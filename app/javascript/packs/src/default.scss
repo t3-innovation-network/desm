@@ -5,24 +5,33 @@ $on-primary: #232323;
 $background-color: #fff;
 $background-color-dark: #f3f3f3;
 
-/* Use the variables */
+/* General */
+
+h6 {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+section {
+  margin-bottom: 2vw;
+}
+
+.usage-explanation {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+a {
+  color: $on-primary;
+}
+
+a:hover {
+  color: $primary-color-light;
+}
+
 body {
   margin-right: 12%;
   margin-left: 12%;
-}
-
-/*Navbar Styles*/
-.navbar {
-  border-bottom: solid 2px $primary-color;
-  padding-bottom: 0px;
-  padding-left: 0px;
-  padding-top: 0px;
-}
-
-.nav-item {
-  margin-left: 30px;
-  margin-right: 30px;
-  padding-top: 10px;
 }
 
 .btn {
@@ -30,33 +39,14 @@ body {
   padding-right: 25px;
 }
 
-#view-mappings {
-  border-bottom: solid 4px $primary-color-light;
-}
+/* Main view Styles */
 
-#brand-box {
-  border-bottom: solid 8px $on-primary;
-}
-
-.navbar-brand {
-  background-color: $on-primary;
-  margin-right: 0px;
-  margin-left: 0px;
-  padding-left: 15px;
-  padding-right: 15px;
-  color: $background-color;
-}
-
-.navbar-brand, a:hover{
-  color: $background-color;
-}
-
-/* Main view Styles */ 
 .right-side-col {
   background-color: $background-color-dark;
 }
 
 /* Override Bootstrap4 container width*/
+
 @media (min-width: 576px) {
   .container {
     max-width: 100%;
@@ -98,34 +88,47 @@ body {
 }
 
 /* Mobile */
+
 @media (max-width: 767.98px) {
   .nav-item > .btn  {
     margin-bottom: 10px;
   }
 }
 
-/* General */
+/*Navbar Styles*/
 
-h6 {
-  font-weight: bold;
-  font-size: 18px;
+.navbar {
+  border-bottom: solid 2px $primary-color;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  padding-top: 0px;
 }
 
-section {
-  margin-bottom: 2vw;
+.nav-item {
+  margin-left: 30px;
+  margin-right: 30px;
+  padding-top: 10px;
 }
 
-.usage-explanation {
-  font-size: 18px;
-  font-weight: bold;
+#view-mappings {
+  border-bottom: solid 4px $primary-color-light;
 }
 
-a {
-  color: $on-primary;
+#brand-box {
+  border-bottom: solid 8px $on-primary;
 }
 
-a:hover {
-  color: $primary-color-light;
+.navbar-brand {
+  background-color: $on-primary;
+  margin-right: 0px;
+  margin-left: 0px;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: $background-color;
+}
+
+.navbar-brand, a:hover{
+  color: $background-color;
 }
 
 /* Forms */
