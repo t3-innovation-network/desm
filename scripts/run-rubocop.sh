@@ -5,4 +5,4 @@ set -e
 cd "${0%/*}/.."
 
 echo "Running rubocop"
-docker-compose run web bundle exec rubocop
+docker-compose run --rm web bundle exec rubocop
