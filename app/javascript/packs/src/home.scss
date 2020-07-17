@@ -1,0 +1,43 @@
+/* Define standard variables and values for website */
+$secondary-color: #d5320d;
+$secondary-color-dark: #232323;
+$primary-color-light: #fff;
+
+/* Use the variables */
+body {
+  margin-right: 12%;
+  margin-left: 12%;
+}
+
+.navbar {
+  border-bottom: solid 2px $secondary-color;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+.nav-item {
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 10px;
+}
+
+.btn {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+#view-mappings {
+  border-bottom: solid 3px $secondary-color;
+}
+
+#brand-box {
+  border-bottom: solid 8px $secondary-color-dark;
+}
+
+.navbar-brand {
+  background-color: $secondary-color-dark;
+  margin-right: 0px;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: $primary-color-light;
+}
