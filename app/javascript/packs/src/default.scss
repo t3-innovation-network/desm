@@ -104,6 +104,8 @@ body {
   }
 }
 
+/* General */
+
 h6 {
   font-weight: bold;
   font-size: 18px;
@@ -116,4 +118,19 @@ section {
 .usage-explanation {
   font-size: 18px;
   font-weight: bold;
+}
+
+a {
+  color: $on-primary;
+}
+
+a:hover {
+  color: $primary-color-light;
+}
+
+/* Forms */
+
+.form-group > .form-control:focus {
+  border-color: $primary-color;
+  box-shadow: 0 0 0 0.2rem $background-color-dark;
 }
