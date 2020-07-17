@@ -19,3 +19,4 @@ import "bootstrap";
 import "./src/application.scss";
 import "./src/home.scss";
 import "@fortawesome/fontawesome-free/js/all";
+global.toastr = require("toastr");
