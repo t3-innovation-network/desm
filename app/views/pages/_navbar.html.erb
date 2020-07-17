@@ -1,17 +1,24 @@
 <nav class="navbar navbar-expand-md">
-  <%= render "logo.html.erb" %>
-  <ul class="navbar-nav mr-auto">
-    <li class="nav-item active" id="view-mappings">
-      <a class="nav-link">View Mappings</a>
-    </li>
-    <li class="nav-item">
-      <button class="btn btn-outline-secondary" type="button">Map a Specification</button>
-    </li>
-  </ul>
-  <ul class="navbar-nav ml-auto">
-    <li class="nav-item">
-      <button class="btn btn-outline-secondary" type="button">Create an Account</button>
-      <button class="btn btn-dark" type="button">Sign-In</button>
-    </li>
-  </ul>
+  <div class="container">
+    <%= render "logo.html.erb" %>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myToggleNav" aria-controls="myToggleNav" aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggler-icon"></span></button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="myToggleNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active" id="view-mappings">
+          <a class="nav-link">View Mappings</a>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-outline-secondary" type="button">Map a Specification</button>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <button class="btn btn-outline-secondary" type="button">Create an Account</button>
+          <button class="btn btn-dark" type="button">Sign-In</button>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
