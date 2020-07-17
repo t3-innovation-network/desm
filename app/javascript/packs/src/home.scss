@@ -1,7 +1,9 @@
 /* Define standard variables and values for website */
-$secondary-color: #d5320d;
-$secondary-color-dark: #232323;
-$primary-color-light: #fff;
+$primary-color: #d5320d;
+$primary-color-light: #fb2437;
+$on-primary: #232323;
+$background-color: #fff;
+$background-color-dark: #f3f3f3;
 
 /* Use the variables */
 body {
@@ -10,15 +12,16 @@ body {
 }
 
 .navbar {
-  border-bottom: solid 2px $secondary-color;
+  border-bottom: solid 2px $primary-color;
   padding-bottom: 0px;
   padding-left: 0px;
+  padding-top: 0px;
 }
 
 .nav-item {
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-bottom: 10px;
+  margin-left: 30px;
+  margin-right: 30px;
+  padding-top: 10px;
 }
 
 .btn {
@@ -27,17 +30,22 @@ body {
 }
 
 #view-mappings {
-  border-bottom: solid 3px $secondary-color;
+  border-bottom: solid 4px $primary-color-light;
 }
 
 #brand-box {
-  border-bottom: solid 8px $secondary-color-dark;
+  border-bottom: solid 8px $on-primary;
 }
 
 .navbar-brand {
-  background-color: $secondary-color-dark;
+  background-color: $on-primary;
   margin-right: 0px;
+  margin-left: 0px;
   padding-left: 15px;
   padding-right: 15px;
-  color: $primary-color-light;
+  color: $background-color;
+}
+
+.right-side-col {
+  background-color: $background-color-dark;
 }
