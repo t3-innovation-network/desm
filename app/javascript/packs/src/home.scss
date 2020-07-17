@@ -11,6 +11,7 @@ body {
   margin-left: 12%;
 }
 
+/*Navbar Styles*/
 .navbar {
   border-bottom: solid 2px $primary-color;
   padding-bottom: 0px;
@@ -46,6 +47,62 @@ body {
   color: $background-color;
 }
 
+/* Main view Styles */ 
 .right-side-col {
   background-color: $background-color-dark;
+}
+
+/* Override Bootstrap4 container width*/
+@media (min-width: 576px) {
+  .container {
+    max-width: 100%;
+  }
+
+  .container > .row > .col-lg-6 {
+    padding: 4vw 6vw 4vw 6vw;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 100%;
+  }
+
+  .container > .row > .col-lg-6 {
+    padding: 4vw 6vw 4vw 6vw;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 100%;
+  }
+
+  .container > .row > .col-lg-6 {
+    padding: 4vw 6vw 4vw 6vw;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 100%;
+  }
+
+  .container > .row > .col-lg-6 {
+    padding: 4vw 6vw 4vw 6vw;
+  }
+}
+
+h6 {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+section {
+  margin-bottom: 2vw;
+}
+
+.usage-explanation {
+  font-size: 18px;
+  font-weight: bold;
 }
