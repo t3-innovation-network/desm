@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "Running pre-commit hook"
-./scripts/run-rubocop.bash
+./scripts/run-rubocop.sh
 
 # $? stores exit value of the last command
 if [ $? -ne 0 ]; then
