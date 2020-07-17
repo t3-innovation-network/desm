@@ -17,8 +17,12 @@
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <button class="btn btn-outline-secondary" type="button">Create an Account</button>
-          <button class="btn btn-dark" type="button">Sign-In</button>
+          <% if current_user %> 
+              <%= link_to "Sign Out", destroy_user_session_path, { :method => :delete, :class => "btn btn-outline-secondary" } %>
+          <% else %>
+            <%= link_to "Create an Account", new_user_registration_path, { :class => "btn btn-outline-secondary" } %>
+            <%= link_to "Sign-In", new_user_session_path, { :class => "btn btn-dark" } %>
+          <% end %>
         </li>
       </ul>
     </div>
