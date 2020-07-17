@@ -47,6 +47,10 @@ body {
   color: $background-color;
 }
 
+.navbar-brand, a:hover{
+  color: $background-color;
+}
+
 /* Main view Styles */ 
 .right-side-col {
   background-color: $background-color-dark;
