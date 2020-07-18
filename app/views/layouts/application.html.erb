@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>App</title>
+    <title>T3 Converter</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <meta content='maximum-scale=1.0, initial-scale=1.0, width=device-width' name='viewport'>
@@ -12,6 +12,7 @@
 
   <body>
     <%= render "shared/navbar.html.erb" %>
+    <%= render "shared/alerts.html.erb" %>
 
     <%= yield %>
   </body>
