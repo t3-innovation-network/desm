@@ -2,7 +2,7 @@
   <script type="text/javascript">
     <% flash.each do |f| %>
       <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
-      toastr['<%= type %>']('<%= f[1] %>');
+      toastr['<%= type %>']('<%= f[1] %>', '', {"closeButton": false, "debug": false, "positionClass": "toast-top-center", "onclick": null, "showDuration": "300", "hideDuration": "1000", "timeOut": "5000", "extendedTimeOut": "1000", "showEasing": "swing", "hideEasing": "linear", "showMethod": "fadeIn", "hideMethod": "fadeOut" });
     <% end %>
   </script>
 <% end %>

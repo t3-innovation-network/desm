@@ -8,16 +8,18 @@
 
     <div class="collapse navbar-collapse justify-content-end" id="toggle-nav">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active" id="view-mappings">
-          <a class="nav-link">View Mappings</a>
+        <li class="nav-item active view-mappings">
+          <a class="nav-link"><%= t('home.navigation.view_mappings') %></a>
         </li>
         <li class="nav-item">
-          <button class="btn btn-outline-secondary" type="button">Map a Specification</button>
+          <button class="btn btn-outline-secondary" type="button">
+            <%= t('home.navigation.map_specification') %>
+          </button>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <% if current_user %> 
+          <% if current_user %>
               <%= link_to "Sign Out", destroy_user_session_path, { :method => :delete, :class => "btn btn-outline-secondary" } %>
           <% else %>
             <%= link_to "Create an Account", new_user_registration_path, { :class => "btn btn-outline-secondary" } %>
