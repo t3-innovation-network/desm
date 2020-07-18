@@ -1,0 +1,22 @@
+en:
+  home:
+    test: "Testing something"
+    navigation:
+      view_mappings: "View Mappings"
+      map_specification: "Map a Specification"
+    body:
+      view_specification_title: "View Specification"
+      view_specification_description: "Description goes here Lorem ipsum dolor sit amet, consectetur\n adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n dolore magna aliqua."
+      view_specifications: "View Specifications"
+      map_specification_to_t3: "Map your specification to the T3 spine"
+      map_specification_description: "Description goes here Lorem ipsum dolor sit amet consectetur\n adipiscing elit lobortis ridiculus suscipit, risus etiam per\n auctor cum viverra proin dapibus dis rhoncus felis, hendrerit\n at integer inceptos curabitur ad volutpat quam urna. Posuere\n quis nam vehicula nisi odio rhoncus molestie volutpat."
+      upload_specification: "Upload Your Specification"
+      coarse_grain_mapping: "Coarse Grain Mapping"
+      fine_grain_mapping: "Fine Grain Mapping and Tunning"
+      start_mapping: "Start Mapping"
+      about_the_project: "About the project"
+      about_the_project_p1: "Description goes here Lorem ipsum dolor sit amet consectetur\n adipiscing elit lobortis ridiculus suscipit, risus etiam per\n auctor cum viverra proin dapibus dis rhoncus felis, hendrerit\n at integer inceptos curabitur ad volutpat quam urna. Posuere\n quis nam vehicula nisi odio rhoncus molestie volutpat."
+      about_the_project_p2: "Description goes here Lorem ipsum dolor sit amet consectetur\n adipiscing elit lobortis ridiculus suscipit, risus etiam per\n auctor cum viverra proin dapibus dis rhoncus felis, hendrerit\n at integer inceptos curabitur ad volutpat quam urna. Posuere\n quis nam vehicula nisi odio rhoncus molestie volutpat."
+      about_the_project_p3: "Description goes here Lorem ipsum dolor sit amet consectetur\n adipiscing elit lobortis ridiculus suscipit, risus etiam per\n auctor cum viverra proin dapibus dis rhoncus felis, hendrerit\n at integer inceptos curabitur ad volutpat quam urna. Posuere\n quis nam vehicula nisi odio rhoncus molestie volutpat."
+      about_the_project_subtitle: "Section Title"
+      about_the_project_subtitle_content: "Description goes here Lorem ipsum dolor sit amet consectetur\n adipiscing elit lobortis ridiculus suscipit, risus etiam per\n auctor cum viverra proin dapibus dis rhoncus felis, hendrerit\n at integer inceptos curabitur ad volutpat quam urna. Posuere\n quis nam vehicula nisi odio rhoncus molestie volutpat."
