@@ -1,0 +1,36 @@
+/*Navbar Styles*/
+@import 'colors.scss';
+
+.navbar {
+  border-bottom: solid 2px $primary-color;
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-top: 0;
+}
+
+.nav-item {
+  margin-left: 30px;
+  margin-right: 30px;
+  padding-top: 10px;
+}
+
+.view-mappings {
+  border-bottom: solid 4px $primary-color-light;
+}
+
+.brand-box {
+  border-bottom: solid 8px $on-primary;
+}
+
+.navbar-brand {
+  background-color: $on-primary;
+  color: $background-color;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  a:hover{
+    color: $background-color;
+  }
+}

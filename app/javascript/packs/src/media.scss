@@ -1,0 +1,49 @@
+/* Override Bootstrap4 container width*/
+
+@media (min-width: 576px) {
+    .container {
+      max-width: 100%;
+    }
+  
+    .container > .row > .col-lg-6 {
+      padding: 4vw 6vw 4vw 6vw;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .container {
+      max-width: 100%;
+    }
+  
+    .container > .row > .col-lg-6 {
+      padding: 4vw 6vw 4vw 6vw;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .container {
+      max-width: 100%;
+    }
+  
+    .container > .row > .col-lg-6 {
+      padding: 4vw 6vw 4vw 6vw;
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .container {
+      max-width: 100%;
+    }
+  
+    .container > .row > .col-lg-6 {
+      padding: 4vw 6vw 4vw 6vw;
+    }
+  }
+  
+  /* Mobile */
+  
+  @media (max-width: 767.98px) {
+    .nav-item > .btn  {
+      margin-bottom: 10px;
+    }
+  }

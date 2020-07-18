@@ -1,9 +1,4 @@
-/* Define standard variables and values for website */
-$primary-color: #d5320d;
-$primary-color-light: #fb2437;
-$on-primary: #232323;
-$background-color: #fff;
-$background-color-dark: #f3f3f3;
+@import 'colors.scss';
 
 /* General */
 
@@ -43,92 +38,6 @@ body {
 
 .right-side-col {
   background-color: $background-color-dark;
-}
-
-/* Override Bootstrap4 container width*/
-
-@media (min-width: 576px) {
-  .container {
-    max-width: 100%;
-  }
-
-  .container > .row > .col-lg-6 {
-    padding: 4vw 6vw 4vw 6vw;
-  }
-}
-
-@media (min-width: 768px) {
-  .container {
-    max-width: 100%;
-  }
-
-  .container > .row > .col-lg-6 {
-    padding: 4vw 6vw 4vw 6vw;
-  }
-}
-
-@media (min-width: 992px) {
-  .container {
-    max-width: 100%;
-  }
-
-  .container > .row > .col-lg-6 {
-    padding: 4vw 6vw 4vw 6vw;
-  }
-}
-
-@media (min-width: 1200px) {
-  .container {
-    max-width: 100%;
-  }
-
-  .container > .row > .col-lg-6 {
-    padding: 4vw 6vw 4vw 6vw;
-  }
-}
-
-/* Mobile */
-
-@media (max-width: 767.98px) {
-  .nav-item > .btn  {
-    margin-bottom: 10px;
-  }
-}
-
-/*Navbar Styles*/
-
-.navbar {
-  border-bottom: solid 2px $primary-color;
-  padding-bottom: 0px;
-  padding-left: 0px;
-  padding-top: 0px;
-}
-
-.nav-item {
-  margin-left: 30px;
-  margin-right: 30px;
-  padding-top: 10px;
-}
-
-#view-mappings {
-  border-bottom: solid 4px $primary-color-light;
-}
-
-#brand-box {
-  border-bottom: solid 8px $on-primary;
-}
-
-.navbar-brand {
-  background-color: $on-primary;
-  margin-right: 0px;
-  margin-left: 0px;
-  padding-left: 15px;
-  padding-right: 15px;
-  color: $background-color;
-}
-
-.navbar-brand a:hover{
-  color: $background-color;
 }
 
 /* Forms */
