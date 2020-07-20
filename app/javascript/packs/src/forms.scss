@@ -1,0 +1,18 @@
+/* Forms */
+@import 'colors.scss';
+
+.form-group > .form-control:focus {
+  border-color: $primary-color;
+  box-shadow: 0 0 0 0.2rem $background-color-dark;
+}
+
+.domain-option {
+  padding-top: 0.2vw;
+  padding-bottom: 0.2vw;
+}
+
+.form-group {
+  > label {
+    font-weight: 600;
+  }
+}

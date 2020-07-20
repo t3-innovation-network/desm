@@ -20,5 +20,6 @@ import "./src/application.scss";
 import "./src/default.scss";
 import "./src/media.scss";
 import "./src/navbar.scss";
+import "./src/forms.scss";
 import "@fortawesome/fontawesome-free/js/all";
 global.toastr = require("toastr");
