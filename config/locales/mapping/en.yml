@@ -1,0 +1,13 @@
+en:
+  mapping:
+    upload_specification: "Upload Your Specification"
+    specification_name: "Name of your Specification"
+    specification_name_help: "This is the name you will see in your list of mappings"
+    version: "Version"
+    import: "Import Specification"
+    use_case: "What use case are you mapping for?"
+    specification_to_map: "What specification would you like to map to?"
+    domains_to_map: "Which of the following domains are you mapping to?"
+    attach_file: "Attach File"
+    upload: "Upload"
+    upload_help: "You can upload your specification as RDF, JSON, XML, or JSONLD format"

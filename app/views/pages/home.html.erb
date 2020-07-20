@@ -37,9 +37,7 @@
         </ol>
       </section>
       <section>
-        <button class="btn btn-dark" type="button">
-          <%= t('home.body.start_mapping') %>
-        </button>
+        <%= link_to t('home.body.start_mapping'), mappings_index_path, { :class => "btn btn-dark" } %>
       </section>
     </div>
 

@@ -1,0 +1,100 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
+      <section>
+        <h6>
+          <%= t('mapping.upload_specification') %>
+        </h6>
+
+        <form>
+
+          <div class="form-group">
+            <label for="specification_name">
+              <%= t('mapping.specification_name') %>
+            </label>
+            <input type="text" class="form-control" id="specification_name" aria-describedby="nameHelp" placeholder="Specification Name">
+            <small id="nameHelp" class="form-text text-muted">
+              <%= t('mapping.specification_name_help') %>
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="version">
+              <%= t('mapping.version') %>
+            </label>
+            <input type="text" class="form-control" id="version" placeholder="Version">
+          </div>
+
+          <div class="form-group">
+            <label for="use_case">
+              <%= t('mapping.use_case') %>
+            </label>
+            <select class="form-control" id="use_case">
+              <option>Use case 1</option>
+              <option>Use case 2</option>
+              <option>Use case 3</option>
+              <option>Use case 4</option>
+              <option>Use case 5</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="use_case">
+              <%= t('mapping.specification_to_map') %>
+            </label>
+            <select class="form-control" id="use_case">
+              <% @specifications.each do |s| %>
+                <option><%= s.name %></option>
+              <% end %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="use_case">
+              <%= t('mapping.domains_to_map') %>
+            </label></br>
+
+            <% @domains.each do |domain| %>
+              <div class="form-check-inline">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" value=""><%= domain.name %>
+                </label>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupFileAddon01">
+                  <%= t('mapping.upload') %>
+                </span>
+              </div>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                  aria-describedby="inputGroupFileAddon01">
+                <label class="custom-file-label" for="inputGroupFile01">
+                  <%= t('mapping.attach_file') %>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <h6>
+              <%= t('mapping.upload_help') %>
+          </h6>
+
+          <button type="submit" class="btn btn-dark">
+              <%= t('mapping.import') %>
+          </button>
+        </form>
+
+      </section>
+    </div>
+
+    <div class="col-lg-6 right-side-col">
+      <section>
+      </section>
+    </div>
+  </div>
+</div>

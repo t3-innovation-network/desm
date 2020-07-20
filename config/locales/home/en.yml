@@ -1,6 +1,5 @@
 en:
   home:
-    test: "Testing something"
     navigation:
       view_mappings: "View Mappings"
       map_specification: "Map a Specification"
