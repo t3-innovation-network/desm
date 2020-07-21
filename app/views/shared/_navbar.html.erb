@@ -8,11 +8,13 @@
 
     <div class="collapse navbar-collapse" id="toggle-nav">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active current-page">
-          <a class="nav-link <%= 'nav-title-highlited' if @current_page != t('home.navigation.view_mappings') %>">
-            <%= @current_page %>
-          </a>
-        </li>
+        <% if @current_page %>
+          <li class="nav-item active current-page">
+            <a class="nav-link <%= 'nav-title-highlited' if @current_page != t('home.navigation.view_mappings') %>">
+              <%= @current_page %>
+            </a>
+          </li>
+        <% end %>
 
         <% if @current_page == t('home.navigation.view_mappings') %>
           <li class="nav-item">
@@ -34,7 +36,6 @@
           <% if current_user %>
               <%= link_to "Sign Out", destroy_user_session_path, { :method => :delete, :class => "btn btn-outline-secondary" } %>
           <% else %>
-            <%= link_to "Create an Account", new_user_registration_path, { :class => "btn btn-outline-secondary" } %>
             <%= link_to "Sign-In", new_user_session_path, { :class => "btn btn-dark" } %>
           <% end %>
         </li>
