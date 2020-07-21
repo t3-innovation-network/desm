@@ -10,5 +10,7 @@ There are different official data schemas like CEDS, Dublin Core, among others. 
 1. Clone this project locally
 2. Execute `docker-compose build`
 3. Execute `docker-compose up`
-4. In a different command prompt, execute`docker-compose run web rake db:create`
+4. In a different command prompt, execute `docker-compose run --rm web rake db:create`
+4. Then, execute `docker-compose run --rm web rake db:migrate`
+4. And finally, to get all the initial data, execute `docker-compose run --rm web rake db:seed`
 5. Go to http://localhost:3000

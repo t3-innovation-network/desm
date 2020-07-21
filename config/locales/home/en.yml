@@ -1,9 +1,11 @@
 en:
   home:
-    test: "Testing something"
     navigation:
       view_mappings: "View Mappings"
       map_specification: "Map a Specification"
+      step_indicator_1: "1. Upload Specification"
+      step_indicator_2: "2. Map to Domains"
+      step_indicator_3: "3. Align and Fine Tune"
     body:
       view_specification_title: "View Specification"
       view_specification_description: "Description goes here Lorem ipsum dolor sit amet, consectetur\n adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n dolore magna aliqua."
