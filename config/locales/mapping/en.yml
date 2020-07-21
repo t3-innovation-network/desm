@@ -1,5 +1,6 @@
 en:
   mapping:
+    map_specification: "Map a Specification"
     upload_specification: "1. Upload Your Specification"
     specification_name: "Name of your Specification"
     specification_name_help: "This is the name you will see in your list of mappings"

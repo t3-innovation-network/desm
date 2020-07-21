@@ -46,4 +46,12 @@
     .nav-item > .btn  {
       margin-bottom: 10px;
     }
+
+    .container > .row > .col-lg-6 {
+      padding: 4vw 6vw 4vw 6vw;
+    }
+
+    .indicator {
+      visibility: hidden;
+    }
   }

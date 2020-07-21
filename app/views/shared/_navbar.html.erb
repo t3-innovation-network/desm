@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md">
+<nav class="navbar navbar-expand-lg">
   <div class="container">
     <%= render "shared/logo.html.erb" %>
 
@@ -6,17 +6,29 @@
       <i class="fa fa-bars" aria-hidden="true"></i>
     </button>
 
-    <div class="collapse navbar-collapse justify-content-end" id="toggle-nav">
+    <div class="collapse navbar-collapse" id="toggle-nav">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active view-mappings">
-          <a class="nav-link"><%= t('home.navigation.view_mappings') %></a>
+        <li class="nav-item active current-page">
+          <a class="nav-link <%= 'nav-title-highlited' if @current_page != t('home.navigation.view_mappings') %>">
+            <%= @current_page %>
+          </a>
         </li>
-        <li class="nav-item">
-          <button class="btn btn-outline-secondary" type="button">
-            <%= t('home.navigation.map_specification') %>
-          </button>
-        </li>
+
+        <% if @current_page == t('home.navigation.view_mappings') %>
+          <li class="nav-item">
+            <button class="btn btn-outline-secondary" type="button">
+              <%= t('home.navigation.map_specification') %>
+            </button>
+          </li>
+        <% end %>
+
+        <% if @current_page == t('mapping.map_specification') %>
+          <li>
+            <%= render "shared/stepper.html.erb" %>
+          </li>
+        <% end %>
       </ul>
+
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
           <% if current_user %>

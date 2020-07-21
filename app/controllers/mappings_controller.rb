@@ -8,6 +8,8 @@
 class MappingsController < ApplicationController
   # Prepare data for the the "Start Mapping" view and redirect to it
   def index
+    @current_page = t("mapping.map_specification")
+
     @specifications = Specification.all
     @domains = Domain.all.sort_by(&:name)
   end

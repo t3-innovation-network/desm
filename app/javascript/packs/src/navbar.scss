@@ -17,7 +17,7 @@
   padding-top: 10px;
 }
 
-.view-mappings {
+.current-page {
   border-bottom: solid 4px $primary-color-light;
 }
 
@@ -36,4 +36,9 @@
   a:hover{
     color: $background-color;
   }
+}
+
+.nav-title-highlited{
+  font-weight: 600;
+  font-size: 18px;
 }
