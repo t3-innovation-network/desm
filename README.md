@@ -14,3 +14,10 @@ There are different official data schemas like CEDS, Dublin Core, among others. 
 4. Then, execute `docker-compose run --rm web rake db:migrate`
 4. And finally, to get all the initial data, execute `docker-compose run --rm web rake db:seed`
 5. Go to http://localhost:3000
+
+## Collaborate
+
+> In order to collaborate, please set up with the git hoos, following the steps below:
+
+1. Execute `chmod +x scripts/*.bash`
+2. Execute `./scripts/install-hooks.sh`

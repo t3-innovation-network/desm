@@ -5,6 +5,6 @@ echo "Running pre-commit hook"
 
 # $? stores exit value of the last command
 if [ $? -ne 0 ]; then
- echo "Code must be clean before commiting"
+ cowsay "Code must be clean before commiting"
  exit 1
 fi
