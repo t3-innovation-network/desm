@@ -1,4 +1,4 @@
-# T3 Metadata Converter
+# T3 Innovation Network Data Schema Converter
 
 This application is meant to serve as a way to reach interoperability between different data schemas.
 There are different official data schemas like CEDS, Dublin Core, among others. With this application it's possible to convert metadata from one specification to another.
@@ -15,9 +15,11 @@ There are different official data schemas like CEDS, Dublin Core, among others. 
 4. And finally, to get all the initial data, execute `docker-compose run --rm web rake db:seed`
 5. Go to http://localhost:3000
 
+The project will be accessible from any device within your network
+
 ## Collaborate
 
-> In order to collaborate, please set up with the git hoos, following the steps below:
+> In order to collaborate, please set up your environment with the git hooks, following the steps below:
 
 1. Execute `chmod +x scripts/*.bash`
 2. Execute `./scripts/install-hooks.sh`
