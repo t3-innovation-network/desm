@@ -23,3 +23,5 @@ The project will be accessible from any device within your network
 
 1. Execute `chmod +x scripts/*.bash`
 2. Execute `./scripts/install-hooks.sh`
+
+> Admin user email: "admin@t3converter.com", pass: "t3admin"
