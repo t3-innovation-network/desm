@@ -125,8 +125,6 @@ GEM
     public_suffix (4.0.5)
     puma (4.3.5)
       nio4r (~> 2.0)
-    pundit (2.1.0)
-      activesupport (>= 3.0.0)
     rack (2.2.3)
     rack-proxy (0.6.5)
       rack
@@ -164,6 +162,8 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     regexp_parser (1.7.1)
+    rerun (0.13.0)
+      listen (~> 3.0)
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -254,8 +254,8 @@ DEPENDENCIES
   listen (~> 3.2)
   pg (>= 0.18, < 2.0)
   puma (~> 4.1)
-  pundit
   rails (~> 6.0.3, >= 6.0.3.2)
+  rerun
   rspec-rails (~> 4.0.1)
   rubocop
   seed-fu
