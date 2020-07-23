@@ -4,6 +4,8 @@ en:
       title: "Title"
       actions: "Actions"
       confirmation: "Please confirm"
+      create: "Create"
+      mandatory_fields: "Fields with * are mandatory!"
     menu:
       users: "Users"
       organizations: "Organizations"
@@ -16,6 +18,7 @@ en:
         name: "Name"
       actions:
         add: "Add Organizations"
+        new: "New Organization"
       title: "Organizations"
     users:
       attributes:

@@ -27,6 +27,17 @@ class Admin::OrganizationsController < ApplicationController
     redirect_to admin_organizations_path
   end
 
+  ###
+  # @description: Adds a new organization to the database
+  ###
+  def create
+    @organization = Organization.create(permitted_params)
+
+    flash[:notice] = t("alerts.successfully_added", record: Organization.name) if @organization.save
+
+    redirect_to admin_organizations_path
+  end
+
   private
 
   ###
@@ -42,5 +53,13 @@ class Admin::OrganizationsController < ApplicationController
   ###
   def organization
     @organization = @organization || params[:id].present? ? Organization.find(params[:id]) : Organization.first
+  end
+
+  ###
+  # @description: Clean params
+  # @return [Hash]
+  ###
+  def permitted_params
+    params.permit(:name)
   end
 end
