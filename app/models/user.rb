@@ -13,6 +13,8 @@ class User < ApplicationRecord
   has_many :roles, through: :assignments
   belongs_to :organization
 
+  validates :fullname, presence: true
+
   ###
   # @description: Validates whether a user has or not a given role
   # @param [Symbol] role
