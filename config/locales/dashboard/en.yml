@@ -6,3 +6,7 @@ en:
     menu:
       users: "Users"
       companies: "Companies"
+    sidebar:
+      home: "Dashboard"
+      users: "Users"
+      companies: "Companies"

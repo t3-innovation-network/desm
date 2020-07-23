@@ -7,12 +7,26 @@
     <meta content='maximum-scale=1.0, initial-scale=1.0, width=device-width' name='viewport'>
 
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
     <%= render "shared/alerts.html.erb" %>
 
-    <%= yield %>
+    <%= render "shared/admin/navbar.html.erb" %>
+
+    <div class="container-fluid">
+      <div class="row">
+
+      <%= render "shared/admin/sidebar.html.erb" %>
+
+        <main role="main" class="main col-lg-12">
+
+          <%= yield %>
+
+        </main>
+      </div>
+    </div>
+
   </body>
 </html>

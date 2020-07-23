@@ -34,7 +34,10 @@
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
           <% if user_signed_in? %>
-              <%= link_to "Sign Out", destroy_user_session_path, { :method => :delete, :class => "btn btn-outline-secondary" } %>
+            <% if current_user.role?(:admin) %>
+              <%= link_to "Dashboard", admin_companies_path, { :class => "btn btn-outline-secondary" } %>
+            <% end %>
+            <%= link_to "Sign Out", destroy_user_session_path, { :method => :delete, :class => "btn btn-outline-secondary" } %>
           <% else %>
             <%= link_to "Sign-In", new_user_session_path, { :class => "btn btn-dark" } %>
           <% end %>
