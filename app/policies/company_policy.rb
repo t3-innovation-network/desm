@@ -5,6 +5,12 @@
 #   company records.
 ###
 class CompanyPolicy < ApplicationPolicy
+  def initialize(user, company)
+    @user = user
+    @company = company
+    raise Pundit::NotAuthorizedError unless user.role?(:admin)
+  end
+
   ###
   # @description: Determines if the user has access to the index for this resource
   # @return [TrueClass]

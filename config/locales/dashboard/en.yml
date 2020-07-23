@@ -1,0 +1,8 @@
+en:
+  dashboard:
+    general:
+      title: "Title"
+      actions: "Actions"
+    menu:
+      users: "Users"
+      companies: "Companies"
