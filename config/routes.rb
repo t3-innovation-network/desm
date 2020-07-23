@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :admin do
     get "/" => "organizations#index"
     resources :organizations
+    resources :users
   end
 
   get "mappings/index"

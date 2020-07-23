@@ -2,10 +2,10 @@
 
 require "rails_helper"
 
-describe "Admin::Organizations", type: :request do
+describe "Admin::Users", type: :request do
   describe "GET /index" do
     it "returns http success" do
-      get "/admin/organizations/index"
+      get "/admin/users/index"
 
       expect(response).to have_http_status(302)
     end
@@ -13,19 +13,21 @@ describe "Admin::Organizations", type: :request do
 
   describe "GET /new" do
     it "returns http success" do
-      get "/admin/organizations/new"
+      get "/admin/users/new"
 
       expect(response).to have_http_status(302)
     end
   end
 
-  describe "POST /organizations" do
+  describe "POST /create" do
     it "returns http success" do
       params = {
-        name: "test organization"
+        email: "user@requesttest.com",
+        password: "123123123",
+        organization_id: 1
       }
 
-      post "/admin/organizations", params: params
+      post "/admin/users", params: params
 
       expect(response).to have_http_status(302)
     end
@@ -33,7 +35,7 @@ describe "Admin::Organizations", type: :request do
 
   describe "GET /show" do
     it "returns http success" do
-      get "/admin/organizations/show"
+      get "/admin/users/show"
 
       expect(response).to have_http_status(302)
     end
@@ -41,27 +43,27 @@ describe "Admin::Organizations", type: :request do
 
   describe "GET /edit" do
     it "returns http success" do
-      get "/admin/organizations/edit"
+      get "/admin/users/edit"
 
       expect(response).to have_http_status(302)
     end
   end
 
-  describe "PUT /organizations/{id}" do
+  describe "PUT /update" do
     it "returns http success" do
       params = {
-        name: "updated test organization"
+        name: "updated user"
       }
 
-      put "/admin/organizations/1", params: params
+      put "/admin/users/1", params: params
 
       expect(response).to have_http_status(302)
     end
   end
 
-  describe "DELETE organization" do
+  describe "DELETE /destroy" do
     it "returns http success" do
-      delete "/admin/organizations/1"
+      delete "/admin/users/1"
 
       expect(response).to have_http_status(302)
     end

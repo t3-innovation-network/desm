@@ -10,3 +10,12 @@ en:
       home: "Dashboard"
       users: "Users"
       organizations: "Organizations"
+    organizations:
+      attributes:
+        name: "Name"
+      title: "Organizations"
+    users:
+      attributes:
+        email: "Name"
+        organization: "Organization"
+      title: "Users"

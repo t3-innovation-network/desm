@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
   <h1 class="h2">
-    <%= t('dashboard.organizations.title') %>
+    <%= t('dashboard.users.title') %>
   </h1>
 </div>
 
@@ -11,25 +11,31 @@
         <thead>
           <tr>
             <th>
-              <%= t('dashboard.organizations.attributes.name') %>
+              <%= t('dashboard.users.attributes.email') %>
+            </th>
+            <th>
+              <%= t('dashboard.users.attributes.organzation') %>
             </th>
             <th></th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <% @organizations.each do |c| %>
+          <% @users.each do |c| %>
             <tr>
               <td>
-                <%= c.name %>
+                <%= c.email %>
               </td>
               <td>
-                <%= link_to edit_admin_organization_path(c.id), :class => "btn btn-dark" do %>
+                <%= c.organization.name %>
+              </td>
+              <td>
+                <%= link_to edit_admin_user_path(c.id), :class => "btn btn-dark" do %>
                     <i class="fa fa-pencil-alt" aria-hidden="true"></i>
                 <% end %>
               </td>
               <td>
-                <%= link_to "/admin/organizations/#{c.id}", :class => "btn btn-dark", :method => :delete do %>
+                <%= link_to "/admin/users/#{c.id}", :class => "btn btn-dark", :method => :delete do %>
                     <i class="fa fa-trash" aria-hidden="true"></i>
                 <% end %>
               </td>
