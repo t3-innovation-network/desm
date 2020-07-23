@@ -11,10 +11,13 @@
 SeedFu.seed
 
 # Let's create an admin user first
-user = User.create!(email: "admin@t3converter.com", password: "t3admin");
+user = User.create!(email: "user@t3converter.com", password: "t3user");
+admin = User.create!(email: "admin@t3converter.com", password: "t3admin");
 
-# And an admin role
-role = Role.create!(name: "Admin");
+# And an admin and a regular user role
+admin_role = Role.create!(name: "Admin");
+user_role = Role.create!(name: "Regular User");
 
 # Assing "admin" role to our admin user
-Assignment.create(user: user, role: role);
+Assignment.create(user: user, role: user_role);
+Assignment.create(user: admin, role: admin_role);
