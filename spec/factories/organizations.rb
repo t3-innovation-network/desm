@@ -2,9 +2,9 @@
 
 require "faker"
 
-# Factory for the Company class
+# Factory for the Organization class
 FactoryBot.define do
-  factory :company do
+  factory :organization do
     name { Faker::Company.name }
   end
 end

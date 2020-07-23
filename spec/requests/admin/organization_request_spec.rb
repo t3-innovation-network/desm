@@ -2,10 +2,10 @@
 
 require "rails_helper"
 
-describe "Admin::Companies", type: :request do
+describe "Admin::Organizations", type: :request do
   describe "GET /index" do
     it "returns http success" do
-      get "/admin/companies/index"
+      get "/admin/organizations/index"
 
       expect(response).to have_http_status(302)
     end
@@ -13,19 +13,19 @@ describe "Admin::Companies", type: :request do
 
   describe "GET /new" do
     it "returns http success" do
-      get "/admin/companies/new"
+      get "/admin/organizations/new"
 
       expect(response).to have_http_status(302)
     end
   end
 
-  describe "POST /companies" do
+  describe "POST /organizations" do
     it "returns http success" do
       params = {
-        name: "test company"
+        name: "test organization"
       }
 
-      post "/admin/companies", params: params
+      post "/admin/organizations", params: params
 
       expect(response).to have_http_status(302)
     end
@@ -33,7 +33,7 @@ describe "Admin::Companies", type: :request do
 
   describe "GET /show" do
     it "returns http success" do
-      get "/admin/companies/show"
+      get "/admin/organizations/show"
 
       expect(response).to have_http_status(302)
     end
@@ -41,19 +41,19 @@ describe "Admin::Companies", type: :request do
 
   describe "GET /edit" do
     it "returns http success" do
-      get "/admin/companies/edit"
+      get "/admin/organizations/edit"
 
       expect(response).to have_http_status(302)
     end
   end
 
-  describe "PUT /companies/{id}" do
+  describe "PUT /organizations/{id}" do
     it "returns http success" do
       params = {
-        name: "updated test company"
+        name: "updated test organization"
       }
 
-      put "/admin/companies/1", params: params
+      put "/admin/organizations/1", params: params
 
       expect(response).to have_http_status(302)
     end
@@ -61,7 +61,7 @@ describe "Admin::Companies", type: :request do
 
   describe "DELETE /destroy" do
     it "returns http success" do
-      get "/admin/companies/destroy"
+      get "/admin/organizations/destroy"
 
       expect(response).to have_http_status(302)
     end

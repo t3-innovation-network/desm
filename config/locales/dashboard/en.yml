@@ -5,8 +5,8 @@ en:
       actions: "Actions"
     menu:
       users: "Users"
-      companies: "Companies"
+      organizations: "Organizations"
     sidebar:
       home: "Dashboard"
       users: "Users"
-      companies: "Companies"
+      organizations: "Organizations"

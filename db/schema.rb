@@ -24,15 +24,15 @@ ActiveRecord::Schema.define(version: 2020_07_22_135104) do
     t.index ["user_id"], name: "index_assignments_on_user_id"
   end
 
-  create_table "companies", force: :cascade do |t|
-    t.string "name"
+  create_table "domains", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "domains", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "description"
+  create_table "organizations", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

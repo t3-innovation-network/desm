@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  # Routes related to companies, are under the 'admin' namespace
+  # Routes related to organizations, are under the 'admin' namespace
   namespace :admin do
-    resources :companies
+    get "/" => "organizations#index"
+    resources :organizations
   end
 
   get "mappings/index"

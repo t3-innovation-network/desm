@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 ###
-# @description: Place all the actions related to companies
+# @description: Place all the actions related to organizations
 ###
-class Admin::CompaniesController < ApplicationController
+class Admin::OrganizationsController < ApplicationController
   # We use a different template for this controller, in order the make a
   # difference between the public and the restricted html templates
   layout "admin"
@@ -12,10 +12,10 @@ class Admin::CompaniesController < ApplicationController
   include Pundit
 
   ###
-  # @description: List all the companies
+  # @description: List all the organizations
   ###
   def index
-    @companies = Company.all
+    @organizations = Organization.all
   end
 
   private
@@ -24,14 +24,14 @@ class Admin::CompaniesController < ApplicationController
   # @description: Execute the authorization policy
   ###
   def authorize_with_policy
-    authorize company
+    authorize organization
   end
 
   ###
   # @description: Get the current model record
   # @return [ActiveRecord]
   ###
-  def company
-    @company || params[:id].present? ? Company.find(params[:id]) : Company.first
+  def organization
+    @organization || params[:id].present? ? Organization.find(params[:id]) : Organization.first
   end
 end

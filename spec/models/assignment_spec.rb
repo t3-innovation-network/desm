@@ -4,7 +4,7 @@ require "rails_helper"
 
 describe Assignment, type: :model do
   it "has a valid factory" do
-    expect(FactoryBot.build(:company)).to be_valid
+    expect(FactoryBot.build(:organization)).to be_valid
   end
 
   it { should belong_to(:user) }

@@ -2,12 +2,12 @@
 
 ###
 # @description: Represents the ability that a user has to access
-#   company records.
+#   organization records.
 ###
-class CompanyPolicy < ApplicationPolicy
-  def initialize(user, company)
+class OrganizationPolicy < ApplicationPolicy
+  def initialize(user, organization)
     @user = user
-    @company = company
+    @organization = organization
     raise Pundit::NotAuthorizedError unless user.role?(:admin)
   end
 
