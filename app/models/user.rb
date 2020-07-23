@@ -9,7 +9,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :assignments
+  has_many :assignments, dependent: :delete_all
   has_many :roles, through: :assignments
   belongs_to :organization
 

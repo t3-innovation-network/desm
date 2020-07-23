@@ -1,0 +1,4 @@
+en:
+  alerts:
+    successfully_deleted: "%{record} removed"
+    successfully_added: "%{record} successfully added"

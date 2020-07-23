@@ -1,20 +1,29 @@
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-  <h1 class="h2">
-    <%= t('dashboard.organizations.title') %>
-  </h1>
-</div>
-
-<div class="container">
+<div class="container dashboard-container">
   <div class="row">
     <div class="col-lg-12 mx-auto">
+
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-building"></i>
+          <strong>
+            <%= t('dashboard.organizations.title') %>
+          </strong>
+          <%= link_to new_admin_organization_path, :class => "float-right btn btn-dark btn-sm" do %>
+            <i class="fa fa-fw fa-plus-circle"></i>
+            <%= t('dashboard.organizations.actions.add') %>
+          <% end %>
+        </div>
+      </div>
+
       <table class="table table-striped">
         <thead>
           <tr>
             <th>
               <%= t('dashboard.organizations.attributes.name') %>
             </th>
-            <th></th>
-            <th></th>
+            <th>
+              <%= t('dashboard.general.actions') %>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -27,9 +36,8 @@
                 <%= link_to edit_admin_organization_path(c.id), :class => "btn btn-dark" do %>
                     <i class="fa fa-pencil-alt" aria-hidden="true"></i>
                 <% end %>
-              </td>
-              <td>
-                <%= link_to "/admin/organizations/#{c.id}", :class => "btn btn-dark", :method => :delete do %>
+
+                <%= link_to "/admin/organizations/#{c.id}", :class => "btn btn-dark", method: :delete, data: { confirm: t('dashboard.general.confirmation') } do %>
                     <i class="fa fa-trash" aria-hidden="true"></i>
                 <% end %>
               </td>

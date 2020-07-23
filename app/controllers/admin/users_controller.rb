@@ -12,11 +12,20 @@ class Admin::UsersController < ApplicationController
   include Pundit
 
   ###
-  # @description: List all the users with its organizations
+  # @description: Lists all the users with its organizations
   ###
   def index
     @organizations = Organization.all
     @users = User.all
+  end
+
+  ###
+  # @description: Removes a user from the database
+  ###
+  def destroy
+    @user.destroy!
+    flash[:info] = t("alerts.successfully_deleted", record: User.name)
+    redirect_to admin_users_path
   end
 
   private
@@ -33,6 +42,6 @@ class Admin::UsersController < ApplicationController
   # @return [ActiveRecord]
   ###
   def user
-    @user || params[:id].present? ? User.find(params[:id]) : User.first
+    @user = @user || params[:id].present? ? User.find(params[:id]) : User.first
   end
 end

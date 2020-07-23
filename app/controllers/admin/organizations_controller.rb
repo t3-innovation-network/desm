@@ -12,10 +12,19 @@ class Admin::OrganizationsController < ApplicationController
   include Pundit
 
   ###
-  # @description: List all the organizations
+  # @description: Lists all the organizations
   ###
   def index
     @organizations = Organization.all
+  end
+
+  ###
+  # @description: Removes an organization from the database
+  ###
+  def destroy
+    @organization.destroy!
+    flash[:info] = t("alerts.successfully_deleted", record: Organization.name)
+    redirect_to admin_organizations_path
   end
 
   private
@@ -32,6 +41,6 @@ class Admin::OrganizationsController < ApplicationController
   # @return [ActiveRecord]
   ###
   def organization
-    @organization || params[:id].present? ? Organization.find(params[:id]) : Organization.first
+    @organization = @organization || params[:id].present? ? Organization.find(params[:id]) : Organization.first
   end
 end

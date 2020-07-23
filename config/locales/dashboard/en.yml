@@ -3,6 +3,7 @@ en:
     general:
       title: "Title"
       actions: "Actions"
+      confirmation: "Please confirm"
     menu:
       users: "Users"
       organizations: "Organizations"
@@ -13,9 +14,13 @@ en:
     organizations:
       attributes:
         name: "Name"
+      actions:
+        add: "Add Organizations"
       title: "Organizations"
     users:
       attributes:
         email: "Name"
         organization: "Organization"
+      actions:
+        add: "Add Users"
       title: "Users"
