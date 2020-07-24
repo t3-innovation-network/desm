@@ -57,9 +57,9 @@ class Admin::OrganizationsController < ApplicationController
 
   ###
   # @description: Clean params
-  # @return [Hash]
+  # @return [ActionController::Parameters]
   ###
   def permitted_params
-    params.permit(:name)
+    params.require(:organization).permit(:name)
   end
 end

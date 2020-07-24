@@ -10,6 +10,12 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  ###
+  # @description: Prepare the data for the flash message to the user
+  #   about an error that happened because an unpermittted access to
+  #   an action
+  # @param [Exception] _exception The exception that was raised
+  ###
   def user_not_authorized(_exception)
     flash[:error] = t("errors.auth.unauthorized_action")
     redirect_to root_path

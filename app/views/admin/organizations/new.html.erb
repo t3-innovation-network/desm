@@ -21,10 +21,10 @@
         </p>
 
         <div class="col-sm-6">
-          <%= form_with(model: @organization, url: "/admin/organizations", method: "post") do |f| %>
+          <%= form_with(model: @organization, url: "/admin/organizations", method: "post", scope: "organization") do |f| %>
             <div class="form-group">
               <label>Name <span class="text-danger">*</span></label>
-              <input type="text" name="name" class="form-control" placeholder="Enter the name of the organization" required="">
+              <%= f.text_field :name, class: "form-control", placeholder: "Enter  the name of the organization", required: true %>
             </div>
             <div class="form-group">
               <%= f.submit t('dashboard.general.create'), class: 'btn btn-dark' %>

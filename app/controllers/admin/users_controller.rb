@@ -11,12 +11,39 @@ class Admin::UsersController < ApplicationController
 
   include Pundit
 
+  # Set a default password for every new user, since it's not created by itself,
+  # but by an administrator
+  DEFAULT_PASS = "t3user123"
+
   ###
   # @description: Lists all the users with its organizations
   ###
   def index
     @organizations = Organization.all
     @users = User.all
+  end
+
+  ###
+  # @description: Displays the form to create a new user. We need the
+  #   organizations and roles in order to assign it to the user
+  ###
+  def new
+    @organizations = Organization.all
+    @roles = Role.all
+  end
+
+  ###
+  # @description: Adds a new user to the database
+  ###
+  def create
+    @user = User.create(permitted_params.merge(password: DEFAULT_PASS))
+
+    if @user.save
+      Assignment.new(user_id: @user.id, role_id: params[:role_id])
+      flash[:notice] = t("alerts.successfully_added", record: User.name)
+    end
+
+    redirect_to admin_users_path
   end
 
   ###
@@ -43,5 +70,13 @@ class Admin::UsersController < ApplicationController
   ###
   def user
     @user = @user || params[:id].present? ? User.find(params[:id]) : User.first
+  end
+
+  ###
+  # @description: Clean params
+  # @return [ActionController::Parameters]
+  ###
+  def permitted_params
+    params.require(:user).permit(:email, :fullname, :password, :organization_id, :role_id)
   end
 end

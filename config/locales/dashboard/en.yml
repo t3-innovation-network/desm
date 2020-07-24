@@ -17,7 +17,7 @@ en:
       attributes:
         name: "Name"
       actions:
-        add: "Add Organizations"
+        add: "Add Organization"
         new: "New Organization"
       title: "Organizations"
     users:
@@ -25,5 +25,6 @@ en:
         email: "Name"
         organization: "Organization"
       actions:
-        add: "Add Users"
+        add: "Add User"
+        new: "New User"
       title: "Users"
