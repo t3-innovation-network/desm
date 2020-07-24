@@ -42,7 +42,7 @@
   
   /* Mobile */
   
-  @media (max-width: 767.98px) {
+  @media (max-width: 768px) {
     .nav-item > .btn  {
       margin-bottom: 10px;
     }
@@ -53,5 +53,11 @@
 
     .indicator {
       visibility: hidden;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .brand-box-container {
+      width: 20rem !important;
     }
   }

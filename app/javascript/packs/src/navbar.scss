@@ -1,11 +1,14 @@
 /*Navbar Styles*/
 @import 'colors.scss';
 
+.nav-container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .navbar {
   border-bottom: solid 2px $primary-color;
-  padding-bottom: 0;
-  padding-left: 0;
-  padding-top: 0;
+  padding: 0;
 }
 
 .navbar-nav.ml-auto {
@@ -22,16 +25,23 @@
 }
 
 .brand-box {
+  background-image: url('images/White-T3-Inno-Network-02-reverse.png');
+  background-size: 12rem;
+  background-repeat: no-repeat;
+}
+
+.brand-box-container {
+  height: 3.4rem;
+  width: 13.5rem;
   border-bottom: solid 8px $on-primary;
+  background-color: $on-primary;
 }
 
 .navbar-brand {
   background-color: $on-primary;
-  color: $background-color;
-  margin-left: 0;
-  margin-right: 0;
-  padding-left: 15px;
-  padding-right: 15px;
+  margin: 0.4rem;
+  height: 90%;
+  width: 90%;
 
   a:hover{
     color: $background-color;
