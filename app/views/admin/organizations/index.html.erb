@@ -1,0 +1,50 @@
+<div class="container dashboard-container">
+  <div class="row">
+    <div class="col-lg-12 mx-auto">
+
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-building"></i>
+          <strong>
+            <%= t('dashboard.organizations.title') %>
+          </strong>
+          <%= link_to new_admin_organization_path, :class => "float-right btn btn-dark btn-sm" do %>
+            <i class="fa fa-fw fa-plus-circle"></i>
+            <%= t('dashboard.organizations.actions.add') %>
+          <% end %>
+        </div>
+      </div>
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>
+              <%= t('dashboard.organizations.attributes.name') %>
+            </th>
+            <th>
+              <%= t('dashboard.general.actions') %>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @organizations.each do |c| %>
+            <tr>
+              <td>
+                <%= c.name %>
+              </td>
+              <td>
+                <%= link_to edit_admin_organization_path(c.id), :class => "btn btn-dark" do %>
+                    <i class="fa fa-pencil-alt" aria-hidden="true"></i>
+                <% end %>
+
+                <%= link_to "/admin/organizations/#{c.id}", :class => "btn btn-dark", method: :delete, data: { confirm: t('dashboard.general.confirmation') } do %>
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

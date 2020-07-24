@@ -1,0 +1,10 @@
+<nav class="navbar sticky-top flex-md-nowrap p-0">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">
+    <%= t('dashboard.general.t3') %>
+  </a>
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <%= link_to "Sign Out", destroy_user_session_path, { :method => :delete, :class => "btn btn-outline-secondary" } %>
+    </li>
+  </ul>
+</nav>

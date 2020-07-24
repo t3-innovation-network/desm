@@ -1,0 +1,30 @@
+en:
+  dashboard:
+    general:
+      title: "Title"
+      actions: "Actions"
+      confirmation: "Please confirm"
+      create: "Create"
+      mandatory_fields: "Fields with * are mandatory!"
+    menu:
+      users: "Users"
+      organizations: "Organizations"
+    sidebar:
+      home: "Dashboard"
+      users: "Users"
+      organizations: "Organizations"
+    organizations:
+      attributes:
+        name: "Name"
+      actions:
+        add: "Add Organization"
+        new: "New Organization"
+      title: "Organizations"
+    users:
+      attributes:
+        email: "Name"
+        organization: "Organization"
+      actions:
+        add: "Add User"
+        new: "New User"
+      title: "Users"

@@ -7,5 +7,17 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-# Fetch all seed files inside "fixtures" folder
+# Fetch all seed files inside "fixtures" folder, as initial seeds
 SeedFu.seed
+
+# Let's create an admin user first
+user = User.create!(fullname: "user", email: "user@t3converter.com", password: "t3user", organization: Organization.first);
+admin = User.create!(fullname: "admin", email: "admin@t3converter.com", password: "t3admin", organization: Organization.first);
+
+# And an admin and a regular user role
+admin_role = Role.create!(name: "Admin");
+user_role = Role.create!(name: "Regular User");
+
+# Assing "admin" role to our admin user
+Assignment.create(user: user, role: user_role);
+Assignment.create(user: admin, role: admin_role);
