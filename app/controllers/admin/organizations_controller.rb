@@ -37,8 +37,18 @@ class Admin::OrganizationsController < ApplicationController
   # @description: Removes an organization from the database
   ###
   def destroy
-    @organization.destroy!
-    flash[:info] = t("alerts.successfully_deleted", record: Organization.name)
+    begin
+      @organization.destroy!
+      flash[:info] = t("alerts.successfully_deleted", record: Organization.name)
+    rescue ActiveRecord::RecordNotDestroyed
+      # @todo: Implement error handling class/module to avoid "fat controllers" known issue
+      flash[:error] = t(
+        "alerts.errors.cannot_delete_because_has_relation",
+        record: Organization.name.downcase,
+        relation: User.name.pluralize.downcase
+      )
+    end
+
     redirect_to admin_organizations_path
   end
 

@@ -8,6 +8,6 @@ FactoryBot.define do
     fullname { Faker::Name.name }
     email { Faker::Internet.email }
     password { Faker::Internet.password }
-    organization { FactoryBot.create(:organization) }
+    organization
   end
 end

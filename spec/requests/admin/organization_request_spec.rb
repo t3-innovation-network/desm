@@ -58,4 +58,17 @@ describe "Admin::Organizations", type: :request do
       expect(response).to have_http_status(302)
     end
   end
+
+  describe "Can't DELETE organization with users" do
+    let(:o) { FactoryBot.build(:organization) }
+
+    it "returns http success" do
+      FactoryBot.build(:user, organization: o)
+
+      delete "/admin/organizations/#{o.id}/"
+
+      expect(response).to have_http_status(302)
+      expect(o).to be_present
+    end
+  end
 end
