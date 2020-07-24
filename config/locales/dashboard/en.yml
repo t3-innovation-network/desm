@@ -24,9 +24,12 @@ en:
       title: "Organizations"
     users:
       attributes:
+        fullname: "Fullname"
         email: "Name"
         organization: "Organization"
+        role: "Role"
       actions:
         add: "Add User"
         new: "New User"
+        edit: "Edit User"
       title: "Users"

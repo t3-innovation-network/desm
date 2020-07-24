@@ -28,6 +28,7 @@ class Admin::UsersController < ApplicationController
   #   organizations and roles in order to assign it to the user
   ###
   def new
+    @user = User.new
     @organizations = Organization.all
     @roles = Role.all
   end
@@ -46,9 +47,23 @@ class Admin::UsersController < ApplicationController
     redirect_to admin_users_path
   end
 
-  def edit; end
+  ###
+  # @description: Prepares the data for the edit form
+  ###
+  def edit
+    @user = User.find(params[:id])
+    @organizations = Organization.all
+    @roles = Role.all
+  end
 
-  def update; end
+  ###
+  # @description: Udates the attributes of a user
+  ###
+  def update
+    flash[:notice] = t("alerts.successfully_updated", record: User.name) if @user.update(permitted_params)
+
+    redirect_to admin_users_path
+  end
 
   ###
   # @description: Removes a user from the database

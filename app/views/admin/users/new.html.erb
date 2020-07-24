@@ -6,12 +6,8 @@
         <div class="card-header">
           <i class="fa fa-building"></i>
           <strong>
-            <%= t('dashboard.users.new') %>
+            <%= t('dashboard.users.actions.new') %>
           </strong>
-          <%= link_to new_admin_user_path, :class => "float-right btn btn-dark btn-sm" do %>
-            <i class="fa fa-fw fa-plus-circle"></i>
-            <%= t('dashboard.user.actions.add') %>
-          <% end %>
         </div>
       </div>
 
@@ -23,23 +19,34 @@
         <div class="col-sm-6">
           <%= form_with(model: @user, url: "/admin/users", method: "post", scope: "user") do |f| %>
             <div class="form-group">
-              <label>Name<span class="text-danger">*</span></label>
+              <label>
+                <%= t('dashboard.users.attributes.fullname') %>
+                <span class="text-danger">*</span
+              ></label>
               <%= f.text_field :fullname, class: "form-control", placeholder: "Enter the fullname for the user", required: true %>
             </div>
 
             <div class="form-group">
-              <label>Email<span class="text-danger">*</span></label>
+              <label>
+                <%= t('dashboard.users.attributes.email') %>
+                <span class="text-danger">*</span>
+              </label>
               <%= f.email_field :email, class: "form-control", placeholder: "Enter the email for the user", required: true %>
             </div>
 
             <div class="form-group">
-              <label>Organization<span class="text-danger">*</span></label>
+              <label>
+                <%= t('dashboard.users.attributes.organization') %>
+                <span class="text-danger">*</span></label>
                 <%= select(:user, :organization_id, @organizations.collect { |o| [ o.name, o.id ] }, { include_blank: 'Select an organization' }, class: "form-control", required: true) %>
             </div>
 
             <div class="form-group">
-              <label>Role<span class="text-danger">*</span></label>
-                <%= select("", :role_id, @roles.collect { |r| [ r.name, r.id ] }, { include_blank: 'Select a role for this user' }, class: "form-control", required: true) %>
+              <label>
+                <%= t('dashboard.users.attributes.role') %>
+                <span class="text-danger">*</span
+              ></label>
+              <%= select("", :role_id, @roles.collect { |r| [ r.name, r.id ] }, { include_blank: 'Select a role for this user' }, class: "form-control", required: true) %>
             </div>
 
             <div class="form-group">
