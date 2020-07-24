@@ -29,9 +29,23 @@ class Admin::OrganizationsController < ApplicationController
     redirect_to admin_organizations_path
   end
 
-  def edit; end
+  ###
+  # @description: Prepares the data for the edit form
+  ###
+  def edit
+    @organization = Organization.find(params[:id])
+  end
 
-  def update; end
+  ###
+  # @description: Udates the attributes of an organization
+  ###
+  def update
+    if @organization.update(permitted_params)
+      flash[:notice] = t("alerts.successfully_updated", record: Organization.name)
+    end
+
+    redirect_to admin_organizations_path
+  end
 
   ###
   # @description: Removes an organization from the database

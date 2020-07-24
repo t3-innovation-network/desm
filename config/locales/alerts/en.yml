@@ -2,5 +2,6 @@ en:
   alerts:
     successfully_deleted: "%{record} removed"
     successfully_added: "%{record} successfully added"
+    successfully_updated: "%{record} successfully updated"
     errors:
       cannot_delete_because_has_relation: "Cannot delete this %{record}, because it has %{relation}."
