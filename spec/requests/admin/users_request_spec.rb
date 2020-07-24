@@ -3,9 +3,9 @@
 require "rails_helper"
 
 describe "Admin::Users", type: :request do
-  describe "GET /index" do
+  describe "GET /" do
     it "returns http success" do
-      get "/admin/users/index"
+      get "/admin/users"
 
       expect(response).to have_http_status(302)
     end
@@ -33,17 +33,9 @@ describe "Admin::Users", type: :request do
     end
   end
 
-  describe "GET /show" do
-    it "returns http success" do
-      get "/admin/users/show"
-
-      expect(response).to have_http_status(302)
-    end
-  end
-
   describe "GET /edit" do
     it "returns http success" do
-      get "/admin/users/edit"
+      get "/admin/users/1/edit"
 
       expect(response).to have_http_status(302)
     end

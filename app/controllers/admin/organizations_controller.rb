@@ -19,15 +19,6 @@ class Admin::OrganizationsController < ApplicationController
   end
 
   ###
-  # @description: Removes an organization from the database
-  ###
-  def destroy
-    @organization.destroy!
-    flash[:info] = t("alerts.successfully_deleted", record: Organization.name)
-    redirect_to admin_organizations_path
-  end
-
-  ###
   # @description: Adds a new organization to the database
   ###
   def create
@@ -35,6 +26,19 @@ class Admin::OrganizationsController < ApplicationController
 
     flash[:notice] = t("alerts.successfully_added", record: Organization.name) if @organization.save
 
+    redirect_to admin_organizations_path
+  end
+
+  def edit; end
+
+  def update; end
+
+  ###
+  # @description: Removes an organization from the database
+  ###
+  def destroy
+    @organization.destroy!
+    flash[:info] = t("alerts.successfully_deleted", record: Organization.name)
     redirect_to admin_organizations_path
   end
 

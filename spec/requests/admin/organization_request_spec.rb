@@ -3,9 +3,9 @@
 require "rails_helper"
 
 describe "Admin::Organizations", type: :request do
-  describe "GET /index" do
+  describe "GET /" do
     it "returns http success" do
-      get "/admin/organizations/index"
+      get "/admin/organizations"
 
       expect(response).to have_http_status(302)
     end
@@ -31,17 +31,9 @@ describe "Admin::Organizations", type: :request do
     end
   end
 
-  describe "GET /show" do
-    it "returns http success" do
-      get "/admin/organizations/show"
-
-      expect(response).to have_http_status(302)
-    end
-  end
-
   describe "GET /edit" do
     it "returns http success" do
-      get "/admin/organizations/edit"
+      get "/admin/organizations/1/edit"
 
       expect(response).to have_http_status(302)
     end

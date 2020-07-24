@@ -46,6 +46,10 @@ class Admin::UsersController < ApplicationController
     redirect_to admin_users_path
   end
 
+  def edit; end
+
+  def update; end
+
   ###
   # @description: Removes a user from the database
   ###

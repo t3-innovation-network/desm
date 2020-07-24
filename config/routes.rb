@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   # Routes related to organizations, are under the 'admin' namespace
   namespace :admin do
     get "/" => "organizations#index"
-    resources :organizations
-    resources :users
+    resources :organizations, only: %i[index new create edit update destroy]
+    resources :users, only: %i[index new create edit update destroy]
   end
 
   get "mappings/index"
