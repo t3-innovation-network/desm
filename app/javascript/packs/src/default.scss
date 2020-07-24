@@ -2,6 +2,11 @@
 
 /* General */
 
+@font-face {
+  font-family: 'Proxima Nova Condensed Light';
+  src: url('fonts/proxima-light/Proxima Nova Condensed Light.otf')
+}
+
 h6 {
   font-weight: bold;
   font-size: 18px;
@@ -27,6 +32,7 @@ a:hover {
 body {
   margin-right: 12%;
   margin-left: 12%;
+  font-family: "Proxima Nova Condensed Light", sans-serif;
 }
 
 .btn {
