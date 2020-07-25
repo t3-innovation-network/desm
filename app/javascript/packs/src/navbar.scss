@@ -26,29 +26,26 @@
 
 .brand-box {
   background-image: url('images/White-T3-Inno-Network-02-reverse.png');
-  background-size: 12rem;
   background-repeat: no-repeat;
+  background-size: 12rem;
 }
 
 .brand-box-container {
-  height: 3.4rem;
-  width: 13.5rem;
+  background-color: $on-primary;
   border-bottom: solid 8px $on-primary;
-  background-color: $on-primary;
-}
+  height: 3.5rem;
+  width: 20rem;
 
-.navbar-brand {
-  background-color: $on-primary;
-  margin: 0.4rem;
-  height: 90%;
-  width: 90%;
-
-  a:hover{
-    color: $background-color;
+  .navbar-brand{
+    background-color: $on-primary;
+    height: 90%;
+    margin-left: 2rem;
+    margin-top: 0.4rem;
+    width: 80%;
   }
 }
 
 .nav-title-highlited{
-  font-weight: 600;
   font-size: 18px;
+  font-weight: 600;
 }
