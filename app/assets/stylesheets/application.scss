@@ -7,7 +7,7 @@
   src: url('../fonts/proxima-light/Proxima Nova Condensed Light.otf')
 }
 
-html,body,.container,.row,.wrapper,body>div {
+html,body,.container-fluid,.row,.wrapper,body>div {
   height:100%;
 }
 
@@ -18,11 +18,6 @@ html,body,.container,.row,.wrapper,body>div {
 
 section {
   margin-bottom: 2vw;
-}
-
-.usage-explanation {
-  font-size: 18px;
-  font-weight: bold;
 }
 
 a {
@@ -39,52 +34,8 @@ a:hover {
   font-family: "Proxima Nova Condensed Light", sans-serif;
 }
 
-.wide-btn {
-  padding-left: 25px;
-  padding-right: 25px;
-}
-
 /* Main view Styles */
 
-.right-side-col {
+.bg-col-secondary {
   background-color: $background-color-dark;
-}
-
-
-/* IDEAS */
-.bg_primary-color {
-  background-color: #FFFFFF;
-}
-.primary-color {
-  background-color: #FFFFFF;
-}
-.bg_secondary-color {
-  background-color: #293241;
-}
-.secondary-color {
-  color: #293241;
-}
-.custom-button.btn {
-  background-color: #293241;
-  color: #FFF;
-  border: none;
-}
-.custom-button.btn:hover {
-  color: #FFF !important;
-  border: none;
-}
-.hero {
-  width: 100vw;
-  height: 50vh;
-}
-.hero img {
-  object-fit: cover;
-  object-position: top;
-  height: 100%;
-  width: 100%;
-}
-.overlay {
-  height: 100%;
-  width: 100%;
-  opacity: 0.4;
 }

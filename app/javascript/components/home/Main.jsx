@@ -10,7 +10,7 @@ export default () => (
       <BrowserRouter>
           <Nav />
       </BrowserRouter>
-      <div className="container">
+      <div className="container-fluid container-wrapper">
         <div className="row">
           <LeftSideHome />
           <RightSideHome />
