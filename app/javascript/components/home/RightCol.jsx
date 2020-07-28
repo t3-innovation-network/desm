@@ -3,7 +3,7 @@ import React from "react";
 class RightSideHome extends React.Component {
   render() {
     return (
-      <div className="col-lg-6 right-side-col">
+      <div className="col-lg-6 pt-5 right-side-col">
       <section>
         <h6 className="subtitle">
           About the project

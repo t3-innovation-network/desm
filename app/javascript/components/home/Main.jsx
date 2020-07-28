@@ -5,11 +5,10 @@ import LeftSideHome from "../home/LeftCol";
 import RightSideHome from "../home/RightCol";
 
 export default () => (
+  <React.Fragment>
     <div className="wrapper">
       <BrowserRouter>
-        <div>
           <Nav />
-        </div>
       </BrowserRouter>
       <div className="container">
         <div className="row">
@@ -18,4 +17,5 @@ export default () => (
         </div>
       </div>
     </div>
+  </React.Fragment>
 );

@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 class LeftSideHome extends React.Component {
   render() {
     return (
-      <div className="col-lg-6">
+      <div className="col-lg-6 pt-5">
         <section>
           <h6 className="subtitle">View Specification</h6>
           <p>
@@ -12,7 +12,7 @@ class LeftSideHome extends React.Component {
             adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua.
           </p>
-          <button className="btn btn-dark" type="button">
+          <button className="btn wide-btn btn-dark" type="button">
             View Specifications
           </button>
         </section>
@@ -35,7 +35,7 @@ class LeftSideHome extends React.Component {
           </ol>
         </section>
         <section>
-          <NavLink to="/sign-in" className="btn btn-dark">
+          <NavLink to="/sign-in" className="btn wide-btn btn-dark">
             Start Mapping
           </NavLink>
         </section>

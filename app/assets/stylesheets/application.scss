@@ -7,7 +7,7 @@
   src: url('../fonts/proxima-light/Proxima Nova Condensed Light.otf')
 }
 
-html,body,.container,.row, .wrapper {
+html,body,.container,.row,.wrapper,body>div {
   height:100%;
 }
 
@@ -33,13 +33,13 @@ a:hover {
   color: $primary-color-light;
 }
 
-body {
+.wrapper {
   margin-right: 12%;
   margin-left: 12%;
   font-family: "Proxima Nova Condensed Light", sans-serif;
 }
 
-.btn {
+.wide-btn {
   padding-left: 25px;
   padding-right: 25px;
 }

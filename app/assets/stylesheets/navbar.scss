@@ -2,22 +2,26 @@
 @import 'colors.scss';
 
 .nav-container {
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .navbar {
   border-bottom: solid 2px $primary-color;
-  padding: 0;
+  padding: 0 !important;
+}
+
+.navbar-nav > li > .nav-link {
+  color: $on-primary;
 }
 
 .navbar-nav.ml-auto {
   padding-bottom: 6px;
 }
 
-.nav-item {
-  margin-left: 30px;
-  padding-top: 10px;
+#toggle-nav {
+  position: relative;
+  bottom: -5px;
 }
 
 .current-page {
@@ -34,7 +38,7 @@
   background-color: $on-primary;
   border-bottom: solid 8px $on-primary;
   height: 3.5rem;
-  width: 20rem;
+  width: 15rem;
 
   .navbar-brand{
     background-color: $on-primary;
