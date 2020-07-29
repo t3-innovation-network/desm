@@ -17,8 +17,11 @@ WORKDIR /app
 # Copy Gemfile from our current application to the /app container
 COPY Gemfile Gemfile.lock ./
 
-# Install all the dependencies
+# Install all the backend dependencies
 RUN bundle install
+
+# Install all the frontend dependencies
+RUN yarn
 
 # Copy all the files from our current application to the /app 
 COPY . .
