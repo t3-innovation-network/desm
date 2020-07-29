@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Main from "../components/home/Main";
-import Mapping from "../components/mapping/Main";
+import Home from "../components/home/Home";
+import Mapping from "../components/mapping/Mapping";
 
 export default (
   <Router>
     <Switch>
-      <Route path="/" exact component={Main} />
-      <Route path="/mappings/new" exact component={Mapping} />
+      <Route exact path="/" component={Home} />
+      <Route exact path="/new-mapping" component={Mapping} />
     </Switch>
   </Router>
 );

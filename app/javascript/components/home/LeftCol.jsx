@@ -35,7 +35,7 @@ class LeftSideHome extends React.Component {
           </ol>
         </section>
         <section>
-          <Link to="/mappings/new" className="btn wide-btn btn-dark">
+          <Link to="/new-mapping" className="btn wide-btn btn-dark">
             Start Mapping
           </Link>
         </section>

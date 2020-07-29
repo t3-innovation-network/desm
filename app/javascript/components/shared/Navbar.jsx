@@ -45,11 +45,11 @@ class Navbar extends React.Component {
                 <li
                   className={
                     "mt-0 mb-1 ml-0 ml-lg-3 mr-0 mr-lg-3 " +
-                    this.getNavLinkClass("/mappings/new")
+                    this.getNavLinkClass("/new-mapping")
                   }
                 >
                   <NavLink
-                    to="/mappings/new"
+                    to="/new-mapping"
                     className="btn wide-btn btn-outline-secondary"
                   >
                     Map a Specification
