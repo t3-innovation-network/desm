@@ -4,6 +4,8 @@
 # @description: Manage all the sessions logic
 ###
 class SessionsController < ApplicationController
+  include CurrentUserConcern
+
   ###
   # @description: Creates a session, trying to authenticate the user
   #   with the params sent in the HTTP request.
@@ -24,5 +26,34 @@ class SessionsController < ApplicationController
     else
       render json: {status: 401}
     end
+  end
+
+  ###
+  # @description: Answers the question: Is there any user logged in?
+  # @return [String]
+  ###
+  def logged_in
+    if @current_user
+      render json: {
+        logged_in: true,
+        user: @current_user
+      }
+    else
+      render json: {
+        logged_in: false
+      }
+    end
+  end
+
+  ###
+  # @description: Destroys the user session
+  # @return [String]
+  ###
+  def logout
+    reset_session
+    render json: {
+      status: 200,
+      logged_out: true
+    }
   end
 end
