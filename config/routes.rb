@@ -7,5 +7,6 @@ Rails.application.routes.draw do
   # Redirect all missing routes to home
   get '/*path' => 'homepage#index'
 
-  resources :sessions only: [:create]
+  resources :sessions, only: [:create]
+  resources :registrations, only: [:create]
 end
