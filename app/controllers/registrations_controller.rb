@@ -9,11 +9,7 @@ class RegistrationsController < ApplicationController
   # @return [String]
   ###
   def create
-    user = User.create!(
-      email: params["user"]["email"],
-      password: params["user"]["password"],
-      password_confirmation: params["user"]["password_confirmation"]
-    )
+    user = User.create!(permitted_params)
 
     if user
       session[:user_id] = user.id
@@ -24,5 +20,15 @@ class RegistrationsController < ApplicationController
     else
       render json: {status: 500}
     end
+  end
+
+  private
+
+  ###
+  # @description: Clean params
+  # @return [ActionController::Parameters]
+  ###
+  def permitted_params
+    params.require(:user).permit(:email, :fullname, :password)
   end
 end
