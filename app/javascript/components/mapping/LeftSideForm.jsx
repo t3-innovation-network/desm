@@ -45,7 +45,6 @@ class LeftSideForm extends React.Component {
                   className="form-control"
                   id="use_case"
                   name="use_case"
-                  required
                   onChange={this.onChange}
                 />
                 <small className="form-text text-muted">

@@ -35,6 +35,10 @@ gem "rubocop", require: false
 # Simplify seeding
 gem "seed-fu"
 
+# Authentication tools
+gem "bcrypt", "~> 3.1", ">= 3.1.15"
+gem "rack-cors", require: "rack/cors"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
