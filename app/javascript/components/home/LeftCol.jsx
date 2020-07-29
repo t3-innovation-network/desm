@@ -35,7 +35,7 @@ class LeftSideHome extends React.Component {
           </ol>
         </section>
         <section>
-          <NavLink to="/sign-in" className="btn wide-btn btn-dark">
+          <NavLink to="/mapping/new" className="btn wide-btn btn-dark">
             Start Mapping
           </NavLink>
         </section>

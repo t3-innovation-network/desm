@@ -12,7 +12,7 @@ class Navbar extends React.Component {
           <div className="container-fluid nav-container">
             <div className="navbar-header">
               <div className="brand-box-container">
-                <a className="navbar-brand nav-item brand-box" href="/"></a>
+                <NavLink to="/" className="navbar-brand nav-item brand-box"></NavLink>
               </div>
 
               <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#toggle-nav" aria-controls="toggle-nav" aria-expanded="false" aria-label="Toggle Navigation">
