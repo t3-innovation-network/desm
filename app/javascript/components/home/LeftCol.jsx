@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class LeftSideHome extends React.Component {
   render() {
@@ -35,9 +35,9 @@ class LeftSideHome extends React.Component {
           </ol>
         </section>
         <section>
-          <NavLink to="/mapping/new" className="btn wide-btn btn-dark">
+          <Link to="/mappings/new" className="btn wide-btn btn-dark">
             Start Mapping
-          </NavLink>
+          </Link>
         </section>
       </div>
     );

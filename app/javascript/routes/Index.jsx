@@ -7,7 +7,7 @@ export default (
   <Router>
     <Switch>
       <Route path="/" exact component={Main} />
-      <Route path="/mapping/new" exact component={Mapping} />
+      <Route path="/mappings/new" exact component={Mapping} />
     </Switch>
   </Router>
 );
