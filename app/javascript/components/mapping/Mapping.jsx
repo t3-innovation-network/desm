@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter } from 'react-router-dom'
-import Nav from "../shared/Navbar";
+import TopNav from "../shared/TopNav";
 import LeftSideForm from "./LeftSideForm";
 
 export default class Mapping extends Component {
@@ -9,7 +9,7 @@ export default class Mapping extends Component {
       <React.Fragment>
         <div className="wrapper">
           <BrowserRouter>
-              <Nav />
+              <TopNav />
           </BrowserRouter>
           <div className="container-fluid container-wrapper">
             <div className="row">

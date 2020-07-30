@@ -4,39 +4,48 @@ import Home from "../components/home/Home";
 import SignIn from "../components/auth/SignIn";
 import Mapping from "../components/mapping/Mapping";
 import MainDashboard from "../components/dashboard/MainDashboard";
-import Axios from "axios";
+import axios from "axios";
 
 class App extends Component {
   constructor() {
     super();
 
     this.state = {
-      loggedIn: "NOT_LOGGED_IN",
+      loggedIn: false,
       user: {},
     };
+
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout() {
+    this.setState({
+      loggedIn: false,
+      user: {},
+    });
   }
 
   checkLoginStatus() {
-    Axios.get("http://localhost:3000/session_status", { withCredentials: true })
+    axios
+      .get("http://localhost:3000/session_status", { withCredentials: true })
       .then((response) => {
-        if (
-          response.data.loggedIn &
-          (this.state.loggedIn === "NOT_LOGGED_IN")
-        ) {
+        /// If we have no session cookie and the api tells us that the user is authenticated,
+        /// let's update that information
+        if (response.data.logged_in & !this.state.loggedIn) {
           this.setState({
-            loggedIn: "LOGGED_IN",
+            loggedIn: true,
             user: response.data.user,
           });
-        } else if (
-          !response.data.loggedIn &
-          (this.state.loggedIn == "LOGGED_IN")
-        ) {
+          /// If we have a session cookie, but the api responds us telling that there's no user
+          /// authenticated, let's update that information according too
+        } else if (!response.data.logged_in & this.state.loggedIn) {
           this.setState({
-            loggedIn: "NOT_LOGGED_IN",
+            loggedIn: false,
             user: {},
           });
         }
       })
+      /// Process any server errors
       .catch((response) => {
         console.log("session error: ", error);
       });
@@ -50,22 +59,42 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path={"/"} component={Home} />
           <Route exact path={"/sign-in"} component={SignIn} />
+
+          <Route
+            exact
+            path={"/"}
+            render={(props) => (
+              <Home
+                {...props}
+                loggedIn={this.state.loggedIn}
+                handleLogout={this.handleLogout}
+              />
+            )}
+          />
+
           <Route
             exact
             path={"/new-mapping"}
             render={(props) => (
-              <Mapping {...props} loggedIn={this.state.loggedIn} />
+              <Mapping
+                {...props}
+                loggedIn={this.state.loggedIn}
+              />
             )}
           />
+
           <Route
             exact
             path={"/dashboard"}
             render={(props) => (
-              <MainDashboard {...props} loggedIn={this.state.loggedIn} />
+              <MainDashboard
+                {...props}
+                loggedIn={this.state.loggedIn}
+              />
             )}
           />
+
         </Switch>
       </Router>
     );

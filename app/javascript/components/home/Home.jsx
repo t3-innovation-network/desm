@@ -1,14 +1,21 @@
 import React, { Component } from "react";
-import Nav from "../shared/Navbar";
+import TopNav from "../shared/TopNav";
 import LeftSideHome from "./LeftCol";
 import RightSideHome from "./RightCol";
 
 export default class Home extends Component{
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <React.Fragment>
         <div className="wrapper">
-          <Nav />
+          <TopNav
+            loggedIn={this.props.loggedIn}
+            handleLogout={this.props.handleLogout}
+          />
           <div className="container-fluid container-wrapper">
             <div className="row">
               <LeftSideHome />

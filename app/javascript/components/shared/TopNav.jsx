@@ -1,10 +1,26 @@
 import React from "react";
-import { NavLink, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
+import AuthButton from "../auth/AuthButton";
+import axios from "axios";
 
-class Navbar extends React.Component {
-  getNavLinkClass = (path) => {
-    return this.props.location.pathname === path ? "active" : "";
-  };
+class TopNav extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
+  }
+
+  handleLogoutClick() {
+    axios
+      .delete("http://localhost:3000/logout", { withCredentials: true })
+      .then((response) => {
+        this.props.handleLogout();
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -12,10 +28,10 @@ class Navbar extends React.Component {
           <div className="container-fluid nav-container">
             <div className="navbar-header">
               <div className="brand-box-container">
-                <NavLink
+                <Link
                   to={"/"}
                   className="navbar-brand nav-item brand-box"
-                ></NavLink>
+                ></Link>
               </div>
 
               <button
@@ -34,36 +50,28 @@ class Navbar extends React.Component {
               <ul className="navbar-nav mr-auto">
                 <li
                   className={
-                    "nav-item current-page mt-0 mb-1 ml-0 ml-lg-3 mr-0 mr-lg-3" +
-                    this.getNavLinkClass("/")
+                    "nav-item current-page mt-0 mb-1 ml-0 ml-lg-3 mr-0 mr-lg-3"
                   }
                 >
-                  <NavLink to={"/"} className="nav-link nav-title-highlited">
+                  <Link to={"/"} className="nav-link nav-title-highlited">
                     View Mappings
-                  </NavLink>
+                  </Link>
                 </li>
-                <li
-                  className={
-                    "mt-0 mb-1 ml-0 ml-lg-3 mr-0 mr-lg-3 " +
-                    this.getNavLinkClass("/new-mapping")
-                  }
-                >
-                  <NavLink
+                <li className={"mt-0 mb-1 ml-0 ml-lg-3 mr-0 mr-lg-3 "}>
+                  <Link
                     to={"/new-mapping"}
                     className="btn wide-btn btn-outline-secondary"
                   >
                     Map a Specification
-                  </NavLink>
+                  </Link>
                 </li>
               </ul>
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
-                  <NavLink
-                    to={"/sign-in"}
-                    className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark"
-                  >
-                    Sign In
-                  </NavLink>
+                  <AuthButton
+                    loggedIn={this.props.loggedIn}
+                    handleLogoutClick={this.handleLogoutClick}
+                  />
                 </li>
               </ul>
             </div>
@@ -74,5 +82,4 @@ class Navbar extends React.Component {
   }
 }
 
-Navbar = withRouter(Navbar);
-export default Navbar;
+export default TopNav;
