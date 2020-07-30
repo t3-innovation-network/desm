@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import AuthButton from "../auth/AuthButton";
 import axios from "axios";
+import { render } from "react-dom";
 
 class TopNav extends React.Component {
   constructor(props) {
@@ -19,6 +20,16 @@ class TopNav extends React.Component {
       .catch((error) => {
         console.log("error: ", error);
       });
+  }
+
+  renderDashboardBtn() {
+    if(this.props.loggedIn){
+      return (
+        <li className="nav-item">
+          <Link to="/dashboard" className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark">Dashboard</Link>
+        </li>
+      );
+    }
   }
 
   render() {
@@ -67,6 +78,7 @@ class TopNav extends React.Component {
                 </li>
               </ul>
               <ul className="navbar-nav ml-auto">
+                { this.renderDashboardBtn() }
                 <li className="nav-item">
                   <AuthButton
                     loggedIn={this.props.loggedIn}
