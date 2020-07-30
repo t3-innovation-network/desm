@@ -4,12 +4,21 @@
 # @description: Manage all the sessions logic
 ###
 class RegistrationsController < ApplicationController
+  # Set a default password for every new user, since it's not created by itself,
+  # but by an administrator
+  DEFAULT_PASS = "t3user123"
+
   ###
   # @description: Creates a user, using the params sent in the HTTP request.
   # @return [String]
   ###
   def create
-    user = User.create!(permitted_params)
+    user = User.create!(
+      permitted_params.merge(
+        password: DEFAULT_PASS,
+        password_confirmation: DEFAULT_PASS
+      )
+    )
 
     if user
       session[:user_id] = user.id
@@ -29,6 +38,6 @@ class RegistrationsController < ApplicationController
   # @return [ActionController::Parameters]
   ###
   def permitted_params
-    params.require(:user).permit(:email, :fullname, :password)
+    params.require(:user).permit(:email, :fullname)
   end
 end
