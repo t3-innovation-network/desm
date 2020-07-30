@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class SignIn extends Component {
   constructor(props) {
@@ -35,6 +37,7 @@ class SignIn extends Component {
       })
       .catch((error) => {
         console.log("sign-in error: ", error);
+        toast.error(error.message);
       });
 
     event.preventDefault();
@@ -86,6 +89,7 @@ class SignIn extends Component {
             Sign In
           </button>
         </form>
+        <ToastContainer />
       </div>
     );
   }
