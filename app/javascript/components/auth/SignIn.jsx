@@ -18,6 +18,11 @@ class SignIn extends Component {
     this.handleOnChange = this.handleOnChange.bind(this);
   }
 
+  handleSuccessfullAuth(data) {
+    this.props.handleLogin(data);
+    this.props.history.push("/");
+  }
+
   handleSubmit(event) {
     const { email, password } = this.state;
 
@@ -34,6 +39,9 @@ class SignIn extends Component {
         { withCredentials: true }
       )
       .then((response) => {
+        if (response.data.logged_in) {
+          this.handleSuccessfullAuth(response.data)
+        }
         console.log("sign-in response: ", response.data);
       })
       .catch((error) => {
@@ -61,14 +69,14 @@ class SignIn extends Component {
           <div className="container-fluid container-wrapper">
             <div className="row mt-5">
               <div className="col-lg-6 mx-auto">
-                <div class="card">
-                  <div class="card-header">
-                    <i class="fa fa-users"></i>
+                <div className="card">
+                  <div className="card-header">
+                    <i className="fa fa-users"></i>
                     <strong>
                       Sign In
                     </strong>
                   </div>
-                  <div class="card-body">
+                  <div className="card-body">
                       <form onSubmit={this.handleSubmit}>
                         <div className="form-group">
                           <label>

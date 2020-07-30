@@ -5,6 +5,8 @@ import SignIn from "../components/auth/SignIn";
 import Mapping from "../components/mapping/Mapping";
 import MainDashboard from "../components/dashboard/MainDashboard";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class App extends Component {
   constructor() {
@@ -16,6 +18,15 @@ class App extends Component {
     };
 
     this.handleLogout = this.handleLogout.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+  }
+
+  handleLogin(data) {
+    this.setState({
+      loggedIn: true,
+      user: data.user
+    });
+    toast.info("Logged In");
   }
 
   handleLogout() {
@@ -23,6 +34,7 @@ class App extends Component {
       loggedIn: false,
       user: {},
     });
+    toast.info("Logged Out");
   }
 
   checkLoginStatus() {
@@ -57,58 +69,62 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
-        <Switch>
-
-        <Route
-            exact
-            path={"/"}
-            render={(props) => (
-              <Home
-                {...props}
-                loggedIn={this.state.loggedIn}
-                handleLogout={this.handleLogout}
-              />
-            )}
-          />
+      <React.Fragment>
+        <Router>
+          <Switch>
 
           <Route
-            exact
-            path={"/sign-in"}
-            render={(props) => (
-              <SignIn
-                {...props}
-                loggedIn={this.state.loggedIn}
-                handleLogout={this.handleLogout}
-              />
-            )}
-          />
+              exact
+              path={"/"}
+              render={(props) => (
+                <Home
+                  {...props}
+                  loggedIn={this.state.loggedIn}
+                  handleLogout={this.handleLogout}
+                />
+              )}
+            />
 
-          <Route
-            exact
-            path={"/new-mapping"}
-            render={(props) => (
-              <Mapping
-                {...props}
-                loggedIn={this.state.loggedIn}
-                handleLogout={this.handleLogout}
-              />
-            )}
-          />
+            <Route
+              exact
+              path={"/sign-in"}
+              render={(props) => (
+                <SignIn
+                  {...props}
+                  loggedIn={this.state.loggedIn}
+                  handleLogin={this.handleLogin}
+                  handleLogout={this.handleLogout}
+                />
+              )}
+            />
 
-          <Route
-            exact
-            path={"/dashboard"}
-            render={(props) => (
-              <MainDashboard
-                {...props}
-                loggedIn={this.state.loggedIn}
-              />
-            )}
-          />
+            <Route
+              exact
+              path={"/new-mapping"}
+              render={(props) => (
+                <Mapping
+                  {...props}
+                  loggedIn={this.state.loggedIn}
+                  handleLogout={this.handleLogout}
+                />
+              )}
+            />
 
-        </Switch>
-      </Router>
+            <Route
+              exact
+              path={"/dashboard"}
+              render={(props) => (
+                <MainDashboard
+                  {...props}
+                  loggedIn={this.state.loggedIn}
+                />
+              )}
+            />
+
+          </Switch>
+        </Router>
+        <ToastContainer />
+      </React.Fragment>
     );
   }
 }
