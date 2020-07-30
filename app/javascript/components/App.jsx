@@ -59,13 +59,24 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path={"/sign-in"} component={SignIn} />
 
-          <Route
+        <Route
             exact
             path={"/"}
             render={(props) => (
               <Home
+                {...props}
+                loggedIn={this.state.loggedIn}
+                handleLogout={this.handleLogout}
+              />
+            )}
+          />
+
+          <Route
+            exact
+            path={"/sign-in"}
+            render={(props) => (
+              <SignIn
                 {...props}
                 loggedIn={this.state.loggedIn}
                 handleLogout={this.handleLogout}
@@ -80,6 +91,7 @@ class App extends Component {
               <Mapping
                 {...props}
                 loggedIn={this.state.loggedIn}
+                handleLogout={this.handleLogout}
               />
             )}
           />

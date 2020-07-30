@@ -1,16 +1,20 @@
 import React, { Component } from "react";
-import { BrowserRouter } from 'react-router-dom'
 import TopNav from "../shared/TopNav";
 import LeftSideForm from "./LeftSideForm";
 
 export default class Mapping extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <React.Fragment>
         <div className="wrapper">
-          <BrowserRouter>
-              <TopNav />
-          </BrowserRouter>
+          <TopNav
+            loggedIn={this.props.loggedIn}
+            handleLogout={this.props.handleLogout}
+          />
           <div className="container-fluid container-wrapper">
             <div className="row">
               <LeftSideForm />
