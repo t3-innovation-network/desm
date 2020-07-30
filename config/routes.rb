@@ -4,11 +4,11 @@ Rails.application.routes.draw do
   # This route will be starting point of the desm SPA
   root "homepage#index"
 
-  # Redirect all missing routes to home
-  get '/*path' => 'homepage#index'
-
   resources :sessions, only: [:create]
   resources :registrations, only: [:create]
   delete :logout, to: 'sessions#logout'
-  get :logged_in, to: 'sessions#logged_in'
+  get :session_status, to: 'sessions#session_status'
+
+  # Redirect all missing routes to home
+  get '/*path' => 'homepage#index'
 end

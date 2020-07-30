@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
   # @description: Answers the question: Is there any user logged in?
   # @return [String]
   ###
-  def logged_in
+  def session_status
     if @current_user
       render json: {
         logged_in: true,
