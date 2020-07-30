@@ -13,7 +13,7 @@ class Navbar extends React.Component {
             <div className="navbar-header">
               <div className="brand-box-container">
                 <NavLink
-                  to="/"
+                  to={"/"}
                   className="navbar-brand nav-item brand-box"
                 ></NavLink>
               </div>
@@ -38,7 +38,7 @@ class Navbar extends React.Component {
                     this.getNavLinkClass("/")
                   }
                 >
-                  <NavLink to="/" className="nav-link nav-title-highlited">
+                  <NavLink to={"/"} className="nav-link nav-title-highlited">
                     View Mappings
                   </NavLink>
                 </li>
@@ -49,7 +49,7 @@ class Navbar extends React.Component {
                   }
                 >
                   <NavLink
-                    to="/new-mapping"
+                    to={"/new-mapping"}
                     className="btn wide-btn btn-outline-secondary"
                   >
                     Map a Specification
@@ -59,7 +59,7 @@ class Navbar extends React.Component {
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
                   <NavLink
-                    to="/sign-in"
+                    to={"/sign-in"}
                     className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark"
                   >
                     Sign In
