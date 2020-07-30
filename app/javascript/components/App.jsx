@@ -12,26 +12,34 @@ class App extends Component {
 
     this.state = {
       loggedIn: "NOT_LOGGED_IN",
-      user: {}
-    }
+      user: {},
+    };
   }
 
   checkLoginStatus() {
-    Axios.get("http://localhost:3000/session_status", {withCredentials: true}).then(response => {
-      if (response.data.loggedIn & this.state.loggedIn === "NOT_LOGGED_IN") {
-        this.setState({
-          loggedIn: "LOGGED_IN",
-          user: response.data.user
-        })
-      } else if (!response.data.loggedIn & this.state.loggedIn == "LOGGED_IN") {
-        this.setState({
-          loggedIn: "NOT_LOGGED_IN",
-          user: {}
-        })
-      }
-    }).catch(response => {
-      console.log("session error: ", error);
-    });
+    Axios.get("http://localhost:3000/session_status", { withCredentials: true })
+      .then((response) => {
+        if (
+          response.data.loggedIn &
+          (this.state.loggedIn === "NOT_LOGGED_IN")
+        ) {
+          this.setState({
+            loggedIn: "LOGGED_IN",
+            user: response.data.user,
+          });
+        } else if (
+          !response.data.loggedIn &
+          (this.state.loggedIn == "LOGGED_IN")
+        ) {
+          this.setState({
+            loggedIn: "NOT_LOGGED_IN",
+            user: {},
+          });
+        }
+      })
+      .catch((response) => {
+        console.log("session error: ", error);
+      });
   }
 
   componentDidMount() {
@@ -47,14 +55,14 @@ class App extends Component {
           <Route
             exact
             path={"/new-mapping"}
-            render={ props => (
+            render={(props) => (
               <Mapping {...props} loggedIn={this.state.loggedIn} />
             )}
           />
           <Route
             exact
             path={"/dashboard"}
-            render={ props => (
+            render={(props) => (
               <MainDashboard {...props} loggedIn={this.state.loggedIn} />
             )}
           />
