@@ -15,5 +15,8 @@ module CurrentUserConcern
   ###
   def set_current_user
     @current_user = User.find(session[:user_id]) if session[:user_id]
+  rescue ActiveRecord::RecordNotFound
+    # Blank the session if the user was removed
+    session[:user_id] = nil
   end
 end

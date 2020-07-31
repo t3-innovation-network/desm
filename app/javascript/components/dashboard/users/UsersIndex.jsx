@@ -83,10 +83,6 @@ export default class UsersIndex extends Component {
                                 aria-hidden="true"
                               ></i>
                             </Link>
-
-                            <Link to="#" className="btn btn-dark">
-                              <i className="fa fa-trash" aria-hidden="true"></i>
-                            </Link>
                           </td>
                         </tr>
                       );

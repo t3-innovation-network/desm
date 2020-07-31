@@ -48,9 +48,34 @@ export default class EditUser extends Component {
       })
       /// Process any server errors
       .catch((error) => {
-        console.log("session error: ", error);
+        console.log("Error: ", error);
         this.setState({
           userErrors: "Couldn't retrieve user with id " + this.state.user_id + "!",
+        });
+      });
+  }
+
+  deleteUser() {
+    axios
+      .delete("http://localhost:3000/users/" + this.state.user_id, { withCredentials: true })
+      .then((response) => {
+        /// We have a list of users from the backend
+        if (response.data.status == 'removed') {
+          toast.info('User successfully removed');
+          this.props.history.push("/dashboard/users");
+      } else {
+          /// Something happened
+          console.log(response);
+          this.setState({
+            userErrors: "Couldn't remove user with id " + this.state.user_id + "!",
+          });
+        }
+      })
+      /// Process any server errors
+      .catch((error) => {
+        console.log("Error: ", error);
+        this.setState({
+          userErrors: "Couldn't remove user with id " + this.state.user_id + "!",
         });
       });
   }
@@ -149,6 +174,9 @@ export default class EditUser extends Component {
                       Send
                     </button>
                   </form>
+                  <button className="btn btn-dark" onClick={ () => { this.deleteUser() } }>
+                    <i className="fa fa-trash" aria-hidden="true"></i>
+                  </button>
                 </React.Fragment>
               )}
             </div>
