@@ -19,10 +19,18 @@ export default class SideBar extends Component {
                             <span className="pl-2">Dashboard</span>
                           </Link>
                         </li>
+
                         <li className="nav-item">
                           <Link to={"/dashboard/users"} className="nav-link cursor-pointer">
                             <i className="fa fa-users" aria-hidden="true"></i>
                             <span className="pl-2">Users</span>
+                          </Link>
+                        </li>
+
+                        <li className="nav-item">
+                          <Link to={"/dashboard/organizations"} className="nav-link cursor-pointer">
+                            <i className="fa fa-building" aria-hidden="true"></i>
+                            <span className="pl-2">Organizations</span>
                           </Link>
                         </li>
                     </ul>

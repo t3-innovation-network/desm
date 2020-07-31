@@ -5,29 +5,31 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default class UsersIndex extends Component {
+export default class OrganizationsIndex extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      users: [],
+      organizations: [],
       indexErrors: "",
     };
   }
 
-  fetchUsers() {
+  fetchOrganizations() {
     axios
-      .get("http://localhost:3000/users", { withCredentials: true })
+      .get("http://localhost:3000/api/v1/organizations", {
+        withCredentials: true,
+      })
       .then((response) => {
-        /// We have a list of users from the backend
+        /// We have a list of organizations from the backend
         if (response.data.success) {
           this.setState({
-            users: response.data.users,
+            organizations: response.data.organizations,
           });
           /// Something happened
         } else {
           this.setState({
-            indexErrors: "Couldn't retrieve users!",
+            indexErrors: "Couldn't retrieve organizations!",
           });
         }
       })
@@ -38,7 +40,7 @@ export default class UsersIndex extends Component {
   }
 
   componentDidMount() {
-    this.fetchUsers();
+    this.fetchOrganizations();
   }
 
   render() {
@@ -50,14 +52,14 @@ export default class UsersIndex extends Component {
         <div className="col-lg-6 mx-auto">
           <div className="card mt-5">
             <div className="card-header">
-              <i className="fa fa-users"></i>
-              <span className="pl-2 subtitle">Users</span>
+              <i className="fa fa-building"></i>
+              <span className="pl-2 subtitle">Organizations</span>
               <Link
-                to="/dashboard/users/new"
+                to="/dashboard/organizations/new"
                 className="float-right btn btn-dark btn-sm"
               >
                 <i className="fa fa-fw fa-plus-circle"></i>
-                <span className="pl-2">Add User</span>
+                <span className="pl-2">Add Organization</span>
               </Link>
             </div>
             <div className="card-body">
@@ -67,22 +69,18 @@ export default class UsersIndex extends Component {
                 <table className="table table-striped">
                   <thead>
                     <tr>
-                      <th>Fullname</th>
-                      <th>Email</th>
-                      <th>Organization</th>
+                      <th>Name</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.users.map(function (user) {
+                    {this.state.organizations.map(function (organization) {
                       return (
-                        <tr key={user.id}>
-                          <td>{user.fullname}</td>
-                          <td>{user.email}</td>
-                          <td>org</td>
+                        <tr key={organization.id}>
+                          <td>{organization.name}</td>
                           <td>
                             <Link
-                              to={"/dashboard/users/" + user.id}
+                              to={"/dashboard/organizations/" + organization.id}
                               className="btn btn-dark"
                             >
                               <i
