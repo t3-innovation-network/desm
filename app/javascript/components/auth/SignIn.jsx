@@ -42,10 +42,8 @@ class SignIn extends Component {
         if (response.data.logged_in) {
           this.handleSuccessfullAuth(response.data)
         }
-        console.log("sign-in response: ", response.data);
       })
       .catch((error) => {
-        console.log("sign-in error: ", error);
         toast.error(error.message);
       });
 

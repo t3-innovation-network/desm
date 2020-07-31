@@ -33,14 +33,12 @@ export default class EditUser extends Component {
       .then((response) => {
         /// We have a list of users from the backend
         if (response.data.success) {
-          console.log(response.data);
           this.setState({
             fullname: response.data.user.fullname,
             email: response.data.user.email,
           });
           /// Something happened
         } else {
-          console.log(response);
           this.setState({
             userErrors: "Couldn't retrieve user with id " + this.state.user_id + "!",
           });
@@ -48,7 +46,6 @@ export default class EditUser extends Component {
       })
       /// Process any server errors
       .catch((error) => {
-        console.log("Error: ", error);
         this.setState({
           userErrors: "Couldn't retrieve user with id " + this.state.user_id + "!",
         });
@@ -65,7 +62,6 @@ export default class EditUser extends Component {
           this.props.history.push("/dashboard/users");
       } else {
           /// Something happened
-          console.log(response);
           this.setState({
             userErrors: "Couldn't remove user with id " + this.state.user_id + "!",
           });
@@ -73,7 +69,6 @@ export default class EditUser extends Component {
       })
       /// Process any server errors
       .catch((error) => {
-        console.log("Error: ", error);
         this.setState({
           userErrors: "Couldn't remove user with id " + this.state.user_id + "!",
         });
@@ -100,12 +95,10 @@ export default class EditUser extends Component {
         { withCredentials: true }
       )
       .then((response) => {
-        console.log("update user response: ", response);
         toast.success("User " + fullname + " (" + this.state.user_id + ") was successfully updated");
         this.props.history.push("/dashboard/users");
       })
       .catch((error) => {
-        console.log("update user error: ", error);
         toast.error(error.message);
       });
 

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import DashboardContainer from "../DashboardContainer";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default class UsersIndex extends Component {
   constructor(props) {
@@ -19,7 +21,6 @@ export default class UsersIndex extends Component {
       .then((response) => {
         /// We have a list of users from the backend
         if (response.data.success) {
-          console.log(response.data);
           this.setState({
             users: response.data.users,
           });
@@ -32,7 +33,7 @@ export default class UsersIndex extends Component {
       })
       /// Process any server errors
       .catch((error) => {
-        console.log("session error: ", error);
+        toast.error("We had an error: " + error.message);
       });
   }
 
@@ -93,6 +94,7 @@ export default class UsersIndex extends Component {
             </div>
           </div>
         </div>
+        <ToastContainer />
       </DashboardContainer>
     );
   }

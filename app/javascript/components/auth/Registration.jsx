@@ -36,10 +36,9 @@ class Registration extends Component {
         { withCredentials: true }
       )
       .then((response) => {
-        console.log("resgistration response: ", response);
+        toast.error("We had an error");
       })
       .catch((error) => {
-        console.log("resgistration error: ", error);
         toast.error(error.message);
       });
 
