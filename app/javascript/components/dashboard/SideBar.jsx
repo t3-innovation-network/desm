@@ -14,13 +14,13 @@ export default class SideBar extends Component {
                 <div className="collapse navbar-collapse w-100">
                     <ul className="flex-md-column flex-row navbar-nav w-100 justify-content-between">
                         <li className="nav-item">
-                          <Link to="/dashboard" className="nav-link cursor-pointer">
+                          <Link to={"/dashboard"} className="nav-link cursor-pointer">
                             <i className="fa fa-home" aria-hidden="true"></i>
                             <span className="pl-2">Dashboard</span>
                           </Link>
                         </li>
                         <li className="nav-item">
-                          <Link to="dashboard/users" className="nav-link cursor-pointer">
+                          <Link to={"/dashboard/users"} className="nav-link cursor-pointer">
                             <i className="fa fa-users" aria-hidden="true"></i>
                             <span className="pl-2">Users</span>
                           </Link>

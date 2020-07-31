@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import DashboardContainer from "../DashboardContainer";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Redirect } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default class EditUser extends Component {
   constructor(props) {
@@ -13,9 +12,8 @@ export default class EditUser extends Component {
       fullname: "",
       email: "",
       userErrors: "",
-      user_id: this.props.match.params.id
+      user_id: this.props.match.params.id,
     };
-
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -29,7 +27,9 @@ export default class EditUser extends Component {
 
   fetchUser() {
     axios
-      .get("http://localhost:3000/users/" + this.state.user_id, { withCredentials: true })
+      .get("http://localhost:3000/users/" + this.state.user_id, {
+        withCredentials: true,
+      })
       .then((response) => {
         /// We have a list of users from the backend
         if (response.data.success) {
@@ -40,37 +40,43 @@ export default class EditUser extends Component {
           /// Something happened
         } else {
           this.setState({
-            userErrors: "Couldn't retrieve user with id " + this.state.user_id + "!",
+            userErrors:
+              "Couldn't retrieve user with id " + this.state.user_id + "!",
           });
         }
       })
       /// Process any server errors
       .catch((error) => {
         this.setState({
-          userErrors: "Couldn't retrieve user with id " + this.state.user_id + "!",
+          userErrors:
+            "Couldn't retrieve user with id " + this.state.user_id + "!",
         });
       });
   }
 
   deleteUser() {
     axios
-      .delete("http://localhost:3000/users/" + this.state.user_id, { withCredentials: true })
+      .delete("http://localhost:3000/users/" + this.state.user_id, {
+        withCredentials: true,
+      })
       .then((response) => {
         /// We have a list of users from the backend
-        if (response.data.status == 'removed') {
-          toast.info('User successfully removed');
+        if (response.data.status == "removed") {
+          toast.info("User successfully removed");
           this.props.history.push("/dashboard/users");
-      } else {
+        } else {
           /// Something happened
           this.setState({
-            userErrors: "Couldn't remove user with id " + this.state.user_id + "!",
+            userErrors:
+              "Couldn't remove user with id " + this.state.user_id + "!",
           });
         }
       })
       /// Process any server errors
       .catch((error) => {
         this.setState({
-          userErrors: "Couldn't remove user with id " + this.state.user_id + "!",
+          userErrors:
+            "Couldn't remove user with id " + this.state.user_id + "!",
         });
       });
   }
@@ -88,14 +94,20 @@ export default class EditUser extends Component {
         {
           user: {
             fullname: fullname,
-            email: email
-          }
+            email: email,
+          },
         },
         /// Tells the API that's ok to get the cookie in our client
         { withCredentials: true }
       )
       .then((response) => {
-        toast.success("User " + fullname + " (" + this.state.user_id + ") was successfully updated");
+        toast.success(
+          "User " +
+            fullname +
+            " (" +
+            this.state.user_id +
+            ") was successfully updated"
+        );
         this.props.history.push("/dashboard/users");
       })
       .catch((error) => {
@@ -116,16 +128,27 @@ export default class EditUser extends Component {
             <div className="card-header">
               <i className="fa fa-user"></i>
               <span className="pl-2 subtitle">User {this.state.fullname}</span>
+              <button
+                className="btn btn-dark float-right"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Delete this user"
+                onClick={() => {
+                  this.deleteUser();
+                }}
+              >
+                <i className="fa fa-trash" aria-hidden="true"></i>
+              </button>
             </div>
             <div className="card-body">
-            {
-              this.state.userErrors ? (
-                <span className="text-danger">{ this.state.userErrors }</span>
+              {this.state.userErrors ? (
+                <span className="text-danger">{this.state.userErrors}</span>
               ) : (
                 <React.Fragment>
                   <div className="mandatory-fields-notice">
                     <small className="form-text text-muted">
-                      Fields with <span className="text-danger">*</span> are mandatory!
+                      Fields with <span className="text-danger">*</span> are
+                      mandatory!
                     </small>
                   </div>
 
@@ -141,7 +164,7 @@ export default class EditUser extends Component {
                         name="fullname"
                         placeholder="Enter the fullname for the user"
                         value={this.state.fullname}
-                        onChange={e => this.handleOnChange(e)}
+                        onChange={(e) => this.handleOnChange(e)}
                         autoFocus
                         required
                       />
@@ -158,7 +181,7 @@ export default class EditUser extends Component {
                         name="email"
                         placeholder="Enter the email for the user"
                         value={this.state.email}
-                        onChange={e => this.handleOnChange(e.target.value)}
+                        onChange={(e) => this.handleOnChange(e.target.value)}
                         required
                       />
                     </div>
@@ -167,9 +190,6 @@ export default class EditUser extends Component {
                       Send
                     </button>
                   </form>
-                  <button className="btn btn-dark" onClick={ () => { this.deleteUser() } }>
-                    <i className="fa fa-trash" aria-hidden="true"></i>
-                  </button>
                 </React.Fragment>
               )}
             </div>
