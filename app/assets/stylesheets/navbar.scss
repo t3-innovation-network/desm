@@ -6,7 +6,7 @@
   padding-right: 0 !important;
 }
 
-.navbar {
+.navbar-with-border {
   border-bottom: solid 2px $primary-color;
   padding: 0 !important;
 }
@@ -52,4 +52,8 @@
 .nav-title-highlited{
   font-size: 18px;
   font-weight: 600;
+}
+
+.cursor-pointer{
+  cursor: pointer;
 }

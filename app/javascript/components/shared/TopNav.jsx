@@ -35,7 +35,7 @@ class TopNav extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <nav className="navbar navbar-expand-lg">
+        <nav className="navbar navbar-with-border navbar-expand-lg">
           <div className="container-fluid nav-container">
             <div className="navbar-header">
               <div className="brand-box-container">
