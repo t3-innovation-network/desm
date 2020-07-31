@@ -54,47 +54,59 @@ class Registration extends Component {
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label>
-              Fullname
-              <span className="text-danger">*</span>
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              name="fullname"
-              placeholder="Enter the fullname for the user"
-              value={this.state.fullname}
-              onChange={this.handleOnChange}
-              autoFocus
-              required
-            />
-          </div>
+      <React.Fragment>
+        <div className="col-lg-6 mx-auto">
+          <div className="card mt-5">
+            <div className="card-header">
+              <i className="fa fa-users"></i>
+              <strong>
+                Create User
+              </strong>
+            </div>
+            <div className="card-body">
+              <form onSubmit={this.handleSubmit}>
+                <div className="form-group">
+                  <label>
+                    Fullname
+                    <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="fullname"
+                    placeholder="Enter the fullname for the user"
+                    value={this.state.fullname}
+                    onChange={this.handleOnChange}
+                    autoFocus
+                    required
+                  />
+                </div>
 
-          <div className="form-group">
-            <label>
-              Email
-              <span className="text-danger">*</span>
-            </label>
-            <input
-              type="email"
-              className="form-control"
-              name="email"
-              placeholder="Enter the email for the user"
-              value={this.state.email}
-              onChange={this.handleOnChange}
-              required
-            />
-          </div>
+                <div className="form-group">
+                  <label>
+                    Email
+                    <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    name="email"
+                    placeholder="Enter the email for the user"
+                    value={this.state.email}
+                    onChange={this.handleOnChange}
+                    required
+                  />
+                </div>
 
-          <button type="submit" className="btn btn-dark">
-            Register
-          </button>
-        </form>
+                <button type="submit" className="btn btn-dark">
+                  Create
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
         <ToastContainer />
-      </div>
+      </React.Fragment>
     );
   }
 }
