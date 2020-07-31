@@ -14,6 +14,7 @@ class UsersController < ApplicationController
 
     if @users
       render json: {
+        success: true,
         users: @users
       }
     else

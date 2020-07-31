@@ -12,8 +12,15 @@ export default class MainDashboard extends Component {
         loggedIn={this.props.loggedIn}
         handleLogout={this.props.handleLogout}
       >
-        <div className="mt-5">
-          <h1>I'm a genius!</h1>
+        <div className="col-lg-6 mx-auto">
+          <div className="card mt-5">
+            <div className="card-header">
+              <i className="fa fa-book"></i>
+              <strong className="pl-2">
+                Dashboard
+              </strong>
+            </div>
+          </div>
         </div>
       </DashboardContainer>
     );
