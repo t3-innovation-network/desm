@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   delete :logout, to: 'sessions#logout'
   get :session_status, to: 'sessions#session_status'
 
-  resources :users, only: [:index, :update, :destroy]
+  resources :users, only: [:index, :show, :update, :destroy]
 
   # Redirect all missing routes to home
   get '/*path' => 'homepage#index'

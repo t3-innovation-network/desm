@@ -23,6 +23,22 @@ class UsersController < ApplicationController
   end
 
   ###
+  # @description: Returns the user with id equal to the one passed in params
+  ###
+  def show
+    @user = User.find(params[:id])
+
+    if @user
+      render json: {
+        success: true,
+        user: @user
+      }
+    else
+      render json: {status: 500}, status: :internal_server_error
+    end
+  end
+
+  ###
   # @description: Udates the attributes of a user
   ###
   def update
