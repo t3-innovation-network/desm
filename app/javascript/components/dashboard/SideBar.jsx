@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 
 export default class SideBar extends Component {
   constructor(props) {
     super(props);
-  }
-
-  handlePageChangeClick(page) {
-    this.props.handlePageChange(page);
   }
 
   render () {
@@ -17,16 +14,16 @@ export default class SideBar extends Component {
                 <div className="collapse navbar-collapse">
                     <ul className="flex-md-column flex-row navbar-nav w-100 justify-content-between">
                         <li className="nav-item">
-                          <a className="nav-link cursor-pointer" onClick={() => this.handlePageChangeClick("main")}>
+                          <Link to="/dashboard" className="nav-link cursor-pointer">
                             <i className="fa fa-home" aria-hidden="true"></i>
                             <span className="pl-2">Dashboard</span>
-                          </a>
+                          </Link>
                         </li>
                         <li className="nav-item">
-                          <a className="nav-link cursor-pointer" onClick={() => this.handlePageChangeClick("users")}>
+                          <Link to="dashboard/users" className="nav-link cursor-pointer">
                             <i className="fa fa-users" aria-hidden="true"></i>
                             <span className="pl-2">Users</span>
-                          </a>
+                          </Link>
                         </li>
                     </ul>
                 </div>

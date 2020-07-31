@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import DashboardContainer from './DashboardContainer';
+import DashboardContainer from '../DashboardContainer';
 
-export default class MainDashboard extends Component {
+export default class UsersIndex extends Component {
   constructor(props) {
     super(props);
   }
@@ -13,7 +13,7 @@ export default class MainDashboard extends Component {
         handleLogout={this.props.handleLogout}
       >
         <div className="mt-5">
-          <h1>I'm a genius!</h1>
+          <h1>Users Index!!!</h1>
         </div>
       </DashboardContainer>
     );

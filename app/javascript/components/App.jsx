@@ -8,6 +8,7 @@ import MainDashboard from "../components/dashboard/MainDashboard";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UsersIndex from '../components/dashboard/users/UsersIndex';
 
 class App extends Component {
   constructor() {
@@ -27,7 +28,7 @@ class App extends Component {
       loggedIn: true,
       user: data.user
     });
-    toast.info("Logged In");
+    toast.info("Signed In");
   }
 
   handleLogout() {
@@ -35,7 +36,7 @@ class App extends Component {
       loggedIn: false,
       user: {},
     });
-    toast.info("Logged Out");
+    toast.info("Signed Out");
   }
 
   checkLoginStatus() {
@@ -118,6 +119,15 @@ class App extends Component {
               handleLogout={this.handleLogout}
               auth={this.state.loggedIn}
               component={MainDashboard}
+            />
+
+            <ProtectedRoute
+              exact
+              path='/dashboard/users'
+              loggedIn={this.state.loggedIn}
+              handleLogout={this.handleLogout}
+              auth={this.state.loggedIn}
+              component={UsersIndex}
             />
 
           </Switch>
