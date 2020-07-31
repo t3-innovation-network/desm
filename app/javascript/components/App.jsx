@@ -12,8 +12,8 @@ import UsersIndex from '../components/dashboard/users/UsersIndex';
 import EditUser from '../components/dashboard/users/EditUser';
 import Registration from "./auth/Registration";
 import OrganizationsIndex from '../components/dashboard/organizations/OrganizationsIndex';
-//import EditOrganization from '../components/dashboard/users/EditOrganization';
-//import CreateOrganization from '../components/dashboard/users/CreateOrganization';
+import EditOrganization from '../components/dashboard/organizations/EditOrganization';
+//import CreateOrganization from '../components/dashboard/organizations/CreateOrganization';
 
 class App extends Component {
   constructor() {
@@ -170,7 +170,7 @@ class App extends Component {
               auth={this.state.loggedIn}
               component={CreateOrganization}
             />
-
+*/
             <ProtectedRoute
               exact
               path='/dashboard/organizations/:id'
@@ -178,7 +178,7 @@ class App extends Component {
               handleLogout={this.handleLogout}
               auth={this.state.loggedIn}
               component={EditOrganization}
-            /> */}
+            />}
 
           </Switch>
         </Router>
