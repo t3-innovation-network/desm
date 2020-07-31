@@ -9,6 +9,13 @@ Rails.application.routes.draw do
   delete :logout, to: 'sessions#logout'
   get :session_status, to: 'sessions#session_status'
 
+  
+  namespace :api do
+    namespace :v1 do
+      resources :organizations, only: [:index, :show, :create, :update, :destroy]
+    end
+  end
+
   resources :users, only: [:index, :show, :update, :destroy]
 
   # Redirect all missing routes to home
