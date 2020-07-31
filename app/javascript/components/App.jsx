@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "../components/home/Home";
 import SignIn from "../components/auth/SignIn";
+import ProtectedRoute from "../components/auth/ProtectedRoute";
 import Mapping from "../components/mapping/Mapping";
 import MainDashboard from "../components/dashboard/MainDashboard";
 import axios from "axios";
@@ -110,15 +111,13 @@ class App extends Component {
               )}
             />
 
-            <Route
+            <ProtectedRoute
               exact
-              path={"/dashboard"}
-              render={(props) => (
-                <MainDashboard
-                  {...props}
-                  loggedIn={this.state.loggedIn}
-                />
-              )}
+              path='/dashboard'
+              loggedIn={this.state.loggedIn}
+              handleLogout={this.handleLogout}
+              auth={this.state.loggedIn}
+              component={MainDashboard}
             />
 
           </Switch>
