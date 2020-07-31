@@ -1,19 +1,16 @@
 import React, { Component } from "react";
 import axios from "axios";
-import DashboardContainer from "../dashboard/DashboardContainer";
+import DashboardContainer from "../DashboardContainer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-class Registration extends Component {
+export default class CreateOrganization extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      email: "",
-      password: "",
-      password_confirmation: "",
-      fullname: "",
-      registrationErrors: "",
+      name: "",
+      createErrors: "",
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,24 +18,23 @@ class Registration extends Component {
   }
 
   handleSubmit(event) {
-    const { email, fullname } = this.state;
+    const { name } = this.state;
 
     axios
       .post(
-        "http://localhost:3000/registrations",
+        "http://localhost:3000/api/v1/organizations",
         {
-          user: {
-            fullname: fullname,
-            email: email,
+          organization: {
+            name: name,
           },
         },
         /// Tells the API that's ok to get the cookie in our client
         { withCredentials: true }
       )
       .then((response) => {
-        if (response.data.status === "created") {
-          toast.success("User " + fullname + " was successfully updated");
-          this.props.history.push("/dashboard/users");
+        if (response.data.success) {
+          toast.success("Organization " + name + " was successfully updated");
+          this.props.history.push("/dashboard/organizations");
         }
       })
       .catch((error) => {
@@ -64,40 +60,24 @@ class Registration extends Component {
           <div className="col-lg-6 mx-auto">
             <div className="card mt-5">
               <div className="card-header">
-                <i className="fa fa-users"></i>
-                <strong>Create User</strong>
+                <i className="fa fa-building"></i>
+                <strong>Create Organization</strong>
               </div>
               <div className="card-body">
                 <form onSubmit={this.handleSubmit}>
                   <div className="form-group">
                     <label>
-                      Fullname
+                      Name
                       <span className="text-danger">*</span>
                     </label>
                     <input
                       type="text"
                       className="form-control"
-                      name="fullname"
-                      placeholder="Enter the fullname for the user"
-                      value={this.state.fullname}
+                      name="name"
+                      placeholder="Enter a name for this organization"
+                      value={this.state.name}
                       onChange={this.handleOnChange}
                       autoFocus
-                      required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>
-                      Email
-                      <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      name="email"
-                      placeholder="Enter the email for the user"
-                      value={this.state.email}
-                      onChange={this.handleOnChange}
                       required
                     />
                   </div>
@@ -115,5 +95,3 @@ class Registration extends Component {
     );
   }
 }
-
-export default Registration;
