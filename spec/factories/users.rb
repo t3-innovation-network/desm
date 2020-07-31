@@ -7,5 +7,6 @@ FactoryBot.define do
     fullname { Faker::Name.name }
     email { Faker::Internet.email }
     password_digest { Faker::Internet.password }
+    organization
   end
 end

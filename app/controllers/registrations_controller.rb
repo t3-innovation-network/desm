@@ -38,6 +38,6 @@ class RegistrationsController < ApplicationController
   # @return [ActionController::Parameters]
   ###
   def permitted_params
-    params.require(:user).permit(:email, :fullname)
+    params.require(:user).permit(:email, :fullname, :organization_id)
   end
 end
