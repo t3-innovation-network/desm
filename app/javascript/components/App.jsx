@@ -9,6 +9,8 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UsersIndex from '../components/dashboard/users/UsersIndex';
+import EditUser from '../components/dashboard/users/EditUser';
+import Registration from "./auth/Registration";
 
 class App extends Component {
   constructor() {
@@ -60,7 +62,7 @@ class App extends Component {
         }
       })
       /// Process any server errors
-      .catch((response) => {
+      .catch((error) => {
         console.log("session error: ", error);
       });
   }
@@ -128,6 +130,24 @@ class App extends Component {
               handleLogout={this.handleLogout}
               auth={this.state.loggedIn}
               component={UsersIndex}
+            />
+
+            <ProtectedRoute
+              exact
+              path='/dashboard/users/new'
+              loggedIn={this.state.loggedIn}
+              handleLogout={this.handleLogout}
+              auth={this.state.loggedIn}
+              component={Registration}
+            />
+
+            <ProtectedRoute
+              exact
+              path='/dashboard/users/:id'
+              loggedIn={this.state.loggedIn}
+              handleLogout={this.handleLogout}
+              auth={this.state.loggedIn}
+              component={EditUser}
             />
 
           </Switch>

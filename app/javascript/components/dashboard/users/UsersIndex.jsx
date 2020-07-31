@@ -25,7 +25,6 @@ export default class UsersIndex extends Component {
           });
           /// Something happened
         } else {
-          console.log(response);
           this.setState({
             indexErrors: "Couldn't retrieve users!",
           });
@@ -52,7 +51,7 @@ export default class UsersIndex extends Component {
             <div className="card-header">
               <i className="fa fa-users"></i>
               <span className="pl-2 subtitle">Users</span>
-              <Link to="#" className="float-right btn btn-dark btn-sm">
+              <Link to="/dashboard/users/new" className="float-right btn btn-dark btn-sm">
                 <i className="fa fa-fw fa-plus-circle"></i>
                 <span className="pl-2">Add User</span>
               </Link>
@@ -78,7 +77,7 @@ export default class UsersIndex extends Component {
                           <td>{user.email}</td>
                           <td>org</td>
                           <td>
-                            <Link to="#" className="btn btn-dark">
+                            <Link to={"/dashboard/users/" + user.id} className="btn btn-dark">
                               <i
                                 className="fa fa-pencil-alt"
                                 aria-hidden="true"

@@ -11,7 +11,7 @@ export default class SideBar extends Component {
       <React.Fragment>
         <aside className="col-12 col-md-2 p-0 bg-light">
             <nav className="navbar navbar-expand navbar-light bg-light flex-md-column flex-row mt-5 align-items-start">
-                <div className="collapse navbar-collapse">
+                <div className="collapse navbar-collapse w-100">
                     <ul className="flex-md-column flex-row navbar-nav w-100 justify-content-between">
                         <li className="nav-item">
                           <Link to="/dashboard" className="nav-link cursor-pointer">

@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   # @description: Lists all the users with its organizations
   ###
   def index
-    @users = User.all
+    @users = User.all.order(fullname: :desc)
 
     if @users
       render json: {
