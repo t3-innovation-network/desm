@@ -8,11 +8,12 @@ Rails.application.routes.draw do
   resources :registrations, only: [:create]
   delete :logout, to: 'sessions#logout'
   get :session_status, to: 'sessions#session_status'
-
+  
   
   namespace :api do
     namespace :v1 do
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
+      resources :roles, only: [:index]
     end
   end
 
