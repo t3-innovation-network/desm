@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import DashboardContainer from "../DashboardContainer";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Helper from "../../api/Helper";
 
 export default class OrganizationsIndex extends Component {
   constructor(props) {
@@ -15,32 +15,15 @@ export default class OrganizationsIndex extends Component {
     };
   }
 
-  fetchOrganizations() {
-    axios
-      .get("http://localhost:3000/api/v1/organizations", {
-        withCredentials: true,
-      })
-      .then((response) => {
-        /// We have a list of organizations from the backend
-        if (response.data.success) {
-          this.setState({
-            organizations: response.data.organizations,
-          });
-          /// Something happened
-        } else {
-          this.setState({
-            indexErrors: "Couldn't retrieve organizations!",
-          });
-        }
-      })
-      /// Process any server errors
-      .catch((error) => {
-        toast.error("We had an error: " + error.message);
-      });
-  }
-
   componentDidMount() {
-    this.fetchOrganizations();
+    Helper.fetchOrganizations().then((orgs) => {
+      this.setState({
+        organizations: orgs,
+      });
+    })
+    .catch(error => {
+      toast.error(error);
+    });
   }
 
   render() {
