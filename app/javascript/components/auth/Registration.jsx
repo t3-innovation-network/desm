@@ -13,7 +13,9 @@ class Registration extends Component {
       email: "",
       fullname: "",
       organization_id: null,
+      role_id: null,
       organizations: [],
+      roles: [],
       registrationErrors: "",
     };
 
@@ -22,7 +24,7 @@ class Registration extends Component {
   }
 
   handleSubmit(event) {
-    const { email, fullname, organization_id } = this.state;
+    const { email, fullname, organization_id, role_id } = this.state;
 
     axios
       .post(
@@ -33,6 +35,7 @@ class Registration extends Component {
             email: email,
             organization_id: organization_id
           },
+          role_id: role_id
         },
         /// Tells the API that's ok to get the cookie in our client
         { withCredentials: true }
@@ -63,7 +66,20 @@ class Registration extends Component {
       });
     })
     .catch(error => {
-      toast.error(error);
+      this.setState({
+        registrationErrors: error,
+      });
+    });
+
+    Helper.fetchRoles().then((Allroles) => {
+      this.setState({
+        roles: Allroles,
+      });
+    })
+    .catch(error => {
+      this.setState({
+        registrationErrors: error,
+      });
     });
   }
 
@@ -75,6 +91,11 @@ class Registration extends Component {
           handleLogout={this.props.handleLogout}
         >
           <div className="col-lg-6 mx-auto">
+            {this.state.registrationErrors && (
+              <div className="alert alert-danger mt-5">
+                <strong>Error!</strong> {this.state.registrationErrors}
+              </div>
+            )}
             <div className="card mt-5">
               <div className="card-header">
                 <i className="fa fa-users"></i>
@@ -130,6 +151,27 @@ class Registration extends Component {
                          this.state.organizations.map(function (org) {
                           return (
                             <option key={org.id} value={org.id}>{org.name}</option>
+                          );
+                        })
+                      }
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                  <label>
+                    Role
+                    <span className="text-danger">*</span></label>
+                    <select
+                      name="role_id"
+                      className="form-control"
+                      required
+                      value={this.state.role_id}
+                      onChange={this.handleOnChange}
+                    >
+                      {
+                         this.state.roles.map(function (role) {
+                          return (
+                            <option key={role.id} value={role.id}>{role.name}</option>
                           );
                         })
                       }

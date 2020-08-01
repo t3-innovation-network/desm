@@ -34,5 +34,23 @@ export default {
       .catch((error) => {
         return "We had an error: " + error.message;
       });
+  },
+
+  fetchRoles: () => {
+    return axios
+      .get("http://localhost:3000/api/v1/roles", { withCredentials: true })
+      .then((response) => {
+        /// We have a list of roles from the backend
+        if (response.status == 200) {
+          return response.data
+        } else {
+          /// Something happened
+          return "Couldn't retrieve roles!";
+        }
+      })
+      /// Process any server errors
+      .catch((error) => {
+        return "We had an error: " + error.message;
+      });
   }
 }
