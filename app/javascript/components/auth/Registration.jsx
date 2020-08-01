@@ -12,8 +12,8 @@ class Registration extends Component {
     this.state = {
       email: "",
       fullname: "",
-      organization_id: null,
-      role_id: null,
+      organization_id: "",
+      role_id: "",
       organizations: [],
       roles: [],
       registrationErrors: "",
@@ -21,6 +21,34 @@ class Registration extends Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
+  }
+
+  fetchOrganizations() {
+    Helper.fetchOrganizations().then((orgs) => {
+      this.setState({
+        organizations: orgs,
+        organization_id: orgs[0].id
+      });
+    })
+    .catch(error => {
+      this.setState({
+        registrationErrors: error,
+      });
+    });
+  }
+
+  fetchRoles() {
+    Helper.fetchRoles().then((Allroles) => {
+      this.setState({
+        roles: Allroles,
+        role_id: Allroles[0].id
+      });
+    })
+    .catch(error => {
+      this.setState({
+        registrationErrors: error,
+      });
+    });
   }
 
   handleSubmit(event) {
@@ -41,7 +69,7 @@ class Registration extends Component {
         { withCredentials: true }
       )
       .then((response) => {
-        if (response.data.status === "created") {
+        if (response.status === 200) {
           toast.success("User " + fullname + " was successfully updated");
           this.props.history.push("/dashboard/users");
         }
@@ -60,27 +88,8 @@ class Registration extends Component {
   }
 
   componentDidMount() {
-    Helper.fetchOrganizations().then((orgs) => {
-      this.setState({
-        organizations: orgs,
-      });
-    })
-    .catch(error => {
-      this.setState({
-        registrationErrors: error,
-      });
-    });
-
-    Helper.fetchRoles().then((Allroles) => {
-      this.setState({
-        roles: Allroles,
-      });
-    })
-    .catch(error => {
-      this.setState({
-        registrationErrors: error,
-      });
-    });
+    this.fetchOrganizations();
+    this.fetchRoles();
   }
 
   render() {

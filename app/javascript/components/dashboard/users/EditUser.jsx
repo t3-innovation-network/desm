@@ -12,10 +12,12 @@ export default class EditUser extends Component {
     this.state = {
       fullname: "",
       email: "",
-      organization_id: null,
-      userErrors: "",
+      organization_id: "",
+      role_id: "",
       user_id: this.props.match.params.id,
-      organizations: []
+      organizations: [],
+      roles: [],
+      userErrors: ""
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,11 +37,12 @@ export default class EditUser extends Component {
       })
       .then((response) => {
         /// We have a list of users from the backend
-        if (response.data.success) {
+        if (response.status === 200) {
           this.setState({
-            fullname: response.data.user.fullname,
-            email: response.data.user.email,
-            organization_id: response.data.user.organization_id
+            fullname: response.data.fullname,
+            email: response.data.email,
+            organization_id: response.data.organization_id,
+            role_id: response.data.assignments[0].role_id
           });
           /// Something happened
         } else {
@@ -56,6 +59,30 @@ export default class EditUser extends Component {
             "Couldn't retrieve user with id " + this.state.user_id + "!",
         });
       });
+  }
+
+  fetchOrganizations() {
+    Helper.fetchOrganizations().then((orgs) => {
+      this.setState({
+        organizations: orgs,
+      });
+    })
+    .catch(error => {
+      toast.error(error);
+    });
+  }
+
+  fetchRoles() {
+    Helper.fetchRoles().then((Allroles) => {
+      this.setState({
+        roles: Allroles,
+      });
+    })
+    .catch(error => {
+      this.setState({
+        registrationErrors: error,
+      });
+    });
   }
 
   deleteUser() {
@@ -85,22 +112,14 @@ export default class EditUser extends Component {
       });
   }
 
-
   componentDidMount() {
     this.fetchUser();
-
-    Helper.fetchOrganizations().then((orgs) => {
-      this.setState({
-        organizations: orgs,
-      });
-    })
-    .catch(error => {
-      toast.error(error);
-    });
+    this.fetchOrganizations();
+    this.fetchRoles();
   }
 
   handleSubmit(event) {
-    const { email, fullname, organization_id } = this.state;
+    const { email, fullname, organization_id, role_id } = this.state;
 
     axios
       .put(
@@ -111,19 +130,22 @@ export default class EditUser extends Component {
             email: email,
             organization_id: organization_id,
           },
+          role_id: role_id
         },
         /// Tells the API that's ok to get the cookie in our client
         { withCredentials: true }
       )
       .then((response) => {
-        toast.success(
-          "User " +
-            fullname +
-            " (" +
-            this.state.user_id +
-            ") was successfully updated"
-        );
-        this.props.history.push("/dashboard/users");
+        if (response.status === 200) {
+          toast.success(
+            "User " +
+              fullname +
+              " (" +
+              this.state.user_id +
+              ") was successfully updated"
+          );
+          this.props.history.push("/dashboard/users");
+        }
       })
       .catch((error) => {
         toast.error(error.message);
@@ -221,6 +243,27 @@ export default class EditUser extends Component {
                           }
                         </select>
                       </div>
+
+                      <div className="form-group">
+                        <label>
+                          Role
+                          <span className="text-danger">*</span></label>
+                          <select
+                            name="role_id"
+                            className="form-control"
+                            required
+                            value={this.state.role_id}
+                            onChange={this.handleOnChange}
+                          >
+                            {
+                              this.state.roles.map(function (role) {
+                                return (
+                                  <option key={role.id} value={role.id}>{role.name}</option>
+                                );
+                              })
+                            }
+                          </select>
+                        </div>
 
                     <button type="submit" className="btn btn-dark">
                       Send
