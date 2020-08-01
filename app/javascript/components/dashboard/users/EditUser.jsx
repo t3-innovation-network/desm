@@ -3,6 +3,7 @@ import DashboardContainer from "../DashboardContainer";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Helper from "../../api/Helper";
 
 export default class EditUser extends Component {
   constructor(props) {
@@ -11,8 +12,10 @@ export default class EditUser extends Component {
     this.state = {
       fullname: "",
       email: "",
+      organization_id: null,
       userErrors: "",
       user_id: this.props.match.params.id,
+      organizations: []
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -36,6 +39,7 @@ export default class EditUser extends Component {
           this.setState({
             fullname: response.data.user.fullname,
             email: response.data.user.email,
+            organization_id: response.data.user.organization_id
           });
           /// Something happened
         } else {
@@ -81,12 +85,22 @@ export default class EditUser extends Component {
       });
   }
 
+
   componentDidMount() {
     this.fetchUser();
+
+    Helper.fetchOrganizations().then((orgs) => {
+      this.setState({
+        organizations: orgs,
+      });
+    })
+    .catch(error => {
+      toast.error(error);
+    });
   }
 
   handleSubmit(event) {
-    const { email, fullname } = this.state;
+    const { email, fullname, organization_id } = this.state;
 
     axios
       .put(
@@ -95,6 +109,7 @@ export default class EditUser extends Component {
           user: {
             fullname: fullname,
             email: email,
+            organization_id: organization_id,
           },
         },
         /// Tells the API that's ok to get the cookie in our client
@@ -185,6 +200,27 @@ export default class EditUser extends Component {
                         required
                       />
                     </div>
+
+                    <div className="form-group">
+                      <label>
+                        Organization
+                        <span className="text-danger">*</span></label>
+                        <select
+                          name="organization_id"
+                          className="form-control"
+                          required
+                          value={this.state.organization_id}
+                          onChange={this.handleOnChange}
+                        >
+                          {
+                            this.state.organizations.map(function (org) {
+                              return (
+                                <option key={org.id} value={org.id}>{org.name}</option>
+                              );
+                            })
+                          }
+                        </select>
+                      </div>
 
                     <button type="submit" className="btn btn-dark">
                       Send

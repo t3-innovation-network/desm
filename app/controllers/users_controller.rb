@@ -13,10 +13,7 @@ class UsersController < ApplicationController
     @users = User.all.order(fullname: :desc)
 
     if @users
-      render json: {
-        success: true,
-        users: @users
-      }
+      render json: @users, include: :organization
     else
       render json: {status: 500}, status: :internal_server_error
     end
@@ -87,6 +84,6 @@ class UsersController < ApplicationController
   # @return [ActionController::Parameters]
   ###
   def permitted_params
-    params.require(:user).permit(:email, :fullname)
+    params.require(:user).permit(:email, :fullname, :organization_id)
   end
 end

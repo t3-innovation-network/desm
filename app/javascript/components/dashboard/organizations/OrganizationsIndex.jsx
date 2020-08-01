@@ -22,7 +22,9 @@ export default class OrganizationsIndex extends Component {
       });
     })
     .catch(error => {
-      toast.error(error);
+      this.setState({
+        indexErrors: error
+      });
     });
   }
 
@@ -33,6 +35,12 @@ export default class OrganizationsIndex extends Component {
         handleLogout={this.props.handleLogout}
       >
         <div className="col-lg-6 mx-auto">
+          {
+            this.state.indexErrors &&
+            <div className="alert alert-danger mt-5">
+              <strong>Error!</strong> {this.state.indexErrors}
+            </div>
+          }
           <div className="card mt-5">
             <div className="card-header">
               <i className="fa fa-building"></i>
@@ -46,38 +54,34 @@ export default class OrganizationsIndex extends Component {
               </Link>
             </div>
             <div className="card-body">
-              {this.state.indexErrors ? (
-                <span className="text-danger">{indexErrors}</span>
-              ) : (
-                <table className="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.organizations.map(function (organization) {
-                      return (
-                        <tr key={organization.id}>
-                          <td>{organization.name}</td>
-                          <td>
-                            <Link
-                              to={"/dashboard/organizations/" + organization.id}
-                              className="btn btn-dark"
-                            >
-                              <i
-                                className="fa fa-pencil-alt"
-                                aria-hidden="true"
-                              ></i>
-                            </Link>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              )}
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.organizations.map(function (organization) {
+                    return (
+                      <tr key={organization.id}>
+                        <td>{organization.name}</td>
+                        <td>
+                          <Link
+                            to={"/dashboard/organizations/" + organization.id}
+                            className="btn btn-dark"
+                          >
+                            <i
+                              className="fa fa-pencil-alt"
+                              aria-hidden="true"
+                            ></i>
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

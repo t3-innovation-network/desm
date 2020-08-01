@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import DashboardContainer from "../DashboardContainer";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Helper from "../../api/Helper";
 
 export default class UsersIndex extends Component {
   constructor(props) {
@@ -15,30 +15,18 @@ export default class UsersIndex extends Component {
     };
   }
 
-  fetchUsers() {
-    axios
-      .get("http://localhost:3000/users", { withCredentials: true })
-      .then((response) => {
-        /// We have a list of users from the backend
-        if (response.data.success) {
-          this.setState({
-            users: response.data.users,
-          });
-          /// Something happened
-        } else {
-          this.setState({
-            indexErrors: "Couldn't retrieve users!",
-          });
-        }
-      })
-      /// Process any server errors
-      .catch((error) => {
-        toast.error("We had an error: " + error.message);
-      });
-  }
-
   componentDidMount() {
-    this.fetchUsers();
+    Helper.fetchUsers()
+      .then((us) => {
+        this.setState({
+          users: us,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          indexErrors: error,
+        });
+      });
   }
 
   render() {
@@ -48,6 +36,11 @@ export default class UsersIndex extends Component {
         handleLogout={this.props.handleLogout}
       >
         <div className="col-lg-6 mx-auto">
+          {this.state.indexErrors && (
+            <div className="alert alert-danger mt-5">
+              <strong>Error!</strong> {this.state.indexErrors}
+            </div>
+          )}
           <div className="card mt-5">
             <div className="card-header">
               <i className="fa fa-users"></i>
@@ -61,42 +54,38 @@ export default class UsersIndex extends Component {
               </Link>
             </div>
             <div className="card-body">
-              {this.state.indexErrors ? (
-                <span className="text-danger">{indexErrors}</span>
-              ) : (
-                <table className="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Fullname</th>
-                      <th>Email</th>
-                      <th>Organization</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.users.map(function (user) {
-                      return (
-                        <tr key={user.id}>
-                          <td>{user.fullname}</td>
-                          <td>{user.email}</td>
-                          <td>org</td>
-                          <td>
-                            <Link
-                              to={"/dashboard/users/" + user.id}
-                              className="btn btn-dark"
-                            >
-                              <i
-                                className="fa fa-pencil-alt"
-                                aria-hidden="true"
-                              ></i>
-                            </Link>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              )}
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Fullname</th>
+                    <th>Email</th>
+                    <th>Organization</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.users.map(function (user) {
+                    return (
+                      <tr key={user.id}>
+                        <td>{user.fullname}</td>
+                        <td>{user.email}</td>
+                        <td>{user.organization.name}</td>
+                        <td>
+                          <Link
+                            to={"/dashboard/users/" + user.id}
+                            className="btn btn-dark"
+                          >
+                            <i
+                              className="fa fa-pencil-alt"
+                              aria-hidden="true"
+                            ></i>
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
