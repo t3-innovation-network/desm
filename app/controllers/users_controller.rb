@@ -26,10 +26,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     if @user
-      render json: {
-        success: true,
-        user: @user
-      }
+      render json: @user, include: :assignments
     else
       render json: {status: 500}, status: :internal_server_error
     end
@@ -39,13 +36,10 @@ class UsersController < ApplicationController
   # @description: Udates the attributes of a user
   ###
   def update
-    if @user.update(permitted_params)
-      render json: {
-        user: @user
-      }
-    else
-      render json: {status: 500}, status: :internal_server_error
-    end
+    @user.update(permitted_params)
+    @user.update_role(params[:role_id])
+
+    render json: @user
   end
 
   ###

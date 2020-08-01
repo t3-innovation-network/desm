@@ -13,27 +13,26 @@ class RegistrationsController < ApplicationController
   # @return [String]
   ###
   def create
-    user = User.create!(
-      permitted_params.merge(
-        password: DEFAULT_PASS,
-        password_confirmation: DEFAULT_PASS
-      )
-    )
+    user = User.create!(request_params)
+    user.assign_role(params[:role_id])
+    session[:user_id] = user.id
 
-    Assignment.create!(user_id: user.id, role_id: params[:role_id])
-
-    if user
-      session[:user_id] = user.id
-      render json: {
-        status: :created,
-        user: user
-      }
-    else
-      render json: {status: 500}, status: :internal_server_error
-    end
+    render json: user
   end
 
   private
+
+  ###
+  # @description: Group the necessary params to create a user, including
+  #   password, which is automatically assigned
+  # @return [ActionController::Parameters]
+  ###
+  def request_params
+    permitted_params.merge(
+      password: DEFAULT_PASS,
+      password_confirmation: DEFAULT_PASS
+    )
+  end
 
   ###
   # @description: Clean params
