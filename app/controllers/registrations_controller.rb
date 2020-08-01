@@ -20,6 +20,8 @@ class RegistrationsController < ApplicationController
       )
     )
 
+    Assignment.create!(user_id: user.id, role_id: params[:role_id])
+
     if user
       session[:user_id] = user.id
       render json: {
