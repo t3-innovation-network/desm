@@ -108,7 +108,7 @@ class Registration extends Component {
             <div className="card mt-5">
               <div className="card-header">
                 <i className="fa fa-users"></i>
-                <strong>Create User</strong>
+                <span className="pl-2 subtitle">Create User</span>
               </div>
               <div className="card-body">
                 <form onSubmit={this.handleSubmit}>

@@ -70,9 +70,7 @@ class SignIn extends Component {
                 <div className="card">
                   <div className="card-header">
                     <i className="fa fa-users"></i>
-                    <strong>
-                      Sign In
-                    </strong>
+                    <span className="pl-2 subtitle">Sign In</span>
                   </div>
                   <div className="card-body">
                       <form onSubmit={this.handleSubmit}>
