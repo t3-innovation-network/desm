@@ -39,6 +39,9 @@ gem "seed-fu"
 gem "bcrypt", "~> 3.1", ">= 3.1.15"
 gem "rack-cors", require: "rack/cors"
 
+# Manage authorization
+gem "pundit"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]

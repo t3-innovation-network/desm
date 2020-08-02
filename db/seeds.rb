@@ -17,5 +17,5 @@ admin_role = Role.create!(name: "Admin");
 user_role = Role.create!(name: "Regular User");
 
 # Assing "admin" role to our admin user
-Assignment.create(user: user, role: user_role);
-Assignment.create(user: admin, role: admin_role);
+Assignment.create!(user: user, role: user_role);
+Assignment.create!(user: admin, role: admin_role);

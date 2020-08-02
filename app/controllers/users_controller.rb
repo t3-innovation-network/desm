@@ -4,7 +4,9 @@
 # @description: Place all the actions related to users
 ###
 class UsersController < ApplicationController
-  before_action :set_user
+  before_action :authorize_with_policy
+
+  include Pundit
 
   ###
   # @description: Lists all the users with its organizations
@@ -23,8 +25,6 @@ class UsersController < ApplicationController
   # @description: Returns the user with id equal to the one passed in params
   ###
   def show
-    @user = User.find(params[:id])
-
     if @user
       render json: @user, include: :assignments
     else
@@ -58,11 +58,10 @@ class UsersController < ApplicationController
   private
 
   ###
-  # @description: Grab the user to make it available in the public methods
-  # @return [ActiveRecord]
+  # @description: Execute the authorization policy
   ###
-  def set_user
-    user
+  def authorize_with_policy
+    authorize user
   end
 
   ###

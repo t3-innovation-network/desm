@@ -1,0 +1,4 @@
+en:
+  errors:
+    auth:
+      unauthorized_access: "Unauthorized access."
