@@ -20,5 +20,5 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show, :update, :destroy]
 
   # Redirect all missing routes to home
-  get '/*path' => 'application#not_found'
+  get '/*path' => 'homepage#index'
 end
