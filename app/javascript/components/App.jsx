@@ -14,6 +14,7 @@ import Registration from "./auth/Registration";
 import OrganizationsIndex from '../components/dashboard/organizations/OrganizationsIndex';
 import EditOrganization from '../components/dashboard/organizations/EditOrganization';
 import CreateOrganization from '../components/dashboard/organizations/CreateOrganization';
+import ErrorNotice from "../components/shared/ErrorNotice";
 
 class App extends Component {
   constructor() {
@@ -22,6 +23,7 @@ class App extends Component {
     this.state = {
       loggedIn: false,
       user: {},
+      errors: ""
     };
 
     this.handleLogout = this.handleLogout.bind(this);
@@ -66,7 +68,10 @@ class App extends Component {
       })
       /// Process any server errors
       .catch((error) => {
-        console.log("session error: ", error);
+        console.log(error);
+        this.setState({
+          errors: "We had an error: " + (error.response.data.error || error.message),
+        });
       });
   }
 
@@ -77,6 +82,8 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
+        {this.state.errors && <ErrorNotice message={this.state.errors} />}
+
         <Router>
           <Switch>
 
