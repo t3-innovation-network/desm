@@ -2,11 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import AuthButton from "../auth/AuthButton";
 import axios from "axios";
-import { render } from "react-dom";
+import Stepper from "../mapping/Stepper";
 
 class TopNav extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      currentPage: window.location.pathname,
+    };
 
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
@@ -23,10 +27,15 @@ class TopNav extends React.Component {
   }
 
   renderDashboardBtn() {
-    if(this.props.loggedIn){
+    if (this.props.loggedIn) {
       return (
         <li className="nav-item">
-          <Link to="/dashboard" className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark">Dashboard</Link>
+          <Link
+            to="/dashboard"
+            className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark"
+          >
+            Dashboard
+          </Link>
         </li>
       );
     }
@@ -76,9 +85,12 @@ class TopNav extends React.Component {
                     Map a Specification
                   </Link>
                 </li>
+                <li>
+                  {this.state.currentPage == "/new-mapping" && <Stepper />}
+                </li>
               </ul>
               <ul className="navbar-nav ml-auto">
-                { this.renderDashboardBtn() }
+                {this.renderDashboardBtn()}
                 <li className="nav-item">
                   <AuthButton
                     loggedIn={this.props.loggedIn}

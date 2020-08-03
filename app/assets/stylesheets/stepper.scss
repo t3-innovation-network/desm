@@ -1,0 +1,76 @@
+/* Stepper (Inside the Navbar) */
+@import 'colors.scss';
+
+.indicator{
+  padding-left: 7vw;
+}
+.indicator > .indicator-step {
+  padding-left: 0.7vw;
+  padding-right: 0.7vw;
+  position: relative;
+  top: 0.5vw;
+}
+.indicator > .indicator-step .indicator-stepnum {
+  color: $foreground-color;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.indicator > .indicator-step > .indicator-dot {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  display: block;
+  background: $primary-color-light;
+  top: 15px;
+  left: 0%;
+  border-radius: 50%;
+}
+.indicator > .indicator-step > .indicator-dot:after {
+  content: ' ';
+  width: 10px;
+  height: 10px;
+  border-radius: 50px;
+  background: $foreground-color;
+  position: absolute;
+  top: 5px;
+  left: 8px;
+}
+.indicator-step.complete > .indicator-dot:after {
+  background: $primary-color;
+}
+.indicator > .indicator-step > .progress {
+  position: relative;
+  border-radius: 0px;
+  height: 3px;
+  box-shadow: none;
+}
+.indicator > .indicator-step > .progress > .progress-bar {
+  width:0px;
+  box-shadow: none;
+  background: $primary-color-light;
+  opacity: 0.2;
+}
+.indicator > .indicator-step.complete > .progress > .progress-bar {
+  width:100%;
+}
+.indicator-step.complete > .indicator-stepnum {
+ color: $primary-color;
+}
+.indicator > .indicator-step:first-child.active > .progress > .progress-bar {
+  width:0%;
+}
+.indicator > .indicator-step:last-child.active > .progress > .progress-bar {
+  width: 100%;
+}
+.indicator > .indicator-step.disabled > .indicator-dot {
+  background-color: $primary-color-light;
+  opacity: 0.2;
+}
+.indicator > .indicator-step.disabled > .indicator-dot:after {
+  opacity: 0;
+}
+
+.indicator > .indicator-step.disabled a.indicator-dot{
+  pointer-events: none;
+}
