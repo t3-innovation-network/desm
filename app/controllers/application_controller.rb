@@ -4,6 +4,9 @@ class ApplicationController < ActionController::Base
   # Authorization handling
   include Pundit
 
+  # Handle errors with a concern
+  include Recuperable
+
   # We manage our own security for sessions
   skip_before_action :verify_authenticity_token
 

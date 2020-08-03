@@ -12,28 +12,20 @@ class Api::V1::OrganizationsController < ApplicationController
   def index
     @organizations = Organization.all.order(name: :asc)
 
-    if @organizations
-      render json: {
-        success: true,
-        organizations: @organizations
-      }
-    else
-      render json: {status: 500}, status: :internal_server_error
-    end
+    render json: {
+      success: true,
+      organizations: @organizations
+    }
   end
 
   ###
   # @description: Prepares the data for the edit form
   ###
   def show
-    if @organization
-      render json: {
-        success: true,
-        organization: @organization
-      }
-    else
-      render json: {status: 500}, status: :internal_server_error
-    end
+    render json: {
+      success: true,
+      organization: @organization
+    }
   end
 
   ###
@@ -42,41 +34,32 @@ class Api::V1::OrganizationsController < ApplicationController
   def create
     @organization = Organization.create(permitted_params)
 
-    if @organization
-      render json: {
-        success: true,
-        organization: @organization
-      }
-    else
-      render json: {status: 500}, status: :internal_server_error
-    end
+    render json: {
+      success: true,
+      organization: @organization
+    }
   end
 
   ###
   # @description: Udates the attributes of an organization
   ###
   def update
-    if @organization.update(permitted_params)
-      render json: {
-        success: true,
-        organization: @organization
-      }
-    else
-      render json: {status: 500}, status: :internal_server_error
-    end
+    @organization.update(permitted_params)
+    render json: {
+      success: true,
+      organization: @organization
+    }
   end
 
   ###
   # @description: Removes an organization from the database
   ###
   def destroy
-    if @organization.destroy!
-      render json: {
-        status: :removed
-      }
-    else
-      render json: {status: 500}, status: :internal_server_error
-    end
+    @organization.destroy!
+
+    render json: {
+      status: :removed
+    }
   end
 
   private

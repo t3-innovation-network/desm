@@ -1,4 +1,7 @@
 en:
   errors:
+    not_found: "Record not found"
+    record_invalid: "Invalid: %{message}"
+    record_not_destroyed: "Can't delete: %{message}"
     auth:
       unauthorized_access: "Unauthorized access."

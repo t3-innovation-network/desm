@@ -14,22 +14,14 @@ class UsersController < ApplicationController
   def index
     @users = User.all.order(fullname: :desc)
 
-    if @users
-      render json: @users, include: :organization
-    else
-      render json: {status: 500}, status: :internal_server_error
-    end
+    render json: @users, include: :organization
   end
 
   ###
   # @description: Returns the user with id equal to the one passed in params
   ###
   def show
-    if @user
-      render json: @user, include: :assignments
-    else
-      render json: {status: 500}, status: :internal_server_error
-    end
+    render json: @user, include: :assignments
   end
 
   ###
@@ -46,13 +38,11 @@ class UsersController < ApplicationController
   # @description: Removes a user from the database
   ###
   def destroy
-    if @user.destroy!
-      render json: {
-        status: :removed
-      }
-    else
-      render json: {status: 500}, status: :internal_server_error
-    end
+    @user.destroy!
+
+    render json: {
+      status: :removed
+    }
   end
 
   private
