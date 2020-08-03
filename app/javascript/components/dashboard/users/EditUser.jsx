@@ -4,6 +4,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Helper from "../../api/Helper";
+import ErrorNotice from "../../shared/ErrorNotice";
 
 export default class EditUser extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ export default class EditUser extends Component {
       user_id: this.props.match.params.id,
       organizations: [],
       roles: [],
-      userErrors: ""
+      errors: ""
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -47,16 +48,14 @@ export default class EditUser extends Component {
           /// Something happened
         } else {
           this.setState({
-            userErrors:
-              "Couldn't retrieve user with id " + this.state.user_id + "!",
+            errors: "Couldn't retrieve user with id " + this.state.user_id + "!",
           });
         }
       })
       /// Process any server errors
       .catch((error) => {
         this.setState({
-          userErrors:
-            "Couldn't retrieve user with id " + this.state.user_id + "!",
+          errors: "Couldn't retrieve user with id " + this.state.user_id + "!",
         });
       });
   }
@@ -68,7 +67,9 @@ export default class EditUser extends Component {
       });
     })
     .catch(error => {
-      toast.error(error);
+      this.setState({
+        errors: "We had an error: " + error.response.data.error,
+      });
     });
   }
 
@@ -98,7 +99,7 @@ export default class EditUser extends Component {
         } else {
           /// Something happened
           this.setState({
-            userErrors:
+            errors:
               "Couldn't remove user with id " + this.state.user_id + "!",
           });
         }
@@ -106,7 +107,7 @@ export default class EditUser extends Component {
       /// Process any server errors
       .catch((error) => {
         this.setState({
-          userErrors:
+          errors:
             "Couldn't remove user with id " + this.state.user_id + "!",
         });
       });
@@ -148,7 +149,9 @@ export default class EditUser extends Component {
         }
       })
       .catch((error) => {
-        toast.error(error.message);
+        this.setState({
+          errors: "We had an error: " + error.response.data.error,
+        });
       });
 
     event.preventDefault();
@@ -178,99 +181,97 @@ export default class EditUser extends Component {
               </button>
             </div>
             <div className="card-body">
-              {this.state.userErrors ? (
-                <span className="text-danger">{this.state.userErrors}</span>
-              ) : (
-                <React.Fragment>
-                  <div className="mandatory-fields-notice">
-                    <small className="form-text text-muted">
-                      Fields with <span className="text-danger">*</span> are
-                      mandatory!
-                    </small>
+              {this.state.errors && <ErrorNotice message={this.state.errors} /> }
+
+              <React.Fragment>
+                <div className="mandatory-fields-notice">
+                  <small className="form-text text-muted">
+                    Fields with <span className="text-danger">*</span> are
+                    mandatory!
+                  </small>
+                </div>
+
+                <form onSubmit={this.handleSubmit}>
+                  <div className="form-group">
+                    <label>
+                      Fullname
+                      <span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="fullname"
+                      placeholder="Enter the fullname for the user"
+                      value={this.state.fullname}
+                      onChange={(e) => this.handleOnChange(e)}
+                      autoFocus
+                      required
+                    />
                   </div>
 
-                  <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                      <label>
-                        Fullname
-                        <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
+                  <div className="form-group">
+                    <label>
+                      Email
+                      <span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      name="email"
+                      placeholder="Enter the email for the user"
+                      value={this.state.email}
+                      onChange={(e) => this.handleOnChange(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>
+                      Organization
+                      <span className="text-danger">*</span></label>
+                      <select
+                        name="organization_id"
                         className="form-control"
-                        name="fullname"
-                        placeholder="Enter the fullname for the user"
-                        value={this.state.fullname}
-                        onChange={(e) => this.handleOnChange(e)}
-                        autoFocus
                         required
-                      />
+                        value={this.state.organization_id}
+                        onChange={this.handleOnChange}
+                      >
+                        {
+                          this.state.organizations.map(function (org) {
+                            return (
+                              <option key={org.id} value={org.id}>{org.name}</option>
+                            );
+                          })
+                        }
+                      </select>
                     </div>
 
                     <div className="form-group">
                       <label>
-                        Email
-                        <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        name="email"
-                        placeholder="Enter the email for the user"
-                        value={this.state.email}
-                        onChange={(e) => this.handleOnChange(e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>
-                        Organization
+                        Role
                         <span className="text-danger">*</span></label>
                         <select
-                          name="organization_id"
+                          name="role_id"
                           className="form-control"
                           required
-                          value={this.state.organization_id}
+                          value={this.state.role_id}
                           onChange={this.handleOnChange}
                         >
                           {
-                            this.state.organizations.map(function (org) {
+                            this.state.roles.map(function (role) {
                               return (
-                                <option key={org.id} value={org.id}>{org.name}</option>
+                                <option key={role.id} value={role.id}>{role.name}</option>
                               );
                             })
                           }
                         </select>
                       </div>
 
-                      <div className="form-group">
-                        <label>
-                          Role
-                          <span className="text-danger">*</span></label>
-                          <select
-                            name="role_id"
-                            className="form-control"
-                            required
-                            value={this.state.role_id}
-                            onChange={this.handleOnChange}
-                          >
-                            {
-                              this.state.roles.map(function (role) {
-                                return (
-                                  <option key={role.id} value={role.id}>{role.name}</option>
-                                );
-                              })
-                            }
-                          </select>
-                        </div>
-
-                    <button type="submit" className="btn btn-dark">
-                      Send
-                    </button>
-                  </form>
-                </React.Fragment>
-              )}
+                  <button type="submit" className="btn btn-dark">
+                    Send
+                  </button>
+                </form>
+              </React.Fragment>
             </div>
           </div>
         </div>

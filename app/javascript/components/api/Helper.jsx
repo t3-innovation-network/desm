@@ -12,10 +12,6 @@ export default {
           return response.data.organizations;
         }
       })
-      /// Process any server errors
-      .catch((error) => {
-        return "We had en error:" + error.message
-      });
     },
 
   fetchUsers: () => {
@@ -30,10 +26,6 @@ export default {
           return "Couldn't retrieve users!";
         }
       })
-      /// Process any server errors
-      .catch((error) => {
-        return "We had an error: " + error.message;
-      });
   },
 
   fetchRoles: () => {
@@ -48,9 +40,5 @@ export default {
           return "Couldn't retrieve roles!";
         }
       })
-      /// Process any server errors
-      .catch((error) => {
-        return "We had an error: " + error.message;
-      });
   }
 }

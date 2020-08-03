@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Helper from "../../api/Helper";
+import ErrorNotice from "../../shared/ErrorNotice";
 
 export default class UsersIndex extends Component {
   constructor(props) {
@@ -11,7 +12,7 @@ export default class UsersIndex extends Component {
 
     this.state = {
       users: [],
-      indexErrors: "",
+      errors: "",
     };
   }
 
@@ -24,7 +25,7 @@ export default class UsersIndex extends Component {
       })
       .catch((error) => {
         this.setState({
-          indexErrors: error,
+          errors: "We had an error: " + error.response.data.error,
         });
       });
   }
@@ -36,11 +37,8 @@ export default class UsersIndex extends Component {
         handleLogout={this.props.handleLogout}
       >
         <div className="col-lg-6 mx-auto">
-          {this.state.indexErrors && (
-            <div className="alert alert-danger mt-5">
-              <strong>Error!</strong> {this.state.indexErrors}
-            </div>
-          )}
+          {this.state.errors && <ErrorNotice message={this.state.errors} /> }
+
           <div className="card mt-5">
             <div className="card-header">
               <i className="fa fa-users"></i>

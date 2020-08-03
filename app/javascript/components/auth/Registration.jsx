@@ -4,6 +4,7 @@ import DashboardContainer from "../dashboard/DashboardContainer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Helper from "../api/Helper";
+import ErrorNotice from "../shared/ErrorNotice";
 
 class Registration extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class Registration extends Component {
       role_id: "",
       organizations: [],
       roles: [],
-      registrationErrors: "",
+      errors: "",
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,7 +33,7 @@ class Registration extends Component {
     })
     .catch(error => {
       this.setState({
-        registrationErrors: error,
+        errors: "We had an error: " + error.response.data.error,
       });
     });
   }
@@ -46,7 +47,7 @@ class Registration extends Component {
     })
     .catch(error => {
       this.setState({
-        registrationErrors: error,
+        errors: "We had an error: " + error.response.data.error,
       });
     });
   }
@@ -100,11 +101,8 @@ class Registration extends Component {
           handleLogout={this.props.handleLogout}
         >
           <div className="col-lg-6 mx-auto">
-            {this.state.registrationErrors && (
-              <div className="alert alert-danger mt-5">
-                <strong>Error!</strong> {this.state.registrationErrors}
-              </div>
-            )}
+            {this.state.errors && <ErrorNotice message={this.state.errors} /> }
+
             <div className="card mt-5">
               <div className="card-header">
                 <i className="fa fa-users"></i>
