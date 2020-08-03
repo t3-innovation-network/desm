@@ -52,34 +52,36 @@ export default class OrganizationsIndex extends Component {
               </Link>
             </div>
             <div className="card-body">
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.organizations.map(function (organization) {
-                    return (
-                      <tr key={organization.id}>
-                        <td>{organization.name}</td>
-                        <td>
-                          <Link
-                            to={"/dashboard/organizations/" + organization.id}
-                            className="btn btn-dark"
-                          >
-                            <i
-                              className="fa fa-pencil-alt"
-                              aria-hidden="true"
-                            ></i>
-                          </Link>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+              <div className="table-responsive">
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.state.organizations.map(function (organization) {
+                      return (
+                        <tr key={organization.id}>
+                          <td>{organization.name}</td>
+                          <td>
+                            <Link
+                              to={"/dashboard/organizations/" + organization.id}
+                              className="btn btn-dark"
+                            >
+                              <i
+                                className="fa fa-pencil-alt"
+                                aria-hidden="true"
+                              ></i>
+                            </Link>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

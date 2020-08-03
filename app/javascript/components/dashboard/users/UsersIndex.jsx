@@ -52,38 +52,40 @@ export default class UsersIndex extends Component {
               </Link>
             </div>
             <div className="card-body">
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Fullname</th>
-                    <th>Email</th>
-                    <th>Organization</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.users.map(function (user) {
-                    return (
-                      <tr key={user.id}>
-                        <td>{user.fullname}</td>
-                        <td>{user.email}</td>
-                        <td>{user.organization.name}</td>
-                        <td>
-                          <Link
-                            to={"/dashboard/users/" + user.id}
-                            className="btn btn-dark"
-                          >
-                            <i
-                              className="fa fa-pencil-alt"
-                              aria-hidden="true"
-                            ></i>
-                          </Link>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+              <div className="table-responsive">
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Fullname</th>
+                      <th>Email</th>
+                      <th>Organization</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.state.users.map(function (user) {
+                      return (
+                        <tr key={user.id}>
+                          <td>{user.fullname}</td>
+                          <td>{user.email}</td>
+                          <td>{user.organization.name}</td>
+                          <td>
+                            <Link
+                              to={"/dashboard/users/" + user.id}
+                              className="btn btn-dark"
+                            >
+                              <i
+                                className="fa fa-pencil-alt"
+                                aria-hidden="true"
+                              ></i>
+                            </Link>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
