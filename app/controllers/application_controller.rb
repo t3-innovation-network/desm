@@ -13,6 +13,10 @@ class ApplicationController < ActionController::Base
   # Handle unauthorized accesses with a json error message
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  def not_found
+    render json: {error: t("errors.not_found")}, status: :not_found
+  end
+
   private
 
   ###
