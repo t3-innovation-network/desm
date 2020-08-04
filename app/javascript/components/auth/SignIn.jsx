@@ -3,6 +3,7 @@ import TopNav from "../shared/TopNav";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import signIn from "../api/signIn";
 
 class SignIn extends Component {
   constructor(props) {
@@ -26,21 +27,10 @@ class SignIn extends Component {
   handleSubmit(event) {
     const { email, password } = this.state;
 
-    axios
-      .post(
-        "http://localhost:3000/sessions",
-        {
-          user: {
-            email: email,
-            password: password
-          }
-        },
-        /// Tells the API that's ok to get the cookie in our client
-        { withCredentials: true }
-      )
+    signIn(email, password)
       .then((response) => {
-        if (response.data.logged_in) {
-          this.handleSuccessfullAuth(response.data)
+        if (response.logged_in) {
+          this.handleSuccessfullAuth(response)
         }
       })
       .catch((error) => {
