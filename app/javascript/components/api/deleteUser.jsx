@@ -9,12 +9,6 @@ const deleteUser = (user_id) => {
       /// We have a list of users from the backend
       if (response.data.status == "removed") {
         return { removed: true };
-      } else {
-        /// Something happened
-        return {
-          removed: false,
-          error: "Couldn't remove user with id " + this.state.user_id + "!",
-        };
       }
     });
 };

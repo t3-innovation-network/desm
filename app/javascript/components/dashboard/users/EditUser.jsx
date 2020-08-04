@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import DashboardContainer from "../DashboardContainer";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import fetchOrganizations from "../../api/fetchOrganizations";
@@ -9,6 +8,7 @@ import ErrorNotice from "../../shared/ErrorNotice";
 import ErrorMessage from "../../helpers/errorMessage";
 import fetchUser from "../../api/fetchUser";
 import deleteUser from "../../api/deleteUser";
+import updateUser from "../../api/updateUser";
 
 export default class EditUser extends Component {
   constructor(props) {
@@ -45,11 +45,6 @@ export default class EditUser extends Component {
             email: response.user.email,
             organization_id: response.user.organization_id,
             role_id: response.user.role_id
-          });
-          /// Something happened
-        } else {
-          this.setState({
-            errors: response.error
           });
         }
       })
@@ -94,11 +89,6 @@ export default class EditUser extends Component {
         if (response.removed) {
           toast.info("User successfully removed");
           this.props.history.push("/dashboard/users");
-        } else {
-          /// Something happened
-          this.setState({
-            errors: response.error
-          });
         }
       })
       /// Process any server errors
@@ -116,30 +106,13 @@ export default class EditUser extends Component {
   }
 
   handleSubmit(event) {
-    const { email, fullname, organization_id, role_id } = this.state;
+    const { email, fullname, organization_id, role_id, user_id } = this.state;
 
-    axios
-      .put(
-        "http://localhost:3000/users/" + this.state.user_id,
-        {
-          user: {
-            fullname: fullname,
-            email: email,
-            organization_id: organization_id,
-          },
-          role_id: role_id
-        },
-        /// Tells the API that's ok to get the cookie in our client
-        { withCredentials: true }
-      )
+    updateUser(user_id, email, fullname, organization_id, role_id)
       .then((response) => {
-        if (response.status === 200) {
+        if (response.success) {
           toast.success(
-            "User " +
-              fullname +
-              " (" +
-              this.state.user_id +
-              ") was successfully updated"
+            "User " + fullname + " (" + user_id + ") was successfully updated"
           );
           this.props.history.push("/dashboard/users");
         }

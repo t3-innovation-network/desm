@@ -16,11 +16,6 @@ const fetchUser = (user_id) => {
           role_id: response.data.assignments[0].role_id
         }
       }
-      /// Something happened
-    } else {
-        return {
-          error: "Couldn't retrieve user with id " + user_id + "!"
-        };
     }
   })
 }

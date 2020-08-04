@@ -7,9 +7,6 @@ const fetchUsers = () => {
       /// We have a list of users from the backend
       if (response.status == 200) {
         return response.data
-      } else {
-        /// Something happened
-        return "Couldn't retrieve users!";
       }
   })
 }
