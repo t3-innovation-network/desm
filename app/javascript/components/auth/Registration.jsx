@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 import DashboardContainer from "../dashboard/DashboardContainer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,6 +6,7 @@ import fetchOrganizations from "../api/fetchOrganizations";
 import fetchRoles from "../api/fetchRoles";
 import ErrorNotice from "../shared/ErrorNotice";
 import ErrorMessage from "../helpers/errorMessage";
+import createUser from "../api/createUser";
 
 class Registration extends Component {
   constructor(props) {
@@ -57,28 +57,17 @@ class Registration extends Component {
   handleSubmit(event) {
     const { email, fullname, organization_id, role_id } = this.state;
 
-    axios
-      .post(
-        "http://localhost:3000/registrations",
-        {
-          user: {
-            fullname: fullname,
-            email: email,
-            organization_id: organization_id
-          },
-          role_id: role_id
-        },
-        /// Tells the API that's ok to get the cookie in our client
-        { withCredentials: true }
-      )
+    createUser(fullname, email, organization_id, role_id)
       .then((response) => {
-        if (response.status === 200) {
+        if (response.success) {
           toast.success("User " + fullname + " was successfully created");
           this.props.history.push("/dashboard/users");
         }
       })
       .catch((error) => {
-        toast.error(error.message);
+        this.setState({
+          errors: ErrorMessage(error)
+        });
       });
 
     event.preventDefault();
