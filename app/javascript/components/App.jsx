@@ -5,7 +5,6 @@ import SignIn from "../components/auth/SignIn";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
 import Mapping from "../components/mapping/Mapping";
 import MainDashboard from "../components/dashboard/MainDashboard";
-import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UsersIndex from '../components/dashboard/users/UsersIndex';
@@ -15,6 +14,7 @@ import OrganizationsIndex from '../components/dashboard/organizations/Organizati
 import EditOrganization from '../components/dashboard/organizations/EditOrganization';
 import CreateOrganization from '../components/dashboard/organizations/CreateOrganization';
 import ErrorNotice from "../components/shared/ErrorNotice";
+import Helper from "./api/Helper";
 
 class App extends Component {
   constructor() {
@@ -47,28 +47,18 @@ class App extends Component {
   }
 
   checkLoginStatus() {
-    axios
-      .get("http://localhost:3000/session_status", { withCredentials: true })
+    Helper.checkLoginStatus({loggedIn: this.state.loggedIn})
       .then((response) => {
-        /// If we have no session cookie and the api tells us that the user is authenticated,
-        /// let's update that information
-        if (response.data.logged_in & !this.state.loggedIn) {
+        /// If we have something to change
+        if (response !== undefined) {
           this.setState({
-            loggedIn: true,
-            user: response.data.user,
-          });
-          /// If we have a session cookie, but the api responds us telling that there's no user
-          /// authenticated, let's update that information according too
-        } else if (!response.data.logged_in & this.state.loggedIn) {
-          this.setState({
-            loggedIn: false,
-            user: {},
-          });
+            loggedIn: response.loggedIn,
+            user: response.user,
+          })
         }
       })
       /// Process any server errors
       .catch((error) => {
-        console.log(error);
         this.setState({
           errors: "We had an error: " + (error.response.data.error || error.message),
         });
