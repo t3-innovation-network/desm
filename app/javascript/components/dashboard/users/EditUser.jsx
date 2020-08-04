@@ -8,6 +8,7 @@ import fetchRoles from "../../api/fetchRoles";
 import ErrorNotice from "../../shared/ErrorNotice";
 import ErrorMessage from "../../helpers/errorMessage";
 import fetchUser from "../../api/fetchUser";
+import deleteUser from "../../api/deleteUser";
 
 export default class EditUser extends Component {
   constructor(props) {
@@ -86,29 +87,24 @@ export default class EditUser extends Component {
     });
   }
 
-  deleteUser() {
-    axios
-      .delete("http://localhost:3000/users/" + this.state.user_id, {
-        withCredentials: true,
-      })
+  deleteUserAPI() {
+    deleteUser(this.state.user_id)
       .then((response) => {
         /// We have a list of users from the backend
-        if (response.data.status == "removed") {
+        if (response.removed) {
           toast.info("User successfully removed");
           this.props.history.push("/dashboard/users");
         } else {
           /// Something happened
           this.setState({
-            errors:
-              "Couldn't remove user with id " + this.state.user_id + "!",
+            errors: response.error
           });
         }
       })
       /// Process any server errors
       .catch((error) => {
         this.setState({
-          errors:
-            "Couldn't remove user with id " + this.state.user_id + "!",
+          errors: ErrorMessage(error)
         });
       });
   }
@@ -174,7 +170,7 @@ export default class EditUser extends Component {
                 data-placement="bottom"
                 title="Delete this user"
                 onClick={() => {
-                  this.deleteUser();
+                  this.deleteUserAPI();
                 }}
               >
                 <i className="fa fa-trash" aria-hidden="true"></i>
