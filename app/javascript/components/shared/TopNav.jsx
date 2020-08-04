@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import AuthButton from "../auth/AuthButton";
-import axios from "axios";
 import Stepper from "../mapping/Stepper";
+import signOut from "../api/signOut";
+import { ToastContainer } from "react-toastify";
 
 class TopNav extends React.Component {
   constructor(props) {
@@ -16,13 +17,14 @@ class TopNav extends React.Component {
   }
 
   handleLogoutClick() {
-    axios
-      .delete("http://localhost:3000/logout", { withCredentials: true })
+    signOut()
       .then((response) => {
-        this.props.handleLogout();
+        if (response.success) {
+          this.props.handleLogout();
+        }
       })
       .catch((error) => {
-        console.log("error: ", error);
+        toast.error(ErrorMessage(error));
       });
   }
 
@@ -101,6 +103,7 @@ class TopNav extends React.Component {
             </div>
           </div>
         </nav>
+        <ToastContainer />
       </React.Fragment>
     );
   }
