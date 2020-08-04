@@ -3,6 +3,7 @@ import axios from "axios";
 import DashboardContainer from "../DashboardContainer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import createOrganization from "../../api/createOrganization";
 
 export default class CreateOrganization extends Component {
   constructor(props) {
@@ -10,7 +11,7 @@ export default class CreateOrganization extends Component {
 
     this.state = {
       name: "",
-      createErrors: "",
+      errors: "",
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,25 +21,17 @@ export default class CreateOrganization extends Component {
   handleSubmit(event) {
     const { name } = this.state;
 
-    axios
-      .post(
-        "http://localhost:3000/api/v1/organizations",
-        {
-          organization: {
-            name: name,
-          },
-        },
-        /// Tells the API that's ok to get the cookie in our client
-        { withCredentials: true }
-      )
+    createOrganization(name)
       .then((response) => {
-        if (response.data.success) {
-          toast.success("Organization " + name + " was successfully updated");
+        if (response.success) {
+          toast.success("Organization " + name + " was successfully created");
           this.props.history.push("/dashboard/organizations");
         }
       })
       .catch((error) => {
-        toast.error(error.message);
+        this.setState({
+          errors: ErrorMessage(error)
+        });
       });
 
     event.preventDefault();
@@ -58,10 +51,12 @@ export default class CreateOrganization extends Component {
           handleLogout={this.props.handleLogout}
         >
           <div className="col-lg-6 mx-auto">
+            {this.state.errors && <ErrorNotice message={this.state.errors} /> }
+
             <div className="card mt-5">
               <div className="card-header">
                 <i className="fa fa-building"></i>
-                <strong>Create Organization</strong>
+                <span className="pl-2 subtitle">Create Organization</span>
               </div>
               <div className="card-body">
                 <form onSubmit={this.handleSubmit}>

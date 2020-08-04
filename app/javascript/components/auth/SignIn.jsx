@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import TopNav from "../shared/TopNav";
-import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import signIn from "../api/signIn";
+import ErrorMessage from "../helpers/errorMessage";
 
 class SignIn extends Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class SignIn extends Component {
     this.state = {
       email: "",
       password: "",
-      sign_in_errors: ""
+      errors: ""
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,7 +34,9 @@ class SignIn extends Component {
         }
       })
       .catch((error) => {
-        toast.error(error.message);
+        this.setState({
+          errors: ErrorMessage(error)
+        });
       });
 
     event.preventDefault();
@@ -57,6 +59,8 @@ class SignIn extends Component {
           <div className="container-fluid container-wrapper">
             <div className="row mt-5">
               <div className="col-lg-6 mx-auto">
+                {this.state.errors && <ErrorNotice message={this.state.errors} /> }
+
                 <div className="card">
                   <div className="card-header">
                     <i className="fa fa-users"></i>
