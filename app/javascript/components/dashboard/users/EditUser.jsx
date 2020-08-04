@@ -7,6 +7,7 @@ import fetchOrganizations from "../../api/fetchOrganizations";
 import fetchRoles from "../../api/fetchRoles";
 import ErrorNotice from "../../shared/ErrorNotice";
 import ErrorMessage from "../../helpers/errorMessage";
+import fetchUser from "../../api/fetchUser";
 
 export default class EditUser extends Component {
   constructor(props) {
@@ -33,31 +34,28 @@ export default class EditUser extends Component {
     });
   }
 
-  fetchUser() {
-    axios
-      .get("http://localhost:3000/users/" + this.state.user_id, {
-        withCredentials: true,
-      })
+  fetchUserAPI() {
+    fetchUser(this.state.user_id)
       .then((response) => {
-        /// We have a list of users from the backend
-        if (response.status === 200) {
+        /// We have a user from the backend
+        if (response.user !== undefined) {
           this.setState({
-            fullname: response.data.fullname,
-            email: response.data.email,
-            organization_id: response.data.organization_id,
-            role_id: response.data.assignments[0].role_id
+            fullname: response.user.fullname,
+            email: response.user.email,
+            organization_id: response.user.organization_id,
+            role_id: response.user.role_id
           });
           /// Something happened
         } else {
           this.setState({
-            errors: "Couldn't retrieve user with id " + this.state.user_id + "!",
+            errors: response.error
           });
         }
       })
       /// Process any server errors
       .catch((error) => {
         this.setState({
-          errors: "Couldn't retrieve user with id " + this.state.user_id + "!",
+          errors: ErrorMessage(error)
         });
       });
   }
@@ -116,7 +114,7 @@ export default class EditUser extends Component {
   }
 
   componentDidMount() {
-    this.fetchUser();
+    this.fetchUserAPI();
     this.fetchOrganizationsAPI();
     this.fetchRolesAPI();
   }
