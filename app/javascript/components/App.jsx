@@ -14,7 +14,7 @@ import OrganizationsIndex from '../components/dashboard/organizations/Organizati
 import EditOrganization from '../components/dashboard/organizations/EditOrganization';
 import CreateOrganization from '../components/dashboard/organizations/CreateOrganization';
 import ErrorNotice from "../components/shared/ErrorNotice";
-import Helper from "./api/Helper";
+import checkLoginStatus from "./api/checkLoginStatus";
 
 class App extends Component {
   constructor() {
@@ -46,8 +46,8 @@ class App extends Component {
     toast.info("Signed Out");
   }
 
-  checkLoginStatus() {
-    Helper.checkLoginStatus({loggedIn: this.state.loggedIn})
+  checkLoginStatusAPI() {
+    checkLoginStatus({loggedIn: this.state.loggedIn})
       .then((response) => {
         /// If we have something to change
         if (response !== undefined) {
@@ -66,7 +66,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.checkLoginStatus();
+    this.checkLoginStatusAPI();
   }
 
   render() {

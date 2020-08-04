@@ -3,8 +3,9 @@ import DashboardContainer from "../DashboardContainer";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Helper from "../../api/Helper";
+import fetchUsers from "../../api/fetchUsers";
 import ErrorNotice from "../../shared/ErrorNotice";
+import ErrorMessage from "../../helpers/errorMessage";
 
 export default class UsersIndex extends Component {
   constructor(props) {
@@ -16,8 +17,8 @@ export default class UsersIndex extends Component {
     };
   }
 
-  componentDidMount() {
-    Helper.fetchUsers()
+  fetchUsersAPI() {
+    fetchUsers()
       .then((us) => {
         this.setState({
           users: us,
@@ -25,9 +26,13 @@ export default class UsersIndex extends Component {
       })
       .catch((error) => {
         this.setState({
-          errors: "We had an error: " + error.response.data.error,
+          errors: ErrorMessage(error)
         });
       });
+  }
+
+  componentDidMount() {
+    this.fetchUsersAPI();
   }
 
   render() {

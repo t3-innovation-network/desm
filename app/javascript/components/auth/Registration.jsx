@@ -3,7 +3,8 @@ import axios from "axios";
 import DashboardContainer from "../dashboard/DashboardContainer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Helper from "../api/Helper";
+import fetchOrganizations from "../api/fetchOrganizations";
+import fetchRoles from "../api/fetchRoles";
 import ErrorNotice from "../shared/ErrorNotice";
 
 class Registration extends Component {
@@ -24,8 +25,8 @@ class Registration extends Component {
     this.handleOnChange = this.handleOnChange.bind(this);
   }
 
-  fetchOrganizations() {
-    Helper.fetchOrganizations().then((orgs) => {
+  fetchOrganizationsAPI() {
+    fetchOrganizations().then((orgs) => {
       this.setState({
         organizations: orgs,
         organization_id: orgs[0].id
@@ -38,8 +39,8 @@ class Registration extends Component {
     });
   }
 
-  fetchRoles() {
-    Helper.fetchRoles().then((Allroles) => {
+  fetchRolesAPI() {
+    fetchRoles().then((Allroles) => {
       this.setState({
         roles: Allroles,
         role_id: Allroles[0].id
@@ -71,7 +72,7 @@ class Registration extends Component {
       )
       .then((response) => {
         if (response.status === 200) {
-          toast.success("User " + fullname + " was successfully updated");
+          toast.success("User " + fullname + " was successfully created");
           this.props.history.push("/dashboard/users");
         }
       })
@@ -89,8 +90,8 @@ class Registration extends Component {
   }
 
   componentDidMount() {
-    this.fetchOrganizations();
-    this.fetchRoles();
+    this.fetchOrganizationsAPI();
+    this.fetchRolesAPI();
   }
 
   render() {

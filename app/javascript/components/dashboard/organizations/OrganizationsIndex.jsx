@@ -3,7 +3,7 @@ import DashboardContainer from "../DashboardContainer";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Helper from "../../api/Helper";
+import fetchOrganizations from "../../api/fetchOrganizations";
 import ErrorNotice from "../../shared/ErrorNotice";
 
 export default class OrganizationsIndex extends Component {
@@ -16,8 +16,8 @@ export default class OrganizationsIndex extends Component {
     };
   }
 
-  componentDidMount() {
-    Helper.fetchOrganizations()
+  fetchOrganizationsAPI() {
+    fetchOrganizations()
       .then((orgs) => {
         this.setState({
           organizations: orgs,
@@ -28,6 +28,10 @@ export default class OrganizationsIndex extends Component {
           errors: "We had an error: " + error.response.data.error,
         });
       });
+  }
+
+  componentDidMount() {
+    this.fetchOrganizationsAPI();
   }
 
   render() {

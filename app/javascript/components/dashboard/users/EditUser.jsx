@@ -3,7 +3,8 @@ import DashboardContainer from "../DashboardContainer";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Helper from "../../api/Helper";
+import fetchOrganizations from "../../api/fetchOrganizations";
+import fetchRoles from "../../api/fetchRoles";
 import ErrorNotice from "../../shared/ErrorNotice";
 
 export default class EditUser extends Component {
@@ -60,8 +61,8 @@ export default class EditUser extends Component {
       });
   }
 
-  fetchOrganizations() {
-    Helper.fetchOrganizations().then((orgs) => {
+  fetchOrganizationsAPI() {
+    fetchOrganizations().then((orgs) => {
       this.setState({
         organizations: orgs,
       });
@@ -73,8 +74,8 @@ export default class EditUser extends Component {
     });
   }
 
-  fetchRoles() {
-    Helper.fetchRoles().then((Allroles) => {
+  fetchRolesAPI() {
+    fetchRoles().then((Allroles) => {
       this.setState({
         roles: Allroles,
       });
@@ -115,8 +116,8 @@ export default class EditUser extends Component {
 
   componentDidMount() {
     this.fetchUser();
-    this.fetchOrganizations();
-    this.fetchRoles();
+    this.fetchOrganizationsAPI();
+    this.fetchRolesAPI();
   }
 
   handleSubmit(event) {
