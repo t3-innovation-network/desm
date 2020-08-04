@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import fetchOrganizations from "../../api/fetchOrganizations";
 import fetchRoles from "../../api/fetchRoles";
 import ErrorNotice from "../../shared/ErrorNotice";
+import ErrorMessage from "../../helpers/errorMessage";
 
 export default class EditUser extends Component {
   constructor(props) {
@@ -69,7 +70,7 @@ export default class EditUser extends Component {
     })
     .catch(error => {
       this.setState({
-        errors: "We had an error: " + error.response.data.error,
+        errors: ErrorMessage(error)
       });
     });
   }
@@ -82,7 +83,7 @@ export default class EditUser extends Component {
     })
     .catch(error => {
       this.setState({
-        registrationErrors: error,
+        errors: ErrorMessage(error)
       });
     });
   }
@@ -151,7 +152,7 @@ export default class EditUser extends Component {
       })
       .catch((error) => {
         this.setState({
-          errors: "We had an error: " + error.response.data.error,
+          errors: ErrorMessage(error)
         });
       });
 

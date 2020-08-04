@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import fetchOrganizations from "../../api/fetchOrganizations";
 import ErrorNotice from "../../shared/ErrorNotice";
+import ErrorMessage from "../../helpers/errorMessage";
 
 export default class OrganizationsIndex extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ export default class OrganizationsIndex extends Component {
       })
       .catch((error) => {
         this.setState({
-          errors: "We had an error: " + error.response.data.error,
+          errors: ErrorMessage(error)
         });
       });
   }

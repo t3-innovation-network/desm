@@ -34,6 +34,6 @@ class ApplicationController < ActionController::Base
   # @param [Exception] _exception The exception that was raised
   ###
   def user_not_authorized(_exception)
-    render json: {error: t("errors.auth.unauthorized_access")}
+    render json: {error: t("errors.auth.unauthorized_access")}, status: :unauthorized
   end
 end

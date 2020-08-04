@@ -15,6 +15,7 @@ import EditOrganization from '../components/dashboard/organizations/EditOrganiza
 import CreateOrganization from '../components/dashboard/organizations/CreateOrganization';
 import ErrorNotice from "../components/shared/ErrorNotice";
 import checkLoginStatus from "./api/checkLoginStatus";
+import ErrorMessage from "./helpers/errorMessage";
 
 class App extends Component {
   constructor() {
@@ -60,7 +61,7 @@ class App extends Component {
       /// Process any server errors
       .catch((error) => {
         this.setState({
-          errors: "We had an error: " + (error.response.data.error || error.message),
+          errors: ErrorMessage(error)
         });
       });
   }
