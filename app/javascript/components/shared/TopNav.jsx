@@ -94,10 +94,7 @@ class TopNav extends React.Component {
               <ul className="navbar-nav ml-auto">
                 {this.renderDashboardBtn()}
                 <li className="nav-item">
-                  <AuthButton
-                    loggedIn={this.props.loggedIn}
-                    handleLogoutClick={this.handleLogoutClick}
-                  />
+                  <AuthButton/>
                 </li>
               </ul>
             </div>
