@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "../components/home/Home";
 import SignIn from "../components/auth/SignIn";
@@ -16,174 +16,161 @@ import CreateOrganization from '../components/dashboard/organizations/CreateOrga
 import ErrorNotice from "../components/shared/ErrorNotice";
 import checkLoginStatus from "./api/checkLoginStatus";
 import ErrorMessage from "./helpers/errorMessage";
+import { useSelector } from "react-redux";
+import { doLogin, doLogout, setUser, unsetUser } from "../actions/sessions"
+import { useDispatch } from "react-redux";
 
-class App extends Component {
-  constructor() {
-    super();
+const App = () => {
+  const isLoggedIn = useSelector((state) => state.loggedIn);
+  const dispatch = useDispatch();
 
-    this.state = {
-      loggedIn: false,
-      user: {},
-      errors: ""
-    };
+  const [errors, setErrors] = useState("");
 
-    this.handleLogout = this.handleLogout.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
-  }
-
-  handleLogin(data) {
-    this.setState({
-      loggedIn: true,
-      user: data.user
-    });
+  const handleLogin = (data) => {
+    dispatch(doLogin());
+    dispatch(setUser(data.user));
     toast.info("Signed In");
   }
 
-  handleLogout() {
-    this.setState({
-      loggedIn: false,
-      user: {},
-    });
+  const handleLogout = () => {
+    dispatch(doLogout());
+    dispatch(unsetUser());
     toast.info("Signed Out");
   }
 
-  checkLoginStatusAPI() {
-    checkLoginStatus({loggedIn: this.state.loggedIn})
+  const checkLoginStatusAPI = () => {
+    checkLoginStatus({loggedIn: isLoggedIn})
       .then((response) => {
         /// If we have something to change
         if (response !== undefined) {
-          this.setState({
-            loggedIn: response.loggedIn,
-            user: response.user,
-          })
+          dispatch(doLogin());
+          dispatch(setUser(data.user));
         }
       })
       /// Process any server errors
       .catch((error) => {
-        this.setState({
-          errors: ErrorMessage(error)
-        });
+        setErrors(ErrorMessage(error));
       });
   }
 
-  componentDidMount() {
-    this.checkLoginStatusAPI();
-  }
+  /// Use effect with an emtpy array as second parameter, will trigger the 'checkLoginStatus'
+  /// action at the 'mounted' event of this functional component (It's not actually mounted,
+  /// but it mimics the same action).
+  useEffect(() => {
+    checkLoginStatusAPI();
+  }, []);
 
-  render() {
-    return (
-      <React.Fragment>
-        {this.state.errors && <ErrorNotice message={this.state.errors} />}
+  return (
+    <React.Fragment>
+      {errors && <ErrorNotice message={errors} />}
 
-        <Router>
-          <Switch>
+      <Router>
+        <Switch>
+
+        <Route
+            exact
+            path={"/"}
+            render={(props) => (
+              <Home
+                {...props}
+                loggedIn={isLoggedIn}
+                handleLogout={handleLogout}
+              />
+            )}
+          />
 
           <Route
-              exact
-              path={"/"}
-              render={(props) => (
-                <Home
-                  {...props}
-                  loggedIn={this.state.loggedIn}
-                  handleLogout={this.handleLogout}
-                />
-              )}
-            />
+            exact
+            path={"/sign-in"}
+            render={(props) => (
+              <SignIn
+                {...props}
+                handleLogin={handleLogin}
+                handleLogout={handleLogout}
+              />
+            )}
+          />
 
-            <Route
-              exact
-              path={"/sign-in"}
-              render={(props) => (
-                <SignIn
-                  {...props}
-                  loggedIn={this.state.loggedIn}
-                  handleLogin={this.handleLogin}
-                  handleLogout={this.handleLogout}
-                />
-              )}
-            />
+          <Route
+            exact
+            path={"/new-mapping"}
+            render={(props) => (
+              <Mapping
+                {...props}
+                loggedIn={isLoggedIn}
+                handleLogout={handleLogout}
+              />
+            )}
+          />
 
-            <Route
-              exact
-              path={"/new-mapping"}
-              render={(props) => (
-                <Mapping
-                  {...props}
-                  loggedIn={this.state.loggedIn}
-                  handleLogout={this.handleLogout}
-                />
-              )}
-            />
+          <ProtectedRoute
+            exact
+            path='/dashboard'
+            loggedIn={isLoggedIn}
+            handleLogout={handleLogout}
+            auth={isLoggedIn}
+            component={MainDashboard}
+          />
 
-            <ProtectedRoute
-              exact
-              path='/dashboard'
-              loggedIn={this.state.loggedIn}
-              handleLogout={this.handleLogout}
-              auth={this.state.loggedIn}
-              component={MainDashboard}
-            />
+          <ProtectedRoute
+            exact
+            path='/dashboard/users'
+            loggedIn={isLoggedIn}
+            handleLogout={handleLogout}
+            auth={isLoggedIn}
+            component={UsersIndex}
+          />
 
-            <ProtectedRoute
-              exact
-              path='/dashboard/users'
-              loggedIn={this.state.loggedIn}
-              handleLogout={this.handleLogout}
-              auth={this.state.loggedIn}
-              component={UsersIndex}
-            />
+          <ProtectedRoute
+            exact
+            path='/dashboard/users/new'
+            loggedIn={isLoggedIn}
+            handleLogout={handleLogout}
+            auth={isLoggedIn}
+            component={Registration}
+          />
 
-            <ProtectedRoute
-              exact
-              path='/dashboard/users/new'
-              loggedIn={this.state.loggedIn}
-              handleLogout={this.handleLogout}
-              auth={this.state.loggedIn}
-              component={Registration}
-            />
+          <ProtectedRoute
+            exact
+            path='/dashboard/users/:id'
+            loggedIn={isLoggedIn}
+            handleLogout={handleLogout}
+            auth={isLoggedIn}
+            component={EditUser}
+          />
 
-            <ProtectedRoute
-              exact
-              path='/dashboard/users/:id'
-              loggedIn={this.state.loggedIn}
-              handleLogout={this.handleLogout}
-              auth={this.state.loggedIn}
-              component={EditUser}
-            />
+          <ProtectedRoute
+            exact
+            path='/dashboard/organizations'
+            loggedIn={isLoggedIn}
+            handleLogout={handleLogout}
+            auth={isLoggedIn}
+            component={OrganizationsIndex}
+          />
 
-            <ProtectedRoute
-              exact
-              path='/dashboard/organizations'
-              loggedIn={this.state.loggedIn}
-              handleLogout={this.handleLogout}
-              auth={this.state.loggedIn}
-              component={OrganizationsIndex}
-            />
+          <ProtectedRoute
+            exact
+            path='/dashboard/organizations/new'
+            loggedIn={isLoggedIn}
+            handleLogout={handleLogout}
+            auth={isLoggedIn}
+            component={CreateOrganization}
+          />
 
-            <ProtectedRoute
-              exact
-              path='/dashboard/organizations/new'
-              loggedIn={this.state.loggedIn}
-              handleLogout={this.handleLogout}
-              auth={this.state.loggedIn}
-              component={CreateOrganization}
-            />
+          <ProtectedRoute
+            exact
+            path='/dashboard/organizations/:id'
+            loggedIn={isLoggedIn}
+            handleLogout={handleLogout}
+            auth={isLoggedIn}
+            component={EditOrganization}
+          />
 
-            <ProtectedRoute
-              exact
-              path='/dashboard/organizations/:id'
-              loggedIn={this.state.loggedIn}
-              handleLogout={this.handleLogout}
-              auth={this.state.loggedIn}
-              component={EditOrganization}
-            />
-
-          </Switch>
-        </Router>
-        <ToastContainer />
-      </React.Fragment>
-    );
-  }
+        </Switch>
+      </Router>
+      <ToastContainer />
+    </React.Fragment>
+  );
 }
 
 export default App;

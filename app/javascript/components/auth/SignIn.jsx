@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import signIn from "../api/signIn";
 import ErrorMessage from "../helpers/errorMessage";
+import ErrorNotice from "../shared/ErrorNotice";
 
 class SignIn extends Component {
   constructor(props) {
