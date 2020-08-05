@@ -4,8 +4,9 @@ import { useSelector } from "react-redux";
 
 const DashboardBtn = () => {
   const isLoggedIn = useSelector((state) => state.loggedIn);
+  const user = useSelector((state) => state.user);
 
-  if (isLoggedIn) {
+  if (isLoggedIn && user.roles !== undefined && user.roles[0].name == "admin") {
     return (
       <li className="nav-item">
         <Link

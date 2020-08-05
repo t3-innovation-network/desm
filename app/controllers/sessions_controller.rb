@@ -30,10 +30,7 @@ class SessionsController < ApplicationController
   ###
   def session_status
     if @current_user
-      render json: {
-        logged_in: true,
-        user: @current_user
-      }
+      render json: @current_user, include: :roles
     else
       render json: {
         logged_in: false

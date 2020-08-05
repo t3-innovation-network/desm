@@ -4,10 +4,11 @@ import { useSelector } from "react-redux";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const isLoggedIn = useSelector((state) => state.loggedIn);
+  const user = useSelector((state) => state.user);
 
   return (
     /// If we have a valid session, go render the requested route
-    isLoggedIn ?
+    isLoggedIn && user.roles !== undefined && user.roles[0].name == "admin" ?
       <Route
         {...rest}
         render={props => (

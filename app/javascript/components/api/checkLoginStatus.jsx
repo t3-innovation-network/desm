@@ -6,14 +6,14 @@ const checkLoginStatus = (props) => {
     .then((response) => {
       /// If we have no session cookie and the api tells us that the user is authenticated,
       /// let's update that information
-      if (response.data.logged_in & !props.loggedIn) {
+      if (response.status == 200 & !props.loggedIn) {
         return {
           loggedIn: true,
-          user: response.data.user,
+          user: response.data,
         }
         /// If we have a session cookie, but the api responds us telling that there's no user
         /// authenticated, let's update that information according too
-      } else if (!response.data.logged_in & props.loggedIn) {
+      } else if (!response.status == 200 & props.loggedIn) {
         return {
           loggedIn: false,
           user: {},
