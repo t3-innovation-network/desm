@@ -85,63 +85,42 @@ const App = () => {
           <ProtectedRoute
             exact
             path='/dashboard'
-            loggedIn={isLoggedIn}
-            handleLogout={handleLogout}
-            auth={isLoggedIn}
             component={MainDashboard}
           />
 
           <ProtectedRoute
             exact
             path='/dashboard/users'
-            loggedIn={isLoggedIn}
-            handleLogout={handleLogout}
-            auth={isLoggedIn}
             component={UsersIndex}
           />
 
           <ProtectedRoute
             exact
             path='/dashboard/users/new'
-            loggedIn={isLoggedIn}
-            handleLogout={handleLogout}
-            auth={isLoggedIn}
             component={Registration}
           />
 
           <ProtectedRoute
             exact
             path='/dashboard/users/:id'
-            loggedIn={isLoggedIn}
-            handleLogout={handleLogout}
-            auth={isLoggedIn}
             component={EditUser}
           />
 
           <ProtectedRoute
             exact
             path='/dashboard/organizations'
-            loggedIn={isLoggedIn}
-            handleLogout={handleLogout}
-            auth={isLoggedIn}
             component={OrganizationsIndex}
           />
 
           <ProtectedRoute
             exact
             path='/dashboard/organizations/new'
-            loggedIn={isLoggedIn}
-            handleLogout={handleLogout}
-            auth={isLoggedIn}
             component={CreateOrganization}
           />
 
           <ProtectedRoute
             exact
             path='/dashboard/organizations/:id'
-            loggedIn={isLoggedIn}
-            handleLogout={handleLogout}
-            auth={isLoggedIn}
             component={EditOrganization}
           />
 
