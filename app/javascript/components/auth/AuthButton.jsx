@@ -1,23 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { doLogout, unsetUser } from "../../actions/sessions";
+import { useSelector } from "react-redux";
 
-const AuthButton = () => {
+const AuthButton = (props) => {
   const isLoggedIn = useSelector((state) => state.loggedIn);
-  const dispatch = useDispatch();
-
-  const logoutActions = () => {
-    dispatch(doLogout());
-    dispatch(unsetUser());
-  };
 
   /// Show "Sign Out" if the user is already signed in
   if (isLoggedIn) {
     return (
       <button
         className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark"
-        onClick={logoutActions}
+        onClick={() => props.handleLogoutClick()}
       >
         Sign Out
       </button>
