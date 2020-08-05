@@ -1,24 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Home from "../components/home/Home";
-import SignIn from "../components/auth/SignIn";
-import ProtectedRoute from "../components/auth/ProtectedRoute";
-import Mapping from "../components/mapping/Mapping";
-import MainDashboard from "../components/dashboard/MainDashboard";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import UsersIndex from '../components/dashboard/users/UsersIndex';
-import EditUser from '../components/dashboard/users/EditUser';
-import Registration from "./auth/Registration";
-import OrganizationsIndex from '../components/dashboard/organizations/OrganizationsIndex';
-import EditOrganization from '../components/dashboard/organizations/EditOrganization';
-import CreateOrganization from '../components/dashboard/organizations/CreateOrganization';
 import ErrorNotice from "../components/shared/ErrorNotice";
 import checkLoginStatus from "./api/checkLoginStatus";
 import ErrorMessage from "./helpers/errorMessage";
 import { useSelector } from "react-redux";
-import { doLogin, doLogout, setUser, unsetUser } from "../actions/sessions"
+import { doLogin, setUser } from "../actions/sessions"
 import { useDispatch } from "react-redux";
+import Routes from "./Routes"
 
 const App = () => {
   const isLoggedIn = useSelector((state) => state.loggedIn);
@@ -30,12 +19,6 @@ const App = () => {
     dispatch(doLogin());
     dispatch(setUser(data.user));
     toast.info("Signed In");
-  }
-
-  const handleLogout = () => {
-    dispatch(doLogout());
-    dispatch(unsetUser());
-    toast.info("Signed Out");
   }
 
   const checkLoginStatusAPI = () => {
@@ -64,68 +47,7 @@ const App = () => {
     <React.Fragment>
       {errors && <ErrorNotice message={errors} />}
 
-      <Router>
-        <Switch>
-
-        <Route exact path={"/"} component={Home} />
-
-        <Route exact path={"/new-mapping"} component={Mapping} />
-
-          <Route
-            exact
-            path={"/sign-in"}
-            render={(props) => (
-              <SignIn
-                {...props}
-                handleLogin={handleLogin}
-              />
-            )}
-          />
-
-          <ProtectedRoute
-            exact
-            path='/dashboard'
-            component={MainDashboard}
-          />
-
-          <ProtectedRoute
-            exact
-            path='/dashboard/users'
-            component={UsersIndex}
-          />
-
-          <ProtectedRoute
-            exact
-            path='/dashboard/users/new'
-            component={Registration}
-          />
-
-          <ProtectedRoute
-            exact
-            path='/dashboard/users/:id'
-            component={EditUser}
-          />
-
-          <ProtectedRoute
-            exact
-            path='/dashboard/organizations'
-            component={OrganizationsIndex}
-          />
-
-          <ProtectedRoute
-            exact
-            path='/dashboard/organizations/new'
-            component={CreateOrganization}
-          />
-
-          <ProtectedRoute
-            exact
-            path='/dashboard/organizations/:id'
-            component={EditOrganization}
-          />
-
-        </Switch>
-      </Router>
+      <Routes handleLogin={handleLogin} />
       <ToastContainer />
     </React.Fragment>
   );
