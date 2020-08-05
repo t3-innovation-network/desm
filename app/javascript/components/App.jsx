@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { doLogin, setUser } from "../actions/sessions";
 import { useDispatch } from "react-redux";
 import Routes from "./Routes";
+import Loader from "./shared/Loader";
 
 const App = () => {
   const isLoggedIn = useSelector((state) => state.loggedIn);
@@ -46,7 +47,7 @@ const App = () => {
   }, []);
 
   return loading ? (
-    <h1>Loading</h1>
+    <Loader />
   ) : (
     <React.Fragment>
       {errors && <ErrorNotice message={errors} />}
