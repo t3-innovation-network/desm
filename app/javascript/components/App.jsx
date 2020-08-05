@@ -17,7 +17,7 @@ const App = () => {
 
   const handleLogin = (data) => {
     dispatch(doLogin());
-    dispatch(setUser(data.user));
+    dispatch(setUser(data));
     toast.info("Signed In");
   }
 

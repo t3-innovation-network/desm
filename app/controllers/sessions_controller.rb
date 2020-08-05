@@ -17,11 +17,8 @@ class SessionsController < ApplicationController
            .try(:authenticate, params["user"]["password"])
 
     session[:user_id] = user.id
-    render json: {
-      status: :created,
-      logged_in: true,
-      user: user
-    }
+
+    render json: user, include: :roles
   end
 
   ###
