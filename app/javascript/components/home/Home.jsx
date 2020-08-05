@@ -3,7 +3,7 @@ import TopNav from "../shared/TopNav";
 import LeftSideHome from "./LeftCol";
 import RightSideHome from "./RightCol";
 
-function Home() {
+const Home = () => {
   return (
     <React.Fragment>
       <div className="wrapper">

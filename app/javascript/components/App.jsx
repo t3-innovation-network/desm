@@ -44,7 +44,7 @@ const App = () => {
         /// If we have something to change
         if (response !== undefined) {
           dispatch(doLogin());
-          dispatch(setUser(data.user));
+          dispatch(setUser(response.user));
         }
       })
       /// Process any server errors
@@ -67,17 +67,9 @@ const App = () => {
       <Router>
         <Switch>
 
-        <Route
-            exact
-            path={"/"}
-            render={(props) => (
-              <Home
-                {...props}
-                loggedIn={isLoggedIn}
-                handleLogout={handleLogout}
-              />
-            )}
-          />
+        <Route exact path={"/"} component={Home} />
+
+        <Route exact path={"/new-mapping"} component={Mapping} />
 
           <Route
             exact
@@ -86,19 +78,6 @@ const App = () => {
               <SignIn
                 {...props}
                 handleLogin={handleLogin}
-                handleLogout={handleLogout}
-              />
-            )}
-          />
-
-          <Route
-            exact
-            path={"/new-mapping"}
-            render={(props) => (
-              <Mapping
-                {...props}
-                loggedIn={isLoggedIn}
-                handleLogout={handleLogout}
               />
             )}
           />
