@@ -11,10 +11,7 @@ export default class Mapping extends Component {
     return (
       <React.Fragment>
         <div className="wrapper">
-          <TopNav
-            loggedIn={this.props.loggedIn}
-            handleLogout={this.props.handleLogout}
-          />
+          <TopNav/>
           <div className="container-fluid container-wrapper">
             <div className="row">
               <LeftSideForm />

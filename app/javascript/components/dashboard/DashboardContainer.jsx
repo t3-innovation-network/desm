@@ -5,10 +5,7 @@ import SideBar from '../dashboard/SideBar';
 const DashboardContainer = (props) => {
   return <React.Fragment>
     <div className="wrapper">
-      <TopNav
-        loggedIn={props.loggedIn}
-        handleLogout={props.handleLogout}
-      />
+      <TopNav/>
       <div className="container-fluid container-wrapper">
         <div className="row">
           <SideBar

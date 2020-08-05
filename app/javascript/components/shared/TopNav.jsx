@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { doLogout, unsetUser } from "../../actions/sessions";
 import { useDispatch } from "react-redux";
+import DashboardBtn from "./DashboardBtn";
 
 const TopNav = () => {
   const currentPage = window.location.pathname;

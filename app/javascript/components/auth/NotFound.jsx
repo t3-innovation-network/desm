@@ -7,11 +7,7 @@ export default class NotFound extends Component {
     return (
       <React.Fragment>
         <div className="wrapper">
-          <TopNav
-            loggedIn={this.props.loggedIn}
-            user={this.props.user}
-            handleLogout={this.props.handleLogout}
-          />
+          <TopNav/>
           <div className="container">
             <div className="row text-center">
               <div className="col-lg-6 offset-lg-3 col-sm-6 offset-sm-3 col-12 p-3 error-main">
