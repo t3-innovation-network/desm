@@ -1,16 +1,35 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { doLogout, unsetUser } from "../../actions/sessions";
+import signOut from "../../services/signOut";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const AuthButton = (props) => {
+const AuthButton = () => {
   const isLoggedIn = useSelector((state) => state.loggedIn);
+  const dispatch = useDispatch();
+
+  const handleLogoutClick = () => {
+    signOut()
+      .then((response) => {
+        if (response.success) {
+          dispatch(doLogout());
+          dispatch(unsetUser());
+          toast.info("Signed Out");
+        }
+      })
+      .catch((error) => {
+        toast.error(ErrorMessage(error));
+      });
+  };
 
   /// Show "Sign Out" if the user is already signed in
   if (isLoggedIn) {
     return (
       <button
         className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark"
-        onClick={() => props.handleLogoutClick()}
+        onClick={handleLogoutClick}
       >
         Sign Out
       </button>
@@ -19,12 +38,15 @@ const AuthButton = (props) => {
   /// Show "Sing in" except for sign in page
   else if (window.location.href.indexOf("sign-in") === -1) {
     return (
-      <Link
-        to={"/sign-in"}
-        className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark"
-      >
-        Sign In
-      </Link>
+      <React.Fragment>
+        <Link
+          to={"/sign-in"}
+          className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark"
+        >
+          Sign In
+        </Link>
+        <ToastContainer />
+      </React.Fragment>
     );
   }
   /// If the user is not signed in, but we are already in the sign in page

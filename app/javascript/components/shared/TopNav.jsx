@@ -2,30 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import AuthButton from "../auth/AuthButton";
 import Stepper from "../mapping/Stepper";
-import signOut from "../../services/signOut";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { doLogout, unsetUser } from "../../actions/sessions";
-import { useDispatch } from "react-redux";
 import DashboardBtn from "./DashboardBtn";
 
 const TopNav = () => {
   const currentPage = window.location.pathname;
-  const dispatch = useDispatch();
-
-  const handleLogoutClick = () => {
-    signOut()
-      .then((response) => {
-        if (response.success) {
-          dispatch(doLogout());
-          dispatch(unsetUser());
-          toast.info("Signed Out");
-        }
-      })
-      .catch((error) => {
-        toast.error(ErrorMessage(error));
-      });
-  }
 
   return (
     <React.Fragment>
@@ -33,10 +13,7 @@ const TopNav = () => {
         <div className="container-fluid nav-container">
           <div className="navbar-header">
             <div className="brand-box-container">
-              <Link
-                to={"/"}
-                className="navbar-brand nav-item brand-box"
-              ></Link>
+              <Link to={"/"} className="navbar-brand nav-item brand-box"></Link>
             </div>
 
             <button
@@ -70,24 +47,19 @@ const TopNav = () => {
                   Map a Specification
                 </Link>
               </li>
-              <li>
-                {currentPage == "/new-mapping" && <Stepper />}
-              </li>
+              <li>{currentPage == "/new-mapping" && <Stepper />}</li>
             </ul>
             <ul className="navbar-nav ml-auto">
               <DashboardBtn />
               <li className="nav-item">
-                <AuthButton
-                  handleLogoutClick={handleLogoutClick}
-                />
+                <AuthButton />
               </li>
             </ul>
           </div>
         </div>
       </nav>
-      <ToastContainer />
     </React.Fragment>
   );
-}
+};
 
 export default TopNav;

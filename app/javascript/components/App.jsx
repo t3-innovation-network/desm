@@ -27,7 +27,7 @@ const App = () => {
     await checkLoginStatus({ loggedIn: isLoggedIn })
       .then((response) => {
         /// If we have something to change
-        if (response !== undefined) {
+        if ((response !== undefined)&&(response.user.logged_in !== false)) {
           dispatch(doLogin());
           dispatch(setUser(response.user));
         }
