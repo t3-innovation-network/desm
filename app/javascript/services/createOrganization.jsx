@@ -3,9 +3,11 @@ import axios from 'axios';
 const createOrganization = (
   name
 ) => {
+  const baseURL = process.env.API_URL;
+
   return axios
     .post(
-      "http://localhost:3000/api/v1/organizations",
+      baseURL + "/api/v1/organizations",
       {
         organization: {
           name: name,

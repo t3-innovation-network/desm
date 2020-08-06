@@ -7,9 +7,11 @@ const updateUser = (
   organization_id,
   role_id
 ) => {
+  const baseURL = process.env.API_URL;
+
   return axios
     .put(
-      "http://localhost:3000/users/" + user_id,
+      baseURL + "/users/" + user_id,
       {
         user: {
           fullname: fullname,

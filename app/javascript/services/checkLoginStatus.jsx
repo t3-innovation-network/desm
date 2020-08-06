@@ -1,8 +1,10 @@
 import axios from 'axios';
 
 const checkLoginStatus = (props) => {
+  const baseURL = process.env.API_URL;
+
   return axios
-    .get("http://localhost:3000/session_status", { withCredentials: true })
+    .get(baseURL + "/session_status", { withCredentials: true })
     .then((response) => {
       /// If we have no session cookie and the api tells us that the user is authenticated,
       /// let's update that information

@@ -1,8 +1,10 @@
 import axios from 'axios';
 
 const fetchUser = (user_id) => {
+  const baseURL = process.env.API_URL;
+
   return axios
-  .get("http://localhost:3000/users/" + user_id, {
+  .get(baseURL + "/users/" + user_id, {
     withCredentials: true,
   })
   .then((response) => {

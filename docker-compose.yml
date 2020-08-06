@@ -22,7 +22,7 @@ services:
 
   webpack:
     build: .
-    command: bash -c "rm -rf ./public/packs; ./bin/webpack-dev-server"
+    command: bash -c "rm -rf ./public/packs; API_URL=${REACT_APP_API_URL} ./bin/webpack-dev-server"
     volumes:
       - .:/app
     ports:

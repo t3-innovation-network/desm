@@ -1,8 +1,10 @@
 import axios from "axios";
 
 const deleteUser = (user_id) => {
+  const baseURL = process.env.API_URL;
+
   return axios
-    .delete("http://localhost:3000/users/" + user_id, {
+    .delete(baseURL + "/users/" + user_id, {
       withCredentials: true,
     })
     .then((response) => {

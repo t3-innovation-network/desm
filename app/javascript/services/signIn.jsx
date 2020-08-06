@@ -1,9 +1,11 @@
 import axios from "axios";
 
 const signIn = (email, password) => {
+  const baseURL = process.env.API_URL;
+
   return axios
     .post(
-      "http://localhost:3000/sessions",
+      baseURL + "/sessions",
       {
         user: {
           email: email,

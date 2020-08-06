@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import fetchOrganization from "../../../services/fetchOrganization";
 import ErrorMessage from "../../shared/ErrorMessage";
+import ErrorNotice from "../../shared/ErrorNotice";
 import deleteOrganization from "../../../services/deleteOrganization";
 import updateOrganization from "../../../services/updateOrganization";
 

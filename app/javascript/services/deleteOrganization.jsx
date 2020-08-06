@@ -1,8 +1,10 @@
 import axios from 'axios';
 
 const deleteOrganization = (organization_id) => {
+  const baseURL = process.env.API_URL;
+
   return axios
-    .delete("http://localhost:3000/api/v1/organizations/" + organization_id, {
+    .delete("/api/v1/organizations/" + organization_id, {
       withCredentials: true,
     })
     .then((response) => {

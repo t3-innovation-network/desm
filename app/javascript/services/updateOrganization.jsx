@@ -4,9 +4,11 @@ const updateOrganization = (
   organization_id,
   name
 ) => {
+  const baseURL = process.env.API_URL;
+
   return axios
   .put(
-    "http://localhost:3000/api/v1/organizations/" + organization_id,
+    baseURL + "/api/v1/organizations/" + organization_id,
     {
       organization: {
         name: name

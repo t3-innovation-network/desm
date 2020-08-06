@@ -1,8 +1,10 @@
 import axios from 'axios';
 
 const fetchOrganizations = () => {
+  const baseURL = process.env.API_URL;
+
   return axios
-    .get("http://localhost:3000/api/v1/organizations", {
+    .get(baseURL + "/api/v1/organizations", {
       withCredentials: true,
     })
     .then((response) => {

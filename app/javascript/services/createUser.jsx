@@ -6,9 +6,11 @@ const createUser = (
   organization_id,
   role_id
 ) => {
+  const baseURL = process.env.API_URL;
+
   return axios
   .post(
-    "http://localhost:3000/registrations",
+    baseURL + "/registrations",
     {
       user: {
         fullname: fullname,
