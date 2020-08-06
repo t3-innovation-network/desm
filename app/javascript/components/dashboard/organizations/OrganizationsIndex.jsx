@@ -3,9 +3,9 @@ import DashboardContainer from "../DashboardContainer";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import fetchOrganizations from "../../api/fetchOrganizations";
+import fetchOrganizations from "../../../services/fetchOrganizations";
 import ErrorNotice from "../../shared/ErrorNotice";
-import ErrorMessage from "../../helpers/errorMessage";
+import ErrorMessage from "../../shared/ErrorMessage";
 
 export default class OrganizationsIndex extends Component {
   constructor(props) {

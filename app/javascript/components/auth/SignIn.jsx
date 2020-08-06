@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import TopNav from "../shared/TopNav";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import signIn from "../api/signIn";
-import ErrorMessage from "../helpers/errorMessage";
+import signIn from "../../services/signIn";
+import ErrorMessage from "../shared/ErrorMessage";
 import ErrorNotice from "../shared/ErrorNotice";
 
 class SignIn extends Component {

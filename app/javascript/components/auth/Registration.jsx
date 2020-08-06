@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import DashboardContainer from "../dashboard/DashboardContainer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import fetchOrganizations from "../api/fetchOrganizations";
-import fetchRoles from "../api/fetchRoles";
+import fetchOrganizations from "../../services/fetchOrganizations";
+import fetchRoles from "../../services/fetchRoles";
 import ErrorNotice from "../shared/ErrorNotice";
-import ErrorMessage from "../helpers/errorMessage";
-import createUser from "../api/createUser";
+import ErrorMessage from "../shared/ErrorMessage";
+import createUser from "../../services/createUser";
 
 class Registration extends Component {
   constructor(props) {

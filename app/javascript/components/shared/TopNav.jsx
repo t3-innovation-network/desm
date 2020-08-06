@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import AuthButton from "../auth/AuthButton";
 import Stepper from "../mapping/Stepper";
-import signOut from "../api/signOut";
+import signOut from "../../services/signOut";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { doLogout, unsetUser } from "../../actions/sessions";
