@@ -42,8 +42,8 @@ const App = () => {
   /// Use effect with an emtpy array as second parameter, will trigger the 'checkLoginStatus'
   /// action at the 'mounted' event of this functional component (It's not actually mounted,
   /// but it mimics the same action).
-  useEffect(async () => {
-    await checkLoginStatusAPI();
+  useEffect(() => {
+    checkLoginStatusAPI();
   }, []);
 
   return loading ? (
