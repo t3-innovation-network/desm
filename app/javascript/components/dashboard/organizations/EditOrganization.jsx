@@ -111,41 +111,37 @@ export default class EditOrganization extends Component {
               </button>
             </div>
             <div className="card-body">
-              {this.state.errors ? (
-                <span className="text-danger">{this.state.errors}</span>
-              ) : (
-                <React.Fragment>
-                  <div className="mandatory-fields-notice">
-                    <small className="form-text text-muted">
-                      Fields with <span className="text-danger">*</span> are
-                      mandatory!
-                    </small>
+              <React.Fragment>
+                <div className="mandatory-fields-notice">
+                  <small className="form-text text-muted">
+                    Fields with <span className="text-danger">*</span> are
+                    mandatory!
+                  </small>
+                </div>
+
+                <form onSubmit={this.handleSubmit}>
+                  <div className="form-group">
+                    <label>
+                      Name
+                      <span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="name"
+                      placeholder="Enter the name for the organization"
+                      value={this.state.name}
+                      onChange={(e) => this.handleOnChange(e)}
+                      autoFocus
+                      required
+                    />
                   </div>
 
-                  <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                      <label>
-                        Name
-                        <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="name"
-                        placeholder="Enter the name for the organization"
-                        value={this.state.name}
-                        onChange={(e) => this.handleOnChange(e)}
-                        autoFocus
-                        required
-                      />
-                    </div>
-
-                    <button type="submit" className="btn btn-dark">
-                      Send
-                    </button>
-                  </form>
-                </React.Fragment>
-              )}
+                  <button type="submit" className="btn btn-dark">
+                    Send
+                  </button>
+                </form>
+              </React.Fragment>
             </div>
           </div>
         </div>

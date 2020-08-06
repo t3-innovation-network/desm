@@ -17,6 +17,8 @@ Layout/LineLength:
 # the code easier to read (by naming things), but can also clutter the class
 Metrics/MethodLength: 
   Max: 20
+  Exclude:
+    - app/controllers/concerns/recuperable.rb
 
 # The guiding principle of classes is SRP, SRP can't be accurately measured by LoC
 Metrics/ClassLength:
