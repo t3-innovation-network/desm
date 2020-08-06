@@ -4,7 +4,7 @@
 # @description: Place all the actions related to organizations
 ###
 class Api::V1::OrganizationsController < ApplicationController
-  before_action :set_organization
+  before_action :authorize_with_policy
 
   ###
   # @description: Lists all the organizations
@@ -67,8 +67,8 @@ class Api::V1::OrganizationsController < ApplicationController
   ###
   # @description: Execute the authorization policy
   ###
-  def set_organization
-    organization
+  def authorize_with_policy
+    authorize organization
   end
 
   ###

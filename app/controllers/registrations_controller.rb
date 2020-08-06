@@ -15,7 +15,6 @@ class RegistrationsController < ApplicationController
   def create
     user = User.create!(request_params)
     user.assign_role(params[:role_id])
-    session[:user_id] = user.id
 
     render json: {
       success: true
