@@ -11,6 +11,8 @@ services:
       - db
     environment:
       - WEBPACKER_DEV_SERVER_HOST=webpack
+      - ADMIN_ROLE_NAME=${ADMIN_ROLE_NAME}
+      - DEFAULT_PASS=${DEFAULT_PASS}
 
   db:
     image: postgres
@@ -22,7 +24,7 @@ services:
 
   webpack:
     build: .
-    command: bash -c "rm -rf ./public/packs; API_URL=${REACT_APP_API_URL} ./bin/webpack-dev-server"
+    command: bash -c "rm -rf ./public/packs; API_URL=${REACT_APP_API_URL} ADMIN_ROLE_NAME=${ADMIN_ROLE_NAME} ./bin/webpack-dev-server"
     volumes:
       - .:/app
     ports:

@@ -16,7 +16,8 @@ RSpec.describe User, type: :model do
 
   it "should be an admin if we configure it that way" do
     user.roles << Role.new(name: "admin")
+    admin_role_name = (ENV["ADMIN_ROLE_NAME"] || "Admin").downcase.to_sym
 
-    expect(user.role?(:admin)).to be(true)
+    expect(user.role?(admin_role_name)).to be(true)
   end
 end

@@ -8,7 +8,9 @@ class UserPolicy < ApplicationPolicy
   def initialize(user, record)
     @user = user
     @record = record
-    raise Pundit::NotAuthorizedError unless user&.role?(:admin)
+    @admin_role_name = (ENV["ADMIN_ROLE_NAME"] || "Admin").downcase.to_sym
+
+    raise Pundit::NotAuthorizedError unless user&.role?(@admin_role_name)
   end
 
   ###
@@ -16,7 +18,7 @@ class UserPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def index?
-    user.role?(:admin)
+    user.role?(@admin_role_name)
   end
 
   ###
@@ -24,7 +26,7 @@ class UserPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def show?
-    user.role?(:admin)
+    user.role?(@admin_role_name)
   end
 
   ###
@@ -32,7 +34,7 @@ class UserPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def create?
-    user.role?(:admin)
+    user.role?(@admin_role_name)
   end
 
   ###
@@ -40,7 +42,7 @@ class UserPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def update?
-    user.role?(:admin)
+    user.role?(@admin_role_name)
   end
 
   ###
@@ -48,6 +50,6 @@ class UserPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def destroy?
-    user.role?(:admin)
+    user.role?(@admin_role_name)
   end
 end
