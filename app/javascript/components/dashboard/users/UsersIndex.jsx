@@ -26,7 +26,7 @@ export default class UsersIndex extends Component {
       })
       .catch((error) => {
         this.setState({
-          errors: ErrorMessage(error)
+          errors: ErrorMessage(error),
         });
       });
   }
@@ -37,12 +37,9 @@ export default class UsersIndex extends Component {
 
   render() {
     return (
-      <DashboardContainer
-        loggedIn={this.props.loggedIn}
-        handleLogout={this.props.handleLogout}
-      >
+      <DashboardContainer>
         <div className="col-lg-6 mx-auto">
-          {this.state.errors && <ErrorNotice message={this.state.errors} /> }
+          {this.state.errors && <ErrorNotice message={this.state.errors} />}
 
           <div className="card mt-5">
             <div className="card-header">

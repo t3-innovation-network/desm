@@ -37,10 +37,7 @@ export default class OrganizationsIndex extends Component {
 
   render() {
     return (
-      <DashboardContainer
-        loggedIn={this.props.loggedIn}
-        handleLogout={this.props.handleLogout}
-      >
+      <DashboardContainer>
         <div className="col-lg-6 mx-auto">
           {this.state.errors && <ErrorNotice message={this.state.errors} />}
 

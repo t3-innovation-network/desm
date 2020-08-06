@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import DashboardContainer from './DashboardContainer';
+import React, { Component } from "react";
+import DashboardContainer from "./DashboardContainer";
 
 export default class MainDashboard extends Component {
   constructor(props) {
@@ -8,17 +8,12 @@ export default class MainDashboard extends Component {
 
   render() {
     return (
-      <DashboardContainer
-        loggedIn={this.props.loggedIn}
-        handleLogout={this.props.handleLogout}
-      >
+      <DashboardContainer>
         <div className="col-lg-6 mx-auto">
           <div className="card mt-5">
             <div className="card-header">
               <i className="fa fa-book"></i>
-              <strong className="pl-2">
-                Dashboard
-              </strong>
+              <strong className="pl-2">Dashboard</strong>
             </div>
           </div>
         </div>

@@ -1,21 +1,21 @@
-import React from 'react';
-import TopNav from '../shared/TopNav';
-import SideBar from '../dashboard/SideBar';
+import React from "react";
+import TopNav from "../shared/TopNav";
+import SideBar from "../dashboard/SideBar";
 
 const DashboardContainer = (props) => {
-  return <React.Fragment>
-    <div className="wrapper">
-      <TopNav/>
-      <div className="container-fluid container-wrapper">
-        <div className="row">
-          <SideBar
-            loggedIn={props.loggedIn}
-          />
-          {props.children}
+  return (
+    <React.Fragment>
+      <div className="wrapper">
+        <TopNav />
+        <div className="container-fluid container-wrapper">
+          <div className="row">
+            <SideBar />
+            {props.children}
+          </div>
         </div>
       </div>
-    </div>
-  </React.Fragment>
-}
+    </React.Fragment>
+  );
+};
 
 export default DashboardContainer;

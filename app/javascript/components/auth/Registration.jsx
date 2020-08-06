@@ -27,31 +27,33 @@ class Registration extends Component {
   }
 
   fetchOrganizationsAPI() {
-    fetchOrganizations().then((orgs) => {
-      this.setState({
-        organizations: orgs,
-        organization_id: orgs[0].id
+    fetchOrganizations()
+      .then((orgs) => {
+        this.setState({
+          organizations: orgs,
+          organization_id: orgs[0].id,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          errors: ErrorMessage(error),
+        });
       });
-    })
-    .catch(error => {
-      this.setState({
-        errors: ErrorMessage(error)
-      });
-    });
   }
 
   fetchRolesAPI() {
-    fetchRoles().then((Allroles) => {
-      this.setState({
-        roles: Allroles,
-        role_id: Allroles[0].id
+    fetchRoles()
+      .then((Allroles) => {
+        this.setState({
+          roles: Allroles,
+          role_id: Allroles[0].id,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          errors: ErrorMessage(error),
+        });
       });
-    })
-    .catch(error => {
-      this.setState({
-        errors: ErrorMessage(error)
-      });
-    });
   }
 
   handleSubmit(event) {
@@ -66,7 +68,7 @@ class Registration extends Component {
       })
       .catch((error) => {
         this.setState({
-          errors: ErrorMessage(error)
+          errors: ErrorMessage(error),
         });
       });
 
@@ -87,12 +89,9 @@ class Registration extends Component {
   render() {
     return (
       <React.Fragment>
-        <DashboardContainer
-          loggedIn={this.props.loggedIn}
-          handleLogout={this.props.handleLogout}
-        >
+        <DashboardContainer>
           <div className="col-lg-6 mx-auto">
-            {this.state.errors && <ErrorNotice message={this.state.errors} /> }
+            {this.state.errors && <ErrorNotice message={this.state.errors} />}
 
             <div className="card mt-5">
               <div className="card-header">
@@ -135,9 +134,10 @@ class Registration extends Component {
                   </div>
 
                   <div className="form-group">
-                  <label>
-                    Organization
-                    <span className="text-danger">*</span></label>
+                    <label>
+                      Organization
+                      <span className="text-danger">*</span>
+                    </label>
                     <select
                       name="organization_id"
                       className="form-control"
@@ -145,20 +145,21 @@ class Registration extends Component {
                       value={this.state.organization_id}
                       onChange={this.handleOnChange}
                     >
-                      {
-                         this.state.organizations.map(function (org) {
-                          return (
-                            <option key={org.id} value={org.id}>{org.name}</option>
-                          );
-                        })
-                      }
+                      {this.state.organizations.map(function (org) {
+                        return (
+                          <option key={org.id} value={org.id}>
+                            {org.name}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
 
                   <div className="form-group">
-                  <label>
-                    Role
-                    <span className="text-danger">*</span></label>
+                    <label>
+                      Role
+                      <span className="text-danger">*</span>
+                    </label>
                     <select
                       name="role_id"
                       className="form-control"
@@ -166,13 +167,13 @@ class Registration extends Component {
                       value={this.state.role_id}
                       onChange={this.handleOnChange}
                     >
-                      {
-                         this.state.roles.map(function (role) {
-                          return (
-                            <option key={role.id} value={role.id}>{role.name}</option>
-                          );
-                        })
-                      }
+                      {this.state.roles.map(function (role) {
+                        return (
+                          <option key={role.id} value={role.id}>
+                            {role.name}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
 

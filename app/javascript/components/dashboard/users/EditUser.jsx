@@ -22,7 +22,7 @@ export default class EditUser extends Component {
       user_id: this.props.match.params.id,
       organizations: [],
       roles: [],
-      errors: ""
+      errors: "",
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -44,42 +44,44 @@ export default class EditUser extends Component {
             fullname: response.user.fullname,
             email: response.user.email,
             organization_id: response.user.organization_id,
-            role_id: response.user.role_id
+            role_id: response.user.role_id,
           });
         }
       })
       /// Process any server errors
       .catch((error) => {
         this.setState({
-          errors: ErrorMessage(error)
+          errors: ErrorMessage(error),
         });
       });
   }
 
   fetchOrganizationsAPI() {
-    fetchOrganizations().then((orgs) => {
-      this.setState({
-        organizations: orgs,
+    fetchOrganizations()
+      .then((orgs) => {
+        this.setState({
+          organizations: orgs,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          errors: ErrorMessage(error),
+        });
       });
-    })
-    .catch(error => {
-      this.setState({
-        errors: ErrorMessage(error)
-      });
-    });
   }
 
   fetchRolesAPI() {
-    fetchRoles().then((Allroles) => {
-      this.setState({
-        roles: Allroles,
+    fetchRoles()
+      .then((Allroles) => {
+        this.setState({
+          roles: Allroles,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          errors: ErrorMessage(error),
+        });
       });
-    })
-    .catch(error => {
-      this.setState({
-        errors: ErrorMessage(error)
-      });
-    });
   }
 
   deleteUserAPI() {
@@ -94,7 +96,7 @@ export default class EditUser extends Component {
       /// Process any server errors
       .catch((error) => {
         this.setState({
-          errors: ErrorMessage(error)
+          errors: ErrorMessage(error),
         });
       });
   }
@@ -119,7 +121,7 @@ export default class EditUser extends Component {
       })
       .catch((error) => {
         this.setState({
-          errors: ErrorMessage(error)
+          errors: ErrorMessage(error),
         });
       });
 
@@ -128,10 +130,7 @@ export default class EditUser extends Component {
 
   render() {
     return (
-      <DashboardContainer
-        loggedIn={this.props.loggedIn}
-        handleLogout={this.props.handleLogout}
-      >
+      <DashboardContainer>
         <div className="col-lg-6 mx-auto">
           <div className="card mt-5">
             <div className="card-header">
@@ -150,7 +149,7 @@ export default class EditUser extends Component {
               </button>
             </div>
             <div className="card-body">
-              {this.state.errors && <ErrorNotice message={this.state.errors} /> }
+              {this.state.errors && <ErrorNotice message={this.state.errors} />}
 
               <React.Fragment>
                 <div className="mandatory-fields-notice">
@@ -197,44 +196,46 @@ export default class EditUser extends Component {
                   <div className="form-group">
                     <label>
                       Organization
-                      <span className="text-danger">*</span></label>
-                      <select
-                        name="organization_id"
-                        className="form-control"
-                        required
-                        value={this.state.organization_id}
-                        onChange={this.handleOnChange}
-                      >
-                        {
-                          this.state.organizations.map(function (org) {
-                            return (
-                              <option key={org.id} value={org.id}>{org.name}</option>
-                            );
-                          })
-                        }
-                      </select>
-                    </div>
+                      <span className="text-danger">*</span>
+                    </label>
+                    <select
+                      name="organization_id"
+                      className="form-control"
+                      required
+                      value={this.state.organization_id}
+                      onChange={this.handleOnChange}
+                    >
+                      {this.state.organizations.map(function (org) {
+                        return (
+                          <option key={org.id} value={org.id}>
+                            {org.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
 
-                    <div className="form-group">
-                      <label>
-                        Role
-                        <span className="text-danger">*</span></label>
-                        <select
-                          name="role_id"
-                          className="form-control"
-                          required
-                          value={this.state.role_id}
-                          onChange={this.handleOnChange}
-                        >
-                          {
-                            this.state.roles.map(function (role) {
-                              return (
-                                <option key={role.id} value={role.id}>{role.name}</option>
-                              );
-                            })
-                          }
-                        </select>
-                      </div>
+                  <div className="form-group">
+                    <label>
+                      Role
+                      <span className="text-danger">*</span>
+                    </label>
+                    <select
+                      name="role_id"
+                      className="form-control"
+                      required
+                      value={this.state.role_id}
+                      onChange={this.handleOnChange}
+                    >
+                      {this.state.roles.map(function (role) {
+                        return (
+                          <option key={role.id} value={role.id}>
+                            {role.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
 
                   <button type="submit" className="btn btn-dark">
                     Send

@@ -15,7 +15,6 @@ const signIn = (email, password) => {
     )
     .then((response) => {
       /// Return the user object
-      console.log(response);
       return response.status == 200 ? response.data : {};
     });
 };
