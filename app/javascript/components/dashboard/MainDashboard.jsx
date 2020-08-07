@@ -15,6 +15,9 @@ export default class MainDashboard extends Component {
     }
   }
 
+  /**
+   * Get the organizations data to be able to show it in the UI
+   */
   fetchOrganizationsAPI() {
     fetchOrganizations()
       .then((orgs) => {
@@ -29,6 +32,9 @@ export default class MainDashboard extends Component {
       });
   }
 
+  /**
+   * Tasks to execute after the first mount of this component
+   */
   componentDidMount() {
     this.fetchOrganizationsAPI();
   }
@@ -36,13 +42,14 @@ export default class MainDashboard extends Component {
   render() {
     return (
       <DashboardContainer>
-        <div className="col-lg-8 mx-auto mt-5">
-          {this.state.errors && <ErrorNotice message={this.state.errors} />}
+        <div className="col col-md-10 mt-5">
+          <div className="row h-50">
+            {this.state.errors && <ErrorNotice message={this.state.errors} />}
 
-          { this.state.organizations.map((o) => {
-            return <OrganizationInfo organization={o} key={o.id} />
-          }) }
-
+            { this.state.organizations.map((o) => {
+              return <OrganizationInfo organization={o} key={o.id} />
+            }) }
+          </div>
         </div>
       </DashboardContainer>
     );
