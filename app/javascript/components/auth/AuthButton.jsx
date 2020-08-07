@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const AuthButton = () => {
   const isLoggedIn = useSelector((state) => state.loggedIn);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const handleLogoutClick = () => {
@@ -27,12 +28,29 @@ const AuthButton = () => {
   /// Show "Sign Out" if the user is already signed in
   if (isLoggedIn) {
     return (
-      <button
-        className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark"
-        onClick={handleLogoutClick}
-      >
-        Sign Out
-      </button>
+      <React.Fragment>
+        <a
+          className="nav-link dropdown-toggle"
+          id="navbarDropdownMenuLink-333"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <span className="pr-2 subtitle">{user.fullname}</span>
+          <i className="fas fa-user"></i>
+        </a>
+        <div
+          className="dropdown-menu dropdown-menu-right dropdown-default"
+          aria-labelledby="navbarDropdownMenuLink-333"
+        >
+          <button
+            className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark"
+            onClick={handleLogoutClick}
+          >
+            Sign Out
+          </button>
+        </div>
+      </React.Fragment>
     );
   }
   /// Show "Sing in" except for sign in page
