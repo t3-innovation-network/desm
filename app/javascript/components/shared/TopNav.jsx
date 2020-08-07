@@ -50,9 +50,7 @@ const TopNav = () => {
               <li>{currentPage == "/new-mapping" && <Stepper />}</li>
             </ul>
             <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <DashboardBtn />
-              </li>
+              <DashboardBtn />
               <li className="nav-item">
                 <AuthButton />
               </li>
