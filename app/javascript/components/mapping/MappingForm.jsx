@@ -2,6 +2,7 @@ import React from "react";
 import validator from "validator";
 import ErrorNotice from "../shared/ErrorNotice";
 import { toast } from "react-toastify";
+import FileInfo from "./FileInfo";
 
 class LeftSideForm extends React.Component {
   constructor() {
@@ -12,16 +13,24 @@ class LeftSideForm extends React.Component {
       name: "",
       version: "",
       use_case: "",
+      selectedFiles: null,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleUseCaseBlur = this.handleUseCaseBlur.bind(this);
+    this.handleFileChange = this.handleFileChange.bind(this);
   }
 
   handleOnChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
+    });
+  }
+
+  handleFileChange() {
+    this.setState({
+      selectedFiles: event.target.files,
     });
   }
 
@@ -46,6 +55,31 @@ class LeftSideForm extends React.Component {
 
     event.preventDefault();
   }
+
+  // File content to be displayed after
+  // file upload is complete
+  fileData = () => {
+    let fileCards = [];
+
+    if (this.state.selectedFiles) {
+      let files = Array.from(this.state.selectedFiles);
+      files.map((file) => {
+        fileCards.push(
+          <FileInfo selectedFile={file} key={file.lastModified} />
+        );
+      });
+    }
+
+    return (
+      <React.Fragment>
+        <label>
+          {this.state.selectedFiles ? this.state.selectedFiles.length : 0} files
+          attached
+        </label>
+        {fileCards}
+      </React.Fragment>
+    );
+  };
 
   render() {
     return (
@@ -135,9 +169,13 @@ class LeftSideForm extends React.Component {
                   <div className="custom-file">
                     <input
                       type="file"
-                      className="custom-file-input"
+                      className="file"
+                      multiple
+                      data-show-upload="true"
+                      data-show-caption="true"
                       id="file-uploader"
                       aria-describedby="upload-help"
+                      onChange={this.handleFileChange}
                       required={true}
                     />
                     <label
@@ -150,6 +188,8 @@ class LeftSideForm extends React.Component {
                   </div>
                 </div>
               </div>
+
+              {this.fileData()}
 
               <section>
                 <button type="submit" className="btn btn-dark mt-3">
