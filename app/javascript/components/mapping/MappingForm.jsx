@@ -22,18 +22,30 @@ class LeftSideForm extends React.Component {
     this.handleFileChange = this.handleFileChange.bind(this);
   }
 
+  /**
+   * Update the state on every change with the corresponding field
+   * (taken from the event)
+   */
   handleOnChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
     });
   }
 
+  /**
+   * Update the files in the state when the input changes
+   * (After the user selects file/s)
+   */
   handleFileChange() {
     this.setState({
       selectedFiles: event.target.files,
     });
   }
 
+  /**
+   * Validates the use case to be a valid URL after the user focuses
+   * out the "use case" input
+   */
   handleUseCaseBlur() {
     if (!validator.isURL(this.state.use_case)) {
       this.setState({
@@ -46,18 +58,27 @@ class LeftSideForm extends React.Component {
     }
   }
 
+  /**
+   * Send the file/s to the API service to be parsed
+   */
   handleSubmit(event) {
     if (this.state.errors) {
       toast.error("Please correct the errors first");
       event.preventDefault();
       return;
     }
-
+    /**
+     * @todo Implement sending the files to the API service
+     */
     event.preventDefault();
   }
 
-  // File content to be displayed after
-  // file upload is complete
+  /**
+   * File content to be displayed after
+   * file upload is complete
+   *
+   * @returns {React.Fragment}
+   */
   fileData = () => {
     let fileCards = [];
 
@@ -65,7 +86,7 @@ class LeftSideForm extends React.Component {
       let files = Array.from(this.state.selectedFiles);
       files.map((file) => {
         fileCards.push(
-          <FileInfo selectedFile={file} key={file.lastModified} />
+          <FileInfo selectedFile={file} key={Date.now() + file.lastModified} />
         );
       });
     }
