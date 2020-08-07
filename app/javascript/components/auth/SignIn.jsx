@@ -57,7 +57,9 @@ class SignIn extends Component {
           <div className="container-fluid container-wrapper">
             <div className="row mt-5">
               <div className="col-lg-6 mx-auto">
-                { this.state.errors && <ErrorNotice message={this.state.errors} /> }
+                {this.state.errors && (
+                  <ErrorNotice message={this.state.errors} />
+                )}
 
                 <div className="card">
                   <div className="card-header">
