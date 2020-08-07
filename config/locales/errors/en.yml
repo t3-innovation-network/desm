@@ -5,3 +5,4 @@ en:
     record_not_destroyed: "Can't delete: %{message}"
     auth:
       unauthorized_access: "Unauthorized access."
+      invalid_credentials: "Ivalid email or password. Please try again."

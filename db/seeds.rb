@@ -13,7 +13,8 @@ user = User.create!(fullname: "user", email: "user@t3converter.com", password: "
 admin = User.create!(fullname: "admin", email: "admin@t3converter.com", password: "t3admin", organization: Organization.first);
 
 # And an admin and a regular user role
-admin_role = Role.create!(name: "Admin");
+admin_role_name = (ENV['ADMIN_ROLE_NAME'] || 'Admin').downcase
+admin_role = Role.create!(admin_role_name);
 user_role = Role.create!(name: "Regular User");
 
 # Assing "admin" role to our admin user

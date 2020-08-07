@@ -18,19 +18,32 @@ const Routes = (props) => {
   return (
     <Router>
       <Switch>
-        <Route exact path={"/"} component={Home} />
-
-        <Route exact path={"/new-mapping"} component={Mapping} />
+        <Route
+          exact
+          path={"/"}
+          component={Home} />
 
         <Route
           exact
           path={"/sign-in"}
-          render={(props) => <SignIn {...props} handleLogin={manageLogin} />}
+          render={(props) => <SignIn {...props} handleLogin={manageLogin}/>}
         />
 
-        <ProtectedRoute exact path="/dashboard" component={MainDashboard} />
+        <ProtectedRoute
+          exact
+          path="/new-mapping"
+          allowNonAdmins={true}
+          component={Mapping} />
 
-        <ProtectedRoute exact path="/dashboard/users" component={UsersIndex} />
+        <ProtectedRoute
+          exact
+          path="/dashboard"
+          component={MainDashboard} />
+
+        <ProtectedRoute
+          exact
+          path="/dashboard/users"
+          component={UsersIndex} />
 
         <ProtectedRoute
           exact

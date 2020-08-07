@@ -43,3 +43,11 @@ a:hover {
 .mandatory-fields-notice{
   text-align: end;
 }
+
+/* Mobile */
+
+@media (max-width: 768px) {
+  .indicator {
+    visibility: hidden;
+  }
+}

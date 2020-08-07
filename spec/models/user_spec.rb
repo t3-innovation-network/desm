@@ -15,8 +15,10 @@ RSpec.describe User, type: :model do
   it { should validate_presence_of(:fullname) }
 
   it "should be an admin if we configure it that way" do
-    user.roles << Role.new(name: "admin")
+    admin_role_name = (ENV["ADMIN_ROLE_NAME"] || "Admin")
 
-    expect(user.role?(:admin)).to be(true)
+    user.roles << Role.new(name: admin_role_name)
+
+    expect(user.role?(admin_role_name.downcase.to_sym)).to be(true)
   end
 end

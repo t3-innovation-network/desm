@@ -1,7 +1,11 @@
-import React from 'react';
+import React from "react";
 
 const ErrorMessage = (error) => {
-  if (error.response !== undefined && error.response.data !== undefined) {
+  if (
+    error.response !== undefined &&
+    error.response.data !== undefined &&
+    error.response.data.error !== undefined
+  ) {
     return "We had an error: " + error.response.data.error;
   }
 
@@ -10,6 +14,6 @@ const ErrorMessage = (error) => {
   }
 
   return "";
-}
+};
 
 export default ErrorMessage;

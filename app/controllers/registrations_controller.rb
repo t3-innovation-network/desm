@@ -6,7 +6,7 @@
 class RegistrationsController < ApplicationController
   # Set a default password for every new user, since it's not created by itself,
   # but by an administrator
-  DEFAULT_PASS = "t3user123"
+  DEFAULT_PASS = ENV["DEFAULT_PASS"]
 
   ###
   # @description: Creates a user, using the params sent in the HTTP request.
@@ -15,9 +15,10 @@ class RegistrationsController < ApplicationController
   def create
     user = User.create!(request_params)
     user.assign_role(params[:role_id])
-    session[:user_id] = user.id
 
-    render json: user
+    render json: {
+      success: true
+    }
   end
 
   private

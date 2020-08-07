@@ -59,7 +59,7 @@ class UsersController < ApplicationController
   # @return [ActiveRecord]
   ###
   def user
-    @user = @user || params[:id].present? ? User.find(params[:id]) : User.first
+    @user = params[:id].present? ? User.find(params[:id]) : User.first
   end
 
   ###
