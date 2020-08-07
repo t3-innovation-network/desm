@@ -12,10 +12,7 @@ class Api::V1::OrganizationsController < ApplicationController
   def index
     @organizations = Organization.all.order(name: :asc)
 
-    render json: {
-      success: true,
-      organizations: @organizations
-    }
+    render json: @organizations, include: :users
   end
 
   ###
