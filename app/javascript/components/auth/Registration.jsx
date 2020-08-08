@@ -9,23 +9,23 @@ import ErrorMessage from "../shared/ErrorMessage";
 import createUser from "../../services/createUser";
 
 class Registration extends Component {
-  constructor(props) {
-    super(props);
+  /**
+   * Represents the state of this component. It contains all the fields that are
+   * going to be sent to the API service to create a user
+   */
+  state = {
+    email: "",
+    fullname: "",
+    organization_id: "",
+    role_id: "",
+    organizations: [],
+    roles: [],
+    errors: "",
+  };
 
-    this.state = {
-      email: "",
-      fullname: "",
-      organization_id: "",
-      role_id: "",
-      organizations: [],
-      roles: [],
-      errors: "",
-    };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleOnChange = this.handleOnChange.bind(this);
-  }
-
+  /**
+   * Use the API service to get all the organizations data
+   */
   fetchOrganizationsAPI() {
     fetchOrganizations()
       .then((orgs) => {
@@ -41,6 +41,9 @@ class Registration extends Component {
       });
   }
 
+  /**
+   * Use the API service to get all the roles data
+   */
   fetchRolesAPI() {
     fetchRoles()
       .then((Allroles) => {
@@ -56,7 +59,11 @@ class Registration extends Component {
       });
   }
 
-  handleSubmit(event) {
+  /**
+   * Prepare the data in the form to be sent to the API service, then call the
+   * service with that data and expect the result to show to the user
+   */
+  handleSubmit = (event) => {
     const { email, fullname, organization_id, role_id } = this.state;
 
     createUser(fullname, email, organization_id, role_id)
@@ -75,12 +82,18 @@ class Registration extends Component {
     event.preventDefault();
   }
 
-  handleOnChange(event) {
+  /**
+   * Update the component state on every change in the input control in the form
+   */
+  handleOnChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
   }
 
+  /**
+   * Perform the necessary tasks needed when the component finish mounting
+   */
   componentDidMount() {
     this.fetchOrganizationsAPI();
     this.fetchRolesAPI();

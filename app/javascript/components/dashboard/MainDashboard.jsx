@@ -6,13 +6,9 @@ import ErrorMessage from "../shared/ErrorMessage";
 import OrganizationInfo from "./organizations/OrganizationInfo";
 
 export default class MainDashboard extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      organizations: [],
-      errors: ""
-    }
+  state = {
+    organizations: [],
+    errors: ""
   }
 
   /**
