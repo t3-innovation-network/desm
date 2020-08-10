@@ -2,6 +2,7 @@ import React from "react";
 import validator from "validator";
 import ErrorNotice from "../shared/ErrorNotice";
 import { toast } from "react-toastify";
+import FileInfo from "./FileInfo";
 
 class LeftSideForm extends React.Component {
   constructor() {
@@ -12,19 +13,39 @@ class LeftSideForm extends React.Component {
       name: "",
       version: "",
       use_case: "",
+      selectedFiles: null,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleUseCaseBlur = this.handleUseCaseBlur.bind(this);
+    this.handleFileChange = this.handleFileChange.bind(this);
   }
 
+  /**
+   * Update the state on every change with the corresponding field
+   * (taken from the event)
+   */
   handleOnChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
     });
   }
 
+  /**
+   * Update the files in the state when the input changes
+   * (After the user selects file/s)
+   */
+  handleFileChange() {
+    this.setState({
+      selectedFiles: event.target.files,
+    });
+  }
+
+  /**
+   * Validates the use case to be a valid URL after the user focuses
+   * out the "use case" input
+   */
   handleUseCaseBlur() {
     if (!validator.isURL(this.state.use_case)) {
       this.setState({
@@ -37,15 +58,49 @@ class LeftSideForm extends React.Component {
     }
   }
 
+  /**
+   * Send the file/s to the API service to be parsed
+   */
   handleSubmit(event) {
     if (this.state.errors) {
       toast.error("Please correct the errors first");
       event.preventDefault();
       return;
     }
-
+    /**
+     * @todo Implement sending the files to the API service
+     */
     event.preventDefault();
   }
+
+  /**
+   * File content to be displayed after
+   * file upload is complete
+   *
+   * @returns {React.Fragment}
+   */
+  fileData = () => {
+    let fileCards = [];
+
+    if (this.state.selectedFiles) {
+      let files = Array.from(this.state.selectedFiles);
+      files.map((file) => {
+        fileCards.push(
+          <FileInfo selectedFile={file} key={Date.now() + file.lastModified} />
+        );
+      });
+    }
+
+    return (
+      <React.Fragment>
+        <label>
+          {this.state.selectedFiles ? this.state.selectedFiles.length : 0} files
+          attached
+        </label>
+        {fileCards}
+      </React.Fragment>
+    );
+  };
 
   render() {
     return (
@@ -135,9 +190,13 @@ class LeftSideForm extends React.Component {
                   <div className="custom-file">
                     <input
                       type="file"
-                      className="custom-file-input"
+                      className="file"
+                      multiple
+                      data-show-upload="true"
+                      data-show-caption="true"
                       id="file-uploader"
                       aria-describedby="upload-help"
+                      onChange={this.handleFileChange}
                       required={true}
                     />
                     <label
@@ -150,6 +209,8 @@ class LeftSideForm extends React.Component {
                   </div>
                 </div>
               </div>
+
+              {this.fileData()}
 
               <section>
                 <button type="submit" className="btn btn-dark mt-3">
