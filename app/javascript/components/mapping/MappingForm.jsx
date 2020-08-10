@@ -1,10 +1,113 @@
 import React from "react";
+import validator from "validator";
+import ErrorNotice from "../shared/ErrorNotice";
+import { toast } from "react-toastify";
+import FileInfo from "./FileInfo";
 
 class LeftSideForm extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      errors: "",
+      name: "",
+      version: "",
+      use_case: "",
+      selectedFiles: null,
+    };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleUseCaseBlur = this.handleUseCaseBlur.bind(this);
+    this.handleFileChange = this.handleFileChange.bind(this);
+  }
+
+  /**
+   * Update the state on every change with the corresponding field
+   * (taken from the event)
+   */
+  handleOnChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  }
+
+  /**
+   * Update the files in the state when the input changes
+   * (After the user selects file/s)
+   */
+  handleFileChange() {
+    this.setState({
+      selectedFiles: event.target.files,
+    });
+  }
+
+  /**
+   * Validates the use case to be a valid URL after the user focuses
+   * out the "use case" input
+   */
+  handleUseCaseBlur() {
+    if (!validator.isURL(this.state.use_case)) {
+      this.setState({
+        errors: "'Use case' must be a valid URL",
+      });
+    } else {
+      this.setState({
+        errors: "",
+      });
+    }
+  }
+
+  /**
+   * Send the file/s to the API service to be parsed
+   */
+  handleSubmit(event) {
+    if (this.state.errors) {
+      toast.error("Please correct the errors first");
+      event.preventDefault();
+      return;
+    }
+    /**
+     * @todo Implement sending the files to the API service
+     */
+    event.preventDefault();
+  }
+
+  /**
+   * File content to be displayed after
+   * file upload is complete
+   *
+   * @returns {React.Fragment}
+   */
+  fileData = () => {
+    let fileCards = [];
+
+    if (this.state.selectedFiles) {
+      let files = Array.from(this.state.selectedFiles);
+      files.map((file) => {
+        fileCards.push(
+          <FileInfo selectedFile={file} key={Date.now() + file.lastModified} />
+        );
+      });
+    }
+
+    return (
+      <React.Fragment>
+        <label>
+          {this.state.selectedFiles ? this.state.selectedFiles.length : 0} files
+          attached
+        </label>
+        {fileCards}
+      </React.Fragment>
+    );
+  };
+
   render() {
     return (
       <React.Fragment>
         <div className="col-lg-6 p-lg-5 pt-5">
+          {this.state.errors && <ErrorNotice message={this.state.errors} />}
+
           <div className="mandatory-fields-notice">
             <small className="form-text text-muted">
               Fields with <span className="text-danger">*</span> are mandatory!
@@ -14,7 +117,7 @@ class LeftSideForm extends React.Component {
           <section>
             <h6 className="subtitle">1. Upload Your Specification</h6>
 
-            <form onSubmit={this.onSubmit}>
+            <form onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <label htmlFor="specification_name">
                   Name of your specification
@@ -24,6 +127,8 @@ class LeftSideForm extends React.Component {
                   name="name"
                   id="specification_name"
                   className="form-control"
+                  value={this.state.name}
+                  onChange={this.handleOnChange}
                   required
                 />
                 <small className="form-text text-muted">
@@ -37,8 +142,9 @@ class LeftSideForm extends React.Component {
                   name="version"
                   id="version"
                   className="form-control"
+                  value={this.state.version}
+                  onChange={this.handleOnChange}
                   required
-                  onChange={this.onChange}
                 />
               </div>
               <div className="form-group">
@@ -48,7 +154,9 @@ class LeftSideForm extends React.Component {
                   className="form-control"
                   id="use_case"
                   name="use_case"
-                  onChange={this.onChange}
+                  value={this.state.use_case}
+                  onBlur={this.handleUseCaseBlur}
+                  onChange={this.handleOnChange}
                 />
                 <small className="form-text text-muted">
                   It must be a valid URL
@@ -82,9 +190,13 @@ class LeftSideForm extends React.Component {
                   <div className="custom-file">
                     <input
                       type="file"
-                      className="custom-file-input"
+                      className="file"
+                      multiple
+                      data-show-upload="true"
+                      data-show-caption="true"
                       id="file-uploader"
                       aria-describedby="upload-help"
+                      onChange={this.handleFileChange}
                       required={true}
                     />
                     <label
@@ -97,6 +209,8 @@ class LeftSideForm extends React.Component {
                   </div>
                 </div>
               </div>
+
+              {this.fileData()}
 
               <section>
                 <button type="submit" className="btn btn-dark mt-3">
