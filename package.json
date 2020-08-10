@@ -20,7 +20,8 @@
     "react-router-dom": "^5.2.0",
     "react-toastify": "^6.0.8",
     "redux": "^4.0.5",
-    "turbolinks": "^5.2.0"
+    "turbolinks": "^5.2.0",
+    "validator": "^13.1.1"
   },
   "version": "0.1.0",
   "devDependencies": {
