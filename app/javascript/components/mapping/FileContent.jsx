@@ -57,7 +57,7 @@ const FileContent = () => {
 
       {contents.map((content, i) => {
         return (
-          <div className="card mt-2 file-card" key={i}>
+          <div className="card mt-2 mb-2 file-card scrollbar" key={i}>
             <div className="card-body">
               <pre>
                 <code>{content}</code>

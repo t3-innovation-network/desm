@@ -57,6 +57,18 @@ a:hover {
   max-height: 50%;
 }
 
+/* Scrollbar */
+
+.scrollbar::-webkit-scrollbar {
+  width: 6px;
+  background-color:$background-color-dark;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: $on-primary-light;
+  border-radius: 8px;
+}
+
 /* Mobile */
 
 @media (max-width: 768px) {

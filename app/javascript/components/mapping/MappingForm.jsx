@@ -172,6 +172,7 @@ const MappingForm = (props) => {
                     data-show-caption="true"
                     id="file-uploader"
                     aria-describedby="upload-help"
+                    accept=".rdf, .json, .jsonld, .xml"
                     onChange={handleFileChange}
                     required={true}
                   />
