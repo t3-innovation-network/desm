@@ -52,6 +52,11 @@ a:hover {
   text-align: end;
 }
 
+.file-card {
+  overflow-y: scroll;
+  max-height: 50%;
+}
+
 /* Mobile */
 
 @media (max-width: 768px) {
