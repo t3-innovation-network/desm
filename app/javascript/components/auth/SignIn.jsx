@@ -5,25 +5,30 @@ import ErrorMessage from "../shared/ErrorMessage";
 import ErrorNotice from "../shared/ErrorNotice";
 
 class SignIn extends Component {
-  constructor(props) {
-    super(props);
+  /**
+   * Represents the state of this component. It contains all the fields that are
+   * going to be sent to the API service in order to create a session
+   */
+  state = {
+    email: "",
+    password: "",
+    errors: "",
+  };
 
-    this.state = {
-      email: "",
-      password: "",
-      errors: "",
-    };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleOnChange = this.handleOnChange.bind(this);
-  }
-
+  /**
+   * On a successfull response from the service, we go and update the store,
+   * then redirect the user to home
+   */
   handleSuccessfullAuth(user) {
     this.props.handleLogin(user);
     this.props.history.push("/");
   }
 
-  handleSubmit(event) {
+  /**
+   * Send the data prepared in the form to the API service, and expect
+   * the result to be shown to the user
+   */
+  handleSubmit = (event) => {
     const { email, password } = this.state;
 
     signIn(email, password)
@@ -43,7 +48,10 @@ class SignIn extends Component {
     event.preventDefault();
   }
 
-  handleOnChange(event) {
+  /**
+   * Update the component state on every change in the input control in the form
+   */
+  handleOnChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });

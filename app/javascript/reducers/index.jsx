@@ -1,5 +1,7 @@
 import loggedReducer from "./loggedReducer";
 import userReducer from "./userReducer";
+import fileReducer from "./fileReducer";
+import submittedReducer from "./submittedReducer";
 import { combineReducers } from "redux";
 
 /**
@@ -8,6 +10,8 @@ import { combineReducers } from "redux";
 const allReducers = combineReducers({
   loggedIn: loggedReducer,
   user: userReducer,
+  files: fileReducer,
+  submitted: submittedReducer
 });
 
 export default allReducers;

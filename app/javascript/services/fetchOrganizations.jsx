@@ -8,10 +8,13 @@ const fetchOrganizations = () => {
       withCredentials: true,
     })
     .then((response) => {
-      /// We have a list of organizations from the backend
-      if (response.data.success) {
-        return response.data.organizations;
+      /// We don't have a valid response
+      if (response.status != 200) {
+        return [];
       }
+
+      /// We have a list of organizations from the backend
+      return response.data;
     })
 }
 

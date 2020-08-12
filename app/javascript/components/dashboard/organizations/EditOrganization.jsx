@@ -9,25 +9,28 @@ import deleteOrganization from "../../../services/deleteOrganization";
 import updateOrganization from "../../../services/updateOrganization";
 
 export default class EditOrganization extends Component {
-  constructor(props) {
-    super(props);
+  /**
+   * Represents the state of this component. It contains all the fields that are
+   * going to be sent to the API service in order to update an organization
+   */
+  state = {
+    name: "",
+    errors: "",
+    organization_id: this.props.match.params.id,
+  };
 
-    this.state = {
-      name: "",
-      errors: "",
-      organization_id: this.props.match.params.id,
-    };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleOnChange = this.handleOnChange.bind(this);
-  }
-
-  handleOnChange(event) {
+  /**
+   * Update the component state on every change in the input control in the form
+   */
+  handleOnChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
   }
 
+  /**
+   * Use the API service to get this organization data
+   */
   fetchOrganizationAPI() {
     fetchOrganization(this.state.organization_id)
       .then((response) => {
@@ -46,6 +49,9 @@ export default class EditOrganization extends Component {
       });
   }
 
+  /**
+   * Hit the API service to delete this organization
+   */
   deleteOrganizationAPI() {
     deleteOrganization(this.state.organization_id)
       .then((response) => {
@@ -63,11 +69,18 @@ export default class EditOrganization extends Component {
       });
   }
 
+  /**
+   * Perform the necessary tasks needed when the component finish mounting
+   */
   componentDidMount() {
     this.fetchOrganizationAPI();
   }
 
-  handleSubmit(event) {
+  /**
+   * Send the data prepared in the form to the API service, and expect
+   * the result to be shown to the user
+   */
+  handleSubmit = (event) => {
     const { name } = this.state;
 
     updateOrganization(this.state.organization_id, name)
