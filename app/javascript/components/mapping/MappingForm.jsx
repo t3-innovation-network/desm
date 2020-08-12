@@ -185,15 +185,18 @@ const MappingForm = (props) => {
                   </label>
                 </div>
               </div>
+              <label className="mt-3">
+                You can upload your specification as RDF, JSON, XML or JSONLD format
+              </label>
             </div>
-
-            {fileData()}
 
             <section>
               <button type="submit" className="btn btn-dark mt-3">
-                Import Mapping
+                Import Specification
               </button>
             </section>
+
+            {fileData()}
           </form>
         </section>
       </div>

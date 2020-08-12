@@ -19,7 +19,7 @@ const MappingPreview = () => {
   return (
     <div className="col-lg-6 p-lg-5 pt-5 bg-col-secondary">
       <React.Fragment>
-        { (files.length) > 0 && (
+        { files.length > 0 && (
           <React.Fragment>
             <div className="card">
               <div className="card-header">
