@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import DashboardContainer from "./DashboardContainer";
 import fetchOrganizations from "../../services/fetchOrganizations"
 import ErrorNotice from "../shared/ErrorNotice";

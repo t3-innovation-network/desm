@@ -40,6 +40,14 @@ a:hover {
   background-color: $background-color-dark;
 }
 
+.bg-col-primary {
+  background-color: $primary-color !important;
+}
+
+.col-background {
+  color: $background-color !important;
+}
+
 .mandatory-fields-notice{
   text-align: end;
 }
