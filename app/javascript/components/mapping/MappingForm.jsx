@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import FileInfo from "./FileInfo";
 import { useSelector, useDispatch } from "react-redux";
 import { setFiles } from "../../actions/files";
+import { doSubmit } from "../../actions/mappingform";
 
 const MappingForm = (props) => {
 
@@ -14,6 +15,7 @@ const MappingForm = (props) => {
   const [use_case, setUseCase] = useState("");
 
   const files = useSelector((state) => state.files);
+  const submitted = useSelector((state) => state.submitted);
   const dispatch = useDispatch();
 
   /**
@@ -48,6 +50,7 @@ const MappingForm = (props) => {
     /**
      * @todo Implement sending the files to the API service
      */
+    dispatch(doSubmit());
     event.preventDefault();
   }
 
@@ -81,7 +84,7 @@ const MappingForm = (props) => {
 
   return (
     <React.Fragment>
-      <div className="col-lg-6 p-lg-5 pt-5">
+      <div className={(submitted ? "disabled-form ": " ") + "col-lg-6 p-lg-5 pt-5"}>
         {errors && <ErrorNotice message={errors} />}
 
         <div className="mandatory-fields-notice">
@@ -106,6 +109,7 @@ const MappingForm = (props) => {
                 value={name}
                 onChange={e => setName(e.target.value)}
                 required
+                disabled={submitted}
               />
               <small className="form-text text-muted">
                 This is the name you will see in your list of mappings
@@ -121,6 +125,7 @@ const MappingForm = (props) => {
                 value={version}
                 onChange={e => setVersion(e.target.value)}
                 required
+                disabled={submitted}
               />
             </div>
             <div className="form-group">
@@ -133,6 +138,7 @@ const MappingForm = (props) => {
                 value={use_case}
                 onBlur={handleUseCaseBlur}
                 onChange={e => setUseCase(e.target.value)}
+                disabled={submitted}
               />
               <small className="form-text text-muted">
                 It must be a valid URL
@@ -149,6 +155,7 @@ const MappingForm = (props) => {
                       type="checkbox"
                       value="1"
                       className="form-check-input"
+                      disabled={submitted}
                     />
                     Person
                   </label>
@@ -175,6 +182,7 @@ const MappingForm = (props) => {
                     accept=".rdf, .json, .jsonld, .xml"
                     onChange={handleFileChange}
                     required={true}
+                    disabled={submitted}
                   />
                   <label
                     className="custom-file-label"

@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { unsetFiles } from "../../actions/files";
 import FileContent from "./FileContent";
+import { doUnsubmit } from "../../actions/mappingform";
 
 const MappingPreview = () => {
-  /// Get the files from the redux store
-  const files = useSelector((state) => state.files);
+  const submitted = useSelector((state) => state.submitted);
   const dispatch = useDispatch();
 
   /**
@@ -14,12 +14,13 @@ const MappingPreview = () => {
    */
   const handleOnReimport = () => {
     dispatch(unsetFiles());
-  }
+    dispatch(doUnsubmit());
+  };
 
   return (
     <div className="col-lg-6 p-lg-5 pt-5 bg-col-secondary">
       <React.Fragment>
-        { files.length > 0 && (
+        {submitted && (
           <React.Fragment>
             <div className="card">
               <div className="card-header">
@@ -28,8 +29,12 @@ const MappingPreview = () => {
                     <strong>Preview your upload</strong>
                   </div>
                   <div className="col-6 text-right">
-                    <button className="btn btn-dark" onClick={handleOnReimport}>Re-import</button>
-                    <button className="btn bg-col-primary col-background ml-2">Looks Good</button>
+                    <button className="btn btn-dark" onClick={handleOnReimport}>
+                      Re-import
+                    </button>
+                    <button className="btn bg-col-primary col-background ml-2">
+                      Looks Good
+                    </button>
                   </div>
                 </div>
               </div>
@@ -39,7 +44,7 @@ const MappingPreview = () => {
         )}
       </React.Fragment>
     </div>
-  )
-}
+  );
+};
 
 export default MappingPreview;

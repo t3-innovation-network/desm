@@ -69,6 +69,10 @@ a:hover {
   border-radius: 8px;
 }
 
+.disabled-form {
+  opacity: 0.4;
+}
+
 /* Mobile */
 
 @media (max-width: 768px) {
