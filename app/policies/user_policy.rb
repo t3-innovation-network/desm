@@ -18,7 +18,7 @@ class UserPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def index?
-    user.role?(@admin_role_name)
+    @user.role?(@admin_role_name)
   end
 
   ###
@@ -26,7 +26,7 @@ class UserPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def show?
-    user.role?(@admin_role_name)
+    @user.role?(@admin_role_name)
   end
 
   ###
@@ -34,7 +34,7 @@ class UserPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def create?
-    user.role?(@admin_role_name)
+    @user.role?(@admin_role_name)
   end
 
   ###
@@ -42,7 +42,7 @@ class UserPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def update?
-    user.role?(@admin_role_name)
+    @user.role?(@admin_role_name)
   end
 
   ###
@@ -50,6 +50,6 @@ class UserPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def destroy?
-    user.role?(@admin_role_name)
+    @user.role?(@admin_role_name)
   end
 end
