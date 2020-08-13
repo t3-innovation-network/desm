@@ -1,15 +1,11 @@
-import axios from 'axios';
+import apiService from "./apiService";
 
 const signOut = () => {
-  const baseURL = process.env.API_URL;
-
-  return axios
-    .delete(baseURL + "/logout", { withCredentials: true })
-    .then((response) => {
-      return {
-        success: response.status == 200
-      }
-    })
-}
+  return apiService.delete("/logout").then((response) => {
+    return {
+      success: response.status == 200,
+    };
+  });
+};
 
 export default signOut;
