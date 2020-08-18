@@ -8,15 +8,18 @@ import ErrorNotice from "../../shared/ErrorNotice";
 import ErrorMessage from "../../shared/ErrorMessage";
 
 export default class UsersIndex extends Component {
-  constructor(props) {
-    super(props);
+  /**
+   * Represents the state of this component. It contains the list of data
+   * that's going to be shown to the user
+   */
+  state = {
+    users: [],
+    errors: "",
+  };
 
-    this.state = {
-      users: [],
-      errors: "",
-    };
-  }
-
+  /**
+   * Use the API service to get this user data
+   */
   fetchUsersAPI() {
     fetchUsers()
       .then((us) => {
@@ -31,6 +34,9 @@ export default class UsersIndex extends Component {
       });
   }
 
+  /**
+   * Perform the necessary tasks needed when the component finish mounting
+   */
   componentDidMount() {
     this.fetchUsersAPI();
   }

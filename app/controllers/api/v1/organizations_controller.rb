@@ -6,16 +6,15 @@
 class Api::V1::OrganizationsController < ApplicationController
   before_action :authorize_with_policy
 
+  include Pundit
+
   ###
   # @description: Lists all the organizations
   ###
   def index
     @organizations = Organization.all.order(name: :asc)
 
-    render json: {
-      success: true,
-      organizations: @organizations
-    }
+    render json: @organizations, include: :users
   end
 
   ###
@@ -76,7 +75,7 @@ class Api::V1::OrganizationsController < ApplicationController
   # @return [ActiveRecord]
   ###
   def organization
-    @organization = @organization || params[:id].present? ? Organization.find(params[:id]) : Organization.first
+    @organization = params[:id].present? ? Organization.find(params[:id]) : Organization.first
   end
 
   ###

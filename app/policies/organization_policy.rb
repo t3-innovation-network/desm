@@ -5,9 +5,9 @@
 #   organization records.
 ###
 class OrganizationPolicy < ApplicationPolicy
-  def initialize(user, organization)
-    @user = user
-    @organization = organization
+  def initialize(user, record)
+    @user = user || @current_user
+    @record = record
     @admin_role_name = (ENV["ADMIN_ROLE_NAME"] || "Admin").downcase.to_sym
 
     raise Pundit::NotAuthorizedError unless user&.role?(@admin_role_name)
@@ -18,7 +18,7 @@ class OrganizationPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def index?
-    user.role?(@admin_role_name)
+    @user.role?(@admin_role_name)
   end
 
   ###
@@ -26,7 +26,7 @@ class OrganizationPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def show?
-    user.role?(@admin_role_name)
+    @user.role?(@admin_role_name)
   end
 
   ###
@@ -34,7 +34,7 @@ class OrganizationPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def create?
-    user.role?(@admin_role_name)
+    @user.role?(@admin_role_name)
   end
 
   ###
@@ -42,7 +42,7 @@ class OrganizationPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def update?
-    user.role?(@admin_role_name)
+    @user.role?(@admin_role_name)
   end
 
   ###
@@ -50,6 +50,6 @@ class OrganizationPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def destroy?
-    user.role?(@admin_role_name)
+    @user.role?(@admin_role_name)
   end
 end
