@@ -24,7 +24,7 @@ services:
 
   webpack:
     build: .
-    command: bash -c "rm -rf ./public/packs; API_URL=${REACT_APP_API_URL} ADMIN_ROLE_NAME=${ADMIN_ROLE_NAME} ./bin/webpack-dev-server"
+    command: bash -c "rm -rf ./public/packs; API_URL=${BASE_API_URL} ADMIN_ROLE_NAME=${ADMIN_ROLE_NAME} ./bin/webpack-dev-server"
     volumes:
       - .:/app
     ports:
