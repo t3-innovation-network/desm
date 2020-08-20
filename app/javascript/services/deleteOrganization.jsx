@@ -1,16 +1,12 @@
-import axios from 'axios';
+import apiService from "./apiService";
 
 const deleteOrganization = (organization_id) => {
-  const baseURL = process.env.API_URL;
-
-  return axios
-    .delete("/api/v1/organizations/" + organization_id, {
-      withCredentials: true,
-    })
+  return apiService
+    .delete("/api/v1/organizations/" + organization_id)
     .then((response) => {
       /// We have a successfull response from the backend
-      return { success: response.data.status == "removed" }
-    })
-}
+      return { success: response.data.status == "removed" };
+    });
+};
 
 export default deleteOrganization;

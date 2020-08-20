@@ -11,30 +11,33 @@ import deleteUser from "../../../services/deleteUser";
 import updateUser from "../../../services/updateUser";
 
 export default class EditUser extends Component {
-  constructor(props) {
-    super(props);
+  /**
+   * Represents the state of this component. It contains all the fields that are
+   * going to be sent to the API service in order to update a user data
+   */
+  state = {
+    fullname: "",
+    email: "",
+    organization_id: "",
+    role_id: "",
+    user_id: this.props.match.params.id,
+    organizations: [],
+    roles: [],
+    errors: "",
+  };
 
-    this.state = {
-      fullname: "",
-      email: "",
-      organization_id: "",
-      role_id: "",
-      user_id: this.props.match.params.id,
-      organizations: [],
-      roles: [],
-      errors: "",
-    };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleOnChange = this.handleOnChange.bind(this);
-  }
-
-  handleOnChange(event) {
+  /**
+   * Update the component state on every change in the input control in the form
+   */
+  handleOnChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
   }
 
+  /**
+   * Use the API service to get this user data
+   */
   fetchUserAPI() {
     fetchUser(this.state.user_id)
       .then((response) => {
@@ -56,6 +59,9 @@ export default class EditUser extends Component {
       });
   }
 
+  /**
+   * Use the API service to get the organizations data
+   */
   fetchOrganizationsAPI() {
     fetchOrganizations()
       .then((orgs) => {
@@ -70,6 +76,9 @@ export default class EditUser extends Component {
       });
   }
 
+  /**
+   * Use the API service to get the roles data
+   */
   fetchRolesAPI() {
     fetchRoles()
       .then((Allroles) => {
@@ -84,6 +93,9 @@ export default class EditUser extends Component {
       });
   }
 
+  /**
+   * Hit the API service to delete this user
+   */
   deleteUserAPI() {
     deleteUser(this.state.user_id)
       .then((response) => {
@@ -101,13 +113,20 @@ export default class EditUser extends Component {
       });
   }
 
+  /**
+   * Perform the necessary tasks needed when the component finish mounting
+   */
   componentDidMount() {
     this.fetchUserAPI();
     this.fetchOrganizationsAPI();
     this.fetchRolesAPI();
   }
 
-  handleSubmit(event) {
+  /**
+   * Send the data prepared in the form to the API service, and expect
+   * the result to be shown to the user
+   */
+  handleSubmit = (event) => {
     const { email, fullname, organization_id, role_id, user_id } = this.state;
 
     updateUser(user_id, email, fullname, organization_id, role_id)

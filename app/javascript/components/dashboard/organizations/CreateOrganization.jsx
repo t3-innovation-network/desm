@@ -5,19 +5,20 @@ import "react-toastify/dist/ReactToastify.css";
 import createOrganization from "../../../services/createOrganization";
 
 export default class CreateOrganization extends Component {
-  constructor(props) {
-    super(props);
+  /**
+   * Represents the state of this component. It contains all the fields that are
+   * going to be sent to the API service in order to create an organization
+   */
+  state = {
+    name: "",
+    errors: "",
+  };
 
-    this.state = {
-      name: "",
-      errors: "",
-    };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleOnChange = this.handleOnChange.bind(this);
-  }
-
-  handleSubmit(event) {
+  /**
+   * Send the data prepared in the form to the API service, and expect
+   * the result to be shown to the user
+   */
+  handleSubmit = (event) => {
     const { name } = this.state;
 
     createOrganization(name)
@@ -36,7 +37,10 @@ export default class CreateOrganization extends Component {
     event.preventDefault();
   }
 
-  handleOnChange(event) {
+  /**
+   * Update the component state on every change in the input control in the form
+   */
+  handleOnChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });

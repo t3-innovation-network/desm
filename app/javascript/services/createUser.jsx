@@ -1,31 +1,18 @@
-import axios from 'axios';
+import apiService from "./apiService";
 
-const createUser = (
-  fullname,
-  email,
-  organization_id,
-  role_id
-) => {
-  const baseURL = process.env.API_URL;
-
-  return axios
-  .post(
-    baseURL + "/registrations",
-    {
+const createUser = (fullname, email, organization_id, role_id) => {
+  return apiService
+    .post("/registrations", {
       user: {
         fullname: fullname,
         email: email,
-        organization_id: organization_id
+        organization_id: organization_id,
       },
-      role_id: role_id
-    },
-    /// Tells the API that's ok to get the cookie in our client
-    { withCredentials: true }
-  )
-  .then((response) => {
-      return { success: (response.status === 200) }
-    }
-  );
-}
+      role_id: role_id,
+    })
+    .then((response) => {
+      return { success: response.status === 200 };
+    });
+};
 
 export default createUser;

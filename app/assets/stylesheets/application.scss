@@ -40,8 +40,37 @@ a:hover {
   background-color: $background-color-dark;
 }
 
+.bg-col-primary {
+  background-color: $primary-color !important;
+}
+
+.col-background {
+  color: $background-color !important;
+}
+
 .mandatory-fields-notice{
   text-align: end;
+}
+
+.file-card {
+  overflow-y: scroll;
+  max-height: 50%;
+}
+
+/* Scrollbar */
+
+.scrollbar::-webkit-scrollbar {
+  width: 6px;
+  background-color:$background-color-dark;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: $on-primary-light;
+  border-radius: 8px;
+}
+
+.disabled-form {
+  opacity: 0.4;
 }
 
 /* Mobile */

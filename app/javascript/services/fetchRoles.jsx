@@ -1,19 +1,14 @@
-import axios from 'axios';
+import apiService from "./apiService";
 
 const fetchRoles = () => {
-  const baseURL = process.env.API_URL;
-
-  return axios
-    .get("/api/v1/roles", { withCredentials: true })
-    .then((response) => {
-      /// We have a list of roles from the backend
-      if (response.status == 200) {
-        return response.data
-      } else {
-        /// Something happened
-        return "Couldn't retrieve roles!";
-      }
-    })
-}
+  return apiService.get("/api/v1/roles").then((response) => {
+    /// We don't have a valid response
+    if (response.status != 200) {
+      return [];
+    }
+    /// We have a list of roles from the backend
+    return response.data;
+  });
+};
 
 export default fetchRoles;

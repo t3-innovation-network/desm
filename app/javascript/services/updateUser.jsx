@@ -1,35 +1,22 @@
-import axios from 'axios';
+import apiService from "./apiService";
 
-const updateUser = (
-  user_id,
-  email,
-  fullname,
-  organization_id,
-  role_id
-) => {
-  const baseURL = process.env.API_URL;
-
-  return axios
-    .put(
-      baseURL + "/users/" + user_id,
-      {
-        user: {
-          fullname: fullname,
-          email: email,
-          organization_id: organization_id,
-        },
-        role_id: role_id
+const updateUser = (user_id, email, fullname, organization_id, role_id) => {
+  return apiService
+    .put("/users/" + user_id, {
+      user: {
+        fullname: fullname,
+        email: email,
+        organization_id: organization_id,
       },
-      /// Tells the API that's ok to get the cookie in our client
-      { withCredentials: true }
-    )
+      role_id: role_id,
+    })
     .then((response) => {
       if (response.status === 200) {
         return {
-          success: true
-        }
+          success: true,
+        };
       }
-    })
-}
+    });
+};
 
 export default updateUser;
