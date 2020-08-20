@@ -1,0 +1,63 @@
+{
+  "@context": {
+    "asn": "http://purl.org/asn/schema/core/",
+    "ceasn": "http://purl.org/ctdlasn/terms/",
+    "ceterms": "http://purl.org/ctdl/terms/",
+    "dct": "http://purl.org/dc/terms/",
+    "desm": "http://desm.org/ns/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "schema": "http://schema.org/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "vann": "http://purl.org/vocab/vann/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph": [
+    {
+      "@id": "@@@",
+      "@type": "rdfs:Property",
+      "dct:identifier": "@@@",
+      "rdfs:comment": {
+        "@language": "en-US",
+        "@value": "@@@"
+      },
+      "rdfs:domain": {
+        "@id": "@@@"
+      },
+      "rdfs:isDefinedBy": {
+        "@id": "desm:"
+      },
+      "rdfs:label": {
+        "@language": "en-US",
+        "@value": "@@@"
+      },
+      "rdfs:range": {
+        "@id": "@@@"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "@@@"
+      },
+      "vann:usageNote": {
+          "@language": "en-US",
+          "@value": "@@@"
+        }
+    },
+    {
+      "@id": "@@@",
+      "@type": "rdfs:Class",
+      "dct:identifier": "@@@",
+      "rdfs:comment": {
+        "@language": "en-US",
+        "@value": "@@@"
+      },
+      "rdfs:isDefinedBy": {
+        "@id": "desm:"
+      },
+      "rdfs:label": {
+        "@language": "en-US",
+        "@value": "@@@"
+      }
+    }
+  ]
+}
