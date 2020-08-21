@@ -1,34 +1,21 @@
+import abstractClasses from "../../../concepts/desmAbstractClasses.json"
+
 const fetchDomains = () => {
-  return [
-    {
-      "id": "hhttp://desm.org/concepts/concepts/person",
-      "name": "Person"
-    },
-    {
-      "id": "http://desm.org/concepts/organization",
-      "name": "Organization"
-    },
-    {
-      "id": "http://desm.org/concepts/course",
-      "name": "Course"
-    },
-    {
-      "id": "http://desm.org/concepts/credential",
-      "name": "Credential"
-    },
-    {
-      "id": "http://desm.org/concepts/employment",
-      "name": "Employment"
-    },
-    {
-      "id": "http://desm.org/concepts/competency",
-      "name": "Competency"
-    },
-    {
-      "id": "http://desm.org/concepts/programOfStudy",
-      "name": "Program of Study"
+  /// Get the domains list from the file
+  let domains = abstractClasses["@graph"];
+
+  /// The first element does not represent a domain.
+  /// It's a Concept Scheme
+  domains.shift();
+
+  return domains.map((domain) => {
+    /// From each domain in the list, we only need the id and the name
+    /// in a simpler way
+    return {
+      id: domain.id,
+      name: domain.prefLabel["en-us"]
     }
-  ]
+  })
 }
 
 export default fetchDomains;
