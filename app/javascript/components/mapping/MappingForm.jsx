@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import validator from "validator";
 import ErrorNotice from "../shared/ErrorNotice";
 import { toast } from "react-toastify";
@@ -6,6 +6,7 @@ import FileInfo from "./FileInfo";
 import { useSelector, useDispatch } from "react-redux";
 import { setFiles } from "../../actions/files";
 import { doSubmit } from "../../actions/mappingform";
+import fetchDomains from "../../services/fetchDomains";
 
 const MappingForm = (props) => {
 
@@ -13,7 +14,8 @@ const MappingForm = (props) => {
   const [name, setName] = useState("");
   const [version, setVersion] = useState("");
   const [use_case, setUseCase] = useState("");
-
+  const [domains, setDomains] = useState([]);
+  const [domainID, setDomainId] = useState(null);
   const files = useSelector((state) => state.files);
   const submitted = useSelector((state) => state.submitted);
   const dispatch = useDispatch();
@@ -82,6 +84,25 @@ const MappingForm = (props) => {
     );
   };
 
+  /**
+   * Fecth the domains to be listed in the new mapping form
+   * then put it in the local sate
+   */
+  const fillWithDomains = () => {
+    let domains = fetchDomains();
+    setDomains(domains);
+    setDomainId(domains[0].id);
+  }
+
+  /**
+   * Use effect with an emtpy array as second parameter, will trigger the 'fillWithDomains'
+   * action at the 'mounted' event of this functional component (It's not actually mounted,
+   * but it mimics the same action).
+   */
+  useEffect(() => {
+    fillWithDomains();
+  }, []);
+
   return (
     <React.Fragment>
       <div className={(submitted ? "disabled-form ": " ") + "col-lg-6 p-lg-5 pt-5"}>
@@ -144,22 +165,24 @@ const MappingForm = (props) => {
                 It must be a valid URL
               </small>
             </div>
+
             <div className="form-group">
               <label htmlFor="domains_to_map">
-                Which of the following domains are you mapping to?
+                Which domain are you uploading?
               </label>
-              <div className="col-lg-4 col-md-4 domain-option">
-                <div className="form-check-inline">
-                  <label className="form-check-label">
-                    <input
-                      type="checkbox"
-                      value="1"
-                      className="form-check-input"
-                      disabled={submitted}
-                    />
-                    Person
-                  </label>
-                </div>
+              <div className="col-sm-10">
+
+              {domains.map(function (dom) {
+                return (
+                  <div className="form-check" key={dom.id}>
+                    <input className="form-check-input" type="radio" name="domain_id" id={dom.id} value={dom.id} onChange={e => setDomainId(e.target.value)}/>
+                    <label className="form-check-label">
+                      {dom.name}
+                    </label>
+                  </div>
+                );
+              })}
+
               </div>
             </div>
 

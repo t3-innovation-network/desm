@@ -39,9 +39,11 @@ const App = () => {
       });
   };
 
-  /// Use effect with an emtpy array as second parameter, will trigger the 'checkLoginStatus'
-  /// action at the 'mounted' event of this functional component (It's not actually mounted,
-  /// but it mimics the same action).
+  /**
+   * Use effect with an emtpy array as second parameter, will trigger the 'checkLoginStatus'
+   * action at the 'mounted' event of this functional component (It's not actually mounted,
+   * but it mimics the same action).
+   */
   useEffect(() => {
     checkLoginStatusAPI();
   }, []);
