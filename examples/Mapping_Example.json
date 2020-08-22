@@ -1,0 +1,91 @@
+{
+  "@context": {
+    "dct": "http://purl.org/dc/terms/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "desm": "http://desm.org/ns/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph": [
+    {
+      "@id": "http://desm.org/TermMapping/b41b73c8-2da7-46b0-8174-42c9cf928fa0",
+      "@type": "desm:AbstractClassMapping",
+      "dcterms:title": "T3 Schema Mapping for Organization",
+      "dcterms:description": "T3 schema mapping for an Organization entity by the following standards development organizations (SDO): Credential Engine, IMS Global, PESC, HR Open Standards, Common Education Data Standards (CEDS), and Schema.org.",
+      "desm:abstractClassMapped": {
+        "@id": "https://example.org/desm/concepts/organization"
+      },
+      "dcterms:created": "2020-08-09",
+      "dcterms:dateModified": "2020-08-10",
+      "dcterms:hasPart": {
+        "@id": "http://desm.org/TermMapping/523e4e5f-42ed-49a6-9f74-36836d620ad1"
+      }
+    },
+    {
+      "@id": "http://desm.org/TermMapping/523e4e5f-42ed-49a6-9f74-36836d620ad1",
+      "@type": "desm:TermMapping",
+      "desm:comment": "Some comment on the mapping.",
+      "desm:mappedterm": {
+        "@id": "http://desm.org/ns/credReg/name"
+      },
+      "desm:spineTerm": {
+        "@id": "http://desm.org/ns/ceds/OrganizationName"
+      },
+      "desm:mappingPredicate": {
+        "@id": "https://example.org/desm/concepts/reworded"
+      },
+      "dcterms:isPartOf": {
+        "@id": "http://desm.org/TermMapping/b41b73c8-2da7-46b0-8174-42c9cf928fa0"
+      }
+    },
+    {
+      "@id": "http://desm.org/ns/ceds/OrganizationName",
+      "@type": "rdf:Property",
+      "rdfs:label": "Organization Name",
+      "rdfs:comment": "The name of a non-person entity such as an organization, institution, agency or business.",
+      "desm:datatype": {
+        "@id": "xsd:string"
+      },
+      "desm:sourceURI": {
+        "@id": "https://ceds.ed.gov/element/000204"
+      },
+      "desm:valueSpace": {
+        "@id": "http://another_enumeration_URL.org"
+      },
+      "rdfs:domain": {
+        "@id": "http://desm.org/ns/ceds/Organization"
+      },
+      "rdfs:range": {
+        "@id": "rdfs:Literal"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "https://ceds.ed.gov/element/000204"
+      }
+    },
+    {
+      "@id": "http://desm.org/ns/credReg/name",
+      "@type": "rdf:Property",
+      "rdfs:label": "name",
+      "rdfs:comment": "Name or title of the resource.",
+      "desm:datatype": {
+        "@id": "xsd:string"
+      },
+      "desm:sourceURI": {
+        "@id": "https://purl.org/ctdl/terms/name"
+      },
+      "desm:valueSpace": {
+        "@id": "http://some_enumeration_URL.org"
+      },
+      "rdfs:domain": {
+        "@id": "http://desm.org/ns/credReg/CredentialOrganization"
+      },
+      "rdfs:range": {
+        "@id": "rdfs:Literal"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "https://purl.org/ctdl/terms/name"
+      }
+    }
+  ]
+}
