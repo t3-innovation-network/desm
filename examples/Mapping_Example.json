@@ -34,7 +34,7 @@
       "desm:mappingPredicate": {
         "@id": "https://example.org/desm/concepts/reworded"
       },
-      "dct:dateModified": 
+      "dct:dateModified": "2020-08-15",
       "dct:isPartOf": {
         "@id": "http://desm.org/TermMapping/b41b73c8-2da7-46b0-8174-42c9cf928fa0"
       }
