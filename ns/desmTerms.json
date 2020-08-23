@@ -242,36 +242,6 @@
       }
     },
     {
-      "@id": "dct:modified",
-      "@type": "rdfs:Property",
-      "dct:identifier": "dct:modified",
-      "rdfs:comment": {
-        "@language": "en-US",
-        "@value": "Date on which the resource was changed."
-      },
-      "rdfs:domain": [
-          {
-            "@id": "desm:AbstractClassMapping"
-          },
-          {
-            "@id": "desm:TermMapping"
-          }
-      ],
-      "rdfs:isDefinedBy": {
-        "@id": "dct:"
-      },
-      "rdfs:label": {
-        "@language": "en-US",
-        "@value": "Date Modified"
-      },
-      "rdfs:range": {
-        "@id": "xsd:date"
-      },
-      "rdfs:subPropertyOf": {
-        "@id": "dct:date"
-      }
-    },
-    {
       "@id": "skos:definition",
       "@type": "rdfs:Property",
       "dct:identifier": "skos:definition",
@@ -290,7 +260,7 @@
         "@value": "Definition"
       },
       "rdfs:range": {
-        "@id": "xsd:string"
+        "@id": "rdf:langString"
       }
     },
     {
@@ -449,7 +419,7 @@
     {
       "@id": "desm:mappedTerm",
       "@type": "rdfs:Property",
-      "dct:identifier": "@@@",
+      "dct:identifier": "desm:mappedTerm",
       "rdfs:comment": {
         "@language": "en-US",
         "@value": "A property in a schema being mapped to a target property in the synthetic spine."
@@ -488,6 +458,36 @@
       },
       "rdfs:range": {
         "@id": "skos:Concept"
+      }
+    },
+    {
+      "@id": "dct:modified",
+      "@type": "rdfs:Property",
+      "dct:identifier": "dct:modified",
+      "rdfs:comment": {
+        "@language": "en-US",
+        "@value": "Date on which the resource was changed."
+      },
+      "rdfs:domain": [
+          {
+            "@id": "desm:AbstractClassMapping"
+          },
+          {
+            "@id": "desm:TermMapping"
+          }
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "dct:"
+      },
+      "rdfs:label": {
+        "@language": "en-US",
+        "@value": "Date Modified"
+      },
+      "rdfs:range": {
+        "@id": "xsd:date"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "dct:date"
       }
     },
     {
