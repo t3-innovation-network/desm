@@ -197,7 +197,7 @@
     {
       "@id": "dct:created",
       "@type": "rdfs:Property",
-      "dct:identifier": "@@@",
+      "dct:identifier": "dct:created",
       "rdfs:comment": {
         "@language": "en-US",
         "@value": "Date of creation of the resource."
@@ -222,7 +222,7 @@
     {
       "@id": "desm:dataType",
       "@type": "rdfs:Property",
-      "dct:identifier": "@@@",
+      "dct:identifier": "desm:dataType",
       "rdfs:comment": {
         "@language": "en-US",
         "@value": "The datatype of a string; e.g., xsd:literal, xsd:integer, xsd:dateTime. "
@@ -346,7 +346,7 @@
     {
       "@id": "skos:inScheme",
       "@type": "rdfs:Property",
-      "dct:identifier": "@@@",
+      "dct:identifier": "skos:inScheme",
       "rdfs:comment": {
         "@language": "en-US",
         "@value": "Relates a resource (for example a concept) to a concept scheme in which it is included."
@@ -372,7 +372,7 @@
     {
       "@id": "dct:isPartOf",
       "@type": "rdfs:Property",
-      "dct:identifier": "@@@",
+      "dct:identifier": "dct:isPartOf",
       "rdfs:comment": {
         "@language": "en-US",
         "@value": "A related resource in which the described resource is physically or logically included."
