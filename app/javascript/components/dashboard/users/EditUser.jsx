@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import DashboardContainer from "../DashboardContainer";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import fetchOrganizations from "../../../services/fetchOrganizations";
 import fetchRoles from "../../../services/fetchRoles";
 import ErrorNotice from "../../shared/ErrorNotice";
@@ -9,6 +7,7 @@ import ErrorMessage from "../../shared/ErrorMessage";
 import fetchUser from "../../../services/fetchUser";
 import deleteUser from "../../../services/deleteUser";
 import updateUser from "../../../services/updateUser";
+import {toastr as toast} from 'react-redux-toastr';
 
 export default class EditUser extends Component {
   /**
@@ -264,7 +263,6 @@ export default class EditUser extends Component {
             </div>
           </div>
         </div>
-        <ToastContainer />
       </DashboardContainer>
     );
   }

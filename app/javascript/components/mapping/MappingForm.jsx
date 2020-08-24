@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import validator from "validator";
 import ErrorNotice from "../shared/ErrorNotice";
-import { toast } from "react-toastify";
 import FileInfo from "./FileInfo";
 import { useSelector, useDispatch } from "react-redux";
 import { setFiles } from "../../actions/files";
 import { doSubmit } from "../../actions/mappingform";
+import {toastr as toast} from 'react-redux-toastr';
 
 const MappingForm = (props) => {
 
