@@ -7,7 +7,7 @@ const DashboardBtn = () => {
   const user = useSelector((state) => state.user);
   const adminRoleName = process.env.ADMIN_ROLE_NAME || "Admin";
 
-  if (isLoggedIn && user.roles !== undefined && user.roles[0].name == adminRoleName) {
+  if (isLoggedIn && user.roles !== undefined && user.roles[0].name.toLowerCase() == adminRoleName.toLowerCase()) {
     return (
       <li className="nav-item">
         <Link
