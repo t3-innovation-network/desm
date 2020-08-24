@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import DashboardContainer from "../dashboard/DashboardContainer";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import fetchOrganizations from "../../services/fetchOrganizations";
 import fetchRoles from "../../services/fetchRoles";
 import ErrorNotice from "../shared/ErrorNotice";
@@ -197,7 +195,6 @@ class Registration extends Component {
               </div>
             </div>
           </div>
-          <ToastContainer />
         </DashboardContainer>
       </React.Fragment>
     );

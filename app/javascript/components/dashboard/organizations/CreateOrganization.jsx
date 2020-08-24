@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import DashboardContainer from "../DashboardContainer";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import createOrganization from "../../../services/createOrganization";
+import {toastr as toast} from 'react-redux-toastr';
 
 export default class CreateOrganization extends Component {
   /**
@@ -84,7 +83,6 @@ export default class CreateOrganization extends Component {
               </div>
             </div>
           </div>
-          <ToastContainer />
         </DashboardContainer>
       </React.Fragment>
     );

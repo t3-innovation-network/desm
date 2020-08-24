@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { doLogout, unsetUser } from "../../actions/sessions";
 import signOut from "../../services/signOut";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import {toastr as toast} from 'react-redux-toastr';
 
 const AuthButton = () => {
   const isLoggedIn = useSelector((state) => state.loggedIn);
@@ -45,7 +44,6 @@ const AuthButton = () => {
         >
           Sign In
         </Link>
-        <ToastContainer />
       </React.Fragment>
     );
   }
