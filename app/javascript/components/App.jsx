@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux";
 import Routes from "./Routes";
 import Loader from "./shared/Loader";
 
+// toast.configure();
+
 const App = () => {
   const isLoggedIn = useSelector((state) => state.loggedIn);
   const dispatch = useDispatch();
