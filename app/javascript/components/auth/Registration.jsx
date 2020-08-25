@@ -5,6 +5,7 @@ import fetchRoles from "../../services/fetchRoles";
 import ErrorNotice from "../shared/ErrorNotice";
 import ErrorMessage from "../shared/ErrorMessage";
 import createUser from "../../services/createUser";
+import {toastr as toast} from 'react-redux-toastr';
 
 class Registration extends Component {
   /**
