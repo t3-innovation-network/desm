@@ -175,8 +175,18 @@ const MappingForm = (props) => {
               {domains.map(function (dom) {
                 return (
                   <div className="form-check" key={dom.id}>
-                    <input className="form-check-input" type="radio" name="domain_id" id={dom.id} value={dom.id} onChange={e => setDomainId(e.target.value)}/>
-                    <label className="form-check-label">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      id={dom.id}
+                      name="domain_id"
+                      value={dom.id}
+                      onChange={e => setDomainId(e.target.value)}
+                    />
+                    <label
+                      for={dom.id}
+                      className="form-check-label cursor-pointer"
+                    >
                       {dom.name}
                     </label>
                   </div>
