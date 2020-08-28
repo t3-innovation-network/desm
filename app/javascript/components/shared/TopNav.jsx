@@ -13,7 +13,7 @@ const TopNav = () => {
         <div className="container-fluid nav-container">
           <div className="navbar-header">
             <div className="brand-box-container">
-              <Link to={"/"} className="navbar-brand nav-item brand-box"></Link>
+              <Link to="/" className="navbar-brand nav-item brand-box"></Link>
             </div>
 
             <button
@@ -35,7 +35,7 @@ const TopNav = () => {
                   "nav-item current-page mt-0 mb-1 ml-0 ml-lg-3 mr-0 mr-lg-3"
                 }
               >
-                <Link to={"/specifications"} className="nav-link nav-title-highlited">
+                <Link to="/specifications" className="nav-link nav-title-highlited">
                   View Mappings
                 </Link>
               </li>
