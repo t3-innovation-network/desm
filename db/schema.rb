@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_28_150609) do
+ActiveRecord::Schema.define(version: 2020_08_28_155236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,17 @@ ActiveRecord::Schema.define(version: 2020_08_28_150609) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["uri"], name: "index_domain_sets_on_uri", unique: true
+  end
+
+  create_table "domains", force: :cascade do |t|
+    t.string "pref_label"
+    t.text "definition"
+    t.string "uri"
+    t.bigint "domain_set_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["domain_set_id"], name: "index_domains_on_domain_set_id"
+    t.index ["uri"], name: "index_domains_on_uri", unique: true
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -59,4 +70,5 @@ ActiveRecord::Schema.define(version: 2020_08_28_150609) do
 
   add_foreign_key "assignments", "roles"
   add_foreign_key "assignments", "users"
+  add_foreign_key "domains", "domain_sets"
 end
