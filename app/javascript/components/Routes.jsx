@@ -11,6 +11,7 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import Mapping from "./mapping/Mapping";
 import MainDashboard from "./dashboard/MainDashboard";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import SpecList from "./specifications-list/SpecList";
 
 const Routes = (props) => {
   let manageLogin = props.handleLogin;
@@ -28,6 +29,12 @@ const Routes = (props) => {
           path={"/sign-in"}
           render={(props) => <SignIn {...props} handleLogin={manageLogin}/>}
         />
+
+        <ProtectedRoute
+          exact
+          path="/specifications"
+          allowNonAdmins={true}
+          component={SpecList} />
 
         <ProtectedRoute
           exact
