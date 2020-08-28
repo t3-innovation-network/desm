@@ -12,9 +12,9 @@ class LeftSideHome extends React.Component {
             adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua.
           </p>
-          <button className="btn wide-btn btn-dark" type="button">
+          <Link to="/specifications" className="btn wide-btn btn-dark">
             View Specifications
-          </button>
+          </Link>
         </section>
         <section>
           <h6 className="subtitle">Map your specification to the T3 spine</h6>
