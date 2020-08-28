@@ -36,7 +36,7 @@
       ]
     },
     {
-      "id": "hhttp://desm.org/concepts/concepts/person",
+      "id": "http://desm.org/concepts/concepts/person",
       "type": "skos:Concept",
       "prefLabel": {"en-us": "Person"},
       "definition": {"en-us": "A human being regarded as an individual."},
