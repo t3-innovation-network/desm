@@ -11,7 +11,7 @@
 #   the project. That directory is configured by setting the environment
 #   variable called: "CONCEPTS_DIRECTORY_PATH"
 ###
-module DomainHelper
+module DomainsHelper
   ###
   # @description: Process a given file which must contain json data, to
   #   create domains and domain sets into the db.

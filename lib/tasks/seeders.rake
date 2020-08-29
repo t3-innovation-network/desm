@@ -36,7 +36,7 @@ namespace :seeders do
         if option == "y"
           file = File.read(path + "/" + filename)
 
-          DomainHelper.process_domains_from_file(file)
+          DomainsHelper.process_domains_from_file(file)
 
           processed += 1
         end

@@ -89,9 +89,10 @@ const MappingForm = (props) => {
    * then put it in the local sate
    */
   const fillWithDomains = () => {
-    let domains = fetchDomains();
-    setDomains(domains);
-    setDomainId(domains[0].id);
+    let domains = fetchDomains().then((response) => {
+      setDomains(response);
+      setDomainId(response[0].id);
+    })
   }
 
   /**
@@ -184,7 +185,7 @@ const MappingForm = (props) => {
                       onChange={e => setDomainId(e.target.value)}
                     />
                     <label
-                      for={dom.id}
+                      htmlFor={dom.id}
                       className="form-check-label cursor-pointer"
                     >
                       {dom.name}
