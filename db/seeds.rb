@@ -20,3 +20,7 @@ user_role = Role.create!(name: "Regular User");
 # Assing "admin" role to our admin user
 Assignment.create!(user: user, role: user_role);
 Assignment.create!(user: admin, role: admin_role);
+
+# Fill the db with all the domains (also called abstract classes or concepts) looking at
+# files in the 'concepts' directory
+Rake::Task['seeders:fetch_domains'].invoke
