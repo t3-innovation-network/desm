@@ -14,13 +14,18 @@
 ###
 namespace :seeders do
   desc "Import the domains from the skos file/s placed inside the 'concepts' directory"
-  task fetch_domains: :environment do
-    processed = 0
-    p "== Seed for domains"
-    p "Existent domain sets and domains will be ignored. Do you want to proceed? (y/n)"
-    option = STDIN.gets.chomp
+  task :fetch_domains, [:interactive] => :environment do |_task, args|
+    args.with_defaults(interactive: false)
 
-    if option == "y"
+    processed = 0
+    p "\n\n== Seed for domains"
+
+    if args[:interactive]
+      p "Existent domain sets and domains will be ignored. Do you want to proceed? (y/n)"
+      option = STDIN.gets.chomp
+    end
+
+    if (option == "y") || (!args[:interactive])
       # Get the concepts directory path from the environment variables
       path = File.join(Rails.root.to_s, "/", ENV.fetch("CONCEPTS_DIRECTORY_PATH"))
 
@@ -31,10 +36,12 @@ namespace :seeders do
         # Ensure we deal with a the file with classes
         next unless filename.downcase.include? "abstractclasses"
 
-        p "Do you want to process #{filename}?"
-        option = STDIN.gets.chomp
+        if args[:interactive]
+          p "Do you want to process #{filename}?"
+          option = STDIN.gets.chomp
+        end
 
-        if option == "y"
+        if (option == "y") || (!args[:interactive])
           file = File.read(path + "/" + filename)
 
           DomainsHelper.process_domains_from_file(file)
@@ -49,13 +56,18 @@ namespace :seeders do
   end
 
   desc "Import the predicates from the skos file/s placed inside the 'concepts' directory"
-  task fetch_predicates: :environment do
-    processed = 0
-    p "== Seed for predicates"
-    p "Existent predicates will be ignored. Do you want to proceed? (y/n)"
-    option = STDIN.gets.chomp
+  task :fetch_predicates, [:interactive] => :environment do |_task, args|
+    args.with_defaults(interactive: false)
 
-    if option == "y"
+    processed = 0
+    p "\n\n== Seed for predicates"
+
+    if args[:interactive]
+      p "Existent predicates will be ignored. Do you want to proceed? (y/n)"
+      option = STDIN.gets.chomp
+    end
+
+    if (option == "y") || (!args[:interactive])
       # Get the concepts directory path from the environment variables
       path = File.join(Rails.root.to_s, "/", ENV.fetch("CONCEPTS_DIRECTORY_PATH"))
 
@@ -66,10 +78,12 @@ namespace :seeders do
         # Ensure we deal with a the file with classes
         next unless filename.downcase.include? "predicates"
 
-        p "Do you want to process #{filename}?"
-        option = STDIN.gets.chomp
+        if args[:interactive]
+          p "Do you want to process #{filename}?"
+          option = STDIN.gets.chomp
+        end
 
-        if option == "y"
+        if (option == "y") || (!args[:interactive])
           file = File.read(path + "/" + filename)
 
           PredicatesHelper.process_from_file(file)
