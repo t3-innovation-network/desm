@@ -15,4 +15,6 @@
 #   - "Not Applicable",
 ###
 class Predicate < ApplicationRecord
+  validates :uri, presence: true, uniqueness: true
+  validates :pref_label, presence: true
 end
