@@ -1,0 +1,92 @@
+/* Desm Radio */
+
+@import 'colors.scss';
+.desm-radio div {
+	clear: both;
+	overflow: hidden;
+}
+
+.desm-radio label {
+	width: 100%;
+	border-radius: 3px;
+	border: 1px solid $primary-color-highlight;
+	font-weight: normal;
+}
+
+.desm-radio input[type="radio"]:empty,
+.desm-radio input[type="checkbox"]:empty {
+	display: none;
+}
+
+.desm-radio input[type="radio"]:empty~label,
+.desm-radio input[type="checkbox"]:empty~label {
+	position: relative;
+	line-height: 2.5em;
+	text-indent: 3.25em;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.desm-radio input[type="radio"]:empty~label:before,
+.desm-radio input[type="checkbox"]:empty~label:before {
+	position: absolute;
+	display: block;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	content: '';
+	width: 2.5em;
+	background: $primary-color-highlight;
+	;
+	border-radius: 3px 0 0 3px;
+}
+
+.desm-radio input[type="radio"]:hover:not(:checked)~label,
+.desm-radio input[type="checkbox"]:hover:not(:checked)~label {
+	color: $on-primary-light;
+}
+
+.desm-radio input[type="radio"]:hover:not(:checked)~label:before,
+.desm-radio input[type="checkbox"]:hover:not(:checked)~label:before {
+	content: '✓';
+	text-indent: .9em;
+	color: $foreground-color;
+}
+
+.desm-radio input[type="radio"]:checked~label,
+.desm-radio input[type="checkbox"]:checked~label {
+	color: #777;
+}
+
+.desm-radio input[type="radio"]:checked~label:before,
+.desm-radio input[type="checkbox"]:checked~label:before {
+	content: '✓';
+	text-indent: .9em;
+	color: #333;
+	background-color: #ccc;
+}
+
+.desm-radio input[type="radio"]:focus~label:before,
+.desm-radio input[type="checkbox"]:focus~label:before {
+	box-shadow: 0 0 0 3px #999;
+}
+
+.desm-radio-default input[type="radio"]:checked~label:before,
+.desm-radio-default input[type="checkbox"]:checked~label:before {
+	color: #333;
+	background-color: #ccc;
+}
+
+.desm-radio-primary input[type="radio"]:checked~label:before,
+.desm-radio-primary input[type="checkbox"]:checked~label:before {
+	color: #fff;
+	background-color: $on-primary;
+}
+
+.multiple-domains-modal {
+  max-height: 100vh;
+  overflow-y: auto;
+}
