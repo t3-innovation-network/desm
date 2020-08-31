@@ -21,9 +21,9 @@ namespace :seeders do
 
     if option == "y"
       # Get the concepts directory path from the environment variables
-      path = File.join(Rails.root.to_s, "/", ENV.fetch("CONCEPTS_DIRECTORY_PATH"))
+      path = Rails.root.join(ENV.fetch("CONCEPTS_DIRECTORY_PATH"))
 
-      Dir.foreach(path) do |filename|
+      Dir.foreach(path.to_s) do |filename|
         # Do not process the parent nor the current folder file representations
         next if (filename == ".") || (filename == "..")
 
@@ -34,7 +34,7 @@ namespace :seeders do
         option = STDIN.gets.chomp
 
         if option == "y"
-          file = File.read(path + "/" + filename)
+          file = File.read(path.join(filename))
 
           DomainsHelper.process_domains_from_file(file)
 
