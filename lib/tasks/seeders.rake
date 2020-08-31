@@ -18,31 +18,25 @@ namespace :seeders do
     args.with_defaults(interactive: false)
 
     processed = 0
-    p "\n\n== Seed for domains"
-
-    if args[:interactive]
-      p "Existent domain sets and domains will be ignored. Do you want to proceed? (y/n)"
-      option = STDIN.gets.chomp
-    end
+    puts "Existent domain sets and domains will be ignored. Do you want to proceed? (y/n)"
+    option = STDIN.gets.chomp
 
     if (option == "y") || (!args[:interactive])
       # Get the concepts directory path from the environment variables
-      path = File.join(Rails.root.to_s, "/", ENV.fetch("CONCEPTS_DIRECTORY_PATH"))
+      path = Rails.root.join(ENV.fetch("CONCEPTS_DIRECTORY_PATH"))
 
-      Dir.foreach(path) do |filename|
+      Dir.foreach(path.to_s) do |filename|
         # Do not process the parent nor the current folder file representations
         next if (filename == ".") || (filename == "..")
 
         # Ensure we deal with a the file with classes
         next unless filename.downcase.include? "abstractclasses"
 
-        if args[:interactive]
-          p "Do you want to process #{filename}?"
-          option = STDIN.gets.chomp
-        end
+        puts "Do you want to process #{filename}?"
+        option = STDIN.gets.chomp
 
-        if (option == "y") || (!args[:interactive])
-          file = File.read(path + "/" + filename)
+        if option == "y"
+          file = File.read(path.join(filename))
 
           DomainsHelper.process_domains_from_file(file)
 
@@ -51,7 +45,7 @@ namespace :seeders do
       end
     end
 
-    p "#{ActionController::Base.helpers.pluralize(processed, 'file')} processed." +
+    puts "#{ActionController::Base.helpers.pluralize(processed, 'file')} processed." +
       (processed < 1 ? " Be sure to name the files ending with 'abstractclasses'." : "")
   end
 

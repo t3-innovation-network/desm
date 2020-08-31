@@ -3,8 +3,8 @@
 class CreateDomainSets < ActiveRecord::Migration[6.0]
   def change
     create_table :domain_sets do |t|
-      t.string :title
-      t.string :uri
+      t.string :title, null: false
+      t.string :uri, null: false
       t.text :description
       t.string :creator
 

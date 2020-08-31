@@ -25,8 +25,8 @@ ActiveRecord::Schema.define(version: 2020_08_29_171223) do
   end
 
   create_table "domain_sets", force: :cascade do |t|
-    t.string "title"
-    t.string "uri"
+    t.string "title", null: false
+    t.string "uri", null: false
     t.text "description"
     t.string "creator"
     t.datetime "created_at", precision: 6, null: false
@@ -35,9 +35,9 @@ ActiveRecord::Schema.define(version: 2020_08_29_171223) do
   end
 
   create_table "domains", force: :cascade do |t|
-    t.string "pref_label"
+    t.string "pref_label", null: false
+    t.string "uri", null: false
     t.text "definition"
-    t.string "uri"
     t.bigint "domain_set_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2020_08_29_171223) do
   end
 
   create_table "organizations", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -61,14 +61,14 @@ ActiveRecord::Schema.define(version: 2020_08_29_171223) do
   end
 
   create_table "roles", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email"
-    t.string "fullname"
+    t.string "email", null: false
+    t.string "fullname", null: false
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
