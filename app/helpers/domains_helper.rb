@@ -31,7 +31,7 @@ module DomainsHelper
 
     processed = process_domains(domains, domain_set)
 
-    p "#{ActionController::Base.helpers.pluralize(processed, 'domain')} processed." +
+    puts "#{ActionController::Base.helpers.pluralize(processed, 'domain')} processed." +
     (
       processed < 1 ? " Be sure to correctly format the file as an json-ld skos concepts file." : ""
     )
@@ -76,7 +76,7 @@ module DomainsHelper
   ###
   def self.already_exists(object_class, object)
     exists = object_class.constantize.where(uri: object[:id]).count.positive?
-    p "#{object_class} with uri: '#{object[:id]}' already exists in our records, ignoring" if exists
+    puts "#{object_class} with uri: '#{object[:id]}' already exists in our records, ignoring" if exists
     exists
   end
 
