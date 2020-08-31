@@ -52,7 +52,7 @@ module DomainsHelper
       # The concept scheme is processed, let's start with the proper domains
       next if domain[:type] == "skos:ConceptScheme"
 
-      next if already_exists("Domain", domain)
+      next if already_exists?(Domain, domain)
 
       Domain.create!({
                        uri: domain[:id],
@@ -74,8 +74,8 @@ module DomainsHelper
   # @param [Object] object The object to validated, it's a generic object so the
   #   class couldn't be inferred from it
   ###
-  def self.already_exists(object_class, object)
-    exists = object_class.constantize.where(uri: object[:id]).count.positive?
+  def self.already_exists?(object_class, object)
+    exists = object_class.exists?(uri: object[:id])
     puts "#{object_class} with uri: '#{object[:id]}' already exists in our records, ignoring" if exists
     exists
   end
@@ -89,7 +89,7 @@ module DomainsHelper
     domain_set = domains.select {|d| d["type"] == "skos:ConceptScheme" }.first
     domain_set = domain_set.with_indifferent_access
 
-    already_exists("DomainSet", domain_set)
+    already_exists?(DomainSet, domain_set)
 
     DomainSet.first_or_create!({
                                  uri: domain_set[:id],
