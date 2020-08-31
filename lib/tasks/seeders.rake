@@ -69,7 +69,7 @@ namespace :seeders do
 
     if (option == "y") || (!args[:interactive])
       # Get the concepts directory path from the environment variables
-      path = File.join(Rails.root.to_s, "/", ENV.fetch("CONCEPTS_DIRECTORY_PATH"))
+      path = Rails.root.join(ENV.fetch("CONCEPTS_DIRECTORY_PATH"))
 
       Dir.foreach(path) do |filename|
         # Do not process the parent nor the current folder file representations
@@ -84,7 +84,7 @@ namespace :seeders do
         end
 
         if (option == "y") || (!args[:interactive])
-          file = File.read(path + "/" + filename)
+          file = File.read(path.join(filename))
 
           PredicatesHelper.new.process_from_file(file)
 
