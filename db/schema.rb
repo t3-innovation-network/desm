@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_01_153043) do
+ActiveRecord::Schema.define(version: 2020_08_28_155236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,21 +24,42 @@ ActiveRecord::Schema.define(version: 2020_08_01_153043) do
     t.index ["user_id"], name: "index_assignments_on_user_id"
   end
 
+  create_table "domain_sets", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "uri", null: false
+    t.text "description"
+    t.string "creator"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["uri"], name: "index_domain_sets_on_uri", unique: true
+  end
+
+  create_table "domains", force: :cascade do |t|
+    t.string "pref_label", null: false
+    t.string "uri", null: false
+    t.text "definition"
+    t.bigint "domain_set_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["domain_set_id"], name: "index_domains_on_domain_set_id"
+    t.index ["uri"], name: "index_domains_on_uri", unique: true
+  end
+
   create_table "organizations", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "roles", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email"
-    t.string "fullname"
+    t.string "email", null: false
+    t.string "fullname", null: false
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -49,4 +70,5 @@ ActiveRecord::Schema.define(version: 2020_08_01_153043) do
 
   add_foreign_key "assignments", "roles"
   add_foreign_key "assignments", "users"
+  add_foreign_key "domains", "domain_sets"
 end

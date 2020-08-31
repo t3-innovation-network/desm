@@ -13,6 +13,7 @@ services:
       - WEBPACKER_DEV_SERVER_HOST=webpack
       - ADMIN_ROLE_NAME=${ADMIN_ROLE_NAME}
       - DEFAULT_PASS=${DEFAULT_PASS}
+      - CONCEPTS_DIRECTORY_PATH=${CONCEPTS_DIRECTORY_PATH}
 
   db:
     image: postgres
