@@ -1,23 +1,25 @@
 # frozen_string_literal: true
 
 ###
-# @description: This module will handle the tasks related to domains,
+# @description: This class will handle the tasks related to domains,
 #   which represents concepts.
 #
 #   E.g. "Person", "Organization", "Course"
 #
-#   One of the main tasks of this module will be to handle the existence
+#   One of the main tasks of this class will be to handle the existence
 #   of the domains by reading a skos file placed in a fixed directory in
 #   the project. That directory is configured by setting the environment
 #   variable called: "CONCEPTS_DIRECTORY_PATH"
 ###
-module DomainsHelper
+class DomainsHelper
+  include Validable
+
   ###
   # @description: Process a given file which must contain json data, to
   #   create domains and domain sets into the db.
   # @param [File] file The already loaded json file to be processed
   ###
-  def self.process_domains_from_file(file)
+  def process_from_file(file)
     file_content = JSON.parse(file)
 
     # The domains are listed under the '@graph' object
@@ -37,6 +39,8 @@ module DomainsHelper
     )
   end
 
+  private
+
   ###
   # @description: Process a given set of domains
   # @param [Array] domains The domains to be processed. It's an array of
@@ -44,15 +48,16 @@ module DomainsHelper
   # @param [DomainSet] The domain set to be assigned as a parent for each
   #   domain to be created
   ###
-  def self.process_domains(domains, domain_set)
+  def process_domains(domains, domain_set)
     processed = 0
+
     domains.each do |domain|
       domain = domain.with_indifferent_access
 
       # The concept scheme is processed, let's start with the proper domains
       next if domain[:type] == "skos:ConceptScheme"
 
-      next if already_exists?(Domain, domain)
+      next if already_exists?(Domain, domain, print_message: true)
 
       Domain.create!({
                        uri: domain[:id],
@@ -68,28 +73,15 @@ module DomainsHelper
   end
 
   ###
-  # @description: Validate the existence of a domain / domain set in the database
-  #   with a message to console
-  # @param [String] object_class The class fr the object to validated
-  # @param [Object] object The object to validated, it's a generic object so the
-  #   class couldn't be inferred from it
-  ###
-  def self.already_exists?(object_class, object)
-    exists = object_class.exists?(uri: object[:id])
-    puts "#{object_class} with uri: '#{object[:id]}' already exists in our records, ignoring" if exists
-    exists
-  end
-
-  ###
   # @description: Process a given concept shcheme (domain set) to crate it
   #   if necessary
   # @param [Object] domain The concept scheme object to be processed
   ###
-  def self.process_domain_set(domains)
+  def process_domain_set(domains)
     domain_set = domains.select {|d| d["type"] == "skos:ConceptScheme" }.first
     domain_set = domain_set.with_indifferent_access
 
-    already_exists?(DomainSet, domain_set)
+    already_exists?(DomainSet, domain_set, print_message: true)
 
     DomainSet.first_or_create!({
                                  uri: domain_set[:id],

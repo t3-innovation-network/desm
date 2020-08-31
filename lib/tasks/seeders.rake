@@ -18,8 +18,12 @@ namespace :seeders do
     args.with_defaults(interactive: false)
 
     processed = 0
-    puts "Existent domain sets and domains will be ignored. Do you want to proceed? (y/n)"
-    option = STDIN.gets.chomp
+    puts "\n\n== Seed for domains"
+
+    if args[:interactive]
+      puts "Existent domain sets and domains will be ignored. Do you want to proceed? (y/n)"
+      option = STDIN.gets.chomp
+    end
 
     if (option == "y") || (!args[:interactive])
       # Get the concepts directory path from the environment variables
@@ -32,13 +36,15 @@ namespace :seeders do
         # Ensure we deal with a the file with classes
         next unless filename.downcase.include? "abstractclasses"
 
-        puts "Do you want to process #{filename}?"
-        option = STDIN.gets.chomp
+        if args[:interactive]
+          puts "Do you want to process #{filename}?"
+          option = STDIN.gets.chomp
+        end
 
-        if option == "y"
+        if (option == "y") || (!args[:interactive])
           file = File.read(path.join(filename))
 
-          DomainsHelper.process_domains_from_file(file)
+          DomainsHelper.new.process_from_file(file)
 
           processed += 1
         end
@@ -54,10 +60,10 @@ namespace :seeders do
     args.with_defaults(interactive: false)
 
     processed = 0
-    p "\n\n== Seed for predicates"
+    puts "\n\n== Seed for predicates"
 
     if args[:interactive]
-      p "Existent predicates will be ignored. Do you want to proceed? (y/n)"
+      puts "Existent predicates will be ignored. Do you want to proceed? (y/n)"
       option = STDIN.gets.chomp
     end
 
@@ -73,21 +79,21 @@ namespace :seeders do
         next unless filename.downcase.include? "predicates"
 
         if args[:interactive]
-          p "Do you want to process #{filename}?"
+          puts "Do you want to process #{filename}?"
           option = STDIN.gets.chomp
         end
 
         if (option == "y") || (!args[:interactive])
           file = File.read(path + "/" + filename)
 
-          PredicatesHelper.process_from_file(file)
+          PredicatesHelper.new.process_from_file(file)
 
           processed += 1
         end
       end
     end
 
-    p "#{ActionController::Base.helpers.pluralize(processed, 'file')} processed." +
+    puts "#{ActionController::Base.helpers.pluralize(processed, 'file')} processed." +
       (processed < 1 ? " Be sure to name the files ending with 'abstractclasses'." : "")
   end
 end
