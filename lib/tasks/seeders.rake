@@ -44,14 +44,14 @@ namespace :seeders do
         if (option == "y") || (!args[:interactive])
           file = File.read(path.join(filename))
 
-          DomainsHelper.new.process_from_file(file)
+          Processors::Domains.process_from_file(file)
 
           processed += 1
         end
       end
     end
 
-    puts "#{ActionController::Base.helpers.pluralize(processed, 'file')} processed." +
+    puts "\n#{ActionController::Base.helpers.pluralize(processed, 'file')} processed." +
       (processed < 1 ? " Be sure to name the files ending with 'abstractclasses'." : "")
   end
 
@@ -86,14 +86,14 @@ namespace :seeders do
         if (option == "y") || (!args[:interactive])
           file = File.read(path.join(filename))
 
-          PredicatesHelper.new.process_from_file(file)
+          Processors::Predicates.process_from_file(file)
 
           processed += 1
         end
       end
     end
 
-    puts "#{ActionController::Base.helpers.pluralize(processed, 'file')} processed." +
+    puts "\n#{ActionController::Base.helpers.pluralize(processed, 'file')} processed." +
       (processed < 1 ? " Be sure to name the files ending with 'abstractclasses'." : "")
   end
 end

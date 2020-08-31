@@ -4,7 +4,7 @@
 # @description: Includes additional validation logic with options like printing
 #   messages to the screen if a validation is not correct
 ###
-module Validable
+module Validatable
   ###
   # @description: Validate the existence of an object in the database
   #
@@ -14,7 +14,9 @@ module Validable
   ###
   def already_exists?(object_class, object, print_message: false)
     exists = object_class.exists?(uri: object[:id])
-    puts "#{object_class} with uri: '#{object[:id]}' already exists in our records, ignoring" if exists && print_message
+    if exists && print_message
+      puts "\n- #{object_class} with uri: '#{object[:id]}' already exists in our records, ignoring"
+    end
     exists
   end
 end
