@@ -13,13 +13,19 @@
 #   attribute of each entity.
 ###
 namespace :seeders do
-  desc "Import the domains from the skos file/s placed inside the 'ns' directory"
-  task fetch_domains: :environment do
-    processed = 0
-    puts "Existent domain sets and domains will be ignored. Do you want to proceed? (y/n)"
-    option = STDIN.gets.chomp
+  desc "Import the domains from the skos file/s placed inside the 'concepts' directory"
+  task :fetch_domains, [:interactive] => :environment do |_task, args|
+    args.with_defaults(interactive: false)
 
-    if option == "y"
+    processed = 0
+    puts "\n\n== Seed for domains"
+
+    if args[:interactive]
+      puts "Existent domain sets and domains will be ignored. Do you want to proceed? (y/n)"
+      option = STDIN.gets.chomp
+    end
+
+    if (option == "y") || (!args[:interactive])
       # Get the concepts directory path from the environment variables
       path = Rails.root.join(ENV.fetch("CONCEPTS_DIRECTORY_PATH"))
 
@@ -30,20 +36,64 @@ namespace :seeders do
         # Ensure we deal with a the file with classes
         next unless filename.downcase.include? "abstractclasses"
 
-        puts "Do you want to process #{filename}?"
-        option = STDIN.gets.chomp
+        if args[:interactive]
+          puts "Do you want to process #{filename}?"
+          option = STDIN.gets.chomp
+        end
 
-        if option == "y"
+        if (option == "y") || (!args[:interactive])
           file = File.read(path.join(filename))
 
-          DomainsHelper.process_domains_from_file(file)
+          Processors::Domains.process_from_file(file)
 
           processed += 1
         end
       end
     end
 
-    puts "#{ActionController::Base.helpers.pluralize(processed, 'file')} processed." +
+    puts "\n#{ActionController::Base.helpers.pluralize(processed, 'file')} processed." +
+      (processed < 1 ? " Be sure to name the files ending with 'abstractclasses'." : "")
+  end
+
+  desc "Import the predicates from the skos file/s placed inside the 'concepts' directory"
+  task :fetch_predicates, [:interactive] => :environment do |_task, args|
+    args.with_defaults(interactive: false)
+
+    processed = 0
+    puts "\n\n== Seed for predicates"
+
+    if args[:interactive]
+      puts "Existent predicates will be ignored. Do you want to proceed? (y/n)"
+      option = STDIN.gets.chomp
+    end
+
+    if (option == "y") || (!args[:interactive])
+      # Get the concepts directory path from the environment variables
+      path = Rails.root.join(ENV.fetch("CONCEPTS_DIRECTORY_PATH"))
+
+      Dir.foreach(path) do |filename|
+        # Do not process the parent nor the current folder file representations
+        next if (filename == ".") || (filename == "..")
+
+        # Ensure we deal with a the file with classes
+        next unless filename.downcase.include? "predicates"
+
+        if args[:interactive]
+          puts "Do you want to process #{filename}?"
+          option = STDIN.gets.chomp
+        end
+
+        if (option == "y") || (!args[:interactive])
+          file = File.read(path.join(filename))
+
+          Processors::Predicates.process_from_file(file)
+
+          processed += 1
+        end
+      end
+    end
+
+    puts "\n#{ActionController::Base.helpers.pluralize(processed, 'file')} processed." +
       (processed < 1 ? " Be sure to name the files ending with 'abstractclasses'." : "")
   end
 end

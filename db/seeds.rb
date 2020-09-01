@@ -9,18 +9,20 @@
 SeedFu.seed
 
 # Let's create an admin user first
-user = User.create!(fullname: "user", email: "user@t3converter.com", password: "t3user", organization: Organization.first);
-admin = User.create!(fullname: "admin", email: "admin@t3converter.com", password: "t3admin", organization: Organization.first);
+user = User.create!(fullname: "user", email: "user@t3converter.com", password: "t3user", organization: Organization.first)
+admin = User.create!(fullname: "admin", email: "admin@t3converter.com", password: "t3admin", organization: Organization.first)
 
 # And an admin and a regular user role
-admin_role_name = (ENV['ADMIN_ROLE_NAME'] || 'Admin').downcase
-admin_role = Role.create!(name: admin_role_name);
-user_role = Role.create!(name: "Regular User");
+admin_role_name = (ENV["ADMIN_ROLE_NAME"] || "Admin").downcase
+admin_role = Role.create!(name: admin_role_name)
+user_role = Role.create!(name: "Regular User")
 
 # Assing "admin" role to our admin user
-Assignment.create!(user: user, role: user_role);
-Assignment.create!(user: admin, role: admin_role);
+Assignment.create!(user: user, role: user_role)
+Assignment.create!(user: admin, role: admin_role)
 
-# Fill the db with all the domains (also called abstract classes or concepts) looking at
-# files in the 'concepts' directory
-Rake::Task['seeders:fetch_domains'].invoke
+# Fill the db with:
+# - all the domains (also called abstract classes or concepts) and
+# - all the predicates, which represents a way to identify the nature / quality of the mapping
+#   between the spine term and mapped term.looking at files in the 'concepts' directory
+["fetch_domains", "fetch_predicates"].each { |t| Rake::Task["seeders:#{t}"].invoke }
