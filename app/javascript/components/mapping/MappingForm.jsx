@@ -6,18 +6,46 @@ import { useSelector, useDispatch } from "react-redux";
 import { setFiles } from "../../actions/files";
 import { doSubmit } from "../../actions/mappingform";
 import fetchDomains from "../../services/fetchDomains";
-import {toastr as toast} from 'react-redux-toastr';
+import { toastr as toast } from "react-redux-toastr";
+import MultipleDomainsModal from "./multipleDomainsModal";
+import apiAnalyzeDomainsInFile from "../../services/apiAnalyzeDomainsInFile";
 
 const MappingForm = (props) => {
-
   const [errors, setErrors] = useState("");
+
+  /// Name of the specification
   const [name, setName] = useState("");
+
+  /// Version of this specification
   const [version, setVersion] = useState("");
+
+  /// Use case for this specification
   const [use_case, setUseCase] = useState("");
+
+  /// The list  of domains (from the skos file)
   const [domains, setDomains] = useState([]);
-  const [domainID, setDomainId] = useState(null);
+
+  /// The selected domain to map to
+  const [selectedDomainId, setSelectedDomainId] = useState(null);
+
+  /// The selected domain to map from (read from the file)
+  const [selectedDomainIdFromFile, setSelectedDomainIdFromFile] = useState(
+    null
+  );
+
+  /// Whether there's more than one domain found in the uploaded file
+  const [multipleDomainsInFile, setMultipleDomainsInFile] = useState(false);
+
+  /// Which domains were found in the uploaded file (the api parses
+  /// the file to get to it)
+  const [domainsInFile, setDomainsInFile] = useState([]);
+
+  /// the files uploaded by the user
   const files = useSelector((state) => state.files);
+
+  /// Whether the form was submitted or not, in order to show the preview
   const submitted = useSelector((state) => state.submitted);
+
   const dispatch = useDispatch();
 
   /**
@@ -26,7 +54,7 @@ const MappingForm = (props) => {
    */
   const handleFileChange = (event) => {
     dispatch(setFiles(Array.from(event.target.files)));
-  }
+  };
 
   /**
    * Validates the use case to be a valid URL after the user focuses
@@ -38,7 +66,11 @@ const MappingForm = (props) => {
     } else {
       setErrors("");
     }
-  }
+  };
+
+  const unsetMultipleDomains = () => {
+    setMultipleDomainsInFile(false);
+  };
 
   /**
    * Send the file/s to the API service to be parsed
@@ -49,12 +81,35 @@ const MappingForm = (props) => {
       event.preventDefault();
       return;
     }
+
+    /**
+     * Be sure the file uploaded contains only one domain to map to
+     */
+    files.map((file) => {
+      apiAnalyzeDomainsInFile(file).then((domainsFound) => {
+        if (domainsFound.length > 1) {
+          setMultipleDomainsInFile(true);
+          setDomainsInFile(domainsFound);
+        }
+      });
+    });
+
     /**
      * @todo Implement sending the files to the API service
      */
     dispatch(doSubmit());
     event.preventDefault();
-  }
+  };
+
+  /**
+   * When the user selects a domain from the ones recognized after parsing
+   * the file, let's manage to grab it so we can send it to the api
+   */
+  const onSelectDomainFromFile = (id) => {
+    setSelectedDomainIdFromFile(id);
+    setMultipleDomainsInFile(false);
+    toast.info("Great! You selected the domain with URI: " + id);
+  };
 
   /**
    * File content to be displayed after
@@ -75,10 +130,7 @@ const MappingForm = (props) => {
 
     return (
       <React.Fragment>
-        <label>
-          {files ? files.length : 0} files
-          attached
-        </label>
+        <label>{files ? files.length : 0} files attached</label>
         {fileCards}
       </React.Fragment>
     );
@@ -89,11 +141,11 @@ const MappingForm = (props) => {
    * then put it in the local sate
    */
   const fillWithDomains = () => {
-    let domains = fetchDomains().then((response) => {
+    fetchDomains().then((response) => {
       setDomains(response);
-      setDomainId(response[0].id);
-    })
-  }
+      setSelectedDomainId(response[0].id);
+    });
+  };
 
   /**
    * Use effect with an emtpy array as second parameter, will trigger the 'fillWithDomains'
@@ -106,7 +158,18 @@ const MappingForm = (props) => {
 
   return (
     <React.Fragment>
-      <div className={(submitted ? "disabled-form ": " ") + "col-lg-6 p-lg-5 pt-5"}>
+      <MultipleDomainsModal
+        modalIsOpen={multipleDomainsInFile}
+        onRequestClose={unsetMultipleDomains}
+        domains={domainsInFile}
+        onSelectDomain={onSelectDomainFromFile}
+      />
+
+      <div
+        className={
+          (submitted ? "disabled-form " : " ") + "col-lg-6 p-lg-5 pt-5"
+        }
+      >
         {errors && <ErrorNotice message={errors} />}
 
         <div className="mandatory-fields-notice">
@@ -129,7 +192,7 @@ const MappingForm = (props) => {
                 id="specification_name"
                 className="form-control"
                 value={name}
-                onChange={e => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 required
                 disabled={submitted}
               />
@@ -145,7 +208,7 @@ const MappingForm = (props) => {
                 id="version"
                 className="form-control"
                 value={version}
-                onChange={e => setVersion(e.target.value)}
+                onChange={(e) => setVersion(e.target.value)}
                 required
                 disabled={submitted}
               />
@@ -159,7 +222,7 @@ const MappingForm = (props) => {
                 name="use_case"
                 value={use_case}
                 onBlur={handleUseCaseBlur}
-                onChange={e => setUseCase(e.target.value)}
+                onChange={(e) => setUseCase(e.target.value)}
                 disabled={submitted}
               />
               <small className="form-text text-muted">
@@ -168,35 +231,25 @@ const MappingForm = (props) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="domains_to_map">
-                Which domain are you uploading?
-              </label>
-              <div className="col-sm-10">
+              <label>Which domain are you uploading?</label>
 
-              {domains.map(function (dom) {
-                return (
-                  <div className="form-check" key={dom.id}>
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      id={dom.id}
-                      name="domain_id"
-                      value={dom.id}
-                      onChange={e => setDomainId(e.target.value)}
-                    />
-                    <label
-                      htmlFor={dom.id}
-                      className="form-check-label cursor-pointer"
-                    >
-                      {dom.name}
-                    </label>
-                  </div>
-                );
-              })}
-
+              <div className="desm-radio">
+                {domains.map(function (dom) {
+                  return (
+                    <div className="desm-radio-primary" key={dom.id}>
+                      <input
+                        type="radio"
+                        value={dom.id}
+                        id={dom.id}
+                        name="domain-options-form"
+                        onChange={(e) => setSelectedDomainId(e.target.value)}
+                      />
+                      <label htmlFor={dom.id}>{dom.name}</label>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-
             <div className="form-group">
               <div className="input-group">
                 <div className="input-group-prepend">
@@ -218,17 +271,15 @@ const MappingForm = (props) => {
                     required={true}
                     disabled={submitted}
                   />
-                  <label
-                    className="custom-file-label"
-                    htmlFor="file-uploader"
-                  >
+                  <label className="custom-file-label" htmlFor="file-uploader">
                     Attach File
                     <span className="text-danger">*</span>
                   </label>
                 </div>
               </div>
               <label className="mt-3">
-                You can upload your specification as RDF, JSON, XML or JSONLD format
+                You can upload your specification as RDF, JSON, XML or JSONLD
+                format
               </label>
             </div>
 
@@ -244,6 +295,6 @@ const MappingForm = (props) => {
       </div>
     </React.Fragment>
   );
-}
+};
 
 export default MappingForm;
