@@ -73,6 +73,11 @@ module Recuperable
         message_key: "errors.auth.invalid_credentials",
         status_code: :unprocessable_entity,
         include_original_error_message: true
+      },
+      "InvalidSpecification": {
+        message_key: "errors.specs.invalid_specification",
+        status_code: :unprocessable_entity,
+        include_original_error_message: false
       }
     }
   end

@@ -6,12 +6,12 @@ const MultipleDomainsModal = (props) => {
 
   const customStyles = {
     content: {
-      top: "50%",
+      top: "10vh",
       left: "50%",
       right: "auto",
       bottom: "auto",
       marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
+      transform: "translate(-50%)",
       border: "none",
     },
   };
@@ -43,6 +43,16 @@ const MultipleDomainsModal = (props) => {
                 Please, pick one of the following domains found in the file to
                 begin mapping
               </h4>
+              <div className="form-group has-search">
+                <span className="fa fa-search form-control-feedback"></span>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Search by name"
+                  value={props.inputValue}
+                  onChange={props.filterOnChange}
+                />
+              </div>
             </div>
           </div>
         </div>

@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       resources :roles, only: [:index]
       get 'domains' => 'domains#index'
       post 'specifications/info' => 'specifications#info'
+      post 'specifications/filter' => 'specifications#filter'
     end
   end
 

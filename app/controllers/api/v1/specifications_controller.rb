@@ -14,4 +14,14 @@ class Api::V1::SpecificationsController < ApplicationController
 
     render json: {domains: domains}
   end
+
+  ###
+  # @description: Return a json-ld file with the context and a graph
+  #  node with only one class, all it's properties and recursively, all the
+  #  related properties
+  ###
+  def filter
+    file = File.read(params[:file])
+    render json: Processors::Specifications.filter_specification(file, params[:uri])
+  end
 end

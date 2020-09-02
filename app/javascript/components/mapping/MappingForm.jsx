@@ -3,12 +3,13 @@ import validator from "validator";
 import ErrorNotice from "../shared/ErrorNotice";
 import FileInfo from "./FileInfo";
 import { useSelector, useDispatch } from "react-redux";
-import { setFiles } from "../../actions/files";
+import { setFiles, setSpecToPreview } from "../../actions/files";
 import { doSubmit } from "../../actions/mappingform";
 import fetchDomains from "../../services/fetchDomains";
 import { toastr as toast } from "react-redux-toastr";
 import MultipleDomainsModal from "./multipleDomainsModal";
 import apiAnalyzeDomainsInFile from "../../services/apiAnalyzeDomainsInFile";
+import filterSpecification from "../../services/filterSpecification";
 
 const MappingForm = (props) => {
   const [errors, setErrors] = useState("");
@@ -40,8 +41,22 @@ const MappingForm = (props) => {
   /// the file to get to it)
   const [domainsInFile, setDomainsInFile] = useState([]);
 
-  /// the files uploaded by the user
+  /// The value of the input that the user is typing in the search box
+  /// when there are many domains in the uploaded file
+  const [inputValue, setInputValue] = useState("");
+
+  /// The domains that includes the string typed by the user in the
+  /// search box when there are many domains in the uploaded file
+  const filteredDomainsInFile = domainsInFile.filter((domain) => {
+    return domain.label.toLowerCase().includes(inputValue.toLowerCase());
+  });
+
+  /// The files uploaded by the user
   const files = useSelector((state) => state.files);
+
+  /// The preview files (files already prepared to be previewed, as
+  /// without the unrelated domains and properties)
+  const previewSpecs = useSelector((state) => state.previewSpecs);
 
   /// Whether the form was submitted or not, in order to show the preview
   const submitted = useSelector((state) => state.submitted);
@@ -72,6 +87,37 @@ const MappingForm = (props) => {
     setMultipleDomainsInFile(false);
   };
 
+  const filterOnChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const sendFileToPreview = (file) => {
+    const reader = new FileReader();
+
+    /**
+     * When reading the file content
+     */
+    reader.onload = () => {
+      /// Get the content of the file
+      let content = reader.result;
+
+      /// Get it into the specs list and put it on the previews
+      let tempSpecs = previewSpecs;
+      tempSpecs.push(content);
+      dispatch(setSpecToPreview([]));
+      dispatch(setSpecToPreview(tempSpecs));
+    };
+
+    /**
+     * Update callback for errors
+     */
+    reader.onerror = function (e) {
+      setErrors("File could not be read! Code: " + e.target.error.code);
+    };
+
+    reader.readAsText(file);
+  };
+
   /**
    * Send the file/s to the API service to be parsed
    */
@@ -86,12 +132,19 @@ const MappingForm = (props) => {
      * Be sure the file uploaded contains only one domain to map to
      */
     files.map((file) => {
-      apiAnalyzeDomainsInFile(file).then((domainsFound) => {
-        if (domainsFound.length > 1) {
-          setMultipleDomainsInFile(true);
-          setDomainsInFile(domainsFound);
-        }
-      });
+      apiAnalyzeDomainsInFile(file)
+        .then((domainsFound) => {
+          if (domainsFound.length > 1) {
+            setMultipleDomainsInFile(true);
+            setDomainsInFile(domainsFound);
+            return;
+          }
+
+          sendFileToPreview(file);
+        })
+        .catch((e) => {
+          toast.error(e.message);
+        });
     });
 
     /**
@@ -103,11 +156,23 @@ const MappingForm = (props) => {
 
   /**
    * When the user selects a domain from the ones recognized after parsing
-   * the file, let's manage to grab it so we can send it to the api
+   * the file, let's manage to grab it so we can send it to the api.
+   *
+   * Then filter the file content to only show the selected domain an
+   * related properties.
    */
   const onSelectDomainFromFile = (id) => {
     setSelectedDomainIdFromFile(id);
     setMultipleDomainsInFile(false);
+
+    let tempSpecs = [];
+    files.map((file) => {
+      filterSpecification(id, file).then((filteredSpecification) => {
+        tempSpecs.push(JSON.stringify(filteredSpecification, null, 2));
+        dispatch(setSpecToPreview(tempSpecs));
+      });
+    });
+
     toast.info("Great! You selected the domain with URI: " + id);
   };
 
@@ -161,8 +226,9 @@ const MappingForm = (props) => {
       <MultipleDomainsModal
         modalIsOpen={multipleDomainsInFile}
         onRequestClose={unsetMultipleDomains}
-        domains={domainsInFile}
+        domains={filteredDomainsInFile}
         onSelectDomain={onSelectDomainFromFile}
+        filterOnChange={filterOnChange}
       />
 
       <div
@@ -243,6 +309,7 @@ const MappingForm = (props) => {
                         id={dom.id}
                         name="domain-options-form"
                         onChange={(e) => setSelectedDomainId(e.target.value)}
+                        disabled={submitted}
                       />
                       <label htmlFor={dom.id}>{dom.name}</label>
                     </div>
@@ -266,7 +333,8 @@ const MappingForm = (props) => {
                     data-show-caption="true"
                     id="file-uploader"
                     aria-describedby="upload-help"
-                    accept=".rdf, .json, .jsonld, .xml"
+                    // accept=".rdf, .json, .jsonld, .xml"
+                    accept=".json, .jsonld"
                     onChange={handleFileChange}
                     required={true}
                     disabled={submitted}
@@ -284,7 +352,7 @@ const MappingForm = (props) => {
             </div>
 
             <section>
-              <button type="submit" className="btn btn-dark mt-3">
+              <button type="submit" className="btn btn-dark mt-3" disabled={submitted}>
                 Import Specification
               </button>
             </section>
