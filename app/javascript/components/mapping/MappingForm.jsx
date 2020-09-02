@@ -40,6 +40,16 @@ const MappingForm = (props) => {
   /// the file to get to it)
   const [domainsInFile, setDomainsInFile] = useState([]);
 
+  /// The value of the input that the user is typing in the search box
+  /// when there are many domains in the uploaded file
+  const [inputValue, setInputValue] = useState("");
+
+  /// The domains that includes the string typed by the user in the
+  /// search box when there are many domains in the uploaded file
+  const filteredDomainsInFile = domainsInFile.filter((domain) => {
+    return domain.label.toLowerCase().includes(inputValue.toLowerCase());
+  });
+
   /// the files uploaded by the user
   const files = useSelector((state) => state.files);
 
@@ -70,6 +80,10 @@ const MappingForm = (props) => {
 
   const unsetMultipleDomains = () => {
     setMultipleDomainsInFile(false);
+  };
+
+  const filterOnChange = (event) => {
+    setInputValue(event.target.value);
   };
 
   /**
@@ -161,8 +175,9 @@ const MappingForm = (props) => {
       <MultipleDomainsModal
         modalIsOpen={multipleDomainsInFile}
         onRequestClose={unsetMultipleDomains}
-        domains={domainsInFile}
+        domains={filteredDomainsInFile}
         onSelectDomain={onSelectDomainFromFile}
+        filterOnChange={filterOnChange}
       />
 
       <div
