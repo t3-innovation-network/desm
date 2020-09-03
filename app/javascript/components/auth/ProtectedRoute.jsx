@@ -17,7 +17,7 @@ const ProtectedRoute = ({
     /// The signed in user has valid roles
       user.roles !== undefined &&
     /// We allow this route for non admins OR the signed in user is an admin
-      (allowNonAdmins || user.roles[0].name == adminRoleName) ? (
+      (allowNonAdmins || user.roles[0].name.toLowerCase() == adminRoleName.toLowerCase()) ? (
 
       /// Go render the route
       <Route

@@ -34,6 +34,10 @@ a:hover {
   font-family: "Proxima Nova Condensed Light", sans-serif;
 }
 
+.cursor-pointer{
+  cursor: pointer;
+}
+
 /* Main view Styles */
 
 .bg-col-secondary {
@@ -42,6 +46,10 @@ a:hover {
 
 .bg-col-primary {
   background-color: $primary-color !important;
+}
+
+.bg-col-on-primary-highlight {
+  background-color: $primary-color-highlight !important;
 }
 
 .col-background {

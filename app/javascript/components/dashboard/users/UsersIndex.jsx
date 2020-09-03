@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import DashboardContainer from "../DashboardContainer";
 import { Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import fetchUsers from "../../../services/fetchUsers";
 import ErrorNotice from "../../shared/ErrorNotice";
 import ErrorMessage from "../../shared/ErrorMessage";
@@ -97,7 +95,6 @@ export default class UsersIndex extends Component {
             </div>
           </div>
         </div>
-        <ToastContainer />
       </DashboardContainer>
     );
   }

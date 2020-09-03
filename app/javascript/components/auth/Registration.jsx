@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import DashboardContainer from "../dashboard/DashboardContainer";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import fetchOrganizations from "../../services/fetchOrganizations";
 import fetchRoles from "../../services/fetchRoles";
 import ErrorNotice from "../shared/ErrorNotice";
 import ErrorMessage from "../shared/ErrorMessage";
 import createUser from "../../services/createUser";
+import {toastr as toast} from 'react-redux-toastr';
 
 class Registration extends Component {
   /**
@@ -197,7 +196,6 @@ class Registration extends Component {
               </div>
             </div>
           </div>
-          <ToastContainer />
         </DashboardContainer>
       </React.Fragment>
     );
