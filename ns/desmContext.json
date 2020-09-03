@@ -25,7 +25,7 @@
     "narrower": {"@id": "skos:narrower", "@type": "@id"},
     "prefLabel": {"@id": "skos:prefLabel", "@container": "@language"},
     "range": {"@id": "rdfs:range", "@type": "@id"},
-    "sourceURI": {"@id": "desm:sourceURI", "@type": "@id" },
+    "sourcePath": {"@id": "desm:sourcePath", "@type": "xsd:string" },
     "spineTerm": {"@id": "desm:spineTerm", "@type": "@id" },
     "subPropertyOf": {"@id": "rdfs:subPropertyOf", "@type": "@id"},
     "title": {"@id": "dct:title", "@container": "@language"},

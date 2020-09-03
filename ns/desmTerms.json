@@ -565,12 +565,12 @@
       }
     },
     {
-      "@id": "desm:sourceURI",
+      "@id": "desm:sourcePath",
       "@type": "rdfs:Property",
-      "dct:identifier": "desm:sourceURI",
+      "dct:identifier": "desm:sourcePath",
       "rdfs:comment": {
         "@language": "en-US",
-        "@value": "The URI of the property being mapped to or from."
+        "@value": "The location of the property in instance data; i.e., XPath, JSONPath, row name in a CSV."
       },
       "rdfs:domain": {
         "@id": "rdf:Property"
@@ -580,10 +580,10 @@
       },
       "rdfs:label": {
         "@language": "en-US",
-        "@value": "Source URI"
+        "@value": "Source Path"
       },
       "rdfs:range": {
-        "@id": "xsd:anyURI"
+        "@id": "xsd:string"
       }
     },
     {
