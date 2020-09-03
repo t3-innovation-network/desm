@@ -50,7 +50,7 @@ module Processors
         }
       end
 
-      domains_in_file
+      domains_in_file.sort_by! {|d| d[:label] }
     end
   end
 end
