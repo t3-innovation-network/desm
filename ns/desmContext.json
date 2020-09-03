@@ -11,7 +11,7 @@
     "broader": {"@id": "skos:broader", "@type": "@id"},
     "comment": {"@id": "rdfs:comment", "@type": "@id"},
     "created": {"@id": "dct:created", "@type": "xsd:date"},
-    "datatpe": {"@id": "desm:datatype", "@type": "rdfs:DataType"},
+    "datatype": {"@id": "desm:datatype", "@type": "rdfs:DataType"},
     "definition": {"@id": "skos:definition", "@container": "@language"},
     "description": {"@id": "dct:description", "@container": "@language"},
     "domain": {"@id": "rdfs:domain", "@type": "@id"},
