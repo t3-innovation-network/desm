@@ -341,8 +341,39 @@
       "owl:inverseOfOf": {
         "@id": "dct:isPartOf"
       }
-    }
-    ,
+    },
+    {
+      "@id": "skos:hasTopConcept",
+      "@type": "rdfs:Property",
+      "dct:identifier": "skos:hasTopConcept",
+      "rdfs:comment": {
+        "@language": "en-US",
+        "@value": "Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies."
+      },
+      "rdfs:domain": [
+        {
+            "@id": "skos:ConceptScheme"
+        }
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "skos:"
+      },
+      "rdfs:label": {
+        "@language": "en-US",
+        "@value": "Has Top Concept"
+      },
+      "rdfs:range": [
+        {
+            "@id": "desm:TermMapping"
+        },
+        {
+            "@id": "desm:skos:Concept"
+        }
+      ],
+      "owl:inverseOfOf": {
+        "@id": "dct:isPartOf"
+      }
+    },
     {
       "@id": "skos:inScheme",
       "@type": "rdfs:Property",
