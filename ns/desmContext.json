@@ -16,6 +16,7 @@
     "description": {"@id": "dct:description", "@container": "@language"},
     "domain": {"@id": "rdfs:domain", "@type": "@id"},
     "hasPart": {"@id": "dct:hasPart", "@type": "@id"},
+    "hasTopConcept": {"@id": "skos:hasTopConcept", "@type": "@id"},
     "inScheme": {"@id": "skos:inScheme", "@type": "@id" },
     "isPartOf": {"@id": "dct:isPartOf", "@type": "@id" },
     "label": {"@id": "rdfs:label", "@type": "xsd:string"},
