@@ -78,6 +78,11 @@ module Recuperable
         message_key: "errors.specs.invalid_specification",
         status_code: :unprocessable_entity,
         include_original_error_message: false
+      },
+      "ActiveRecord::RecordNotUnique": {
+        message_key: "errors.record_not_unique",
+        status_code: :internal_server_error,
+        include_original_error_message: true
       }
     }
   end

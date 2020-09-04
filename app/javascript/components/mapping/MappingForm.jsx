@@ -4,7 +4,12 @@ import ErrorNotice from "../shared/ErrorNotice";
 import FileInfo from "./FileInfo";
 import { useSelector, useDispatch } from "react-redux";
 import { setFiles, setSpecToPreview } from "../../actions/files";
-import { doSubmit } from "../../actions/mappingform";
+import {
+  doSubmit,
+  startProcessingFile,
+  stopProcessingFile,
+  setMappingFormData,
+} from "../../actions/mappingform";
 import fetchDomains from "../../services/fetchDomains";
 import { toastr as toast } from "react-redux-toastr";
 import MultipleDomainsModal from "./multipleDomainsModal";
@@ -21,7 +26,7 @@ const MappingForm = (props) => {
   const [version, setVersion] = useState("");
 
   /// Use case for this specification
-  const [use_case, setUseCase] = useState("");
+  const [useCase, setUseCase] = useState("");
 
   /// The list  of domains (from the skos file)
   const [domains, setDomains] = useState([]);
@@ -76,21 +81,30 @@ const MappingForm = (props) => {
    * out the "use case" input
    */
   const handleUseCaseBlur = () => {
-    if (!validator.isURL(use_case)) {
+    if (!validator.isURL(useCase)) {
       setErrors("'Use case' must be a valid URL");
     } else {
       setErrors("");
     }
   };
 
+  /**
+   * Set multiple domains flag to false
+   */
   const unsetMultipleDomains = () => {
     setMultipleDomainsInFile(false);
   };
 
+  /**
+   * Manage to change values from inputs in the state
+   */
   const filterOnChange = (event) => {
     setInputValue(event.target.value);
   };
 
+  /**
+   * Send the file content to be ready to preview
+   */
   const sendFileToPreview = (file) => {
     const reader = new FileReader();
 
@@ -118,6 +132,15 @@ const MappingForm = (props) => {
     reader.readAsText(file);
   };
 
+  const formData = () => {
+    return {
+      name: name,
+      version: version,
+      useCase: useCase,
+      domainTo: selectedDomainId
+    }
+  }
+
   /**
    * Send the file/s to the API service to be parsed
    */
@@ -128,12 +151,17 @@ const MappingForm = (props) => {
       return;
     }
 
+    dispatch(startProcessingFile());
+    dispatch(setMappingFormData(formData()));
+
     /**
      * Be sure the file uploaded contains only one domain to map to
      */
     files.map((file) => {
       apiAnalyzeDomainsInFile(file)
         .then((domainsFound) => {
+          dispatch(stopProcessingFile());
+
           if (domainsFound.length > 1) {
             setMultipleDomainsInFile(true);
             setDomainsInFile(domainsFound);
@@ -143,6 +171,7 @@ const MappingForm = (props) => {
           sendFileToPreview(file);
         })
         .catch((e) => {
+          dispatch(stopProcessingFile());
           toast.error(e.message);
         });
     });
@@ -162,6 +191,7 @@ const MappingForm = (props) => {
    * related properties.
    */
   const onSelectDomainFromFile = (id) => {
+    dispatch(startProcessingFile());
     setSelectedDomainIdFromFile(id);
     setMultipleDomainsInFile(false);
 
@@ -170,6 +200,7 @@ const MappingForm = (props) => {
       filterSpecification(id, file).then((filteredSpecification) => {
         tempSpecs.push(JSON.stringify(filteredSpecification, null, 2));
         dispatch(setSpecToPreview(tempSpecs));
+        dispatch(stopProcessingFile());
       });
     });
 
@@ -280,13 +311,13 @@ const MappingForm = (props) => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="use_case">Use Case</label>
+              <label htmlFor="useCase">Use Case</label>
               <input
                 type="text"
                 className="form-control"
-                id="use_case"
-                name="use_case"
-                value={use_case}
+                id="useCase"
+                name="useCase"
+                value={useCase}
                 onBlur={handleUseCaseBlur}
                 onChange={(e) => setUseCase(e.target.value)}
                 disabled={submitted}
@@ -302,7 +333,7 @@ const MappingForm = (props) => {
               <div className="desm-radio">
                 {domains.map(function (dom) {
                   return (
-                    <div className="desm-radio-primary" key={dom.id}>
+                    <div className={"desm-radio-primary" + (dom.spine ? " has-spine" : "")} key={dom.id}>
                       <input
                         type="radio"
                         value={dom.id}
@@ -316,6 +347,10 @@ const MappingForm = (props) => {
                   );
                 })}
               </div>
+
+              <small className="mt-3 mb-3 float-right">
+                Domains in <span class="badge badge-success">green</span> has a spine already uploaded
+              </small>
             </div>
             <div className="form-group">
               <div className="input-group">
@@ -352,7 +387,11 @@ const MappingForm = (props) => {
             </div>
 
             <section>
-              <button type="submit" className="btn btn-dark mt-3" disabled={submitted}>
+              <button
+                type="submit"
+                className="btn btn-dark mt-3"
+                disabled={submitted}
+              >
                 Import Specification
               </button>
             </section>

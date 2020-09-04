@@ -14,7 +14,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :roles, only: [:index]
-      get 'domains' => 'domains#index'
+      resources :domains, only: [:index, :show]
+      resources :mappings, only: [:create, :show]
+
+      post 'specifications' => 'specifications#create'
       post 'specifications/info' => 'specifications#info'
       post 'specifications/filter' => 'specifications#filter'
     end

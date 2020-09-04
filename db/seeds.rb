@@ -9,8 +9,8 @@
 SeedFu.seed
 
 # Let's create an admin user first
-user = User.create!(fullname: "user", email: "user@t3converter.com", password: "t3user", organization: Organization.first)
-admin = User.create!(fullname: "admin", email: "admin@t3converter.com", password: "t3admin", organization: Organization.first)
+user = User.create!(fullname: "user", email: "user@schema.org", password: "t3user", organization: Organization.first)
+admin = User.create!(fullname: "admin", email: "admin@schema.org", password: "t3admin", organization: Organization.first)
 
 # And an admin and a regular user role
 admin_role_name = (ENV["ADMIN_ROLE_NAME"] || "Admin").downcase

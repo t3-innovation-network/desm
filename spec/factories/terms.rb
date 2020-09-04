@@ -3,10 +3,9 @@
 require "faker"
 
 FactoryBot.define do
-  factory :domain do
-    pref_label { Faker::App.name }
-    definition { Faker::Lorem.sentence }
+  factory :term do
+    name { Faker::App.name }
     uri { Faker::Lorem.sentence }
-    domain_set
+    specification
   end
 end
