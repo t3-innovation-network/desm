@@ -669,9 +669,14 @@
         "@language": "en-US",
         "@value": "A name given to the resource."
       },
-      "rdfs:domain": {
-        "@id": "desm:AbstractClassMapping"
-      },
+      "rdfs:domain": [
+        {
+            "@id": "desm:AbstractClassMapping"
+        },
+        {
+            "@id": "skos:ConceptScheme"
+        }
+      ],
       "rdfs:isDefinedBy": {
         "@id": "dct:"
       },
