@@ -20,5 +20,6 @@ import './src/application.scss';
 import '../../assets/stylesheets/application'
 import '../../assets/stylesheets/navbar'
 import '../../assets/stylesheets/stepper'
+import '../../assets/stylesheets/customradio'
 import '../../assets/stylesheets/forms'
 import "@fortawesome/fontawesome-free/js/all";

@@ -38,6 +38,23 @@ a:hover {
   cursor: pointer;
 }
 
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+  color: #aaa;
+  display: block;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  margin-left: 0.5rem;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  width: 1.2rem;
+  z-index: 2;
+}
+
 /* Main view Styles */
 
 .bg-col-secondary {

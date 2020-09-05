@@ -1,11 +1,12 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { unsetFiles } from "../../actions/files";
+import { unsetFiles, unsetSpecToPreview } from "../../actions/files";
 import FileContent from "./FileContent";
 import { doUnsubmit } from "../../actions/mappingform";
 
 const MappingPreview = () => {
   const submitted = useSelector((state) => state.submitted);
+  const previewSpecs = useSelector((state) => state.previewSpecs);
   const dispatch = useDispatch();
 
   /**
@@ -14,6 +15,7 @@ const MappingPreview = () => {
    */
   const handleOnReimport = () => {
     dispatch(unsetFiles());
+    dispatch(unsetSpecToPreview());
     dispatch(doUnsubmit());
   };
 
@@ -32,7 +34,7 @@ const MappingPreview = () => {
                     <button className="btn btn-dark" onClick={handleOnReimport}>
                       Re-import
                     </button>
-                    <button className="btn bg-col-primary col-background ml-2">
+                    <button className="btn bg-col-primary col-background ml-2" disabled={!previewSpecs.length}>
                       Looks Good
                     </button>
                   </div>
