@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :roles, only: [:index]
       resources :domains, only: [:index, :show]
-      resources :mappings, only: [:create, :show]
+      resources :mappings, only: [:create, :show, :index]
 
       post 'specifications' => 'specifications#create'
       post 'specifications/info' => 'specifications#info'

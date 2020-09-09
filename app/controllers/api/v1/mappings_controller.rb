@@ -4,6 +4,19 @@
 # @description: Place all the actions related to mappings
 ###
 class Api::V1::MappingsController < ApplicationController
+  before_action :authorize_with_policy
+
+  include Pundit
+
+  ###
+  # @description: Lists all the mappings for the current user's organization
+  ###
+  def index
+    mappings = filter
+
+    render json: mappings, include: {specification: {include: :user}}
+  end
+
   ###
   # @description: Create a mapping with its related specification
   ###
@@ -23,5 +36,37 @@ class Api::V1::MappingsController < ApplicationController
   def show
     mapping = Mapping.find(params[:id])
     render json: mapping, include: :specification
+  end
+
+  private
+
+  ###
+  # @description: Execute the authorization policy
+  ###
+  def authorize_with_policy
+    authorize mapping
+  end
+
+  ###
+  # @description: Get the current model record
+  # @return [ActiveRecord]
+  ###
+  def mapping
+    @mapping = params[:id].present? ? Mapping.find(params[:id]) : Mapping.new
+  end
+
+  ###
+  # @description: Applies the filter/s from the params
+  # @return [ActiveRecord::Relation]
+  ###
+  def filter
+    # Always show only the mappings for the current user's organization
+    mappings = Mapping.where(user: current_user.organization.users)
+
+    # Filter by current user
+    mappings = mappings.where(user: current_user) if params[:user].present? && params[:user] != "all"
+
+    # Return an ordered list
+    mappings.order(title: :desc)
   end
 end

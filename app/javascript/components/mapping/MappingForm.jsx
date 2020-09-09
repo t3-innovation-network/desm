@@ -349,7 +349,7 @@ const MappingForm = (props) => {
               </div>
 
               <small className="mt-3 mb-3 float-right">
-                Domains in <span class="badge badge-success">green</span> has a spine already uploaded
+                Domains in <span className="badge badge-success">green</span> has a spine already uploaded
               </small>
             </div>
             <div className="form-group">

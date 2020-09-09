@@ -8,8 +8,7 @@ const MappingToDomains = (props) => {
   const [loading, setLoading] = useState(true);
 
   /**
-   * 
-   * then put it in the local sate
+   * Get the mapping from the service
    */
   const goForTheMapping = () => {
     fetchMapping(props.match.params.id).then((response) => {
