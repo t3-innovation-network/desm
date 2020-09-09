@@ -9,7 +9,8 @@ const fetchDomains = () => {
     return response.data.map((domain) => {
       return {
         id: domain.uri,
-        name: domain.pref_label
+        name: domain.pref_label,
+        spine: (domain.spine_id !== null)
       }
     })
   })

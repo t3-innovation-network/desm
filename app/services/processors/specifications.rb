@@ -37,13 +37,12 @@ module Processors
       counter = 0
       domains.each do |domain|
         domain = domain.with_indifferent_access
-        break if counter > 250
         # Since we're looking for domains inside the file,
         # we only care about the nodes with type 'rdf:Class'
         next if domain[:@type] != "rdfs:Class"
 
         counter += 1
-        label = domain["rdfs:label"]["@value"] || domain["rdfs:label"]
+        label = domain["rdfs:label"]["@value"] || domain["rdfs:label"]["en-US"] || domain["rdfs:label"]
 
         domains_in_file << {
           id: counter,
@@ -108,10 +107,8 @@ module Processors
     def self.build_nodes_for_uri(nodes, uri)
       # Find all related properties
       related_properties = nodes.select do |node|
-        node["@type"] == "rdf:Property" && (
-          property_of?(node, "http://schema.org/domainIncludes", uri) ||
-          property_of?(node, "http://schema.org/rangeIncludes", uri)
-        )
+        node["@type"] == "rdf:Property" && (property_of?(node, "domainIncludes", uri) ||
+                                            property_of?(node, "rangeIncludes", uri))
       end
 
       # Base case
@@ -133,14 +130,62 @@ module Processors
     # @param [String] uri The identifier of the original node to compare
     ###
     def self.property_of?(node, related_key, uri)
-      # Get the related nodes, one of these can be the
-      # one we're processing
-      related_nodes = node[related_key]
+      # Infer the key name by proximity
+      key = node.select {|key| key.to_s.match(Regexp.new(related_key)) }.keys.first
+
+      # Get the related nodes, one of these can be the one we're processing
+      related_nodes = node[key]
 
       # Ensure we're dealing with array (when it's only 1 it can be a single object)
       related_nodes = [related_nodes] if related_nodes.present? && !related_nodes.is_a?(Array)
 
-      related_nodes.present? && related_nodes.any? {|d| d["@id"] == uri }
+      related_nodes.present? && related_nodes.any? {|d| d["@id"] == uri || d == uri }
+    end
+
+    ###
+    # @description: Create the specification with its terms
+    #
+    # @param [Hash] data The collection of data to create the specification
+    ###
+    def self.create(data)
+      domain = Domain.find_by_uri(data[:domain_to])
+
+      s = Specification.new(
+        name: data[:name],
+        version: data[:version],
+        use_case: data[:use_case],
+        user: data[:user],
+        domain: domain,
+        uri: "uri"
+      )
+
+      s.save!
+
+      create_terms(s, data[:specs])
+
+      s
+    end
+
+    ###
+    # @description: Create each of the terms related to the specification
+    # @param [Specification] spec The parent specification for the specs to create
+    # @param [Array] specifications The specifications uploaded by the user. It
+    #   It should be an array of json formatted strings
+    ###
+    def self.create_terms(specification, specifications)
+      specifications.each do |spec|
+        spec = JSON.parse(spec)
+
+        spec["@graph"].each do |node|
+          label = node["rdfs:label"]["@value"] || node["rdfs:label"]
+
+          Term.create!(
+            specification: specification,
+            uri: node["@id"],
+            name: label
+          )
+        end
+      end
     end
   end
 end

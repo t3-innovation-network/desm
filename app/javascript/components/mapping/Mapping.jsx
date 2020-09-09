@@ -3,7 +3,12 @@ import TopNav from "../shared/TopNav";
 import MappingForm from "./MappingForm";
 import MappingPreview from "./MappingPreview";
 
-const Mapping = () => {
+const Mapping = (props) => {
+
+  const handleRedirect = (path) => {
+    props.history.push(path);
+  }
+
   return (
     <React.Fragment>
       <div className="wrapper">
@@ -11,7 +16,7 @@ const Mapping = () => {
         <div className="container-fluid container-wrapper">
           <div className="row">
             <MappingForm />
-            <MappingPreview />
+            <MappingPreview redirect={handleRedirect}/>
           </div>
         </div>
       </div>

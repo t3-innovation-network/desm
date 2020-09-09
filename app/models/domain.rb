@@ -17,6 +17,15 @@
 ###
 class Domain < ApplicationRecord
   belongs_to :domain_set
+  belongs_to :spine, optional: true, foreign_key: "spine_id", class_name: "Specification"
   validates :uri, presence: true, uniqueness: true
   validates :pref_label, presence: true
+
+  ###
+  # @description: Return whether a domain has a spine specification uploaded
+  # @return [TrueClass|FalseClass]
+  ###
+  def spine?
+    !spine.nil?
+  end
 end

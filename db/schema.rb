@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_29_171223) do
+ActiveRecord::Schema.define(version: 2020_09_08_214345) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,8 +41,35 @@ ActiveRecord::Schema.define(version: 2020_08_29_171223) do
     t.bigint "domain_set_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "spine_id"
     t.index ["domain_set_id"], name: "index_domains_on_domain_set_id"
     t.index ["uri"], name: "index_domains_on_uri", unique: true
+  end
+
+  create_table "mapping_terms", force: :cascade do |t|
+    t.string "uri"
+    t.text "comment"
+    t.bigint "mapping_id", null: false
+    t.bigint "predicate_id", null: false
+    t.integer "spine_term_id"
+    t.integer "mapped_term_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mapping_id"], name: "index_mapping_terms_on_mapping_id"
+    t.index ["predicate_id"], name: "index_mapping_terms_on_predicate_id"
+  end
+
+  create_table "mappings", force: :cascade do |t|
+    t.string "name"
+    t.string "title"
+    t.text "description"
+    t.bigint "user_id", null: false
+    t.bigint "specification_id", null: false
+    t.integer "spine_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["specification_id"], name: "index_mappings_on_specification_id"
+    t.index ["user_id"], name: "index_mappings_on_user_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -60,10 +87,49 @@ ActiveRecord::Schema.define(version: 2020_08_29_171223) do
     t.index ["uri"], name: "index_predicates_on_uri", unique: true
   end
 
+  create_table "properties", force: :cascade do |t|
+    t.string "uri", null: false
+    t.string "datatype"
+    t.string "source_path"
+    t.string "subproperty_of"
+    t.string "value_space"
+    t.string "label"
+    t.text "comment"
+    t.string "domain"
+    t.string "range"
+    t.bigint "term_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["term_id"], name: "index_properties_on_term_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "specifications", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "uri", null: false
+    t.string "version"
+    t.string "use_case"
+    t.bigint "user_id", null: false
+    t.bigint "domain_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["domain_id"], name: "index_specifications_on_domain_id"
+    t.index ["uri"], name: "index_specifications_on_uri", unique: true
+    t.index ["user_id"], name: "index_specifications_on_user_id"
+  end
+
+  create_table "terms", force: :cascade do |t|
+    t.string "name"
+    t.string "uri", null: false
+    t.bigint "specification_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["specification_id"], name: "index_terms_on_specification_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -80,4 +146,12 @@ ActiveRecord::Schema.define(version: 2020_08_29_171223) do
   add_foreign_key "assignments", "roles"
   add_foreign_key "assignments", "users"
   add_foreign_key "domains", "domain_sets"
+  add_foreign_key "mapping_terms", "mappings"
+  add_foreign_key "mapping_terms", "predicates"
+  add_foreign_key "mappings", "specifications"
+  add_foreign_key "mappings", "users"
+  add_foreign_key "properties", "terms"
+  add_foreign_key "specifications", "domains"
+  add_foreign_key "specifications", "users"
+  add_foreign_key "terms", "specifications"
 end
