@@ -177,7 +177,7 @@ module Processors
         spec = JSON.parse(spec)
 
         spec["@graph"].each do |node|
-          label = node["rdfs:label"]["@value"] || node["rdfs:label"]
+          label = node["rdfs:label"]["@value"] || node["rdfs:label"]["en-US"] || node["rdfs:label"]
 
           Term.create!(
             specification: specification,

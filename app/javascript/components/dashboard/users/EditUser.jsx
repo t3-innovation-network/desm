@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DashboardContainer from "../DashboardContainer";
 import fetchOrganizations from "../../../services/fetchOrganizations";
 import fetchRoles from "../../../services/fetchRoles";
-import ErrorNotice from "../../shared/ErrorNotice";
+import AlertNotice from "../../shared/AlertNotice";
 import ErrorMessage from "../../shared/ErrorMessage";
 import fetchUser from "../../../services/fetchUser";
 import deleteUser from "../../../services/deleteUser";
@@ -167,7 +167,7 @@ export default class EditUser extends Component {
               </button>
             </div>
             <div className="card-body">
-              {this.state.errors && <ErrorNotice message={this.state.errors} />}
+              {this.state.errors && <AlertNotice message={this.state.errors} />}
 
               <React.Fragment>
                 <div className="mandatory-fields-notice">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import validator from "validator";
-import ErrorNotice from "../shared/ErrorNotice";
+import AlertNotice from "../shared/AlertNotice";
 import FileInfo from "./FileInfo";
 import { useSelector, useDispatch } from "react-redux";
 import { setFiles, setSpecToPreview } from "../../actions/files";
@@ -267,7 +267,7 @@ const MappingForm = (props) => {
           (submitted ? "disabled-form " : " ") + "col-lg-6 p-lg-5 pt-5"
         }
       >
-        {errors && <ErrorNotice message={errors} />}
+        {errors && <AlertNotice message={errors} />}
 
         <div className="mandatory-fields-notice">
           <small className="form-text text-muted">
@@ -349,7 +349,7 @@ const MappingForm = (props) => {
               </div>
 
               <small className="mt-3 mb-3 float-right">
-                Domains in <span class="badge badge-success">green</span> has a spine already uploaded
+                Domains in <span className="badge badge-success">green</span> has a spine already uploaded
               </small>
             </div>
             <div className="form-group">

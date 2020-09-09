@@ -38,6 +38,14 @@ a:hover {
   cursor: pointer;
 }
 
+.border-bottom {
+  border-bottom: 1px solid $on-primary;
+}
+
+.border-dotted {
+ border: 1px dotted $on-primary !important;
+}
+
 .has-search .form-control {
   padding-left: 2.375rem;
 }
