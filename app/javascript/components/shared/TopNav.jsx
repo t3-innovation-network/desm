@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import AuthButton from "../auth/AuthButton";
 import Stepper from "../mapping/Stepper";
 import DashboardBtn from "./DashboardBtn";
+import UserInfo from "../auth/UserInfo";
 
 const TopNav = () => {
   const currentPage = window.location.pathname;
@@ -50,6 +51,7 @@ const TopNav = () => {
               <li>{currentPage == "/new-mapping" && <Stepper />}</li>
             </ul>
             <ul className="navbar-nav ml-auto">
+              <UserInfo />
               <DashboardBtn />
               <li className="nav-item">
                 <AuthButton />
