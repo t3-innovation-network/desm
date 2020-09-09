@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import validator from "validator";
-import ErrorNotice from "../shared/ErrorNotice";
+import AlertNotice from "../shared/AlertNotice";
 import FileInfo from "./FileInfo";
 import { useSelector, useDispatch } from "react-redux";
 import { setFiles, setSpecToPreview } from "../../actions/files";
@@ -267,7 +267,7 @@ const MappingForm = (props) => {
           (submitted ? "disabled-form " : " ") + "col-lg-6 p-lg-5 pt-5"
         }
       >
-        {errors && <ErrorNotice message={errors} />}
+        {errors && <AlertNotice message={errors} />}
 
         <div className="mandatory-fields-notice">
           <small className="form-text text-muted">

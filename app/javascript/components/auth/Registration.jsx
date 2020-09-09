@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DashboardContainer from "../dashboard/DashboardContainer";
 import fetchOrganizations from "../../services/fetchOrganizations";
 import fetchRoles from "../../services/fetchRoles";
-import ErrorNotice from "../shared/ErrorNotice";
+import AlertNotice from "../shared/AlertNotice";
 import ErrorMessage from "../shared/ErrorMessage";
 import createUser from "../../services/createUser";
 import {toastr as toast} from 'react-redux-toastr';
@@ -103,7 +103,7 @@ class Registration extends Component {
       <React.Fragment>
         <DashboardContainer>
           <div className="col-lg-6 mx-auto">
-            {this.state.errors && <ErrorNotice message={this.state.errors} />}
+            {this.state.errors && <AlertNotice message={this.state.errors} />}
 
             <div className="card mt-5">
               <div className="card-header">

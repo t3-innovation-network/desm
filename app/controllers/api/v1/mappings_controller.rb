@@ -14,7 +14,7 @@ class Api::V1::MappingsController < ApplicationController
   def index
     mappings = filter
 
-    render json: mappings, include: {specification: {include: :user}}
+    render json: mappings, include: {specification: {include: %i[user terms]}}
   end
 
   ###
@@ -35,7 +35,7 @@ class Api::V1::MappingsController < ApplicationController
   ###
   def show
     mapping = Mapping.find(params[:id])
-    render json: mapping, include: :specification
+    render json: mapping, include: {specification: {include: %i[user terms]}}
   end
 
   private

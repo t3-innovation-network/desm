@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import DashboardContainer from "./DashboardContainer";
 import fetchOrganizations from "../../services/fetchOrganizations"
-import ErrorNotice from "../shared/ErrorNotice";
+import AlertNotice from "../shared/AlertNotice";
 import ErrorMessage from "../shared/ErrorMessage";
 import OrganizationInfo from "./organizations/OrganizationInfo";
 
@@ -40,7 +40,7 @@ export default class MainDashboard extends Component {
       <DashboardContainer>
         <div className="col col-md-10 mt-5">
           <div className="row h-50">
-            {this.state.errors && <ErrorNotice message={this.state.errors} />}
+            {this.state.errors && <AlertNotice message={this.state.errors} />}
 
             { this.state.organizations.map((o) => {
               return <OrganizationInfo organization={o} key={o.id} />

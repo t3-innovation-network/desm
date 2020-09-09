@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
 
     session[:user_id] = user.id
 
-    render json: user, include: :roles
+    render json: user, include: %i[roles organization]
   end
 
   ###
@@ -29,7 +29,7 @@ class SessionsController < ApplicationController
   ###
   def session_status
     if @current_user
-      render json: @current_user, include: :roles
+      render json: @current_user, include: %i[roles organization]
     else
       render json: {
         logged_in: false
