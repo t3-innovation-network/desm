@@ -7,7 +7,7 @@ import UserInfo from "../auth/UserInfo";
 const TopNav = (props) => {
   return (
     <React.Fragment>
-      <nav className="navbar navbar-with-border navbar-expand-lg">
+      <nav className="navbar navbar-with-border with-shadow navbar-expand-lg">
         <div className="container-fluid nav-container">
           <div className="navbar-header">
 

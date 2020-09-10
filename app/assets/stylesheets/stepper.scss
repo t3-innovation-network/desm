@@ -59,8 +59,9 @@
   width:100% !important;
 }
 .indicator > .indicator-step.complete > .progress > .progress-bar {
-  background: $on-primary-light;
+  background: $on-primary !important;
   width:100% !important;
+  opacity: 0.5;
 }
 .indicator-step.active > .indicator-stepnum {
   color: $primary-color;
