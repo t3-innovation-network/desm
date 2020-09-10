@@ -9,6 +9,7 @@
   padding-right: 0.7vw;
   position: relative;
   top: 0.5vw;
+  min-width: 7vw;
 }
 .indicator > .indicator-step .indicator-stepnum {
   color: $foreground-color;
@@ -36,8 +37,11 @@
   top: 5px;
   left: 8px;
 }
-.indicator-step.complete > .indicator-dot:after {
+.indicator-step.active > .indicator-dot:after {
   background: $primary-color;
+}
+.indicator-step.complete > .indicator-dot:after {
+  background: $on-primary;
 }
 .indicator > .indicator-step > .progress {
   position: relative;
@@ -48,14 +52,22 @@
 .indicator > .indicator-step > .progress > .progress-bar {
   width:0px;
   box-shadow: none;
-  background: $primary-color-light;
   opacity: 0.2;
 }
+.indicator > .indicator-step.active > .progress > .progress-bar {
+  background: $primary-color-light;
+  width:100% !important;
+}
 .indicator > .indicator-step.complete > .progress > .progress-bar {
-  width:100%;
+  background: $on-primary !important;
+  width:100% !important;
+  opacity: 0.5;
+}
+.indicator-step.active > .indicator-stepnum {
+  color: $primary-color;
 }
 .indicator-step.complete > .indicator-stepnum {
- color: $primary-color;
+ color: $on-primary;
 }
 .indicator > .indicator-step:first-child.active > .progress > .progress-bar {
   width:0%;

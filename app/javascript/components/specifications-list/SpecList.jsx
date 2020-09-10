@@ -3,6 +3,7 @@ import TopNav from "../shared/TopNav";
 import { Link } from "react-router-dom";
 import fetchMappings from "../../services/fetchMappings";
 import Loader from "../shared/Loader";
+import TopNavOptions from "../shared/TopNavOptions";
 
 const SpecList = () => {
   const [mappings, setMappings] = useState([]);
@@ -18,6 +19,18 @@ const SpecList = () => {
       value: "All Mappings",
     },
   ];
+
+  /**
+   * Configure the options to see at the center of the top navigation bar
+   */
+  const navCenterOptions = () => {
+    return (
+      <TopNavOptions
+        viewMappings={true}
+        mapSpecification={true}
+      />
+    )
+  }
 
   /**
    * Change the filter for the listed mappings
@@ -49,7 +62,7 @@ const SpecList = () => {
 
   return (
     <div className="wrapper">
-      <TopNav />
+      <TopNav centerContent={navCenterOptions} />
       <div className="container-fluid container-wrapper">
         <div className="row">
           <div className="col p-lg-5 pt-5">

@@ -39,7 +39,7 @@ export default class MainDashboard extends Component {
     return (
       <DashboardContainer>
         <div className="col col-md-10 mt-5">
-          <div className="row h-50">
+          <div className="row h-50 ml-5">
             {this.state.errors && <AlertNotice message={this.state.errors} />}
 
             { this.state.organizations.map((o) => {

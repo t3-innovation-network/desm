@@ -149,7 +149,7 @@ export default class EditUser extends Component {
   render() {
     return (
       <DashboardContainer>
-        <div className="col-lg-6 mx-auto">
+        <div className="col-lg-6 mx-auto mt-5">
           <div className="card mt-5">
             <div className="card-header">
               <i className="fa fa-user"></i>
@@ -206,7 +206,7 @@ export default class EditUser extends Component {
                       name="email"
                       placeholder="Enter the email for the user"
                       value={this.state.email}
-                      onChange={(e) => this.handleOnChange(e.target.value)}
+                      onChange={(e) => this.handleOnChange(e)}
                       required
                     />
                   </div>

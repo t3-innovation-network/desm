@@ -49,7 +49,7 @@ export default class CreateOrganization extends Component {
     return (
       <React.Fragment>
         <DashboardContainer>
-          <div className="col-lg-6 mx-auto">
+          <div className="col-lg-6 mx-auto mt-5">
             {this.state.errors && <AlertNotice message={this.state.errors} /> }
 
             <div className="card mt-5">
