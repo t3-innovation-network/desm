@@ -1,27 +1,16 @@
 import React from "react";
 import Modal from "react-modal";
+import ModalStyles from '../shared/ModalStyles';
 
 const MultipleDomainsModal = (props) => {
   Modal.setAppElement("body");
-
-  const customStyles = {
-    content: {
-      top: "10vh",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%)",
-      border: "none",
-    },
-  };
 
   return (
     <Modal
       isOpen={props.modalIsOpen}
       onRequestClose={props.onRequestClose}
       contentLabel="Multiple Domains Found"
-      style={customStyles}
+      style={ModalStyles}
       shouldCloseOnEsc={false}
       shouldCloseOnOverlayClick={false}
     >
