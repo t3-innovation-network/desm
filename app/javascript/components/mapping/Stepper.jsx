@@ -7,7 +7,8 @@ const Stepper = (props) => {
         <div
           className={
             "col-xs-4 indicator-step" +
-            (props.stepperStep == 1 ? " complete" : "")
+            (props.stepperStep == 1 ? " active" : "") +
+            (props.stepperStep > 1 ? " complete" : "")
           }
         >
           <div className="indicator-stepnum">1. Upload Specification</div>
@@ -20,7 +21,8 @@ const Stepper = (props) => {
         <div
           className={
             "col-xs-4 indicator-step" +
-            (props.stepperStep > 1 ? " complete" : " active")
+            (props.stepperStep == 2 ? " active" : "") +
+            (props.stepperStep > 2 ? " complete" : "")
           }
         >
           <div className="indicator-stepnum">2. Map to Domains</div>
@@ -33,7 +35,7 @@ const Stepper = (props) => {
         <div
           className={
             "col-xs-4 indicator-step" +
-            (props.stepperStep == 3 ? " complete" : "")
+            (props.stepperStep == 3 ? " active" : "")
           }
         >
           <div className="indicator-stepnum">3. Align and Fine Tune</div>
