@@ -206,7 +206,7 @@ export default class EditUser extends Component {
                       name="email"
                       placeholder="Enter the email for the user"
                       value={this.state.email}
-                      onChange={(e) => this.handleOnChange(e.target.value)}
+                      onChange={(e) => this.handleOnChange(e)}
                       required
                     />
                   </div>

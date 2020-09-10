@@ -5,6 +5,7 @@ import fetchMapping from "../../services/fetchMapping";
 import fetchDomains from "../../services/fetchDomains";
 import { useSelector } from "react-redux";
 import AlertNotice from "../shared/AlertNotice";
+import TopNavOptions from "../shared/TopNavOptions";
 
 const MappingToDomains = (props) => {
   const [mapping, setMapping] = useState({});
@@ -14,6 +15,20 @@ const MappingToDomains = (props) => {
   /// The value of the input that the user is typing in the search box
   /// when there are many domains in the uploaded file
   const [inputValue, setInputValue] = useState("");
+
+  /**
+   * Configure the options to see at the center of the top navigation bar
+   */
+  const navCenterOptions = () => {
+    return (
+      <TopNavOptions 
+        viewMappings={true}
+        mapSpecification={true}
+        stepper={true}
+        stepperStep={2}
+      />
+    )
+  }
 
   /**
    * Manage to change values from inputs in the state
@@ -54,7 +69,7 @@ const MappingToDomains = (props) => {
 
   return (
     <div className="wrapper">
-      <TopNav />
+      <TopNav centerContent={navCenterOptions} />
       <div className="container-fluid container-wrapper">
         <div className="row">
           { loading ? 
