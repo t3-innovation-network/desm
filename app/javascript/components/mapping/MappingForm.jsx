@@ -12,7 +12,7 @@ import {
 } from "../../actions/mappingform";
 import fetchDomains from "../../services/fetchDomains";
 import { toastr as toast } from "react-redux-toastr";
-import MultipleDomainsModal from "./multipleDomainsModal";
+import MultipleDomainsModal from "./MultipleDomainsModal";
 import apiAnalyzeDomainsInFile from "../../services/apiAnalyzeDomainsInFile";
 import filterSpecification from "../../services/filterSpecification";
 
@@ -264,7 +264,7 @@ const MappingForm = (props) => {
 
       <div
         className={
-          (submitted ? "disabled-form " : " ") + "col-lg-6 p-lg-5 pt-5"
+          (submitted ? "disabled-container " : " ") + "col-lg-6 p-lg-5 pt-5"
         }
       >
         {errors && <AlertNotice message={errors} />}

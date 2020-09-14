@@ -1,0 +1,35 @@
+@import './colors.scss';
+
+/* Drag and Drop Classes */
+
+.dnd-active{
+  border: solid 3px $primary-color !important;
+  color: $primary-color;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.domain-drag-box{
+  min-height: 3.5vw;
+  text-align: center;
+}
+
+.draggable{
+  cursor: move;
+}
+
+.not-draggable{
+  cursor: not-allowed;
+}
+
+.is-dragging{
+  opacity: 0.4;
+}
+
+.terms-progress{
+  height: 0.5rem !important;
+  margin-top: 10px;
+  .progress-bar{
+    background-color: $on-primary !important;
+  }
+}
