@@ -6,5 +6,4 @@
 ###
 class Property < ApplicationRecord
   belongs_to :term
-  validates :uri, presence: true, uniqueness: true
 end

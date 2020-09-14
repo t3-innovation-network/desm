@@ -20,9 +20,14 @@ const MappingPreview = (props) => {
    * The files collection is blanked and the use can re-import files
    */
   const handleOnReimport = () => {
+    // Remove files from store
     dispatch(unsetFiles());
+    // Remove previews
     dispatch(unsetSpecToPreview());
+    // Change the form status to unsubmitted
     dispatch(doUnsubmit());
+    // Reset the file uploader
+    $('#file-uploader').val('');
   };
 
   /**

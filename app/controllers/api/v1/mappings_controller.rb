@@ -34,8 +34,7 @@ class Api::V1::MappingsController < ApplicationController
   #   in params
   ###
   def show
-    mapping = Mapping.find(params[:id])
-    render json: mapping, include: {specification: {include: %i[user terms]}}
+    render json: @mapping, include: {specification: {include: {terms: {include: :property}}}}
   end
 
   private

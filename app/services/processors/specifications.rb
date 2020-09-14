@@ -177,15 +177,32 @@ module Processors
         spec = JSON.parse(spec)
 
         spec["@graph"].each do |node|
-          label = node["rdfs:label"]["@value"] || node["rdfs:label"]["en-US"] || node["rdfs:label"]
-
-          Term.create!(
-            specification: specification,
-            uri: node["@id"],
-            name: label
-          )
+          create_one_term(specification, node)
         end
       end
+    end
+
+    ###
+    # @description: Handles to create a term with its related property
+    # @param [Object] node: The node to be evaluated in order to create a term
+    ###
+    def self.create_one_term(spec, node)
+      term = Term.create!(
+        specification: spec,
+        uri: node["@id"],
+        name: Parsers::Specifications.read!(node, "label")
+      )
+
+      Property.create!(
+        term: term,
+        classtype: node["@type"],
+        element: node["@id"],
+        comment: Parsers::Specifications.read!(node, "comment"),
+        label: Parsers::Specifications.read!(node, "label"),
+        domain: Parsers::Specifications.read(node, "domain"),
+        range: Parsers::Specifications.read(node, "range"),
+        subproperty_of: Parsers::Specifications.read!(node, "subproperty")
+      )
     end
   end
 end

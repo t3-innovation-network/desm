@@ -21,8 +21,7 @@ class Api::V1::DomainsController < ApplicationController
   # @description: Returns the domain with id equal to the one passed in params
   ###
   def show
-    domain = Domain.find(params[:id])
-    render json: domain
+    render json: @domain
   end
 
   private

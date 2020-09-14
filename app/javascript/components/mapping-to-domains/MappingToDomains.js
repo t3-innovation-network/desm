@@ -37,14 +37,16 @@ const MappingToDomains = (props) => {
   const [hideMapped, setHideMapped] = useState(false);
 
   /**
-   * The logged in user
+   * Whether we are editing a term or not. Useful to show/hide the
+   * modal window to edit a term
    */
   const [editingTerm, setEditingTerm] = useState(false);
 
   /**
-   * The logged in user
+   * The term to be edited. Active when the user clicks the pencil
+   * icon on a term
    */
-  const [termToEdit, setTermToEdit] = useState({})
+  const [termToEdit, setTermToEdit] = useState({ property: {} });
 
   /**
    * The logged in user
@@ -93,10 +95,15 @@ const MappingToDomains = (props) => {
     setMapping(tempMapping);
   };
 
+  /**
+   * Handles to view the modal window that allows to edit a term
+   *
+   * @param {Object} term
+   */
   const onEditTermClick = (term) => {
     setEditingTerm(true);
     setTermToEdit(term);
-  }
+  };
 
   /**
    * Configure the options to see at the center of the top navigation bar
@@ -113,7 +120,24 @@ const MappingToDomains = (props) => {
   };
 
   /**
+   * Actions on term removed. The term was removed using another component,
+   * so in this one, it's still visible, we need to change that to also
+   * don't show it.
+   *
+   * @param {Object} removedTerm
+   */
+  const termRemoved = (removedTerm) => {
+    const tempTerms = mapping.specification.terms.filter(
+      (term) => term.id !== removedTerm.id
+    );
+    mapping.specification.terms = tempTerms;
+    setMapping(mapping);
+  };
+
+  /**
    * Manage to change values from inputs in the state
+   *
+   * @param {Event} event
    */
   const filterTermsOnChange = (event) => {
     setTermsInputValue(event.target.value);
@@ -153,8 +177,11 @@ const MappingToDomains = (props) => {
     <React.Fragment>
       <EditTerm
         modalIsOpen={editingTerm}
-        onRequestClose={() => { setEditingTerm(false) }}
-        term={termToEdit}
+        onRequestClose={() => {
+          setEditingTerm(false);
+        }}
+        onRemoveTerm={termRemoved}
+        termId={termToEdit.id}
       />
       <div className="wrapper">
         <TopNav centerContent={navCenterOptions} />
@@ -237,7 +264,10 @@ const MappingToDomains = (props) => {
                             onChange={(e) => setHideMapped(!hideMapped)}
                             id="hideElems"
                           />
-                          <label className="form-check-label" htmlFor="hideElems">
+                          <label
+                            className="form-check-label"
+                            htmlFor="hideElems"
+                          >
                             Hidde mapped elements
                           </label>
                         </div>
@@ -260,7 +290,7 @@ const MappingToDomains = (props) => {
                     </p>
                   </div>
 
-                  <div className="has-scrollbar scrollbar pr-5 mt-5">
+                  <div className="pr-5 mt-5">
                     <AlertNotice
                       cssClass="bg-col-primary col-background"
                       title={
@@ -269,21 +299,22 @@ const MappingToDomains = (props) => {
                       }
                       message="Drag your individual elements below to the matching domains on the left to begin mapping your specification"
                     />
+                    <div className="has-scrollbar scrollbar pr-5">
+                      {/* MAPPING TERMS */}
 
-                    {/* MAPPING TERMS */}
-
-                    {filteredTerms.map((term) => {
-                      return hideMapped && term.mappedTo ? (
-                        ""
-                      ) : (
-                        <TermCard
-                          key={term.id}
-                          term={term}
-                          afterDrop={afterDropTerm}
-                          onEditClick={onEditTermClick}
-                        />
-                      );
-                    })}
+                      {filteredTerms.map((term) => {
+                        return hideMapped && term.mappedTo ? (
+                          ""
+                        ) : (
+                          <TermCard
+                            key={term.id}
+                            term={term}
+                            afterDrop={afterDropTerm}
+                            onEditClick={onEditTermClick}
+                          />
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </React.Fragment>

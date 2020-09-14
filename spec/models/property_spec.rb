@@ -7,5 +7,5 @@ describe Property, type: :model do
     expect(FactoryBot.build(:property)).to be_valid
   end
 
-  it { should validate_presence_of(:uri) }
+  it { should belong_to(:term) }
 end

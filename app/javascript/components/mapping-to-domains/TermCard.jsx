@@ -2,15 +2,21 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "./ItemTypes";
+import { useSelector } from "react-redux";
 
 const TermCard = (props) => {
+  /**
+   * The logged in user
+   */
+  const user = useSelector((state) => state.user);
+
   /**
    * Configure the draggable component
    */
   const [{ isDragging }, drag] = useDrag({
     /**
      * The item being dragged.
-     * The type will help on recognizing it when dropped. 
+     * The type will help on recognizing it when dropped.
      * The "other" element can be configured to accept or not this or other
      * type of elements
      */
@@ -44,9 +50,11 @@ const TermCard = (props) => {
       }
       ref={props.term.mappedTo ? null : drag}
     >
-      <div className="card-header no-color-header">
+      <div className="card-header no-color-header pb-0">
         <div className="row">
-          <div className="col-6">{props.term.name}</div>
+          <div className="col-6">
+            {props.term.name}
+          </div>
           <div className="col-6">
             <div className="float-right">
               {props.term.mappedTo ? (
@@ -75,8 +83,12 @@ const TermCard = (props) => {
           </div>
         </div>
       </div>
-      <div id={"collapse-term-" + props.term.id} className="collapse card-body">
-        {props.term.uri}
+      <div
+        id={"collapse-term-" + props.term.id}
+        className="collapse card-body pt-0 pb-0"
+      >
+        <p>{props.term.property.comment}</p>
+        <p>{"Origin: " + user.organization.name}</p>
       </div>
     </div>
   );
