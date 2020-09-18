@@ -2,9 +2,9 @@
 
 ###
 # @description: Represents the ability that a user has to access
-#   domain records.
+#   term records.
 ###
-class DomainPolicy < ApplicationPolicy
+class TermPolicy < ApplicationPolicy
   def initialize(user, record)
     @user = user || @current_user
     @record = record
@@ -14,20 +14,27 @@ class DomainPolicy < ApplicationPolicy
   end
 
   ###
-  # @description: Determines if the user has access to the index for this resource
-  # @return [TrueClass]
-  ###
-  def index?
-    # Signed in users
-    @user.present?
-  end
-
-  ###
   # @description: Determines if the user can see this resource
   # @return [TrueClass]
   ###
   def show?
     # Signed in users
+    @user.present?
+  end
+
+  ###
+  # @description: Determines if the user can update an instance of this resource
+  # @return [TrueClass]
+  ###
+  def update?
+    @user.present?
+  end
+
+  ###
+  # @description: Determines if the user can destroy an instance of this resource
+  # @return [TrueClass]
+  ###
+  def destroy?
     @user.present?
   end
 end

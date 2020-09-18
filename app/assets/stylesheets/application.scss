@@ -92,6 +92,10 @@ a:hover {
   color: $on-primary !important;
 }
 
+.col-primary {
+  color: $primary-color !important;
+}
+
 .no-color-header {
   background-color: unset !important;
   border-bottom: unset !important;
@@ -109,7 +113,7 @@ a:hover {
 
 .has-scrollbar {
   overflow-y: scroll;
-  max-height: 50%;
+  max-height: 45vw;
 }
 
 .scrollbar::-webkit-scrollbar {
@@ -127,9 +131,9 @@ a:hover {
 }
 
 .with-shadow {
-  -webkit-box-shadow: 8px 8px 5px -7px $on-primary-light;
-  -moz-box-shadow: 8px 8px 5px -7px $on-primary-light;
-  box-shadow: 8px 8px 5px -7px $on-primary-light;
+  -webkit-box-shadow: 4px 8px 5px -7px $on-primary-light;
+  -moz-box-shadow: 4px 8px 5px -7px $on-primary-light;
+  box-shadow: 4px 8px 5px -7px $on-primary-light;
 }
 
 /* Mobile */

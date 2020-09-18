@@ -7,8 +7,10 @@ const ModalStyles = {
     marginRight: "-50%",
     transform: "translate(-50%)",
     border: "none",
-    minWidth: "50vw",
-    minHeight: "35vw",
+    minWidth: "60%",
+    maxWidth: "70%",
+    minHeight: "70%",
+    maxHeight: "80%",
   },
 };
 

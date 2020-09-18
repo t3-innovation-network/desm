@@ -9,8 +9,11 @@
 SeedFu.seed
 
 # Let's create an admin user first
-user = User.create!(fullname: "user", email: "user@schema.org", password: "t3user", organization: Organization.first)
 admin = User.create!(fullname: "admin", email: "admin@schema.org", password: "t3admin", organization: Organization.first)
+
+# Then 2 users for different organizations
+user1 = User.create!(fullname: "user", email: "user@schema.org", password: "t3user", organization: Organization.first)
+user2 = User.create!(fullname: "user", email: "user@credreg.com", password: "t3user", organization: Organization.find(2))
 
 # And an admin and a regular user role
 admin_role_name = (ENV["ADMIN_ROLE_NAME"] || "Admin").downcase
@@ -18,7 +21,8 @@ admin_role = Role.create!(name: admin_role_name)
 user_role = Role.create!(name: "Regular User")
 
 # Assing "admin" role to our admin user
-Assignment.create!(user: user, role: user_role)
+Assignment.create!(user: user1, role: user_role)
+Assignment.create!(user: user2, role: user_role)
 Assignment.create!(user: admin, role: admin_role)
 
 # Fill the db with:
