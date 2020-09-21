@@ -6,6 +6,7 @@
 class Term < ApplicationRecord
   belongs_to :specification
   has_one :property, dependent: :destroy
+  has_and_belongs_to_many :vocabularies
 
   validates :uri, presence: true
 

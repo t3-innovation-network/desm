@@ -8,8 +8,10 @@
 class Specification < ApplicationRecord
   belongs_to :user
   belongs_to :domain
+  has_many :terms, dependent: :destroy
+
   before_create :assign_uri
-  has_many :terms
+  before_destroy :nullify_domain_spine
 
   validates :name, presence: true
   validates :uri, presence: true, uniqueness: true
@@ -45,5 +47,13 @@ class Specification < ApplicationRecord
   ###
   def as_json(options={})
     super options.merge(methods: %i[spine? domain])
+  end
+
+  ###
+  # @description: Ensure that if this specification is a spine for a domain,
+  #   the domain doesn't references it anymore
+  ###
+  def nullify_domain_spine
+    Domain.where(spine: self).each {|d| d.update_column(:spine_id, nil) }
   end
 end

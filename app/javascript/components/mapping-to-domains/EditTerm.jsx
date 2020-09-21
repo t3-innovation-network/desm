@@ -4,9 +4,11 @@ import fetchTerm from "../../services/fetchTerm";
 import updateTerm from "../../services/updateTerm";
 import Loader from "../shared/Loader";
 import ModalStyles from "../shared/ModalStyles";
+import UploadVocabulary from "./UploadVocabulary";
 import { toastr as toast } from "react-redux-toastr";
 import deleteTerm from "../../services/deleteTerm";
 import { Controlled as CodeMirror } from "react-codemirror2";
+import fetchVocabularies from "../../services/fetchVocabularies";
 
 export default class EditTerm extends Component {
   /**
@@ -16,29 +18,40 @@ export default class EditTerm extends Component {
     term: {
       name: "",
       property: {},
+      vocabularies: [],
     },
+    /**
+     * Whether the page is loading or not
+     */
     loading: true,
     /**
-     * Example vocabularies to manage dynamic content.
-     * @todo: Replace when implementing final vocabularies
+     * To upload a vocabulary, we need to show a different form. It will manage the
+     * switch between one form and the other
      */
-    vocabularies: [
-      {
-        name: "vocabulary1",
-        value: "example vocab 1",
-      },
-      {
-        name: "vocabulary2",
-        value: "example vocab 2",
-      },
-    ],
+    uploadingVocabulary: false,
+    /**
+     * The list of vocabularies that can be related to this term
+     */
+    vocabularies: [],
   };
 
   /**
    * Vocabulary change method
    */
-  handleVocabularyChange = () => {
+  handleVocabularyChange = (val) => {
     // @todo implement vocabulary change logic
+    let tempTerm = this.state.term;
+    if (tempTerm.vocabularies.find((vocab) => vocab.id == val)) {
+      tempTerm.vocabularies = tempTerm.vocabularies.filter(
+        (vocab) => vocab.id != val
+      );
+    } else {
+      tempTerm.vocabularies.push(
+        this.state.vocabularies.find((vocab) => vocab.id == val)
+      );
+    }
+
+    this.setState({ term: tempTerm });
   };
 
   /**
@@ -75,9 +88,29 @@ export default class EditTerm extends Component {
   };
 
   /**
+   * Add the new vocabulary to our editing term
+   *
+   * @param {Object} vocab
+   */
+  handleVocabularyAdded = (vocab) => {
+    let tempTerm = this.state.term;
+    /// Add new vocabulary to the list of available ones
+    this.state.vocabularies.push({
+      id: vocab.id,
+      name: vocab.name,
+    });
+    /// Add new vocabulary to the term selected vocabularies
+    tempTerm.vocabularies.push({
+      id: vocab.id,
+      name: vocab.name,
+    });
+    this.setState({ term: tempTerm });
+  };
+
+  /**
    * Get the mapping from the service
    */
-  goForTheTerm = () => {
+  fetchTermFromApi = () => {
     if (this.props.termId) {
       fetchTerm(this.props.termId).then((response) => {
         this.setState({
@@ -96,11 +129,18 @@ export default class EditTerm extends Component {
     this.props.onRequestClose();
   };
 
+  getVocabularies = () => {
+    fetchVocabularies().then((response) => {
+      this.setState({ vocabularies: response });
+    });
+  };
+
   /**
    * Tasks before mount
    */
   componentDidMount() {
     Modal.setAppElement("body");
+    this.getVocabularies();
   }
 
   render() {
@@ -108,17 +148,20 @@ export default class EditTerm extends Component {
       <Modal
         isOpen={this.props.modalIsOpen}
         onRequestClose={this.closeRequested}
-        onAfterOpen={this.goForTheTerm}
+        onAfterOpen={this.fetchTermFromApi}
         contentLabel="Edit Term"
         style={ModalStyles}
         shouldCloseOnEsc={true}
-        shouldCloseOnOverlayClick={false}
+        shouldCloseOnOverlayClick={true}
       >
         <div className="card ">
           <div className="card-header no-color-header">
             <div className="row">
               <div className="col-6">
-                <h4>Editing Term <span className="col-primary">{this.state.term.name}</span></h4>
+                <h4>
+                  Editing Term{" "}
+                  <span className="col-primary">{this.state.term.name}</span>
+                </h4>
               </div>
               <div className="col-6">
                 <a
@@ -139,7 +182,13 @@ export default class EditTerm extends Component {
                 <div className="row">
                   {/* LEFT COLUMN */}
 
-                  <div className="col-6">
+                  <div
+                    className={
+                      (this.state.uploadingVocabulary
+                        ? "disabled-container "
+                        : "") + "col-6"
+                    }
+                  >
                     <div className="form-group">
                       <label>Class/Type</label>
                       <input
@@ -149,6 +198,7 @@ export default class EditTerm extends Component {
                         placeholder="Class/Type"
                         value={this.state.term.property.classtype}
                         onChange={(e) => this.handlePropertyChange(e)}
+                        disabled={this.state.uploadingVocabulary}
                         autoFocus
                       />
                     </div>
@@ -162,6 +212,7 @@ export default class EditTerm extends Component {
                         placeholder="Element/Property"
                         value={this.state.term.property.element}
                         onChange={(e) => this.handlePropertyChange(e)}
+                        disabled={this.state.uploadingVocabulary}
                       />
                     </div>
 
@@ -172,7 +223,8 @@ export default class EditTerm extends Component {
                         name="comment"
                         value={this.state.term.property.comment}
                         onChange={(e) => this.handlePropertyChange(e)}
-                        />
+                        disabled={this.state.uploadingVocabulary}
+                      />
                     </div>
 
                     <div className="form-group">
@@ -182,6 +234,7 @@ export default class EditTerm extends Component {
                         name="source_path"
                         value={this.state.term.property.source_path || ""}
                         onChange={(e) => this.handlePropertyChange(e)}
+                        disabled={this.state.uploadingVocabulary}
                       >
                         {this.state.term.property.source_path || ""}
                       </textarea>
@@ -189,71 +242,113 @@ export default class EditTerm extends Component {
 
                     <div className="form-group">
                       <label>Vocabulary (optional)</label>
-                      {this.state.vocabularies.map((vocab) => {
-                        return (
-                          <div className="row" key={vocab.name}>
-                            <div className="col-10">
-                              <input
-                                type="text"
-                                className="form-control mb-2"
-                                name={vocab.name}
-                                value={vocab.value}
-                                onChange={this.handleVocabularyChange}
-                              />
-                            </div>
-                            <div className="col">
-                              <button className="btn">
-                                <i
-                                  className="fa fa-times"
-                                  aria-hidden="true"
-                                ></i>
-                              </button>
-                            </div>
+                      <div
+                        className="card mt-2 mb-2 has-scrollbar scrollbar"
+                        style={{ maxHeight: "10rem" }}
+                      >
+                        <div className="card-body">
+                          <div className="desm-radio">
+                            {this.state.vocabularies.map((vocab) => {
+                              return (
+                                <div
+                                  className={"desm-radio-primary"}
+                                  key={vocab.id}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    value={vocab.id}
+                                    id={vocab.id}
+                                    name="vocabularies[]"
+                                    onChange={(e) =>
+                                      this.handleVocabularyChange(
+                                        e.target.value
+                                      )
+                                    }
+                                    checked={this.state.term.vocabularies.some(
+                                      (v) => v.id == vocab.id
+                                    )}
+                                    disabled={this.state.uploadingVocabulary}
+                                  />
+                                  <label htmlFor={vocab.id}>{vocab.name}</label>
+                                </div>
+                              );
+                            })}
                           </div>
-                        );
-                      })}
+                        </div>
+                      </div>
                     </div>
                   </div>
 
                   {/* RIGHT COLUMN */}
 
                   <div className="col-6">
-                    <div className="form-group">
-                      <label>Datatype</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="datatype"
-                        value={this.state.term.property.datatype || ""}
-                        onChange={(e) => this.handlePropertyChange(e)}
-                        placeholder="Datatype"
+                    {this.state.uploadingVocabulary ? (
+                      <UploadVocabulary
+                        term={this.state.term}
+                        onVocabularyAdded={this.handleVocabularyAdded}
+                        onRequestClose={() =>
+                          this.setState({
+                            uploadingVocabulary: false,
+                          })
+                        }
                       />
-                    </div>
+                    ) : (
+                      <React.Fragment>
+                        <div className="form-group">
+                          <label>Datatype</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="datatype"
+                            value={this.state.term.property.datatype || ""}
+                            onChange={(e) => this.handlePropertyChange(e)}
+                            placeholder="Datatype"
+                          />
+                        </div>
 
-                    <div style={{ height: "75%" }}>
-                      <label>Raw</label>
-                      <CodeMirror
-                        value={JSON.stringify(this.state.term, null, 2)}
-                        options={{ lineNumbers: true }}
-                      />
-                    </div>
+                        <div style={{ height: "78%" }}>
+                          <label>Raw</label>
+                          <CodeMirror
+                            value={JSON.stringify(this.state.term, null, 2)}
+                            options={{ lineNumbers: true }}
+                            disabled={this.state.uploadingVocabulary}
+                          />
+                        </div>
+                      </React.Fragment>
+                    )}
                   </div>
                 </div>
 
-                <div className="row float-right">
-                  <div className="col">
-                    <button
-                      className="btn btn-outline-secondary mr-2"
-                      onClick={this.handleRemoveTerm}
-                    >
-                      Remove Term
-                    </button>
-                    <button
-                      className="btn btn-dark"
-                      onClick={this.handleSaveTerm}
-                    >
-                      Save and Exit
-                    </button>
+                <div className="row ">
+                  <div className="col float-left">
+                    {!this.state.uploadingVocabulary && (
+                      <button
+                        className="btn btn-dark"
+                        onClick={() =>
+                          this.setState({ uploadingVocabulary: true })
+                        }
+                      >
+                        Add Vocabulary
+                      </button>
+                    )}
+                  </div>
+                  <div className="col float-right">
+                    {!this.state.uploadingVocabulary && (
+                      <React.Fragment>
+                        <button
+                          className="btn btn-outline-secondary mr-2"
+                          onClick={this.handleRemoveTerm}
+                        >
+                          Remove Term
+                        </button>
+                        <button
+                          className="btn btn-dark"
+                          onClick={this.handleSaveTerm}
+                        >
+                          Save and Exit
+                        </button>
+                      </React.Fragment>
+                    )}
                   </div>
                 </div>
               </React.Fragment>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_17_194407) do
+ActiveRecord::Schema.define(version: 2020_09_18_181712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,6 +133,13 @@ ActiveRecord::Schema.define(version: 2020_09_17_194407) do
     t.index ["specification_id"], name: "index_terms_on_specification_id"
   end
 
+  create_table "terms_vocabularies", id: false, force: :cascade do |t|
+    t.bigint "term_id", null: false
+    t.bigint "vocabulary_id", null: false
+    t.index ["term_id"], name: "index_terms_vocabularies_on_term_id"
+    t.index ["vocabulary_id"], name: "index_terms_vocabularies_on_vocabulary_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "fullname", null: false
@@ -142,6 +149,15 @@ ActiveRecord::Schema.define(version: 2020_09_17_194407) do
     t.integer "organization_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["organization_id"], name: "users_organization_id"
+  end
+
+  create_table "vocabularies", force: :cascade do |t|
+    t.string "name"
+    t.bigint "organization_id", null: false
+    t.jsonb "content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_vocabularies_on_organization_id"
   end
 
   add_foreign_key "assignments", "roles"
@@ -155,4 +171,5 @@ ActiveRecord::Schema.define(version: 2020_09_17_194407) do
   add_foreign_key "specifications", "domains"
   add_foreign_key "specifications", "users"
   add_foreign_key "terms", "specifications"
+  add_foreign_key "vocabularies", "organizations"
 end
