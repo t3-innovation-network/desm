@@ -75,6 +75,13 @@ const MappingToDomains = (props) => {
   });
 
   /**
+   * The selected terms.
+   */
+  const selectedTerms = mapping.specification.terms.filter((term) => {
+    return term.selected;
+  });
+
+  /**
    * The already mapped terms to a given domain.
    */
   const mappedTermsToDomain = (domainUri) =>
@@ -148,8 +155,8 @@ const MappingToDomains = (props) => {
    */
   const goForTheMapping = () => {
     fetchMapping(props.match.params.id).then((response) => {
-      setMapping(response.mapping);
       setLoading(false);
+      setMapping(response.mapping);
     });
   };
 
@@ -162,6 +169,20 @@ const MappingToDomains = (props) => {
       setDomains(response);
     });
   };
+
+  /**
+   * Mark the term as "selected"
+   */
+  const onTermClick = (termId) => {
+    let tempTerms = mapping.specification.terms;
+    let term = tempTerms.find(t => t.id == termId);
+
+    term.selected = (term.selected == undefined) ? true : !term.selected;
+
+    mapping.specification.terms = tempTerms;
+    setMapping(basicMapping);
+    setMapping(mapping);
+  }
 
   /**
    * Use effect with an emtpy array as second parameter, will trigger the 'goForTheMappings'
@@ -228,7 +249,7 @@ const MappingToDomains = (props) => {
                     </div>
                   </div>
                   <div className="mt-5">
-                    {/* DOMAINS */}
+                    {/* DOMAINS */}´
 
                     {domains.map((domain) => {
                       return (
@@ -286,7 +307,7 @@ const MappingToDomains = (props) => {
                       </div>
                     </div>
                     <p>
-                      <strong>0</strong> elements selected
+                      <strong>{selectedTerms.length}</strong> elements selected
                     </p>
                   </div>
 
@@ -309,6 +330,7 @@ const MappingToDomains = (props) => {
                           <TermCard
                             key={term.id}
                             term={term}
+                            onClick={() => onTermClick(term.id)}
                             afterDrop={afterDropTerm}
                             onEditClick={onEditTermClick}
                           />

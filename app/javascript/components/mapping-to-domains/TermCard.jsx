@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "./ItemTypes";
@@ -9,6 +9,11 @@ const TermCard = (props) => {
    * The logged in user
    */
   const user = useSelector((state) => state.user);
+
+  /**
+   * The representation of the term for this component
+   */
+  const [selected, setSelected] = useState(false);
 
   /**
    * Configure the draggable component
@@ -39,6 +44,17 @@ const TermCard = (props) => {
     }),
   });
 
+  /**
+   * Make both the term for this component and the one in the mapping,
+   * selected
+   */
+  const handleTermClick = (event) => {
+    if (event.ctrlKey) {
+      setSelected(!selected);
+      props.onClick();
+    }
+  };
+
   return (
     <div
       className={
@@ -46,15 +62,14 @@ const TermCard = (props) => {
         (props.term.mappedTo
           ? " disabled-container not-draggable"
           : " draggable") +
+        (selected ? " term-selected" : "") +
         (isDragging ? " is-dragging" : "")
       }
       ref={props.term.mappedTo ? null : drag}
     >
       <div className="card-header no-color-header pb-0">
         <div className="row">
-          <div className="col-6">
-            {props.term.name}
-          </div>
+          <div className="col-6" onClick={handleTermClick}>{props.term.name}</div>
           <div className="col-6">
             <div className="float-right">
               {props.term.mappedTo ? (

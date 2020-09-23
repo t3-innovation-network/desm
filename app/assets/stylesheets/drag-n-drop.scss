@@ -33,3 +33,8 @@
     background-color: $on-primary !important;
   }
 }
+
+.term-selected {
+  border-color: $primary-color !important;
+  border-width: 1px !important;
+}
