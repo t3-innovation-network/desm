@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "./ItemTypes";
 import { useSelector } from "react-redux";
+import { Animated } from "react-animated-css";
 
 const TermCard = (props) => {
   /**
@@ -14,6 +15,16 @@ const TermCard = (props) => {
    * The representation of the term for this component
    */
   const [selected, setSelected] = useState(false);
+
+  /**
+   * Whether we're showing or not the tooltip for multiselect
+   */
+  const [showingTooltip, setShowingTooltip] = useState(false);
+
+  /**
+   * The message to show on the tooltip
+   */
+  const toolTipMessage = "Use [Ctrl + Click] for multiselect";
 
   /**
    * Configure the draggable component
@@ -52,6 +63,11 @@ const TermCard = (props) => {
     if (event.ctrlKey) {
       setSelected(!selected);
       props.onClick();
+    } else {
+      setShowingTooltip(true);
+      setTimeout(() => {
+        setShowingTooltip(false);
+      }, 3000);
     }
   };
 
@@ -69,7 +85,17 @@ const TermCard = (props) => {
     >
       <div className="card-header no-color-header pb-0">
         <div className="row">
-          <div className="col-6" onClick={handleTermClick}>{props.term.name}</div>
+          <div className="col-6" onClick={handleTermClick}>
+            {props.term.name}
+            <Animated
+              animationIn="fadeIn"
+              animationOut="fadeOut"
+              isVisible={showingTooltip}
+              className="desm-tooltip"
+            >
+              {toolTipMessage}
+            </Animated>
+          </div>
           <div className="col-6">
             <div className="float-right">
               {props.term.mappedTo ? (
