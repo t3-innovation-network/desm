@@ -5,6 +5,7 @@ const updateTerm = async (term) => {
     term: {
       name: term.name,
       property_attributes: term.property,
+      vocabulary_ids: term.vocabularies.map(v => v.id)
     },
   });
   if (response.status === 200) {

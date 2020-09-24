@@ -6,6 +6,7 @@
 class Organization < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   has_many :users, dependent: :destroy
+  has_many :vocabularies
 
   before_destroy :check_for_users, prepend: true
 

@@ -53,7 +53,7 @@ const App = () => {
   ) : (
     <React.Fragment>
       {errors && <AlertNotice message={errors} />}
-      <ReduxToastr />
+      <ReduxToastr position="top-center" className="desm-toast"/>
       <Routes handleLogin={handleLogin} />
     </React.Fragment>
   );

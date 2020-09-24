@@ -6,13 +6,11 @@
 class Api::V1::TermsController < ApplicationController
   before_action :authorize_with_policy
 
-  include Pundit
-
   ###
   # @description: Returns the term with id equal to the one passed in params
   ###
   def show
-    render json: @term, include: :property
+    render json: @term, include: %i[property vocabularies]
   end
 
   ###
@@ -55,8 +53,11 @@ class Api::V1::TermsController < ApplicationController
   # @return [ActionController::Parameters]
   ###
   def permitted_params
-    params.require(:term).permit(:name, :uri, :specification_id, property_attributes: %i[
-                                   datatype source_path subproperty_of value_space label comment domain range
-                                 ])
+    params.require(:term).permit(
+      :name, :uri, :specification_id, {vocabulary_ids: []},
+      property_attributes: %i[
+        datatype source_path subproperty_of value_space label comment domain range
+      ]
+    )
   end
 end
