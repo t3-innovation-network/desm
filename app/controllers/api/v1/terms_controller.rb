@@ -6,8 +6,6 @@
 class Api::V1::TermsController < ApplicationController
   before_action :authorize_with_policy
 
-  include Pundit
-
   ###
   # @description: Returns the term with id equal to the one passed in params
   ###

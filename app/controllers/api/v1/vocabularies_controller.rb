@@ -6,16 +6,12 @@
 class Api::V1::VocabulariesController < ApplicationController
   before_action :authorize_with_policy
 
-  include Pundit
-
   ###
   # @description: Returns the list of vocabularies for the logged in
   #   user's organization
   ###
   def index
-    vocabularies = Vocabulary
-                   .for_organization(current_user.organization)
-                   .order(:name)
+    vocabularies = current_user.organization.vocabularies.order(:name)
 
     render json: vocabularies
   end
@@ -24,7 +20,7 @@ class Api::V1::VocabulariesController < ApplicationController
   # @description: Creates a vocabulary
   ###
   def create
-    @vocabulary = Vocabulary.create!(valid_params)
+    @vocabulary = current_user.organization.vocabularies.create!(permitted_params)
 
     render json: {
       success: true,
@@ -47,20 +43,6 @@ class Api::V1::VocabulariesController < ApplicationController
   ###
   def vocabulary
     @vocabulary = params[:id].present? ? Vocabulary.find(params[:id]) : (Vocabulary.first || Vocabulary)
-  end
-
-  ###
-  # @description: Let's ensure the content is a valid json before
-  #   creating a vocabulary. Also validate the organization is the
-  #   current users's organization
-  # @return [ActionController::Parameters]
-  ###
-  def valid_params
-    params = permitted_params.merge(
-      organization: current_user.organization
-    )
-    params[:content] = JSON.parse(params[:content])
-    params
   end
 
   ###

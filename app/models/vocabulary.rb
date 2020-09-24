@@ -9,27 +9,8 @@
 #   The implementation will be all in the content attribute as a Hash.
 ###
 class Vocabulary < ApplicationRecord
-  include Organizationable
-
   belongs_to :organization
   has_and_belongs_to_many :terms
 
-  before_save :name_taken?
-
-  validates :name, presence: true
-
-  ###
-  # @description: Validates the name was not taken within the organization
-  # @return [TrueClass|FalseClass]:
-  ###
-  def name_taken?
-    if self.class
-           .for_organization(organization)
-           .where(name: name)
-           .count.positive?
-      raise ActiveRecord::RecordNotUnique.new(
-        "Vocabulary name already taken"
-      )
-    end
-  end
+  validates :name, presence: true, uniqueness: {scope: :organization_id}
 end
