@@ -3,7 +3,7 @@ en:
     not_found: "Record not found"
     record_invalid: "Invalid: %{message}"
     record_not_destroyed: "Can't delete: %{message}"
-    record_not_unique: "Record not unique. The file you're trying to ulpoad could be already processed by an existing mapping: %{message}"
+    record_not_unique: "Record not unique: %{message}"
     invalid_json: "The provided value is not a valid JSON"
     auth:
       unauthorized_access: "Unauthorized access."

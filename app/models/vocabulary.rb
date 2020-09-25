@@ -12,5 +12,5 @@ class Vocabulary < ApplicationRecord
   belongs_to :organization
   has_and_belongs_to_many :terms
 
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true, uniqueness: {scope: :organization_id}
 end

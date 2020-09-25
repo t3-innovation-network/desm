@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import createVocabulary from "../../services/createVocabulary";
 import FileInfo from "../mapping/FileInfo";
+import isJSON from "is-valid-json";
+import { toastr as toast } from "react-redux-toastr";
 
 const UploadVocabulary = (props) => {
   /**
@@ -69,21 +71,41 @@ const UploadVocabulary = (props) => {
   };
 
   /**
+   * Manages to corroborate that the file content is a valid JSON
+   * 
+   * @param {String} content 
+   */
+  const validateJSON = (content) => {
+    let isValid = isJSON(content);
+
+    if (!isValid) {
+      toast.error("Invalid JSON!\nBe sure to validate the file before uploading");
+    }
+
+    return isValid;
+  }
+
+  /**
    * Send the file with the vocabulary to the backend
    */
   const handleCreateVocabulary = (event) => {
-    let data = {
-      name: name,
-      content: fileContent,
-    };
+    if(validateJSON(fileContent)) {
+      let data = {
+        name: name,
+        content: fileContent,
+      };
 
-    createVocabulary(data).then((response) => {
-      props.onVocabularyAdded({
-        id: response.vocabulary.id,
-        name: response.vocabulary.name,
+      createVocabulary(data).then((response) => {
+        props.onVocabularyAdded({
+          id: response.vocabulary.id,
+          name: response.vocabulary.name,
+        });
+        props.onRequestClose();
+      }).catch(e => {
+        console.log(e);
+        toast.error("Error! " + e.response.data.message);
       });
-      props.onRequestClose();
-    });
+    }
     event.preventDefault();
   };
 

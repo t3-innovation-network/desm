@@ -62,7 +62,7 @@ const MappingPreview = (props) => {
         }
       })
       .catch((e) => {
-        toast.error(e.response.data.error);
+        toast.error(e.response.data.message);
         setCreatingSpec(false);
       });
   };

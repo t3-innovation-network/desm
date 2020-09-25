@@ -3,8 +3,7 @@
 class CreateTermsVocabulariesJoinTable < ActiveRecord::Migration[6.0]
   def change
     create_join_table :terms, :vocabularies do |t|
-      t.index :term_id
-      t.index :vocabulary_id
+      t.index %i[term_id vocabulary_id], unique: true
     end
   end
 end

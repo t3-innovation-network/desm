@@ -136,8 +136,7 @@ ActiveRecord::Schema.define(version: 2020_09_18_181712) do
   create_table "terms_vocabularies", id: false, force: :cascade do |t|
     t.bigint "term_id", null: false
     t.bigint "vocabulary_id", null: false
-    t.index ["term_id"], name: "index_terms_vocabularies_on_term_id"
-    t.index ["vocabulary_id"], name: "index_terms_vocabularies_on_vocabulary_id"
+    t.index ["term_id", "vocabulary_id"], name: "index_terms_vocabularies_on_term_id_and_vocabulary_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -152,9 +151,9 @@ ActiveRecord::Schema.define(version: 2020_09_18_181712) do
   end
 
   create_table "vocabularies", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.bigint "organization_id", null: false
-    t.jsonb "content"
+    t.jsonb "content", default: "{}", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["organization_id"], name: "index_vocabularies_on_organization_id"

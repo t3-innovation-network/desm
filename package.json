@@ -12,6 +12,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "bootstrap": "^4.5.0",
     "codemirror": "^5.57.0",
+    "is-valid-json": "^1.0.2",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",

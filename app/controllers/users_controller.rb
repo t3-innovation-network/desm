@@ -6,8 +6,6 @@
 class UsersController < ApplicationController
   before_action :authorize_with_policy
 
-  include Pundit
-
   ###
   # @description: Lists all the users with its organizations
   ###

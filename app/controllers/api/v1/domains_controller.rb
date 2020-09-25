@@ -6,8 +6,6 @@
 class Api::V1::DomainsController < ApplicationController
   before_action :authorize_with_policy
 
-  include Pundit
-
   ###
   # @description: Lists all the domains
   ###

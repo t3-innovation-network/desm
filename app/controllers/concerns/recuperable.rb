@@ -34,7 +34,7 @@ module Recuperable
   # @param [NamedRoute] path
   ###
   def handle(message, http_code=:internal_server_error)
-    render json: {error: message}, status: http_code
+    render json: {message: message}, status: http_code
   end
 
   ###
@@ -81,7 +81,7 @@ module Recuperable
       },
       "ActiveRecord::RecordNotUnique": {
         message_key: "errors.record_not_unique",
-        status_code: :internal_server_error,
+        status_code: :conflict,
         include_original_error_message: true
       },
       "JSON::ParserError": {
