@@ -4,7 +4,7 @@ import { ItemTypes } from "./ItemTypes";
 
 const DomainCard = (props) => {
   const [{ canDrop, isOver }, drop] = useDrop({
-    accept: ItemTypes.BOX,
+    accept: ItemTypes.BOXSET,
     drop: () => ({
       name: props.domain.name,
       uri: props.domain.id,
@@ -42,7 +42,12 @@ const DomainCard = (props) => {
               ref={props.domain.spine ? drop : null}
             >
               {isActive ? (
-                <p className="mb-0 fully-centered">Add 1 Record</p>
+                <p className="mb-0 fully-centered">
+                  {"Add " +
+                    props.selectedTermsCount +
+                    " Record" +
+                    (props.selectedTermsCount > 1 ? "s" : "")}
+                </p>
               ) : (
                 <p className="mb-0 fully-centered">
                   Drag elements or groups of elements to this domain

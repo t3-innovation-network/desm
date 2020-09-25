@@ -1,138 +1,113 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useDrag } from "react-dnd";
-import { ItemTypes } from "./ItemTypes";
-import { useSelector } from "react-redux";
+import React, { Component } from "react";
 import { Animated } from "react-animated-css";
 
-const TermCard = (props) => {
-  /**
-   * The logged in user
-   */
-  const user = useSelector((state) => state.user);
-
-  /**
-   * The representation of the term for this component
-   */
-  const [selected, setSelected] = useState(false);
-
-  /**
-   * Whether we're showing or not the tooltip for multiselect
-   */
-  const [showingTooltip, setShowingTooltip] = useState(false);
-
-  /**
-   * The message to show on the tooltip
-   */
-  const toolTipMessage = "Use [Ctrl + Click] for multiselect";
-
-  /**
-   * Configure the draggable component
-   */
-  const [{ isDragging }, drag] = useDrag({
+export default class TermCard extends Component {
+  state = {
     /**
-     * The item being dragged.
-     * The type will help on recognizing it when dropped.
-     * The "other" element can be configured to accept or not this or other
-     * type of elements
+     * The representation of the term for this component
      */
-    item: {
-      name: props.term.name,
-      uri: props.term.uri,
-      type: ItemTypes.BOX,
-    },
-    end: (item, monitor) => {
-      /**
-       * The element where it was dropped in
-       */
-      const domainDropped = monitor.getDropResult();
-      if (item && domainDropped) {
-        props.afterDrop(item, domainDropped);
-      }
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  });
+    selected: this.props.term.selected,
+    animationisVisible: true,
+    animationDuration: 250
+  };
 
   /**
    * Make both the term for this component and the one in the mapping,
-   * selected
+   * selected or not selected
    */
-  const handleTermClick = (event) => {
-    if (event.ctrlKey) {
-      setSelected(!selected);
-      props.onClick();
-    } else {
-      setShowingTooltip(true);
-      setTimeout(() => {
-        setShowingTooltip(false);
-      }, 3000);
+  handleTermClick = () => {
+    const { selected, animationDuration } = this.state;
+    // Trigger animation
+    if (!selected) {
+      this.setState(
+        ({ animationisVisible }) => ({
+          animationisVisible: !animationisVisible,
+        }),
+        () => {
+          // Await until the animation finishes. Otherwise the term just roughly dissapears
+          setTimeout(() => {
+            // local value (this term)
+            this.setState(
+              ({ selected }) => ({
+                selected: !selected,
+              }),
+              () => {
+                // props value (the term inside the list in the parent component)
+                this.props.term.selected = !this.props.term.selected;
+                this.props.onClick(this.props.term);
+              }
+            );
+          }, animationDuration);
+        }
+      );
     }
   };
 
-  return (
-    <div
-      className={
-        "card with-shadow mb-2" +
-        (props.term.mappedTo
-          ? " disabled-container not-draggable"
-          : " draggable") +
-        (selected ? " term-selected" : "") +
-        (isDragging ? " is-dragging" : "")
-      }
-      ref={props.term.mappedTo ? null : drag}
-    >
-      <div className="card-header no-color-header pb-0">
-        <div className="row">
-          <div className="col-6" onClick={handleTermClick}>
-            {props.term.name}
-            <Animated
-              animationIn="fadeIn"
-              animationOut="fadeOut"
-              isVisible={showingTooltip}
-              className="desm-tooltip"
-            >
-              {toolTipMessage}
-            </Animated>
-          </div>
-          <div className="col-6">
-            <div className="float-right">
-              {props.term.mappedTo ? (
-                <i className="fas fa-check"></i>
-              ) : (
-                <React.Fragment>
-                  <button
-                    onClick={() => {
-                      props.onEditClick(props.term);
-                    }}
-                    className="btn"
-                  >
-                    <i className="fa fa-pencil-alt"></i>
-                  </button>
-                  <Link
-                    data-target={"#collapse-term-" + props.term.id}
-                    data-toggle="collapse"
-                    className="btn"
-                    to="#"
-                  >
-                    <i className="fas fa-angle-down"></i>
-                  </Link>
-                </React.Fragment>
-              )}
+  render() {
+    const { selected, animationisVisible, animationDuration } = this.state;
+    return (
+      <Animated
+        animationIn="fadeInDown"
+        animationOut="fadeOutUp"
+        animationInDuration={animationDuration}
+        animationOutDuration={animationDuration}
+        isVisible={animationisVisible}
+      >
+        <div
+          className={
+            "card with-shadow mb-2" +
+            (this.props.term.mappedTo
+              ? " disabled-container not-draggable"
+              : selected
+              ? " draggable term-selected"
+              : "")
+          }
+        >
+          <div className="card-header no-color-header pb-0">
+            <div className="row">
+              <div
+                className={"col-8 mb-3" + (selected ? "" : " cursor-pointer")}
+                onClick={this.handleTermClick}
+              >
+                {this.props.term.name}
+              </div>
+              <div className="col-4">
+                <div className="float-right">
+                  {this.props.term.mappedTo ? (
+                    <i className="fas fa-check"></i>
+                  ) : (
+                    <React.Fragment>
+                      <button
+                        onClick={() => {
+                          this.props.onEditClick(this.props.term);
+                        }}
+                        className="btn"
+                      >
+                        <i className="fa fa-pencil-alt"></i>
+                      </button>
+                      <a
+                        data-target={"#collapse-term-" + this.props.term.id}
+                        data-toggle="collapse"
+                        className="btn"
+                        to="#"
+                      >
+                        <i className="fas fa-angle-down"></i>
+                      </a>
+                    </React.Fragment>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
+          <div
+            id={"collapse-term-" + this.props.term.id}
+            className="collapse card-body pt-0 pb-0"
+          >
+            <p>{this.props.term.property.comment}</p>
+            <p>{"Origin: " + ""}</p>
+          </div>
         </div>
-      </div>
-      <div
-        id={"collapse-term-" + props.term.id}
-        className="collapse card-body pt-0 pb-0"
-      >
-        <p>{props.term.property.comment}</p>
-        <p>{"Origin: " + user.organization.name}</p>
-      </div>
-    </div>
-  );
-};
-
-export default TermCard;
+      </Animated>
+    );
+  }
+}

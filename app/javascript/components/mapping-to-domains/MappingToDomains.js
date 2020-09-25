@@ -9,17 +9,18 @@ import TopNavOptions from "../shared/TopNavOptions";
 import TermCard from "./TermCard";
 import DomainCard from "./DomainCard";
 import EditTerm from "./EditTerm";
+import TermCardsContainer from "./TermCardsContainer";
 
 const MappingToDomains = (props) => {
   /**
    * Declare and have an initial state for the mapping
    */
-  const basicMapping = {
-    specification: {
-      terms: [],
-    },
-  };
-  const [mapping, setMapping] = useState(basicMapping);
+  const [mapping, setMapping] = useState({});
+
+  /**
+   * The specification terms list
+   */
+  const [terms, setTerms] = useState([]);
 
   /**
    * Whether the page is loading results or not
@@ -55,29 +56,35 @@ const MappingToDomains = (props) => {
 
   /**
    * The value of the input that the user is typing in the search box
-   * when there are many domains in the uploaded file
+   * to filter the list of terms
    */
   const [termsInputValue, setTermsInputValue] = useState("");
 
   /**
-   * The domains that includes the string typed by the user in the
-   * search box when there are many domains in the uploaded file
+   * The selected or not selected terms that includes the string typed by the user in the
+   * search box.
    */
-  const filteredTerms = mapping.specification.terms.filter((term) => {
-    return term.name.toLowerCase().includes(termsInputValue.toLowerCase());
-  });
+  const filteredTerms = (options = { pickSelected: false }) =>
+    terms
+      .filter((term) => {
+        return (
+          (options.pickSelected ? term.selected : !term.selected) &&
+          term.name.toLowerCase().includes(termsInputValue.toLowerCase())
+        );
+      })
+      .sort((a, b) => (a.name > b.name ? 1 : -1));
 
   /**
    * The already mapped terms. To use in progress bar.
    */
-  const mappedTerms = mapping.specification.terms.filter((term) => {
+  const mappedTerms = terms.filter((term) => {
     return term.mappedTo;
   });
 
   /**
    * The selected terms.
    */
-  const selectedTerms = mapping.specification.terms.filter((term) => {
+  const selectedTerms = terms.filter((term) => {
     return term.selected;
   });
 
@@ -85,21 +92,21 @@ const MappingToDomains = (props) => {
    * The already mapped terms to a given domain.
    */
   const mappedTermsToDomain = (domainUri) =>
-    mapping.specification.terms.filter((term) => {
+    terms.filter((term) => {
       return term.mappedTo == domainUri;
     });
 
   /**
    * Action to perform after a term is dropped
    */
-  const afterDropTerm = (mappedTerm, domain) => {
-    let tempMapping = mapping;
-    let termToMap = tempMapping.specification.terms.find(
-      (term) => term.uri == mappedTerm.uri
-    );
-    termToMap.mappedTo = domain.uri;
-    setMapping(basicMapping);
-    setMapping(tempMapping);
+  const afterDropTerm = (domain) => {
+    let tempTerms = selectedTerms;
+    tempTerms.forEach((termToMap) => {
+      termToMap.mappedTo = domain.uri;
+      termToMap.selected = !termToMap.selected;
+    });
+    tempTerms = [...terms];
+    setTerms(tempTerms);
   };
 
   /**
@@ -134,11 +141,8 @@ const MappingToDomains = (props) => {
    * @param {Object} removedTerm
    */
   const termRemoved = (removedTerm) => {
-    const tempTerms = mapping.specification.terms.filter(
-      (term) => term.id !== removedTerm.id
-    );
-    mapping.specification.terms = tempTerms;
-    setMapping(mapping);
+    const tempTerms = terms.filter((term) => term.id !== removedTerm.id);
+    setTerms(tempTerms);
   };
 
   /**
@@ -153,10 +157,11 @@ const MappingToDomains = (props) => {
   /**
    * Get the mapping from the service
    */
-  const goForTheMapping = () => {
+  const fetchMappingFromAPI = () => {
     fetchMapping(props.match.params.id).then((response) => {
       setLoading(false);
       setMapping(response.mapping);
+      setTerms(response.mapping.specification.terms);
     });
   };
 
@@ -173,24 +178,21 @@ const MappingToDomains = (props) => {
   /**
    * Mark the term as "selected"
    */
-  const onTermClick = (termId) => {
-    let tempTerms = mapping.specification.terms;
-    let term = tempTerms.find(t => t.id == termId);
+  const onTermClick = (clickedTerm) => {
+    let tempTerms = [...terms];
+    let term = tempTerms.find((t) => t.id == clickedTerm.id);
+    term.selected = clickedTerm.selected;
 
-    term.selected = (term.selected == undefined) ? true : !term.selected;
-
-    mapping.specification.terms = tempTerms;
-    setMapping(basicMapping);
-    setMapping(mapping);
-  }
+    setTerms(tempTerms);
+  };
 
   /**
-   * Use effect with an emtpy array as second parameter, will trigger the 'goForTheMappings'
+   * Use effect with an emtpy array as second parameter, will trigger the 'fetchMappingsFromAPI'
    * and also 'fillWithDomains' actions at the 'mounted' event of this functional component
    * (It's not actually mounted, but it mimics the same action).
    */
   useEffect(() => {
-    goForTheMapping();
+    fetchMappingFromAPI();
     fillWithDomains();
   }, []);
 
@@ -224,9 +226,7 @@ const MappingToDomains = (props) => {
                       <div className="col-5">
                         <p>
                           <strong>{mappedTerms.length}</strong>
-                          {" of " +
-                            mapping.specification.terms.length +
-                            " elements added to domains"}
+                          {" of " + terms.length + " elements added to domains"}
                         </p>
                       </div>
                       <div className="col-7">
@@ -236,13 +236,11 @@ const MappingToDomains = (props) => {
                             role="progressbar"
                             style={{
                               width:
-                                (mappedTerms.length * 100) /
-                                  mapping.specification.terms.length +
-                                "%",
+                                (mappedTerms.length * 100) / terms.length + "%",
                             }}
                             aria-valuenow="0"
                             aria-valuemin="0"
-                            aria-valuemax={mapping.specification.terms.length}
+                            aria-valuemax={terms.length}
                           ></div>
                         </div>
                       </div>
@@ -250,13 +248,13 @@ const MappingToDomains = (props) => {
                   </div>
                   <div className="mt-5">
                     {/* DOMAINS */}´
-
                     {domains.map((domain) => {
                       return (
                         <DomainCard
                           key={domain.id}
                           domain={domain}
                           mappedTerms={mappedTermsToDomain(domain.id)}
+                          selectedTermsCount={selectedTerms.length}
                         />
                       );
                     })}
@@ -314,28 +312,45 @@ const MappingToDomains = (props) => {
                   <div className="pr-5 mt-5">
                     <AlertNotice
                       cssClass="bg-col-primary col-background"
-                      title={
-                        mapping.specification.terms.length +
-                        " elements have been uploaded"
-                      }
+                      title={terms.length + " elements have been uploaded"}
                       message="Drag your individual elements below to the matching domains on the left to begin mapping your specification"
                     />
-                    <div className="has-scrollbar scrollbar pr-5">
-                      {/* MAPPING TERMS */}
+                    <div>
+                      {/* SELECTED TERMS */}
 
-                      {filteredTerms.map((term) => {
+                      <TermCardsContainer
+                        className="has-scrollbar scrollbar pr-5"
+                        terms={selectedTerms}
+                        afterDrop={afterDropTerm}
+                      >
+                        {filteredTerms({ pickSelected: true }).map((term) => {
+                          return hideMapped && term.mappedTo ? (
+                            ""
+                          ) : (
+                            <TermCard
+                              key={term.id}
+                              term={term}
+                              onClick={onTermClick}
+                              onEditClick={onEditTermClick}
+                            />
+                          );
+                        })}
+                      </TermCardsContainer>
+
+                      {/* NOT SELECTED TERMS */}
+                      {filteredTerms({ pickSelected: false }).map((term) => {
                         return hideMapped && term.mappedTo ? (
                           ""
                         ) : (
                           <TermCard
                             key={term.id}
                             term={term}
-                            onClick={() => onTermClick(term.id)}
-                            afterDrop={afterDropTerm}
+                            onClick={onTermClick}
                             onEditClick={onEditTermClick}
                           />
                         );
                       })}
+                      {/* END NOT SELECTED TERMS */}
                     </div>
                   </div>
                 </div>

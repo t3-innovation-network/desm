@@ -1,3 +1,3 @@
 export const ItemTypes = {
-  BOX: 'box',
+  BOXSET: 'box-set',
 }
