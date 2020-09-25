@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import createVocabulary from "../../services/createVocabulary";
 import FileInfo from "../mapping/FileInfo";
-import isJSON from "is-valid-json";
 import { toastr as toast } from "react-redux-toastr";
+
+var isJSON = require('is-valid-json');
 
 const UploadVocabulary = (props) => {
   /**
