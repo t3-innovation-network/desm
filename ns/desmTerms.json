@@ -81,7 +81,7 @@
       "dct:identifier": "desm:MappingPredicateType",
       "rdfs:comment": {
         "@language": "en-US",
-        "@value": "An abstract class of all competency frameworks defining schema mapping predicates."
+        "@value": "An abstract class of all competency frameworks defining schema mapping predicates used in schema mapping."
       },
       "rdfs:isDefinedBy": {
         "@id": "desm:"
