@@ -6,8 +6,6 @@
 class Api::V1::OrganizationsController < ApplicationController
   before_action :authorize_with_policy
 
-  include Pundit
-
   ###
   # @description: Lists all the organizations
   ###

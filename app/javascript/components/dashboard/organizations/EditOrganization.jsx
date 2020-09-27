@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DashboardContainer from "../DashboardContainer";
 import fetchOrganization from "../../../services/fetchOrganization";
 import ErrorMessage from "../../shared/ErrorMessage";
-import ErrorNotice from "../../shared/ErrorNotice";
+import AlertNotice from "../../shared/AlertNotice";
 import deleteOrganization from "../../../services/deleteOrganization";
 import updateOrganization from "../../../services/updateOrganization";
 import {toastr as toast} from 'react-redux-toastr';
@@ -103,8 +103,8 @@ export default class EditOrganization extends Component {
   render() {
     return (
       <DashboardContainer>
-        <div className="col-lg-6 mx-auto">
-          {this.state.errors && <ErrorNotice message={this.state.errors} /> }
+        <div className="col-lg-6 mx-auto mt-5">
+          {this.state.errors && <AlertNotice message={this.state.errors} /> }
 
           <div className="card mt-5">
             <div className="card-header">

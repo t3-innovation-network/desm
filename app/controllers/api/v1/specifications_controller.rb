@@ -24,4 +24,38 @@ class Api::V1::SpecificationsController < ApplicationController
     file = File.read(params[:file])
     render json: Processors::Specifications.filter_specification(file, params[:uri])
   end
+
+  ###
+  # @description: Create a specification with its terms. Store it from an already
+  #   filtered JSON object
+  ###
+  def create
+    spec = Processors::Specifications.create(valid_params)
+
+    # If there's no specification for the user's company and the selected domain to
+    # map to, then it's the spine.
+    spec.spine! unless spec.domain.spine?
+
+    render json: spec
+  end
+
+  ###
+  # @description: Clean the parameters with all needed for specifications creation
+  # @return [ActionController::Parameters]
+  ###
+  def valid_params
+    permitted_params.merge(
+      user: current_user,
+      domain_to: params[:domain_to],
+      specs: params[:specifications]
+    )
+  end
+
+  ###
+  # @description: Clean params
+  # @return [ActionController::Parameters]
+  ###
+  def permitted_params
+    params.require(:specification).permit(:name, :version, :uri, :use_case)
+  end
 end

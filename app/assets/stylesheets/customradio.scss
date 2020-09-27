@@ -44,6 +44,10 @@
 	border-radius: 3px 0 0 3px;
 }
 
+.desm-radio > .has-spine input[type="radio"]:empty~label:before,
+.desm-radio > .has-spine input[type="checkbox"]:empty~label:before {
+	background: green !important;
+}
 .desm-radio input[type="radio"]:hover:not(:checked)~label,
 .desm-radio input[type="checkbox"]:hover:not(:checked)~label {
 	color: $on-primary-light;
@@ -84,9 +88,4 @@
 .desm-radio-primary input[type="checkbox"]:checked~label:before {
 	color: #fff;
 	background-color: $on-primary;
-}
-
-.multiple-domains-modal {
-  max-height: 80vh;
-  overflow-y: auto;
 }

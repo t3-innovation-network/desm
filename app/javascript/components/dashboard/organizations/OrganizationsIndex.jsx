@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DashboardContainer from "../DashboardContainer";
 import { Link } from "react-router-dom";
 import fetchOrganizations from "../../../services/fetchOrganizations";
-import ErrorNotice from "../../shared/ErrorNotice";
+import AlertNotice from "../../shared/AlertNotice";
 import ErrorMessage from "../../shared/ErrorMessage";
 
 export default class OrganizationsIndex extends Component {
@@ -42,8 +42,8 @@ export default class OrganizationsIndex extends Component {
   render() {
     return (
       <DashboardContainer>
-        <div className="col-lg-6 mx-auto">
-          {this.state.errors && <ErrorNotice message={this.state.errors} />}
+        <div className="col-lg-6 mx-auto mt-5">
+          {this.state.errors && <AlertNotice message={this.state.errors} />}
 
           <div className="card mt-5">
             <div className="card-header">

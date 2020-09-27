@@ -38,6 +38,14 @@ a:hover {
   cursor: pointer;
 }
 
+.border-bottom {
+  border-bottom: 1px solid $on-primary;
+}
+
+.border-dotted {
+ border: 1px dotted $on-primary !important;
+}
+
 .has-search .form-control {
   padding-left: 2.375rem;
 }
@@ -52,7 +60,14 @@ a:hover {
   position: absolute;
   text-align: center;
   width: 1.2rem;
-  z-index: 2;
+}
+
+.fully-centered{
+  position: absolute;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  top: 50%;
+  left: 50%;
 }
 
 /* Main view Styles */
@@ -73,16 +88,33 @@ a:hover {
   color: $background-color !important;
 }
 
+.col-on-primary {
+  color: $on-primary !important;
+}
+
+.col-primary {
+  color: $primary-color !important;
+}
+
+.no-color-header {
+  background-color: unset !important;
+  border-bottom: unset !important;
+}
+
 .mandatory-fields-notice{
   text-align: end;
 }
 
-.file-card {
-  overflow-y: scroll;
-  max-height: 50%;
+.col-header {
+  min-height: 10vw;
 }
 
 /* Scrollbar */
+
+.has-scrollbar {
+  overflow-y: scroll;
+  max-height: 45vw;
+}
 
 .scrollbar::-webkit-scrollbar {
   width: 6px;
@@ -94,8 +126,14 @@ a:hover {
   border-radius: 8px;
 }
 
-.disabled-form {
+.disabled-container {
   opacity: 0.4;
+}
+
+.with-shadow {
+  -webkit-box-shadow: 4px 8px 5px -7px $on-primary-light;
+  -moz-box-shadow: 4px 8px 5px -7px $on-primary-light;
+  box-shadow: 4px 8px 5px -7px $on-primary-light;
 }
 
 /* Mobile */

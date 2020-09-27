@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import TopNav from "../shared/TopNav";
 import signIn from "../../services/signIn";
 import ErrorMessage from "../shared/ErrorMessage";
-import ErrorNotice from "../shared/ErrorNotice";
+import AlertNotice from "../shared/AlertNotice";
+import TopNavOptions from "../shared/TopNavOptions";
 
 class SignIn extends Component {
   /**
@@ -57,15 +58,27 @@ class SignIn extends Component {
     });
   }
 
+  /**
+   * Configure the options to see at the center of the top navigation bar
+   */
+  navCenterOptions = () => {
+    return (
+      <TopNavOptions
+        viewMappings={true}
+        mapSpecification={true}
+      />
+    )
+  }
+
   render() {
     return (
       <React.Fragment>
         <div className="wrapper">
-          <TopNav />
+          <TopNav centerContent={this.navCenterOptions} />
           <div className="container-fluid container-wrapper">
             <div className="row mt-5">
               <div className="col-lg-6 mx-auto">
-                { this.state.errors && <ErrorNotice message={this.state.errors} /> }
+                { this.state.errors && <AlertNotice message={this.state.errors} /> }
 
                 <div className="card">
                   <div className="card-header">
