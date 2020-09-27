@@ -8,7 +8,7 @@ export default class TermCard extends Component {
      */
     selected: this.props.term.selected,
     animationisVisible: true,
-    animationDuration: 250
+    animationDuration: 250,
   };
 
   /**
@@ -18,29 +18,27 @@ export default class TermCard extends Component {
   handleTermClick = () => {
     const { selected, animationDuration } = this.state;
     // Trigger animation
-    if (!selected) {
-      this.setState(
-        ({ animationisVisible }) => ({
-          animationisVisible: !animationisVisible,
-        }),
-        () => {
-          // Await until the animation finishes. Otherwise the term just roughly dissapears
-          setTimeout(() => {
-            // local value (this term)
-            this.setState(
-              ({ selected }) => ({
-                selected: !selected,
-              }),
-              () => {
-                // props value (the term inside the list in the parent component)
-                this.props.term.selected = !this.props.term.selected;
-                this.props.onClick(this.props.term);
-              }
-            );
-          }, animationDuration);
-        }
-      );
-    }
+    this.setState(
+      ({ animationisVisible }) => ({
+        animationisVisible: !animationisVisible,
+      }),
+      () => {
+        // Await until the animation finishes. Otherwise the term just roughly dissapears
+        setTimeout(() => {
+          // local value (this term)
+          this.setState(
+            ({ selected }) => ({
+              selected: !selected,
+            }),
+            () => {
+              // props value (the term inside the list in the parent component)
+              this.props.term.selected = !this.props.term.selected;
+              this.props.onClick(this.props.term);
+            }
+          );
+        }, animationDuration);
+      }
+    );
   };
 
   render() {

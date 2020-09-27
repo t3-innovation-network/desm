@@ -1,7 +1,7 @@
 import apiService from "./apiService";
 
-const updateUser = (user_id, email, fullname, organization_id, role_id) => {
-  return apiService
+const updateUser = async (user_id, email, fullname, organization_id, role_id) => {
+  const response = await apiService
     .put("/users/" + user_id, {
       user: {
         fullname: fullname,
@@ -9,14 +9,12 @@ const updateUser = (user_id, email, fullname, organization_id, role_id) => {
         organization_id: organization_id,
       },
       role_id: role_id,
-    })
-    .then((response) => {
-      if (response.status === 200) {
-        return {
-          success: true,
-        };
-      }
     });
+  if (response.status === 200) {
+    return {
+      success: true,
+    };
+  }
 };
 
 export default updateUser;
