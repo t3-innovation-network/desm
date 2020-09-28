@@ -190,7 +190,7 @@ export default class EditTerm extends Component {
                     }
                   >
                     <div className="form-group">
-                      <label>Class/Type</label>
+                      <label>Domain</label>
                       <input
                         type="text"
                         className="form-control"
@@ -202,18 +202,57 @@ export default class EditTerm extends Component {
                         autoFocus
                       />
                     </div>
+                    <div className="card">
+                      <div className="card-body">
+                        <h5><strong>Element/Property</strong></h5>
 
-                    <div className="form-group">
-                      <label>Element/Property</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="element"
-                        placeholder="Element/Property"
-                        value={this.state.term.property.element}
-                        onChange={(e) => this.handlePropertyChange(e)}
-                        disabled={this.state.uploadingVocabulary}
-                      />
+                        <div className="form-group row">
+                          <div className="col-3">
+                            <label><strong>Property URI</strong></label>
+                          </div>
+                          <div className="col-9">
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="property-uri"
+                              placeholder="Property URI"
+                              value={this.state.term.property.element}
+                              onChange={(e) => this.handlePropertyChange(e)}
+                              disabled={this.state.uploadingVocabulary}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="form-group row">
+                          <div className="col-3">
+                            <label><strong>Source URI</strong></label>
+                          </div>
+                          <div className="col-9">
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="source-uri"
+                              placeholder="Source URI"
+                              disabled={this.state.uploadingVocabulary}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="form-group row">
+                          <div className="col-3">
+                            <label><strong>Property label</strong></label>
+                          </div>
+                          <div className="col-9">
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="property-label"
+                              placeholder="Porperty Label"
+                              disabled={this.state.uploadingVocabulary}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     <div className="form-group">
@@ -228,10 +267,11 @@ export default class EditTerm extends Component {
                     </div>
 
                     <div className="form-group">
-                      <label>Path (optional)</label>
+                      <label>XPath/JSON Path (optional)</label>
                       <textarea
                         className="form-control"
                         name="source_path"
+                        placeholder="XPath or JSON Path"
                         value={this.state.term.property.source_path || ""}
                         onChange={(e) => this.handlePropertyChange(e)}
                         disabled={this.state.uploadingVocabulary}
@@ -241,9 +281,25 @@ export default class EditTerm extends Component {
                     </div>
 
                     <div className="form-group">
+                      <label>Range</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="datatype"
+                        value={this.state.term.property.datatype || ""}
+                        onChange={(e) => this.handlePropertyChange(e)}
+                        placeholder="Datatype"
+                      />
+                    </div>
+                  </div>
+
+                  {/* RIGHT COLUMN */}
+
+                  <div className="col-6">
+                    <div className="form-group">
                       <label>Vocabulary (optional)</label>
                       <div
-                        className="card mt-2 mb-2 has-scrollbar scrollbar"
+                        className="card mb-2 has-scrollbar scrollbar"
                         style={{ maxHeight: "10rem" }}
                       >
                         <div className="card-body">
@@ -277,11 +333,7 @@ export default class EditTerm extends Component {
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* RIGHT COLUMN */}
-
-                  <div className="col-6">
                     {this.state.uploadingVocabulary ? (
                       <UploadVocabulary
                         term={this.state.term}
@@ -294,20 +346,8 @@ export default class EditTerm extends Component {
                       />
                     ) : (
                       <React.Fragment>
-                        <div className="form-group">
-                          <label>Datatype</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            name="datatype"
-                            value={this.state.term.property.datatype || ""}
-                            onChange={(e) => this.handlePropertyChange(e)}
-                            placeholder="Datatype"
-                          />
-                        </div>
-
                         <div style={{ height: "78%" }}>
-                          <label>Raw</label>
+                          <label><strong>Raw</strong></label>
                           <CodeMirror
                             value={JSON.stringify(this.state.term, null, 2)}
                             options={{ lineNumbers: true }}
