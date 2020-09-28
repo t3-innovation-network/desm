@@ -285,8 +285,8 @@ export default class EditTerm extends Component {
                       <input
                         type="text"
                         className="form-control"
-                        name="datatype"
-                        value={this.state.term.property.datatype || ""}
+                        name="range"
+                        value={this.state.term.property.range || ""}
                         onChange={(e) => this.handlePropertyChange(e)}
                         placeholder="Datatype"
                       />

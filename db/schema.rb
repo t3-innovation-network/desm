@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_18_181712) do
+ActiveRecord::Schema.define(version: 2020_09_28_192237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,7 +88,6 @@ ActiveRecord::Schema.define(version: 2020_09_18_181712) do
   end
 
   create_table "properties", force: :cascade do |t|
-    t.string "datatype"
     t.string "source_path"
     t.string "subproperty_of"
     t.string "value_space"
