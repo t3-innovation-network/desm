@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ErrorNotice from "../components/shared/ErrorNotice";
+import AlertNotice from "../components/shared/AlertNotice";
 import checkLoginStatus from "./../services/checkLoginStatus";
 import ErrorMessage from "./shared/ErrorMessage";
 import { useSelector } from "react-redux";
@@ -52,8 +52,8 @@ const App = () => {
     <Loader />
   ) : (
     <React.Fragment>
-      {errors && <ErrorNotice message={errors} />}
-      <ReduxToastr />
+      {errors && <AlertNotice message={errors} />}
+      <ReduxToastr position="top-center" className="desm-toast"/>
       <Routes handleLogin={handleLogin} />
     </React.Fragment>
   );

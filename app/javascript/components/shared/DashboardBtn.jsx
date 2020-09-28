@@ -9,14 +9,12 @@ const DashboardBtn = () => {
 
   if (isLoggedIn && user.roles !== undefined && user.roles[0].name.toLowerCase() == adminRoleName.toLowerCase()) {
     return (
-      <li className="nav-item">
-        <Link
-          to="/dashboard"
-          className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark"
-        >
-          Dashboard
-        </Link>
-      </li>
+      <Link
+        to="/dashboard"
+        className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark"
+      >
+        Dashboard
+      </Link>
     );
   }
   return null

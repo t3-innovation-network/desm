@@ -1,34 +1,26 @@
 import React from "react";
 import Modal from "react-modal";
+import ModalStyles from '../shared/ModalStyles';
 
 const MultipleDomainsModal = (props) => {
   Modal.setAppElement("body");
-
-  const customStyles = {
-    content: {
-      top: "10vh",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%)",
-      border: "none",
-    },
-  };
 
   return (
     <Modal
       isOpen={props.modalIsOpen}
       onRequestClose={props.onRequestClose}
       contentLabel="Multiple Domains Found"
-      style={customStyles}
+      style={ModalStyles}
       shouldCloseOnEsc={false}
       shouldCloseOnOverlayClick={false}
     >
-      <div className="card multiple-domains-modal">
+      <div className="card" style={{maxHeight: "45rem"}}>
         <div className="card-header">
           <div className="row">
-            <div className="col">
+            <div className="col-10">
+              <h5 className="col-primary"><strong>{props.domains.length}</strong> domains found</h5>
+            </div>
+            <div className="col-2">
               <a
                 className="float-right cursor-pointer"
                 onClick={props.onRequestClose}
@@ -39,10 +31,7 @@ const MultipleDomainsModal = (props) => {
           </div>
           <div className="row">
             <div className="col">
-              <h4>
-                Please, pick one of the following domains found in the file to
-                begin mapping
-              </h4>
+              <strong>Please select a domain from the list to begin mapping</strong>
               <div className="form-group has-search">
                 <span className="fa fa-search form-control-feedback"></span>
                 <input
@@ -57,7 +46,7 @@ const MultipleDomainsModal = (props) => {
           </div>
         </div>
 
-        <div className="card-body">
+        <div className="card-body has-scrollbar scrollbar">
           <div className="desm-radio">
             {props.domains.map(function (dom) {
               return (

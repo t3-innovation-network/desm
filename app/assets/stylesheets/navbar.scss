@@ -19,6 +19,10 @@
   padding-bottom: 6px;
 }
 
+.navbar-nav .dropdown-menu {
+  position: absolute;
+}
+
 #toggle-nav {
   position: relative;
   bottom: -7px;

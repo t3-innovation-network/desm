@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Domain, type: :model do
+describe Domain, type: :model do
   it "has a valid factory" do
     expect(FactoryBot.build(:domain_set)).to be_valid
   end

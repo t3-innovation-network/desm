@@ -12,6 +12,7 @@ import Mapping from "./mapping/Mapping";
 import MainDashboard from "./dashboard/MainDashboard";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import SpecList from "./specifications-list/SpecList";
+import MappingToDomains from "./mapping-to-domains/MappingToDomains";
 
 const Routes = (props) => {
   let manageLogin = props.handleLogin;
@@ -41,6 +42,12 @@ const Routes = (props) => {
           path="/new-mapping"
           allowNonAdmins={true}
           component={Mapping} />
+
+        <ProtectedRoute
+          exact
+          path="/mappings/:id"
+          allowNonAdmins={true}
+          component={MappingToDomains} />
 
         <ProtectedRoute
           exact

@@ -16,3 +16,30 @@
     font-weight: 600;
   }
 }
+
+.react-codemirror2{
+  height: 100%;
+  max-height: 30rem;
+  ::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+    background-color: $primary-color-highlight;
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: $primary-color;
+    border-radius: 8px;
+  }
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: $primary-color-light;
+  }
+  /* The corner where the vertical and horizontal scrollbars meet */
+  ::-webkit-scrollbar-corner {
+    background: $primary-color-light;
+  }
+}
+
+.CodeMirror{
+  height: 100% !important;
+}

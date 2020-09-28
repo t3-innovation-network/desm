@@ -22,7 +22,7 @@ const apiAnalyzeDomainsInFile = (file) => {
       return response.data.domains;
     })
     .catch((e) => {
-      throw new Error(e.response.data.error);
+      throw new Error(e.response.data.message);
     });
 };
 

@@ -11,7 +11,7 @@ const FileContent = () => {
     <React.Fragment>
       {previewSpecs.map((content, i) => {
         return (
-          <div className="card mt-2 mb-2 file-card scrollbar" key={i}>
+          <div className="card mt-2 mb-2 has-scrollbar scrollbar" key={i}>
             <div className="card-body">
               <pre>
                 <code>{content}</code>
