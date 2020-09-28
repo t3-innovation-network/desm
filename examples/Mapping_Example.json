@@ -4,6 +4,7 @@
     "desm": "http://desmsolutions.org/ns/",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "sdo": "http://schema.org/" ,
     "xsd": "http://www.w3.org/2001/XMLSchema#"
   },
   "@graph": [
@@ -44,9 +45,6 @@
       "@type": "rdf:Property",
       "rdfs:label": "Organization Name",
       "rdfs:comment": "The name of a non-person entity such as an organization, institution, agency or business.",
-      "desm:datatype": {
-        "@id": "xsd:string"
-      },
       "desm:sourceURI": {
         "@id": "https://ceds.ed.gov/element/000204"
       },
@@ -57,7 +55,7 @@
         "@id": "http://desmsolutions.org/ns/ceds/Organization"
       },
       "rdfs:range": {
-        "@id": "rdfs:Literal"
+        "@id": "sdo:Text"
       },
       "rdfs:subPropertyOf": {
         "@id": "https://ceds.ed.gov/element/000204"
@@ -68,9 +66,6 @@
       "@type": "rdf:Property",
       "rdfs:label": "name",
       "rdfs:comment": "Name or title of the resource.",
-      "desm:datatype": {
-        "@id": "xsd:string"
-      },
       "desm:sourceURI": {
         "@id": "https://purl.org/ctdl/terms/name"
       },
@@ -81,7 +76,7 @@
         "@id": "http://desmsolutions.org/ns/credReg/CredentialOrganization"
       },
       "rdfs:range": {
-        "@id": "rdfs:Literal"
+        "@id": "sdo:Text"
       },
       "rdfs:subPropertyOf": {
         "@id": "https://purl.org/ctdl/terms/name"
