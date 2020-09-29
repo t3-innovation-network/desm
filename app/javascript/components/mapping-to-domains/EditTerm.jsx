@@ -9,7 +9,6 @@ import { toastr as toast } from "react-redux-toastr";
 import deleteTerm from "../../services/deleteTerm";
 import { Controlled as CodeMirror } from "react-codemirror2";
 import fetchVocabularies from "../../services/fetchVocabularies";
-import RawTerm from "./rawTerm";
 import rawTerm from "./rawTerm";
 
 export default class EditTerm extends Component {
@@ -197,36 +196,6 @@ export default class EditTerm extends Component {
                         : "") + "col-6"
                     }
                   >
-                    <div className="form-group">
-                      <label>Domain</label>
-                      <div className="card mb-2 has-scrollbar scrollbar desm-check-container-sm">
-                        <div className="card-body">
-                          <div className="desm-radio">
-                            {this.state.term.property.domain &&
-                              this.state.term.property.domain.map((dom) => {
-                                return (
-                                  <div
-                                    className={"desm-radio-primary"}
-                                    key={dom}
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      value={dom}
-                                      id={dom}
-                                      name="vocabularies[]"
-                                      onChange={(e) =>
-                                        this.handleDomainChange(e.target.value)
-                                      }
-                                      disabled={true}
-                                    />
-                                    <label htmlFor={dom}>{dom}</label>
-                                  </div>
-                                );
-                              })}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                     <div className="card">
                       <div className="card-body">
                         <h5>
@@ -304,16 +273,34 @@ export default class EditTerm extends Component {
                     </div>
 
                     <div className="form-group">
-                      <label>XPath/JSON Path (optional)</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="path"
-                        placeholder="XPath or JSON Path"
-                        value={this.state.term.property.path || ""}
-                        onChange={(e) => this.handlePropertyChange(e)}
-                        disabled={this.state.uploadingVocabulary}
-                      ></input>
+                      <label>Domain</label>
+                      <div className="card mb-2 has-scrollbar scrollbar desm-check-container-sm">
+                        <div className="card-body">
+                          <div className="desm-radio">
+                            {this.state.term.property.domain &&
+                              this.state.term.property.domain.map((dom) => {
+                                return (
+                                  <div
+                                    className={"desm-radio-primary"}
+                                    key={dom}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      value={dom}
+                                      id={dom}
+                                      name="vocabularies[]"
+                                      onChange={(e) =>
+                                        this.handleDomainChange(e.target.value)
+                                      }
+                                      disabled={true}
+                                    />
+                                    <label htmlFor={dom}>{dom}</label>
+                                  </div>
+                                );
+                              })}
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     <div className="form-group">
@@ -326,6 +313,19 @@ export default class EditTerm extends Component {
                         onChange={(e) => this.handlePropertyChange(e)}
                         placeholder="Datatype"
                       />
+                    </div>
+
+                    <div className="form-group">
+                      <label>XPath/JSON Path (optional)</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="path"
+                        placeholder="XPath or JSON Path"
+                        value={this.state.term.property.path || ""}
+                        onChange={(e) => this.handlePropertyChange(e)}
+                        disabled={this.state.uploadingVocabulary}
+                      ></input>
                     </div>
                   </div>
 
