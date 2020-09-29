@@ -195,8 +195,7 @@ module Processors
 
       Property.create!(
         term: term,
-        classtype: node["@type"],
-        element: node["@id"],
+        uri: node["@id"],
         comment: Parsers::Specifications.read!(node, "comment"),
         label: Parsers::Specifications.read!(node, "label"),
         domain: Parsers::Specifications.read(node, "domain"),

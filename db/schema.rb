@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_18_181712) do
+ActiveRecord::Schema.define(version: 2020_09_28_232021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,19 +88,18 @@ ActiveRecord::Schema.define(version: 2020_09_18_181712) do
   end
 
   create_table "properties", force: :cascade do |t|
-    t.string "datatype"
-    t.string "source_path"
+    t.string "source_uri"
     t.string "subproperty_of"
     t.string "value_space"
     t.string "label"
     t.text "comment"
-    t.string "domain"
+    t.jsonb "domain"
     t.string "range"
     t.bigint "term_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "classtype"
-    t.string "element"
+    t.string "uri"
+    t.string "path"
     t.index ["term_id"], name: "index_properties_on_term_id"
   end
 

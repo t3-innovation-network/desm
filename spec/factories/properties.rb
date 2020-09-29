@@ -4,8 +4,7 @@ require "faker"
 
 FactoryBot.define do
   factory :property do
-    datatype { Faker::Lorem.sentence }
-    source_path { Faker::Lorem.sentence }
+    source_uri { Faker::Lorem.sentence }
     subproperty_of { Faker::Lorem.sentence }
     value_space { Faker::Lorem.sentence }
     label { Faker::Lorem.sentence }

@@ -9,6 +9,8 @@ import { toastr as toast } from "react-redux-toastr";
 import deleteTerm from "../../services/deleteTerm";
 import { Controlled as CodeMirror } from "react-codemirror2";
 import fetchVocabularies from "../../services/fetchVocabularies";
+import RawTerm from "./rawTerm";
+import rawTerm from "./rawTerm";
 
 export default class EditTerm extends Component {
   /**
@@ -36,10 +38,16 @@ export default class EditTerm extends Component {
   };
 
   /**
-   * Vocabulary change method
+   * Domain change
+   */
+  handleDomainChange = (val) => {
+    // @todo: implement domain change logic
+  };
+
+  /**
+   * Vocabulary change
    */
   handleVocabularyChange = (val) => {
-    // @todo implement vocabulary change logic
     let tempTerm = this.state.term;
     if (tempTerm.vocabularies.find((vocab) => vocab.id == val)) {
       tempTerm.vocabularies = tempTerm.vocabularies.filter(
@@ -190,30 +198,98 @@ export default class EditTerm extends Component {
                     }
                   >
                     <div className="form-group">
-                      <label>Class/Type</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="classtype"
-                        placeholder="Class/Type"
-                        value={this.state.term.property.classtype}
-                        onChange={(e) => this.handlePropertyChange(e)}
-                        disabled={this.state.uploadingVocabulary}
-                        autoFocus
-                      />
+                      <label>Domain</label>
+                      <div className="card mb-2 has-scrollbar scrollbar desm-check-container-sm">
+                        <div className="card-body">
+                          <div className="desm-radio">
+                            {this.state.term.property.domain &&
+                              this.state.term.property.domain.map((dom) => {
+                                return (
+                                  <div
+                                    className={"desm-radio-primary"}
+                                    key={dom}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      value={dom}
+                                      id={dom}
+                                      name="vocabularies[]"
+                                      onChange={(e) =>
+                                        this.handleDomainChange(e.target.value)
+                                      }
+                                      disabled={true}
+                                    />
+                                    <label htmlFor={dom}>{dom}</label>
+                                  </div>
+                                );
+                              })}
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                    <div className="card">
+                      <div className="card-body">
+                        <h5>
+                          <strong>Element/Property</strong>
+                        </h5>
 
-                    <div className="form-group">
-                      <label>Element/Property</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="element"
-                        placeholder="Element/Property"
-                        value={this.state.term.property.element}
-                        onChange={(e) => this.handlePropertyChange(e)}
-                        disabled={this.state.uploadingVocabulary}
-                      />
+                        <div className="form-group row">
+                          <div className="col-3">
+                            <label>
+                              <strong>Property URI</strong>
+                            </label>
+                          </div>
+                          <div className="col-9">
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="uri"
+                              placeholder="Property URI"
+                              value={this.state.term.property.uri}
+                              onChange={(e) => this.handlePropertyChange(e)}
+                              disabled={this.state.uploadingVocabulary}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="form-group row">
+                          <div className="col-3">
+                            <label>
+                              <strong>Source URI</strong>
+                            </label>
+                          </div>
+                          <div className="col-9">
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="source_uri"
+                              placeholder="Source URI"
+                              value={this.state.term.property.source_uri || ""}
+                              onChange={(e) => this.handlePropertyChange(e)}
+                              disabled={this.state.uploadingVocabulary}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="form-group row">
+                          <div className="col-3">
+                            <label>
+                              <strong>Property label</strong>
+                            </label>
+                          </div>
+                          <div className="col-9">
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="label"
+                              placeholder="Porperty Label"
+                              value={this.state.term.property.label}
+                              onChange={(e) => this.handlePropertyChange(e)}
+                              disabled={this.state.uploadingVocabulary}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     <div className="form-group">
@@ -228,60 +304,88 @@ export default class EditTerm extends Component {
                     </div>
 
                     <div className="form-group">
-                      <label>Path (optional)</label>
-                      <textarea
+                      <label>XPath/JSON Path (optional)</label>
+                      <input
+                        type="text"
                         className="form-control"
-                        name="source_path"
-                        value={this.state.term.property.source_path || ""}
+                        name="path"
+                        placeholder="XPath or JSON Path"
+                        value={this.state.term.property.path || ""}
                         onChange={(e) => this.handlePropertyChange(e)}
                         disabled={this.state.uploadingVocabulary}
-                      >
-                        {this.state.term.property.source_path || ""}
-                      </textarea>
+                      ></input>
                     </div>
 
                     <div className="form-group">
-                      <label>Vocabulary (optional)</label>
-                      <div
-                        className="card mt-2 mb-2 has-scrollbar scrollbar"
-                        style={{ maxHeight: "10rem" }}
-                      >
-                        <div className="card-body">
-                          <div className="desm-radio">
-                            {this.state.vocabularies.map((vocab) => {
-                              return (
-                                <div
-                                  className={"desm-radio-primary"}
-                                  key={vocab.id}
-                                >
-                                  <input
-                                    type="checkbox"
-                                    value={vocab.id}
-                                    id={vocab.id}
-                                    name="vocabularies[]"
-                                    onChange={(e) =>
-                                      this.handleVocabularyChange(
-                                        e.target.value
-                                      )
-                                    }
-                                    checked={this.state.term.vocabularies.some(
-                                      (v) => v.id == vocab.id
-                                    )}
-                                    disabled={this.state.uploadingVocabulary}
-                                  />
-                                  <label htmlFor={vocab.id}>{vocab.name}</label>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      </div>
+                      <label>Range</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="range"
+                        value={this.state.term.property.range || ""}
+                        onChange={(e) => this.handlePropertyChange(e)}
+                        placeholder="Datatype"
+                      />
                     </div>
                   </div>
 
                   {/* RIGHT COLUMN */}
 
                   <div className="col-6">
+                    {!this.state.uploadingVocabulary && (
+                      <div className="form-group">
+                        <label>Vocabulary (optional)</label>
+                        <div className="card mb-2 has-scrollbar scrollbar desm-check-container-sm">
+                          <div className="card-body">
+                            <div className="desm-radio">
+                              {this.state.vocabularies.map((vocab) => {
+                                return (
+                                  <div
+                                    className={"desm-radio-primary"}
+                                    key={vocab.id}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      value={vocab.id}
+                                      id={vocab.id}
+                                      name="vocabularies[]"
+                                      onChange={(e) =>
+                                        this.handleVocabularyChange(
+                                          e.target.value
+                                        )
+                                      }
+                                      checked={this.state.term.vocabularies.some(
+                                        (v) => v.id == vocab.id
+                                      )}
+                                      disabled={this.state.uploadingVocabulary}
+                                    />
+                                    <label htmlFor={vocab.id}>
+                                      {vocab.name}
+                                    </label>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="row">
+                          <div className="col">
+                            {!this.state.uploadingVocabulary && (
+                              <a
+                                className="col-on-primary cursor-pointer float-right"
+                                onClick={() =>
+                                  this.setState({ uploadingVocabulary: true })
+                                }
+                              >
+                                Add Vocabulary
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     {this.state.uploadingVocabulary ? (
                       <UploadVocabulary
                         term={this.state.term}
@@ -294,22 +398,16 @@ export default class EditTerm extends Component {
                       />
                     ) : (
                       <React.Fragment>
-                        <div className="form-group">
-                          <label>Datatype</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            name="datatype"
-                            value={this.state.term.property.datatype || ""}
-                            onChange={(e) => this.handlePropertyChange(e)}
-                            placeholder="Datatype"
-                          />
-                        </div>
-
                         <div style={{ height: "78%" }}>
-                          <label>Raw</label>
+                          <label>
+                            <strong>Raw</strong>
+                          </label>
                           <CodeMirror
-                            value={JSON.stringify(this.state.term, null, 2)}
+                            value={JSON.stringify(
+                              rawTerm(this.state.term),
+                              null,
+                              2
+                            )}
                             options={{ lineNumbers: true }}
                             disabled={this.state.uploadingVocabulary}
                           />
@@ -320,29 +418,17 @@ export default class EditTerm extends Component {
                 </div>
 
                 <div className="row ">
-                  <div className="col float-left">
-                    {!this.state.uploadingVocabulary && (
-                      <button
-                        className="btn btn-dark"
-                        onClick={() =>
-                          this.setState({ uploadingVocabulary: true })
-                        }
-                      >
-                        Add Vocabulary
-                      </button>
-                    )}
-                  </div>
-                  <div className="col float-right">
+                  <div className="col">
                     {!this.state.uploadingVocabulary && (
                       <React.Fragment>
                         <button
-                          className="btn btn-outline-secondary mr-2"
+                          className="btn btn-outline-secondary ml-2 float-right"
                           onClick={this.handleRemoveTerm}
                         >
                           Remove Term
                         </button>
                         <button
-                          className="btn btn-dark"
+                          className="btn btn-dark float-right"
                           onClick={this.handleSaveTerm}
                         >
                           Save and Exit

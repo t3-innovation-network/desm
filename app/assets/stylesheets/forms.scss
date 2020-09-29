@@ -1,7 +1,7 @@
 /* Forms */
 @import 'colors.scss';
 
-.form-group > .form-control:focus {
+.form-group .form-control:focus {
   border-color: $primary-color;
   box-shadow: 0 0 0 0.2rem $background-color-dark;
 }
@@ -19,7 +19,7 @@
 
 .react-codemirror2{
   height: 100%;
-  max-height: 30rem;
+  max-height: 27rem;
   ::-webkit-scrollbar {
     height: 6px;
     width: 6px;

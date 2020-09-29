@@ -55,8 +55,8 @@ class Api::V1::TermsController < ApplicationController
   def permitted_params
     params.require(:term).permit(
       :name, :uri, :specification_id, {vocabulary_ids: []},
-      property_attributes: %i[
-        datatype source_path subproperty_of value_space label comment domain range
+      property_attributes: [
+        :source_uri, :uri, :subproperty_of, :value_space, :label, :comment, :range, :path, {domain: []}
       ]
     )
   end
