@@ -40,6 +40,17 @@ class Api::V1::SpecificationsController < ApplicationController
   end
 
   ###
+  # @description: Returns the specification with id equal to the one passed in params
+  ###
+  def show
+    @specification = Specification.find(params[:id])
+
+    render json: @specification, include: %i[user domain]
+  end
+
+  private
+
+  ###
   # @description: Clean the parameters with all needed for specifications creation
   # @return [ActionController::Parameters]
   ###

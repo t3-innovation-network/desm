@@ -31,6 +31,15 @@ class Api::V1::TermsController < ApplicationController
     render json: {status: :removed}
   end
 
+  ###
+  # @description: All the terms from a specification
+  ###
+  def from_specification
+    terms = Specification.find(params[:id]).terms
+
+    render json: terms, include: :property
+  end
+
   private
 
   ###

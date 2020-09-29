@@ -16,12 +16,13 @@ Rails.application.routes.draw do
       resources :mappings, only: [:create, :show, :index]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :roles, only: [:index]
+      resources :specifications, only: [:create, :show]
       resources :terms, only: [:show, :update, :destroy]
       resources :vocabularies, only: [:index, :create]
 
-      post 'specifications' => 'specifications#create'
       post 'specifications/info' => 'specifications#info'
       post 'specifications/filter' => 'specifications#filter'
+      get 'specifications/:id/terms' => 'terms#from_specification'
     end
   end
 

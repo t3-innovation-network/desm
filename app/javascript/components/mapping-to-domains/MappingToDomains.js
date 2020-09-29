@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import TopNav from "../shared/TopNav";
 import Loader from "../shared/Loader";
 import fetchMapping from "../../services/fetchMapping";
-import fetchDomains from "../../services/fetchDomains";
 import { useSelector } from "react-redux";
 import AlertNotice from "../shared/AlertNotice";
 import TopNavOptions from "../shared/TopNavOptions";
@@ -10,12 +9,19 @@ import TermCard from "./TermCard";
 import DomainCard from "./DomainCard";
 import EditTerm from "./EditTerm";
 import TermCardsContainer from "./TermCardsContainer";
+import fetchSpecification from "../../services/fetchSpecification";
+import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
 
 const MappingToDomains = (props) => {
   /**
    * Declare and have an initial state for the mapping
    */
   const [mapping, setMapping] = useState({});
+
+  /**
+   * Declare and have an initial state for the mapping
+   */
+  const [domain, setDomain] = useState({});
 
   /**
    * The specification terms list
@@ -26,11 +32,6 @@ const MappingToDomains = (props) => {
    * Whether the page is loading results or not
    */
   const [loading, setLoading] = useState(true);
-
-  /**
-   * The domains list
-   */
-  const [domains, setDomains] = useState([]);
 
   /**
    * Whether to hide mapped terms or not
@@ -155,24 +156,23 @@ const MappingToDomains = (props) => {
   };
 
   /**
-   * Get the mapping from the service
+   * Get the data from the service
    */
-  const fetchMappingFromAPI = () => {
-    fetchMapping(props.match.params.id).then((response) => {
-      setLoading(false);
-      setMapping(response.mapping);
-      setTerms(response.mapping.specification.terms);
-    });
-  };
+  const fetchDataFromAPI = async () => {
+    // Get the mapping
+    let response = await fetchMapping(props.match.params.id);
+    setMapping(response.mapping);
 
-  /**
-   * Fecth the domains to be listed in the new mapping form
-   * then put it in the local sate
-   */
-  const fillWithDomains = () => {
-    fetchDomains().then((response) => {
-      setDomains(response);
-    });
+    // Get the specification, with the domain
+    let spec_id = response.mapping.specification_id;
+    response = await fetchSpecification(spec_id);
+    setDomain(response.specification.domain);
+
+    // Get the terms
+    response = await fetchSpecificationTerms(spec_id);
+    setTerms(response.terms);
+
+    setLoading(false);
   };
 
   /**
@@ -192,8 +192,7 @@ const MappingToDomains = (props) => {
    * (It's not actually mounted, but it mimics the same action).
    */
   useEffect(() => {
-    fetchMappingFromAPI();
-    fillWithDomains();
+    fetchDataFromAPI();
   }, []);
 
   return (
@@ -248,16 +247,13 @@ const MappingToDomains = (props) => {
                   </div>
                   <div className="mt-5">
                     {/* DOMAINS */}´
-                    {domains.map((domain) => {
-                      return (
-                        <DomainCard
-                          key={domain.id}
-                          domain={domain}
-                          mappedTerms={mappedTermsToDomain(domain.id)}
-                          selectedTermsCount={selectedTerms.length}
-                        />
-                      );
-                    })}
+                    {!loading && (
+                      <DomainCard
+                        domain={domain}
+                        mappedTerms={mappedTermsToDomain(domain.id)}
+                        selectedTermsCount={selectedTerms.length}
+                      />
+                    )}
                   </div>
                   <div className="mt-2">
                     <button className="btn bg-col-primary col-background">

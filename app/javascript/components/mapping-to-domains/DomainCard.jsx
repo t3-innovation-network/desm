@@ -20,7 +20,7 @@ const DomainCard = (props) => {
   return (
     <div
       className={
-        "card mb-2" + (props.domain.spine ? "" : " disabled-container")
+        "card mb-2" + (props.domain.spine_id ? "" : " disabled-container")
       }
       key={props.domain.id}
     >
@@ -28,7 +28,7 @@ const DomainCard = (props) => {
         <div className="row">
           <div className="col-4">
             <h5>
-              <strong>{props.domain.name}</strong>
+              <strong>{props.domain.pref_label}</strong>
             </h5>
             {props.mappedTerms.length + " Added"}
           </div>
@@ -39,7 +39,7 @@ const DomainCard = (props) => {
                 "card domain-drag-box pl-5 pr-5 pt-2 pb-2" +
                 (isActive ? " dnd-active" : " border-dotted")
               }
-              ref={props.domain.spine ? drop : null}
+              ref={props.domain.spine_id ? drop : null}
             >
               {isActive ? (
                 <p className="mb-0 fully-centered">

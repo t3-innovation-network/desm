@@ -32,7 +32,7 @@ class Api::V1::MappingsController < ApplicationController
   #   in params
   ###
   def show
-    render json: @mapping, include: {specification: {include: {terms: {include: :property}}}}
+    render json: @mapping
   end
 
   private
