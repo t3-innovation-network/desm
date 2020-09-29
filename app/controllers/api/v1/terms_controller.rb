@@ -56,7 +56,7 @@ class Api::V1::TermsController < ApplicationController
     params.require(:term).permit(
       :name, :uri, :specification_id, {vocabulary_ids: []},
       property_attributes: %i[
-        source_path subproperty_of value_space label comment domain range
+        source_uri uri subproperty_of value_space label comment domain range path
       ]
     )
   end

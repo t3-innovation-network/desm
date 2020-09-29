@@ -194,9 +194,9 @@ export default class EditTerm extends Component {
                       <input
                         type="text"
                         className="form-control"
-                        name="classtype"
+                        name="domain"
                         placeholder="Class/Type"
-                        value={this.state.term.property.classtype}
+                        value={this.state.term.property.domain}
                         onChange={(e) => this.handlePropertyChange(e)}
                         disabled={this.state.uploadingVocabulary}
                         autoFocus
@@ -214,9 +214,9 @@ export default class EditTerm extends Component {
                             <input
                               type="text"
                               className="form-control"
-                              name="property-uri"
+                              name="uri"
                               placeholder="Property URI"
-                              value={this.state.term.property.element}
+                              value={this.state.term.property.uri}
                               onChange={(e) => this.handlePropertyChange(e)}
                               disabled={this.state.uploadingVocabulary}
                             />
@@ -231,8 +231,10 @@ export default class EditTerm extends Component {
                             <input
                               type="text"
                               className="form-control"
-                              name="source-uri"
+                              name="source_uri"
                               placeholder="Source URI"
+                              value={this.state.term.property.source_uri || ""}
+                              onChange={(e) => this.handlePropertyChange(e)}
                               disabled={this.state.uploadingVocabulary}
                             />
                           </div>
@@ -246,8 +248,10 @@ export default class EditTerm extends Component {
                             <input
                               type="text"
                               className="form-control"
-                              name="property-label"
+                              name="label"
                               placeholder="Porperty Label"
+                              value={this.state.term.property.label}
+                              onChange={(e) => this.handlePropertyChange(e)}
                               disabled={this.state.uploadingVocabulary}
                             />
                           </div>
@@ -268,16 +272,16 @@ export default class EditTerm extends Component {
 
                     <div className="form-group">
                       <label>XPath/JSON Path (optional)</label>
-                      <textarea
+                      <input
+                        type="text"
                         className="form-control"
-                        name="source_path"
+                        name="path"
                         placeholder="XPath or JSON Path"
-                        value={this.state.term.property.source_path || ""}
+                        value={this.state.term.property.path || ""}
                         onChange={(e) => this.handlePropertyChange(e)}
                         disabled={this.state.uploadingVocabulary}
                       >
-                        {this.state.term.property.source_path || ""}
-                      </textarea>
+                      </input>
                     </div>
 
                     <div className="form-group">
@@ -296,43 +300,45 @@ export default class EditTerm extends Component {
                   {/* RIGHT COLUMN */}
 
                   <div className="col-6">
-                    <div className="form-group">
-                      <label>Vocabulary (optional)</label>
-                      <div
-                        className="card mb-2 has-scrollbar scrollbar"
-                        style={{ maxHeight: "10rem" }}
-                      >
-                        <div className="card-body">
-                          <div className="desm-radio">
-                            {this.state.vocabularies.map((vocab) => {
-                              return (
-                                <div
-                                  className={"desm-radio-primary"}
-                                  key={vocab.id}
-                                >
-                                  <input
-                                    type="checkbox"
-                                    value={vocab.id}
-                                    id={vocab.id}
-                                    name="vocabularies[]"
-                                    onChange={(e) =>
-                                      this.handleVocabularyChange(
-                                        e.target.value
-                                      )
-                                    }
-                                    checked={this.state.term.vocabularies.some(
-                                      (v) => v.id == vocab.id
-                                    )}
-                                    disabled={this.state.uploadingVocabulary}
-                                  />
-                                  <label htmlFor={vocab.id}>{vocab.name}</label>
-                                </div>
-                              );
-                            })}
+                    { !this.state.uploadingVocabulary && 
+                      <div className="form-group">
+                        <label>Vocabulary (optional)</label>
+                        <div
+                          className="card mb-2 has-scrollbar scrollbar"
+                          style={{ maxHeight: "10rem" }}
+                        >
+                          <div className="card-body">
+                            <div className="desm-radio">
+                              {this.state.vocabularies.map((vocab) => {
+                                return (
+                                  <div
+                                    className={"desm-radio-primary"}
+                                    key={vocab.id}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      value={vocab.id}
+                                      id={vocab.id}
+                                      name="vocabularies[]"
+                                      onChange={(e) =>
+                                        this.handleVocabularyChange(
+                                          e.target.value
+                                        )
+                                      }
+                                      checked={this.state.term.vocabularies.some(
+                                        (v) => v.id == vocab.id
+                                      )}
+                                      disabled={this.state.uploadingVocabulary}
+                                    />
+                                    <label htmlFor={vocab.id}>{vocab.name}</label>
+                                  </div>
+                                );
+                              })}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    }
 
                     {this.state.uploadingVocabulary ? (
                       <UploadVocabulary
