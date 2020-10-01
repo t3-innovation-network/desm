@@ -49,7 +49,7 @@ class Api::V1::MappingsController < ApplicationController
   #   in params
   ###
   def show
-    render json: @mapping
+    render json: @mapping, include: :terms
   end
 
   private

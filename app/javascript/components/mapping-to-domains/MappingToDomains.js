@@ -80,9 +80,23 @@ const MappingToDomains = (props) => {
   /**
    * The already mapped terms. To use in progress bar.
    */
-  const mappedTerms = terms.filter((term) => {
-    return term.mappedTo;
-  });
+  const mappedTerms = terms.filter(termIsMapped);
+
+  /**
+   * Returns wether the term is already mapped to the domain. It can be 1 of 2 options:
+   *
+   * 1. The term is recently dragged to the domain, so it's not in the backend, just
+   *    marked in memory as "mapped".
+   * 2. The term is already mapped in the backend (is one of the mapping terms in DB).
+   */
+  function termIsMapped(term) {
+    return (
+      term.mapped ||
+      mapping.terms.some((mappingTerm) => {
+        return mappingTerm.mapped_term_id === term.id;
+      })
+    );
+  }
 
   /**
    * The selected terms.
@@ -97,7 +111,7 @@ const MappingToDomains = (props) => {
   const afterDropTerm = (domain) => {
     let tempTerms = selectedTerms;
     tempTerms.forEach((termToMap) => {
-      termToMap.mappedTo = domain.uri;
+      termToMap.mapped = true;
       termToMap.selected = !termToMap.selected;
     });
     tempTerms = [...terms];
@@ -174,11 +188,11 @@ const MappingToDomains = (props) => {
    * Mark the term as "selected"
    */
   const onTermClick = (clickedTerm) => {
-    if(!clickedTerm.mappedTo){
+    if (!clickedTerm.mapped) {
       let tempTerms = [...terms];
       let term = tempTerms.find((t) => t.id == clickedTerm.id);
       term.selected = clickedTerm.selected;
-      
+
       setTerms(tempTerms);
     }
   };
@@ -348,13 +362,14 @@ const MappingToDomains = (props) => {
                         afterDrop={afterDropTerm}
                       >
                         {filteredTerms({ pickSelected: true }).map((term) => {
-                          return hideMapped && term.mappedTo ? (
+                          return hideMapped && termIsMapped(term) ? (
                             ""
                           ) : (
                             <TermCard
                               key={term.id}
                               term={term}
                               onClick={onTermClick}
+                              isMapped={termIsMapped}
                               onEditClick={onEditTermClick}
                             />
                           );
@@ -363,13 +378,14 @@ const MappingToDomains = (props) => {
 
                       {/* NOT SELECTED TERMS */}
                       {filteredTerms({ pickSelected: false }).map((term) => {
-                        return hideMapped && term.mappedTo ? (
+                        return hideMapped && termIsMapped(term) ? (
                           ""
                         ) : (
                           <TermCard
                             key={term.id}
                             term={term}
                             onClick={onTermClick}
+                            isMapped={termIsMapped}
                             onEditClick={onEditTermClick}
                           />
                         );

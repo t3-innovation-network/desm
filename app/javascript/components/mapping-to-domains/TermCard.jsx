@@ -16,7 +16,7 @@ export default class TermCard extends Component {
    * selected or not selected
    */
   handleTermClick = () => {
-    if (!this.props.term.mappedTo) {
+    if (!this.props.isMapped(this.props.term)) {
       const { selected, animationDuration } = this.state;
       // Trigger animation
       this.setState(
@@ -56,7 +56,7 @@ export default class TermCard extends Component {
         <div
           className={
             "card with-shadow mb-2" +
-            (this.props.term.mappedTo
+            (this.props.isMapped(this.props.term)
               ? " disabled-container not-draggable"
               : selected
               ? " draggable term-selected"
@@ -73,7 +73,7 @@ export default class TermCard extends Component {
               </div>
               <div className="col-4">
                 <div className="float-right">
-                  {this.props.term.mappedTo ? (
+                  {this.props.isMapped(this.props.term) ? (
                     <i className="fas fa-check"></i>
                   ) : (
                     <React.Fragment>
