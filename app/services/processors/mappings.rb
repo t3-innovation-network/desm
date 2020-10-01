@@ -35,9 +35,13 @@ module Processors
     def self.create_terms(mapping, terms)
       terms.each do |term|
         term = Term.find(term[:id])
+        custom_uri = "desm:#{term.uri}"
+
+        # Do not create this term if there's already one with the same uri
+        next if MappingTerm.find_by(uri: custom_uri)
 
         MappingTerm.create!(
-          uri: "desm:#{term.uri}",
+          uri: custom_uri,
           mapping: mapping,
           mapped_term_id: term.id
         )
