@@ -11,7 +11,7 @@ import EditTerm from "./EditTerm";
 import TermCardsContainer from "./TermCardsContainer";
 import fetchSpecification from "../../services/fetchSpecification";
 import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
-import createMappingTerms from "../../services/createMappingTerms";
+import saveMappingTerms from "../../services/saveMappingTerms";
 import { toastr as toast } from "react-redux-toastr";
 
 const MappingToDomains = (props) => {
@@ -34,6 +34,11 @@ const MappingToDomains = (props) => {
    * Whether the page is loading results or not
    */
   const [loading, setLoading] = useState(true);
+
+  /**
+   * Whether any change awas performed after the page loads
+   */
+  const [anyTermMapped, setAnyTermMapped] = useState(false);
 
   /**
    * Whether to hide mapped terms or not
@@ -116,6 +121,7 @@ const MappingToDomains = (props) => {
     });
     tempTerms = [...terms];
     setTerms(tempTerms);
+    setAnyTermMapped(true);
   };
 
   /**
@@ -204,7 +210,7 @@ const MappingToDomains = (props) => {
     return (
       <button
         className="btn bg-col-primary col-background"
-        onClick={handleDomainMapping}
+        onClick={handleSaveChanges}
         disabled={!mappedTerms.length}
       >
         Done Domain Mapping
@@ -213,18 +219,23 @@ const MappingToDomains = (props) => {
   };
 
   /**
+   * Comain mappping complete. Confirm to save status in the backend
+   */
+  const handleDoneDomainMapping = () => {
+    // @todo: Redirect to 3rd step mapping ("Align and Fine Tune")
+  };
+
+  /**
    * Create the mapping terms
    */
-  const handleDomainMapping = () => {
-    createMappingTerms({
+  const handleSaveChanges = () => {
+    saveMappingTerms({
       mappingId: mapping.id,
       terms: mappedTerms,
     })
       .then((response) => {
-        toast.success(
-          mappedTerms.length + " mapping terms created successfully"
-        );
-        // @todo: Redirect to 3rd step mapping ("Align and Fine Tune")
+        toast.success("Changes saved");
+        setAnyTermMapped(false);
       })
       .catch((e) => {
         toast.error(e.response.data.message);
@@ -302,6 +313,13 @@ const MappingToDomains = (props) => {
                   </div>
                   <div className="mt-2"></div>
                   {<DoneDomainMapping />}
+                  <button
+                    className="btn btn-dark ml-3"
+                    onClick={handleSaveChanges}
+                    disabled={!anyTermMapped}
+                  >
+                    Save Changes
+                  </button>
                 </div>
 
                 {/* RIGHT SIDE */}

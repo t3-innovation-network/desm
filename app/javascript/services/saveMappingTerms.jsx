@@ -1,6 +1,6 @@
 import apiService from "./apiService";
 
-const createMappingTerms = async (data) => {
+const saveMappingTerms = async (data) => {
   const response = await apiService.post("/api/v1/mappings/terms", {
     terms: data.terms,
     mapping_id: data.mappingId,
@@ -8,4 +8,4 @@ const createMappingTerms = async (data) => {
   return response.data;
 };
 
-export default createMappingTerms;
+export default saveMappingTerms;
