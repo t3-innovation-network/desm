@@ -28,6 +28,18 @@ class Api::V1::MappingsController < ApplicationController
   end
 
   ###
+  # @description: Udates the attributes of a mapping
+  ###
+  def update
+    @mapping.update(permitted_params)
+
+    render json: {
+      success: true,
+      mapping: @mapping
+    }
+  end
+
+  ###
   # @description: Creates the mapping terms. This method is used when the user has already
   #   decided which terms to map to the spine
   ###
@@ -82,5 +94,13 @@ class Api::V1::MappingsController < ApplicationController
 
     # Return an ordered list
     mappings.order(title: :desc)
+  end
+
+  ###
+  # @description: Clean params
+  # @return [ActionController::Parameters]
+  ###
+  def permitted_params
+    params.require(:mapping).permit(:status)
   end
 end

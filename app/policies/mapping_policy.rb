@@ -46,4 +46,12 @@ class MappingPolicy < ApplicationPolicy
   def create_terms?
     @user.present?
   end
+
+  ###
+  # @description: Determines if the user can update an instance of this resource
+  # @return [TrueClass]
+  ###
+  def update?
+    @user.present?
+  end
 end

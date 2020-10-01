@@ -13,6 +13,7 @@ import fetchSpecification from "../../services/fetchSpecification";
 import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
 import saveMappingTerms from "../../services/saveMappingTerms";
 import { toastr as toast } from "react-redux-toastr";
+import updateMapping from "../../services/updateMapping";
 
 const MappingToDomains = (props) => {
   /**
@@ -210,7 +211,7 @@ const MappingToDomains = (props) => {
     return (
       <button
         className="btn bg-col-primary col-background"
-        onClick={handleSaveChanges}
+        onClick={handleDoneDomainMapping}
         disabled={!mappedTerms.length}
       >
         Done Domain Mapping
@@ -221,7 +222,11 @@ const MappingToDomains = (props) => {
   /**
    * Comain mappping complete. Confirm to save status in the backend
    */
-  const handleDoneDomainMapping = () => {
+  const handleDoneDomainMapping = async () => {
+    await updateMapping({ id: mapping.id, status: "mapped" });
+    if (anyTermMapped){
+      handleSaveChanges();
+    }
     // @todo: Redirect to 3rd step mapping ("Align and Fine Tune")
   };
 
@@ -233,7 +238,7 @@ const MappingToDomains = (props) => {
       mappingId: mapping.id,
       terms: mappedTerms,
     })
-      .then((response) => {
+      .then(() => {
         toast.success("Changes saved");
         setAnyTermMapped(false);
       })

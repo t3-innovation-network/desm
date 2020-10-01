@@ -13,4 +13,9 @@ class Mapping < ApplicationRecord
   belongs_to :spine, foreign_key: "spine_id", class_name: :Specification
   has_many :terms, class_name: :MappingTerm
   validates :name, presence: true
+
+  # The possible status of a mapping
+  # 1. "uploaded" This means there's a specification uploaded but not terms mapped
+  # 2. "mapped" It means the terms are confirmed as mapped to the spine
+  enum status: %i[uploaded mapped]
 end
