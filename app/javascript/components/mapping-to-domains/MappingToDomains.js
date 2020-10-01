@@ -191,6 +191,7 @@ const MappingToDomains = (props) => {
       <button
         className="btn bg-col-primary col-background"
         onClick={handleDomainMapping}
+        disabled={!mappedTerms.length}
       >
         Done Domain Mapping
       </button>
@@ -212,7 +213,7 @@ const MappingToDomains = (props) => {
         // @todo: Redirect to 3rd step mapping ("Align and Fine Tune")
       })
       .catch((e) => {
-        toast.error(e.message);
+        toast.error(e.response.data.message);
       });
   };
 

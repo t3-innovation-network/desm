@@ -1,5 +1,6 @@
 en:
   errors:
+    runtime: "Atention: %{message}"
     not_found: "Record not found"
     record_invalid: "Invalid: %{message}"
     record_not_destroyed: "Can't delete: %{message}"

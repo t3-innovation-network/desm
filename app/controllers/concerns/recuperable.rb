@@ -54,6 +54,11 @@ module Recuperable
   ###
   def self.define_errors
     {
+      "RuntimeError": {
+        message_key: "errors.runtime",
+        status_code: :internal_server_error,
+        include_original_error_message: true
+      },
       "ActiveRecord::RecordNotFound": {
         message_key: "errors.not_found",
         status_code: :not_found,

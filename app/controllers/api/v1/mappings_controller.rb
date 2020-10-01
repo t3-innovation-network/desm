@@ -36,7 +36,7 @@ class Api::V1::MappingsController < ApplicationController
     mapping = Mapping.find(params[:mapping_id])
     terms = params[:terms]
 
-    raise ActiveRecord::RecordInvalid.new("Mapping terms were not provided") unless terms.count.positive?
+    raise "Mapping terms were not provided" unless terms.count.positive?
 
     # Proceed to create the mapping terms
     Processors::Mappings.create_terms(mapping, terms)
