@@ -11,6 +11,8 @@ import EditTerm from "./EditTerm";
 import TermCardsContainer from "./TermCardsContainer";
 import fetchSpecification from "../../services/fetchSpecification";
 import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
+import createMappingTerms from "../../services/createMappingTerms";
+import { toastr as toast } from "react-redux-toastr";
 
 const MappingToDomains = (props) => {
   /**
@@ -90,14 +92,6 @@ const MappingToDomains = (props) => {
   });
 
   /**
-   * The already mapped terms to a given domain.
-   */
-  const mappedTermsToDomain = (domainUri) =>
-    terms.filter((term) => {
-      return term.mappedTo == domainUri;
-    });
-
-  /**
    * Action to perform after a term is dropped
    */
   const afterDropTerm = (domain) => {
@@ -130,6 +124,7 @@ const MappingToDomains = (props) => {
         mapSpecification={true}
         stepper={true}
         stepperStep={2}
+        customcontent={<DoneDomainMapping />}
       />
     );
   };
@@ -179,11 +174,46 @@ const MappingToDomains = (props) => {
    * Mark the term as "selected"
    */
   const onTermClick = (clickedTerm) => {
-    let tempTerms = [...terms];
-    let term = tempTerms.find((t) => t.id == clickedTerm.id);
-    term.selected = clickedTerm.selected;
+    if(!clickedTerm.mappedTo){
+      let tempTerms = [...terms];
+      let term = tempTerms.find((t) => t.id == clickedTerm.id);
+      term.selected = clickedTerm.selected;
+      
+      setTerms(tempTerms);
+    }
+  };
 
-    setTerms(tempTerms);
+  /**
+   * Button to accept the mapping, create teh mapping terms and go to the next screen
+   */
+  const DoneDomainMapping = () => {
+    return (
+      <button
+        className="btn bg-col-primary col-background"
+        onClick={handleDomainMapping}
+      >
+        Done Domain Mapping
+      </button>
+    );
+  };
+
+  /**
+   * Create the mapping terms
+   */
+  const handleDomainMapping = () => {
+    createMappingTerms({
+      mappingId: mapping.id,
+      terms: mappedTerms,
+    })
+      .then((response) => {
+        toast.success(
+          mappedTerms.length + " mapping terms created successfully"
+        );
+        // @todo: Redirect to 3rd step mapping ("Align and Fine Tune")
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      });
   };
 
   /**
@@ -250,16 +280,13 @@ const MappingToDomains = (props) => {
                     {!loading && (
                       <DomainCard
                         domain={domain}
-                        mappedTerms={mappedTermsToDomain(domain.id)}
+                        mappedTerms={mappedTerms}
                         selectedTermsCount={selectedTerms.length}
                       />
                     )}
                   </div>
-                  <div className="mt-2">
-                    <button className="btn bg-col-primary col-background">
-                      Done Domain Mapping
-                    </button>
-                  </div>
+                  <div className="mt-2"></div>
+                  {<DoneDomainMapping />}
                 </div>
 
                 {/* RIGHT SIDE */}

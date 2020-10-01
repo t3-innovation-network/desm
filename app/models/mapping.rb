@@ -10,6 +10,7 @@
 class Mapping < ApplicationRecord
   belongs_to :user
   belongs_to :specification
-  belongs_to :spine, foreign_key: "spine_id", class_name: "Specification"
+  belongs_to :spine, foreign_key: "spine_id", class_name: :Specification
+  has_many :terms, class_name: :MappingTerm
   validates :name, presence: true
 end

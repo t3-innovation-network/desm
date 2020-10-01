@@ -23,5 +23,25 @@ module Processors
       )
       m
     end
+
+    ###
+    # @description: Creates the terms for the mapping.
+    # @param [Mapping] mapping: The mapping for which the terms are going to be created.
+    # @params [Array] terms: The list of terms as an array of objects. These are the
+    #   specification terms, selected to be mapped against the spine.
+    #
+    # @return [Mapping]
+    ###
+    def self.create_terms(mapping, terms)
+      terms.each do |term|
+        term = Term.find(term[:id])
+
+        MappingTerm.create!(
+          uri: "desm:#{term.uri}",
+          mapping: mapping,
+          mapped_term_id: term.id
+        )
+      end
+    end
   end
 end

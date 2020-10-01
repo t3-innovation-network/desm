@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       resources :terms, only: [:show, :update, :destroy]
       resources :vocabularies, only: [:index, :create]
 
+      post 'mappings/terms' => 'mappings#create_terms'
       post 'specifications/info' => 'specifications#info'
       post 'specifications/filter' => 'specifications#filter'
       get 'specifications/:id/terms' => 'terms#from_specification'

@@ -16,7 +16,7 @@ class Api::V1::MappingsController < ApplicationController
   end
 
   ###
-  # @description: Create a mapping with its related specification
+  # @description: Creates a mapping with its related specification
   ###
   def create
     spec = Specification.find(params[:specification_id])
@@ -25,6 +25,23 @@ class Api::V1::MappingsController < ApplicationController
     mapping = Processors::Mappings.create(spec, current_user) unless spec.spine?
 
     render json: mapping, include: :specification
+  end
+
+  ###
+  # @description: Creates the mapping terms. This method is used when the user has already
+  #   decided which terms to map to the spine
+  ###
+  def create_terms
+    # Validate mapping existence (We will create mapping terms for an existent mapping)
+    mapping = Mapping.find(params[:mapping_id])
+    terms = params[:terms]
+
+    raise ActiveRecord::RecordInvalid.new("Mapping terms were not provided") unless terms.count.positive?
+
+    # Proceed to create the mapping terms
+    Processors::Mappings.create_terms(mapping, terms)
+
+    render json: mapping, include: :terms
   end
 
   ###
