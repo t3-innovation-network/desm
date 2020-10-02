@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 2020_10_01_204710) do
     t.string "uri"
     t.text "comment"
     t.bigint "mapping_id", null: false
-    t.integer "predicate_id"
+    t.bigint "predicate_id"
     t.integer "spine_term_id"
     t.integer "mapped_term_id"
     t.datetime "created_at", precision: 6, null: false
