@@ -223,11 +223,16 @@ const MappingToDomains = (props) => {
    * Comain mappping complete. Confirm to save status in the backend
    */
   const handleDoneDomainMapping = async () => {
-    await updateMapping({ id: mapping.id, status: "mapped" });
-    if (anyTermMapped){
+    // Change the mapping satus to "in_progress" (with underscore, because it's
+    // the name in the backend), so we say it's begun terms mapping phase
+    await updateMapping({ id: mapping.id, status: "in_progress" });
+
+    // Save changes if necessary
+    if (anyTermMapped) {
       handleSaveChanges();
     }
-    // @todo: Redirect to 3rd step mapping ("Align and Fine Tune")
+    // Redirect to 3rd step mapping ("Align and Fine Tune")
+    props.history.push("/mappings/" + mapping.id + "/align");
   };
 
   /**
@@ -307,7 +312,7 @@ const MappingToDomains = (props) => {
                     </div>
                   </div>
                   <div className="mt-5">
-                    {/* DOMAINS */}´
+                    {/* DOMAINS */}
                     {!loading && (
                       <DomainCard
                         domain={domain}
@@ -393,6 +398,7 @@ const MappingToDomains = (props) => {
                               term={term}
                               onClick={onTermClick}
                               isMapped={termIsMapped}
+                              editEnabled={true}
                               onEditClick={onEditTermClick}
                             />
                           );
@@ -409,6 +415,7 @@ const MappingToDomains = (props) => {
                             term={term}
                             onClick={onTermClick}
                             isMapped={termIsMapped}
+                            editEnabled={true}
                             onEditClick={onEditTermClick}
                           />
                         );

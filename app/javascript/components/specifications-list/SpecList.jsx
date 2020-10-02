@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import fetchMappings from "../../services/fetchMappings";
 import Loader from "../shared/Loader";
 import TopNavOptions from "../shared/TopNavOptions";
+import Capitalize from "../shared/Capitalize";
 
 const SpecList = () => {
   const [mappings, setMappings] = useState([]);
@@ -24,13 +25,8 @@ const SpecList = () => {
    * Configure the options to see at the center of the top navigation bar
    */
   const navCenterOptions = () => {
-    return (
-      <TopNavOptions
-        viewMappings={true}
-        mapSpecification={true}
-      />
-    )
-  }
+    return <TopNavOptions viewMappings={true} mapSpecification={true} />;
+  };
 
   /**
    * Change the filter for the listed mappings
@@ -38,7 +34,7 @@ const SpecList = () => {
   const handleFilterChange = (value) => {
     setFilter(value);
     goForTheMappings(value);
-  }
+  };
 
   /**
    * Get the mappings from the service
@@ -83,7 +79,7 @@ const SpecList = () => {
                         <select
                           className="form-control"
                           value={filter}
-                          onChange={(e) => handleFilterChange(event.target.value)}
+                          onChange={(e) => handleFilterChange(e.target.value)}
                         >
                           {filterOptions.map(function (option) {
                             return (
@@ -104,15 +100,31 @@ const SpecList = () => {
                             <td>{mapping.title}</td>
                             <td>{mapping.specification.version}</td>
                             <td>0/0</td>
-                            <td></td>
+                            <td>{Capitalize(mapping.status)}</td>
                             <td>{mapping.specification.user.fullname}</td>
                             <td>
-                              <Link
-                                to={"/mappings/" + mapping.id}
-                                className="btn btn-sm bg-col-primary col-background"
-                              >
-                                Resume
-                              </Link>
+                              {mapping["mapped?"] ? (
+                                <Link
+                                  to={"/mappings/" + mapping.id}
+                                  className="btn btn-sm btn-dark ml-2"
+                                >
+                                  Edit
+                                </Link>
+                              ) : (
+                                <Link
+                                  to={
+                                    mapping["uploaded?"]
+                                      ? // There's terms mapped, but not finished selecting the terms from the specification
+                                        "/mappings/" + mapping.id
+                                      : // It's on the 3d step (algin and fine tune), already selected
+                                        // the terms from the specification, and now it's mapping terms into the spine terms
+                                        "/mappings/" + mapping.id + "/align"
+                                  }
+                                  className="btn btn-sm bg-col-primary col-background"
+                                >
+                                  Resume
+                                </Link>
+                              )}
                               <Link
                                 to={"/mappings/" + mapping.id}
                                 className="btn btn-sm btn-dark ml-2"

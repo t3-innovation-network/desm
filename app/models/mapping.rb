@@ -15,7 +15,18 @@ class Mapping < ApplicationRecord
   validates :name, presence: true
 
   # The possible status of a mapping
-  # 1. "uploaded" This means there's a specification uploaded but not terms mapped
-  # 2. "mapped" It means the terms are confirmed as mapped to the spine
-  enum status: %i[uploaded mapped]
+  # 1. "uploaded" It means that there's a specification uploaded but not
+  #    terms mapped
+  # 2. "in-progress" It means that the user is already mapping terms but
+  #    not yet finished mapping
+  # 3. "mapped" It means the terms are confirmed as mapped to the spine
+  enum status: %i[uploaded in_progress mapped]
+
+  ###
+  # @description: Include additional information about the mapping in
+  #   json responses. This overrides the ApplicationRecord as_json method.
+  ###
+  def as_json(options={})
+    super options.merge(methods: %i[uploaded? mapped? in_progress?])
+  end
 end

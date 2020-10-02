@@ -77,6 +77,8 @@ export default class TermCard extends Component {
                     <i className="fas fa-check"></i>
                   ) : (
                     <React.Fragment>
+                    {
+                      this.props.editEnabled &&
                       <button
                         onClick={() => {
                           this.props.onEditClick(this.props.term);
@@ -85,6 +87,7 @@ export default class TermCard extends Component {
                       >
                         <i className="fa fa-pencil-alt"></i>
                       </button>
+                    }
                       <a
                         data-target={"#collapse-term-" + this.props.term.id}
                         data-toggle="collapse"
