@@ -30,21 +30,23 @@ module Processors
     # @params [Array] terms: The list of terms as an array of objects. These are the
     #   specification terms, selected to be mapped against the spine.
     #
-    # @return [Mapping]
+    # @return [Array]
     ###
     def self.create_terms(mapping, terms)
-      terms.each do |term|
-        term = Term.find(term[:id])
-        custom_uri = "desm:#{term.uri}"
+      ActiveRecord::Base.transaction do
+        terms.each do |term|
+          term = Term.find(term[:id])
+          custom_uri = "desm:#{term.uri}"
 
-        # Do not create this term if there's already one with the same uri
-        next if MappingTerm.find_by(uri: custom_uri)
+          # Do not create this term if there's already one with the same uri
+          next if MappingTerm.find_by(uri: custom_uri)
 
-        MappingTerm.create!(
-          uri: custom_uri,
-          mapping: mapping,
-          mapped_term_id: term.id
-        )
+          MappingTerm.create!(
+            uri: custom_uri,
+            mapping: mapping,
+            mapped_term_id: term.id
+          )
+        end
       end
     end
   end

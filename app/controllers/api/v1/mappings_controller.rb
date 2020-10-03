@@ -31,7 +31,7 @@ class Api::V1::MappingsController < ApplicationController
   # @description: Udates the attributes of a mapping
   ###
   def update
-    @mapping.update(permitted_params)
+    @mapping.update!(permitted_params)
 
     render json: {
       success: true,
@@ -48,7 +48,7 @@ class Api::V1::MappingsController < ApplicationController
     mapping = Mapping.find(params[:mapping_id])
     terms = params[:terms]
 
-    raise "Mapping terms were not provided" unless terms.count.positive?
+    raise "Mapping terms were not provided" unless terms.present? && terms.any?
 
     # Proceed to create the mapping terms
     Processors::Mappings.create_terms(mapping, terms)
