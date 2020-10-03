@@ -11,6 +11,9 @@ import EditTerm from "./EditTerm";
 import TermCardsContainer from "./TermCardsContainer";
 import fetchSpecification from "../../services/fetchSpecification";
 import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
+import saveMappingTerms from "../../services/saveMappingTerms";
+import { toastr as toast } from "react-redux-toastr";
+import updateMapping from "../../services/updateMapping";
 
 const MappingToDomains = (props) => {
   /**
@@ -32,6 +35,11 @@ const MappingToDomains = (props) => {
    * Whether the page is loading results or not
    */
   const [loading, setLoading] = useState(true);
+
+  /**
+   * Whether any change awas performed after the page loads
+   */
+  const [anyTermMapped, setAnyTermMapped] = useState(false);
 
   /**
    * Whether to hide mapped terms or not
@@ -78,9 +86,23 @@ const MappingToDomains = (props) => {
   /**
    * The already mapped terms. To use in progress bar.
    */
-  const mappedTerms = terms.filter((term) => {
-    return term.mappedTo;
-  });
+  const mappedTerms = terms.filter(termIsMapped);
+
+  /**
+   * Returns wether the term is already mapped to the domain. It can be 1 of 2 options:
+   *
+   * 1. The term is recently dragged to the domain, so it's not in the backend, just
+   *    marked in memory as "mapped".
+   * 2. The term is already mapped in the backend (is one of the mapping terms in DB).
+   */
+  function termIsMapped(term) {
+    return (
+      term.mapped ||
+      mapping.terms.some((mappingTerm) => {
+        return mappingTerm.mapped_term_id === term.id;
+      })
+    );
+  }
 
   /**
    * The selected terms.
@@ -90,24 +112,17 @@ const MappingToDomains = (props) => {
   });
 
   /**
-   * The already mapped terms to a given domain.
-   */
-  const mappedTermsToDomain = (domainUri) =>
-    terms.filter((term) => {
-      return term.mappedTo == domainUri;
-    });
-
-  /**
    * Action to perform after a term is dropped
    */
   const afterDropTerm = (domain) => {
     let tempTerms = selectedTerms;
     tempTerms.forEach((termToMap) => {
-      termToMap.mappedTo = domain.uri;
+      termToMap.mapped = true;
       termToMap.selected = !termToMap.selected;
     });
     tempTerms = [...terms];
     setTerms(tempTerms);
+    setAnyTermMapped(true);
   };
 
   /**
@@ -130,6 +145,7 @@ const MappingToDomains = (props) => {
         mapSpecification={true}
         stepper={true}
         stepperStep={2}
+        customcontent={<DoneDomainMapping />}
       />
     );
   };
@@ -179,11 +195,56 @@ const MappingToDomains = (props) => {
    * Mark the term as "selected"
    */
   const onTermClick = (clickedTerm) => {
-    let tempTerms = [...terms];
-    let term = tempTerms.find((t) => t.id == clickedTerm.id);
-    term.selected = clickedTerm.selected;
+    if (!clickedTerm.mapped) {
+      let tempTerms = [...terms];
+      let term = tempTerms.find((t) => t.id == clickedTerm.id);
+      term.selected = clickedTerm.selected;
 
-    setTerms(tempTerms);
+      setTerms(tempTerms);
+    }
+  };
+
+  /**
+   * Button to accept the mapping, create teh mapping terms and go to the next screen
+   */
+  const DoneDomainMapping = () => {
+    return (
+      <button
+        className="btn bg-col-primary col-background"
+        onClick={handleDoneDomainMapping}
+        disabled={!mappedTerms.length}
+      >
+        Done Domain Mapping
+      </button>
+    );
+  };
+
+  /**
+   * Comain mappping complete. Confirm to save status in the backend
+   */
+  const handleDoneDomainMapping = async () => {
+    await updateMapping({ id: mapping.id, status: "mapped" });
+    if (anyTermMapped){
+      handleSaveChanges();
+    }
+    // @todo: Redirect to 3rd step mapping ("Align and Fine Tune")
+  };
+
+  /**
+   * Create the mapping terms
+   */
+  const handleSaveChanges = () => {
+    saveMappingTerms({
+      mappingId: mapping.id,
+      terms: mappedTerms,
+    })
+      .then(() => {
+        toast.success("Changes saved");
+        setAnyTermMapped(false);
+      })
+      .catch((e) => {
+        toast.error(e.response.data.message);
+      });
   };
 
   /**
@@ -250,16 +311,20 @@ const MappingToDomains = (props) => {
                     {!loading && (
                       <DomainCard
                         domain={domain}
-                        mappedTerms={mappedTermsToDomain(domain.id)}
+                        mappedTerms={mappedTerms}
                         selectedTermsCount={selectedTerms.length}
                       />
                     )}
                   </div>
-                  <div className="mt-2">
-                    <button className="btn bg-col-primary col-background">
-                      Done Domain Mapping
-                    </button>
-                  </div>
+                  <div className="mt-2"></div>
+                  {<DoneDomainMapping />}
+                  <button
+                    className="btn btn-dark ml-3"
+                    onClick={handleSaveChanges}
+                    disabled={!anyTermMapped}
+                  >
+                    Save Changes
+                  </button>
                 </div>
 
                 {/* RIGHT SIDE */}
@@ -320,13 +385,14 @@ const MappingToDomains = (props) => {
                         afterDrop={afterDropTerm}
                       >
                         {filteredTerms({ pickSelected: true }).map((term) => {
-                          return hideMapped && term.mappedTo ? (
+                          return hideMapped && termIsMapped(term) ? (
                             ""
                           ) : (
                             <TermCard
                               key={term.id}
                               term={term}
                               onClick={onTermClick}
+                              isMapped={termIsMapped}
                               onEditClick={onEditTermClick}
                             />
                           );
@@ -335,13 +401,14 @@ const MappingToDomains = (props) => {
 
                       {/* NOT SELECTED TERMS */}
                       {filteredTerms({ pickSelected: false }).map((term) => {
-                        return hideMapped && term.mappedTo ? (
+                        return hideMapped && termIsMapped(term) ? (
                           ""
                         ) : (
                           <TermCard
                             key={term.id}
                             term={term}
                             onClick={onTermClick}
+                            isMapped={termIsMapped}
                             onEditClick={onEditTermClick}
                           />
                         );
