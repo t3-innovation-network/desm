@@ -9,6 +9,7 @@ import AlertNotice from "../shared/AlertNotice";
 import Loader from "../shared/Loader";
 import TopNav from "../shared/TopNav";
 import TopNavOptions from "../shared/TopNavOptions";
+import SpineTermCard from "./SpineTermCard";
 
 const AlginAndFineTune = (props) => {
   /**
@@ -192,21 +193,19 @@ const AlginAndFineTune = (props) => {
                   <div className="mt-5">
                     {spineTerms.map((term) => {
                       return (
-                        <div className="row">
+                        <div className="row mb-2" key={term.id}>
                           <div className="col-5">
-                            <div className="card with-shadow mb-2">
-                              <div className="card-header">{term.name}</div>
-                              <div className="card-body">
-                                <p>{term.property.comment}</p>
-                                <p>{"Origin: " + ""}</p>
-                              </div>
-                            </div>
+                            <SpineTermCard term={term} />
                           </div>
 
                           <div className="col-2">
                             <select
+                              style={{
+                                fontSize: "16px",
+                                height: "calc(1.5em + 1.8rem + 2px)",
+                              }}
                               name="predicate_id"
-                              className="form-control"
+                              className="form-control form-control-lg"
                               required
                             >
                               <option value="1">Duplicated</option>
@@ -216,7 +215,9 @@ const AlginAndFineTune = (props) => {
 
                           <div className="col-5">
                             <div className="card with-shadow mb-2">
-                              <div className="card-header">Drag a matching element here</div>
+                              <div className="card-header">
+                                Drag a matching element here
+                              </div>
                             </div>
                           </div>
                         </div>
