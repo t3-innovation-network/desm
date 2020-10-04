@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import fetchMapping from "../../services/fetchMapping";
 import fetchMappingTerms from "../../services/fetchMappingTerms";
+import fetchPredicates from "../../services/fetchPredicates";
 import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
 import TermCard from "../mapping-to-domains/TermCard";
 import TermCardsContainer from "../mapping-to-domains/TermCardsContainer";
@@ -9,7 +10,7 @@ import AlertNotice from "../shared/AlertNotice";
 import Loader from "../shared/Loader";
 import TopNav from "../shared/TopNav";
 import TopNavOptions from "../shared/TopNavOptions";
-import SpineTermCard from "./SpineTermCard";
+import SpineTermsList from "./SpineTermsList";
 
 const AlginAndFineTune = (props) => {
   /**
@@ -36,6 +37,12 @@ const AlginAndFineTune = (props) => {
    * The terms of the spine (The specification being mapped against)
    */
   const [spineTerms, setSpineTerms] = useState([]);
+
+  /**
+   * The predicates from DB. These will be used to match a mapping term to a spine
+   * term in a meaningful way. E.g. "Identicall", "Agregatted", ...
+   */
+  const [predicates, setPredicates] = useState([]);
 
   /**
    * Whether any change awas performed after the page loads
@@ -159,6 +166,10 @@ const AlginAndFineTune = (props) => {
     response = await fetchMappingTerms(props.match.params.id);
     setMappingTerms(response.terms);
 
+    // Get the predicates
+    response = await fetchPredicates();
+    setPredicates(response.predicates);
+
     setLoading(false);
   };
 
@@ -191,38 +202,10 @@ const AlginAndFineTune = (props) => {
                     <div className="row">More content</div>
                   </div>
                   <div className="mt-5">
-                    {spineTerms.map((term) => {
-                      return (
-                        <div className="row mb-2" key={term.id}>
-                          <div className="col-5">
-                            <SpineTermCard term={term} />
-                          </div>
-
-                          <div className="col-2">
-                            <select
-                              style={{
-                                fontSize: "16px",
-                                height: "calc(1.5em + 1.8rem + 2px)",
-                              }}
-                              name="predicate_id"
-                              className="form-control form-control-lg"
-                              required
-                            >
-                              <option value="1">Duplicated</option>
-                              <option value="2">Identical</option>
-                            </select>
-                          </div>
-
-                          <div className="col-5">
-                            <div className="card with-shadow mb-2">
-                              <div className="card-header">
-                                Drag a matching element here
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
+                    <SpineTermsList
+                      terms={spineTerms}
+                      predicates={predicates}
+                    />
                   </div>
                 </div>
 
