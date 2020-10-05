@@ -10,10 +10,6 @@ class Api::V1::PredicatesController < ApplicationController
   def index
     predicates = Predicate.all.order(:pref_label)
 
-    3.times { puts "--- predicates.count ---" }
-    puts "predicates.count: #{predicates.count}"
-    3.times { puts "--- predicates.count ---" }
-
     render json: predicates
   end
 end

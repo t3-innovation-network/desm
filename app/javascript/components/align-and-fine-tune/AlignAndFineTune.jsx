@@ -78,6 +78,22 @@ const AlginAndFineTune = (props) => {
   };
 
   /**
+   * The already mapped terms. To use in progress bar.
+   * For a term to be mapped, it can be 1 of 2 options:
+   *
+   * 1. The term is recently dragged to the domain, so it's not in the backend, just
+   *    marked in memory as "mapped".
+   * 2. The term is already mapped in the backend (is one of the mapping terms in DB).
+   * 
+   * @param {Object} spineTerm
+   */
+  const mappedTermsToSpineTerm = (spineTerm) => {
+    return mappingTerms.filter((term) => {
+      return term.mapped_term.mappedTo === spineTerm.uri;
+    });
+  };
+
+  /**
    * The selected or not selected terms that includes the string typed by the user in the
    * search box.
    */
@@ -129,6 +145,7 @@ const AlginAndFineTune = (props) => {
     let tempTerms = selectedMappingTerms;
     tempTerms.forEach((termToMap) => {
       termToMap.mappedTo = spineTerm.uri;
+      termToMap.mapped_term.mappedTo = spineTerm.uri;
       termToMap.selected = !termToMap.selected;
     });
     tempTerms = [...mappingTerms];
@@ -202,10 +219,14 @@ const AlginAndFineTune = (props) => {
                     <div className="row">More content</div>
                   </div>
                   <div className="mt-5">
-                    <SpineTermsList
-                      terms={spineTerms}
-                      predicates={predicates}
-                    />
+                    {!loading && (
+                      <SpineTermsList
+                        terms={spineTerms}
+                        predicates={predicates}
+                        selectedMappingTerms={selectedMappingTerms}
+                        mappedTermsToSpineTerm={mappedTermsToSpineTerm}
+                      />
+                    )}
                   </div>
                 </div>
 

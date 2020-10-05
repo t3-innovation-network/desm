@@ -43,3 +43,8 @@
 .CodeMirror{
   height: 100% !important;
 }
+
+.custom-select:focus{
+  border-color: $primary-color !important;
+  box-shadow: 0 0 0 0.2rem $background-color-dark !important;
+}

@@ -69,7 +69,7 @@ class Api::V1::MappingsController < ApplicationController
   #   to the one passed in params
   ###
   def show_terms
-    render json: @mapping.terms, include: [:spine_term, mapped_term: {include: :property}]
+    render json: @mapping.terms.order(:uri), include: [:spine_term, mapped_term: {include: :property}]
   end
 
   private
