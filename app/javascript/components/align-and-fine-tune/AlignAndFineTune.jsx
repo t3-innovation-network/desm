@@ -41,11 +41,6 @@ const AlginAndFineTune = (props) => {
   const [spineTerms, setSpineTerms] = useState([]);
 
   /**
-   * The domains from DB
-   */
-  const [domains, setDomains] = useState([]);
-
-  /**
    * The predicates from DB. These will be used to match a mapping term to a spine
    * term in a meaningful way. E.g. "Identicall", "Agregatted", ...
    */
@@ -248,10 +243,6 @@ const AlginAndFineTune = (props) => {
     response = await fetchPredicates();
     setPredicates(response.predicates);
 
-    // Get the domains (to fill the dropdown in the header)
-    response = await fetchDomains();
-    setDomains(response.domains);
-
     setLoading(false);
   };
 
@@ -285,21 +276,12 @@ const AlginAndFineTune = (props) => {
                     </div>
                     <div className="row mb-2">
                       <div className="col-5">
-                        <select className="custom-select">
-                          <option
-                            className="mr-5"
-                            value=""
-                            disabled
-                            defaultValue
-                          >
-                            Map to:{" "}
-                          </option>
-                          {domains.map((domain) => {
-                            return (
-                              <option key={domain.id}>{domain.name}</option>
-                            );
-                          })}
-                        </select>
+                        <div className="card">
+                          <div className="card-header">
+                            <strong>Map to:</strong>
+                            {" " + mapping.domain}
+                          </div>
+                        </div>
                       </div>
                       <div className="col-5">
                         <div className="form-check">
@@ -377,9 +359,10 @@ const AlginAndFineTune = (props) => {
                     <div className="row">
                       <div className="col-6">
                         {/* TODO: Show te corresponding domain */}
-                        <h6 className="subtitle">
-                          {user.organization.name + " > " + "Course"}
-                        </h6>
+                        <p>
+                          <strong>{user.organization.name + " > "}</strong>
+                          {mapping.domain}
+                        </p>
                       </div>
                       <div className="col-6">
                         <p className="float-right">

@@ -31,10 +31,19 @@ class Mapping < ApplicationRecord
   end
 
   ###
+  # @description: The domain that this mapping is for. It's taken from the
+  #   related specification
+  # @return [String]
+  ###
+  def domain
+    specification.domain.pref_label
+  end
+
+  ###
   # @description: Include additional information about the mapping in
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
   def as_json(options={})
-    super options.merge(methods: %i[uploaded? mapped? in_progress? origin])
+    super options.merge(methods: %i[uploaded? mapped? in_progress? origin domain])
   end
 end
