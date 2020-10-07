@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import fetchMapping from "../../services/fetchMapping";
 import fetchMappingTerms from "../../services/fetchMappingTerms";
 import fetchPredicates from "../../services/fetchPredicates";
-import fetchDomains from "../../services/fetchDomains";
 import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
 import TermCard from "../mapping-to-domains/TermCard";
 import TermCardsContainer from "../mapping-to-domains/TermCardsContainer";
@@ -12,13 +11,14 @@ import Loader from "../shared/Loader";
 import TopNav from "../shared/TopNav";
 import TopNavOptions from "../shared/TopNavOptions";
 import SpineTermsList from "./SpineTermsList";
-import ProgressReportBar from "../shared/ProgressReportBar";
+import SpineHeader from "./SpineHeader";
+import MappingTermsHeaders from "./MappingTermsHeader";
 
 const AlginAndFineTune = (props) => {
   /**
    * Whether the page is loading results or not
    */
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   /**
    * The logged in user
@@ -242,8 +242,6 @@ const AlginAndFineTune = (props) => {
     // Get the predicates
     response = await fetchPredicates();
     setPredicates(response.predicates);
-
-    setLoading(false);
   };
 
   /**
@@ -252,7 +250,12 @@ const AlginAndFineTune = (props) => {
    * it mimics the same action).
    */
   useEffect(() => {
-    fetchDataFromAPI();
+    async function fetchData() {
+      await fetchDataFromAPI();
+    }
+    fetchData().then(() => {
+      setLoading(false);
+    });
   }, []);
 
   return (
@@ -268,75 +271,15 @@ const AlginAndFineTune = (props) => {
                 {/* LEFT SIDE */}
 
                 <div className="col-lg-8 p-lg-5 pt-5">
-                  <div className="border-bottom desm-col-header">
-                    <div className="row mb-2">
-                      <h6 className="subtitle">
-                        3. Map CredReg to Schema / Spine
-                      </h6>
-                    </div>
-                    <div className="row mb-2">
-                      <div className="col-5">
-                        <div className="card">
-                          <div className="card-header">
-                            <strong>Map to:</strong>
-                            {" " + mapping.domain}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-5">
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            id="hideSpineElems"
-                            value={hideMappedSpineTerms}
-                            onChange={(e) =>
-                              setHideMappedSpineTerms(!hideMappedSpineTerms)
-                            }
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="hideSpineElems"
-                          >
-                            Hidde Mapped Elements
-                          </label>
-                        </div>
-                      </div>
-                      <div
-                        className="col-2"
-                        style={{
-                          position: "relative",
-                          bottom: "1rem",
-                        }}
-                      >
-                        <ProgressReportBar
-                          maxValue={mappingTerms.length}
-                          currentValue={mappedMappingTerms.length}
-                          messageReport="Mapped"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-2">
-                      <div className="col-5">
-                        <div className="form-group has-search">
-                          <span className="fa fa-search form-control-feedback"></span>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Find Element / Property"
-                            value={spineTermsInputValue}
-                            onChange={filterSpineTermsOnChange}
-                          />
-                        </div>
-                      </div>
-                      <div className="col-5"></div>
-                      <div className="col-2">
-                        <button className="btn btn-block btn-dark">
-                          + Add Synthetic
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                  <SpineHeader
+                    domain={mapping.domain}
+                    hideMappedSpineTerms={hideMappedSpineTerms}
+                    setHideMappedSpineTerms={setHideMappedSpineTerms}
+                    mappingTerms={mappingTerms}
+                    mappedMappingTerms={mappedMappingTerms}
+                    spineTermsInputValue={spineTermsInputValue}
+                    filterSpineTermsOnChange={filterSpineTermsOnChange}
+                  />
                   <div className="mt-5">
                     {!loading && (
                       <SpineTermsList
@@ -355,69 +298,19 @@ const AlginAndFineTune = (props) => {
                 {/* RIGHT SIDE */}
 
                 <div className="col-lg-4 p-lg-5 pt-5 bg-col-secondary">
-                  <div className="border-bottom desm-col-header">
-                    <div className="row">
-                      <div className="col-6">
-                        {/* TODO: Show te corresponding domain */}
-                        <p>
-                          <strong>{user.organization.name + " > "}</strong>
-                          {mapping.domain}
-                        </p>
-                      </div>
-                      <div className="col-6">
-                        <p className="float-right">
-                          <strong>{selectedMappingTerms.length}</strong>{" "}
-                          elements selected
-                        </p>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-8">
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            value={hideMappedMappingTerms}
-                            onChange={(e) =>
-                              setHideMappedMappingTerms(!hideMappedMappingTerms)
-                            }
-                            id="hideElems"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="hideElems"
-                          >
-                            Hidde Mapped Elements
-                          </label>
-                        </div>
-                      </div>
-                      <div
-                        className="col-4"
-                        style={{
-                          position: "relative",
-                          bottom: "1rem",
-                        }}
-                      >
-                        <ProgressReportBar
-                          maxValue={mappingTerms.length}
-                          currentValue={mappedMappingTerms.length}
-                          messageReport="Mapped"
-                        />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col form-group has-search">
-                        <span className="fa fa-search form-control-feedback"></span>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Find Element / Property"
-                          value={mappingTermsInputValue}
-                          onChange={filterMappingTermsOnChange}
-                        />
-                      </div>
-                    </div>
-                  </div>
+                  <MappingTermsHeaders
+                    organizationName={user.organization.name}
+                    domain={mapping.domain}
+                    selectedMappingTerms={selectedMappingTerms}
+                    hideMappedMappingTerms={hideMappedMappingTerms}
+                    setHideMappedMappingTerms={setHideMappedMappingTerms}
+                    mappingTerms={mappingTerms}
+                    mappedMappingTerms={mappedMappingTerms}
+                    mappingTermsInputValue={mappingTermsInputValue}
+                    filterMappingTermsOnChange={filterMappingTermsOnChange}
+                  />
+
+                  {/* MAPPING TERMS LIST */}
 
                   <div className="pr-5 mt-5">
                     <AlertNotice
