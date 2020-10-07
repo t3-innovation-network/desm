@@ -364,6 +364,7 @@ const AlginAndFineTune = (props) => {
                         hideMappedSpineTerms={hideMappedSpineTerms}
                         mappedTermsToSpineTerm={mappedTermsToSpineTerm}
                         isMapped={spineTermIsMapped}
+                        origin={mapping.origin}
                       />
                     )}
                   </div>
@@ -464,6 +465,7 @@ const AlginAndFineTune = (props) => {
                                 onClick={onMappingTermClick}
                                 editEnabled={false}
                                 isMapped={mappingTermIsMapped}
+                                origin={mapping.origin}
                               />
                             );
                           }
@@ -483,6 +485,7 @@ const AlginAndFineTune = (props) => {
                               onClick={onMappingTermClick}
                               editEnabled={false}
                               isMapped={mappingTermIsMapped}
+                              origin={mapping.origin}
                             />
                           );
                         }

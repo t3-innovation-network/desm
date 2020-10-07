@@ -39,7 +39,7 @@ export default class SpineTermCard extends Component {
   render() {
     const { animationIsVisible, animationDuration, showTerm } = this.state;
 
-    const { term } = this.props;
+    const { term, origin } = this.props;
 
     return (
       <div className="card">
@@ -59,7 +59,15 @@ export default class SpineTermCard extends Component {
           animationOutDuration={animationDuration}
           isVisible={animationIsVisible}
         >
-          {showTerm && <div className="card-body">{term.property.comment}</div>}
+          {showTerm && (
+            <div className="card-body">
+              <p>{term.property.comment}</p>
+              <p>
+                Origin:
+                <span className="col-primary">{" " + this.props.origin}</span>
+              </p>
+            </div>
+          )}
         </Animated>
       </div>
     );

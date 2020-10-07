@@ -176,9 +176,6 @@ const MappingForm = (props) => {
         });
     });
 
-    /**
-     * @todo Implement sending the files to the API service
-     */
     dispatch(doSubmit());
     event.preventDefault();
   };

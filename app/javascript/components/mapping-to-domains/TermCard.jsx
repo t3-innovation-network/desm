@@ -163,7 +163,7 @@ export default class TermCard extends Component {
             {showTermBody && (
               <div className="card-body pt-0 pb-0">
                 <p>{this.props.term.property.comment}</p>
-                <p>{"Origin: " + ""}</p>
+                <p>{"Origin: " + this.props.origin}</p>
               </div>
             )}
           </Animated>

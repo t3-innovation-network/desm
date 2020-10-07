@@ -11,7 +11,11 @@ const SpineTermsList = (props) => {
         ) : (
           <div className="row mb-2" key={term.id}>
             <div className="col-5">
-              <SpineTermCard term={term} isMapped={props.isMapped} />
+              <SpineTermCard
+                term={term}
+                isMapped={props.isMapped}
+                origin={props.origin}
+              />
             </div>
 
             <div className="col-3">

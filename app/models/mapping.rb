@@ -23,10 +23,18 @@ class Mapping < ApplicationRecord
   enum status: %i[uploaded in_progress mapped]
 
   ###
+  # @description: The organization that originated this term
+  # @return [String]
+  ###
+  def origin
+    user.organization.name
+  end
+
+  ###
   # @description: Include additional information about the mapping in
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
   def as_json(options={})
-    super options.merge(methods: %i[uploaded? mapped? in_progress?])
+    super options.merge(methods: %i[uploaded? mapped? in_progress? origin])
   end
 end
