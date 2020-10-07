@@ -11,4 +11,12 @@ class Term < ApplicationRecord
   validates :uri, presence: true
 
   accepts_nested_attributes_for :property, allow_destroy: true
+
+  ###
+  # @description: Build and return the uri with the "desm" prefix
+  # @return [String]: the desm namespaced uri
+  ###
+  def desm_uri
+    "desm:#{uri.split(':').last}"
+  end
 end

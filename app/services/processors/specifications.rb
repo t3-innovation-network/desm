@@ -195,7 +195,8 @@ module Processors
 
       Property.create!(
         term: term,
-        uri: node["@id"],
+        uri: term.desm_uri,
+        source_uri: node["@id"],
         comment: Parsers::Specifications.read!(node, "comment"),
         label: Parsers::Specifications.read!(node, "label"),
         domain: Parsers::Specifications.read(node, "domain"),
