@@ -4,11 +4,29 @@ import { Animated } from "react-animated-css";
 export default class TermCard extends Component {
   state = {
     /**
-     * The representation of the term for this component
+     * Whether the term is selected or not
      */
     selected: this.props.term.selected,
-    animationisVisible: true,
-    animationDuration: 250,
+    /**
+     * The animation of the whole term card status
+     */
+    cardAnimationisVisible: true,
+    /**
+     * The animation of the term body card status
+     */
+    termBodyAnimationisVisible: false,
+    /**
+     * Whether the term body is visible or not
+     */
+    showTermBody: false,
+    /**
+     * The card animation duration in miliseconds
+     */
+    cardAnimationDuration: 250,
+    /**
+     * The term body animation duration in miliseconds
+     */
+    termBodyAnimationDuration: 500,
   };
 
   /**
@@ -17,11 +35,11 @@ export default class TermCard extends Component {
    */
   handleTermClick = () => {
     if (!this.props.isMapped(this.props.term)) {
-      const { selected, animationDuration } = this.state;
+      const { selected, cardAnimationDuration } = this.state;
       // Trigger animation
       this.setState(
-        ({ animationisVisible }) => ({
-          animationisVisible: !animationisVisible,
+        ({ cardAnimationisVisible }) => ({
+          cardAnimationisVisible: !cardAnimationisVisible,
         }),
         () => {
           // Await until the animation finishes. Otherwise the term just roughly dissapears
@@ -37,21 +55,60 @@ export default class TermCard extends Component {
                 this.props.onClick(this.props.term);
               }
             );
-          }, animationDuration);
+          }, cardAnimationDuration);
         }
       );
     }
   };
 
+  toggleShowBody = () => {
+    const {
+      termBodyAnimationisVisible,
+      termBodyAnimationDuration,
+      showTermBody,
+    } = this.state;
+
+    // Trigger animation
+    this.setState(
+      ({ termBodyAnimationisVisible }) => ({
+        termBodyAnimationisVisible: !termBodyAnimationisVisible,
+      }),
+      () => {
+        if (!showTermBody) {
+          // Change term visibility
+          this.setState(({ showTermBody }) => ({
+            showTermBody: !showTermBody,
+          }));
+          return;
+        }
+
+        // Await until the animation finishes. Otherwise the term just roughly dissapears
+        setTimeout(() => {
+          // Change term visibility
+          this.setState(({ showTermBody }) => ({
+            showTermBody: !showTermBody,
+          }));
+        }, termBodyAnimationDuration);
+      }
+    );
+  };
+
   render() {
-    const { selected, animationisVisible, animationDuration } = this.state;
+    const {
+      selected,
+      cardAnimationisVisible,
+      cardAnimationDuration,
+      termBodyAnimationisVisible,
+      termBodyAnimationDuration,
+      showTermBody,
+    } = this.state;
     return (
       <Animated
         animationIn="fadeInDown"
         animationOut="fadeOutUp"
-        animationInDuration={animationDuration}
-        animationOutDuration={animationDuration}
-        isVisible={animationisVisible}
+        animationInDuration={cardAnimationDuration}
+        animationOutDuration={cardAnimationDuration}
+        isVisible={cardAnimationisVisible}
       >
         <div
           className={
@@ -77,38 +134,39 @@ export default class TermCard extends Component {
                     <i className="fas fa-check"></i>
                   ) : (
                     <React.Fragment>
-                    {
-                      this.props.editEnabled &&
-                      <button
-                        onClick={() => {
-                          this.props.onEditClick(this.props.term);
-                        }}
-                        className="btn"
-                      >
-                        <i className="fa fa-pencil-alt"></i>
-                      </button>
-                    }
-                      <a
-                        data-target={"#collapse-term-" + this.props.term.id}
-                        data-toggle="collapse"
-                        className="btn"
-                        to="#"
-                      >
+                      {this.props.editEnabled && (
+                        <button
+                          onClick={() => {
+                            this.props.onEditClick(this.props.term);
+                          }}
+                          className="btn"
+                        >
+                          <i className="fa fa-pencil-alt"></i>
+                        </button>
+                      )}
+                      <button className="btn" onClick={this.toggleShowBody}>
                         <i className="fas fa-angle-down"></i>
-                      </a>
+                      </button>
                     </React.Fragment>
                   )}
                 </div>
               </div>
             </div>
           </div>
-          <div
-            id={"collapse-term-" + this.props.term.id}
-            className="collapse card-body pt-0 pb-0"
+          <Animated
+            animationIn="fadeIn"
+            animationOut="fadeOut"
+            animationInDuration={termBodyAnimationDuration}
+            animationOutDuration={termBodyAnimationDuration}
+            isVisible={termBodyAnimationisVisible}
           >
-            <p>{this.props.term.property.comment}</p>
-            <p>{"Origin: " + ""}</p>
-          </div>
+            {showTermBody && (
+              <div className="card-body pt-0 pb-0">
+                <p>{this.props.term.property.comment}</p>
+                <p>{"Origin: " + ""}</p>
+              </div>
+            )}
+          </Animated>
         </div>
       </Animated>
     );

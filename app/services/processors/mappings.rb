@@ -38,7 +38,7 @@ module Processors
           term = Term.find(term[:id])
 
           # Do not create this term if there's already one with the same uri
-          next if MappingTerm.find_by(uri: custom_uri)
+          next if MappingTerm.find_by(uri: term.desm_uri)
 
           MappingTerm.create!(
             uri: term.desm_uri,
