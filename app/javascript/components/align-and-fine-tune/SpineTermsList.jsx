@@ -6,10 +6,12 @@ const SpineTermsList = (props) => {
   return (
     <React.Fragment>
       {props.terms.map((term) => {
-        return (
+        return props.hideMappedSpineTerms && props.isMapped(term) ? (
+          ""
+        ) : (
           <div className="row mb-2" key={term.id}>
             <div className="col-5">
-              <SpineTermCard term={term} />
+              <SpineTermCard term={term} isMapped={props.isMapped} />
             </div>
 
             <div className="col-3">

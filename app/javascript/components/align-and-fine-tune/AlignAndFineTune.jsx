@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import fetchMapping from "../../services/fetchMapping";
 import fetchMappingTerms from "../../services/fetchMappingTerms";
 import fetchPredicates from "../../services/fetchPredicates";
+import fetchDomains from "../../services/fetchDomains";
 import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
 import TermCard from "../mapping-to-domains/TermCard";
 import TermCardsContainer from "../mapping-to-domains/TermCardsContainer";
@@ -11,6 +12,7 @@ import Loader from "../shared/Loader";
 import TopNav from "../shared/TopNav";
 import TopNavOptions from "../shared/TopNavOptions";
 import SpineTermsList from "./SpineTermsList";
+import ProgressReportBar from "../shared/ProgressReportBar";
 
 const AlginAndFineTune = (props) => {
   /**
@@ -39,6 +41,11 @@ const AlginAndFineTune = (props) => {
   const [spineTerms, setSpineTerms] = useState([]);
 
   /**
+   * The domains from DB
+   */
+  const [domains, setDomains] = useState([]);
+
+  /**
    * The predicates from DB. These will be used to match a mapping term to a spine
    * term in a meaningful way. E.g. "Identicall", "Agregatted", ...
    */
@@ -50,15 +57,26 @@ const AlginAndFineTune = (props) => {
   const [anyChangePerformed, setAnyChangePerformed] = useState(false);
 
   /**
-   * Whether to hide mapped terms or not
+   * Whether to hide mapped mapping terms or not
+   */
+  const [hideMappedSpineTerms, setHideMappedSpineTerms] = useState(false);
+
+  /**
+   * Whether to hide mapped spine terms or not
    */
   const [hideMappedMappingTerms, setHideMappedMappingTerms] = useState(false);
 
   /**
    * The value of the input that the user is typing in the search box
-   * to filter the list of terms
+   * to filter the list of mapping terms
    */
   const [mappingTermsInputValue, setMappingTermsInputValue] = useState("");
+
+  /**
+   * The value of the input that the user is typing in the search box
+   * to filter the list of spine terms
+   */
+  const [spineTermsInputValue, setSpineTermsInputValue] = useState("");
 
   /**
    * The selected mapping terms (the terms of the original specification, now
@@ -69,12 +87,21 @@ const AlginAndFineTune = (props) => {
   });
 
   /**
-   * Manage to change values from inputs in the state
+   * Manage to change values from mapping term inputs in the state
    *
    * @param {Event} event
    */
-  const filterSpecTermsOnChange = (event) => {
+  const filterMappingTermsOnChange = (event) => {
     setMappingTermsInputValue(event.target.value);
+  };
+
+  /**
+   * Manage to change values from spine term inputs in the state
+   *
+   * @param {Event} event
+   */
+  const filterSpineTermsOnChange = (event) => {
+    setSpineTermsInputValue(event.target.value);
   };
 
   /**
@@ -84,7 +111,7 @@ const AlginAndFineTune = (props) => {
    * 1. The term is recently dragged to the domain, so it's not in the backend, just
    *    marked in memory as "mapped".
    * 2. The term is already mapped in the backend (is one of the mapping terms in DB).
-   * 
+   *
    * @param {Object} spineTerm
    */
   const mappedTermsToSpineTerm = (spineTerm) => {
@@ -110,19 +137,52 @@ const AlginAndFineTune = (props) => {
       .sort((a, b) => (a.name > b.name ? 1 : -1));
 
   /**
-   * Returns wether the term is already mapped to the spinw. It can be 1 of 2 options:
+   * The selected or not selected terms that includes the string typed by the user in the
+   * search box.
+   */
+  const filteredSpineTerms = spineTerms
+    .filter((term) => {
+      return term.name
+        .toLowerCase()
+        .includes(spineTermsInputValue.toLowerCase());
+    })
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
+
+  /**
+   * All the terms that are already mapped
+   */
+  const mappedMappingTerms = mappingTerms.filter(mappingTermIsMapped);
+
+  /**
+   * Returns wether the term is already mapped to the spine. It can be 1 of 2 options:
    *
-   * 1. The term is recently dragged to the spine term, so it's not in the backend, just
+   * 1. The mapping term was recently dragged to the spine term, so it's not in the backend, just
    *    marked in memory as "mappedTo".
    * 2. The term is already mapped in the backend (is one of the mapping terms in DB).
    */
-  function termIsMapped(mappingTerm) {
+  function mappingTermIsMapped(mappingTerm) {
     return (
       mappingTerm.mappedTo ||
       spineTerms.some((spineTerm) => {
         return spineTerm.id === mappingTerm.spine_term_id;
       })
     );
+  }
+
+  /**
+   * Returns wether the spine term has any mappping terms mapped to it. It can be 1 of 2 options:
+   *
+   * 1. The mapping term was recently dragged to the spine term, so it's not in the backend, just
+   *    marked in memory as "mappedTo".
+   * 2. The mapping term is already mapped in the backend (is one of the mapping terms in DB).
+   */
+  function spineTermIsMapped(spineTerm) {
+    return mappingTerms.some((mappingTerm) => {
+      return (
+        mappingTerm.mappedTo === spineTerm.uri ||
+        mappingTerm.spine_term_id === spineTerm.id
+      );
+    });
   }
 
   /**
@@ -149,6 +209,7 @@ const AlginAndFineTune = (props) => {
       termToMap.selected = !termToMap.selected;
     });
     tempTerms = [...mappingTerms];
+    setMappingTerms([]);
     setMappingTerms(tempTerms);
     setAnyChangePerformed(true);
   };
@@ -187,6 +248,10 @@ const AlginAndFineTune = (props) => {
     response = await fetchPredicates();
     setPredicates(response.predicates);
 
+    // Get the domains (to fill the dropdown in the header)
+    response = await fetchDomains();
+    setDomains(response.domains);
+
     setLoading(false);
   };
 
@@ -212,19 +277,93 @@ const AlginAndFineTune = (props) => {
                 {/* LEFT SIDE */}
 
                 <div className="col-lg-8 p-lg-5 pt-5">
-                  <div className="border-bottom">
-                    <h6 className="subtitle">
-                      3. Map CredReg to Schema / Spine
-                    </h6>
-                    <div className="row">More content</div>
+                  <div className="border-bottom desm-col-header">
+                    <div className="row mb-2">
+                      <h6 className="subtitle">
+                        3. Map CredReg to Schema / Spine
+                      </h6>
+                    </div>
+                    <div className="row mb-2">
+                      <div className="col-5">
+                        <select className="custom-select">
+                          <option
+                            className="mr-5"
+                            value=""
+                            disabled
+                            defaultValue
+                          >
+                            Map to:{" "}
+                          </option>
+                          {domains.map((domain) => {
+                            return (
+                              <option key={domain.id}>{domain.name}</option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                      <div className="col-5">
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="hideSpineElems"
+                            value={hideMappedSpineTerms}
+                            onChange={(e) =>
+                              setHideMappedSpineTerms(!hideMappedSpineTerms)
+                            }
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="hideSpineElems"
+                          >
+                            Hidde Mapped Elements
+                          </label>
+                        </div>
+                      </div>
+                      <div
+                        className="col-2"
+                        style={{
+                          position: "relative",
+                          bottom: "1rem",
+                        }}
+                      >
+                        <ProgressReportBar
+                          maxValue={mappingTerms.length}
+                          currentValue={mappedMappingTerms.length}
+                          messageReport="Mapped"
+                        />
+                      </div>
+                    </div>
+                    <div className="row mb-2">
+                      <div className="col-5">
+                        <div className="form-group has-search">
+                          <span className="fa fa-search form-control-feedback"></span>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Find Element / Property"
+                            value={spineTermsInputValue}
+                            onChange={filterSpineTermsOnChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-5"></div>
+                      <div className="col-2">
+                        <button className="btn btn-block btn-dark">
+                          + Add Synthetic
+                        </button>
+                      </div>
+                    </div>
                   </div>
                   <div className="mt-5">
                     {!loading && (
                       <SpineTermsList
-                        terms={spineTerms}
+                        terms={filteredSpineTerms}
                         predicates={predicates}
                         selectedMappingTerms={selectedMappingTerms}
+                        hideMappedSpineTerms={hideMappedSpineTerms}
                         mappedTermsToSpineTerm={mappedTermsToSpineTerm}
+                        isMapped={spineTermIsMapped}
                       />
                     )}
                   </div>
@@ -233,19 +372,30 @@ const AlginAndFineTune = (props) => {
                 {/* RIGHT SIDE */}
 
                 <div className="col-lg-4 p-lg-5 pt-5 bg-col-secondary">
-                  <div className="border-bottom">
+                  <div className="border-bottom desm-col-header">
                     <div className="row">
                       <div className="col-6">
-                        <h6 className="subtitle">{user.organization.name}</h6>
+                        {/* TODO: Show te corresponding domain */}
+                        <h6 className="subtitle">
+                          {user.organization.name + " > " + "Course"}
+                        </h6>
                       </div>
                       <div className="col-6">
-                        <div className="form-check float-right">
+                        <p className="float-right">
+                          <strong>{selectedMappingTerms.length}</strong>{" "}
+                          elements selected
+                        </p>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-8">
+                        <div className="form-check">
                           <input
                             className="form-check-input"
                             type="checkbox"
                             value={hideMappedMappingTerms}
                             onChange={(e) =>
-                              setHideMappedSpecTerms(!hideMappedMappingTerms)
+                              setHideMappedMappingTerms(!hideMappedMappingTerms)
                             }
                             id="hideElems"
                           />
@@ -257,23 +407,32 @@ const AlginAndFineTune = (props) => {
                           </label>
                         </div>
                       </div>
+                      <div
+                        className="col-4"
+                        style={{
+                          position: "relative",
+                          bottom: "1rem",
+                        }}
+                      >
+                        <ProgressReportBar
+                          maxValue={mappingTerms.length}
+                          currentValue={mappedMappingTerms.length}
+                          messageReport="Mapped"
+                        />
+                      </div>
                     </div>
                     <div className="row">
-                      <div className="col-12 form-group has-search">
+                      <div className="col form-group has-search">
                         <span className="fa fa-search form-control-feedback"></span>
                         <input
                           type="text"
                           className="form-control"
                           placeholder="Find Element / Property"
                           value={mappingTermsInputValue}
-                          onChange={filterSpecTermsOnChange}
+                          onChange={filterMappingTermsOnChange}
                         />
                       </div>
                     </div>
-                    <p>
-                      <strong>{selectedMappingTerms.length}</strong> elements
-                      selected
-                    </p>
                   </div>
 
                   <div className="pr-5 mt-5">
@@ -296,7 +455,7 @@ const AlginAndFineTune = (props) => {
                         {filteredMappingTerms({ pickSelected: true }).map(
                           (term) => {
                             return hideMappedMappingTerms &&
-                              termIsMapped(term) ? (
+                              mappingTermIsMapped(term) ? (
                               ""
                             ) : (
                               <TermCard
@@ -304,7 +463,7 @@ const AlginAndFineTune = (props) => {
                                 term={term.mapped_term}
                                 onClick={onMappingTermClick}
                                 editEnabled={false}
-                                isMapped={termIsMapped}
+                                isMapped={mappingTermIsMapped}
                               />
                             );
                           }
@@ -315,7 +474,7 @@ const AlginAndFineTune = (props) => {
                       {filteredMappingTerms({ pickSelected: false }).map(
                         (term) => {
                           return hideMappedMappingTerms &&
-                            termIsMapped(term) ? (
+                            mappingTermIsMapped(term) ? (
                             ""
                           ) : (
                             <TermCard
@@ -323,7 +482,7 @@ const AlginAndFineTune = (props) => {
                               term={term.mapped_term}
                               onClick={onMappingTermClick}
                               editEnabled={false}
-                              isMapped={termIsMapped}
+                              isMapped={mappingTermIsMapped}
                             />
                           );
                         }

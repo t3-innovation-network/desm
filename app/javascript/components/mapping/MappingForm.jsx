@@ -238,8 +238,8 @@ const MappingForm = (props) => {
    */
   const fillWithDomains = () => {
     fetchDomains().then((response) => {
-      setDomains(response);
-      setSelectedDomainId(response[0].id);
+      setDomains(response.domains);
+      setSelectedDomainId(response.domains[0].id);
     });
   };
 
