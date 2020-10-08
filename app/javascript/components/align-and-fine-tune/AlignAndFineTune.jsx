@@ -13,6 +13,7 @@ import TopNavOptions from "../shared/TopNavOptions";
 import SpineTermsList from "./SpineTermsList";
 import SpineHeader from "./SpineHeader";
 import MappingTermsHeaders from "./MappingTermsHeader";
+import Pluralize from "pluralize";
 
 const AlignAndFineTune = (props) => {
   /**
@@ -340,7 +341,9 @@ const AlignAndFineTune = (props) => {
                       cssClass="bg-col-primary col-background"
                       title={
                         mappingTerms.length +
-                        " elements have been selected from the original specification"
+                        " " +
+                        Pluralize("element", mappingTerms.length) +
+                        " have been selected from the original specification"
                       }
                       message="The items below have been added to Person Domain. Now you can align them to the spine."
                     />

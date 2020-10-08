@@ -20,7 +20,7 @@ class Mapping < ApplicationRecord
   # 2. "in-progress" It means that the user is already mapping terms but
   #    not yet finished mapping
   # 3. "mapped" It means the terms are confirmed as mapped to the spine
-  enum status: %i[uploaded in_progress mapped]
+  enum status: {uploaded: 0, in_progress: 1, mapped: 2}
 
   ###
   # @description: The organization that originated this term
