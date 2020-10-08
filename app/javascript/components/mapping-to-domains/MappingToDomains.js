@@ -177,36 +177,6 @@ const MappingToDomains = (props) => {
   };
 
   /**
-   * Get the specification terms
-   */
-  const handleFetchSpecificationTerms = async (spec_id) => {
-    let response = await fetchSpecificationTerms(spec_id);
-    if (response.error) {
-      setErrors(errors.push(response.error.message));
-    }
-    setTerms(response.terms);
-  };
-
-  /**
-   * Get the data from the service
-   */
-  const fetchDataFromAPI = async () => {
-    // Get the mapping
-    let response = await fetchMapping(props.match.params.id);
-    setMapping(response.mapping);
-
-    // Get the specification, with the domain
-    let spec_id = response.mapping.specification_id;
-    response = await fetchSpecification(spec_id);
-    setDomain(response.specification.domain);
-
-    // Get the terms
-    handleFetchSpecificationTerms(spec_id);
-
-    setLoading(false);
-  };
-
-  /**
    * Mark the term as "selected"
    */
   const onTermClick = (clickedTerm) => {
@@ -268,12 +238,53 @@ const MappingToDomains = (props) => {
   };
 
   /**
+   * Get the specification terms
+   */
+  const handleFetchSpecificationTerms = async (spec_id) => {
+    let response = await fetchSpecificationTerms(spec_id);
+    // Manage to set the errors to show in the UI
+    if (response.error) {
+      let tempErrors = errors;
+      tempErrors.push(response.error);
+      setErrors(tempErrors);
+      // Finish execution of this method here
+      return;
+    }
+    // Set the spine terms on state
+    setTerms(response.terms);
+  };
+
+  /**
+   * Get the data from the service
+   */
+  const fetchDataFromAPI = async () => {
+    // Get the mapping
+    let response = await fetchMapping(props.match.params.id);
+    setMapping(response.mapping);
+
+    // Get the specification, with the domain
+    let spec_id = response.mapping.specification_id;
+    response = await fetchSpecification(spec_id);
+    setDomain(response.specification.domain);
+
+    // Get the terms
+    await handleFetchSpecificationTerms(spec_id);
+  };
+
+  /**
    * Use effect with an emtpy array as second parameter, will trigger the 'fetchMappingsFromAPI'
    * and also 'fillWithDomains' actions at the 'mounted' event of this functional component
    * (It's not actually mounted, but it mimics the same action).
    */
   useEffect(() => {
-    fetchDataFromAPI();
+    async function fetchData() {
+      await fetchDataFromAPI();
+    }
+    fetchData().then(() => {
+      if (_.isEmpty(errors)) {
+        setLoading(false);
+      }
+    });
   }, []);
 
   return (
@@ -288,9 +299,9 @@ const MappingToDomains = (props) => {
       />
       <div className="wrapper">
         <TopNav centerContent={navCenterOptions} />
+        {errors.length ? <AlertNotice message={errors.join("\n")} /> : ""}
         <div className="container-fluid container-wrapper">
           <div className="row">
-            {errors && <AlertNotice message={_.map(errors).join("\n")} />}
             {loading ? (
               <Loader />
             ) : (

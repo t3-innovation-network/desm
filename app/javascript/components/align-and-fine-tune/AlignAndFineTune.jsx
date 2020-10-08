@@ -236,7 +236,7 @@ const AlignAndFineTune = (props) => {
     // Manage to set the errors to show in the UI
     if (response.error) {
       let tempErrors = errors;
-      tempErrors.push(response.error.message);
+      tempErrors.push(response.error);
       setErrors(tempErrors);
       // Finish execution of this method here
       return;
