@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import fetchMappings from "../../services/fetchMappings";
 import Loader from "../shared/Loader";
 import TopNavOptions from "../shared/TopNavOptions";
-import Capitalize from "../shared/Capitalize";
+import _ from 'lodash';
 
 const SpecList = () => {
   const [mappings, setMappings] = useState([]);
@@ -100,7 +100,7 @@ const SpecList = () => {
                             <td>{mapping.title}</td>
                             <td>{mapping.specification.version}</td>
                             <td>0/0</td>
-                            <td>{Capitalize(mapping.status)}</td>
+                            <td>{_.startCase(_.toLower(mapping.status))}</td>
                             <td>{mapping.specification.user.fullname}</td>
                             <td>
                               {mapping["mapped?"] ? (

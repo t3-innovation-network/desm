@@ -13,7 +13,7 @@ import MainDashboard from "./dashboard/MainDashboard";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import SpecList from "./specifications-list/SpecList";
 import MappingToDomains from "./mapping-to-domains/MappingToDomains";
-import AlginAndFineTune from "./align-and-fine-tune/AlignAndFineTune";
+import AlignAndFineTune from "./align-and-fine-tune/AlignAndFineTune";
 
 const Routes = (props) => {
   let manageLogin = props.handleLogin;
@@ -54,7 +54,7 @@ const Routes = (props) => {
           exact
           path="/mappings/:id/align"
           allowNonAdmins={true}
-          component={AlginAndFineTune} />
+          component={AlignAndFineTune} />
 
         <ProtectedRoute
           exact

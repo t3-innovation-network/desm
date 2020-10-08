@@ -16,7 +16,7 @@ import MultipleDomainsModal from "./MultipleDomainsModal";
 import apiAnalyzeDomainsInFile from "../../services/apiAnalyzeDomainsInFile";
 import filterSpecification from "../../services/filterSpecification";
 
-const MappingForm = (props) => {
+const MappingForm = () => {
   const [errors, setErrors] = useState("");
 
   /// Name of the specification

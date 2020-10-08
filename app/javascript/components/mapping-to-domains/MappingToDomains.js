@@ -17,6 +17,11 @@ import updateMapping from "../../services/updateMapping";
 
 const MappingToDomains = (props) => {
   /**
+   * Representation of an error on this page process
+   */
+  const [errors, setErrors] = useState([]);
+
+  /**
    * Declare and have an initial state for the mapping
    */
   const [mapping, setMapping] = useState({});
@@ -172,6 +177,17 @@ const MappingToDomains = (props) => {
   };
 
   /**
+   * Get the specification terms
+   */
+  const handleFetchSpecificationTerms = async (spec_id) => {
+    let response = await fetchSpecificationTerms(spec_id);
+    if (response.error) {
+      setErrors(errors.push(response.error.message));
+    }
+    setTerms(response.terms);
+  };
+
+  /**
    * Get the data from the service
    */
   const fetchDataFromAPI = async () => {
@@ -185,8 +201,7 @@ const MappingToDomains = (props) => {
     setDomain(response.specification.domain);
 
     // Get the terms
-    response = await fetchSpecificationTerms(spec_id);
-    setTerms(response.terms);
+    handleFetchSpecificationTerms(spec_id);
 
     setLoading(false);
   };
@@ -275,6 +290,7 @@ const MappingToDomains = (props) => {
         <TopNav centerContent={navCenterOptions} />
         <div className="container-fluid container-wrapper">
           <div className="row">
+            {errors && <AlertNotice message={_.map(errors).join("\n")} />}
             {loading ? (
               <Loader />
             ) : (
@@ -353,7 +369,7 @@ const MappingToDomains = (props) => {
                             className="form-check-label"
                             htmlFor="hideElems"
                           >
-                            Hidde mapped elements
+                            Hide mapped elements
                           </label>
                         </div>
                       </div>

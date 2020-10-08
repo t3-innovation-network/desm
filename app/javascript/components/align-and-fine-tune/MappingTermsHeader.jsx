@@ -20,20 +20,22 @@ const MappingTermsHeaders = (props) => {
       </div>
       <div className="row">
         <div className="col-8">
-          <div className="form-check">
+
+          <div className="custom-control custom-checkbox mb-3">
             <input
-              className="form-check-input"
               type="checkbox"
+              className="custom-control-input desm-custom-control-input"
+              id="hideMappingElems"
               value={props.hideMappedMappingTerms}
               onChange={(e) =>
                 props.setHideMappedMappingTerms(!props.hideMappedMappingTerms)
               }
-              id="hideElems"
             />
-            <label className="form-check-label" htmlFor="hideElems">
-              Hidde Mapped Elements
+            <label className="custom-control-label" htmlFor="hideMappingElems">
+              Hide Mapped Elements
             </label>
           </div>
+
         </div>
         <div
           className="col-4"

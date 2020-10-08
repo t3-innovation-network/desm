@@ -17,20 +17,21 @@ const SpineHeader = (props) => {
           </div>
         </div>
         <div className="col-5">
-          <div className="form-check">
+          <div className="custom-control custom-checkbox mb-3">
             <input
-              className="form-check-input"
               type="checkbox"
+              className="custom-control-input desm-custom-control-input"
               id="hideSpineElems"
               value={props.hideMappedSpineTerms}
-              onChange={(e) =>
+              onChange={() =>
                 props.setHideMappedSpineTerms(!props.hideMappedSpineTerms)
               }
             />
-            <label className="form-check-label" htmlFor="hideSpineElems">
-              Hidde Mapped Elements
+            <label className="custom-control-label" htmlFor="hideSpineElems">
+              Hide Mapped Elements
             </label>
           </div>
+
         </div>
         <div
           className="col-2"

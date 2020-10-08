@@ -14,7 +14,12 @@ import SpineTermsList from "./SpineTermsList";
 import SpineHeader from "./SpineHeader";
 import MappingTermsHeaders from "./MappingTermsHeader";
 
-const AlginAndFineTune = (props) => {
+const AlignAndFineTune = (props) => {
+  /**
+   * Representation of an error on this page process
+   */
+  const [errors, setErrors] = useState([]);
+
   /**
    * Whether the page is loading results or not
    */
@@ -158,7 +163,7 @@ const AlginAndFineTune = (props) => {
   function mappingTermIsMapped(mappingTerm) {
     return (
       mappingTerm.mappedTo ||
-      spineTerms.some((spineTerm) => {
+      _.some(spineTerms, (spineTerm) => {
         return spineTerm.id === mappingTerm.spine_term_id;
       })
     );
@@ -224,6 +229,23 @@ const AlginAndFineTune = (props) => {
   };
 
   /**
+   * Get the specification terms
+   */
+  const handleFetchSpecificationTerms = async (spec_id) => {
+    let response = await fetchSpecificationTerms(spec_id);
+    // Manage to set the errors to show in the UI
+    if (response.error) {
+      let tempErrors = errors;
+      tempErrors.push(response.error.message);
+      setErrors(tempErrors);
+      // Finish execution of this method here
+      return;
+    }
+    // Set the spine terms on state
+    setSpineTerms(response.terms);
+  };
+
+  /**
    * Get the data from the service
    */
   const fetchDataFromAPI = async () => {
@@ -232,8 +254,7 @@ const AlginAndFineTune = (props) => {
     setMapping(response.mapping);
 
     // Get the spine terms
-    response = await fetchSpecificationTerms(response.mapping.spine_id);
-    setSpineTerms(response.terms);
+    await handleFetchSpecificationTerms(response.mapping.spine_id);
 
     // Get the mapping terms
     response = await fetchMappingTerms(props.match.params.id);
@@ -254,7 +275,9 @@ const AlginAndFineTune = (props) => {
       await fetchDataFromAPI();
     }
     fetchData().then(() => {
-      setLoading(false);
+      if (_.isEmpty(errors)) {
+        setLoading(false);
+      }
     });
   }, []);
 
@@ -262,6 +285,7 @@ const AlginAndFineTune = (props) => {
     <React.Fragment>
       <div className="wrapper">
         <TopNav centerContent={navCenterOptions} />
+        {errors.length ? <AlertNotice message={errors.join("\n")} /> : ""}
         <div className="container-fluid container-wrapper">
           <div className="row">
             {loading ? (
@@ -269,7 +293,6 @@ const AlginAndFineTune = (props) => {
             ) : (
               <React.Fragment>
                 {/* LEFT SIDE */}
-
                 <div className="col-lg-8 p-lg-5 pt-5">
                   <SpineHeader
                     domain={mapping.domain}
@@ -379,4 +402,4 @@ const AlginAndFineTune = (props) => {
   );
 };
 
-export default AlginAndFineTune;
+export default AlignAndFineTune;
