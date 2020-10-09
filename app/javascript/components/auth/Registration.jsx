@@ -5,7 +5,7 @@ import fetchRoles from "../../services/fetchRoles";
 import AlertNotice from "../shared/AlertNotice";
 import ErrorMessage from "../shared/ErrorMessage";
 import createUser from "../../services/createUser";
-import {toastr as toast} from 'react-redux-toastr';
+import { toastr as toast } from "react-redux-toastr";
 
 class Registration extends Component {
   /**
@@ -65,21 +65,18 @@ class Registration extends Component {
   handleSubmit = (event) => {
     const { email, fullname, organization_id, role_id } = this.state;
 
-    createUser(fullname, email, organization_id, role_id)
-      .then((response) => {
-        if (response.success) {
-          toast.success("User " + fullname + " was successfully created");
-          this.props.history.push("/dashboard/users");
-        }
-      })
-      .catch((error) => {
+    createUser(fullname, email, organization_id, role_id).then((response) => {
+      if (response.error) {
         this.setState({
           errors: ErrorMessage(error),
         });
-      });
+      }
+      toast.success("User " + fullname + " was successfully created");
+      this.props.history.push("/dashboard/users");
+    });
 
     event.preventDefault();
-  }
+  };
 
   /**
    * Update the component state on every change in the input control in the form
@@ -88,7 +85,7 @@ class Registration extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
-  }
+  };
 
   /**
    * Perform the necessary tasks needed when the component finish mounting
