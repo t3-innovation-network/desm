@@ -17,6 +17,11 @@ import updateMapping from "../../services/updateMapping";
 
 const MappingToDomains = (props) => {
   /**
+   * Representation of an error on this page process
+   */
+  const [errors, setErrors] = useState([]);
+
+  /**
    * Declare and have an initial state for the mapping
    */
   const [mapping, setMapping] = useState({});
@@ -172,26 +177,6 @@ const MappingToDomains = (props) => {
   };
 
   /**
-   * Get the data from the service
-   */
-  const fetchDataFromAPI = async () => {
-    // Get the mapping
-    let response = await fetchMapping(props.match.params.id);
-    setMapping(response.mapping);
-
-    // Get the specification, with the domain
-    let spec_id = response.mapping.specification_id;
-    response = await fetchSpecification(spec_id);
-    setDomain(response.specification.domain);
-
-    // Get the terms
-    response = await fetchSpecificationTerms(spec_id);
-    setTerms(response.terms);
-
-    setLoading(false);
-  };
-
-  /**
    * Mark the term as "selected"
    */
   const onTermClick = (clickedTerm) => {
@@ -223,11 +208,16 @@ const MappingToDomains = (props) => {
    * Comain mappping complete. Confirm to save status in the backend
    */
   const handleDoneDomainMapping = async () => {
-    await updateMapping({ id: mapping.id, status: "mapped" });
-    if (anyTermMapped){
+    // Change the mapping satus to "in_progress" (with underscore, because it's
+    // the name in the backend), so we say it's begun terms mapping phase
+    await updateMapping({ id: mapping.id, status: "in_progress" });
+
+    // Save changes if necessary
+    if (anyTermMapped) {
       handleSaveChanges();
     }
-    // @todo: Redirect to 3rd step mapping ("Align and Fine Tune")
+    // Redirect to 3rd step mapping ("Align and Fine Tune")
+    props.history.push("/mappings/" + mapping.id + "/align");
   };
 
   /**
@@ -248,12 +238,53 @@ const MappingToDomains = (props) => {
   };
 
   /**
+   * Get the specification terms
+   */
+  const handleFetchSpecificationTerms = async (spec_id) => {
+    let response = await fetchSpecificationTerms(spec_id);
+    // Manage to set the errors to show in the UI
+    if (response.error) {
+      let tempErrors = errors;
+      tempErrors.push(response.error);
+      setErrors(tempErrors);
+      // Finish execution of this method here
+      return;
+    }
+    // Set the spine terms on state
+    setTerms(response.terms);
+  };
+
+  /**
+   * Get the data from the service
+   */
+  const fetchDataFromAPI = async () => {
+    // Get the mapping
+    let response = await fetchMapping(props.match.params.id);
+    setMapping(response.mapping);
+
+    // Get the specification, with the domain
+    let spec_id = response.mapping.specification_id;
+    response = await fetchSpecification(spec_id);
+    setDomain(response.specification.domain);
+
+    // Get the terms
+    await handleFetchSpecificationTerms(spec_id);
+  };
+
+  /**
    * Use effect with an emtpy array as second parameter, will trigger the 'fetchMappingsFromAPI'
    * and also 'fillWithDomains' actions at the 'mounted' event of this functional component
    * (It's not actually mounted, but it mimics the same action).
    */
   useEffect(() => {
-    fetchDataFromAPI();
+    async function fetchData() {
+      await fetchDataFromAPI();
+    }
+    fetchData().then(() => {
+      if (_.isEmpty(errors)) {
+        setLoading(false);
+      }
+    });
   }, []);
 
   return (
@@ -268,6 +299,7 @@ const MappingToDomains = (props) => {
       />
       <div className="wrapper">
         <TopNav centerContent={navCenterOptions} />
+        {errors.length ? <AlertNotice message={errors.join("\n")} /> : ""}
         <div className="container-fluid container-wrapper">
           <div className="row">
             {loading ? (
@@ -307,7 +339,7 @@ const MappingToDomains = (props) => {
                     </div>
                   </div>
                   <div className="mt-5">
-                    {/* DOMAINS */}´
+                    {/* DOMAINS */}
                     {!loading && (
                       <DomainCard
                         domain={domain}
@@ -348,7 +380,7 @@ const MappingToDomains = (props) => {
                             className="form-check-label"
                             htmlFor="hideElems"
                           >
-                            Hidde mapped elements
+                            Hide mapped elements
                           </label>
                         </div>
                       </div>
@@ -393,7 +425,9 @@ const MappingToDomains = (props) => {
                               term={term}
                               onClick={onTermClick}
                               isMapped={termIsMapped}
+                              editEnabled={true}
                               onEditClick={onEditTermClick}
+                              origin={mapping.origin}
                             />
                           );
                         })}
@@ -409,7 +443,9 @@ const MappingToDomains = (props) => {
                             term={term}
                             onClick={onTermClick}
                             isMapped={termIsMapped}
+                            editEnabled={true}
                             onEditClick={onEditTermClick}
+                            origin={mapping.origin}
                           />
                         );
                       })}

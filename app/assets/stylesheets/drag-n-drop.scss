@@ -6,11 +6,15 @@
   border: solid 3px $primary-color !important;
   color: $primary-color;
   font-weight: bold;
-  font-size: 20px;
 }
 
 .domain-drag-box{
   min-height: 3.5vw;
+  text-align: center;
+}
+
+.mapping-term-drag-box{
+  height: calc(1.5em + 1.8rem + 2px);
   text-align: center;
 }
 

@@ -103,7 +103,6 @@ const UploadVocabulary = (props) => {
         });
         props.onRequestClose();
       }).catch(e => {
-        console.log(e);
         toast.error("Error! " + e.response.data.message);
       });
     }

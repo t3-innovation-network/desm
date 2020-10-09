@@ -64,6 +64,14 @@ class Api::V1::MappingsController < ApplicationController
     render json: @mapping, include: :terms
   end
 
+  ###
+  # @description: Fetch the mapping terms for the mapping with the id equal
+  #   to the one passed in params
+  ###
+  def show_terms
+    render json: @mapping.terms.order(:uri), include: [:spine_term, mapped_term: {include: :property}]
+  end
+
   private
 
   ###
@@ -93,7 +101,7 @@ class Api::V1::MappingsController < ApplicationController
     mappings = mappings.where(user: current_user) if params[:user].present? && params[:user] != "all"
 
     # Return an ordered list
-    mappings.order(title: :desc)
+    mappings.order(:title)
   end
 
   ###

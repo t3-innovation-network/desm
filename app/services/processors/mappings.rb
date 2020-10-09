@@ -36,13 +36,12 @@ module Processors
       ActiveRecord::Base.transaction do
         terms.each do |term|
           term = Term.find(term[:id])
-          custom_uri = "desm:#{term.uri}"
 
           # Do not create this term if there's already one with the same uri
-          next if MappingTerm.find_by(uri: custom_uri)
+          next if MappingTerm.find_by(uri: term.desm_uri)
 
           MappingTerm.create!(
-            uri: custom_uri,
+            uri: term.desm_uri,
             mapping: mapping,
             mapped_term_id: term.id
           )

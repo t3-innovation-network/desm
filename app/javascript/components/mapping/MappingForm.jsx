@@ -16,7 +16,7 @@ import MultipleDomainsModal from "./MultipleDomainsModal";
 import apiAnalyzeDomainsInFile from "../../services/apiAnalyzeDomainsInFile";
 import filterSpecification from "../../services/filterSpecification";
 
-const MappingForm = (props) => {
+const MappingForm = () => {
   const [errors, setErrors] = useState("");
 
   /// Name of the specification
@@ -176,9 +176,6 @@ const MappingForm = (props) => {
         });
     });
 
-    /**
-     * @todo Implement sending the files to the API service
-     */
     dispatch(doSubmit());
     event.preventDefault();
   };
@@ -238,8 +235,8 @@ const MappingForm = (props) => {
    */
   const fillWithDomains = () => {
     fetchDomains().then((response) => {
-      setDomains(response);
-      setSelectedDomainId(response[0].id);
+      setDomains(response.domains);
+      setSelectedDomainId(response.domains[0].id);
     });
   };
 
