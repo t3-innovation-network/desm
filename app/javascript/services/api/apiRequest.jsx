@@ -30,6 +30,7 @@ const apiRequest = async (props) => {
     method: props.method,
     data: props.payload,
     options: props.options
+  /// Process the errors globally
   }).catch((error) => {
     return {
       error: processMessage(error),
@@ -46,8 +47,9 @@ const apiRequest = async (props) => {
     return props.defaultResponse || null;
   }
 
-  /// We have our response, return in a proper way
-  let responseData = null;
+  /// Default way to return the response obtained
+  let responseData = response.data;
+
   /// If we are provided with a name to return the response with, let's do it
   if (props.successResponse) {
     responseData = {};

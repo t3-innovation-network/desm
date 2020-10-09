@@ -57,7 +57,7 @@ const MappingPreview = (props) => {
           // so let's create the mapping and (with the id returned) load the
           // mapping page
           createMapping(response.id).then((response) => {
-            props.redirect("/mappings/" + response.data.id);
+            props.redirect("/mappings/" + response.mapping.id);
           });
         }
       })
