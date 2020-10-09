@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const apiAnalyzeDomainsInFile = async (file) => {
   let data = new FormData();

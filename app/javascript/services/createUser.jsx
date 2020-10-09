@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const createUser = async (fullname, email, organization_id, role_id) => {
   const response = await apiService

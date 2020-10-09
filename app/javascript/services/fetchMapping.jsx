@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const fetchMapping = async (mapping_id) => {
   const response = await apiService

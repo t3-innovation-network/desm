@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const createSpec = async (data) => {
   const response = await apiService

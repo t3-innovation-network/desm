@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const updateTerm = async (term) => {
   const response = await apiService.put("/api/v1/terms/" + term.id, {

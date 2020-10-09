@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const deleteUser = async (user_id) => {
   const response = await apiService.delete("/users/" + user_id);

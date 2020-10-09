@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const createMapping = async (specification_id) => {
   const response = await apiService

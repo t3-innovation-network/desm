@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const updateUser = async (user_id, email, fullname, organization_id, role_id) => {
   const response = await apiService

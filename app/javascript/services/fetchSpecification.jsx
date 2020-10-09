@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const fetchSpecification = async (specId) => {
   const response = await apiService.get("/api/v1/specifications/" + specId);

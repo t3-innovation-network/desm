@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const fetchVocabularies = async () => {
   const response = await apiService.get("/api/v1/vocabularies");
