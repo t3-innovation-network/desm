@@ -13,7 +13,7 @@ import {
 import fetchDomains from "../../services/fetchDomains";
 import { toastr as toast } from "react-redux-toastr";
 import MultipleDomainsModal from "./MultipleDomainsModal";
-import apiAnalyzeDomainsInFile from "../../services/apiAnalyzeDomainsInFile";
+import checkDomainsInFile from "../../services/checkDomainsInFile";
 import filterSpecification from "../../services/filterSpecification";
 
 const MappingForm = () => {
@@ -137,9 +137,9 @@ const MappingForm = () => {
       name: name,
       version: version,
       useCase: useCase,
-      domainTo: selectedDomainId
-    }
-  }
+      domainTo: selectedDomainId,
+    };
+  };
 
   /**
    * Send the file/s to the API service to be parsed
@@ -157,23 +157,22 @@ const MappingForm = () => {
     /**
      * Be sure the file uploaded contains only one domain to map to
      */
-    files.map((file) => {
-      apiAnalyzeDomainsInFile(file)
-        .then((domainsFound) => {
-          dispatch(stopProcessingFile());
+    files.map(async (file) => {
+      let response = await checkDomainsInFile(file);
 
-          if (domainsFound.length > 1) {
-            setMultipleDomainsInFile(true);
-            setDomainsInFile(domainsFound);
-            return;
-          }
+      if (response.error) {
+        toast.error(response.error);
+        return;
+      }
 
-          sendFileToPreview(file);
-        })
-        .catch((e) => {
-          dispatch(stopProcessingFile());
-          toast.error(e.message);
-        });
+      if (response.domains.length > 1) {
+        setMultipleDomainsInFile(true);
+        setDomainsInFile(response.domains);
+        return;
+      }
+
+      dispatch(stopProcessingFile());
+      sendFileToPreview(file);
     });
 
     dispatch(doSubmit());
@@ -330,7 +329,12 @@ const MappingForm = () => {
               <div className="desm-radio">
                 {domains.map(function (dom) {
                   return (
-                    <div className={"desm-radio-primary" + (dom.spine ? " has-spine" : "")} key={dom.id}>
+                    <div
+                      className={
+                        "desm-radio-primary" + (dom.spine ? " has-spine" : "")
+                      }
+                      key={dom.id}
+                    >
                       <input
                         type="radio"
                         value={dom.id}
@@ -346,7 +350,8 @@ const MappingForm = () => {
               </div>
 
               <small className="mt-3 mb-3 float-right">
-                Domains in <span className="badge badge-success">green</span> has a spine already uploaded
+                Domains in <span className="badge badge-success">green</span>{" "}
+                has a spine already uploaded
               </small>
             </div>
             <div className="form-group">

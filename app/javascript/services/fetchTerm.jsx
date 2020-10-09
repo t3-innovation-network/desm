@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const fetchTerm = async (termId) => {
   const response = await apiService.get("/api/v1/terms/" + termId);

@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const updateOrganization = async (organization_id, name) => {
   const response = await apiService

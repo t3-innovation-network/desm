@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const signIn = async (email, password) => {
   const response = await apiService

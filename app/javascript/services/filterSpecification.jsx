@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const filterSpecification = async (uri, file) => {
 

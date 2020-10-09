@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const saveMappingTerms = async (data) => {
   const response = await apiService.post("/api/v1/mappings/terms", {

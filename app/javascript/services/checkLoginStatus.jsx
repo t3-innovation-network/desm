@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 const checkLoginStatus = async (props) => {
   const response = await apiService.get("/session_status");

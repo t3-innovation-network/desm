@@ -1,4 +1,4 @@
-import apiService from "./apiService";
+import apiService from "./api/apiService";
 
 async function fetchUser(user_id) {
   const response = await apiService.get("/users/" + user_id);

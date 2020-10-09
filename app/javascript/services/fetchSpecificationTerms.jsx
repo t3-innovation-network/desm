@@ -1,10 +1,11 @@
-import apiGet from "./apiGet";
+import apiRequest from "./api/apiRequest";
 
 const fetchSpecificationTerms = async (specId) => {
-  const response = await apiGet({
-    uri: "/api/v1/specifications/" + specId + "/terms",
+  const response = await apiRequest({
+    url: "/api/v1/specifications/" + specId + "/terms",
     defaultResponse: [],
-    successResponse: "terms"
+    successResponse: "terms",
+    method: "get"
   })
   return response;
 };
