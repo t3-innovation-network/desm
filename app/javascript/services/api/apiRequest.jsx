@@ -42,7 +42,7 @@ const apiRequest = async (props) => {
   }
 
   /// We don't have a valid response
-  if (response.status != 200) {
+  if (!response.data && response.status != 200) {
     return props.defaultResponse || null;
   }
 

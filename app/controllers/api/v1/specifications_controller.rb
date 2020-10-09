@@ -12,7 +12,7 @@ class Api::V1::SpecificationsController < ApplicationController
     file = File.read(params[:file])
     domains = Processors::Specifications.process_domains_from_file(file)
 
-    render json: {domains: domains}
+    render json: domains
   end
 
   ###
