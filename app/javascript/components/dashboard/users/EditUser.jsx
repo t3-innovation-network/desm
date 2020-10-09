@@ -7,7 +7,7 @@ import ErrorMessage from "../../shared/ErrorMessage";
 import fetchUser from "../../../services/fetchUser";
 import deleteUser from "../../../services/deleteUser";
 import updateUser from "../../../services/updateUser";
-import {toastr as toast} from 'react-redux-toastr';
+import { toastr as toast } from "react-redux-toastr";
 
 export default class EditUser extends Component {
   /**
@@ -32,7 +32,7 @@ export default class EditUser extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
-  }
+  };
 
   /**
    * Use the API service to get this user data
@@ -98,18 +98,19 @@ export default class EditUser extends Component {
   deleteUserAPI() {
     deleteUser(this.state.user_id)
       .then((response) => {
-        /// We have a list of users from the backend
-        if (response.removed) {
-          toast.info("User successfully removed");
-          this.props.history.push("/dashboard/users");
+        if (response.error) {
+          this.setState({
+            errors: response.error,
+          });
+          return;
         }
+
+        /// We have a list of users from the backend
+        toast.info("User successfully removed");
+        this.props.history.push("/dashboard/users");
       })
       /// Process any server errors
-      .catch((error) => {
-        this.setState({
-          errors: ErrorMessage(error),
-        });
-      });
+      .catch((error) => {});
   }
 
   /**
@@ -144,7 +145,7 @@ export default class EditUser extends Component {
       });
 
     event.preventDefault();
-  }
+  };
 
   render() {
     return (

@@ -101,6 +101,7 @@ const UploadVocabulary = (props) => {
       createVocabulary(data).then((response) => {
         if (response.error) {
           toast.error("Error! " + e.response.data.message);
+          return;
         }
 
         props.onVocabularyAdded({

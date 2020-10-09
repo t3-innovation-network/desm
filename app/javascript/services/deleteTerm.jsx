@@ -1,10 +1,10 @@
-import apiService from "./api/apiService";
+import apiRequest from "./api/apiRequest";
 
 const deleteTerm = async (term_id) => {
-  const response = await apiService.delete("/api/v1/terms/" + term_id);
-  if (response.status == 200 && response.data.status == "removed") {
-    return { removed: true };
-  }
+  return await apiRequest({
+    url: "/api/v1/terms/" + term_id,
+    method: "delete"
+  });
 };
 
 export default deleteTerm;

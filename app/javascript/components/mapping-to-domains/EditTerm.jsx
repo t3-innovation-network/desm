@@ -10,6 +10,7 @@ import deleteTerm from "../../services/deleteTerm";
 import { Controlled as CodeMirror } from "react-codemirror2";
 import fetchVocabularies from "../../services/fetchVocabularies";
 import rawTerm from "./rawTerm";
+import AlertNotice from "../shared/AlertNotice";
 
 export default class EditTerm extends Component {
   /**
@@ -21,6 +22,10 @@ export default class EditTerm extends Component {
       property: {},
       vocabularies: [],
     },
+    /**
+     * Manages the errors on this view
+     */
+    error: null,
     /**
      * Whether the page is loading or not
      */
@@ -86,11 +91,12 @@ export default class EditTerm extends Component {
    */
   handleRemoveTerm = () => {
     deleteTerm(this.state.term.id).then((response) => {
-      if (response.removed) {
-        this.props.onRemoveTerm(this.state.term);
-        this.props.onRequestClose();
-        toast.info("Term removed: " + this.state.term.name);
+      if (response.error) {
+        this.setState({ error: response.error });
       }
+      this.props.onRemoveTerm(this.state.term);
+      this.props.onRequestClose();
+      toast.info("Term removed: " + this.state.term.name);
     });
   };
 
@@ -187,8 +193,13 @@ export default class EditTerm extends Component {
             ) : (
               <React.Fragment>
                 <div className="row">
-                  {/* LEFT COLUMN */}
+                  {this.state.error ? (
+                    <AlertNotice message={this.state.error} />
+                  ) : (
+                    ""
+                  )}
 
+                  {/* LEFT COLUMN */}
                   <div
                     className={
                       (this.state.uploadingVocabulary
