@@ -230,20 +230,65 @@ const AlignAndFineTune = (props) => {
   };
 
   /**
-   * Get the specification terms
+   * Handle showing the errors on screen, if any
+   * 
+   * @param {HttpResponse} response 
    */
-  const handleFetchSpecificationTerms = async (spec_id) => {
-    let response = await fetchSpecificationTerms(spec_id);
-    // Manage to set the errors to show in the UI
+  function anyError(response) {
     if (response.error) {
       let tempErrors = errors;
       tempErrors.push(response.error);
+      setErrors([]);
       setErrors(tempErrors);
-      // Finish execution of this method here
-      return;
     }
-    // Set the spine terms on state
-    setSpineTerms(response.terms);
+    /// It will return a truthy value (depending no the existence
+    /// of the errors on the response object)
+    return !_.isUndefined(response.error);
+  }
+
+  /**
+   * Get the mapping
+   */
+  const handleFetchMapping = async (mappingId) => {
+    let response = await fetchMapping(mappingId);
+    if (!anyError(response)) {
+      // Set the mapping on state
+      setMapping(response.mapping);
+    }
+    return response;
+  };
+
+  /**
+   * Get the mapping terms
+   */
+  const handleFetchMappingTerms = async (mappingId) => {
+    let response = await fetchMappingTerms(mappingId);
+    if (!anyError(response)) {
+      // Set the mapping on state
+      setMappingTerms(response.terms);
+    }
+  };
+
+  /**
+   * Get the specification terms
+   */
+  const handleFetchSpineTerms = async (specId) => {
+    let response = await fetchSpecificationTerms(specId);
+    if (!anyError(response)) {
+      // Set the spine terms on state
+      setSpineTerms(response.terms);
+    }
+  };
+
+  /**
+   * Get the specification terms
+   */
+  const handleFetchPredicates = async () => {
+    let response = await fetchPredicates();
+    if (!anyError(response)) {
+      // Set the spine terms on state
+      setPredicates(response.predicates);
+    }
   };
 
   /**
@@ -251,23 +296,20 @@ const AlignAndFineTune = (props) => {
    */
   const fetchDataFromAPI = async () => {
     // Get the mapping
-    let response = await fetchMapping(props.match.params.id);
-    setMapping(response.mapping);
+    let response = await handleFetchMapping(props.match.params.id);
 
     // Get the spine terms
-    await handleFetchSpecificationTerms(response.mapping.spine_id);
+    await handleFetchSpineTerms(response.mapping.spine_id);
 
     // Get the mapping terms
-    response = await fetchMappingTerms(props.match.params.id);
-    setMappingTerms(response.terms);
+    await handleFetchMappingTerms(props.match.params.id);
 
     // Get the predicates
-    response = await fetchPredicates();
-    setPredicates(response.predicates);
+    await handleFetchPredicates();
   };
 
   /**
-   * Use effect with an emtpy array as second parameter, will trigger the 'fetchMappingsFromAPI'
+   * Use effect with an emtpy array as second parameter, will trigger the 'fetchDataFromAPI'
    * action at the 'mounted' event of this functional component (It's not actually mounted, but
    * it mimics the same action).
    */

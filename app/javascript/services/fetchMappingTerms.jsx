@@ -1,16 +1,12 @@
-import apiService from "./api/apiService";
+import apiRequest from "./api/apiRequest";
 
-const fetchMappingsTerms = async (mappingId) => {
-  const response = await apiService.get(
-    "/api/v1/mappings/" + mappingId + "/terms"
-  );
-  /// We don't have a valid response
-  if (response.status != 200) {
-    return [];
-  }
-  return {
-    terms: response.data,
-  };
+const fetchMappingTerms = async (mappingId) => {
+  return await apiRequest({
+    url: "/api/v1/mappings/" + mappingId + "/terms",
+    method: "get",
+    defaultResponse: [],
+    successResponse: "terms"
+  });
 };
 
-export default fetchMappingsTerms;
+export default fetchMappingTerms;

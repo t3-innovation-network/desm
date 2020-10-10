@@ -1,15 +1,16 @@
-import apiService from "./api/apiService";
+import apiRequest from "./api/apiRequest";
 
 const fetchMappings = async (filter) => {
-  const response = await apiService
-    .get("/api/v1/mappings", {
+  return await apiRequest({
+    url: "/api/v1/mappings",
+    method: "get",
+    payload: {
       params: {
-        user: filter
-      }
-    });
-  return {
-    mappings: response.data,
-  };
+        user: filter,
+      },
+    },
+    successResponse: "mappings",
+  });
 };
 
 export default fetchMappings;

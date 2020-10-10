@@ -251,16 +251,15 @@ const MappingToDomains = (props) => {
     }
     /// It will return a truthy value (depending no the existence
     /// of the errors on the response object)
-    return response.error;
+    return !_.isUndefined(response.error);
   }
 
   /**
-   * Get the specification terms
+   * Get the mapping
    */
   const handleFetchMapping = async (mapping_id) => {
     let response = await fetchMapping(mapping_id);
-    let error = anyError(response);
-    if (_.isUndefined(error)) {
+    if (!anyError(response)) {
       // Set the mapping on state
       setMapping(response.mapping);
     }
@@ -273,7 +272,7 @@ const MappingToDomains = (props) => {
   const handleFetchSpecification = async (spec_id) => {
     let response = await fetchSpecification(spec_id);
     let error = anyError(response);
-    if (_.isUndefined(error)) {
+    if (!anyError(response)) {
       // Set the domain on state
       setDomain(response.specification.domain);
     }
@@ -284,8 +283,7 @@ const MappingToDomains = (props) => {
    */
   const handleFetchSpecificationTerms = async (spec_id) => {
     let response = await fetchSpecificationTerms(spec_id);
-    let error = anyError(response);
-    if (_.isUndefined(error)) {
+    if (!anyError(response)) {
       // Set the spine terms on state
       setTerms(response.terms);
     }
@@ -306,7 +304,7 @@ const MappingToDomains = (props) => {
   };
 
   /**
-   * Use effect with an emtpy array as second parameter, will trigger the 'fetchMappingsFromAPI'
+   * Use effect with an emtpy array as second parameter, will trigger the 'fetchDataFromAPI'
    * and also 'fillWithDomains' actions at the 'mounted' event of this functional component
    * (It's not actually mounted, but it mimics the same action).
    */
