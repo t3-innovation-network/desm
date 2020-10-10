@@ -75,21 +75,22 @@ export default class EditUser extends Component {
     });
   }
 
+
   /**
-   * Use the API service to get the roles data
+   * Use the API service to get all the roles data
    */
   fetchRolesAPI() {
-    fetchRoles()
-      .then((Allroles) => {
+    fetchRoles().then((response) => {
+      if (response.errors) {
         this.setState({
-          roles: Allroles,
+          errors: response.errors,
         });
-      })
-      .catch((error) => {
-        this.setState({
-          errors: ErrorMessage(error),
-        });
+        return;
+      }
+      this.setState({
+        roles: response.roles,
       });
+    });
   }
 
   /**

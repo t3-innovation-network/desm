@@ -44,18 +44,18 @@ class Registration extends Component {
    * Use the API service to get all the roles data
    */
   fetchRolesAPI() {
-    fetchRoles()
-      .then((Allroles) => {
+    fetchRoles().then((response) => {
+      if (response.errors) {
         this.setState({
-          roles: Allroles,
-          role_id: Allroles[0].id,
+          errors: response.errors,
         });
-      })
-      .catch((error) => {
-        this.setState({
-          errors: ErrorMessage(error),
-        });
+        return;
+      }
+      this.setState({
+        roles: response.roles,
+        role_id: response.roles[0].id,
       });
+    });
   }
 
   /**

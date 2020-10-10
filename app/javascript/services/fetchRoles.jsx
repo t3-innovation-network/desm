@@ -1,12 +1,12 @@
-import apiService from "./api/apiService";
+import apiRequest from "./api/apiRequest";
 
 const fetchRoles = async () => {
-  const response = await apiService.get("/api/v1/roles");
-  /// We don't have a valid response
-  if (response.status != 200) {
-    return [];
-  }
-  return response.data;
+  return await apiRequest({
+    url: "/api/v1/roles",
+    method: "get",
+    defaultResponse: [],
+    successResponse: "roles",
+  });
 };
 
 export default fetchRoles;
