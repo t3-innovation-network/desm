@@ -210,14 +210,15 @@ const MappingToDomains = (props) => {
   const handleDoneDomainMapping = async () => {
     // Change the mapping satus to "in_progress" (with underscore, because it's
     // the name in the backend), so we say it's begun terms mapping phase
-    await updateMapping({ id: mapping.id, status: "in_progress" });
-
-    // Save changes if necessary
-    if (anyTermMapped) {
-      handleSaveChanges();
+    let response = await updateMapping({ id: mapping.id, status: "in_progress" });
+    if (!anyError(response)){
+      // Save changes if necessary
+      if (anyTermMapped) {
+        handleSaveChanges();
+      }
+      // Redirect to 3rd step mapping ("Align and Fine Tune")
+      props.history.push("/mappings/" + mapping.id + "/align");
     }
-    // Redirect to 3rd step mapping ("Align and Fine Tune")
-    props.history.push("/mappings/" + mapping.id + "/align");
   };
 
   /**
@@ -271,7 +272,6 @@ const MappingToDomains = (props) => {
    */
   const handleFetchSpecification = async (spec_id) => {
     let response = await fetchSpecification(spec_id);
-    let error = anyError(response);
     if (!anyError(response)) {
       // Set the domain on state
       setDomain(response.specification.domain);

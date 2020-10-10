@@ -79,10 +79,12 @@ export default class EditTerm extends Component {
    */
   handleSaveTerm = () => {
     updateTerm(this.state.term).then((response) => {
-      if (response.success) {
-        this.props.onRequestClose();
-        toast.success("Changes Saved to  " + this.state.term.name);
+      if (response.error) {
+        this.setState({ error: response.error });
+        return;
       }
+      this.props.onRequestClose();
+      toast.success("Changes Saved to  " + this.state.term.name);
     });
   };
 

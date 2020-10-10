@@ -198,7 +198,7 @@ const MappingForm = () => {
           toast.error(response.error);
           return;
         }
-        tempSpecs.push(JSON.stringify(response, null, 2));
+        tempSpecs.push(JSON.stringify(response.specification, null, 2));
         dispatch(setSpecToPreview(tempSpecs));
         dispatch(stopProcessingFile());
       });

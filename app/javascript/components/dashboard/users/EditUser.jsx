@@ -127,20 +127,20 @@ export default class EditUser extends Component {
   handleSubmit = (event) => {
     const { email, fullname, organization_id, role_id, user_id } = this.state;
 
-    updateUser(user_id, email, fullname, organization_id, role_id)
-      .then((response) => {
-        if (response.success) {
-          toast.success(
-            "User " + fullname + " (" + user_id + ") was successfully updated"
-          );
-          this.props.history.push("/dashboard/users");
+    updateUser(user_id, email, fullname, organization_id, role_id).then(
+      (response) => {
+        if (response.error) {
+          this.setState({
+            errors: response.error,
+          });
+          return;
         }
-      })
-      .catch((error) => {
-        this.setState({
-          errors: ErrorMessage(error),
-        });
-      });
+        toast.success(
+          "User " + fullname + " (" + user_id + ") was successfully updated"
+        );
+        this.props.history.push("/dashboard/users");
+      }
+    );
 
     event.preventDefault();
   };
@@ -149,6 +149,7 @@ export default class EditUser extends Component {
     return (
       <DashboardContainer>
         <div className="col-lg-6 mx-auto mt-5">
+          {this.state.errors && <AlertNotice message={this.state.errors} />}
           <div className="card mt-5">
             <div className="card-header">
               <i className="fa fa-user"></i>
@@ -166,8 +167,6 @@ export default class EditUser extends Component {
               </button>
             </div>
             <div className="card-body">
-              {this.state.errors && <AlertNotice message={this.state.errors} />}
-
               <React.Fragment>
                 <div className="mandatory-fields-notice">
                   <small className="form-text text-muted">

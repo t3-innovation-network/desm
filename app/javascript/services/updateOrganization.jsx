@@ -1,13 +1,15 @@
-import apiService from "./api/apiService";
+import apiRequest from "./api/apiRequest";
 
 const updateOrganization = async (organization_id, name) => {
-  const response = await apiService
-    .put("/api/v1/organizations/" + organization_id, {
+  return await apiRequest({
+    url: "/api/v1/organizations/" + organization_id,
+    method: "put",
+    payload: {
       organization: {
         name: name,
       },
-    });
-  return { success: response.data.success };
+    },
+  });
 };
 
 export default updateOrganization;

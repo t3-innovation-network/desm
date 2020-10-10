@@ -33,10 +33,7 @@ class Api::V1::MappingsController < ApplicationController
   def update
     @mapping.update!(permitted_params)
 
-    render json: {
-      success: true,
-      mapping: @mapping
-    }
+    render json: @mapping
   end
 
   ###

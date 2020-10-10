@@ -39,10 +39,7 @@ class Api::V1::OrganizationsController < ApplicationController
   ###
   def update
     @organization.update(permitted_params)
-    render json: {
-      success: true,
-      organization: @organization
-    }
+    render json: @organization
   end
 
   ###

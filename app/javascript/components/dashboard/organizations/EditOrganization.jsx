@@ -76,24 +76,22 @@ export default class EditOrganization extends Component {
   handleSubmit = (event) => {
     const { name } = this.state;
 
-    updateOrganization(this.state.organization_id, name)
-      .then((response) => {
-        if (response.success) {
-          toast.success(
-            "Organization " +
-              name +
-              " (" +
-              this.state.organization_id +
-              ") was successfully updated"
-          );
-          this.props.history.push("/dashboard/organizations");
-        }
-      })
-      .catch((error) => {
+    updateOrganization(this.state.organization_id, name).then((response) => {
+      if (response.error) {
         this.setState({
-          errors: ErrorMessage(error),
+          errors: response.error,
         });
-      });
+        return;
+      }
+      toast.success(
+        "Organization " +
+          name +
+          " (" +
+          this.state.organization_id +
+          ") was successfully updated"
+      );
+      this.props.history.push("/dashboard/organizations");
+    });
 
     event.preventDefault();
   };

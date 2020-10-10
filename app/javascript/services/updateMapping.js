@@ -1,16 +1,11 @@
-import apiService from "./api/apiService";
+import apiRequest from "./api/apiRequest";
 
 const updateMapping = async (mapping) => {
-  const response = await apiService.put(
-    "/api/v1/mappings/" + mapping.id,
-    mapping
-  );
-  if (response.status === 200) {
-    return {
-      success: true,
-    };
-  }
-  return { success: false };
+  return await apiRequest({
+    url: "/api/v1/mappings/" + mapping.id,
+    method: "put",
+    payload: mapping,
+  });
 };
 
 export default updateMapping;
