@@ -126,8 +126,12 @@ export default class EditTerm extends Component {
   fetchTermFromApi = () => {
     if (this.props.termId) {
       fetchTerm(this.props.termId).then((response) => {
+        if (response.error) {
+          this.setState({ error: response.error });
+          return;
+        }
         this.setState({
-          term: response,
+          term: response.term,
           loading: false,
         });
       });
@@ -144,7 +148,11 @@ export default class EditTerm extends Component {
 
   getVocabularies = () => {
     fetchVocabularies().then((response) => {
-      this.setState({ vocabularies: response });
+      if (response.error) {
+        this.setState({ error: response.error });
+        return;
+      }
+      this.setState({ vocabularies: response.vocabularies });
     });
   };
 
@@ -188,17 +196,12 @@ export default class EditTerm extends Component {
           </div>
 
           <div className="card-body">
+            {this.state.error ? <AlertNotice message={this.state.error} /> : ""}
             {this.state.loading ? (
               <Loader />
             ) : (
               <React.Fragment>
                 <div className="row">
-                  {this.state.error ? (
-                    <AlertNotice message={this.state.error} />
-                  ) : (
-                    ""
-                  )}
-
                   {/* LEFT COLUMN */}
                   <div
                     className={

@@ -38,24 +38,22 @@ export default class EditUser extends Component {
    * Use the API service to get this user data
    */
   fetchUserAPI() {
-    fetchUser(this.state.user_id)
-      .then((response) => {
-        /// We have a user from the backend
-        if (response.user !== undefined) {
-          this.setState({
-            fullname: response.user.fullname,
-            email: response.user.email,
-            organization_id: response.user.organization_id,
-            role_id: response.user.role_id,
-          });
-        }
-      })
-      /// Process any server errors
-      .catch((error) => {
+    fetchUser(this.state.user_id).then((response) => {
+      if (response.error) {
         this.setState({
-          errors: ErrorMessage(error),
+          errors: response.error,
         });
+        return;
+      }
+
+      /// We have a user from the backend
+      this.setState({
+        fullname: response.user.fullname,
+        email: response.user.email,
+        organization_id: response.user.organization_id,
+        role_id: response.user.role_id,
       });
+    });
   }
 
   /**
@@ -74,7 +72,6 @@ export default class EditUser extends Component {
       });
     });
   }
-
 
   /**
    * Use the API service to get all the roles data

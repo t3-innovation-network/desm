@@ -19,17 +19,17 @@ export default class UsersIndex extends Component {
    * Use the API service to get this user data
    */
   fetchUsersAPI() {
-    fetchUsers()
-      .then((us) => {
+    fetchUsers().then((response) => {
+      if (response.error) {
         this.setState({
-          users: us,
+          errors: response.error,
         });
-      })
-      .catch((error) => {
-        this.setState({
-          errors: ErrorMessage(error),
-        });
+        return;
+      }
+      this.setState({
+        users: response.users,
       });
+    });
   }
 
   /**

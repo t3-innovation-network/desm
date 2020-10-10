@@ -1,12 +1,12 @@
-import apiService from "./api/apiService";
+import apiRequest from "./api/apiRequest";
 
 const fetchUsers = async () => {
-  const response = await apiService.get("/users");
-  /// We have a list of users from the backend
-  if (response.status != 200) {
-    return [];
-  }
-  return response.data;
+  return await apiRequest({
+    url: "/users",
+    method: "get",
+    defaultResponse: [],
+    successResponse: "users",
+  });
 };
 
 export default fetchUsers;

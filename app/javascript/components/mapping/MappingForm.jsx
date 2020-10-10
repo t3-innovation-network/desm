@@ -193,8 +193,12 @@ const MappingForm = () => {
 
     let tempSpecs = [];
     files.map((file) => {
-      filterSpecification(id, file).then((filteredSpecification) => {
-        tempSpecs.push(JSON.stringify(filteredSpecification, null, 2));
+      filterSpecification(id, file).then((response) => {
+        if (response.error) {
+          toast.error(response.error);
+          return;
+        }
+        tempSpecs.push(JSON.stringify(response, null, 2));
         dispatch(setSpecToPreview(tempSpecs));
         dispatch(stopProcessingFile());
       });
