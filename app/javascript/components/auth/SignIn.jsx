@@ -32,22 +32,17 @@ class SignIn extends Component {
   handleSubmit = (event) => {
     const { email, password } = this.state;
 
-    signIn(email, password)
-      .then((user) => {
-        user != {}
-          ? this.handleSuccessfullAuth(user)
-          : this.setState({
-              errors: ErrorMessage("Error: We were not able to sign you in."),
-            });
-      })
-      .catch((error) => {
+    signIn(email, password).then((response) => {
+      if (response.error) {
         this.setState({
-          errors: ErrorMessage(error),
+          errors: response.error + "\nWe were not able to sign you in.",
         });
-      });
+      }
+      this.handleSuccessfullAuth(response.user);
+    });
 
     event.preventDefault();
-  }
+  };
 
   /**
    * Update the component state on every change in the input control in the form
@@ -56,19 +51,14 @@ class SignIn extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
-  }
+  };
 
   /**
    * Configure the options to see at the center of the top navigation bar
    */
   navCenterOptions = () => {
-    return (
-      <TopNavOptions
-        viewMappings={true}
-        mapSpecification={true}
-      />
-    )
-  }
+    return <TopNavOptions viewMappings={true} mapSpecification={true} />;
+  };
 
   render() {
     return (
@@ -78,7 +68,9 @@ class SignIn extends Component {
           <div className="container-fluid container-wrapper">
             <div className="row mt-5">
               <div className="col-lg-6 mx-auto">
-                { this.state.errors && <AlertNotice message={this.state.errors} /> }
+                {this.state.errors && (
+                  <AlertNotice message={this.state.errors} />
+                )}
 
                 <div className="card">
                   <div className="card-header">
@@ -100,6 +92,7 @@ class SignIn extends Component {
                           value={this.state.email}
                           onChange={this.handleOnChange}
                           required
+                          autoFocus
                         />
                       </div>
 

@@ -1,14 +1,18 @@
-import apiService from "./api/apiService";
+import apiRequest from "./api/apiRequest";
 
 const signIn = async (email, password) => {
-  const response = await apiService
-    .post("/sessions", {
+  return await apiRequest({
+    url: "/sessions",
+    method: "post",
+    payload: {
       user: {
         email: email,
         password: password,
       },
-    });
-  return response.status == 200 ? response.data : {};
+    },
+    defaultResponse: {},
+    successResponse: "user",
+  });
 };
 
 export default signIn;

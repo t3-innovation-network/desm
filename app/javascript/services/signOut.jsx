@@ -1,10 +1,10 @@
-import apiService from "./api/apiService";
+import apiRequest from "./api/apiRequest";
 
 const signOut = async () => {
-  const response = await apiService.delete("/logout");
-  return {
-    success: response.status == 200,
-  };
+  return await apiRequest({
+    url: "/logout",
+    method: "delete",
+  });
 };
 
 export default signOut;

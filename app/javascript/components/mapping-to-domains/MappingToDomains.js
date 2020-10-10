@@ -11,7 +11,7 @@ import EditTerm from "./EditTerm";
 import TermCardsContainer from "./TermCardsContainer";
 import fetchSpecification from "../../services/fetchSpecification";
 import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
-import saveMappingTerms from "../../services/saveMappingTerms";
+import createMappingTerms from "../../services/createMappingTerms";
 import { toastr as toast } from "react-redux-toastr";
 import updateMapping from "../../services/updateMapping";
 
@@ -224,23 +224,23 @@ const MappingToDomains = (props) => {
    * Create the mapping terms
    */
   const handleSaveChanges = () => {
-    saveMappingTerms({
+    createMappingTerms({
       mappingId: mapping.id,
       terms: mappedTerms,
-    })
-      .then(() => {
-        toast.success("Changes saved");
-        setAnyTermMapped(false);
-      })
-      .catch((e) => {
+    }).then((response) => {
+      if (response.error) {
         toast.error(e.response.data.message);
-      });
+        return;
+      }
+      toast.success("Changes saved");
+      setAnyTermMapped(false);
+    });
   };
 
   /**
    * Handle showing the errors on screen, if any
-   * 
-   * @param {HttpResponse} response 
+   *
+   * @param {HttpResponse} response
    */
   function anyError(response) {
     if (response.error) {
