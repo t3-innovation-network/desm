@@ -31,21 +31,18 @@ export default class EditOrganization extends Component {
    * Use the API service to get this organization data
    */
   fetchOrganizationAPI() {
-    fetchOrganization(this.state.organization_id)
-      .then((response) => {
-        /// We have a list of organizations from the backend
-        if (response.success) {
-          this.setState({
-            name: response.organization.name,
-          });
-        }
-      })
-      /// Process any server errors
-      .catch((error) => {
+    fetchOrganization(this.state.organization_id).then((response) => {
+      if (response.error) {
         this.setState({
-          errors: ErrorMessage(error),
+          errors: response.error,
         });
+        return;
+      }
+      /// We have a list of organizations from the backend
+      this.setState({
+        name: response.organization.name,
       });
+    });
   }
 
   /**
@@ -55,7 +52,7 @@ export default class EditOrganization extends Component {
     deleteOrganization(this.state.organization_id).then((response) => {
       if (response.error) {
         this.setState({
-          errors: response.error
+          errors: response.error,
         });
         return;
       }

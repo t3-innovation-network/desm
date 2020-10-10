@@ -1,12 +1,11 @@
-import apiService from "./api/apiService";
+import apiRequest from "./api/apiRequest";
 
 const fetchOrganization = async (organization_id) => {
-  const response = await apiService
-    .get("/api/v1/organizations/" + organization_id);
-  return {
-    success: response.data.success,
-    organization: response.data.organization,
-  };
+  return await apiRequest({
+    url: "/api/v1/organizations/" + organization_id,
+    method: "get",
+    successResponse: "organization",
+  });
 };
 
 export default fetchOrganization;

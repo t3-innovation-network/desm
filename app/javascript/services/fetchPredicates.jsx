@@ -1,14 +1,12 @@
-import apiService from "./api/apiService";
+import apiRequest from "./api/apiRequest";
 
 const fetchPredicates = async () => {
-  const response = await apiService.get("/api/v1/predicates");
-  /// We don't have a valid response
-  if (response.status != 200) {
-    return [];
-  }
-  return {
-    predicates: response.data
-  }
+  return await apiRequest({
+    url: "/api/v1/predicates",
+    method: "get",
+    defaultResponse: [],
+    successResponse: "predicates",
+  });
 };
 
 export default fetchPredicates;

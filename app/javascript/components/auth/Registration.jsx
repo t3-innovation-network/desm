@@ -26,18 +26,18 @@ class Registration extends Component {
    * Use the API service to get all the organizations data
    */
   fetchOrganizationsAPI() {
-    fetchOrganizations()
-      .then((orgs) => {
+    fetchOrganizations().then((response) => {
+      if (response.errors) {
         this.setState({
-          organizations: orgs,
-          organization_id: orgs[0].id,
+          errors: response.errors,
         });
-      })
-      .catch((error) => {
-        this.setState({
-          errors: ErrorMessage(error),
-        });
+        return;
+      }
+      this.setState({
+        organizations: response.organizations,
+        organization_id: response.organizations[0].id,
       });
+    });
   }
 
   /**

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import DashboardContainer from "./DashboardContainer";
-import fetchOrganizations from "../../services/fetchOrganizations"
+import fetchOrganizations from "../../services/fetchOrganizations";
 import AlertNotice from "../shared/AlertNotice";
 import ErrorMessage from "../shared/ErrorMessage";
 import OrganizationInfo from "./organizations/OrganizationInfo";
@@ -8,24 +8,24 @@ import OrganizationInfo from "./organizations/OrganizationInfo";
 export default class MainDashboard extends Component {
   state = {
     organizations: [],
-    errors: ""
-  }
+    errors: "",
+  };
 
   /**
    * Get the organizations data to be able to show it in the UI
    */
   fetchOrganizationsAPI() {
-    fetchOrganizations()
-      .then((orgs) => {
+    fetchOrganizations().then((response) => {
+      if (response.errors) {
         this.setState({
-          organizations: orgs,
+          errors: response.errors,
         });
-      })
-      .catch((error) => {
-        this.setState({
-          errors: ErrorMessage(error),
-        });
+        return;
+      }
+      this.setState({
+        organizations: response.organizations,
       });
+    });
   }
 
   /**
@@ -42,9 +42,9 @@ export default class MainDashboard extends Component {
           <div className="row h-50 ml-5">
             {this.state.errors && <AlertNotice message={this.state.errors} />}
 
-            { this.state.organizations.map((o) => {
-              return <OrganizationInfo organization={o} key={o.id} />
-            }) }
+            {this.state.organizations.map((o) => {
+              return <OrganizationInfo organization={o} key={o.id} />;
+            })}
           </div>
         </div>
       </DashboardContainer>

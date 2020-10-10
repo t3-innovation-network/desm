@@ -19,10 +19,7 @@ class Api::V1::OrganizationsController < ApplicationController
   # @description: Prepares the data for the edit form
   ###
   def show
-    render json: {
-      success: true,
-      organization: @organization
-    }
+    render json: @organization
   end
 
   ###
