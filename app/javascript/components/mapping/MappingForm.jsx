@@ -234,6 +234,10 @@ const MappingForm = () => {
    */
   const fillWithDomains = () => {
     fetchDomains().then((response) => {
+      if (response.error) {
+        toast.error(response.error);
+        return;
+      }
       setDomains(response.domains);
       setSelectedDomainId(response.domains[0].id);
     });

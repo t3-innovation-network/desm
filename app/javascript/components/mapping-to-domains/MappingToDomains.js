@@ -238,20 +238,57 @@ const MappingToDomains = (props) => {
   };
 
   /**
+   * Handle showing the errors on screen, if any
+   * 
+   * @param {HttpResponse} response 
+   */
+  function anyError(response) {
+    if (response.error) {
+      let tempErrors = errors;
+      tempErrors.push(response.error);
+      setErrors([]);
+      setErrors(tempErrors);
+    }
+    /// It will return a truthy value (depending no the existence
+    /// of the errors on the response object)
+    return response.error;
+  }
+
+  /**
+   * Get the specification terms
+   */
+  const handleFetchMapping = async (mapping_id) => {
+    let response = await fetchMapping(mapping_id);
+    let error = anyError(response);
+    if (_.isUndefined(error)) {
+      // Set the mapping on state
+      setMapping(response.mapping);
+    }
+    return response;
+  };
+
+  /**
+   * Get the specification
+   */
+  const handleFetchSpecification = async (spec_id) => {
+    let response = await fetchSpecification(spec_id);
+    let error = anyError(response);
+    if (_.isUndefined(error)) {
+      // Set the domain on state
+      setDomain(response.specification.domain);
+    }
+  };
+
+  /**
    * Get the specification terms
    */
   const handleFetchSpecificationTerms = async (spec_id) => {
     let response = await fetchSpecificationTerms(spec_id);
-    // Manage to set the errors to show in the UI
-    if (response.error) {
-      let tempErrors = errors;
-      tempErrors.push(response.error);
-      setErrors(tempErrors);
-      // Finish execution of this method here
-      return;
+    let error = anyError(response);
+    if (_.isUndefined(error)) {
+      // Set the spine terms on state
+      setTerms(response.terms);
     }
-    // Set the spine terms on state
-    setTerms(response.terms);
   };
 
   /**
@@ -259,16 +296,13 @@ const MappingToDomains = (props) => {
    */
   const fetchDataFromAPI = async () => {
     // Get the mapping
-    let response = await fetchMapping(props.match.params.id);
-    setMapping(response.mapping);
+    let response = await handleFetchMapping(props.match.params.id);
 
-    // Get the specification, with the domain
-    let spec_id = response.mapping.specification_id;
-    response = await fetchSpecification(spec_id);
-    setDomain(response.specification.domain);
+    // Get the specification
+    await handleFetchSpecification(response.mapping.specification_id);
 
     // Get the terms
-    await handleFetchSpecificationTerms(spec_id);
+    await handleFetchSpecificationTerms(response.mapping.specification_id);
   };
 
   /**

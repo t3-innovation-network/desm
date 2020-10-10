@@ -1,14 +1,12 @@
-import apiService from "./api/apiService";
+import apiRequest from "./api/apiRequest";
 
 const fetchSpecification = async (specId) => {
-  const response = await apiService.get("/api/v1/specifications/" + specId);
-  /// We don't have a valid response
-  if (response.status != 200) {
-    return {};
-  }
-  return {
-    specification: response.data
-  }
+  return await apiRequest({
+    url: "/api/v1/specifications/" + specId,
+    method: "get",
+    defaultResponse: {},
+    successResponse: "specification",
+  });
 };
 
 export default fetchSpecification;
