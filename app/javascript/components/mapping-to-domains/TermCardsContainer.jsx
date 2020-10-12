@@ -30,9 +30,9 @@ const TermCardsContainer = (props) => {
       /**
        * The element where it was dropped in
        */
-      const domainDropped = monitor.getDropResult();
-      if (item && domainDropped) {
-        props.afterDrop(domainDropped);
+      const itemDropped = monitor.getDropResult();
+      if (item && itemDropped) {
+        props.afterDrop(itemDropped);
       }
     },
     collect: (monitor) => ({

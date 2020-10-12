@@ -42,14 +42,13 @@ const MappingPreview = (props) => {
     createSpec(mappingFormData).then((response) => {
       setCreatingSpec(false);
       dispatch(doUnsubmit());
+      dispatch(unsetSpecToPreview());
+      dispatch(unsetFiles());
 
       if (response.error) {
         toast.error(response.error);
         return;
       }
-
-      dispatch(unsetSpecToPreview());
-      dispatch(unsetFiles());
 
       // if it's the spine, show a message to the user and return to home
       if (response["spine?"]) {

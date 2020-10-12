@@ -21,7 +21,8 @@ Rails.application.routes.draw do
       resources :terms, only: [:show, :update, :destroy]
       resources :vocabularies, only: [:index, :create]
 
-      post 'mappings/terms' => 'mappings#create_terms'
+      post 'mappings/selected_terms' => 'mappings#create_selected_terms'
+      get 'mappings/:id/selected_terms' => 'mappings#show_selected_terms'
       get 'mappings/:id/terms' => 'mappings#show_terms'
       post 'specifications/info' => 'specifications#info'
       post 'specifications/filter' => 'specifications#filter'

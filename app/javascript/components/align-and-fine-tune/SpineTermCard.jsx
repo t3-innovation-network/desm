@@ -9,7 +9,7 @@ export default class SpineTermCard extends Component {
   };
 
   toggleShowBody = () => {
-    const { animationIsVisible, animationDuration, showTerm } = this.state;
+    const { animationDuration, showTerm } = this.state;
 
     // Trigger animation
     this.setState(
@@ -42,7 +42,7 @@ export default class SpineTermCard extends Component {
     const { term, origin } = this.props;
 
     return (
-      <div className="card">
+      <div className="card with-shadow">
         <div
           className="card-header cursor-pointer pb-0"
           onClick={this.toggleShowBody}

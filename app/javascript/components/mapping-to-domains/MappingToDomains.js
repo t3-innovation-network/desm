@@ -11,7 +11,7 @@ import EditTerm from "./EditTerm";
 import TermCardsContainer from "./TermCardsContainer";
 import fetchSpecification from "../../services/fetchSpecification";
 import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
-import createMappingTerms from "../../services/createMappingTerms";
+import createMappingSelectedTerms from "../../services/createMappingSelectedTerms";
 import { toastr as toast } from "react-redux-toastr";
 import updateMapping from "../../services/updateMapping";
 
@@ -98,13 +98,13 @@ const MappingToDomains = (props) => {
    *
    * 1. The term is recently dragged to the domain, so it's not in the backend, just
    *    marked in memory as "mapped".
-   * 2. The term is already mapped in the backend (is one of the mapping terms in DB).
+   * 2. The term is already mapped in the backend (is one of the mapping selected terms in DB).
    */
   function termIsMapped(term) {
     return (
       term.mapped ||
-      mapping.terms.some((mappingTerm) => {
-        return mappingTerm.mapped_term_id === term.id;
+      mapping.selected_terms.some((selectedTerm) => {
+        return selectedTerm.id === term.id;
       })
     );
   }
@@ -210,8 +210,11 @@ const MappingToDomains = (props) => {
   const handleDoneDomainMapping = async () => {
     // Change the mapping satus to "in_progress" (with underscore, because it's
     // the name in the backend), so we say it's begun terms mapping phase
-    let response = await updateMapping({ id: mapping.id, status: "in_progress" });
-    if (!anyError(response)){
+    let response = await updateMapping({
+      id: mapping.id,
+      status: "in_progress",
+    });
+    if (!anyError(response)) {
       // Save changes if necessary
       if (anyTermMapped) {
         handleSaveChanges();
@@ -225,7 +228,7 @@ const MappingToDomains = (props) => {
    * Create the mapping terms
    */
   const handleSaveChanges = () => {
-    createMappingTerms({
+    createMappingSelectedTerms({
       mappingId: mapping.id,
       terms: mappedTerms,
     }).then((response) => {

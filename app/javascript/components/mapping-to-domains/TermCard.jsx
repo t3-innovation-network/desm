@@ -27,6 +27,10 @@ export default class TermCard extends Component {
      * The term body animation duration in miliseconds
      */
     termBodyAnimationDuration: 500,
+    /**
+     * Whether this card should be available to drag after the first successful drop
+     */
+    alwaysEnabled: this.props.alwaysEnabled,
   };
 
   /**
@@ -34,8 +38,10 @@ export default class TermCard extends Component {
    * selected or not selected
    */
   handleTermClick = () => {
-    if (!this.props.isMapped(this.props.term)) {
-      const { selected, cardAnimationDuration } = this.state;
+    const { isMapped, term, onClick } = this.props;
+    const { cardAnimationDuration, alwaysEnabled } = this.state;
+
+    if (!isMapped(term) || alwaysEnabled) {
       // Trigger animation
       this.setState(
         ({ cardAnimationisVisible }) => ({
@@ -51,8 +57,8 @@ export default class TermCard extends Component {
               }),
               () => {
                 // props value (the term inside the list in the parent component)
-                this.props.term.selected = !this.props.term.selected;
-                this.props.onClick(this.props.term);
+                term.selected = !term.selected;
+                onClick(term);
               }
             );
           }, cardAnimationDuration);
@@ -62,11 +68,7 @@ export default class TermCard extends Component {
   };
 
   toggleShowBody = () => {
-    const {
-      termBodyAnimationisVisible,
-      termBodyAnimationDuration,
-      showTermBody,
-    } = this.state;
+    const { termBodyAnimationDuration, showTermBody } = this.state;
 
     // Trigger animation
     this.setState(
@@ -101,7 +103,11 @@ export default class TermCard extends Component {
       termBodyAnimationisVisible,
       termBodyAnimationDuration,
       showTermBody,
+      alwaysEnabled,
     } = this.state;
+
+    const { term, isMapped, onEditClick, origin, editEnabled } = this.props;
+
     return (
       <Animated
         animationIn="fadeInDown"
@@ -113,7 +119,7 @@ export default class TermCard extends Component {
         <div
           className={
             "card with-shadow mb-2" +
-            (this.props.isMapped(this.props.term)
+            (isMapped(term) && !alwaysEnabled
               ? " disabled-container not-draggable"
               : selected
               ? " draggable term-selected"
@@ -126,18 +132,18 @@ export default class TermCard extends Component {
                 className={"col-8 mb-3" + (selected ? "" : " cursor-pointer")}
                 onClick={this.handleTermClick}
               >
-                {this.props.term.name}
+                {term.name}
               </div>
               <div className="col-4">
                 <div className="float-right">
-                  {this.props.isMapped(this.props.term) ? (
+                  {isMapped(term) && !alwaysEnabled ? (
                     <i className="fas fa-check"></i>
                   ) : (
                     <React.Fragment>
-                      {this.props.editEnabled && (
+                      {editEnabled && (
                         <button
                           onClick={() => {
-                            this.props.onEditClick(this.props.term);
+                            onEditClick(term);
                           }}
                           className="btn"
                         >
@@ -162,8 +168,8 @@ export default class TermCard extends Component {
           >
             {showTermBody && (
               <div className="card-body pt-0 pb-0">
-                <p>{this.props.term.property.comment}</p>
-                <p>{"Origin: " + this.props.origin}</p>
+                <p>{term.property.comment}</p>
+                <p>{"Origin: " + origin}</p>
               </div>
             )}
           </Animated>
