@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import TopNav from "../shared/TopNav";
 import signIn from "../../services/signIn";
-import ErrorMessage from "../shared/ErrorMessage";
 import AlertNotice from "../shared/AlertNotice";
 import TopNavOptions from "../shared/TopNavOptions";
 

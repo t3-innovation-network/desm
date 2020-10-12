@@ -3,7 +3,6 @@ import DashboardContainer from "../DashboardContainer";
 import { Link } from "react-router-dom";
 import fetchOrganizations from "../../../services/fetchOrganizations";
 import AlertNotice from "../../shared/AlertNotice";
-import ErrorMessage from "../../shared/ErrorMessage";
 
 export default class OrganizationsIndex extends Component {
   /**

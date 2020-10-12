@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import DashboardContainer from "./DashboardContainer";
 import fetchOrganizations from "../../services/fetchOrganizations";
 import AlertNotice from "../shared/AlertNotice";
-import ErrorMessage from "../shared/ErrorMessage";
 import OrganizationInfo from "./organizations/OrganizationInfo";
 
 export default class MainDashboard extends Component {

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import DashboardContainer from "../DashboardContainer";
 import fetchOrganization from "../../../services/fetchOrganization";
-import ErrorMessage from "../../shared/ErrorMessage";
 import AlertNotice from "../../shared/AlertNotice";
 import deleteOrganization from "../../../services/deleteOrganization";
 import updateOrganization from "../../../services/updateOrganization";

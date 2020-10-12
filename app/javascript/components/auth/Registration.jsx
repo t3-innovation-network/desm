@@ -3,7 +3,6 @@ import DashboardContainer from "../dashboard/DashboardContainer";
 import fetchOrganizations from "../../services/fetchOrganizations";
 import fetchRoles from "../../services/fetchRoles";
 import AlertNotice from "../shared/AlertNotice";
-import ErrorMessage from "../shared/ErrorMessage";
 import createUser from "../../services/createUser";
 import { toastr as toast } from "react-redux-toastr";
 
@@ -68,7 +67,7 @@ class Registration extends Component {
     createUser(fullname, email, organization_id, role_id).then((response) => {
       if (response.error) {
         this.setState({
-          errors: ErrorMessage(error),
+          errors: response.error,
         });
       }
       toast.success("User " + fullname + " was successfully created");
