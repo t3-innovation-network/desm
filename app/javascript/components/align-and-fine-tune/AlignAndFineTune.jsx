@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import fetchMapping from "../../services/fetchMapping";
-import fetchMappingTerms from "../../services/fetchMappingTerms";
+import fetchMappingSelectedTerms from "../../services/fetchMappingSelectedTerms";
 import fetchPredicates from "../../services/fetchPredicates";
 import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
 import TermCard from "../mapping-to-domains/TermCard";
@@ -10,10 +10,11 @@ import AlertNotice from "../shared/AlertNotice";
 import Loader from "../shared/Loader";
 import TopNav from "../shared/TopNav";
 import TopNavOptions from "../shared/TopNavOptions";
-import SpineTermsList from "./SpineTermsList";
+import SpineTermRow from "./SpineTermRow";
 import SpineHeader from "./SpineHeader";
 import MappingTermsHeaders from "./MappingTermsHeader";
 import Pluralize from "pluralize";
+import fetchMappingTerms from "../../services/fetchMappingTerms";
 
 const AlignAndFineTune = (props) => {
   /**
@@ -37,9 +38,16 @@ const AlignAndFineTune = (props) => {
   const [mapping, setMapping] = useState({});
 
   /**
-   * The terms of the mapping (The selected ones from the uploaded specification)
+   * The terms of the mapping (The ones for the output, not visible here, but necessary
+   * to configure the relation between the predicate, spine term and selected terms
+   * from the specification)
    */
   const [mappingTerms, setMappingTerms] = useState([]);
+
+  /**
+   * The terms of the mapping (The selected ones from the uploaded specification)
+   */
+  const [mappingSelectedTerms, setMappingSelectedTerms] = useState([]);
 
   /**
    * The terms of the spine (The specification being mapped against)
@@ -65,13 +73,16 @@ const AlignAndFineTune = (props) => {
   /**
    * Whether to hide mapped spine terms or not
    */
-  const [hideMappedMappingTerms, setHideMappedMappingTerms] = useState(false);
+  const [hideMappedSelectedTerms, setHideMappedSelectedTerms] = useState(false);
 
   /**
    * The value of the input that the user is typing in the search box
    * to filter the list of mapping terms
    */
-  const [mappingTermsInputValue, setMappingTermsInputValue] = useState("");
+  const [
+    mappingSelectedTermsInputValue,
+    setMappingSelectedTermsInputValue,
+  ] = useState("");
 
   /**
    * The value of the input that the user is typing in the search box
@@ -83,7 +94,7 @@ const AlignAndFineTune = (props) => {
    * The selected mapping terms (the terms of the original specification, now
    * selected to map into the spine).
    */
-  const selectedMappingTerms = mappingTerms.filter((term) => {
+  const selectedMappingTerms = mappingSelectedTerms.filter((term) => {
     return term.selected;
   });
 
@@ -92,8 +103,8 @@ const AlignAndFineTune = (props) => {
    *
    * @param {Event} event
    */
-  const filterMappingTermsOnChange = (event) => {
-    setMappingTermsInputValue(event.target.value);
+  const filterMappingSelectedTermsOnChange = (event) => {
+    setMappingSelectedTermsInputValue(event.target.value);
   };
 
   /**
@@ -116,23 +127,22 @@ const AlignAndFineTune = (props) => {
    * @param {Object} spineTerm
    */
   const mappedTermsToSpineTerm = (spineTerm) => {
-    return mappingTerms.filter((term) => {
-      return term.mapped_term.mappedTo === spineTerm.uri;
-    });
+    let mterm = mappingTerms.find((mt) => mt.spine_term_id === spineTerm.id);
+    return mterm ? mterm.mapped_terms : [];
   };
 
   /**
    * The selected or not selected terms that includes the string typed by the user in the
    * search box.
    */
-  const filteredMappingTerms = (options = { pickSelected: false }) =>
-    mappingTerms
+  const filteredMappingSelectedTerms = (options = { pickSelected: false }) =>
+    mappingSelectedTerms
       .filter((term) => {
         return (
           (options.pickSelected ? term.selected : !term.selected) &&
-          term.mapped_term.name
+          term.name
             .toLowerCase()
-            .includes(mappingTermsInputValue.toLowerCase())
+            .includes(mappingSelectedTermsInputValue.toLowerCase())
         );
       })
       .sort((a, b) => (a.name > b.name ? 1 : -1));
@@ -152,7 +162,7 @@ const AlignAndFineTune = (props) => {
   /**
    * All the terms that are already mapped
    */
-  const mappedMappingTerms = mappingTerms.filter(mappingTermIsMapped);
+  const mappedSelectedTerms = mappingSelectedTerms.filter(selectedTermIsMapped);
 
   /**
    * Returns wether the term is already mapped to the spine. It can be 1 of 2 options:
@@ -161,7 +171,7 @@ const AlignAndFineTune = (props) => {
    *    marked in memory as "mappedTo".
    * 2. The term is already mapped in the backend (is one of the mapping terms in DB).
    */
-  function mappingTermIsMapped(mappingTerm) {
+  function selectedTermIsMapped(mappingTerm) {
     return (
       mappingTerm.mappedTo ||
       _.some(spineTerms, (spineTerm) => {
@@ -178,7 +188,7 @@ const AlignAndFineTune = (props) => {
    * 2. The mapping term is already mapped in the backend (is one of the mapping terms in DB).
    */
   function spineTermIsMapped(spineTerm) {
-    return mappingTerms.some((mappingTerm) => {
+    return mappingSelectedTerms.some((mappingTerm) => {
       return (
         mappingTerm.mappedTo === spineTerm.uri ||
         mappingTerm.spine_term_id === spineTerm.id
@@ -189,29 +199,66 @@ const AlignAndFineTune = (props) => {
   /**
    * Mark the term as "selected"
    */
-  const onMappingTermClick = (clickedTerm) => {
+  const onSelectedTermClick = (clickedTerm) => {
     if (!clickedTerm.mappedTo) {
-      let tempTerms = [...mappingTerms];
-      let term = tempTerms.find((t) => t.mapped_term.id == clickedTerm.id);
+      let tempTerms = [...mappingSelectedTerms];
+      let term = tempTerms.find((t) => t.id == clickedTerm.id);
       term.selected = clickedTerm.selected;
 
-      setMappingTerms(tempTerms);
+      setMappingSelectedTerms(tempTerms);
     }
+  };
+
+  /**
+   * Returns the mapping term that corresponds to a specific term by its id
+   * It represents the relation between a spine term, one or more selected
+   * terms from the original specification and the predicate
+   *
+   * @param {Integer} spineTermId
+   */
+  const mappingTermForSpineTerm = (spineTermId) => {
+    return mappingTerms.find((mt) => mt.spine_term_id === spineTermId.id);
+  };
+
+  /**
+   * Link the predicate to the corresponding mapping term
+   *
+   * @param {Object} spineTerm
+   * @param {Object} predicate
+   */
+  const onPredicateSelected = (spineTerm, predicate) => {
+    let tempTerms = mappingTerms;
+    let selectedTerm = tempTerms.find(
+      (mTerm) => mTerm.spine_term_id == spineTerm.id
+    );
+    selectedTerm.predicate_id = predicate.id;
+
+    setMappingTerms([]);
+    setMappingTerms(tempTerms);
   };
 
   /**
    * Action to perform after a mapping term is dropped
    */
   const afterDropTerm = (spineTerm) => {
-    let tempTerms = selectedMappingTerms;
-    tempTerms.forEach((termToMap) => {
-      termToMap.mappedTo = spineTerm.uri;
-      termToMap.mapped_term.mappedTo = spineTerm.uri;
-      termToMap.selected = !termToMap.selected;
-    });
-    tempTerms = [...mappingTerms];
+    /// Set the selected terms as mapped for the mapping terms dropped on
+    let selectedTerms = selectedMappingTerms;
+    let mappingTerm = mappingTerms.find(
+      (mt) => mt.spine_term_id === spineTerm.id
+    );
+    mappingTerm.mapped_terms = selectedTerms;
+    let tempMappingTerms = mappingTerms;
+
+    /// Deselect terms
+    selectedTerms.forEach(term => term.selected = !term.selected);
+    let tempMappingSelectedTerms = [...mappingSelectedTerms];
+    setMappingSelectedTerms(tempMappingSelectedTerms);
+
+    /// Redraw the mapped terms
     setMappingTerms([]);
-    setMappingTerms(tempTerms);
+    setMappingTerms(tempMappingTerms);
+
+    /// Warn to save changes
     setAnyChangePerformed(true);
   };
 
@@ -231,8 +278,8 @@ const AlignAndFineTune = (props) => {
 
   /**
    * Handle showing the errors on screen, if any
-   * 
-   * @param {HttpResponse} response 
+   *
+   * @param {HttpResponse} response
    */
   function anyError(response) {
     if (response.error) {
@@ -252,7 +299,7 @@ const AlignAndFineTune = (props) => {
   const handleFetchMapping = async (mappingId) => {
     let response = await fetchMapping(mappingId);
     if (!anyError(response)) {
-      // Set the mapping on state
+      // Set the mapping and mapping terms on state
       setMapping(response.mapping);
     }
     return response;
@@ -261,11 +308,23 @@ const AlignAndFineTune = (props) => {
   /**
    * Get the mapping terms
    */
+  const handleFetchMappingSelectedTerms = async (mappingId) => {
+    let response = await fetchMappingSelectedTerms(mappingId);
+    if (!anyError(response)) {
+      // Set the mapping on state
+      setMappingSelectedTerms(response.terms);
+    }
+  };
+
+  /**
+   * Get the mapping terms. These are those that will relate spine terms
+   * with predicates and specification selected terms
+   */
   const handleFetchMappingTerms = async (mappingId) => {
     let response = await fetchMappingTerms(mappingId);
     if (!anyError(response)) {
-      // Set the mapping on state
-      setMappingTerms(response.terms);
+      // Set the mapping terms on state
+      setMappingTerms(response.terms)
     }
   };
 
@@ -298,11 +357,14 @@ const AlignAndFineTune = (props) => {
     // Get the mapping
     let response = await handleFetchMapping(props.match.params.id);
 
-    // Get the spine terms
-    await handleFetchSpineTerms(response.mapping.spine_id);
-
     // Get the mapping terms
     await handleFetchMappingTerms(props.match.params.id);
+
+    // Get the mapping selected terms
+    await handleFetchMappingSelectedTerms(props.match.params.id);
+
+    // Get the spine terms
+    await handleFetchSpineTerms(response.mapping.spine_id);
 
     // Get the predicates
     await handleFetchPredicates();
@@ -341,23 +403,31 @@ const AlignAndFineTune = (props) => {
                     domain={mapping.domain}
                     hideMappedSpineTerms={hideMappedSpineTerms}
                     setHideMappedSpineTerms={setHideMappedSpineTerms}
-                    mappingTerms={mappingTerms}
-                    mappedMappingTerms={mappedMappingTerms}
+                    mappingSelectedTerms={mappingSelectedTerms}
+                    mappedSelectedTerms={mappedSelectedTerms}
                     spineTermsInputValue={spineTermsInputValue}
                     filterSpineTermsOnChange={filterSpineTermsOnChange}
                   />
                   <div className="mt-5">
-                    {!loading && (
-                      <SpineTermsList
-                        terms={filteredSpineTerms}
-                        predicates={predicates}
-                        selectedMappingTerms={selectedMappingTerms}
-                        hideMappedSpineTerms={hideMappedSpineTerms}
-                        mappedTermsToSpineTerm={mappedTermsToSpineTerm}
-                        isMapped={spineTermIsMapped}
-                        origin={mapping.origin}
-                      />
-                    )}
+                    {!loading &&
+                      filteredSpineTerms.map((term) => {
+                        return props.hideMappedSpineTerms &&
+                          props.isMapped(term) ? (
+                          ""
+                        ) : (
+                          <SpineTermRow
+                            key={term.id}
+                            term={term}
+                            predicates={predicates}
+                            selectedMappingTerms={selectedMappingTerms}
+                            mappedTermsToSpineTerm={mappedTermsToSpineTerm}
+                            isMapped={spineTermIsMapped}
+                            origin={mapping.origin}
+                            onPredicateSelected={onPredicateSelected}
+                            mappingTerm={() => mappingTermForSpineTerm(term.id)}
+                          />
+                        );
+                      })}
                   </div>
                 </div>
 
@@ -368,12 +438,16 @@ const AlignAndFineTune = (props) => {
                     organizationName={user.organization.name}
                     domain={mapping.domain}
                     selectedMappingTerms={selectedMappingTerms}
-                    hideMappedMappingTerms={hideMappedMappingTerms}
-                    setHideMappedMappingTerms={setHideMappedMappingTerms}
-                    mappingTerms={mappingTerms}
-                    mappedMappingTerms={mappedMappingTerms}
-                    mappingTermsInputValue={mappingTermsInputValue}
-                    filterMappingTermsOnChange={filterMappingTermsOnChange}
+                    hideMappedSelectedTerms={hideMappedSelectedTerms}
+                    setHideMappedSelectedTerms={setHideMappedSelectedTerms}
+                    mappingSelectedTerms={mappingSelectedTerms}
+                    mappedSelectedTerms={mappedSelectedTerms}
+                    mappingSelectedTermsInputValue={
+                      mappingSelectedTermsInputValue
+                    }
+                    filterMappingSelectedTermsOnChange={
+                      filterMappingSelectedTermsOnChange
+                    }
                   />
 
                   {/* MAPPING TERMS LIST */}
@@ -382,9 +456,9 @@ const AlignAndFineTune = (props) => {
                     <AlertNotice
                       cssClass="bg-col-primary col-background"
                       title={
-                        mappingTerms.length +
+                        mappingSelectedTerms.length +
                         " " +
-                        Pluralize("element", mappingTerms.length) +
+                        Pluralize("element", mappingSelectedTerms.length) +
                         " have been selected from the original specification"
                       }
                       message="The items below have been added to Person Domain. Now you can align them to the spine."
@@ -397,43 +471,45 @@ const AlignAndFineTune = (props) => {
                         terms={selectedMappingTerms}
                         afterDrop={afterDropTerm}
                       >
-                        {filteredMappingTerms({ pickSelected: true }).map(
-                          (term) => {
-                            return hideMappedMappingTerms &&
-                              mappingTermIsMapped(term) ? (
-                              ""
-                            ) : (
-                              <TermCard
-                                key={term.id}
-                                term={term.mapped_term}
-                                onClick={onMappingTermClick}
-                                editEnabled={false}
-                                isMapped={mappingTermIsMapped}
-                                origin={mapping.origin}
-                              />
-                            );
-                          }
-                        )}
-                      </TermCardsContainer>
-
-                      {/* NOT SELECTED TERMS */}
-                      {filteredMappingTerms({ pickSelected: false }).map(
-                        (term) => {
-                          return hideMappedMappingTerms &&
-                            mappingTermIsMapped(term) ? (
+                        {filteredMappingSelectedTerms({
+                          pickSelected: true,
+                        }).map((term) => {
+                          return hideMappedSelectedTerms &&
+                            selectedTermIsMapped(term) ? (
                             ""
                           ) : (
                             <TermCard
                               key={term.id}
-                              term={term.mapped_term}
-                              onClick={onMappingTermClick}
+                              term={term}
+                              onClick={onSelectedTermClick}
                               editEnabled={false}
-                              isMapped={mappingTermIsMapped}
+                              isMapped={selectedTermIsMapped}
                               origin={mapping.origin}
+                              alwaysEnabled={true}
                             />
                           );
-                        }
-                      )}
+                        })}
+                      </TermCardsContainer>
+
+                      {/* NOT SELECTED TERMS */}
+                      {filteredMappingSelectedTerms({
+                        pickSelected: false,
+                      }).map((term) => {
+                        return hideMappedSelectedTerms &&
+                          selectedTermIsMapped(term) ? (
+                          ""
+                        ) : (
+                          <TermCard
+                            key={term.id}
+                            term={term}
+                            onClick={onSelectedTermClick}
+                            editEnabled={false}
+                            isMapped={selectedTermIsMapped}
+                            origin={mapping.origin}
+                            alwaysEnabled={true}
+                          />
+                        );
+                      })}
                       {/* END NOT SELECTED TERMS */}
                     </div>
                   </div>

@@ -30,7 +30,7 @@ const App = () => {
         return;
       }
       /// If we have something to change
-      if (response.user.logged_in) {
+      if (response.loggedIn) {
         dispatch(doLogin());
         dispatch(setUser(response.user));
       }

@@ -12,6 +12,7 @@ class Mapping < ApplicationRecord
   belongs_to :specification
   belongs_to :spine, foreign_key: "spine_id", class_name: :Specification
   has_many :terms, class_name: :MappingTerm
+  has_and_belongs_to_many :selected_terms, join_table: :mapping_selected_terms, class_name: :Term
   validates :name, presence: true
 
   # The possible status of a mapping

@@ -45,8 +45,8 @@ const MappingTermsHeaders = (props) => {
           }}
         >
           <ProgressReportBar
-            maxValue={props.mappingTerms.length}
-            currentValue={props.mappedMappingTerms.length}
+            maxValue={props.mappingSelectedTerms.length}
+            currentValue={props.mappedSelectedTerms.length}
             messageReport="Mapped"
           />
         </div>
@@ -58,8 +58,8 @@ const MappingTermsHeaders = (props) => {
             type="text"
             className="form-control"
             placeholder="Find Element / Property"
-            value={props.mappingTermsInputValue}
-            onChange={props.filterMappingTermsOnChange}
+            value={props.mappingSelectedTermsInputValue}
+            onChange={props.filterMappingSelectedTermsOnChange}
           />
         </div>
       </div>

@@ -6,7 +6,7 @@ const SpineTermDropZone = (props) => {
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: ItemTypes.BOXSET,
     drop: () => ({
-      uri: props.term.uri,
+      id: props.term.id,
     }),
     collect: (monitor) => ({
       isOver: monitor.isOver(),

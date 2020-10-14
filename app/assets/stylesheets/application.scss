@@ -74,6 +74,11 @@ a:hover {
   min-height: 10rem;
 }
 
+.hover-col-primary:hover{
+  background-color: $primary-color;
+  color: $foreground-color;
+}
+
 /* Main view Styles */
 
 .bg-col-secondary {
@@ -111,6 +116,12 @@ a:hover {
 
 .col-header {
   min-height: 10vw;
+}
+
+.float-over {
+  position: absolute !important;
+  width: 90%;
+  z-index: 3;
 }
 
 /* Scrollbar */

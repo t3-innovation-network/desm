@@ -11,6 +11,7 @@ import { Controlled as CodeMirror } from "react-codemirror2";
 import fetchVocabularies from "../../services/fetchVocabularies";
 import rawTerm from "./rawTerm";
 import AlertNotice from "../shared/AlertNotice";
+import ExpandableOptions from "../shared/ExpandableOptions";
 
 export default class EditTerm extends Component {
   /**
@@ -42,10 +43,53 @@ export default class EditTerm extends Component {
   };
 
   /**
+   * Prepare the domains of a term to be listed as options for the expandable component
+   *
+   * @param {Array} domains
+   */
+  domainsAsOptions = (domains) => {
+    return domains
+      ? domains.map((domain) => {
+          return {
+            id: domain,
+            name: domain,
+          };
+        })
+      : [];
+  };
+
+  /**
+   * Prepare the domains of a term to be listed as options for the expandable component
+   *
+   * @param {Array} domains
+   */
+  rangeAsOptions = (range) => {
+    return range
+      ? range.map((rng) => {
+          return {
+            id: rng,
+            name: rng,
+          };
+        })
+      : [];
+  };
+
+  /**
    * Domain change
    */
   handleDomainChange = (val) => {
-    // @todo: implement domain change logic
+    let tempTerm = this.state.term;
+    tempTerm.property.selected_domain = val;
+    this.setState({ term: tempTerm });
+  };
+
+  /**
+   * Range change
+   */
+  handleRangeChange = (val) => {
+    let tempTerm = this.state.term;
+    tempTerm.property.selected_range = val;
+    this.setState({ term: tempTerm });
   };
 
   /**
@@ -290,45 +334,32 @@ export default class EditTerm extends Component {
 
                     <div className="form-group">
                       <label>Domain</label>
-                      <div className="card mb-2 has-scrollbar scrollbar desm-check-container-sm">
-                        <div className="card-body">
-                          <div className="desm-radio">
-                            {this.state.term.property.domain &&
-                              this.state.term.property.domain.map((dom) => {
-                                return (
-                                  <div
-                                    className={"desm-radio-primary"}
-                                    key={dom}
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      value={dom}
-                                      id={dom}
-                                      name="vocabularies[]"
-                                      onChange={(e) =>
-                                        this.handleDomainChange(e.target.value)
-                                      }
-                                      disabled={true}
-                                    />
-                                    <label htmlFor={dom}>{dom}</label>
-                                  </div>
-                                );
-                              })}
-                          </div>
-                        </div>
-                      </div>
+
+                      <ExpandableOptions
+                        options={this.domainsAsOptions(
+                          this.state.term.property.domain
+                        )}
+                        selectedOption={this.state.term.property.domain.find(
+                          (d) => d === this.state.term.property.selected_domain
+                        )}
+                        onClose={(domain) => this.handleDomainChange(domain.id)}
+                      />
+
                     </div>
 
                     <div className="form-group">
                       <label>Range</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="range"
-                        value={this.state.term.property.range || ""}
-                        onChange={(e) => this.handlePropertyChange(e)}
-                        placeholder="Datatype"
+
+                      <ExpandableOptions
+                        options={this.rangeAsOptions(
+                          this.state.term.property.range
+                        )}
+                        selectedOption={this.state.term.property.range.find(
+                          (r) => r === this.state.term.property.selected_range
+                        )}
+                        onClose={(range) => this.handleRangeChange(range.id)}
                       />
+
                     </div>
 
                     <div className="form-group">

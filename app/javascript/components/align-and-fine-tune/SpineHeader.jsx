@@ -41,8 +41,8 @@ const SpineHeader = (props) => {
           }}
         >
           <ProgressReportBar
-            maxValue={props.mappingTerms.length}
-            currentValue={props.mappedMappingTerms.length}
+            maxValue={props.mappingSelectedTerms.length}
+            currentValue={props.mappedSelectedTerms.length}
             messageReport="Mapped"
           />
         </div>

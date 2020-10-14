@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_01_204710) do
+ActiveRecord::Schema.define(version: 2020_10_13_112043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,13 +46,28 @@ ActiveRecord::Schema.define(version: 2020_10_01_204710) do
     t.index ["uri"], name: "index_domains_on_uri", unique: true
   end
 
+  create_table "mapping_selected_terms", force: :cascade do |t|
+    t.bigint "mapping_id"
+    t.bigint "term_id"
+    t.index ["mapping_id", "term_id"], name: "index_mapping_selected_terms_on_mapping_id_and_term_id", unique: true
+    t.index ["mapping_id"], name: "index_mapping_selected_terms_on_mapping_id"
+    t.index ["term_id"], name: "index_mapping_selected_terms_on_term_id"
+  end
+
+  create_table "mapping_term_mapped_terms", force: :cascade do |t|
+    t.bigint "mapping_term_id"
+    t.bigint "term_id"
+    t.index ["mapping_term_id", "term_id"], name: "index_mapping_term_mapped_terms_on_mapping_term_id_and_term_id", unique: true
+    t.index ["mapping_term_id"], name: "index_mapping_term_mapped_terms_on_mapping_term_id"
+    t.index ["term_id"], name: "index_mapping_term_mapped_terms_on_term_id"
+  end
+
   create_table "mapping_terms", force: :cascade do |t|
     t.string "uri"
     t.text "comment"
     t.bigint "mapping_id", null: false
     t.bigint "predicate_id"
     t.integer "spine_term_id"
-    t.integer "mapped_term_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["mapping_id"], name: "index_mapping_terms_on_mapping_id"
@@ -95,12 +110,14 @@ ActiveRecord::Schema.define(version: 2020_10_01_204710) do
     t.string "label"
     t.text "comment"
     t.jsonb "domain"
-    t.string "range"
+    t.jsonb "range"
     t.bigint "term_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "uri"
     t.string "path"
+    t.string "selected_domain"
+    t.string "selected_range"
     t.index ["term_id"], name: "index_properties_on_term_id"
   end
 
@@ -162,6 +179,10 @@ ActiveRecord::Schema.define(version: 2020_10_01_204710) do
   add_foreign_key "assignments", "roles"
   add_foreign_key "assignments", "users"
   add_foreign_key "domains", "domain_sets"
+  add_foreign_key "mapping_selected_terms", "mappings"
+  add_foreign_key "mapping_selected_terms", "terms"
+  add_foreign_key "mapping_term_mapped_terms", "mapping_terms"
+  add_foreign_key "mapping_term_mapped_terms", "terms"
   add_foreign_key "mapping_terms", "mappings"
   add_foreign_key "mapping_terms", "predicates"
   add_foreign_key "mappings", "specifications"

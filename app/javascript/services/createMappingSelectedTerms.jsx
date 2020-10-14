@@ -1,8 +1,8 @@
 import apiRequest from "./api/apiRequest";
 
-const createMappingTerms = async (data) => {
+const createMappingSelectedTerms = async (data) => {
   return await apiRequest({
-    url: "/api/v1/mappings/terms",
+    url: "/api/v1/mappings/selected_terms",
     method: "post",
     payload: {
       terms: data.terms,
@@ -11,4 +11,4 @@ const createMappingTerms = async (data) => {
   });
 };
 
-export default createMappingTerms;
+export default createMappingSelectedTerms;
