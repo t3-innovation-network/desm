@@ -66,7 +66,7 @@ class Api::V1::MappingsController < ApplicationController
   #   to the one passed in params
   ###
   def show_terms
-    render json: @mapping.terms.order(:uri), include: [:mapped_terms]
+    render json: @mapping.terms.order(:uri), include: {mapped_terms: {include: %i[property]}}
   end
 
   ###

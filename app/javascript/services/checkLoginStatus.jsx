@@ -11,10 +11,10 @@ const checkLoginStatus = async (props) => {
     }
     /// If we have no session cookie and the api tells us that the user is authenticated,
     /// let's update that information
-    if (!props.loggedIn && !_.isUndefined(response.session)) {
+    if (!props.loggedIn && response.session.logged_in) {
       return {
         loggedIn: true,
-        user: response.session,
+        user: response.session.user,
       };
     }
     /// If we have a session cookie, but the api responds us telling that there's no user

@@ -190,7 +190,7 @@ const MappingToDomains = (props) => {
   };
 
   /**
-   * Button to accept the mapping, create teh mapping terms and go to the next screen
+   * Button to accept the mapping, create the mapping terms and go to the next screen
    */
   const DoneDomainMapping = () => {
     return (

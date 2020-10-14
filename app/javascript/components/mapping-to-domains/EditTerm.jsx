@@ -217,7 +217,7 @@ export default class EditTerm extends Component {
         onRequestClose={this.closeRequested}
         onAfterOpen={this.fetchTermFromApi}
         contentLabel="Edit Term"
-        style={ModalStyles}
+        style={{ ...ModalStyles }}
         shouldCloseOnEsc={true}
         shouldCloseOnOverlayClick={true}
       >
@@ -344,7 +344,6 @@ export default class EditTerm extends Component {
                         )}
                         onClose={(domain) => this.handleDomainChange(domain.id)}
                       />
-
                     </div>
 
                     <div className="form-group">
@@ -359,7 +358,6 @@ export default class EditTerm extends Component {
                         )}
                         onClose={(range) => this.handleRangeChange(range.id)}
                       />
-
                     </div>
 
                     <div className="form-group">

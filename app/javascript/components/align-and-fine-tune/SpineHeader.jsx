@@ -2,6 +2,17 @@ import React from "react";
 import ProgressReportBar from "../shared/ProgressReportBar";
 
 const SpineHeader = (props) => {
+  const {
+    domain,
+    hideMappedSpineTerms,
+    setHideMappedSpineTerms,
+    mappingSelectedTerms,
+    mappedSelectedTerms,
+    spineTermsInputValue,
+    filterSpineTermsOnChange,
+    handleAddSynthetic,
+  } = props;
+
   return (
     <div className="border-bottom desm-col-header">
       <div className="row mb-2">
@@ -12,7 +23,7 @@ const SpineHeader = (props) => {
           <div className="card">
             <div className="card-header">
               <strong>Map to:</strong>
-              {" " + props.domain}
+              {" " + domain}
             </div>
           </div>
         </div>
@@ -22,16 +33,13 @@ const SpineHeader = (props) => {
               type="checkbox"
               className="custom-control-input desm-custom-control-input"
               id="hideSpineElems"
-              value={props.hideMappedSpineTerms}
-              onChange={() =>
-                props.setHideMappedSpineTerms(!props.hideMappedSpineTerms)
-              }
+              value={hideMappedSpineTerms}
+              onChange={() => setHideMappedSpineTerms(!hideMappedSpineTerms)}
             />
             <label className="custom-control-label" htmlFor="hideSpineElems">
               Hide Mapped Elements
             </label>
           </div>
-
         </div>
         <div
           className="col-2"
@@ -41,8 +49,8 @@ const SpineHeader = (props) => {
           }}
         >
           <ProgressReportBar
-            maxValue={props.mappingSelectedTerms.length}
-            currentValue={props.mappedSelectedTerms.length}
+            maxValue={mappingSelectedTerms.length}
+            currentValue={mappedSelectedTerms.length}
             messageReport="Mapped"
           />
         </div>
@@ -55,14 +63,20 @@ const SpineHeader = (props) => {
               type="text"
               className="form-control"
               placeholder="Find Element / Property"
-              value={props.spineTermsInputValue}
-              onChange={props.filterSpineTermsOnChange}
+              value={spineTermsInputValue}
+              onChange={filterSpineTermsOnChange}
             />
           </div>
         </div>
         <div className="col-5"></div>
         <div className="col-2">
-          <button className="btn btn-block btn-dark">+ Add Synthetic</button>
+          <button
+            className="btn btn-block btn-dark"
+            onClick={handleAddSynthetic}
+            disabled={props.addingSynthetic}
+          >
+            + Add Synthetic
+          </button>
         </div>
       </div>
     </div>

@@ -34,7 +34,7 @@ const Routes = (props) => {
 
         <ProtectedRoute
           exact
-          path="/specifications"
+          path="/mappings"
           allowNonAdmins={true}
           component={SpecList} />
 

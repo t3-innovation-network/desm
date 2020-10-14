@@ -14,4 +14,16 @@ class MappingTerm < ApplicationRecord
   has_and_belongs_to_many :mapped_terms, join_table: :mapping_term_mapped_terms, class_name: :Term
 
   validates :uri, presence: true
+
+  ###
+  # @description: Associate the terms to this alignment. NOTE: This method will replace the previous
+  #   associated terms, so if you need to add terms, maintaining the previous oines, include the
+  #   previous ids in the params.
+  #
+  # @param [Array] mapped_term_ids: A collection of ids representing the terms that are
+  #   goint to be mapped to this alignment
+  ###
+  def update_mapped_terms ids
+    self.mapped_term_ids = ids
+  end
 end
