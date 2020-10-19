@@ -1,7 +1,7 @@
 # T3 Innovation Network Data Schema Converter
 
-This application is meant to serve as a way to reach interoperability between different data schemas.
-There are different official data schemas like CEDS, Dublin Core, among others. With this application it's possible to convert metadata from one specification to another.
+This application provides the means to map (crosswalk) data specifications (standards) using predefined sets of mapping predicates that indicate the degree of equivalency between mapped property pairs, or the lack of such equivalency. The mapping outcomes of the tool will support data interoperability between data specifications based on the probabilities of matching or closely matching semantics.
+
 
 ## Installation (development)
 
