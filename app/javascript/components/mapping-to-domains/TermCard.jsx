@@ -108,6 +108,7 @@ export default class TermCard extends Component {
         cardHeaderColStyle={disableClick ? "" : (selected ? "" : "cursor-pointer")}
         handleOnClick={disableClick ? null : this.handleTermClick }
         headerContent={this.termHeaderContent()}
+        observeOutside={true}
         bodyContent={
           <div className="card-body pt-0 pb-0">
             <p>{term.property.comment}</p>

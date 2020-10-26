@@ -202,6 +202,7 @@ const SpineTermRow = (props) => {
           <Collapsible
             headerContent={<strong>{term.name}</strong>}
             cardStyle={"with-shadow mb-2"}
+            observeOutside={false}
             bodyContent={
               <React.Fragment>
                 <p>{term.property.comment}</p>
@@ -220,6 +221,7 @@ const SpineTermRow = (props) => {
               headerContent={predicateSelectedCard()}
               bodyContent={alignmentOptions()}
               cardStyle={"with-shadow mb-2"}
+              observeOutside={true}
               bodyStyle={"p-0"}
               cardHeaderStyle={"border-bottom"}
             />
@@ -246,12 +248,15 @@ const SpineTermRow = (props) => {
                   headerContent={<strong>{term.name}</strong>}
                   cardStyle={"with-shadow mb-2"}
                   key={term.id}
+                  observeOutside={false}
                   bodyContent={
                     <React.Fragment>
                       <p>{term.property.comment}</p>
                       <p>
                         Origin:
-                        <span className="col-primary">{" " + props.origin}</span>
+                        <span className="col-primary">
+                          {" " + props.origin}
+                        </span>
                       </p>
                     </React.Fragment>
                   }

@@ -2,7 +2,7 @@
 
 ###
 # @description: Represents a mapping term, which is each of terms resulting of
-#   a merge between 2 specifications.
+#   a merge between 2 specifications. It's also called an "Alignment"
 #
 #   It's created when the user selects a term from the specification to map
 #   against the spine.
