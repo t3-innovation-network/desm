@@ -10,11 +10,15 @@ const UserInfo = () => {
     <React.Fragment>
       {isLoggedIn ? (
         <React.Fragment>
-          <Link to="#" className="nav-link">
+          <Link to="#" className="nav-link col-on-primary">
             <i className="fas fa-user mr-2"></i>
-            {user &&
-              user.organization &&
-              user.fullname + " - " + user.organization.name}
+            {user && user.organization &&
+              (
+                <span>
+                  { user.fullname + " - " + user.organization.name }
+                </span>
+              )
+            }
           </Link>
         </React.Fragment>
       ) : (

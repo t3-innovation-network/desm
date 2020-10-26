@@ -11,7 +11,7 @@ class Mapping < ApplicationRecord
   belongs_to :user
   belongs_to :specification
   belongs_to :spine, foreign_key: "spine_id", class_name: :Specification
-  has_many :terms, class_name: :MappingTerm
+  has_many :terms, class_name: :MappingTerm, dependent: :destroy
   has_and_belongs_to_many :selected_terms, join_table: :mapping_selected_terms, class_name: :Term
   validates :name, presence: true
 
@@ -32,6 +32,14 @@ class Mapping < ApplicationRecord
   end
 
   ###
+  # @description: The organization that originated this the spine
+  # @return [String]
+  ###
+  def spine_origin
+    spine.user.organization.name
+  end
+
+  ###
   # @description: The domain that this mapping is for. It's taken from the
   #   related specification
   # @return [String]
@@ -45,6 +53,6 @@ class Mapping < ApplicationRecord
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
   def as_json(options={})
-    super options.merge(methods: %i[uploaded? mapped? in_progress? origin domain])
+    super options.merge(methods: %i[uploaded? mapped? in_progress? origin spine_origin domain])
   end
 end

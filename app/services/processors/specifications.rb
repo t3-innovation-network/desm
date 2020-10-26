@@ -177,7 +177,7 @@ module Processors
         spec = JSON.parse(spec)
 
         spec["@graph"].each do |node|
-          create_one_term(specification, node)
+          create_one_term(specification, node) unless node["@type"] == "rdfs:Class"
         end
       end
     end

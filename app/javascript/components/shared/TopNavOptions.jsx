@@ -8,7 +8,7 @@ const TopNavOptions = (props) => {
       <ul className="navbar-nav mr-auto">
         {props.viewMappings && (
           <li className="nav-item current-page mt-0 mb-1 ml-0 ml-lg-3 mr-0 mr-lg-3">
-            <Link to="/specifications" className="nav-link nav-title-highlited">
+            <Link to="/mappings" className="nav-link nav-title-highlited">
               View Mappings
             </Link>
           </li>

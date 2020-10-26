@@ -1,6 +1,15 @@
 import React, { Component } from "react";
-import { Animated } from "react-animated-css";
+import { SlideInDown, FadeIn } from "./Animations.jsx";
+import OutsideAlerter from "./OutsideAlerter.jsx";
 
+/**
+ * Props:
+ * @param {Boolean} expanded
+ * @param {String} selectedOption
+ * @param {Function} onClose
+ * @param {Function} onExpand
+ * @param {Array} options
+ */
 class ExpandableOptions extends Component {
   state = {
     /**
@@ -8,25 +17,17 @@ class ExpandableOptions extends Component {
      */
     expanded: this.props.expanded || false,
     /**
-     * The status of the component's animation when it's shrinked
-     */
-    shrinkedAnimationisVisible: true,
-    /**
-     * The status of the option's wrapper animation
-     */
-    expandedAnimationisVisible: false,
-    /**
-     * The card animation duration in miliseconds
-     */
-    shrinkedAnimationDuration: 250,
-    /**
-     * The term body animation duration in miliseconds
-     */
-    expandedAnimationDuration: 500,
-    /**
      * The options currently selected
      */
     selectedOption: this.props.selectedOption,
+  };
+
+  /**
+   * Shrinks the component without any side effect otr changes.
+   * Used for click outside handler. We want this controls to shrink if the user click outside it
+   */
+  handleShrink = () => {
+    this.setState({ expanded: false });
   };
 
   /**
@@ -37,24 +38,17 @@ class ExpandableOptions extends Component {
    * @param {Object} option
    */
   handleOptionClick = (option) => {
-    const { expandedAnimationDuration } = this.state;
+    const { onClose } = this.props;
     // Trigger animation
-    this.setState(
-      { expandedAnimationisVisible: false, selectedOption: option.name },
-      () => {
-        // Await until the animation finishes. Otherwise the element just roughly dissapears
-        setTimeout(() => {
-          this.setState({ shrinkedAnimationisVisible: true });
+    this.setState({ selectedOption: option.name }, () => {
+      // Change visibility
+      this.setState({ expanded: false });
 
-          // Change visibility
-          this.setState({ expanded: false });
-        }, expandedAnimationDuration);
+      // Execute the callback, if any.
+      if (onClose) {
+        onClose(option);
       }
-    );
-
-    if (this.props.onClose) {
-      this.props.onClose(option);
-    }
+    });
   };
 
   /**
@@ -62,44 +56,24 @@ class ExpandableOptions extends Component {
    * It also executes the callback function 'onExpand' passed in props, if any.
    */
   handleExpand = () => {
-    const { shrinkedAnimationDuration } = this.state;
-
-    // Trigger animation
-    this.setState({ expandedAnimationisVisible: true }, () => {
-      // Await until the animation finishes. Otherwise the element just roughly dissapears
-      setTimeout(() => {
-        this.setState({ shrinkedAnimationisVisible: false });
-
-        // Change visibility
-        this.setState({ expanded: true });
-      }, shrinkedAnimationDuration);
+    const { onExpand } = this.props;
+    // Change visibility
+    this.setState({ expanded: true }, () => {
+      // Execute the callback, if any.
+      if (onExpand) {
+        onExpand();
+      }
     });
-
-    if (this.props.onExpand) {
-      this.props.onExpand();
-    }
   };
 
   render() {
-    const {
-      expanded,
-      expandedAnimationDuration,
-      expandedAnimationisVisible,
-      shrinkedAnimationDuration,
-      shrinkedAnimationisVisible,
-      selectedOption,
-    } = this.state;
+    const { expanded, selectedOption } = this.state;
+    const { options } = this.props;
+
     return (
-      <React.Fragment>
+      <OutsideAlerter onOutsideAlert={() => this.handleShrink()}>
         {expanded ? (
-          <Animated
-            animationIn="slideInDown"
-            animationOut="slideOutUp"
-            animationInDuration={expandedAnimationDuration}
-            animationOutDuration={expandedAnimationDuration}
-            isVisible={expandedAnimationisVisible}
-            className="float-over"
-          >
+          <SlideInDown className="float-over">
             <div className="card with-shadow">
               {this.props.options.map((option) => {
                 return (
@@ -113,31 +87,26 @@ class ExpandableOptions extends Component {
                 );
               })}
             </div>
-          </Animated>
+          </SlideInDown>
         ) : (
-          <Animated
-            animationIn="fadeIn"
-            animationOut="slideOutUp"
-            animationInDuration={shrinkedAnimationDuration}
-            animationOutDuration={shrinkedAnimationDuration}
-            isVisible={shrinkedAnimationisVisible}
-          >
+          <FadeIn>
             <div className="card with-shadow">
               <div
-                className={"card-header" + (selectedOption ? " pb-0" : " pb-4")}
-                onClick={() => this.handleExpand()}
+                className={
+                  "card-header cursor-pointer" +
+                  (selectedOption ? " pb-0" : " pb-4")
+                }
+                onClick={this.handleExpand}
               >
                 <p>
                   <strong>{selectedOption}</strong>
-                  <span className="cursor-pointer">
-                    <i className="fas fa-angle-down float-right"></i>
-                  </span>
+                  <i className="fas fa-angle-down float-right"></i>
                 </p>
               </div>
             </div>
-          </Animated>
+          </FadeIn>
         )}
-      </React.Fragment>
+      </OutsideAlerter>
     );
   }
 }

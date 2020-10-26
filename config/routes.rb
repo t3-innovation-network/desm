@@ -14,10 +14,12 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :domains, only: [:index, :show]
       resources :mappings, only: [:create, :show, :index, :update]
+      resources :mapping_terms, only: [:update]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :predicates, only: [:index]
       resources :roles, only: [:index]
       resources :specifications, only: [:create, :show]
+      resources :spine_terms, only: [:create]
       resources :terms, only: [:show, :update, :destroy]
       resources :vocabularies, only: [:index, :create]
 
