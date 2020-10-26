@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_13_112043) do
+ActiveRecord::Schema.define(version: 2020_10_26_141752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,8 +70,10 @@ ActiveRecord::Schema.define(version: 2020_10_13_112043) do
     t.integer "spine_term_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "vocabulary_id"
     t.index ["mapping_id"], name: "index_mapping_terms_on_mapping_id"
     t.index ["predicate_id"], name: "index_mapping_terms_on_predicate_id"
+    t.index ["vocabulary_id"], name: "index_mapping_terms_on_vocabulary_id"
   end
 
   create_table "mappings", force: :cascade do |t|
