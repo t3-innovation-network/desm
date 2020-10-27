@@ -1,22 +1,7 @@
 import React from "react";
-import { useDrop } from "react-dnd";
-import { ItemTypes } from "./ItemTypes";
+import DropZone from "../shared/DropZone";
 
 const DomainCard = (props) => {
-  const [{ canDrop, isOver }, drop] = useDrop({
-    accept: ItemTypes.BOXSET,
-    drop: () => ({
-      name: props.domain.name,
-      uri: props.domain.id,
-    }),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
-  });
-
-  const isActive = canDrop && isOver;
-
   return (
     <div
       className={
@@ -34,26 +19,13 @@ const DomainCard = (props) => {
           </div>
           <div className="col-8">
             {/* Only accept mappingTerms if the domain has a spine */}
-            <div
-              className={
-                "card domain-drag-box pl-5 pr-5 pt-2 pb-2" +
-                (isActive ? " dnd-active" : " border-dotted")
-              }
-              ref={props.domain.spine_id ? drop : null}
-            >
-              {isActive ? (
-                <p className="mb-0 fully-centered">
-                  {"Add " +
-                    props.selectedTermsCount +
-                    " Record" +
-                    (props.selectedTermsCount > 1 ? "s" : "")}
-                </p>
-              ) : (
-                <p className="mb-0 fully-centered">
-                  Drag elements or groups of elements to this domain
-                </p>
-              )}
-            </div>
+            <DropZone
+              draggable={{
+                name: props.domain.name,
+                uri: props.domain.id,
+              }}
+              selectedCount={props.selectedTermsCount}
+            />
           </div>
         </div>
       </div>

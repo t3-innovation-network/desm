@@ -6,7 +6,7 @@ import Collapsible from "../shared/Collapsible";
 import ExpandableOptions from "../shared/ExpandableOptions";
 import Loader from "../shared/Loader";
 import ModalStyles from "../shared/ModalStyles";
-import ConceptDropZone from "./ConceptDropZone";
+import DropZone from "../shared/DropZone";
 
 /**
  * Props
@@ -140,11 +140,11 @@ const MatchVocabulary = (props) => {
       onRequestClose={onRequestClose}
       contentLabel="Match Controlled Vocabulary"
       style={ModalStyles}
-      shouldCloseOnEsc={true}
-      shouldCloseOnOverlayClick={true}
+      shouldCloseOnEsc={false}
+      shouldCloseOnOverlayClick={false}
     >
-      <div className="card">
-        <div className="card-header no-color-header border-bottom">
+      <div className="card p-5">
+        <div className="card-header no-color-header border-bottom pb-3">
           <div className="row">
             <div className="col-6">
               <h3>Match Controlled Vocabulary</h3>
@@ -167,15 +167,19 @@ const MatchVocabulary = (props) => {
           ) : (
             <Fragment>
               <div className="row mb-3">
-                <div className="col-8"><h4>T3 Spine</h4></div>
-                <div className="col-4"><h4>{mappingOrigin}</h4></div>
+                <div className="col-8">
+                  <h4>T3 Spine</h4>
+                </div>
+                <div className="col-4">
+                  <h4>{mappingOrigin}</h4>
+                </div>
               </div>
               <div className="row">
                 <div className="col-8">
                   {/* Spine vocabulary concepts */}
                   {spineVocabulary.concepts.map((concept) => {
                     return (
-                      <div className="row mb-2">
+                      <div className="row mb-2" key={concept.id}>
                         <div className="col-4">
                           <Collapsible
                             headerContent={<strong>{concept.name}</strong>}
@@ -187,7 +191,7 @@ const MatchVocabulary = (props) => {
                                 <p>
                                   Origin:
                                   <span className="col-primary">
-                                    {" " + props.spineOrigin}
+                                    {" " + spineOrigin}
                                   </span>
                                 </p>
                               </React.Fragment>
@@ -206,9 +210,10 @@ const MatchVocabulary = (props) => {
                         </div>
 
                         <div className="col-4">
-                          <ConceptDropZone
-                            concept={concept}
+                          <DropZone
+                            draggable={{ id: concept.id }}
                             selectedCount={1}
+                            textStyle={{ fontSize: "12px" }}
                           />
                         </div>
                       </div>
@@ -219,7 +224,7 @@ const MatchVocabulary = (props) => {
                   {/* Mapping vocabulary concepts */}
                   {mappedTermVocabulary.concepts.map((concept) => {
                     return (
-                      <div className="row">
+                      <div className="row" key={concept.id}>
                         <div className="col">
                           <Collapsible
                             headerContent={<strong>{concept.name}</strong>}

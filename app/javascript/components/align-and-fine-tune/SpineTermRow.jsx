@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import SpineTermDropZone from "../mapping-to-domains/SpineTermDropZone";
 import ExpandableOptions from "../shared/ExpandableOptions";
 import EditAlignment from "./EditAlignment";
 import { toastr as toast } from "react-redux-toastr";
 import Collapsible from "../shared/Collapsible";
 import MatchVocabulary from "./MatchVocabulary";
+import DropZone from "../shared/DropZone";
 
 /**
  * Props:
@@ -320,9 +320,9 @@ const SpineTermRow = (props) => {
             );
           })}
           {!props.mappedTermsToSpineTerm(term).length && (
-            <SpineTermDropZone
-              term={term}
-              selectedTermsCount={props.selectedMappingTerms.length}
+            <DropZone
+              selectedCount={props.selectedMappingTerms.length}
+              draggable={{id: term.id}}
             />
           )}
         </div>
