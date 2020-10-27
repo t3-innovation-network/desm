@@ -17,6 +17,13 @@ class Api::V1::VocabulariesController < ApplicationController
   end
 
   ###
+  # @description: Returns a specific vocabulary
+  ###
+  def show
+    render json: @vocabulary
+  end
+
+  ###
   # @description: Creates a vocabulary
   ###
   def create
@@ -50,6 +57,6 @@ class Api::V1::VocabulariesController < ApplicationController
   # @return [ActionController::Parameters]
   ###
   def permitted_params
-    params.require(:vocabulary).permit(:name, :content)
+    params.require(:vocabulary).permit(:name, {content: {}})
   end
 end

@@ -65,7 +65,7 @@ export default class Collapsible extends Component {
     } = this.props;
 
     return (
-      <OutsideAlerter onOutsideAlert={observeOutside ? () => this.hideBody() : null}>
+      <OutsideAlerter onOutsideAlert={observeOutside ? () => this.hideBody() : () => {}}>
         <FadeIn>
           <div className={"card" + (cardStyle ? " " + cardStyle : "")}>
             <div

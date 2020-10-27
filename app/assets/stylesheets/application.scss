@@ -7,7 +7,7 @@
   src: url('../fonts/proxima-light/Proxima Nova Condensed Light.otf')
 }
 
-html,body,.container-fluid,.row,.wrapper,body>div {
+html,body,.container-fluid,.container-fluid>.row,.wrapper,body>div {
   height:100%;
 }
 
@@ -77,6 +77,10 @@ a:hover {
 .hover-col-primary:hover{
   background-color: $primary-color;
   color: $foreground-color;
+}
+
+.underlined {
+  text-decoration: underline;
 }
 
 /* Main view Styles */

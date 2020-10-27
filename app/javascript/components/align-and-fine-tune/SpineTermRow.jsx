@@ -4,6 +4,7 @@ import ExpandableOptions from "../shared/ExpandableOptions";
 import EditAlignment from "./EditAlignment";
 import { toastr as toast } from "react-redux-toastr";
 import Collapsible from "../shared/Collapsible";
+import MatchVocabulary from "./MatchVocabulary";
 
 /**
  * Props:
@@ -19,7 +20,7 @@ const SpineTermRow = (props) => {
   /**
    * The data passed in props
    */
-  const { term, predicates } = props;
+  const { term, predicates, spineOrigin, origin } = props;
 
   /**
    * The mapping term (alignment) representing this row
@@ -41,6 +42,17 @@ const SpineTermRow = (props) => {
    * the user selects an option from the alginment dropdown after selecting a predicate
    */
   const [editing, setEditing] = useState(false);
+
+  /**
+   * Whether we are matching vocabulary for the alignment or not. Set to true when
+   * the user clicks on the vocabulary link on the mapped term of this alignment
+   */
+  const [matchingVocab, setMatchingVocab] = useState(false);
+
+  /**
+   * The term we are using to match vocabularies against the spine
+   */
+  const [mappedTermMatching, setMappedTermMatching] = useState(null);
 
   /**
    * If the mapping term (alignment) has a predicate selected, lets find it
@@ -174,10 +186,25 @@ const SpineTermRow = (props) => {
   };
 
   /**
-   * Closes the modal window and cancel editing the alignment
+   * MAnages the actions when a user clicks to open the match vocabulary
    */
-  const onRequestClose = () => {
+  const handleMatchVocabularyClick = (mappedTerm) => {
+    setMappedTermMatching(mappedTerm);
+    setMatchingVocab(true);
+  };
+
+  /**
+   * Closes the modal window for editing the alignment and cancel editing the alignment
+   */
+  const onRequestEditClose = () => {
     setEditing(false);
+  };
+
+  /**
+   * Closes the modal window for matching vocabularies
+   */
+  const onRequestVocabsClose = () => {
+    setMatchingVocab(false);
   };
 
   return (
@@ -194,8 +221,26 @@ const SpineTermRow = (props) => {
             (predicate) => predicate.id === mappingTerm.predicate_id
           )}
           mode={editMode}
-          onRequestClose={onRequestClose}
+          onRequestClose={onRequestEditClose}
         />
+      )}
+
+      {term.vocabularies &&
+      term.vocabularies.length &&
+      props
+        .mappedTermsToSpineTerm(term)
+        .some((mTerm) => mTerm.vocabularies && mTerm.vocabularies.length) ? (
+        <MatchVocabulary
+          modalIsOpen={matchingVocab}
+          onRequestClose={onRequestVocabsClose}
+          mappingOrigin={origin}
+          spineOrigin={spineOrigin}
+          spineTerm={term}
+          mappedTerm={mappedTermMatching}
+          predicatesAsOptions={predicatesAsOptions}
+        />
+      ) : (
+        ""
       )}
       <div className="row mb-2" key={term.id}>
         <div className="col-5">
@@ -208,7 +253,7 @@ const SpineTermRow = (props) => {
                 <p>{term.property.comment}</p>
                 <p>
                   Origin:
-                  <span className="col-primary">{" " + props.spineOrigin}</span>
+                  <span className="col-primary">{" " + spineOrigin}</span>
                 </p>
               </React.Fragment>
             }
@@ -241,29 +286,40 @@ const SpineTermRow = (props) => {
         </div>
 
         <div className="col-4">
-          {props.mappedTermsToSpineTerm(term).length > 0 ? (
-            props.mappedTermsToSpineTerm(term).map((term) => {
-              return (
-                <Collapsible
-                  headerContent={<strong>{term.name}</strong>}
-                  cardStyle={"with-shadow mb-2"}
-                  key={term.id}
-                  observeOutside={false}
-                  bodyContent={
-                    <React.Fragment>
-                      <p>{term.property.comment}</p>
-                      <p>
-                        Origin:
-                        <span className="col-primary">
-                          {" " + props.origin}
-                        </span>
+          {props.mappedTermsToSpineTerm(term).map((term) => {
+            return (
+              <Collapsible
+                headerContent={<strong>{term.name}</strong>}
+                cardStyle={"with-shadow mb-2"}
+                key={term.id}
+                observeOutside={false}
+                bodyContent={
+                  <React.Fragment>
+                    <p>{term.property.comment}</p>
+                    <p>
+                      Origin:
+                      <span className="col-primary">{" " + origin}</span>
+                    </p>
+
+                    {/* Here we take the first vocabulary. This term might have more than only 1 associated,
+                    but we only can match 1 vocabulary to another.  */}
+
+                    {term.vocabularies && term.vocabularies.length ? (
+                      <p
+                        className="col-primary underlined cursor-pointer"
+                        onClick={() => handleMatchVocabularyClick(term)}
+                      >
+                        {term.vocabularies[0].name}
                       </p>
-                    </React.Fragment>
-                  }
-                />
-              );
-            })
-          ) : (
+                    ) : (
+                      ""
+                    )}
+                  </React.Fragment>
+                }
+              />
+            );
+          })}
+          {!props.mappedTermsToSpineTerm(term).length && (
             <SpineTermDropZone
               term={term}
               selectedTermsCount={props.selectedMappingTerms.length}

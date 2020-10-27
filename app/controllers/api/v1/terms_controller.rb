@@ -37,7 +37,7 @@ class Api::V1::TermsController < ApplicationController
   def from_specification
     terms = Specification.find(params[:id]).terms
 
-    render json: terms, include: :property
+    render json: terms, include: %i[property vocabularies]
   end
 
   private

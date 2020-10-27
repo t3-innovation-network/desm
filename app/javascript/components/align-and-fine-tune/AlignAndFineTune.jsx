@@ -159,12 +159,14 @@ const AlignAndFineTune = (props) => {
    * The selected or not selected terms that includes the string typed by the user in the
    * search box.
    */
-  const filteredSpineTerms = _.sortBy((spineTerms
-    .filter((term) => {
+  const filteredSpineTerms = _.sortBy(
+    spineTerms.filter((term) => {
       return term.name
         .toLowerCase()
         .includes(spineTermsInputValue.toLowerCase());
-    })), ["synthetic", "name"]);
+    }),
+    ["synthetic", "name"]
+  );
 
   /**
    * All the terms that are already mapped
@@ -248,17 +250,19 @@ const AlignAndFineTune = (props) => {
 
   /**
    * Update the name of a spine term
-   * 
-   * @param {Integer} spineTermId 
-   * @param {String} name 
+   *
+   * @param {Integer} spineTermId
+   * @param {String} name
    */
   const setSyntheticName = (spineTermId, name) => {
     let tempSpineTerms = spineTerms;
-    let spineTerm = tempSpineTerms.find(sTerm => sTerm.id === spineTermId);
-    spineTerm.name = name;
+    let spineTerm = tempSpineTerms.find((sTerm) => sTerm.id === spineTermId);
 
-    setSpineTerms(tempSpineTerms)
-  }
+    if (spineTerm.synthetic) {
+      spineTerm.name = name;
+      setSpineTerms(tempSpineTerms);
+    }
+  };
 
   /**
    * Action to perform after a mapping term is dropped
@@ -412,12 +416,8 @@ const AlignAndFineTune = (props) => {
    * CAncel adding a synthetic term to the spine
    */
   const handleCancelSynthetic = () => {
-    setMappingTerms(
-      mappingTerms.filter((mt) => !mt.synthetic)
-    );
-    setSpineTerms(
-      spineTerms.filter((st) => !st.synthetic)
-    );
+    setMappingTerms(mappingTerms.filter((mt) => !mt.synthetic));
+    setSpineTerms(spineTerms.filter((st) => !st.synthetic));
     setChangesPerformed(changesPerformed - 1);
     setAddingSynthetic(false);
   };
@@ -442,7 +442,9 @@ const AlignAndFineTune = (props) => {
     }
     let [mappedTerm] = mTerm.mapped_terms;
     let tempUri = mappedTerm.uri + "-synthetic";
-    let spineTerm = spineTerms.find(sTerm => sTerm.id === mTerm.spine_term_id);
+    let spineTerm = spineTerms.find(
+      (sTerm) => sTerm.id === mTerm.spine_term_id
+    );
 
     let response = await createSpineTerm({
       synthetic: {
@@ -494,9 +496,7 @@ const AlignAndFineTune = (props) => {
    */
   const saveAllAlignments = async () => {
     /// Check for synthetic elements and save it if any
-    let synthetics = mappingTerms.filter(
-      (mTerm) => mTerm.synthetic
-    );
+    let synthetics = mappingTerms.filter((mTerm) => mTerm.synthetic);
     let alignments = mappingTerms.filter(
       (mTerm) => !mTerm.synthetic && mTerm.changed
     );
@@ -787,7 +787,9 @@ const AlignAndFineTune = (props) => {
                             isMapped={selectedTermIsMapped}
                             origin={mapping.origin}
                             alwaysEnabled={true}
-                            disableClick={addingSynthetic && selectedMappingTerms.length > 0}
+                            disableClick={
+                              addingSynthetic && selectedMappingTerms.length > 0
+                            }
                           />
                         );
                       })}

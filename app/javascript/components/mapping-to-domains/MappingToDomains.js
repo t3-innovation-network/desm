@@ -308,8 +308,8 @@ const MappingToDomains = (props) => {
 
   /**
    * Use effect with an emtpy array as second parameter, will trigger the 'fetchDataFromAPI'
-   * and also 'fillWithDomains' actions at the 'mounted' event of this functional component
-   * (It's not actually mounted, but it mimics the same action).
+   * action at the 'mounted' event of this functional component (It's not actually mounted,
+   * but it mimics the same action).
    */
   useEffect(() => {
     async function fetchData() {

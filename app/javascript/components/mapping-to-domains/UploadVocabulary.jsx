@@ -94,8 +94,10 @@ const UploadVocabulary = (props) => {
   const handleCreateVocabulary = (event) => {
     if (validateJSON(fileContent)) {
       let data = {
-        name: name,
-        content: fileContent,
+        vocabulary: {
+          name: name,
+          content: JSON.parse(fileContent),
+        }
       };
 
       createVocabulary(data).then((response) => {
