@@ -60,7 +60,6 @@ export default class Collapsible extends Component {
       bodyStyle,
       bodyContent,
       headerContent,
-      handleOnClick,
       observeOutside,
     } = this.props;
 
@@ -79,7 +78,7 @@ export default class Collapsible extends Component {
                     "col-10" +
                     (cardHeaderColStyle ? " " + cardHeaderColStyle : "")
                   }
-                  onClick={handleOnClick}
+                  onClick={this.handleClick}
                 >
                   {headerContent}
                 </div>
