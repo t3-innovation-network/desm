@@ -1,24 +1,25 @@
 import React from "react";
 import { useDrop } from "react-dnd";
-import { ItemTypes } from "../mapping-to-domains/ItemTypes";
 import Pluralize from "pluralize";
 
 /**
  * Props:
  * @param {Object} draggable The element that's going to be dragged
  * @param {Integer} selectedCount The number of elements being dragged
+ * @param {Style} textStyle CSS styles for the text inside
+ * @param {ItemType} itemType The type of item that this box accepts
  */
 const DropZone = (props) => {
   /**
    * Elements from props
    */
-  const { draggable, selectedCount, textStyle } = props;
+  const { draggable, selectedCount, textStyle, itemType } = props;
 
   /**
    * Draggable configuration
    */
   const [{ canDrop, isOver }, drop] = useDrop({
-    accept: ItemTypes.BOXSET,
+    accept: itemType,
     drop: () => draggable,
     collect: (monitor) => ({
       isOver: monitor.isOver(),

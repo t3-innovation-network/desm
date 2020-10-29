@@ -1,5 +1,6 @@
 import React from "react";
 import DropZone from "../shared/DropZone";
+import { ItemTypes } from "./ItemTypes";
 
 const DomainCard = (props) => {
   return (
@@ -24,6 +25,7 @@ const DomainCard = (props) => {
                 name: props.domain.name,
                 uri: props.domain.id,
               }}
+              itemType={ItemTypes.PROPERTIES_SET}
               selectedCount={props.selectedTermsCount}
             />
           </div>

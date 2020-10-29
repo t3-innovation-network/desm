@@ -8,12 +8,13 @@ import TopNavOptions from "../shared/TopNavOptions";
 import TermCard from "./TermCard";
 import DomainCard from "./DomainCard";
 import EditTerm from "./EditTerm";
-import TermCardsContainer from "./TermCardsContainer";
 import fetchSpecification from "../../services/fetchSpecification";
 import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
 import createMappingSelectedTerms from "../../services/createMappingSelectedTerms";
 import { toastr as toast } from "react-redux-toastr";
 import updateMapping from "../../services/updateMapping";
+import Draggable from "../shared/Draggable";
+import { ItemTypes } from "./ItemTypes";
 
 const MappingToDomains = (props) => {
   /**
@@ -119,7 +120,7 @@ const MappingToDomains = (props) => {
   /**
    * Action to perform after a term is dropped
    */
-  const afterDropTerm = (domain) => {
+  const afterDropTerm = () => {
     let tempTerms = selectedTerms;
     tempTerms.forEach((termToMap) => {
       termToMap.mapped = true;
@@ -443,12 +444,12 @@ const MappingToDomains = (props) => {
                       title={terms.length + " elements have been uploaded"}
                       message="Drag your individual elements below to the matching domains on the left to begin mapping your specification"
                     />
-                    <div>
+                    <div className="has-scrollbar scrollbar pr-5">
                       {/* SELECTED TERMS */}
 
-                      <TermCardsContainer
-                        className="has-scrollbar scrollbar pr-5"
-                        terms={selectedTerms}
+                      <Draggable
+                        items={selectedTerms}
+                        itemType={ItemTypes.PROPERTIES_SET}
                         afterDrop={afterDropTerm}
                       >
                         {filteredTerms({ pickSelected: true }).map((term) => {
@@ -466,7 +467,7 @@ const MappingToDomains = (props) => {
                             />
                           );
                         })}
-                      </TermCardsContainer>
+                      </Draggable>
 
                       {/* NOT SELECTED TERMS */}
                       {filteredTerms({ pickSelected: false }).map((term) => {

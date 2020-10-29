@@ -5,7 +5,6 @@ import fetchMappingSelectedTerms from "../../services/fetchMappingSelectedTerms"
 import fetchPredicates from "../../services/fetchPredicates";
 import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
 import TermCard from "../mapping-to-domains/TermCard";
-import TermCardsContainer from "../mapping-to-domains/TermCardsContainer";
 import AlertNotice from "../shared/AlertNotice";
 import Loader from "../shared/Loader";
 import TopNav from "../shared/TopNav";
@@ -18,6 +17,8 @@ import fetchMappingTerms from "../../services/fetchMappingTerms";
 import updateMappingTerm from "../../services/updateMappingTerm";
 import { toastr as toast } from "react-redux-toastr";
 import createSpineTerm from "../../services/createSpineTerm";
+import Draggable from "../shared/Draggable";
+import { ItemTypes } from "../mapping-to-domains/ItemTypes";
 
 const AlignAndFineTune = (props) => {
   /**
@@ -743,12 +744,12 @@ const AlignAndFineTune = (props) => {
                       }
                       message="The items below have been added to Person Domain. Now you can align them to the spine."
                     />
-                    <div>
+                    <div className="has-scrollbar scrollbar pr-5">
                       {/* SELECTED TERMS */}
 
-                      <TermCardsContainer
-                        className="has-scrollbar scrollbar pr-5"
-                        terms={selectedMappingTerms}
+                      <Draggable
+                        items={selectedMappingTerms}
+                        itemType={ItemTypes.PROPERTIES_SET}
                         afterDrop={afterDropTerm}
                       >
                         {filteredMappingSelectedTerms({
@@ -769,7 +770,7 @@ const AlignAndFineTune = (props) => {
                             />
                           );
                         })}
-                      </TermCardsContainer>
+                      </Draggable>
 
                       {/* NOT SELECTED TERMS */}
                       {filteredMappingSelectedTerms({

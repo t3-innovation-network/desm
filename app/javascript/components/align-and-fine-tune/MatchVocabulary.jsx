@@ -57,11 +57,14 @@ const MatchVocabulary = (props) => {
   const [mappingConcepts, setMappingConcepts] = useState([]);
 
   /**
-   * The selected concepts.
+   * The mapping vocabulary concepts, filtered by selected/not selected.
    */
-  const selectedMappingConcepts = mappingConcepts.filter((concept) => {
-    return concept.selected;
-  });
+  const filteredMappingConcepts = (options = { pickSelected: false }) =>
+    mappingConcepts
+      .filter((concept) => {
+        return options.pickSelected ? concept.selected : !concept.selected;
+      })
+      .sort((a, b) => (a.name > b.name ? 1 : -1));
 
   /**
    * Mark the term as "selected"
@@ -150,6 +153,7 @@ const MatchVocabulary = (props) => {
             <DropZone
               draggable={{ id: concept.id }}
               selectedCount={1}
+              itemType={ItemTypes.CONCEPTS_SET}
               textStyle={{ fontSize: "12px" }}
             />
           </div>
@@ -164,9 +168,12 @@ const MatchVocabulary = (props) => {
   const MappingConceptsList = () => {
     return (
       <Fragment>
-        {/* SELECTED TERMS */}
-        <Draggable items={selectedMappingConcepts} itemType={ItemTypes.BOXSET}>
-          {selectedMappingConcepts.map((concept) => {
+        {/* SELECTED CONCEPTS */}
+        <Draggable
+          items={filteredMappingConcepts({ pickSelected: true })}
+          itemType={ItemTypes.CONCEPTS_SET}
+        >
+          {filteredMappingConcepts({ pickSelected: true }).map((concept) => {
             return (
               <ConceptCard
                 key={concept.id}
@@ -177,10 +184,10 @@ const MatchVocabulary = (props) => {
             );
           })}
         </Draggable>
-        {/* END SELECTED TERMS */}
+        {/* END SELECTED CONCEPTS */}
 
-        {/* NOT SELECTED TERMS */}
-        {mappingConcepts.map((concept) => {
+        {/* NOT SELECTED CONCEPTS */}
+        {filteredMappingConcepts({ pickSelected: false }).map((concept) => {
           return (
             <ConceptCard
               key={concept.id}
@@ -190,7 +197,7 @@ const MatchVocabulary = (props) => {
             />
           );
         })}
-        {/* END NOT SELECTED TERMS */}
+        {/* END NOT SELECTED CONCEPTS */}
       </Fragment>
     );
   };
@@ -303,7 +310,7 @@ const MatchVocabulary = (props) => {
                 </div>
                 <div className="col-3">
                   <div className="float-right">
-                    {selectedMappingConcepts.length + " elements selected"}
+                    {filteredMappingConcepts({ pickSelected: true }).length + " elements selected"}
                   </div>
                 </div>
               </div>

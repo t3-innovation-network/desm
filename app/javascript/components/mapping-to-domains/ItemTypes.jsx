@@ -1,3 +1,4 @@
 export const ItemTypes = {
-  BOXSET: 'box-set',
-}
+  PROPERTIES_SET: "properties-set",
+  CONCEPTS_SET: "concepts-set",
+};
