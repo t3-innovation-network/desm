@@ -265,11 +265,13 @@ const SpineTermRow = (props) => {
               </div>
             </div>
           ) : (
-              <PredicateOptions
-                predicates={predicates}
-                onPredicateSelected={(predicate) => handlePredicateSelected(term, predicate)}
-                predicate={predicate}
-              />
+            <PredicateOptions
+              predicates={predicates}
+              onPredicateSelected={(predicate) =>
+                handlePredicateSelected(term, predicate)
+              }
+              predicate={predicate}
+            />
           )}
         </div>
 
@@ -310,8 +312,8 @@ const SpineTermRow = (props) => {
           {!props.mappedTermsToSpineTerm(term).length && (
             <DropZone
               selectedCount={props.selectedMappingTerms.length}
-              itemType={ItemTypes.PROPERTIES_SET}
-              draggable={{id: term.id}}
+              acceptedItemType={ItemTypes.PROPERTIES_SET}
+              droppedItem={{ id: term.id }}
             />
           )}
         </div>

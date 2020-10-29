@@ -21,11 +21,11 @@ const DomainCard = (props) => {
           <div className="col-8">
             {/* Only accept mappingTerms if the domain has a spine */}
             <DropZone
-              draggable={{
+              droppedItem={{
                 name: props.domain.name,
                 uri: props.domain.id,
               }}
-              itemType={ItemTypes.PROPERTIES_SET}
+              acceptedItemType={ItemTypes.PROPERTIES_SET}
               selectedCount={props.selectedTermsCount}
             />
           </div>

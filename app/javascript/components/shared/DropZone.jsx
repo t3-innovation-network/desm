@@ -4,23 +4,23 @@ import Pluralize from "pluralize";
 
 /**
  * Props:
- * @param {Object} draggable The element that's going to be dragged
+ * @param {Object} droppedItem The element that's going to be dropped
  * @param {Integer} selectedCount The number of elements being dragged
  * @param {Style} textStyle CSS styles for the text inside
- * @param {ItemType} itemType The type of item that this box accepts
+ * @param {ItemType} acceptedItemType The type of item that this box accepts
  */
 const DropZone = (props) => {
   /**
    * Elements from props
    */
-  const { draggable, selectedCount, textStyle, itemType } = props;
+  const { droppedItem, selectedCount, textStyle, acceptedItemType } = props;
 
   /**
    * Draggable configuration
    */
   const [{ canDrop, isOver }, drop] = useDrop({
-    accept: itemType,
-    drop: () => draggable,
+    accept: acceptedItemType,
+    drop: () => droppedItem,
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),

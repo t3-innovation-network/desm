@@ -120,11 +120,11 @@ const MatchVocabulary = (props) => {
           </div>
           <div className="col-4">
             <DropZone
-              draggable={{ id: concept.id }}
+              droppedItem={{ id: concept.id }}
               selectedCount={
                 filteredMappingConcepts({ pickSelected: true }).length
               }
-              itemType={ItemTypes.CONCEPTS_SET}
+              acceptedItemType={ItemTypes.CONCEPTS_SET}
               textStyle={{ fontSize: "12px" }}
             />
           </div>
