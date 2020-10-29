@@ -12,7 +12,6 @@ import PredicateOptions from "../shared/PredicateOptions";
  * @param {String} origin The organization name of the mapping
  * @param {String} spineOrigin The organization name of the spine specification
  * @param {Object} term The spine term
- * @param {Object} term The spine term
  * @param {Array} predicates The collection of predicates
  * @param {Function} onPredicateSelected The actions to execute when a predicate is selected
  * @param {Function} mappedTermsToSpineTerm The list of terms that are mapped toa given spine term
@@ -21,7 +20,7 @@ const SpineTermRow = (props) => {
   /**
    * The data passed in props
    */
-  const { term, predicates, spineOrigin, origin } = props;
+  const { term, predicates, spineOrigin, origin, mappedTermsToSpineTerm } = props;
 
   /**
    * The mapping term (alignment) representing this row
@@ -53,7 +52,7 @@ const SpineTermRow = (props) => {
   /**
    * The term we are using to match vocabularies against the spine
    */
-  const [mappedTermMatching, setMappedTermMatching] = useState(null);
+  const [mappedTermMatching, setMappedTermMatching] = useState(mappedTermsToSpineTerm(term)[0]);
 
   /**
    * If the mapping term (alignment) has a predicate selected, lets find it
