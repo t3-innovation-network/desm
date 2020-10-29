@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import ExpandableOptions from "../shared/ExpandableOptions";
 import EditAlignment from "./EditAlignment";
 import { toastr as toast } from "react-redux-toastr";
 import Collapsible from "../shared/Collapsible";
-import MatchVocabulary from "./MatchVocabulary";
+import MatchVocabulary from "./match-vocabulary/MatchVocabulary";
 import DropZone from "../shared/DropZone";
 import { ItemTypes } from "../mapping-to-domains/ItemTypes";
+import PredicateOptions from "../shared/PredicateOptions";
 
 /**
  * Props:
@@ -130,19 +130,6 @@ const SpineTermRow = (props) => {
   };
 
   /**
-   * Return the list of predicates as options to use on the abstract
-   * expandable options component
-   */
-  const predicatesAsOptions = () => {
-    return predicates.map((predicate) => {
-      return {
-        name: predicate.pref_label,
-        id: predicate.id,
-      };
-    });
-  };
-
-  /**
    * Actions to take when a predicate has been selected for a mapping term
    *
    * @param {Object} predicate
@@ -215,7 +202,7 @@ const SpineTermRow = (props) => {
           modalIsOpen={editing}
           onCommentUpdated={(result) => handleOnCommentUpdated(result)}
           onPredicateUpdated={(result) => handleOnPredicateUpdated(result)}
-          predicatesAsOptions={predicatesAsOptions}
+          predicates={predicates}
           mappingTerm={mappingTerm}
           spineTerm={term}
           predicate={predicates.find(
@@ -238,7 +225,7 @@ const SpineTermRow = (props) => {
           spineOrigin={spineOrigin}
           spineTerm={term}
           mappedTerm={mappedTermMatching}
-          predicatesAsOptions={predicatesAsOptions}
+          predicates={predicates}
         />
       ) : (
         ""
@@ -278,11 +265,11 @@ const SpineTermRow = (props) => {
               </div>
             </div>
           ) : (
-            <ExpandableOptions
-              options={predicatesAsOptions()}
-              onClose={(predicate) => handlePredicateSelected(term, predicate)}
-              selectedOption={predicate}
-            />
+              <PredicateOptions
+                predicates={predicates}
+                onPredicateSelected={(predicate) => handlePredicateSelected(term, predicate)}
+                predicate={predicate}
+              />
           )}
         </div>
 

@@ -1,14 +1,15 @@
-import React, { Component, Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Modal from "react-modal";
-import fetchVocabulary from "../../services/fetchVocabulary";
-import AlertNotice from "../shared/AlertNotice";
-import Collapsible from "../shared/Collapsible";
-import ExpandableOptions from "../shared/ExpandableOptions";
-import Loader from "../shared/Loader";
-import ModalStyles from "../shared/ModalStyles";
-import DropZone from "../shared/DropZone";
-import Draggable from "../shared/Draggable";
-import { ItemTypes } from "../mapping-to-domains/ItemTypes";
+import fetchVocabulary from "../../../services/fetchVocabulary";
+import AlertNotice from "../../shared/AlertNotice";
+import Loader from "../../shared/Loader";
+import ModalStyles from "../../shared/ModalStyles";
+import DropZone from "../../shared/DropZone";
+import Draggable from "../../shared/Draggable";
+import { ItemTypes } from "../../mapping-to-domains/ItemTypes";
+import ConceptCard from "./ConceptCard";
+import SpineConceptCard from "./SpineConceptCard";
+import PredicateOptions from "../../shared/PredicateOptions";
 
 /**
  * Props
@@ -18,7 +19,7 @@ import { ItemTypes } from "../mapping-to-domains/ItemTypes";
  * @param {String} mappingOrigin
  * @param {Object} mappedTerm
  * @param {Object} spineTerm
- * @param {Function} predicatesAsOptions
+ * @param {Array} predicates
  */
 const MatchVocabulary = (props) => {
   Modal.setAppElement("body");
@@ -33,7 +34,7 @@ const MatchVocabulary = (props) => {
     mappingOrigin,
     spineTerm,
     mappedTerm,
-    predicatesAsOptions,
+    predicates,
   } = props;
 
   /**
@@ -103,56 +104,26 @@ const MatchVocabulary = (props) => {
    * List the concepts for the spine term vocabulary as cards with the options to map
    */
   const SpineConceptsList = () => {
-    /**
-     * The concept as a card
-     * Props:
-     * @param {Object} concept
-     */
-    const SpineConceptCard = (props) => {
-      return (
-        <Collapsible
-          headerContent={<strong>{props.concept.name}</strong>}
-          cardStyle={"with-shadow mb-2"}
-          observeOutside={false}
-          bodyContent={
-            <React.Fragment>
-              <p>{props.concept.definition}</p>
-              <p>
-                Origin:
-                <span className="col-primary">{" " + spineOrigin}</span>
-              </p>
-            </React.Fragment>
-          }
-        />
-      );
-    };
-
-    /**
-     * The predicates list as "Expandable"
-     */
-    const PredicateOptions = () => {
-      return (
-        <ExpandableOptions
-          options={predicatesAsOptions()}
-          onClose={(predicate) => handlePredicateSelected(predicate)}
-          selectedOption={null}
-        />
-      );
-    };
-
     return spineConcepts.map((concept) => {
       return (
         <div className="row mb-2" key={concept.id}>
           <div className="col-4">
-            <SpineConceptCard concept={concept} />
+            <SpineConceptCard concept={concept} spineOrigin={spineOrigin} />
           </div>
           <div className="col-4">
-            <PredicateOptions />
+            <PredicateOptions
+              predicates={predicates}
+              onPredicateSelected={(concept) =>
+                handlePredicateSelected(concept)
+              }
+            />
           </div>
           <div className="col-4">
             <DropZone
               draggable={{ id: concept.id }}
-              selectedCount={1}
+              selectedCount={
+                filteredMappingConcepts({ pickSelected: true }).length
+              }
               itemType={ItemTypes.CONCEPTS_SET}
               textStyle={{ fontSize: "12px" }}
             />
@@ -175,12 +146,15 @@ const MatchVocabulary = (props) => {
         >
           {filteredMappingConcepts({ pickSelected: true }).map((concept) => {
             return (
-              <ConceptCard
-                key={concept.id}
-                concept={concept}
-                onClick={onMappingConceptClick}
-                origin={mappingOrigin}
-              />
+              <div className="row mb-2" key={concept.id}>
+                <div className="col">
+                  <ConceptCard
+                    concept={concept}
+                    onClick={onMappingConceptClick}
+                    origin={mappingOrigin}
+                  />
+                </div>
+              </div>
             );
           })}
         </Draggable>
@@ -189,12 +163,15 @@ const MatchVocabulary = (props) => {
         {/* NOT SELECTED CONCEPTS */}
         {filteredMappingConcepts({ pickSelected: false }).map((concept) => {
           return (
-            <ConceptCard
-              key={concept.id}
-              concept={concept}
-              onClick={onMappingConceptClick}
-              origin={mappingOrigin}
-            />
+            <div className="row mb-2" key={concept.id}>
+              <div className="col">
+                <ConceptCard
+                  concept={concept}
+                  onClick={onMappingConceptClick}
+                  origin={mappingOrigin}
+                />
+              </div>
+            </div>
           );
         })}
         {/* END NOT SELECTED CONCEPTS */}
@@ -248,8 +225,9 @@ const MatchVocabulary = (props) => {
    *
    * @param {Object} predicate
    */
-  const handlePredicateSelected = (predicate) => {
-    // @todo: logic when a predicate is selected
+  const handlePredicateSelected = (concept, predicate) => {
+    // @todo: logic when a predicate is selected. The alginment vocabulary concept
+    //   is matched with the selected predicate in memory
   };
 
   /**
@@ -310,7 +288,8 @@ const MatchVocabulary = (props) => {
                 </div>
                 <div className="col-3">
                   <div className="float-right">
-                    {filteredMappingConcepts({ pickSelected: true }).length + " elements selected"}
+                    {filteredMappingConcepts({ pickSelected: true }).length +
+                      " elements selected"}
                   </div>
                 </div>
               </div>
@@ -330,65 +309,5 @@ const MatchVocabulary = (props) => {
     </Modal>
   );
 };
-
-/**
- * Structure of a concept of the mapped term vocabulary
- *
- * @param {Object} concept
- * @param {Function} onClick
- * @param {String} origin
- */
-class ConceptCard extends Component {
-  /**
-   * Internal state for "selected"
-   */
-  state = {
-    selected: this.props.concept.selected,
-  };
-
-  /**
-   * Internal handler for onclick event
-   */
-  handleClick = () => {
-    const { selected } = this.state;
-    const { onClick, concept } = this.props;
-
-    this.setState({ selected: !selected }, () => {
-      if (onClick) {
-        onClick(concept);
-      }
-    });
-  };
-
-  render() {
-    const { concept, origin } = this.props;
-    const { selected } = this.state;
-
-    return (
-      <div className="row mb-2">
-        <div className="col">
-          <Collapsible
-            headerContent={<strong>{concept.name}</strong>}
-            cardStyle={
-              "with-shadow mb-2" + (selected ? " draggable term-selected" : "")
-            }
-            cardHeaderColStyle={selected ? "" : "cursor-pointer"}
-            observeOutside={false}
-            handleOnClick={this.handleClick}
-            bodyContent={
-              <Fragment>
-                <p>{concept.definition}</p>
-                <p>
-                  Origin:
-                  <span className="col-primary">{" " + origin}</span>
-                </p>
-              </Fragment>
-            }
-          />
-        </div>
-      </div>
-    );
-  }
-}
 
 export default MatchVocabulary;
