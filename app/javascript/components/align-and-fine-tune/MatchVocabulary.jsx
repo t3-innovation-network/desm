@@ -47,42 +47,37 @@ const MatchVocabulary = (props) => {
   const [errors, setErrors] = useState([]);
 
   /**
-   * The vocabulary for the spine term
+   * The vocabulary concepts for the spine term
    */
-  const [spineVocabulary, setSpineVocabulary] = useState([]);
+  const [spineConcepts, setSpineConcepts] = useState([]);
 
   /**
-   * The vocabulary for the mapped term
+   * The vocabulary concepts for the mapped term
    */
-  const [mappedTermVocabulary, setMappedTermVocabulary] = useState([]);
+  const [mappingConcepts, setMappingConcepts] = useState([]);
 
   /**
    * The selected concepts.
    */
-  const selectedMappingConcepts = _.isEmpty(mappedTermVocabulary)
-    ? []
-    : mappedTermVocabulary.concepts.filter((concept) => {
-        return concept.selected;
-      });
+  const selectedMappingConcepts = mappingConcepts.filter((concept) => {
+    return concept.selected;
+  });
 
   /**
    * Mark the term as "selected"
    */
   const onMappingConceptClick = (clickedConcept) => {
-    let tempVocabulary = mappedTermVocabulary;
-    let concept = tempVocabulary.concepts.find(
-      (c) => c.id == clickedConcept.id
-    );
+    let concept = mappingConcepts.find((c) => c.id == clickedConcept.id);
     concept.selected = !concept.selected;
 
-    setMappedTermVocabulary([]);
-    setMappedTermVocabulary(tempVocabulary);
+    setMappingConcepts([]);
+    setMappingConcepts(mappingConcepts);
   };
 
   /**
    * Structure of the header for this component
    */
-  const headerContent = () => {
+  const HeaderContent = () => {
     return (
       <div className="row">
         <div className="col-6">
@@ -104,21 +99,21 @@ const MatchVocabulary = (props) => {
   /**
    * List the concepts for the spine term vocabulary as cards with the options to map
    */
-  const spineConceptsList = () => {
+  const SpineConceptsList = () => {
     /**
      * The concept as a card
-     *
+     * Props:
      * @param {Object} concept
      */
-    const conceptCard = (concept) => {
+    const SpineConceptCard = (props) => {
       return (
         <Collapsible
-          headerContent={<strong>{concept.name}</strong>}
+          headerContent={<strong>{props.concept.name}</strong>}
           cardStyle={"with-shadow mb-2"}
           observeOutside={false}
           bodyContent={
             <React.Fragment>
-              <p>{concept.definition}</p>
+              <p>{props.concept.definition}</p>
               <p>
                 Origin:
                 <span className="col-primary">{" " + spineOrigin}</span>
@@ -132,7 +127,7 @@ const MatchVocabulary = (props) => {
     /**
      * The predicates list as "Expandable"
      */
-    const predicateOptions = () => {
+    const PredicateOptions = () => {
       return (
         <ExpandableOptions
           options={predicatesAsOptions()}
@@ -142,13 +137,15 @@ const MatchVocabulary = (props) => {
       );
     };
 
-    return spineVocabulary.concepts.map((concept) => {
+    return spineConcepts.map((concept) => {
       return (
         <div className="row mb-2" key={concept.id}>
-          <div className="col-4">{conceptCard(concept)}</div>
-
-          <div className="col-4">{predicateOptions()}</div>
-
+          <div className="col-4">
+            <SpineConceptCard concept={concept} />
+          </div>
+          <div className="col-4">
+            <PredicateOptions />
+          </div>
           <div className="col-4">
             <DropZone
               draggable={{ id: concept.id }}
@@ -164,14 +161,11 @@ const MatchVocabulary = (props) => {
   /**
    * List the concepts for the mapped term vocabulary as selectable cards
    */
-  const mappingConceptsList = () => {
+  const MappingConceptsList = () => {
     return (
       <Fragment>
         {/* SELECTED TERMS */}
-        <Draggable
-          items={selectedMappingConcepts}
-          itemType={ItemTypes.BOXSET}
-        >
+        <Draggable items={selectedMappingConcepts} itemType={ItemTypes.BOXSET}>
           {selectedMappingConcepts.map((concept) => {
             return (
               <ConceptCard
@@ -186,7 +180,7 @@ const MatchVocabulary = (props) => {
         {/* END SELECTED TERMS */}
 
         {/* NOT SELECTED TERMS */}
-        {mappedTermVocabulary.concepts.map((concept) => {
+        {mappingConcepts.map((concept) => {
           return (
             <ConceptCard
               key={concept.id}
@@ -225,7 +219,7 @@ const MatchVocabulary = (props) => {
     let response = await fetchVocabulary(spineTerm.vocabularies[0].id);
     if (!anyError(response)) {
       // Set the vocabulary on state
-      setSpineVocabulary(response.vocabulary);
+      setSpineConcepts(response.vocabulary.concepts);
     }
   };
 
@@ -237,7 +231,7 @@ const MatchVocabulary = (props) => {
       let response = await fetchVocabulary(mappedTerm.vocabularies[0].id);
       if (!anyError(response)) {
         // Set the vocabulary on state
-        setMappedTermVocabulary(response.vocabulary);
+        setMappingConcepts(response.vocabulary.concepts);
       }
     }
   };
@@ -292,7 +286,7 @@ const MatchVocabulary = (props) => {
     >
       <div className="card p-5">
         <div className="card-header no-color-header border-bottom pb-3">
-          {headerContent()}
+          <HeaderContent />
         </div>
         <div className="card-body">
           {errors.length ? <AlertNotice message={errors.join("\n")} /> : ""}
@@ -301,16 +295,26 @@ const MatchVocabulary = (props) => {
           ) : (
             <Fragment>
               <div className="row mb-3">
-                <div className="col-8">
+                <div className="col-6">
                   <h4>T3 Spine</h4>
                 </div>
-                <div className="col-4">
+                <div className="col-3">
                   <h4>{mappingOrigin}</h4>
                 </div>
+                <div className="col-3">
+                  <div className="float-right">
+                    {selectedMappingConcepts.length + " elements selected"}
+                  </div>
+                </div>
               </div>
+
               <div className="row">
-                <div className="col-8">{spineConceptsList()}</div>
-                <div className="col-4">{mappingConceptsList()}</div>
+                <div className="col-8">
+                  <SpineConceptsList />
+                </div>
+                <div className="col-4 bg-col-secondary">
+                  <MappingConceptsList />
+                </div>
               </div>
             </Fragment>
           )}
@@ -354,24 +358,28 @@ class ConceptCard extends Component {
     const { selected } = this.state;
 
     return (
-      <Collapsible
-        headerContent={<strong>{concept.name}</strong>}
-        cardStyle={
-          "with-shadow mb-2" + (selected ? " draggable term-selected" : "")
-        }
-        cardHeaderColStyle={selected ? "" : "cursor-pointer"}
-        observeOutside={false}
-        handleOnClick={this.handleClick}
-        bodyContent={
-          <Fragment>
-            <p>{concept.definition}</p>
-            <p>
-              Origin:
-              <span className="col-primary">{" " + origin}</span>
-            </p>
-          </Fragment>
-        }
-      />
+      <div className="row mb-2">
+        <div className="col">
+          <Collapsible
+            headerContent={<strong>{concept.name}</strong>}
+            cardStyle={
+              "with-shadow mb-2" + (selected ? " draggable term-selected" : "")
+            }
+            cardHeaderColStyle={selected ? "" : "cursor-pointer"}
+            observeOutside={false}
+            handleOnClick={this.handleClick}
+            bodyContent={
+              <Fragment>
+                <p>{concept.definition}</p>
+                <p>
+                  Origin:
+                  <span className="col-primary">{" " + origin}</span>
+                </p>
+              </Fragment>
+            }
+          />
+        </div>
+      </div>
     );
   }
 }
