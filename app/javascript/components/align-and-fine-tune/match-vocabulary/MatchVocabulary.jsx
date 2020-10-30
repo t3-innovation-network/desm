@@ -6,7 +6,7 @@ import Loader from "../../shared/Loader";
 import ModalStyles from "../../shared/ModalStyles";
 import HeaderContent from "./HeaderContent";
 import MappingConceptsList from "./MappingConceptsList";
-import SpineConceptsList from "./SpineConceptsList";
+import SpineConceptRow from "./SpineConceptRow";
 
 /**
  * Props
@@ -202,13 +202,20 @@ export default class MatchVocabulary extends Component {
 
                 <div className="row">
                   <div className="col-8">
-                    <SpineConceptsList
-                      spineConcepts={spineConcepts}
-                      spineOrigin={spineOrigin}
-                      predicates={predicates}
-                      handlePredicateSelected={this.handlePredicateSelected}
-                      filteredMappingConcepts={this.filteredMappingConcepts}
-                    />
+                    {spineConcepts.map((concept) => {
+                      return (
+                        <SpineConceptRow
+                          concept={concept}
+                          spineOrigin={spineOrigin}
+                          predicates={predicates}
+                          handlePredicateSelected={this.handlePredicateSelected}
+                          selectedCount={
+                            this.filteredMappingConcepts({ pickSelected: true })
+                              .length
+                          }
+                        />
+                      );
+                    })}
                   </div>
                   <div className="col-4 bg-col-secondary">
                     <MappingConceptsList
