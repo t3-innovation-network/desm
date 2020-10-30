@@ -163,21 +163,21 @@ export default class MatchVocabulary extends Component {
     const Title = () => {
       return (
         <div className="row mb-3">
-        <div className="col-6">
-          <h4>T3 Spine</h4>
-        </div>
-        <div className="col-3">
-          <h4>{mappingOrigin}</h4>
-        </div>
-        <div className="col-3">
-          <div className="float-right">
-            {this.filteredMappingConcepts({ pickSelected: true })
-              .length + " elements selected"}
+          <div className="col-6">
+            <h4>T3 Spine</h4>
+          </div>
+          <div className="col-3">
+            <h4>{mappingOrigin}</h4>
+          </div>
+          <div className="col-3">
+            <div className="float-right">
+              {this.filteredMappingConcepts({ pickSelected: true }).length +
+                " elements selected"}
+            </div>
           </div>
         </div>
-      </div>
       );
-    }
+    };
 
     return (
       <Modal
