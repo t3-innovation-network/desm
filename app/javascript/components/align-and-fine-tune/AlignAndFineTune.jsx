@@ -18,7 +18,7 @@ import updateMappingTerm from "../../services/updateMappingTerm";
 import { toastr as toast } from "react-redux-toastr";
 import createSpineTerm from "../../services/createSpineTerm";
 import Draggable from "../shared/Draggable";
-import { ItemTypes } from "../mapping-to-domains/ItemTypes";
+import { DraggableItemTypes } from "../shared/DraggableItemTypes";
 
 const AlignAndFineTune = (props) => {
   /**
@@ -749,7 +749,7 @@ const AlignAndFineTune = (props) => {
 
                       <Draggable
                         items={selectedMappingTerms}
-                        itemType={ItemTypes.PROPERTIES_SET}
+                        itemType={DraggableItemTypes.PROPERTIES_SET}
                         afterDrop={afterDropTerm}
                       >
                         {filteredMappingSelectedTerms({

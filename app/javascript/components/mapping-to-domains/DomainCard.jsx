@@ -1,6 +1,6 @@
 import React from "react";
+import { DraggableItemTypes } from "../shared/DraggableItemTypes";
 import DropZone from "../shared/DropZone";
-import { ItemTypes } from "./ItemTypes";
 
 const DomainCard = (props) => {
   return (
@@ -25,7 +25,7 @@ const DomainCard = (props) => {
                 name: props.domain.name,
                 uri: props.domain.id,
               }}
-              acceptedItemType={ItemTypes.PROPERTIES_SET}
+              acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
               selectedCount={props.selectedTermsCount}
             />
           </div>

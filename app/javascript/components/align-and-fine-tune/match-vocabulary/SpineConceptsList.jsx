@@ -1,5 +1,5 @@
 import React from "react";
-import { ItemTypes } from "../../mapping-to-domains/ItemTypes";
+import { DraggableItemTypes } from "../../shared/DraggableItemTypes";
 import DropZone from "../../shared/DropZone";
 import PredicateOptions from "../../shared/PredicateOptions";
 import SpineConceptCard from "./SpineConceptCard";
@@ -41,7 +41,7 @@ const SpineConceptsList = (props) => {
             selectedCount={
               filteredMappingConcepts({ pickSelected: true }).length
             }
-            acceptedItemType={ItemTypes.CONCEPTS_SET}
+            acceptedItemType={DraggableItemTypes.CONCEPTS_SET}
             textStyle={{ fontSize: "12px" }}
           />
         </div>

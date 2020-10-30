@@ -14,7 +14,7 @@ import createMappingSelectedTerms from "../../services/createMappingSelectedTerm
 import { toastr as toast } from "react-redux-toastr";
 import updateMapping from "../../services/updateMapping";
 import Draggable from "../shared/Draggable";
-import { ItemTypes } from "./ItemTypes";
+import { DraggableItemTypes } from "../shared/DraggableItemTypes";
 
 const MappingToDomains = (props) => {
   /**
@@ -449,7 +449,7 @@ const MappingToDomains = (props) => {
 
                       <Draggable
                         items={selectedTerms}
-                        itemType={ItemTypes.PROPERTIES_SET}
+                        itemType={DraggableItemTypes.PROPERTIES_SET}
                         afterDrop={afterDropTerm}
                       >
                         {filteredTerms({ pickSelected: true }).map((term) => {

@@ -154,7 +154,30 @@ export default class MatchVocabulary extends Component {
       spineOrigin,
       predicates,
     } = this.props;
+
     const { loading, errors, spineConcepts } = this.state;
+
+    /**
+     * Structure for the title
+     */
+    const Title = () => {
+      return (
+        <div className="row mb-3">
+        <div className="col-6">
+          <h4>T3 Spine</h4>
+        </div>
+        <div className="col-3">
+          <h4>{mappingOrigin}</h4>
+        </div>
+        <div className="col-3">
+          <div className="float-right">
+            {this.filteredMappingConcepts({ pickSelected: true })
+              .length + " elements selected"}
+          </div>
+        </div>
+      </div>
+      );
+    }
 
     return (
       <Modal
@@ -175,20 +198,7 @@ export default class MatchVocabulary extends Component {
               <Loader />
             ) : (
               <Fragment>
-                <div className="row mb-3">
-                  <div className="col-6">
-                    <h4>T3 Spine</h4>
-                  </div>
-                  <div className="col-3">
-                    <h4>{mappingOrigin}</h4>
-                  </div>
-                  <div className="col-3">
-                    <div className="float-right">
-                      {this.filteredMappingConcepts({ pickSelected: true })
-                        .length + " elements selected"}
-                    </div>
-                  </div>
-                </div>
+                <Title />
 
                 <div className="row">
                   <div className="col-8">

@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
-import { ItemTypes } from "../../mapping-to-domains/ItemTypes";
 import Draggable from "../../shared/Draggable";
+import { DraggableItemTypes } from "../../shared/DraggableItemTypes";
 import ConceptCard from "./ConceptCard";
 
 /**
@@ -41,7 +41,7 @@ const MappingConceptsList = (props) => {
       {/* SELECTED CONCEPTS */}
       <Draggable
         items={filteredMappingConcepts({ pickSelected: true })}
-        itemType={ItemTypes.CONCEPTS_SET}
+        itemType={DraggableItemTypes.CONCEPTS_SET}
       >
         {filteredMappingConcepts({ pickSelected: true }).map((concept) => {
           return (

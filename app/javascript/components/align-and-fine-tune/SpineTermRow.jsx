@@ -4,8 +4,8 @@ import { toastr as toast } from "react-redux-toastr";
 import Collapsible from "../shared/Collapsible";
 import MatchVocabulary from "./match-vocabulary/MatchVocabulary";
 import DropZone from "../shared/DropZone";
-import { ItemTypes } from "../mapping-to-domains/ItemTypes";
 import PredicateOptions from "../shared/PredicateOptions";
+import { DraggableItemTypes } from "../shared/DraggableItemTypes";
 
 /**
  * Props:
@@ -311,7 +311,7 @@ const SpineTermRow = (props) => {
           {!props.mappedTermsToSpineTerm(term).length && (
             <DropZone
               selectedCount={props.selectedMappingTerms.length}
-              acceptedItemType={ItemTypes.PROPERTIES_SET}
+              acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
               droppedItem={{ id: term.id }}
             />
           )}
