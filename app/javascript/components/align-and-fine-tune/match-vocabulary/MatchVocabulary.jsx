@@ -89,8 +89,20 @@ export default class MatchVocabulary extends Component {
     let response = await fetchVocabulary(spineTerm.vocabularies[0].id);
 
     if (!this.anyError(response)) {
+      // Manage the concepts separately
+      let tempConcepts = response.vocabulary.concepts;
+
+      // Add a synthetic concept to have the chance to match elements to
+      // the "No Match" predicate option.
+      tempConcepts.push({
+        id: -1,
+        name: "",
+        definition: "Synthetic element added to the vocabulary",
+        synthetic: true,
+      });
+
       // Set the spine vocabulary concepts on state
-      this.setState({ spineConcepts: response.vocabulary.concepts });
+      this.setState({ spineConcepts: tempConcepts });
     }
   };
 

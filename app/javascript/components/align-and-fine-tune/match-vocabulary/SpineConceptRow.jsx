@@ -23,16 +23,33 @@ const SpineConceptRow = (props) => {
     selectedCount,
   } = props;
 
+  /**
+   * To show on rows of synthetic concepts
+   */
+  const SyntheticPredicate = () => {
+    return (
+      <div className="card">
+        <div className="card-header bg-col-primary col-background">
+          No Match
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="row mb-2" key={concept.id}>
       <div className="col-4">
         <SpineConceptCard concept={concept} spineOrigin={spineOrigin} />
       </div>
       <div className="col-4">
-        <PredicateOptions
-          predicates={predicates}
-          onPredicateSelected={(concept) => handlePredicateSelected(concept)}
-        />
+        {concept.synthetic ? (
+          <SyntheticPredicate />
+        ) : (
+          <PredicateOptions
+            predicates={predicates}
+            onPredicateSelected={(concept) => handlePredicateSelected(concept)}
+          />
+        )}
       </div>
       <div className="col-4">
         <DropZone
