@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import Modal from "react-modal";
+import fetchAlginmentVocabulary from "../../../services/fetchAlignmentVocabulary";
 import fetchVocabulary from "../../../services/fetchVocabulary";
 import AlertNotice from "../../shared/AlertNotice";
 import Loader from "../../shared/Loader";
@@ -15,6 +16,7 @@ import SpineConceptRow from "./SpineConceptRow";
  * @param {String} spineOrigin
  * @param {String} mappingOrigin
  * @param {Object} mappedTerm
+ * @param {Object} mappingTerm
  * @param {Object} spineTerm
  * @param {Array} predicates
  */
@@ -39,6 +41,10 @@ export default class MatchVocabulary extends Component {
      * The vocabulary concepts for the mapped term
      */
     mappingConcepts: [],
+    /**
+     * The vocabulary concepts for the mapped term
+     */
+    alignedConcepts: [],
   };
 
   /**
@@ -60,6 +66,16 @@ export default class MatchVocabulary extends Component {
     concept.selected = !concept.selected;
 
     this.setState({ mappingConcepts: mappingConcepts });
+  };
+
+  /**
+   * Actions to take when a predicate has been selected for a mapping term
+   *
+   * @param {Object} predicate
+   */
+  handlePredicateSelected = (concept, predicate) => {
+    // @todo: logic when a predicate is selected. The alginment vocabulary concept
+    //   is matched with the selected predicate in memory
   };
 
   /**
@@ -121,13 +137,17 @@ export default class MatchVocabulary extends Component {
   };
 
   /**
-   * Actions to take when a predicate has been selected for a mapping term
-   *
-   * @param {Object} predicate
+   * Get the alignment vocabulary. This is the vocabulary for the 
    */
-  handlePredicateSelected = (concept, predicate) => {
-    // @todo: logic when a predicate is selected. The alginment vocabulary concept
-    //   is matched with the selected predicate in memory
+  handleFetchAlignmentVocabulary = async () => {
+    const { mappingTerm } = this.props;
+
+    let response = await fetchAlginmentVocabulary(mappingTerm.id);
+
+    if (!this.anyError(response)) {
+      // Set the alignment vocabulary concepts on state
+      this.setState({ alignedConcepts: response.vocabulary.concepts });
+    }
   };
 
   /**
@@ -138,6 +158,8 @@ export default class MatchVocabulary extends Component {
     await this.handleFetchSpineVocabulary();
     // Get the mapped term vocabulary
     await this.handleFetchMappedTermVocabulary();
+    // Get the alignment term vocabulary
+    await this.handleFetchAlignmentVocabulary();
   };
 
   /**
@@ -212,11 +234,12 @@ export default class MatchVocabulary extends Component {
               <Fragment>
                 <Title />
 
-                <div className="row">
-                  <div className="col-8">
+                <div className="row has-scrollbar scrollbar">
+                  <div className="col-8 pt-3">
                     {spineConcepts.map((concept) => {
                       return (
                         <SpineConceptRow
+                          key={concept.id}
                           concept={concept}
                           spineOrigin={spineOrigin}
                           predicates={predicates}
@@ -229,7 +252,7 @@ export default class MatchVocabulary extends Component {
                       );
                     })}
                   </div>
-                  <div className="col-4 bg-col-secondary">
+                  <div className="col-4 bg-col-secondary pt-3">
                     <MappingConceptsList
                       mappingOrigin={mappingOrigin}
                       filteredMappingConcepts={this.filteredMappingConcepts}

@@ -10,10 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_26_141752) do
+ActiveRecord::Schema.define(version: 2020_10_30_114114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "alignment_vocabularies", force: :cascade do |t|
+    t.bigint "mapping_term_id", null: false
+    t.string "title"
+    t.string "description"
+    t.string "creator"
+    t.index ["mapping_term_id"], name: "index_alignment_vocabularies_on_mapping_term_id"
+  end
+
+  create_table "alignment_vocabulary_concepts", force: :cascade do |t|
+    t.bigint "alignment_vocabulary_id", null: false
+    t.bigint "predicate_id"
+    t.string "spine_concept_uri", null: false
+    t.index ["alignment_vocabulary_id"], name: "index_alignment_vocabulary_concepts_on_alignment_vocabulary_id"
+    t.index ["predicate_id"], name: "index_alignment_vocabulary_concepts_on_predicate_id"
+  end
+
+  create_table "alignv_mapped_concepts", force: :cascade do |t|
+    t.bigint "alignment_vocabulary_concept_id", null: false
+    t.string "mapping_concept_uri", null: false
+    t.index ["alignment_vocabulary_concept_id"], name: "index_alignv_mapped_concepts_on_alignment_vocabulary_concept_id"
+  end
 
   create_table "assignments", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -178,6 +200,10 @@ ActiveRecord::Schema.define(version: 2020_10_26_141752) do
     t.index ["organization_id"], name: "index_vocabularies_on_organization_id"
   end
 
+  add_foreign_key "alignment_vocabularies", "mapping_terms"
+  add_foreign_key "alignment_vocabulary_concepts", "alignment_vocabularies"
+  add_foreign_key "alignment_vocabulary_concepts", "predicates"
+  add_foreign_key "alignv_mapped_concepts", "alignment_vocabulary_concepts"
   add_foreign_key "assignments", "roles"
   add_foreign_key "assignments", "users"
   add_foreign_key "domains", "domain_sets"

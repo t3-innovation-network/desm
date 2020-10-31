@@ -20,12 +20,6 @@ class MappingTerm < ApplicationRecord
   belongs_to :predicate, optional: true
 
   ###
-  # @description: After matching vocabularies from the spine term property and the uploaded
-  #   specification property, a new vocabulary is created for this mapping term.
-  ###
-  belongs_to :vocabulary, optional: true
-
-  ###
   # @description: The term from the spine specification.
   ###
   belongs_to :spine_term, foreign_key: "spine_term_id", class_name: "Term", optional: true
@@ -34,6 +28,12 @@ class MappingTerm < ApplicationRecord
   # @description: After matching some terms from the uploaded specification, we store it here.
   ###
   has_and_belongs_to_many :mapped_terms, join_table: :mapping_term_mapped_terms, class_name: :Term
+
+  ###
+  # @description: If this mapping term has a vocabulary and the spine term also does, it will be
+  #   necessary to map the 2 of it
+  ###
+  has_one :vocabulary, class_name: :AlignmentVocabulary
 
   validates :uri, presence: true
 

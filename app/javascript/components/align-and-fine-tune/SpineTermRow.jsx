@@ -6,6 +6,7 @@ import MatchVocabulary from "./match-vocabulary/MatchVocabulary";
 import DropZone from "../shared/DropZone";
 import PredicateOptions from "../shared/PredicateOptions";
 import { DraggableItemTypes } from "../shared/DraggableItemTypes";
+import VocabularyLabel from "./match-vocabulary/VocabularyLabel";
 
 /**
  * Props:
@@ -20,7 +21,13 @@ const SpineTermRow = (props) => {
   /**
    * The data passed in props
    */
-  const { term, predicates, spineOrigin, origin, mappedTermsToSpineTerm } = props;
+  const {
+    term,
+    predicates,
+    spineOrigin,
+    origin,
+    mappedTermsToSpineTerm,
+  } = props;
 
   /**
    * The mapping term (alignment) representing this row
@@ -52,7 +59,9 @@ const SpineTermRow = (props) => {
   /**
    * The term we are using to match vocabularies against the spine
    */
-  const [mappedTermMatching, setMappedTermMatching] = useState(mappedTermsToSpineTerm(term)[0]);
+  const [mappedTermMatching, setMappedTermMatching] = useState(
+    mappedTermsToSpineTerm(term)[0]
+  );
 
   /**
    * If the mapping term (alignment) has a predicate selected, lets find it
@@ -225,6 +234,7 @@ const SpineTermRow = (props) => {
           spineTerm={term}
           mappedTerm={mappedTermMatching}
           predicates={predicates}
+          mappingTerm={mappingTerm}
         />
       ) : (
         ""
@@ -242,6 +252,11 @@ const SpineTermRow = (props) => {
                   Origin:
                   <span className="col-primary">{" " + spineOrigin}</span>
                 </p>
+
+                <VocabularyLabel
+                  term={term}
+                  handleMatchVocabularyClick={() => {}}
+                />
               </React.Fragment>
             }
           />
@@ -290,19 +305,11 @@ const SpineTermRow = (props) => {
                       <span className="col-primary">{" " + origin}</span>
                     </p>
 
-                    {/* Here we take the first vocabulary. This term might have more than only 1 associated,
-                    but we only can match 1 vocabulary to another.  */}
-
-                    {term.vocabularies && term.vocabularies.length ? (
-                      <p
-                        className="col-primary underlined cursor-pointer"
-                        onClick={() => handleMatchVocabularyClick(term)}
-                      >
-                        {term.vocabularies[0].name}
-                      </p>
-                    ) : (
-                      ""
-                    )}
+                    <VocabularyLabel
+                      term={term}
+                      handleMatchVocabularyClick={handleMatchVocabularyClick}
+                      clickable={true}
+                    />
                   </React.Fragment>
                 }
               />

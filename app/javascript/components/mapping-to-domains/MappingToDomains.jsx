@@ -313,14 +313,16 @@ const MappingToDomains = (props) => {
    * but it mimics the same action).
    */
   useEffect(() => {
-    async function fetchData() {
-      await fetchDataFromAPI();
-    }
-    fetchData().then(() => {
-      if (_.isEmpty(errors)) {
-        setLoading(false);
+    if (loading) {
+      async function fetchData() {
+        await fetchDataFromAPI();
       }
-    });
+      fetchData().then(() => {
+        if (_.isEmpty(errors)) {
+          setLoading(false);
+        }
+      });
+    }
   }, []);
 
   return (

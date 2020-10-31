@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       post 'specifications/info' => 'specifications#info'
       post 'specifications/filter' => 'specifications#filter'
       get 'specifications/:id/terms' => 'terms#from_specification'
+      get 'mapping_terms/:id/vocabulary' => 'alignment_vocabularies#show'
     end
   end
 
