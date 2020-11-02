@@ -11,7 +11,7 @@ import SpineConceptCard from "./SpineConceptCard";
  * @param {Object} concept
  * @param {String} spineOrigin
  * @param {Array} predicates
- * @param {Function} handlePredicateSelected
+ * @param {Function} onPredicateSelected
  * @param {Integer} selectedCount
  */
 const SpineConceptRow = (props) => {
@@ -19,7 +19,7 @@ const SpineConceptRow = (props) => {
     concept,
     spineOrigin,
     predicates,
-    handlePredicateSelected,
+    onPredicateSelected,
     selectedCount,
   } = props;
 
@@ -47,7 +47,7 @@ const SpineConceptRow = (props) => {
         ) : (
           <PredicateOptions
             predicates={predicates}
-            onPredicateSelected={(concept) => handlePredicateSelected(concept)}
+            onPredicateSelected={(predicate) => onPredicateSelected(predicate)}
           />
         )}
       </div>

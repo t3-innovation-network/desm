@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2020_11_02_131905) do
   create_table "alignment_vocabulary_concepts", force: :cascade do |t|
     t.bigint "alignment_vocabulary_id", null: false
     t.bigint "predicate_id"
-    t.string "spine_concept_uri", null: false
+    t.integer "spine_concept_id", null: false
     t.index ["alignment_vocabulary_id"], name: "index_alignment_vocabulary_concepts_on_alignment_vocabulary_id"
     t.index ["predicate_id"], name: "index_alignment_vocabulary_concepts_on_predicate_id"
   end

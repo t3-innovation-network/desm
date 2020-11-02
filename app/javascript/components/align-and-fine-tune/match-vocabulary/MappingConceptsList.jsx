@@ -10,6 +10,7 @@ import ConceptCard from "./ConceptCard";
  * @param {String} mappingOrigin
  * @param {Function} filteredMappingConcepts
  * @param {Function} onMappingConceptClick
+ * @param {Function} afterDropConcept
  */
 const MappingConceptsList = (props) => {
   /**
@@ -19,6 +20,7 @@ const MappingConceptsList = (props) => {
     mappingOrigin,
     filteredMappingConcepts,
     onMappingConceptClick,
+    afterDropConcept
   } = props;
 
   /**
@@ -42,6 +44,7 @@ const MappingConceptsList = (props) => {
       <Draggable
         items={filteredMappingConcepts({ pickSelected: true })}
         itemType={DraggableItemTypes.CONCEPTS_SET}
+        afterDrop={afterDropConcept}
       >
         {filteredMappingConcepts({ pickSelected: true }).map((concept) => {
           return (

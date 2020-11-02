@@ -28,7 +28,7 @@ class AlignmentVocabulary < ApplicationRecord
     spine_vocabulary.concepts.each do |concept|
       AlignmentVocabularyConcept.create!(
         alignment_vocabulary: self,
-        spine_concept_uri: concept[:id]
+        spine_concept_id: concept.id
       )
     end
   end

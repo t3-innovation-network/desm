@@ -44,7 +44,7 @@ export default class MatchVocabulary extends Component {
     /**
      * The vocabulary concepts for the mapped term
      */
-    alignedConcepts: [],
+    alignmentConcepts: [],
   };
 
   /**
@@ -70,12 +70,29 @@ export default class MatchVocabulary extends Component {
 
   /**
    * Actions to take when a predicate has been selected for a mapping term
+   * The alginment vocabulary concept is matched with the selected predicate in memory
    *
    * @param {Object} predicate
    */
-  handlePredicateSelected = (concept, predicate) => {
-    // @todo: logic when a predicate is selected. The alginment vocabulary concept
-    //   is matched with the selected predicate in memory
+  handleOnPredicateSelected = (concept, predicate) => {
+    const { alignmentConcepts } = this.state;
+
+    let alignment = alignmentConcepts.find(
+      (conc) => conc.spine_concept_id === concept.id
+    );
+    alignment.predicate_id = predicate.id;
+
+    this.setState({ alignmentConcepts: alignmentConcepts });
+  };
+
+  /**
+   * Actions when a concept or set of concepts are dropped into an alignment
+   *
+   * @param {Object} alignment
+   * @param {Object} concept
+   */
+  handleAfterDropConcept = (alignment, concept) => {
+    console.log(alignment);
   };
 
   /**
@@ -137,7 +154,7 @@ export default class MatchVocabulary extends Component {
   };
 
   /**
-   * Get the alignment vocabulary. This is the vocabulary for the 
+   * Get the alignment vocabulary. This is the vocabulary for the
    */
   handleFetchAlignmentVocabulary = async () => {
     const { mappingTerm } = this.props;
@@ -146,7 +163,7 @@ export default class MatchVocabulary extends Component {
 
     if (!this.anyError(response)) {
       // Set the alignment vocabulary concepts on state
-      this.setState({ alignedConcepts: response.vocabulary.concepts });
+      this.setState({ alignmentConcepts: response.vocabulary.concepts });
     }
   };
 
@@ -243,7 +260,9 @@ export default class MatchVocabulary extends Component {
                           concept={concept}
                           spineOrigin={spineOrigin}
                           predicates={predicates}
-                          handlePredicateSelected={this.handlePredicateSelected}
+                          onPredicateSelected={(predicate) =>
+                            this.handleOnPredicateSelected(concept, predicate)
+                          }
                           selectedCount={
                             this.filteredMappingConcepts({ pickSelected: true })
                               .length
@@ -257,6 +276,7 @@ export default class MatchVocabulary extends Component {
                       mappingOrigin={mappingOrigin}
                       filteredMappingConcepts={this.filteredMappingConcepts}
                       onMappingConceptClick={this.onMappingConceptClick}
+                      afterDropConcept={this.handleAfterDropConcept}
                     />
                   </div>
                 </div>
