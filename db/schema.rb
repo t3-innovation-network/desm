@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_30_114114) do
+ActiveRecord::Schema.define(version: 2020_11_02_131905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,6 +149,18 @@ ActiveRecord::Schema.define(version: 2020_10_30_114114) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "skos_concepts", force: :cascade do |t|
+    t.jsonb "raw"
+    t.string "uri", null: false
+    t.index ["uri"], name: "index_skos_concepts_on_uri", unique: true
+  end
+
+  create_table "skos_concepts_vocabularies", id: false, force: :cascade do |t|
+    t.bigint "skos_concept_id", null: false
+    t.bigint "vocabulary_id", null: false
+    t.index ["skos_concept_id", "vocabulary_id"], name: "index_skos_concepts_vocab_on_skos_concept_id_and_vocabulary_id", unique: true
   end
 
   create_table "specifications", force: :cascade do |t|

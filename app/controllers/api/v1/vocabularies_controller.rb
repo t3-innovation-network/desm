@@ -20,19 +20,20 @@ class Api::V1::VocabulariesController < ApplicationController
   # @description: Returns a specific vocabulary
   ###
   def show
-    render json: @vocabulary
+    render json: @vocabulary, include: :concepts
   end
 
   ###
   # @description: Creates a vocabulary
   ###
   def create
-    @vocabulary = current_user.organization.vocabularies.create!(permitted_params)
+    @vocabulary = Processors::Skos
+                  .create({
+                            organization: current_user.organization,
+                            attrs: permitted_params
+                          })
 
-    render json: {
-      success: true,
-      vocabulary: @vocabulary
-    }
+    render json: @vocabulary, include: :concepts
   end
 
   private

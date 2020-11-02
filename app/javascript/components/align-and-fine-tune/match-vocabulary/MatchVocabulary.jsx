@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import Modal from "react-modal";
 import fetchAlginmentVocabulary from "../../../services/fetchAlignmentVocabulary";
-import fetchVocabulary from "../../../services/fetchVocabulary";
+import fetchVocabularyConcepts from "../../../services/fetchVocabularyConcepts";
 import AlertNotice from "../../shared/AlertNotice";
 import Loader from "../../shared/Loader";
 import ModalStyles from "../../shared/ModalStyles";
@@ -102,11 +102,11 @@ export default class MatchVocabulary extends Component {
   handleFetchSpineVocabulary = async () => {
     const { spineTerm } = this.props;
 
-    let response = await fetchVocabulary(spineTerm.vocabularies[0].id);
+    let response = await fetchVocabularyConcepts(spineTerm.vocabularies[0].id);
 
     if (!this.anyError(response)) {
       // Manage the concepts separately
-      let tempConcepts = response.vocabulary.concepts;
+      let tempConcepts = response;
 
       // Add a synthetic concept to have the chance to match elements to
       // the "No Match" predicate option.
@@ -128,11 +128,11 @@ export default class MatchVocabulary extends Component {
   handleFetchMappedTermVocabulary = async () => {
     const { mappedTerm } = this.props;
 
-    let response = await fetchVocabulary(mappedTerm.vocabularies[0].id);
+    let response = await fetchVocabularyConcepts(mappedTerm.vocabularies[0].id);
 
     if (!this.anyError(response)) {
       // Set the mapping vocabulary concepts on state
-      this.setState({ mappingConcepts: response.vocabulary.concepts });
+      this.setState({ mappingConcepts: response });
     }
   };
 
