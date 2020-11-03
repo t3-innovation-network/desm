@@ -18,6 +18,9 @@ import SimpleConceptCard from "./SimpleConceptCard";
  * @param {Integer} selectedCount
  */
 const SpineConceptRow = (props) => {
+  /**
+   * Elements from props
+   */
   const {
     alignment,
     concept,
@@ -41,6 +44,15 @@ const SpineConceptRow = (props) => {
     );
   };
 
+  /**
+   * The name of the selected predicate
+   */
+  const predicateLabel = () => {
+    return alignment.predicate_id
+      ? predicates.find((p) => p.id == alignment.predicate_id).pref_label
+      : null;
+  };
+
   return (
     <div className="row mb-2" key={concept.id}>
       <div className="col-4">
@@ -53,13 +65,12 @@ const SpineConceptRow = (props) => {
           <PredicateOptions
             predicates={predicates}
             onPredicateSelected={(predicate) => onPredicateSelected(predicate)}
+            predicate={predicateLabel}
           />
         )}
       </div>
       <div className="col-4">
-        {alignment &&
-        alignment.mappedConcepts &&
-        alignment.mappedConcepts.length ? (
+        {alignment.mappedConcepts && alignment.mappedConcepts.length ? (
           alignment.mappedConcepts.map((conc) => {
             return (
               <SimpleConceptCard

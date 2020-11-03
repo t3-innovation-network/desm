@@ -86,6 +86,31 @@ export default class MatchVocabulary extends Component {
   };
 
   /**
+   * Actions to perform when concepts were dropped into a synthetic alignment (No Match)
+   *
+   * @param {Object} alignment
+   */
+  handleDropOnSynthetic = (alignment) => {
+    const { spineConcepts } = this.state;
+
+    /// Remove synthetic status (So we can add another)
+    alignment.synthetic = false;
+    spineConcept.synthetic = false;
+
+    /// Instantiate the spine concept
+    let spineConcept = spineConcepts.find(
+      (concept) => concept.id == alignment.spine_concept_id
+    );
+
+    /// Name the synthetic spine concept
+    let [mappedConcept] = alignment.mappedConcepts;
+    spineConcept.name = mappedConcept.name;
+
+    /// Add a new synthetic row
+    this.addSyntheticConceptRow();
+  };
+
+  /**
    * Actions when a concept or set of concepts are dropped into an alignment
    *
    * @param {Object} alignment
@@ -104,6 +129,10 @@ export default class MatchVocabulary extends Component {
       pickSelected: true,
     });
 
+    if (alignment.synthetic) {
+      this.handleDropOnSynthetic(alignment);
+    }
+
     /// Deselect the selected concepts
     this.filteredMappingConcepts({ pickSelected: true }).forEach(
       (conc) => (conc.selected = false)
@@ -112,6 +141,42 @@ export default class MatchVocabulary extends Component {
     /// Update the UI
     this.setState({ alignmentConcepts: alignmentConcepts });
     this.setState({ mappingConcepts: mappingConcepts });
+  };
+
+  /**
+   * Add a new synthetic concept row. This, in order to be able to map
+   * a concept as "No Match".
+   */
+  addSyntheticConceptRow = () => {
+    const { alignmentConcepts, spineConcepts } = this.state;
+    const { predicates } = this.props;
+
+    let nextSpineConceptId = _.maxBy(spineConcepts, "id").id + 1;
+    let nextAlignmentId = _.maxBy(alignmentConcepts, "id").id + 1;
+
+    // Add a synthetic concept to have the chance to match elements to
+    // the "No Match" predicate option.
+    spineConcepts.push({
+      id: nextSpineConceptId,
+      name: "",
+      definition: "Synthetic element added to the vocabulary",
+      synthetic: true,
+    });
+
+    // Add the corresponding synthetic alignment
+    alignmentConcepts.push({
+      id: nextAlignmentId,
+      predicate_id: predicates.find((predicate) =>
+        predicate.uri.toLowerCase().includes("nomatch")
+      ).id,
+      spine_concept_id: nextSpineConceptId,
+      synthetic: true,
+    });
+
+    this.setState({
+      spineConcepts: spineConcepts,
+      alignmentConcepts: alignmentConcepts,
+    });
   };
 
   /**
@@ -141,20 +206,8 @@ export default class MatchVocabulary extends Component {
     let response = await fetchVocabularyConcepts(spineTerm.vocabularies[0].id);
 
     if (!this.anyError(response)) {
-      // Manage the concepts separately
-      let tempConcepts = response;
-
-      // Add a synthetic concept to have the chance to match elements to
-      // the "No Match" predicate option.
-      tempConcepts.push({
-        id: -1,
-        name: "",
-        definition: "Synthetic element added to the vocabulary",
-        synthetic: true,
-      });
-
       // Set the spine vocabulary concepts on state
-      this.setState({ spineConcepts: tempConcepts });
+      this.setState({ spineConcepts: response });
     }
   };
 
@@ -211,6 +264,7 @@ export default class MatchVocabulary extends Component {
     this.setState({ loading: true });
     await this.fetchDataFromAPI().then(() => {
       if (_.isEmpty(errors)) {
+        this.addSyntheticConceptRow();
         this.setState({ loading: false });
       }
     });
@@ -263,7 +317,9 @@ export default class MatchVocabulary extends Component {
             <HeaderContent onClose={onRequestClose} />
           </div>
           <div className="card-body">
+            {/* Manage to show the errors, if any */}
             {errors.length ? <AlertNotice message={errors.join("\n")} /> : ""}
+
             {loading ? (
               <Loader />
             ) : (
@@ -273,13 +329,17 @@ export default class MatchVocabulary extends Component {
                 <div className="row has-scrollbar scrollbar">
                   <div className="col-8 pt-3">
                     {spineConcepts.map((concept) => {
+                      /**
+                       * Instantiate the alignment to pass to the spine concept row through props
+                       */
+                      let _alignment = alignmentConcepts.find(
+                        (alignment) => alignment.spine_concept_id == concept.id
+                      );
+
                       return (
                         <SpineConceptRow
                           key={concept.id}
-                          alignment={alignmentConcepts.find(
-                            (alignment) =>
-                              alignment.spine_concept_id == concept.id
-                          )}
+                          alignment={_alignment}
                           concept={concept}
                           mappingOrigin={mappingOrigin}
                           spineOrigin={spineOrigin}
