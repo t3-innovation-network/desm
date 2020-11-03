@@ -42,7 +42,7 @@ class Api::V1::VocabulariesController < ApplicationController
   # @description: Execute the authorization policy
   ###
   def authorize_with_policy
-    authorize with_instance
+    authorize(with_instance)
   end
 
   ###

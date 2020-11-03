@@ -70,8 +70,8 @@ const SpineConceptRow = (props) => {
         )}
       </div>
       <div className="col-4">
-        {alignment.mappedConcepts && alignment.mappedConcepts.length ? (
-          alignment.mappedConcepts.map((conc) => {
+        {alignment.mapped_concepts && alignment.mapped_concepts.length ? (
+          alignment.mapped_concepts.map((conc) => {
             return (
               <SimpleConceptCard
                 key={conc.id}

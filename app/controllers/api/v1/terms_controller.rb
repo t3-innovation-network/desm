@@ -46,7 +46,7 @@ class Api::V1::TermsController < ApplicationController
   # @description: Execute the authorization policy
   ###
   def authorize_with_policy
-    authorize with_instance
+    authorize(with_instance)
   end
 
   ###

@@ -16,6 +16,6 @@ class Api::V1::AlignmentVocabulariesController < ApplicationController
       title: "Vocabulary for #{mapping_term.uri}"
     )
 
-    render json: @vocabulary, include: %i[concepts]
+    render json: @vocabulary, include: {concepts: {include: :mapped_concepts}}
   end
 end

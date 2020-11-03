@@ -103,7 +103,7 @@ export default class MatchVocabulary extends Component {
     );
 
     /// Name the synthetic spine concept
-    let [mappedConcept] = alignment.mappedConcepts;
+    let [mappedConcept] = alignment.mapped_concepts;
     spineConcept.name = mappedConcept.name;
 
     /// Add a new synthetic row
@@ -125,7 +125,7 @@ export default class MatchVocabulary extends Component {
     );
 
     /// Update the mapped concepts
-    alignment.mappedConcepts = this.filteredMappingConcepts({
+    alignment.mapped_concepts = this.filteredMappingConcepts({
       pickSelected: true,
     });
 
@@ -235,7 +235,7 @@ export default class MatchVocabulary extends Component {
 
     if (!this.anyError(response)) {
       // Set the alignment vocabulary concepts on state
-      this.setState({ alignmentConcepts: response.vocabulary.concepts });
+      this.setState({ alignmentConcepts: response });
     }
   };
 
