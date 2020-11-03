@@ -91,8 +91,27 @@ export default class MatchVocabulary extends Component {
    * @param {Object} alignment
    * @param {Object} concept
    */
-  handleAfterDropConcept = (alignment, concept) => {
-    console.log(alignment);
+  handleAfterDropConcept = (spineData) => {
+    const { alignmentConcepts, mappingConcepts } = this.state;
+
+    /// Get the alignment (information about vocabulary being mapped)
+    let alignment = alignmentConcepts.find(
+      (conc) => conc.spine_concept_id == spineData.spineConceptId
+    );
+
+    /// Update the mapped concepts
+    alignment.mappedConcepts = this.filteredMappingConcepts({
+      pickSelected: true,
+    });
+
+    /// Deselect the selected concepts
+    this.filteredMappingConcepts({ pickSelected: true }).forEach(
+      (conc) => (conc.selected = false)
+    );
+
+    /// Update the UI
+    this.setState({ alignmentConcepts: alignmentConcepts });
+    this.setState({ mappingConcepts: mappingConcepts });
   };
 
   /**
@@ -206,7 +225,7 @@ export default class MatchVocabulary extends Component {
       predicates,
     } = this.props;
 
-    const { loading, errors, spineConcepts } = this.state;
+    const { loading, errors, spineConcepts, alignmentConcepts } = this.state;
 
     /**
      * Structure for the title
@@ -257,7 +276,12 @@ export default class MatchVocabulary extends Component {
                       return (
                         <SpineConceptRow
                           key={concept.id}
+                          alignment={alignmentConcepts.find(
+                            (alignment) =>
+                              alignment.spine_concept_id == concept.id
+                          )}
                           concept={concept}
+                          mappingOrigin={mappingOrigin}
                           spineOrigin={spineOrigin}
                           predicates={predicates}
                           onPredicateSelected={(predicate) =>

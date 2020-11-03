@@ -2,13 +2,16 @@ import React from "react";
 import { DraggableItemTypes } from "../../shared/DraggableItemTypes";
 import DropZone from "../../shared/DropZone";
 import PredicateOptions from "../../shared/PredicateOptions";
-import SpineConceptCard from "./SpineConceptCard";
+import ConceptCard from "./ConceptCard";
+import SimpleConceptCard from "./SimpleConceptCard";
 
 /**
  * List the concepts for the spine term vocabulary as cards with the options to map.
  *
  * Props:
+ * @param {Object} alignment
  * @param {Object} concept
+ * @param {String} mappingOrigin
  * @param {String} spineOrigin
  * @param {Array} predicates
  * @param {Function} onPredicateSelected
@@ -16,7 +19,9 @@ import SpineConceptCard from "./SpineConceptCard";
  */
 const SpineConceptRow = (props) => {
   const {
+    alignment,
     concept,
+    mappingOrigin,
     spineOrigin,
     predicates,
     onPredicateSelected,
@@ -39,7 +44,7 @@ const SpineConceptRow = (props) => {
   return (
     <div className="row mb-2" key={concept.id}>
       <div className="col-4">
-        <SpineConceptCard concept={concept} spineOrigin={spineOrigin} />
+        <SimpleConceptCard concept={concept} origin={spineOrigin} />
       </div>
       <div className="col-4">
         {concept.synthetic ? (
@@ -52,12 +57,26 @@ const SpineConceptRow = (props) => {
         )}
       </div>
       <div className="col-4">
-        <DropZone
-          droppedItem={{ id: concept.id }}
-          selectedCount={selectedCount}
-          acceptedItemType={DraggableItemTypes.CONCEPTS_SET}
-          textStyle={{ fontSize: "12px" }}
-        />
+        {alignment &&
+        alignment.mappedConcepts &&
+        alignment.mappedConcepts.length ? (
+          alignment.mappedConcepts.map((conc) => {
+            return (
+              <SimpleConceptCard
+                key={conc.id}
+                concept={conc}
+                origin={mappingOrigin}
+              />
+            );
+          })
+        ) : (
+          <DropZone
+            droppedItem={{ spineConceptId: concept.id }}
+            selectedCount={selectedCount}
+            acceptedItemType={DraggableItemTypes.CONCEPTS_SET}
+            textStyle={{ fontSize: "12px" }}
+          />
+        )}
       </div>
     </div>
   );

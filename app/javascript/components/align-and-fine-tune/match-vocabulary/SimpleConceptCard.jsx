@@ -6,9 +6,10 @@ import Collapsible from "../../shared/Collapsible";
  * The concept as a card
  * Props:
  * @param {Object} concept
+ * @param {String} origin
  */
-const SpineConceptCard = (props) => {
-  const { concept, spineOrigin } = props;
+const SimpleConceptCard = (props) => {
+  const { concept, origin } = props;
 
   return (
     <Collapsible
@@ -20,7 +21,7 @@ const SpineConceptCard = (props) => {
           <p>{concept.definition}</p>
           <p>
             Origin:
-            <span className="col-primary">{" " + spineOrigin}</span>
+            <span className="col-primary">{" " + origin}</span>
           </p>
         </Fragment>
       }
@@ -28,4 +29,4 @@ const SpineConceptCard = (props) => {
   );
 };
 
-export default SpineConceptCard;
+export default SimpleConceptCard;
