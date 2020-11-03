@@ -10,16 +10,16 @@ class Api::V1::DomainsController < ApplicationController
   # @description: Lists all the domains
   ###
   def index
-    @domains = Domain.order(pref_label: :asc)
+    domains = Domain.order(pref_label: :asc)
 
-    render json: @domains
+    render json: domains
   end
 
   ###
   # @description: Returns the domain with id equal to the one passed in params
   ###
   def show
-    render json: @domain
+    render json: @instance
   end
 
   private
@@ -28,14 +28,6 @@ class Api::V1::DomainsController < ApplicationController
   # @description: Execute the authorization policy
   ###
   def authorize_with_policy
-    authorize domain
-  end
-
-  ###
-  # @description: Get the current model record
-  # @return [ActiveRecord]
-  ###
-  def domain
-    @domain = params[:id].present? ? Domain.find(params[:id]) : Domain.first
+    authorize with_instance
   end
 end

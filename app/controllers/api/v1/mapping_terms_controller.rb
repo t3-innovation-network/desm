@@ -12,12 +12,12 @@ class Api::V1::MappingTermsController < ApplicationController
   def update
     ActiveRecord::Base.transaction do
       if params[:mapping_term][:mapped_terms].present?
-        @mapping_term.update_mapped_terms(params[:mapping_term][:mapped_terms])
+        @instance.update_mapped_terms(params[:mapping_term][:mapped_terms])
       end
-      @mapping_term.update!(permitted_params)
+      @instance.update!(permitted_params)
     end
 
-    render json: @mapping_term, include: %i[mapped_terms]
+    render json: @instance, include: %i[mapped_terms]
   end
 
   private
@@ -26,15 +26,7 @@ class Api::V1::MappingTermsController < ApplicationController
   # @description: Execute the authorization policy
   ###
   def authorize_with_policy
-    authorize mapping_term
-  end
-
-  ###
-  # @description: Get the current model record
-  # @return [MappingTerm]
-  ###
-  def mapping_term
-    @mapping_term = MappingTerm.find(params[:id])
+    authorize with_instance
   end
 
   ###

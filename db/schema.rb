@@ -33,8 +33,9 @@ ActiveRecord::Schema.define(version: 2020_11_02_131905) do
 
   create_table "alignv_mapped_concepts", force: :cascade do |t|
     t.bigint "alignment_vocabulary_concept_id", null: false
-    t.string "mapping_concept_uri", null: false
+    t.bigint "skos_concept_id", null: false
     t.index ["alignment_vocabulary_concept_id"], name: "index_alignv_mapped_concepts_on_alignment_vocabulary_concept_id"
+    t.index ["skos_concept_id"], name: "index_alignv_mapped_concepts_on_skos_concept_id"
   end
 
   create_table "assignments", force: :cascade do |t|
@@ -216,6 +217,7 @@ ActiveRecord::Schema.define(version: 2020_11_02_131905) do
   add_foreign_key "alignment_vocabulary_concepts", "alignment_vocabularies"
   add_foreign_key "alignment_vocabulary_concepts", "predicates"
   add_foreign_key "alignv_mapped_concepts", "alignment_vocabulary_concepts"
+  add_foreign_key "alignv_mapped_concepts", "skos_concepts"
   add_foreign_key "assignments", "roles"
   add_foreign_key "assignments", "users"
   add_foreign_key "domains", "domain_sets"

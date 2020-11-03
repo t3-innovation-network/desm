@@ -39,11 +39,11 @@ class MappingTerm < ApplicationRecord
 
   ###
   # @description: Associate the terms to this alignment. NOTE: This method will replace the previous
-  #   associated terms, so if you need to add terms, maintaining the previous oines, include the
+  #   associated terms, so if you need to add terms, maintaining the previous ones, include the
   #   previous ids in the params.
   #
   # @param [Array] mapped_term_ids: A collection of ids representing the terms that are
-  #   goint to be mapped to this alignment
+  #   going to be mapped to this alignment
   ###
   def update_mapped_terms ids
     self.mapped_term_ids = ids

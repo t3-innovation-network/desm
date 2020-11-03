@@ -12,7 +12,7 @@ class CreateAlignmentVocabularyConceptMappedConcepts < ActiveRecord::Migration[6
     # So the name was shortened.
     create_table :alignv_mapped_concepts do |t|
       t.references :alignment_vocabulary_concept, null: false, foreign_key: true
-      t.string :mapping_concept_uri, null: false
+      t.references :skos_concept, null: false, foreign_key: true
     end
   end
 end

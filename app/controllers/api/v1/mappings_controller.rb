@@ -31,9 +31,9 @@ class Api::V1::MappingsController < ApplicationController
   # @description: Udates the attributes of a mapping
   ###
   def update
-    @mapping.update!(permitted_params)
+    @instance.update!(permitted_params)
 
-    render json: @mapping
+    render json: @instance
   end
 
   ###
@@ -58,7 +58,7 @@ class Api::V1::MappingsController < ApplicationController
   #   in params
   ###
   def show
-    render json: @mapping, include: %i[terms selected_terms]
+    render json: @instance, include: %i[terms selected_terms]
   end
 
   ###
@@ -66,7 +66,7 @@ class Api::V1::MappingsController < ApplicationController
   #   to the one passed in params
   ###
   def show_terms
-    render json: @mapping.terms.order(:uri), include: {mapped_terms: {include: %i[property vocabularies]}}
+    render json: @instance.terms.order(:uri), include: {mapped_terms: {include: %i[property vocabularies]}}
   end
 
   ###
@@ -74,7 +74,7 @@ class Api::V1::MappingsController < ApplicationController
   #   to the one passed in params
   ###
   def show_selected_terms
-    render json: @mapping.selected_terms.order(:uri), include: [:property]
+    render json: @instance.selected_terms.order(:uri), include: [:property]
   end
 
   private
@@ -83,15 +83,7 @@ class Api::V1::MappingsController < ApplicationController
   # @description: Execute the authorization policy
   ###
   def authorize_with_policy
-    authorize mapping
-  end
-
-  ###
-  # @description: Get the current model record
-  # @return [ActiveRecord]
-  ###
-  def mapping
-    @mapping = params[:id].present? ? Mapping.find(params[:id]) : Mapping.new
+    authorize with_instance
   end
 
   ###

@@ -5,7 +5,7 @@
 ###
 class Api::V1::AlignmentVocabulariesController < ApplicationController
   ###
-  # @description: Returns the vocabulary mapping for a specific mapping term,
+  # @description: Returns the vocabulary mapping for a specific alignment,
   #   with its concepts
   ###
   def show

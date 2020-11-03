@@ -20,20 +20,20 @@ class Api::V1::VocabulariesController < ApplicationController
   # @description: Returns a specific vocabulary
   ###
   def show
-    render json: @vocabulary, include: :concepts
+    render json: @instance, include: :concepts
   end
 
   ###
   # @description: Creates a vocabulary
   ###
   def create
-    @vocabulary = Processors::Skos
-                  .create({
-                            organization: current_user.organization,
-                            attrs: permitted_params
-                          })
+    @instance = Processors::Skos
+                .create({
+                          organization: current_user.organization,
+                          attrs: permitted_params
+                        })
 
-    render json: @vocabulary, include: :concepts
+    render json: @instance, include: :concepts
   end
 
   private
@@ -42,15 +42,7 @@ class Api::V1::VocabulariesController < ApplicationController
   # @description: Execute the authorization policy
   ###
   def authorize_with_policy
-    authorize vocabulary
-  end
-
-  ###
-  # @description: Get the current model record
-  # @return [ActiveRecord]
-  ###
-  def vocabulary
-    @vocabulary = params[:id].present? ? Vocabulary.find(params[:id]) : (Vocabulary.first || Vocabulary)
+    authorize with_instance
   end
 
   ###
