@@ -2,12 +2,13 @@ import React from "react";
 
 /**
  * Structure of the header for the "Match Vocabulary" component
- * 
+ *
  * Props:
- * @param {Function} onClose
+ * @param {Function} onRequestClose
+ * @param {Function} onRequestSave
  */
 const HeaderContent = (props) => {
-  const { onClose } = props;
+  const { onRequestClose, onRequestSave } = props;
 
   return (
     <div className="row">
@@ -17,11 +18,13 @@ const HeaderContent = (props) => {
       <div className="col-6 text-right">
         <button
           className="btn btn-outline-secondary mr-2"
-          onClick={onClose}
+          onClick={onRequestClose}
         >
           Cancel
         </button>
-        <button className="btn btn-dark">Save Mapping</button>
+        <button className="btn btn-dark" onClick={onRequestSave}>
+          Save Mapping
+        </button>
       </div>
     </div>
   );

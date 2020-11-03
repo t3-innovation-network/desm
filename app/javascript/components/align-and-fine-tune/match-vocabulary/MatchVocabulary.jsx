@@ -2,12 +2,14 @@ import React, { Component, Fragment } from "react";
 import Modal from "react-modal";
 import fetchAlginmentVocabulary from "../../../services/fetchAlignmentVocabulary";
 import fetchVocabularyConcepts from "../../../services/fetchVocabularyConcepts";
+import updateAlignmentVocabularyConcept from "../../../services/updateAlignmentVocabularyConcept";
 import AlertNotice from "../../shared/AlertNotice";
 import Loader from "../../shared/Loader";
 import ModalStyles from "../../shared/ModalStyles";
 import HeaderContent from "./HeaderContent";
 import MappingConceptsList from "./MappingConceptsList";
 import SpineConceptRow from "./SpineConceptRow";
+import { toastr as toast } from "react-redux-toastr";
 
 /**
  * Props
@@ -58,6 +60,12 @@ export default class MatchVocabulary extends Component {
       .sort((a, b) => (a.name > b.name ? 1 : -1));
 
   /**
+   * The changed alignments
+   */
+  changedAlignments = () =>
+    this.state.alignmentConcepts.filter((alignment) => alignment.updated);
+
+  /**
    * Mark the term as "selected"
    */
   onMappingConceptClick = (clickedConcept) => {
@@ -81,6 +89,7 @@ export default class MatchVocabulary extends Component {
       (conc) => conc.spine_concept_id === concept.id
     );
     alignment.predicate_id = predicate.id;
+    alignment.updated = true;
 
     this.setState({ alignmentConcepts: alignmentConcepts });
   };
@@ -92,10 +101,6 @@ export default class MatchVocabulary extends Component {
    */
   handleDropOnSynthetic = (alignment) => {
     const { spineConcepts } = this.state;
-
-    /// Remove synthetic status (So we can add another)
-    alignment.synthetic = false;
-    spineConcept.synthetic = false;
 
     /// Instantiate the spine concept
     let spineConcept = spineConcepts.find(
@@ -128,6 +133,8 @@ export default class MatchVocabulary extends Component {
     alignment.mapped_concepts = this.filteredMappingConcepts({
       pickSelected: true,
     });
+
+    alignment.updated = true;
 
     if (alignment.synthetic) {
       this.handleDropOnSynthetic(alignment);
@@ -196,6 +203,29 @@ export default class MatchVocabulary extends Component {
     /// of the errors on the response object)
     return !_.isUndefined(response.error);
   }
+
+  /**
+   * Saves the alginment changes
+   */
+  handleSave = () => {
+    const { onRequestClose } = this.props;
+
+    this.changedAlignments().filter(a => !a.synthetic).forEach((alignment) => {
+      let response = updateAlignmentVocabularyConcept({
+        id: alignment.id,
+        predicate_id: alignment.predicate_id,
+        mapped_concepts: alignment.mapped_concepts.map((concept) => concept.id),
+      });
+
+      // Stop the execution on any error. The details will be shown on the screen by AlertNotice
+      if (this.anyError(response)) {
+        return;
+      }
+    });
+
+    toast.success("The vocabulary changes were successfully saved!");
+    onRequestClose();
+  };
 
   /**
    * Get the spine vocabulary
@@ -314,7 +344,10 @@ export default class MatchVocabulary extends Component {
       >
         <div className="card p-5">
           <div className="card-header no-color-header border-bottom pb-3">
-            <HeaderContent onClose={onRequestClose} />
+            <HeaderContent
+              onRequestClose={onRequestClose}
+              onRequestSave={this.handleSave}
+            />
           </div>
           <div className="card-body">
             {/* Manage to show the errors, if any */}
