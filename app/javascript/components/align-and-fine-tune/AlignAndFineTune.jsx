@@ -197,14 +197,12 @@ const AlignAndFineTune = (props) => {
    *    marked in memory as "mappedTo".
    * 2. The mapping term is already mapped in the backend (is one of the mapping terms in DB).
    */
-  function spineTermIsMapped(spineTerm) {
-    return mappingSelectedTerms.some((mappingTerm) => {
-      return (
-        mappingTerm.mappedTo === spineTerm.uri ||
-        mappingTerm.spine_term_id === spineTerm.id
-      );
-    });
-  }
+  const spineTermIsMapped = (spineTerm) => {
+    let mTerm = mappingTerms.find(
+      (mTerm) => mTerm.spine_term_id == spineTerm.id
+    );
+    return mTerm.mapped_terms.length;
+  };
 
   /**
    * Mark the term as "selected"
@@ -670,6 +668,7 @@ const AlignAndFineTune = (props) => {
                     filterSpineTermsOnChange={filterSpineTermsOnChange}
                     addingSynthetic={addingSynthetic}
                     handleAddSynthetic={handleAddSynthetic}
+                    mappingTerms={mappingTerms}
                   />
                   <div className="mt-5">
                     {addingSynthetic && (
@@ -691,6 +690,8 @@ const AlignAndFineTune = (props) => {
                           ""
                         ) : loading ? (
                           <Loader />
+                        ) : hideMappedSpineTerms && spineTermIsMapped(term) ? (
+                          ""
                         ) : (
                           <SpineTermRow
                             key={term.id}
@@ -699,7 +700,6 @@ const AlignAndFineTune = (props) => {
                             predicates={predicates}
                             selectedMappingTerms={selectedMappingTerms}
                             mappedTermsToSpineTerm={mappedTermsToSpineTerm}
-                            isMapped={spineTermIsMapped}
                             origin={mapping.origin}
                             spineOrigin={mapping.spine_origin}
                             onPredicateSelected={onPredicateSelected}
