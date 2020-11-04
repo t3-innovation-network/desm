@@ -12,7 +12,7 @@ class Api::V1::MappingsController < ApplicationController
   def index
     mappings = filter
 
-    render json: mappings, include: {specification: {include: %i[user terms]}}
+    render json: mappings, include: [:terms, {specification: {include: %i[user terms]}}]
   end
 
   ###

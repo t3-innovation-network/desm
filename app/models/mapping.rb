@@ -49,10 +49,18 @@ class Mapping < ApplicationRecord
   end
 
   ###
+  # @description: Returns the number of terms that are already mapped
+  # @return [Integer]
+  ###
+  def mapped_terms
+    terms.select {|term| term.mapped_terms.count.positive? }.count
+  end
+
+  ###
   # @description: Include additional information about the mapping in
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
   def as_json(options={})
-    super options.merge(methods: %i[uploaded? mapped? in_progress? origin spine_origin domain])
+    super options.merge(methods: %i[uploaded? mapped? in_progress? origin spine_origin domain mapped_terms])
   end
 end
