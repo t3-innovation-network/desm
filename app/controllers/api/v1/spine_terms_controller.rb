@@ -7,6 +7,9 @@ class Api::V1::SpineTermsController < ApplicationController
   before_action :validate_mapped_terms, only: [:create]
   after_action :set_mapped_terms, only: [:create]
 
+  ###
+  # @description: Creates a new (synthetic) term for the spine, along with its alignment
+  ###
   def create
     ActiveRecord::Base.transaction do
       spine_term = Term.create!(permitted_params[:spine_term])

@@ -10,6 +10,7 @@ import HeaderContent from "./HeaderContent";
 import MappingConceptsList from "./MappingConceptsList";
 import SpineConceptRow from "./SpineConceptRow";
 import { toastr as toast } from "react-redux-toastr";
+import createSyntheticVocabularyConcept from "../../../services/createSyntheticVocabularyConcept";
 
 /**
  * Props
@@ -205,23 +206,78 @@ export default class MatchVocabulary extends Component {
   }
 
   /**
+   * Save all those alignments marked as "updated"
+   */
+  saveChangedAlignments = () => {
+    this.changedAlignments()
+      .filter((a) => !a.synthetic)
+      .forEach((alignment) => {
+        let response = updateAlignmentVocabularyConcept({
+          id: alignment.id,
+          predicate_id: alignment.predicate_id,
+          mapped_concepts: alignment.mapped_concepts.map(
+            (concept) => concept.id
+          ),
+        });
+
+        // Stop the execution on any error. The details will be shown on the screen by AlertNotice
+        if (this.anyError(response)) {
+          return;
+        }
+      });
+  };
+
+  /**
+   * Save all those alignments added mannually
+   */
+  saveSyntheticAlignments = () => {
+    const { spineConcepts } = this.state;
+
+    this.changedAlignments()
+      .filter((a) => a.synthetic)
+      .forEach((alignment) => {
+        let spineConcept = spineConcepts.find(
+          (sc) => sc.id == alignment.spine_concept_id
+        );
+        let response = createSyntheticVocabularyConcept({
+          spine_concept: {
+            uri: "http://desm.org/concepts/concepts/" + spineConcept.name,
+            raw: {
+              id: "http://desm.org/concepts/concepts" + spineConcept.name,
+              type: "skos:Concept",
+              prefLabel: {
+                "en-us": spineConcept.name,
+              },
+              definition: {
+                "en-us":
+                  "Synthetic concept added to the vocabulary for " +
+                  spineConcept.name,
+              },
+              inScheme: "http://desm.org/concepts/mappingClasses",
+            },
+          },
+          alignment: {
+            predicate_id: 7,
+            alignment_vocabulary_id: 1,
+            mapped_concepts: alignment.mapped_concepts,
+          },
+        });
+
+        // Stop the execution on any error. The details will be shown on the screen by AlertNotice
+        if (this.anyError(response)) {
+          return;
+        }
+      });
+  };
+
+  /**
    * Saves the alginment changes
    */
   handleSave = () => {
     const { onRequestClose } = this.props;
 
-    this.changedAlignments().filter(a => !a.synthetic).forEach((alignment) => {
-      let response = updateAlignmentVocabularyConcept({
-        id: alignment.id,
-        predicate_id: alignment.predicate_id,
-        mapped_concepts: alignment.mapped_concepts.map((concept) => concept.id),
-      });
-
-      // Stop the execution on any error. The details will be shown on the screen by AlertNotice
-      if (this.anyError(response)) {
-        return;
-      }
-    });
+    this.saveChangedAlignments();
+    this.saveSyntheticAlignments();
 
     toast.success("The vocabulary changes were successfully saved!");
     onRequestClose();

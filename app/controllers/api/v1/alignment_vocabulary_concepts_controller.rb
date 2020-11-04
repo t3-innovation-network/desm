@@ -5,7 +5,6 @@
 ###
 class Api::V1::AlignmentVocabularyConceptsController < ApplicationController
   before_action :authorize_with_policy
-  @model_name = AlignmentVocabularyConcept
 
   ###
   # @description: Updates a single alignment concept, firstly updating its mapped concepts

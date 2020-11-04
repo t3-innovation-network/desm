@@ -15,14 +15,19 @@ class AlignmentVocabulary < ApplicationRecord
   after_create :assign_concepts_from_spine, unless: proc { concepts.count.positive? }
 
   ###
+  # @description: The first of the vocabularies is what we need. The client
+  # @return [Vocabulary]
+  ###
+  def spine_vocabulary
+    mapping_term.spine_term.vocabularies.first
+  end
+
+  ###
   # @description: If this vocabulary mapping was created from the controller, it does not contain any concept yet.
   #   Let's create each one from the spine property vocabulary concepts.
   # @return [TrueClass|FalseClass]
   ###
   def assign_concepts_from_spine
-    # The first of the vocabularies is what we need. The client
-    spine_vocabulary = mapping_term.spine_term.vocabularies.first
-
     return unless spine_vocabulary.present?
 
     spine_vocabulary.concepts.each do |concept|
