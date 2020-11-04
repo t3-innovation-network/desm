@@ -48,6 +48,10 @@ export default class MatchVocabulary extends Component {
      * The vocabulary concepts for the mapped term
      */
     alignmentConcepts: [],
+    /**
+     * Whether any change awas performed after the page loads
+     */
+    changesPerformed: 0,
   };
 
   /**
@@ -84,7 +88,7 @@ export default class MatchVocabulary extends Component {
    * @param {Object} predicate
    */
   handleOnPredicateSelected = (concept, predicate) => {
-    const { alignmentConcepts } = this.state;
+    const { alignmentConcepts, changesPerformed } = this.state;
 
     let alignment = alignmentConcepts.find(
       (conc) => conc.spine_concept_id === concept.id
@@ -92,7 +96,10 @@ export default class MatchVocabulary extends Component {
     alignment.predicate_id = predicate.id;
     alignment.updated = true;
 
-    this.setState({ alignmentConcepts: alignmentConcepts });
+    this.setState({
+      alignmentConcepts: alignmentConcepts,
+      changesPerformed: changesPerformed + 1,
+    });
   };
 
   /**
@@ -123,7 +130,7 @@ export default class MatchVocabulary extends Component {
    * @param {Object} concept
    */
   handleAfterDropConcept = (spineData) => {
-    const { alignmentConcepts, mappingConcepts } = this.state;
+    const { alignmentConcepts, mappingConcepts, changesPerformed } = this.state;
 
     /// Get the alignment (information about vocabulary being mapped)
     let alignment = alignmentConcepts.find(
@@ -147,8 +154,11 @@ export default class MatchVocabulary extends Component {
     );
 
     /// Update the UI
-    this.setState({ alignmentConcepts: alignmentConcepts });
-    this.setState({ mappingConcepts: mappingConcepts });
+    this.setState({
+      alignmentConcepts: alignmentConcepts,
+      mappingConcepts: mappingConcepts,
+      changesPerformed: changesPerformed + 1,
+    });
   };
 
   /**
@@ -243,7 +253,7 @@ export default class MatchVocabulary extends Component {
           spine_concept: {
             uri: "http://desm.org/concepts/concepts/" + spineConcept.name,
             raw: {
-              id: "http://desm.org/concepts/concepts" + spineConcept.name,
+              id: "http://desm.org/concepts/concepts/" + spineConcept.name,
               type: "skos:Concept",
               prefLabel: {
                 "en-us": spineConcept.name,
@@ -259,7 +269,7 @@ export default class MatchVocabulary extends Component {
           alignment: {
             predicate_id: 7,
             alignment_vocabulary_id: 1,
-            mapped_concepts: alignment.mapped_concepts,
+            mapped_concepts: alignment.mapped_concepts.map((mc) => mc.id),
           },
         });
 
@@ -365,7 +375,13 @@ export default class MatchVocabulary extends Component {
       predicates,
     } = this.props;
 
-    const { loading, errors, spineConcepts, alignmentConcepts } = this.state;
+    const {
+      loading,
+      errors,
+      spineConcepts,
+      alignmentConcepts,
+      changesPerformed,
+    } = this.state;
 
     /**
      * Structure for the title
@@ -403,6 +419,7 @@ export default class MatchVocabulary extends Component {
             <HeaderContent
               onRequestClose={onRequestClose}
               onRequestSave={this.handleSave}
+              disableSave={!changesPerformed}
             />
           </div>
           <div className="card-body">

@@ -6,9 +6,10 @@ import React from "react";
  * Props:
  * @param {Function} onRequestClose
  * @param {Function} onRequestSave
+ * @param {Boolean} disableSave
  */
 const HeaderContent = (props) => {
-  const { onRequestClose, onRequestSave } = props;
+  const { onRequestClose, onRequestSave, disableSave } = props;
 
   return (
     <div className="row">
@@ -22,7 +23,11 @@ const HeaderContent = (props) => {
         >
           Cancel
         </button>
-        <button className="btn btn-dark" onClick={onRequestSave}>
+        <button
+          className="btn btn-dark"
+          onClick={onRequestSave}
+          disabled={disableSave}
+        >
           Save Mapping
         </button>
       </div>
