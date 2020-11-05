@@ -17,7 +17,9 @@ class AlignmentVocabularyConcept < ApplicationRecord
   ###
   # @description: The mapping property concepts this new concept is aligning
   ###
-  has_and_belongs_to_many :mapped_concepts, join_table: :alignv_mapped_concepts, class_name: "SkosConcept"
+  has_and_belongs_to_many :mapped_concepts,
+                          join_table: :alignment_vocabulary_concept_mapped_concepts,
+                          class_name: "SkosConcept"
 
   ###
   # @description: Associate the concepts to this alignment vocabulary. NOTE: This method will replace the previous

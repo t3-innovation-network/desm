@@ -23,19 +23,20 @@ ActiveRecord::Schema.define(version: 2020_11_02_131905) do
     t.index ["mapping_term_id"], name: "index_alignment_vocabularies_on_mapping_term_id"
   end
 
+  create_table "alignment_vocabulary_concept_mapped_concepts", force: :cascade do |t|
+    t.bigint "alignment_vocabulary_concept_id", null: false
+    t.bigint "skos_concept_id", null: false
+    t.index ["alignment_vocabulary_concept_id", "skos_concept_id"], name: "index_avcmc_alignment_vocabulary_concept_id_skos_concept_id", unique: true
+    t.index ["alignment_vocabulary_concept_id"], name: "index_avc_mapped_concepts_acv_id"
+    t.index ["skos_concept_id"], name: "index_avc_mapped_concepts_skos_concept_id"
+  end
+
   create_table "alignment_vocabulary_concepts", force: :cascade do |t|
     t.bigint "alignment_vocabulary_id", null: false
     t.bigint "predicate_id"
     t.integer "spine_concept_id", null: false
     t.index ["alignment_vocabulary_id"], name: "index_alignment_vocabulary_concepts_on_alignment_vocabulary_id"
     t.index ["predicate_id"], name: "index_alignment_vocabulary_concepts_on_predicate_id"
-  end
-
-  create_table "alignv_mapped_concepts", force: :cascade do |t|
-    t.bigint "alignment_vocabulary_concept_id", null: false
-    t.bigint "skos_concept_id", null: false
-    t.index ["alignment_vocabulary_concept_id"], name: "index_alignv_mapped_concepts_on_alignment_vocabulary_concept_id"
-    t.index ["skos_concept_id"], name: "index_alignv_mapped_concepts_on_skos_concept_id"
   end
 
   create_table "assignments", force: :cascade do |t|
@@ -214,10 +215,10 @@ ActiveRecord::Schema.define(version: 2020_11_02_131905) do
   end
 
   add_foreign_key "alignment_vocabularies", "mapping_terms"
+  add_foreign_key "alignment_vocabulary_concept_mapped_concepts", "alignment_vocabulary_concepts"
+  add_foreign_key "alignment_vocabulary_concept_mapped_concepts", "skos_concepts"
   add_foreign_key "alignment_vocabulary_concepts", "alignment_vocabularies"
   add_foreign_key "alignment_vocabulary_concepts", "predicates"
-  add_foreign_key "alignv_mapped_concepts", "alignment_vocabulary_concepts"
-  add_foreign_key "alignv_mapped_concepts", "skos_concepts"
   add_foreign_key "assignments", "roles"
   add_foreign_key "assignments", "users"
   add_foreign_key "domains", "domain_sets"
