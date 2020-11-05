@@ -175,6 +175,15 @@ const AlignAndFineTune = (props) => {
   const mappedSelectedTerms = mappingSelectedTerms.filter(selectedTermIsMapped);
 
   /**
+   * Returns whether all the terms from the specification are already mapped
+   */
+  const allTermsMapped = mappingSelectedTerms.every((term) =>
+    mappingTerms.some((mTerm) =>
+      mTerm.mapped_terms.some((t) => t.id === term.id)
+    )
+  );
+
+  /**
    * Returns wether the term is already mapped to the spine. It can be 1 of 2 options:
    *
    * 1. The mapping term was recently dragged to the spine term, so it's not in the backend, just
@@ -305,7 +314,7 @@ const AlignAndFineTune = (props) => {
         <button
           className="btn bg-col-primary col-background"
           onClick={handleDoneAlignment}
-          disabled={loading}
+          disabled={loading || !allTermsMapped}
         >
           Done Alignment
         </button>
