@@ -153,7 +153,7 @@ ActiveRecord::Schema.define(version: 2020_11_02_131905) do
   end
 
   create_table "skos_concepts", force: :cascade do |t|
-    t.jsonb "raw"
+    t.jsonb "raw", null: false
     t.string "uri", null: false
     t.index ["uri"], name: "index_skos_concepts_on_uri", unique: true
   end
@@ -227,6 +227,7 @@ ActiveRecord::Schema.define(version: 2020_11_02_131905) do
   add_foreign_key "mapping_term_mapped_terms", "terms"
   add_foreign_key "mapping_terms", "mappings"
   add_foreign_key "mapping_terms", "predicates"
+  add_foreign_key "mapping_terms", "vocabularies"
   add_foreign_key "mappings", "specifications"
   add_foreign_key "mappings", "users"
   add_foreign_key "properties", "terms"

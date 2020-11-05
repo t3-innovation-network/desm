@@ -95,7 +95,7 @@ class Api::V1::MappingsController < ApplicationController
     mappings = Mapping.where(user: current_user.organization.users)
 
     # Filter by current user
-    mappings = mappings.where(user: current_user) if params[:filter].present? && params[:filter] != "all"
+    mappings = mappings.where(user: current_user) if params[:filter] != "all"
 
     # Return an ordered list
     mappings.order(:title)

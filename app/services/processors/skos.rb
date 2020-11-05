@@ -47,7 +47,7 @@ module Processors
     ###
     def self.create_concepts concepts_list
       concepts_list.map do |concept|
-        SkosConcept.find_or_create_by(uri: Parsers::Specifications.read!(concept, "id")) do |skos_concept|
+        SkosConcept.find_or_initialize_by(uri: Parsers::Specifications.read!(concept, "id")) do |skos_concept|
           skos_concept.update(raw: concept)
         end
       end

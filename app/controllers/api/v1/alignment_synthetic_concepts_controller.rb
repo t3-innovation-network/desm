@@ -29,16 +29,24 @@ class Api::V1::AlignmentSyntheticConceptsController < ApplicationController
   # @description: Ensure we have the mapped concepts in order to add the new synthetic concept to the spine vocabulary
   ###
   def validate_mapped_concepts
-    return if params[:synthetic][:alignment][:mapped_concepts].present?
+    return if mapped_concepts.present?
 
     raise "No mapped concepts provided for the new synthetic concept"
+  end
+
+  ###
+  # @description: Returns the mapped concepts, if passed in params
+  # @return [Array|nil]
+  ###
+  def mapped_concepts
+    params.dig(:synthetic, :alignment, :mapped_concepts)
   end
 
   ###
   # @description: Set the mapped concepts to the recently created alignment
   ###
   def set_mapped_concepts
-    @alignment.update_mapped_concepts(params[:synthetic][:alignment][:mapped_concepts])
+    @alignment.update_mapped_concepts(mapped_concepts)
   end
 
   ###

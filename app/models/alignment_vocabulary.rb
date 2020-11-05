@@ -25,7 +25,7 @@ class AlignmentVocabulary < ApplicationRecord
   ###
   # @description: If this vocabulary mapping was created from the controller, it does not contain any concept yet.
   #   Let's create each one from the spine property vocabulary concepts.
-  # @return [TrueClass|FalseClass]
+  # @return [Array]
   ###
   def assign_concepts_from_spine
     return unless spine_vocabulary.present?

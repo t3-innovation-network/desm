@@ -221,8 +221,7 @@ const SpineTermRow = (props) => {
         />
       )}
 
-      {term.vocabularies &&
-      term.vocabularies.length &&
+      {term.vocabularies?.length &&
       props
         .mappedTermsToSpineTerm(term)
         .some((mTerm) => mTerm.vocabularies && mTerm.vocabularies.length) ? (
@@ -253,10 +252,7 @@ const SpineTermRow = (props) => {
                   <span className="col-primary">{" " + spineOrigin}</span>
                 </p>
 
-                <VocabularyLabel
-                  term={term}
-                  handleMatchVocabularyClick={() => {}}
-                />
+                <VocabularyLabel term={term} />
               </React.Fragment>
             }
           />
@@ -307,7 +303,7 @@ const SpineTermRow = (props) => {
 
                     <VocabularyLabel
                       term={term}
-                      handleMatchVocabularyClick={handleMatchVocabularyClick}
+                      onVocabularyClick={handleMatchVocabularyClick}
                       clickable={true}
                     />
                   </React.Fragment>

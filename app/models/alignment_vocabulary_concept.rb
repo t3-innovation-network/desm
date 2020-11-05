@@ -9,9 +9,14 @@
 # This last in order to represent the multiple alignment between concepts
 ###
 class AlignmentVocabularyConcept < ApplicationRecord
+  ###
+  # @description: The vocabulary for the alignment between two properties
+  ###
   belongs_to :alignment_vocabulary
-  # @todo: Provide class_name. Since we are not modeling the concept from vocabularies, we will need
-  #   to do that first
+
+  ###
+  # @description: The mapping property concepts this new concept is aligning
+  ###
   has_and_belongs_to_many :mapped_concepts, join_table: :alignv_mapped_concepts, class_name: "SkosConcept"
 
   ###

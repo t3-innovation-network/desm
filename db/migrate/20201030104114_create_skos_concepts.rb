@@ -3,7 +3,7 @@
 class CreateSkosConcepts < ActiveRecord::Migration[6.0]
   def change
     create_table :skos_concepts do |t|
-      t.jsonb :raw
+      t.jsonb :raw, null: false
       t.string :uri, null: false
     end
 

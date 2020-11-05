@@ -6,18 +6,18 @@ import React from "react";
  *
  * Props:
  * @param {Object} term
- * @param {Function} handleMatchVocabularyClick
+ * @param {Function} onVocabularyClick
  * @param {Boolean} clickable
  */
 const VocabularyLabel = (props) => {
-  const { term, handleMatchVocabularyClick, clickable } = props;
+  const { term, onVocabularyClick, clickable } = props;
 
   return term.vocabularies && term.vocabularies.length ? (
     <p
       className={
         "col-primary underlined" + (clickable ? " cursor-pointer" : "")
       }
-      onClick={() => handleMatchVocabularyClick(term)}
+      onClick={() => onVocabularyClick && onVocabularyClick(term)}
     >
       {term.vocabularies[0].name}
     </p>
