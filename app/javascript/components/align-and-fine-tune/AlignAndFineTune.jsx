@@ -182,11 +182,8 @@ const AlignAndFineTune = (props) => {
    * 2. The term is already mapped in the backend (is one of the mapping terms in DB).
    */
   function selectedTermIsMapped(mappingTerm) {
-    return (
-      mappingTerm.mappedTo ||
-      _.some(spineTerms, (spineTerm) => {
-        return spineTerm.id === mappingTerm.spine_term_id;
-      })
+    return mappingTerms.some((mTerm) =>
+      mTerm.mapped_terms.some((mappedTerm) => mappedTerm.id === mappingTerm.id)
     );
   }
 
@@ -195,7 +192,7 @@ const AlignAndFineTune = (props) => {
    *
    * 1. The mapping term was recently dragged to the spine term, so it's not in the backend, just
    *    marked in memory as "mappedTo".
-   * 2. The mapping term is already mapped in the backend (is one of the mapping terms in DB).
+   * 2. The mapping term is already mapped in the backend (is one of the mapping terms mapped in DB).
    */
   const spineTermIsMapped = (spineTerm) => {
     let mTerm = mappingTerms.find(
