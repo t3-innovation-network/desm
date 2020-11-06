@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { unsetFiles, unsetSpecToPreview } from "../../actions/files";
 import FileContent from "./FileContent";
-import { doUnsubmit } from "../../actions/mappingform";
+import { doUnsubmit, startProcessingFile, stopProcessingFile } from "../../actions/mappingform";
 import Loader from "./../shared/Loader";
 import createSpec from "../../services/createSpec";
 import { toastr as toast } from "react-redux-toastr";
@@ -60,7 +60,14 @@ const MappingPreview = (props) => {
         // If it's not the spine, the user is uploading a specification to map,
         // so let's create the mapping and (with the id returned) load the
         // mapping page
+        dispatch(startProcessingFile());
         createMapping(response.id).then((response) => {
+          if (response.error) {
+            toast.error(response.error);
+            return;
+          }
+
+          dispatch(stopProcessingFile());
           props.redirect("/mappings/" + response.mapping.id);
         });
       }

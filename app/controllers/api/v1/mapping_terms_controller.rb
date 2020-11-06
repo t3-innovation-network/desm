@@ -11,7 +11,7 @@ class Api::V1::MappingTermsController < ApplicationController
   ###
   def update
     ActiveRecord::Base.transaction do
-      if params[:mapping_term][:mapped_terms].present?
+      unless params[:mapping_term][:mapped_terms].nil?
         @instance.update_mapped_terms(params[:mapping_term][:mapped_terms])
       end
       @instance.update!(permitted_params)

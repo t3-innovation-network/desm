@@ -34,11 +34,6 @@ const MappingForm = () => {
   /// The selected domain to map to
   const [selectedDomainId, setSelectedDomainId] = useState(null);
 
-  /// The selected domain to map from (read from the file)
-  const [selectedDomainIdFromFile, setSelectedDomainIdFromFile] = useState(
-    null
-  );
-
   /// Whether there's more than one domain found in the uploaded file
   const [multipleDomainsInFile, setMultipleDomainsInFile] = useState(false);
 
@@ -190,7 +185,6 @@ const MappingForm = () => {
    */
   const onSelectDomainFromFile = (id) => {
     dispatch(startProcessingFile());
-    setSelectedDomainIdFromFile(id);
     setMultipleDomainsInFile(false);
 
     let tempSpecs = [];

@@ -57,6 +57,18 @@ class Mapping < ApplicationRecord
   end
 
   ###
+  # @description: Associate the terms to this mapping. NOTE: This method will replace the previous
+  #   associated terms, so if you need to add terms, maintaining the previous ones, include the
+  #   previous ids in the params.
+  #
+  # @param [Array] ids: A collection of ids representing the terms that are
+  #   going to be added as "selected" to this mapping
+  ###
+  def update_selected_terms ids
+    self.selected_term_ids = ids
+  end
+
+  ###
   # @description: Include additional information about the mapping in
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
