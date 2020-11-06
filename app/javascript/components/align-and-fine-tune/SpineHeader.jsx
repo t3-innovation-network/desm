@@ -1,6 +1,18 @@
 import React from "react";
 import ProgressReportBar from "../shared/ProgressReportBar";
 
+/**
+ * Props:
+ * @param {Object} domain,
+ * @param {Boolean} hideMappedSpineTerms,
+ * @param {Function} setHideMappedSpineTerms,
+ * @param {Array} mappingSelectedTerms,
+ * @param {Array} mappedSelectedTerms,
+ * @param {String} spineTermsInputValue,
+ * @param {Function} filterSpineTermsOnChange,
+ * @param {Function} handleAddSynthetic,
+ * @param {Array} mappingTerms
+ */
 const SpineHeader = (props) => {
   const {
     domain,
@@ -11,6 +23,7 @@ const SpineHeader = (props) => {
     spineTermsInputValue,
     filterSpineTermsOnChange,
     handleAddSynthetic,
+    mappingTerms
   } = props;
 
   return (
@@ -49,8 +62,8 @@ const SpineHeader = (props) => {
           }}
         >
           <ProgressReportBar
-            maxValue={mappingSelectedTerms.length}
-            currentValue={mappedSelectedTerms.length}
+            maxValue={mappingTerms.length}
+            currentValue={mappingTerms.filter(mTerm => mTerm.mapped_terms.length).length}
             messageReport="Mapped"
           />
         </div>

@@ -92,6 +92,8 @@ const MappingForm = () => {
    * Set multiple domains flag to false
    */
   const unsetMultipleDomains = () => {
+    dispatch(stopProcessingFile());
+    dispatch(doUnsubmit());
     setMultipleDomainsInFile(false);
   };
 

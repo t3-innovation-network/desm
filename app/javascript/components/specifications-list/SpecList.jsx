@@ -99,7 +99,7 @@ const SpecList = () => {
                           <tr key={mapping.id}>
                             <td>{mapping.title}</td>
                             <td>{mapping.specification.version}</td>
-                            <td>0/0</td>
+                            <td>{mapping.mapped_terms + "/" + mapping.terms.length}</td>
                             <td>{_.startCase(_.toLower(mapping.status))}</td>
                             <td>{mapping.specification.user.fullname}</td>
                             <td>

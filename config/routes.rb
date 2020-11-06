@@ -21,7 +21,9 @@ Rails.application.routes.draw do
       resources :specifications, only: [:create, :show]
       resources :spine_terms, only: [:create]
       resources :terms, only: [:show, :update, :destroy]
-      resources :vocabularies, only: [:index, :create]
+      resources :vocabularies, only: [:index, :create, :show]
+      resources :alignment_vocabulary_concepts, only: [:update]
+      resources :alignment_synthetic_concepts, only: [:create]
 
       post 'mappings/selected_terms' => 'mappings#create_selected_terms'
       get 'mappings/:id/selected_terms' => 'mappings#show_selected_terms'
@@ -29,6 +31,7 @@ Rails.application.routes.draw do
       post 'specifications/info' => 'specifications#info'
       post 'specifications/filter' => 'specifications#filter'
       get 'specifications/:id/terms' => 'terms#from_specification'
+      get 'mapping_terms/:id/vocabulary' => 'alignment_vocabularies#show'
     end
   end
 

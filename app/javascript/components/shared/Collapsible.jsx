@@ -12,6 +12,7 @@ import OutsideAlerter from "./OutsideAlerter.jsx";
  * @param {String} bodyStyle,
  * @param {React.Component} bodyContent,
  * @param {React.Component} headerContent,
+ * @param {Boolean} observeOutside Whether this component should react or not on an oustise event
  */
 export default class Collapsible extends Component {
   state = {
@@ -59,11 +60,11 @@ export default class Collapsible extends Component {
       bodyStyle,
       bodyContent,
       headerContent,
-      handleOnClick,
+      observeOutside,
     } = this.props;
 
     return (
-      <OutsideAlerter onOutsideAlert={() => this.hideBody()}>
+      <OutsideAlerter onOutsideAlert={observeOutside ? () => this.hideBody() : () => {}}>
         <FadeIn>
           <div className={"card" + (cardStyle ? " " + cardStyle : "")}>
             <div
@@ -77,7 +78,7 @@ export default class Collapsible extends Component {
                     "col-10" +
                     (cardHeaderColStyle ? " " + cardHeaderColStyle : "")
                   }
-                  onClick={handleOnClick}
+                  onClick={this.handleClick}
                 >
                   {headerContent}
                 </div>

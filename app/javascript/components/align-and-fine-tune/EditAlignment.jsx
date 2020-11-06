@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import updateMappingTerm from "../../services/updateMappingTerm";
 import AlertNotice from "../shared/AlertNotice";
-import ExpandableOptions from "../shared/ExpandableOptions";
 import ModalStyles from "../shared/ModalStyles";
+import PredicateOptions from "../shared/PredicateOptions";
 
 const EditAlignment = (props) => {
   Modal.setAppElement("body");
@@ -15,9 +15,9 @@ const EditAlignment = (props) => {
     mappingTerm,
     spineTerm,
     predicate,
+    predicates,
     onCommentUpdated,
     onPredicateUpdated,
-    predicatesAsOptions,
   } = props;
 
   /**
@@ -140,10 +140,10 @@ const EditAlignment = (props) => {
                   <div className="card-header">{predicate.pref_label}</div>
                 </div>
               ) : (
-                <ExpandableOptions
-                  options={predicatesAsOptions()}
-                  onClose={(predicate) => handlePredicateSelected(predicate)}
-                  selectedOption={predicate.pref_label}
+                <PredicateOptions
+                  predicates={predicates}
+                  onPredicateSelected={(predicate) => handlePredicateSelected(predicate)}
+                  predicate={predicate.pref_label}
                 />
               )}
             </div>

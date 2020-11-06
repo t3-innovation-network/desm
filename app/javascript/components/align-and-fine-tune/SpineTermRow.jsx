@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import SpineTermDropZone from "../mapping-to-domains/SpineTermDropZone";
-import ExpandableOptions from "../shared/ExpandableOptions";
 import EditAlignment from "./EditAlignment";
 import { toastr as toast } from "react-redux-toastr";
 import Collapsible from "../shared/Collapsible";
+import MatchVocabulary from "./match-vocabulary/MatchVocabulary";
+import DropZone from "../shared/DropZone";
+import PredicateOptions from "../shared/PredicateOptions";
+import { DraggableItemTypes } from "../shared/DraggableItemTypes";
+import VocabularyLabel from "./match-vocabulary/VocabularyLabel";
 
 /**
  * Props:
  * @param {String} origin The organization name of the mapping
  * @param {String} spineOrigin The organization name of the spine specification
- * @param {Object} term The spine term
  * @param {Object} term The spine term
  * @param {Array} predicates The collection of predicates
  * @param {Function} onPredicateSelected The actions to execute when a predicate is selected
@@ -19,7 +21,13 @@ const SpineTermRow = (props) => {
   /**
    * The data passed in props
    */
-  const { term, predicates } = props;
+  const {
+    term,
+    predicates,
+    spineOrigin,
+    origin,
+    mappedTermsToSpineTerm,
+  } = props;
 
   /**
    * The mapping term (alignment) representing this row
@@ -41,6 +49,19 @@ const SpineTermRow = (props) => {
    * the user selects an option from the alginment dropdown after selecting a predicate
    */
   const [editing, setEditing] = useState(false);
+
+  /**
+   * Whether we are matching vocabulary for the alignment or not. Set to true when
+   * the user clicks on the vocabulary link on the mapped term of this alignment
+   */
+  const [matchingVocab, setMatchingVocab] = useState(false);
+
+  /**
+   * The term we are using to match vocabularies against the spine
+   */
+  const [mappedTermMatching, setMappedTermMatching] = useState(
+    mappedTermsToSpineTerm(term)[0]
+  );
 
   /**
    * If the mapping term (alignment) has a predicate selected, lets find it
@@ -117,19 +138,6 @@ const SpineTermRow = (props) => {
   };
 
   /**
-   * Return the list of predicates as options to use on the abstract
-   * expandable options component
-   */
-  const predicatesAsOptions = () => {
-    return predicates.map((predicate) => {
-      return {
-        name: predicate.pref_label,
-        id: predicate.id,
-      };
-    });
-  };
-
-  /**
    * Actions to take when a predicate has been selected for a mapping term
    *
    * @param {Object} predicate
@@ -174,10 +182,25 @@ const SpineTermRow = (props) => {
   };
 
   /**
-   * Closes the modal window and cancel editing the alignment
+   * MAnages the actions when a user clicks to open the match vocabulary
    */
-  const onRequestClose = () => {
+  const handleMatchVocabularyClick = (mappedTerm) => {
+    setMappedTermMatching(mappedTerm);
+    setMatchingVocab(true);
+  };
+
+  /**
+   * Closes the modal window for editing the alignment and cancel editing the alignment
+   */
+  const onRequestEditClose = () => {
     setEditing(false);
+  };
+
+  /**
+   * Closes the modal window for matching vocabularies
+   */
+  const onRequestVocabsClose = () => {
+    setMatchingVocab(false);
   };
 
   return (
@@ -187,28 +210,49 @@ const SpineTermRow = (props) => {
           modalIsOpen={editing}
           onCommentUpdated={(result) => handleOnCommentUpdated(result)}
           onPredicateUpdated={(result) => handleOnPredicateUpdated(result)}
-          predicatesAsOptions={predicatesAsOptions}
+          predicates={predicates}
           mappingTerm={mappingTerm}
           spineTerm={term}
           predicate={predicates.find(
             (predicate) => predicate.id === mappingTerm.predicate_id
           )}
           mode={editMode}
-          onRequestClose={onRequestClose}
+          onRequestClose={onRequestEditClose}
         />
+      )}
+
+      {term.vocabularies?.length &&
+      props
+        .mappedTermsToSpineTerm(term)
+        .some((mTerm) => mTerm.vocabularies && mTerm.vocabularies.length) ? (
+        <MatchVocabulary
+          modalIsOpen={matchingVocab}
+          onRequestClose={onRequestVocabsClose}
+          mappingOrigin={origin}
+          spineOrigin={spineOrigin}
+          spineTerm={term}
+          mappedTerm={mappedTermMatching}
+          predicates={predicates}
+          mappingTerm={mappingTerm}
+        />
+      ) : (
+        ""
       )}
       <div className="row mb-2" key={term.id}>
         <div className="col-5">
           <Collapsible
             headerContent={<strong>{term.name}</strong>}
             cardStyle={"with-shadow mb-2"}
+            observeOutside={false}
             bodyContent={
               <React.Fragment>
                 <p>{term.property.comment}</p>
                 <p>
                   Origin:
-                  <span className="col-primary">{" " + props.spineOrigin}</span>
+                  <span className="col-primary">{" " + spineOrigin}</span>
                 </p>
+
+                <VocabularyLabel term={term} />
               </React.Fragment>
             }
           />
@@ -220,6 +264,7 @@ const SpineTermRow = (props) => {
               headerContent={predicateSelectedCard()}
               bodyContent={alignmentOptions()}
               cardStyle={"with-shadow mb-2"}
+              observeOutside={true}
               bodyStyle={"p-0"}
               cardHeaderStyle={"border-bottom"}
             />
@@ -230,38 +275,47 @@ const SpineTermRow = (props) => {
               </div>
             </div>
           ) : (
-            <ExpandableOptions
-              options={predicatesAsOptions()}
-              onClose={(predicate) => handlePredicateSelected(term, predicate)}
-              selectedOption={predicate}
+            <PredicateOptions
+              predicates={predicates}
+              onPredicateSelected={(predicate) =>
+                handlePredicateSelected(term, predicate)
+              }
+              predicate={predicate}
             />
           )}
         </div>
 
         <div className="col-4">
-          {props.mappedTermsToSpineTerm(term).length > 0 ? (
-            props.mappedTermsToSpineTerm(term).map((term) => {
-              return (
-                <Collapsible
-                  headerContent={<strong>{term.name}</strong>}
-                  cardStyle={"with-shadow mb-2"}
-                  key={term.id}
-                  bodyContent={
-                    <React.Fragment>
-                      <p>{term.property.comment}</p>
-                      <p>
-                        Origin:
-                        <span className="col-primary">{" " + props.origin}</span>
-                      </p>
-                    </React.Fragment>
-                  }
-                />
-              );
-            })
-          ) : (
-            <SpineTermDropZone
-              term={term}
-              selectedTermsCount={props.selectedMappingTerms.length}
+          {props.mappedTermsToSpineTerm(term).map((term) => {
+            return (
+              <Collapsible
+                headerContent={<strong>{term.name}</strong>}
+                cardStyle={"with-shadow mb-2"}
+                key={term.id}
+                observeOutside={false}
+                bodyContent={
+                  <React.Fragment>
+                    <p>{term.property.comment}</p>
+                    <p>
+                      Origin:
+                      <span className="col-primary">{" " + origin}</span>
+                    </p>
+
+                    <VocabularyLabel
+                      term={term}
+                      onVocabularyClick={handleMatchVocabularyClick}
+                      clickable={true}
+                    />
+                  </React.Fragment>
+                }
+              />
+            );
+          })}
+          {!props.mappedTermsToSpineTerm(term).length && (
+            <DropZone
+              selectedCount={props.selectedMappingTerms.length}
+              acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
+              droppedItem={{ id: term.id }}
             />
           )}
         </div>

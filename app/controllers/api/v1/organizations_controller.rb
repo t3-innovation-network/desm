@@ -10,27 +10,27 @@ class Api::V1::OrganizationsController < ApplicationController
   # @description: Lists all the organizations
   ###
   def index
-    @organizations = Organization.all.order(name: :asc)
+    organizations = Organization.all.order(name: :asc)
 
-    render json: @organizations, include: :users
+    render json: organizations, include: :users
   end
 
   ###
   # @description: Prepares the data for the edit form
   ###
   def show
-    render json: @organization
+    render json: @instance
   end
 
   ###
   # @description: Adds a new organization to the database
   ###
   def create
-    @organization = Organization.create(permitted_params)
+    @instance = Organization.create(permitted_params)
 
     render json: {
       success: true,
-      organization: @organization
+      organization: @instance
     }
   end
 
@@ -38,15 +38,15 @@ class Api::V1::OrganizationsController < ApplicationController
   # @description: Udates the attributes of an organization
   ###
   def update
-    @organization.update(permitted_params)
-    render json: @organization
+    @instance.update(permitted_params)
+    render json: @instance
   end
 
   ###
   # @description: Removes an organization from the database
   ###
   def destroy
-    @organization.destroy!
+    @instance.destroy!
 
     render json: {
       status: :removed
@@ -59,15 +59,7 @@ class Api::V1::OrganizationsController < ApplicationController
   # @description: Execute the authorization policy
   ###
   def authorize_with_policy
-    authorize organization
-  end
-
-  ###
-  # @description: Get the current model record
-  # @return [ActiveRecord]
-  ###
-  def organization
-    @organization = params[:id].present? ? Organization.find(params[:id]) : Organization.first
+    authorize(with_instance)
   end
 
   ###

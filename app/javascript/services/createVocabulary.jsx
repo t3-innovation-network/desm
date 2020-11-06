@@ -5,6 +5,7 @@ const createVocabulary = async (data) => {
     url: "/api/v1/vocabularies",
     method: "post",
     payload: data,
+    successResponse: "vocabulary"
   });
 };
 

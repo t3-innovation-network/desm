@@ -5,7 +5,6 @@ import fetchMappingSelectedTerms from "../../services/fetchMappingSelectedTerms"
 import fetchPredicates from "../../services/fetchPredicates";
 import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
 import TermCard from "../mapping-to-domains/TermCard";
-import TermCardsContainer from "../mapping-to-domains/TermCardsContainer";
 import AlertNotice from "../shared/AlertNotice";
 import Loader from "../shared/Loader";
 import TopNav from "../shared/TopNav";
@@ -18,6 +17,8 @@ import fetchMappingTerms from "../../services/fetchMappingTerms";
 import updateMappingTerm from "../../services/updateMappingTerm";
 import { toastr as toast } from "react-redux-toastr";
 import createSpineTerm from "../../services/createSpineTerm";
+import Draggable from "../shared/Draggable";
+import { DraggableItemTypes } from "../shared/DraggableItemTypes";
 
 const AlignAndFineTune = (props) => {
   /**
@@ -159,17 +160,28 @@ const AlignAndFineTune = (props) => {
    * The selected or not selected terms that includes the string typed by the user in the
    * search box.
    */
-  const filteredSpineTerms = _.sortBy((spineTerms
-    .filter((term) => {
+  const filteredSpineTerms = _.sortBy(
+    spineTerms.filter((term) => {
       return term.name
         .toLowerCase()
         .includes(spineTermsInputValue.toLowerCase());
-    })), ["synthetic", "name"]);
+    }),
+    ["synthetic", "name"]
+  );
 
   /**
    * All the terms that are already mapped
    */
   const mappedSelectedTerms = mappingSelectedTerms.filter(selectedTermIsMapped);
+
+  /**
+   * Returns whether all the terms from the specification are already mapped
+   */
+  const allTermsMapped = mappingSelectedTerms.every((term) =>
+    mappingTerms.some((mTerm) =>
+      mTerm.mapped_terms.some((t) => t.id === term.id)
+    )
+  );
 
   /**
    * Returns wether the term is already mapped to the spine. It can be 1 of 2 options:
@@ -179,11 +191,8 @@ const AlignAndFineTune = (props) => {
    * 2. The term is already mapped in the backend (is one of the mapping terms in DB).
    */
   function selectedTermIsMapped(mappingTerm) {
-    return (
-      mappingTerm.mappedTo ||
-      _.some(spineTerms, (spineTerm) => {
-        return spineTerm.id === mappingTerm.spine_term_id;
-      })
+    return mappingTerms.some((mTerm) =>
+      mTerm.mapped_terms.some((mappedTerm) => mappedTerm.id === mappingTerm.id)
     );
   }
 
@@ -192,16 +201,14 @@ const AlignAndFineTune = (props) => {
    *
    * 1. The mapping term was recently dragged to the spine term, so it's not in the backend, just
    *    marked in memory as "mappedTo".
-   * 2. The mapping term is already mapped in the backend (is one of the mapping terms in DB).
+   * 2. The mapping term is already mapped in the backend (is one of the mapping terms mapped in DB).
    */
-  function spineTermIsMapped(spineTerm) {
-    return mappingSelectedTerms.some((mappingTerm) => {
-      return (
-        mappingTerm.mappedTo === spineTerm.uri ||
-        mappingTerm.spine_term_id === spineTerm.id
-      );
-    });
-  }
+  const spineTermIsMapped = (spineTerm) => {
+    let mTerm = mappingTerms.find(
+      (mTerm) => mTerm.spine_term_id == spineTerm.id
+    );
+    return mTerm.mapped_terms.length;
+  };
 
   /**
    * Mark the term as "selected"
@@ -248,17 +255,19 @@ const AlignAndFineTune = (props) => {
 
   /**
    * Update the name of a spine term
-   * 
-   * @param {Integer} spineTermId 
-   * @param {String} name 
+   *
+   * @param {Integer} spineTermId
+   * @param {String} name
    */
   const setSyntheticName = (spineTermId, name) => {
     let tempSpineTerms = spineTerms;
-    let spineTerm = tempSpineTerms.find(sTerm => sTerm.id === spineTermId);
-    spineTerm.name = name;
+    let spineTerm = tempSpineTerms.find((sTerm) => sTerm.id === spineTermId);
 
-    setSpineTerms(tempSpineTerms)
-  }
+    if (spineTerm.synthetic) {
+      spineTerm.name = name;
+      setSpineTerms(tempSpineTerms);
+    }
+  };
 
   /**
    * Action to perform after a mapping term is dropped
@@ -305,7 +314,7 @@ const AlignAndFineTune = (props) => {
         <button
           className="btn bg-col-primary col-background"
           onClick={handleDoneAlignment}
-          disabled={loading}
+          disabled={loading || !allTermsMapped}
         >
           Done Alignment
         </button>
@@ -412,12 +421,8 @@ const AlignAndFineTune = (props) => {
    * CAncel adding a synthetic term to the spine
    */
   const handleCancelSynthetic = () => {
-    setMappingTerms(
-      mappingTerms.filter((mt) => !mt.synthetic)
-    );
-    setSpineTerms(
-      spineTerms.filter((st) => !st.synthetic)
-    );
+    setMappingTerms(mappingTerms.filter((mt) => !mt.synthetic));
+    setSpineTerms(spineTerms.filter((st) => !st.synthetic));
     setChangesPerformed(changesPerformed - 1);
     setAddingSynthetic(false);
   };
@@ -442,7 +447,9 @@ const AlignAndFineTune = (props) => {
     }
     let [mappedTerm] = mTerm.mapped_terms;
     let tempUri = mappedTerm.uri + "-synthetic";
-    let spineTerm = spineTerms.find(sTerm => sTerm.id === mTerm.spine_term_id);
+    let spineTerm = spineTerms.find(
+      (sTerm) => sTerm.id === mTerm.spine_term_id
+    );
 
     let response = await createSpineTerm({
       synthetic: {
@@ -494,9 +501,7 @@ const AlignAndFineTune = (props) => {
    */
   const saveAllAlignments = async () => {
     /// Check for synthetic elements and save it if any
-    let synthetics = mappingTerms.filter(
-      (mTerm) => mTerm.synthetic
-    );
+    let synthetics = mappingTerms.filter((mTerm) => mTerm.synthetic);
     let alignments = mappingTerms.filter(
       (mTerm) => !mTerm.synthetic && mTerm.changed
     );
@@ -669,6 +674,7 @@ const AlignAndFineTune = (props) => {
                     filterSpineTermsOnChange={filterSpineTermsOnChange}
                     addingSynthetic={addingSynthetic}
                     handleAddSynthetic={handleAddSynthetic}
+                    mappingTerms={mappingTerms}
                   />
                   <div className="mt-5">
                     {addingSynthetic && (
@@ -690,6 +696,8 @@ const AlignAndFineTune = (props) => {
                           ""
                         ) : loading ? (
                           <Loader />
+                        ) : hideMappedSpineTerms && spineTermIsMapped(term) ? (
+                          ""
                         ) : (
                           <SpineTermRow
                             key={term.id}
@@ -698,7 +706,6 @@ const AlignAndFineTune = (props) => {
                             predicates={predicates}
                             selectedMappingTerms={selectedMappingTerms}
                             mappedTermsToSpineTerm={mappedTermsToSpineTerm}
-                            isMapped={spineTermIsMapped}
                             origin={mapping.origin}
                             spineOrigin={mapping.spine_origin}
                             onPredicateSelected={onPredicateSelected}
@@ -743,12 +750,12 @@ const AlignAndFineTune = (props) => {
                       }
                       message="The items below have been added to Person Domain. Now you can align them to the spine."
                     />
-                    <div>
+                    <div className="has-scrollbar scrollbar pr-5">
                       {/* SELECTED TERMS */}
 
-                      <TermCardsContainer
-                        className="has-scrollbar scrollbar pr-5"
-                        terms={selectedMappingTerms}
+                      <Draggable
+                        items={selectedMappingTerms}
+                        itemType={DraggableItemTypes.PROPERTIES_SET}
                         afterDrop={afterDropTerm}
                       >
                         {filteredMappingSelectedTerms({
@@ -769,7 +776,7 @@ const AlignAndFineTune = (props) => {
                             />
                           );
                         })}
-                      </TermCardsContainer>
+                      </Draggable>
 
                       {/* NOT SELECTED TERMS */}
                       {filteredMappingSelectedTerms({
@@ -787,7 +794,9 @@ const AlignAndFineTune = (props) => {
                             isMapped={selectedTermIsMapped}
                             origin={mapping.origin}
                             alwaysEnabled={true}
-                            disableClick={addingSynthetic && selectedMappingTerms.length > 0}
+                            disableClick={
+                              addingSynthetic && selectedMappingTerms.length > 0
+                            }
                           />
                         );
                       })}

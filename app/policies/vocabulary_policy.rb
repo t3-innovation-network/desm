@@ -29,4 +29,12 @@ class VocabularyPolicy < ApplicationPolicy
   def create?
     @user.present?
   end
+
+  ###
+  # @description: Determines if the user can see this resource
+  # @return [TrueClass]
+  ###
+  def show?
+    @user.present?
+  end
 end

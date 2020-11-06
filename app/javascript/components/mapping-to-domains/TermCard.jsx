@@ -49,7 +49,7 @@ export default class TermCard extends Component {
 
     return (
       <div className="card with-shadow mb-2 disabled-container not-draggable">
-        <div className="card-header no-color-headers">
+        <div className="card-header no-color-header">
           <div className="row">
             <div className="col-8">{term.name}</div>
             <div className="col-4">
@@ -108,6 +108,7 @@ export default class TermCard extends Component {
         cardHeaderColStyle={disableClick ? "" : (selected ? "" : "cursor-pointer")}
         handleOnClick={disableClick ? null : this.handleTermClick }
         headerContent={this.termHeaderContent()}
+        observeOutside={true}
         bodyContent={
           <div className="card-body pt-0 pb-0">
             <p>{term.property.comment}</p>

@@ -7,13 +7,18 @@
   src: url('../fonts/proxima-light/Proxima Nova Condensed Light.otf')
 }
 
-html,body,.container-fluid,.row,.wrapper,body>div {
+html,body,.container-fluid,.container-fluid>.row,.wrapper,body>div {
   height:100%;
+  font-size: 13px;
 }
 
 .subtitle {
   font-weight: bold;
   font-size: 18px;
+}
+
+.small-text {
+  font-size: 11px;
 }
 
 section {
@@ -77,6 +82,10 @@ a:hover {
 .hover-col-primary:hover{
   background-color: $primary-color;
   color: $foreground-color;
+}
+
+.underlined {
+  text-decoration: underline;
 }
 
 /* Main view Styles */
