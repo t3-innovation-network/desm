@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import DashboardContainer from "../DashboardContainer";
 import createOrganization from "../../../services/createOrganization";
-import {toastr as toast} from 'react-redux-toastr';
+import { toastr as toast } from "react-redux-toastr";
+import AlertNotice from "../../shared/AlertNotice";
 
 export default class CreateOrganization extends Component {
   /**
@@ -17,24 +18,25 @@ export default class CreateOrganization extends Component {
    * Send the data prepared in the form to the API service, and expect
    * the result to be shown to the user
    */
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     const { name } = this.state;
-
-    createOrganization(name)
-      .then((response) => {
-        if (response.success) {
-          toast.success("Organization " + name + " was successfully created");
-          this.props.history.push("/dashboard/organizations");
-        }
-      })
-      .catch((error) => {
-        this.setState({
-          errors: ErrorMessage(error)
-        });
-      });
-
     event.preventDefault();
-  }
+
+    let response = await createOrganization(name);
+
+    if (response.error) {
+      this.setState({
+        errors: response.error,
+      });
+      return;
+    }
+
+    if (response.success) {
+      toast.success("Organization " + name + " was successfully created");
+      this.props.history.push("/dashboard/organizations");
+      return;
+    }
+  };
 
   /**
    * Update the component state on every change in the input control in the form
@@ -43,14 +45,14 @@ export default class CreateOrganization extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
-  }
+  };
 
   render() {
     return (
       <React.Fragment>
         <DashboardContainer>
           <div className="col-lg-6 mx-auto mt-5">
-            {this.state.errors && <AlertNotice message={this.state.errors} /> }
+            {this.state.errors && <AlertNotice message={this.state.errors} />}
 
             <div className="card mt-5">
               <div className="card-header">

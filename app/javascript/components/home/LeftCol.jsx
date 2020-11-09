@@ -12,7 +12,7 @@ class LeftSideHome extends React.Component {
             adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua.
           </p>
-          <Link to="/specifications" className="btn wide-btn btn-dark">
+          <Link to="/mappings" className="btn wide-btn btn-dark">
             View Specifications
           </Link>
         </section>

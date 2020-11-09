@@ -12,6 +12,7 @@ import Mapping from "./mapping/Mapping";
 import MainDashboard from "./dashboard/MainDashboard";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import SpecList from "./specifications-list/SpecList";
+import AlignAndFineTune from "./align-and-fine-tune/AlignAndFineTune";
 import MappingToDomains from "./mapping-to-domains/MappingToDomains";
 
 const Routes = (props) => {
@@ -33,7 +34,7 @@ const Routes = (props) => {
 
         <ProtectedRoute
           exact
-          path="/specifications"
+          path="/mappings"
           allowNonAdmins={true}
           component={SpecList} />
 
@@ -48,6 +49,12 @@ const Routes = (props) => {
           path="/mappings/:id"
           allowNonAdmins={true}
           component={MappingToDomains} />
+
+        <ProtectedRoute
+          exact
+          path="/mappings/:id/align"
+          allowNonAdmins={true}
+          component={AlignAndFineTune} />
 
         <ProtectedRoute
           exact

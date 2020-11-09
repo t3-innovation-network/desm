@@ -13,10 +13,10 @@ import {
 import fetchDomains from "../../services/fetchDomains";
 import { toastr as toast } from "react-redux-toastr";
 import MultipleDomainsModal from "./MultipleDomainsModal";
-import apiAnalyzeDomainsInFile from "../../services/apiAnalyzeDomainsInFile";
+import checkDomainsInFile from "../../services/checkDomainsInFile";
 import filterSpecification from "../../services/filterSpecification";
 
-const MappingForm = (props) => {
+const MappingForm = () => {
   const [errors, setErrors] = useState("");
 
   /// Name of the specification
@@ -92,6 +92,8 @@ const MappingForm = (props) => {
    * Set multiple domains flag to false
    */
   const unsetMultipleDomains = () => {
+    dispatch(stopProcessingFile());
+    dispatch(doUnsubmit());
     setMultipleDomainsInFile(false);
   };
 
@@ -137,9 +139,9 @@ const MappingForm = (props) => {
       name: name,
       version: version,
       useCase: useCase,
-      domainTo: selectedDomainId
-    }
-  }
+      domainTo: selectedDomainId,
+    };
+  };
 
   /**
    * Send the file/s to the API service to be parsed
@@ -157,28 +159,24 @@ const MappingForm = (props) => {
     /**
      * Be sure the file uploaded contains only one domain to map to
      */
-    files.map((file) => {
-      apiAnalyzeDomainsInFile(file)
-        .then((domainsFound) => {
-          dispatch(stopProcessingFile());
+    files.map(async (file) => {
+      let response = await checkDomainsInFile(file);
 
-          if (domainsFound.length > 1) {
-            setMultipleDomainsInFile(true);
-            setDomainsInFile(domainsFound);
-            return;
-          }
+      if (response.error) {
+        toast.error(response.error);
+        return;
+      }
 
-          sendFileToPreview(file);
-        })
-        .catch((e) => {
-          dispatch(stopProcessingFile());
-          toast.error(e.message);
-        });
+      if (response.domains.length > 1) {
+        setMultipleDomainsInFile(true);
+        setDomainsInFile(response.domains);
+        return;
+      }
+
+      dispatch(stopProcessingFile());
+      sendFileToPreview(file);
     });
 
-    /**
-     * @todo Implement sending the files to the API service
-     */
     dispatch(doSubmit());
     event.preventDefault();
   };
@@ -197,8 +195,12 @@ const MappingForm = (props) => {
 
     let tempSpecs = [];
     files.map((file) => {
-      filterSpecification(id, file).then((filteredSpecification) => {
-        tempSpecs.push(JSON.stringify(filteredSpecification, null, 2));
+      filterSpecification(id, file).then((response) => {
+        if (response.error) {
+          toast.error(response.error);
+          return;
+        }
+        tempSpecs.push(JSON.stringify(response.specification, null, 2));
         dispatch(setSpecToPreview(tempSpecs));
         dispatch(stopProcessingFile());
       });
@@ -238,8 +240,12 @@ const MappingForm = (props) => {
    */
   const fillWithDomains = () => {
     fetchDomains().then((response) => {
-      setDomains(response);
-      setSelectedDomainId(response[0].id);
+      if (response.error) {
+        toast.error(response.error);
+        return;
+      }
+      setDomains(response.domains);
+      setSelectedDomainId(response.domains[0].id);
     });
   };
 
@@ -333,7 +339,12 @@ const MappingForm = (props) => {
               <div className="desm-radio">
                 {domains.map(function (dom) {
                   return (
-                    <div className={"desm-radio-primary" + (dom.spine ? " has-spine" : "")} key={dom.id}>
+                    <div
+                      className={
+                        "desm-radio-primary" + (dom.spine ? " has-spine" : "")
+                      }
+                      key={dom.id}
+                    >
                       <input
                         type="radio"
                         value={dom.id}
@@ -349,7 +360,8 @@ const MappingForm = (props) => {
               </div>
 
               <small className="mt-3 mb-3 float-right">
-                Domains in <span className="badge badge-success">green</span> has a spine already uploaded
+                Domains in <span className="badge badge-success">green</span>{" "}
+                has a spine already uploaded
               </small>
             </div>
             <div className="form-group">

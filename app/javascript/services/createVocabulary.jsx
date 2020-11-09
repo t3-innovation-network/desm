@@ -1,9 +1,12 @@
-import apiService from "./apiService";
+import apiRequest from "./api/apiRequest";
 
 const createVocabulary = async (data) => {
-  const response = await apiService
-    .post("/api/v1/vocabularies", data);
-  return response.data;
+  return await apiRequest({
+    url: "/api/v1/vocabularies",
+    method: "post",
+    payload: data,
+    successResponse: "vocabulary"
+  });
 };
 
 export default createVocabulary;

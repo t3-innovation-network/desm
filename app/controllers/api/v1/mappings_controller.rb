@@ -12,11 +12,11 @@ class Api::V1::MappingsController < ApplicationController
   def index
     mappings = filter
 
-    render json: mappings, include: {specification: {include: %i[user terms]}}
+    render json: mappings, include: [:terms, {specification: {include: %i[user terms]}}]
   end
 
   ###
-  # @description: Create a mapping with its related specification
+  # @description: Creates a mapping with its related specification
   ###
   def create
     spec = Specification.find(params[:specification_id])
@@ -28,11 +28,53 @@ class Api::V1::MappingsController < ApplicationController
   end
 
   ###
+  # @description: Udates the attributes of a mapping
+  ###
+  def update
+    @instance.update!(permitted_params)
+
+    render json: @instance
+  end
+
+  ###
+  # @description: Creates the selected mapping terms. This method is used when the user has already
+  #   decided which terms to map to the spine
+  ###
+  def create_selected_terms
+    # Validate mapping existence (We will create mapping terms for an existent mapping)
+    mapping = Mapping.find(params[:mapping_id])
+    terms = params[:terms]
+
+    raise "Mapping terms were not provided" unless terms.present? && terms.any?
+
+    # Proceed to create the mapping terms
+    Processors::Mappings.create_selected_terms(mapping, terms)
+
+    render json: mapping, include: :terms
+  end
+
+  ###
   # @description: Fetch the mapping with the id equal to the one passed
   #   in params
   ###
   def show
-    render json: @mapping, include: {specification: {include: {terms: {include: :property}}}}
+    render json: @instance, include: %i[terms selected_terms]
+  end
+
+  ###
+  # @description: Fetch the mapping terms for the mapping with the id equal
+  #   to the one passed in params
+  ###
+  def show_terms
+    render json: @instance.terms.order(:uri), include: {mapped_terms: {include: %i[property vocabularies]}}
+  end
+
+  ###
+  # @description: Fetch the mapping terms for the mapping with the id equal
+  #   to the one passed in params
+  ###
+  def show_selected_terms
+    render json: @instance.selected_terms.order(:uri), include: [:property]
   end
 
   private
@@ -41,15 +83,7 @@ class Api::V1::MappingsController < ApplicationController
   # @description: Execute the authorization policy
   ###
   def authorize_with_policy
-    authorize mapping
-  end
-
-  ###
-  # @description: Get the current model record
-  # @return [ActiveRecord]
-  ###
-  def mapping
-    @mapping = params[:id].present? ? Mapping.find(params[:id]) : Mapping.new
+    authorize(with_instance)
   end
 
   ###
@@ -61,9 +95,17 @@ class Api::V1::MappingsController < ApplicationController
     mappings = Mapping.where(user: current_user.organization.users)
 
     # Filter by current user
-    mappings = mappings.where(user: current_user) if params[:user].present? && params[:user] != "all"
+    mappings = mappings.where(user: current_user) if params[:filter] != "all"
 
     # Return an ordered list
-    mappings.order(title: :desc)
+    mappings.order(:title)
+  end
+
+  ###
+  # @description: Clean params
+  # @return [ActionController::Parameters]
+  ###
+  def permitted_params
+    params.require(:mapping).permit(:status)
   end
 end

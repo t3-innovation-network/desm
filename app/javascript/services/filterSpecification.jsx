@@ -1,7 +1,6 @@
-import apiService from "./apiService";
+import apiRequest from "./api/apiRequest";
 
-const filterSpecification = (uri, file) => {
-
+const filterSpecification = async (uri, file) => {
   let data = new FormData();
   data.append("file", file);
   data.append("uri", uri);
@@ -17,20 +16,18 @@ const filterSpecification = (uri, file) => {
    * the selected class or those that are related to a propesrty
    * that's also related to the selected class and so on.
    */
-  return apiService
-    .post("/api/v1/specifications/filter", data, {
+  return await apiRequest({
+    url: "/api/v1/specifications/filter",
+    method: "post",
+    payload: data,
+    options: {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    })
-    .then((response) => {
-      /// We don't have a valid response
-      if (response.status != 200) {
-        return "";
-      }
-
-      return response.data;
-    });
+    },
+    defaultResponse: "",
+    successResponse: "specification",
+  });
 };
 
 export default filterSpecification;

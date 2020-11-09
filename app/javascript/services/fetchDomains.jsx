@@ -1,19 +1,24 @@
-import apiService from "./apiService";
+import apiRequest from "./api/apiRequest";
 
-const fetchDomains = () => {
-  return apiService
-    .get("/api/v1/domains")
-    .then((response) => {
-    /// From each domain in the list, we only need the id and the name
-    /// in a simpler way
-    return response.data.map((domain) => {
-      return {
-        id: domain.uri,
-        name: domain.pref_label,
-        spine: (domain.spine_id !== null)
-      }
-    })
-  })
-}
+const fetchDomains = async () => {
+  const response = await apiRequest({
+    url: "/api/v1/domains",
+    method: "get",
+    successResponse: "domains"
+  });
+
+  if(!response.error){
+    return {
+      domains: response.domains.map((domain) => {
+        return {
+          id: domain.uri,
+          name: domain.pref_label,
+          spine: domain.spine_id !== null,
+        };
+      }),
+    };
+  }
+  return response;
+};
 
 export default fetchDomains;

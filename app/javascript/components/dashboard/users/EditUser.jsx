@@ -3,11 +3,10 @@ import DashboardContainer from "../DashboardContainer";
 import fetchOrganizations from "../../../services/fetchOrganizations";
 import fetchRoles from "../../../services/fetchRoles";
 import AlertNotice from "../../shared/AlertNotice";
-import ErrorMessage from "../../shared/ErrorMessage";
 import fetchUser from "../../../services/fetchUser";
 import deleteUser from "../../../services/deleteUser";
 import updateUser from "../../../services/updateUser";
-import {toastr as toast} from 'react-redux-toastr';
+import { toastr as toast } from "react-redux-toastr";
 
 export default class EditUser extends Component {
   /**
@@ -32,64 +31,62 @@ export default class EditUser extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
-  }
+  };
 
   /**
    * Use the API service to get this user data
    */
   fetchUserAPI() {
-    fetchUser(this.state.user_id)
-      .then((response) => {
-        /// We have a user from the backend
-        if (response.user !== undefined) {
-          this.setState({
-            fullname: response.user.fullname,
-            email: response.user.email,
-            organization_id: response.user.organization_id,
-            role_id: response.user.role_id,
-          });
-        }
-      })
-      /// Process any server errors
-      .catch((error) => {
+    fetchUser(this.state.user_id).then((response) => {
+      if (response.error) {
         this.setState({
-          errors: ErrorMessage(error),
+          errors: response.error,
         });
+        return;
+      }
+
+      /// We have a user from the backend
+      this.setState({
+        fullname: response.user.fullname,
+        email: response.user.email,
+        organization_id: response.user.organization_id,
+        role_id: response.user.role_id,
       });
+    });
   }
 
   /**
    * Use the API service to get the organizations data
    */
   fetchOrganizationsAPI() {
-    fetchOrganizations()
-      .then((orgs) => {
+    fetchOrganizations().then((response) => {
+      if (response.errors) {
         this.setState({
-          organizations: orgs,
+          errors: response.errors,
         });
-      })
-      .catch((error) => {
-        this.setState({
-          errors: ErrorMessage(error),
-        });
+        return;
+      }
+      this.setState({
+        organizations: response.organizations,
       });
+    });
   }
 
   /**
-   * Use the API service to get the roles data
+   * Use the API service to get all the roles data
    */
   fetchRolesAPI() {
-    fetchRoles()
-      .then((Allroles) => {
+    fetchRoles().then((response) => {
+      if (response.errors) {
         this.setState({
-          roles: Allroles,
+          errors: response.errors,
         });
-      })
-      .catch((error) => {
-        this.setState({
-          errors: ErrorMessage(error),
-        });
+        return;
+      }
+      this.setState({
+        roles: response.roles,
       });
+    });
   }
 
   /**
@@ -98,18 +95,19 @@ export default class EditUser extends Component {
   deleteUserAPI() {
     deleteUser(this.state.user_id)
       .then((response) => {
-        /// We have a list of users from the backend
-        if (response.removed) {
-          toast.info("User successfully removed");
-          this.props.history.push("/dashboard/users");
+        if (response.error) {
+          this.setState({
+            errors: response.error,
+          });
+          return;
         }
+
+        /// We have a list of users from the backend
+        toast.info("User successfully removed");
+        this.props.history.push("/dashboard/users");
       })
       /// Process any server errors
-      .catch((error) => {
-        this.setState({
-          errors: ErrorMessage(error),
-        });
-      });
+      .catch((error) => {});
   }
 
   /**
@@ -128,28 +126,29 @@ export default class EditUser extends Component {
   handleSubmit = (event) => {
     const { email, fullname, organization_id, role_id, user_id } = this.state;
 
-    updateUser(user_id, email, fullname, organization_id, role_id)
-      .then((response) => {
-        if (response.success) {
-          toast.success(
-            "User " + fullname + " (" + user_id + ") was successfully updated"
-          );
-          this.props.history.push("/dashboard/users");
+    updateUser(user_id, email, fullname, organization_id, role_id).then(
+      (response) => {
+        if (response.error) {
+          this.setState({
+            errors: response.error,
+          });
+          return;
         }
-      })
-      .catch((error) => {
-        this.setState({
-          errors: ErrorMessage(error),
-        });
-      });
+        toast.success(
+          "User " + fullname + " (" + user_id + ") was successfully updated"
+        );
+        this.props.history.push("/dashboard/users");
+      }
+    );
 
     event.preventDefault();
-  }
+  };
 
   render() {
     return (
       <DashboardContainer>
         <div className="col-lg-6 mx-auto mt-5">
+          {this.state.errors && <AlertNotice message={this.state.errors} />}
           <div className="card mt-5">
             <div className="card-header">
               <i className="fa fa-user"></i>
@@ -167,8 +166,6 @@ export default class EditUser extends Component {
               </button>
             </div>
             <div className="card-body">
-              {this.state.errors && <AlertNotice message={this.state.errors} />}
-
               <React.Fragment>
                 <div className="mandatory-fields-notice">
                   <small className="form-text text-muted">

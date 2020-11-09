@@ -3,7 +3,6 @@ import DashboardContainer from "../DashboardContainer";
 import { Link } from "react-router-dom";
 import fetchUsers from "../../../services/fetchUsers";
 import AlertNotice from "../../shared/AlertNotice";
-import ErrorMessage from "../../shared/ErrorMessage";
 
 export default class UsersIndex extends Component {
   /**
@@ -19,17 +18,17 @@ export default class UsersIndex extends Component {
    * Use the API service to get this user data
    */
   fetchUsersAPI() {
-    fetchUsers()
-      .then((us) => {
+    fetchUsers().then((response) => {
+      if (response.error) {
         this.setState({
-          users: us,
+          errors: response.error,
         });
-      })
-      .catch((error) => {
-        this.setState({
-          errors: ErrorMessage(error),
-        });
+        return;
+      }
+      this.setState({
+        users: response.users,
       });
+    });
   }
 
   /**

@@ -1,12 +1,11 @@
-import apiService from "./apiService";
+import apiRequest from "./api/apiRequest";
 
-const deleteUser = (user_id) => {
-  return apiService.delete("/users/" + user_id).then((response) => {
-    /// We have a list of users from the backend
-    if (response.data.status == "removed") {
-      return { removed: true };
-    }
+const deleteUser = async (user_id) => {
+  const response = await apiRequest({
+    url: "/users/" + user_id,
+    method: "delete",
   });
+  return response;
 };
 
 export default deleteUser;

@@ -3,7 +3,6 @@ import DashboardContainer from "../DashboardContainer";
 import { Link } from "react-router-dom";
 import fetchOrganizations from "../../../services/fetchOrganizations";
 import AlertNotice from "../../shared/AlertNotice";
-import ErrorMessage from "../../shared/ErrorMessage";
 
 export default class OrganizationsIndex extends Component {
   /**
@@ -19,17 +18,17 @@ export default class OrganizationsIndex extends Component {
    * Use the API service to get the organizations data
    */
   fetchOrganizationsAPI() {
-    fetchOrganizations()
-      .then((orgs) => {
+    fetchOrganizations().then((response) => {
+      if (response.errors) {
         this.setState({
-          organizations: orgs,
+          errors: response.errors,
         });
-      })
-      .catch((error) => {
-        this.setState({
-          errors: ErrorMessage(error)
-        });
+        return;
+      }
+      this.setState({
+        organizations: response.organizations,
       });
+    });
   }
 
   /**

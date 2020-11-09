@@ -10,25 +10,34 @@ class Api::V1::TermsController < ApplicationController
   # @description: Returns the term with id equal to the one passed in params
   ###
   def show
-    render json: @term, include: %i[property vocabularies]
+    render json: @instance, include: %i[property vocabularies]
   end
 
   ###
   # @description: Updates a term in conjuntion with its property
   ###
   def update
-    @term.update(permitted_params)
+    @instance.update(permitted_params)
 
-    render json: @term, include: :property
+    render json: @instance, include: :property
   end
 
   ###
   # @description: Removes a term from the database
   ###
   def destroy
-    @term.destroy!
+    @instance.destroy!
 
     render json: {status: :removed}
+  end
+
+  ###
+  # @description: All the terms from a specification
+  ###
+  def from_specification
+    terms = Specification.find(params[:id]).terms
+
+    render json: terms, include: %i[property vocabularies]
   end
 
   private
@@ -37,15 +46,7 @@ class Api::V1::TermsController < ApplicationController
   # @description: Execute the authorization policy
   ###
   def authorize_with_policy
-    authorize term
-  end
-
-  ###
-  # @description: Get the current model record
-  # @return [ActiveRecord]
-  ###
-  def term
-    @term = params[:id].present? ? Term.find(params[:id]) : Term.first
+    authorize(with_instance)
   end
 
   ###
@@ -55,8 +56,9 @@ class Api::V1::TermsController < ApplicationController
   def permitted_params
     params.require(:term).permit(
       :name, :uri, :specification_id, {vocabulary_ids: []},
-      property_attributes: %i[
-        datatype source_path subproperty_of value_space label comment domain range
+      property_attributes: [
+        :source_uri, :uri, :subproperty_of, :value_space, :label, :comment,
+        {range: []}, :path, {domain: []}, :selected_domain, :selected_range
       ]
     )
   end

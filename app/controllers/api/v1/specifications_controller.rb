@@ -12,7 +12,7 @@ class Api::V1::SpecificationsController < ApplicationController
     file = File.read(params[:file])
     domains = Processors::Specifications.process_domains_from_file(file)
 
-    render json: {domains: domains}
+    render json: domains
   end
 
   ###
@@ -38,6 +38,17 @@ class Api::V1::SpecificationsController < ApplicationController
 
     render json: spec
   end
+
+  ###
+  # @description: Returns the specification with id equal to the one passed in params
+  ###
+  def show
+    @specification = Specification.find(params[:id])
+
+    render json: @specification, include: %i[user domain]
+  end
+
+  private
 
   ###
   # @description: Clean the parameters with all needed for specifications creation

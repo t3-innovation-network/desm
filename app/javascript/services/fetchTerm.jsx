@@ -1,12 +1,12 @@
-import apiService from "./apiService";
+import apiRequest from "./api/apiRequest";
 
 const fetchTerm = async (termId) => {
-  const response = await apiService.get("/api/v1/terms/" + termId);
-  /// We don't have a valid response
-  if (response.status != 200) {
-    return {};
-  }
-  return response.data;
+  return await apiRequest({
+    url: "/api/v1/terms/" + termId,
+    method: "get",
+    defaultResponse: {},
+    successResponse: "term",
+  });
 };
 
 export default fetchTerm;
