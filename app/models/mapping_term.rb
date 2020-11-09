@@ -42,7 +42,7 @@ class MappingTerm < ApplicationRecord
   #   associated terms, so if you need to add terms, maintaining the previous ones, include the
   #   previous ids in the params.
   #
-  # @param [Array] mapped_term_ids: A collection of ids representing the terms that are
+  # @param [Array] ids: A collection of ids representing the terms that are
   #   going to be mapped to this alignment
   ###
   def update_mapped_terms ids

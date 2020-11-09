@@ -99,13 +99,13 @@ const SpecList = () => {
                           <tr key={mapping.id}>
                             <td>{mapping.title}</td>
                             <td>{mapping.specification.version}</td>
-                            <td>{mapping.mapped_terms + "/" + mapping.terms.length}</td>
+                            <td>{mapping.mapped_terms + "/" + mapping.selected_terms.length}</td>
                             <td>{_.startCase(_.toLower(mapping.status))}</td>
                             <td>{mapping.specification.user.fullname}</td>
                             <td>
                               {mapping["mapped?"] ? (
                                 <Link
-                                  to={"/mappings/" + mapping.id}
+                                  to={"/mappings/" + mapping.id + "/align"}
                                   className="btn btn-sm btn-dark ml-2"
                                 >
                                   Edit

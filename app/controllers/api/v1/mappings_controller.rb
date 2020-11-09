@@ -12,7 +12,7 @@ class Api::V1::MappingsController < ApplicationController
   def index
     mappings = filter
 
-    render json: mappings, include: [:terms, {specification: {include: %i[user terms]}}]
+    render json: mappings, include: [:terms, :selected_terms, {specification: {include: %i[user terms]}}]
   end
 
   ###
@@ -37,23 +37,6 @@ class Api::V1::MappingsController < ApplicationController
   end
 
   ###
-  # @description: Creates the selected mapping terms. This method is used when the user has already
-  #   decided which terms to map to the spine
-  ###
-  def create_selected_terms
-    # Validate mapping existence (We will create mapping terms for an existent mapping)
-    mapping = Mapping.find(params[:mapping_id])
-    terms = params[:terms]
-
-    raise "Mapping terms were not provided" unless terms.present? && terms.any?
-
-    # Proceed to create the mapping terms
-    Processors::Mappings.create_selected_terms(mapping, terms)
-
-    render json: mapping, include: :terms
-  end
-
-  ###
   # @description: Fetch the mapping with the id equal to the one passed
   #   in params
   ###
@@ -67,14 +50,6 @@ class Api::V1::MappingsController < ApplicationController
   ###
   def show_terms
     render json: @instance.terms.order(:uri), include: {mapped_terms: {include: %i[property vocabularies]}}
-  end
-
-  ###
-  # @description: Fetch the mapping terms for the mapping with the id equal
-  #   to the one passed in params
-  ###
-  def show_selected_terms
-    render json: @instance.selected_terms.order(:uri), include: [:property]
   end
 
   private

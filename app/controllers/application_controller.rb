@@ -17,8 +17,8 @@ class ApplicationController < ActionController::Base
   # @description: Create a class instance of the model being represented
   # @return [Object] an instance of the class being represented
   ###
-  def with_instance
-    model_name = controller_name.classify.constantize
+  def with_instance model_name=nil
+    model_name = controller_name.classify.constantize unless model_name.present?
     @instance = params[:id].present? ? model_name.find(params[:id]) : model_name.new
   end
 
