@@ -52,5 +52,26 @@ module Processors
         end
       end
     end
+
+    ###
+    # @description: Identify all the concepts for a given vocabulary id (scheme uri).
+    # @param [Array] graph: the collection of nodes. It can contain all kind of nodes, we will find only those with
+    #   type "skos:Concept" and related to the given scheme.
+    # @param [String] scheme_uri: The id of the scheme containing the concepts
+    # @return [Array]
+    ###
+    def self.identify_concepts graph, scheme_uri
+      concepts = []
+
+      graph.each do |node|
+        node_type = Parsers::Specifications.read!(node, "type")
+        if node_type.is_a?(String) && node_type.downcase == "skos:concept" &&
+           Parsers::Specifications.read!(node, "inScheme") == scheme_uri
+          concepts << node
+        end
+      end
+
+      concepts
+    end
   end
 end

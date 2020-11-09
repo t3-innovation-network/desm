@@ -3,7 +3,7 @@ import validator from "validator";
 import AlertNotice from "../shared/AlertNotice";
 import FileInfo from "./FileInfo";
 import { useSelector, useDispatch } from "react-redux";
-import { setFiles, setSpecToPreview } from "../../actions/files";
+import { setFiles, setMergedFile, setSpecToPreview } from "../../actions/files";
 import {
   doSubmit,
   startProcessingFile,
@@ -15,6 +15,8 @@ import { toastr as toast } from "react-redux-toastr";
 import MultipleDomainsModal from "./MultipleDomainsModal";
 import checkDomainsInFile from "../../services/checkDomainsInFile";
 import filterSpecification from "../../services/filterSpecification";
+import mergeFiles from "../../services/mergeFiles";
+import { setVocabularies } from "../../actions/vocabularies";
 
 const MappingForm = () => {
   const [errors, setErrors] = useState("");
@@ -53,6 +55,9 @@ const MappingForm = () => {
 
   /// The files uploaded by the user
   const files = useSelector((state) => state.files);
+
+  /// The unified file from the ones the user uploaded
+  const mergedFile = useSelector((state) => state.mergedFile);
 
   /// The preview files (files already prepared to be previewed, as
   /// without the unrelated domains and properties)
@@ -139,41 +144,97 @@ const MappingForm = () => {
   };
 
   /**
+   * Unify the files by using the service
+   * If we recognize more than 1 file uploaded by the user, we use the service to
+   * merge the files into one big graph. And from now on, we manage to work with
+   * the file content and not with the file object/s.
+   *
+   * Note that if there's only one file, nothing changes. The backend will just
+   * return the file as its needed, and with the proper format to be processed here
+   */
+  const handleMergeFiles = async () => {
+    let response = await mergeFiles(files);
+
+    if (response.error) {
+      toast.error(response.error);
+      return;
+    }
+
+    dispatch(setMergedFile(response.specification));
+
+    files.map((file) => sendFileToPreview(file));
+
+    return response.specification;
+  };
+
+  /**
+   * Be sure that the uploaded file contains only one domain to map to
+   */
+  const handleCheckDomainsInFile = async (spec) => {
+    let response = await checkDomainsInFile(spec);
+
+    if (response.error) {
+      toast.error(response.error);
+      return;
+    }
+
+    if (response.domains.length > 1) {
+      setMultipleDomainsInFile(true);
+      setDomainsInFile(response.domains);
+      return;
+    }
+  };
+
+  /**
+   * Manage to work with only 1 file with all the information.
+   */
+  const processFiles = async () => {
+    let spec = await handleMergeFiles();
+
+    await handleCheckDomainsInFile(spec);
+  };
+
+  /**
    * Send the file/s to the API service to be parsed
    */
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // Check the form validity
     if (errors) {
       toast.error("Please correct the errors first");
       event.preventDefault();
       return;
     }
 
+    // Update the shared state
     dispatch(startProcessingFile());
     dispatch(setMappingFormData(formData()));
 
-    /**
-     * Be sure the file uploaded contains only one domain to map to
-     */
-    files.map(async (file) => {
-      let response = await checkDomainsInFile(file);
+    // Manage file tasks with the service
+    await processFiles();
 
-      if (response.error) {
-        toast.error(response.error);
-        return;
-      }
-
-      if (response.domains.length > 1) {
-        setMultipleDomainsInFile(true);
-        setDomainsInFile(response.domains);
-        return;
-      }
-
-      dispatch(stopProcessingFile());
-      sendFileToPreview(file);
-    });
-
+    // Update the shared state
+    dispatch(stopProcessingFile());
     dispatch(doSubmit());
-    event.preventDefault();
+  };
+
+  /**
+   * Filter the specification to have only those properties related to the
+   * selected domain.
+   *
+   * @param {String} id: The uri of the selected domain
+   */
+  const handleFilterSpecification = async (id) => {
+    let response = await filterSpecification(id, mergedFile);
+
+    if (response.error) {
+      toast.error(response.error);
+      return;
+    }
+
+    dispatch(setVocabularies(response.filtered.vocabularies));
+
+    return response.filtered.specification;
   };
 
   /**
@@ -183,22 +244,18 @@ const MappingForm = () => {
    * Then filter the file content to only show the selected domain an
    * related properties.
    */
-  const onSelectDomainFromFile = (id) => {
+  const onSelectDomainFromFile = async (id) => {
     dispatch(startProcessingFile());
     setMultipleDomainsInFile(false);
 
     let tempSpecs = [];
-    files.map((file) => {
-      filterSpecification(id, file).then((response) => {
-        if (response.error) {
-          toast.error(response.error);
-          return;
-        }
-        tempSpecs.push(JSON.stringify(response.specification, null, 2));
-        dispatch(setSpecToPreview(tempSpecs));
-        dispatch(stopProcessingFile());
-      });
-    });
+    let specification = await handleFilterSpecification(id);
+    dispatch(setMergedFile(specification));
+
+    tempSpecs.push(JSON.stringify(specification, null, 2));
+
+    dispatch(setSpecToPreview(tempSpecs));
+    dispatch(stopProcessingFile());
 
     toast.info("Great! You selected the domain with URI: " + id);
   };

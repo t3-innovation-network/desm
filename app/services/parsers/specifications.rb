@@ -7,6 +7,7 @@ module Parsers
   #   complex objects, hence the operations needed to process it.
   ###
   class Specifications
+    include Connectable
     ###
     # @description: Read an attribute from a node and return it's content as String
     # @param [Hash] node: The node to being evaluated
@@ -56,6 +57,34 @@ module Parsers
     ###
     def self.valid_node_key?(node, key)
       node.is_a?(Hash) && node.key?(key)
+    end
+
+    ###
+    # @description: Put together the content of the uploaded files to get only one object with
+    #   all the necessary data to process
+    # @param [Array] specifications: The list of file contents uploaded
+    # @return [Object]: The unified specification
+    ###
+    def self.merge_specs specifications
+      final_spec = {
+        "@context": {},
+        "@graph": []
+      }
+
+      specifications.each do |spec|
+        spec = JSON.parse(spec) if spec.is_a?(String)
+
+        # Ensure we're dealing with a hash, otherwise the "merge!" method below will not work
+        spec["@context"] = http_get(spec["@context"]) if spec["@context"].is_a?(String) && uri?(spec["@context"])
+
+        # merge the context so we have all the context info
+        final_spec[:@context].merge!(spec["@context"])
+
+        # merge the graph so we have all the elements in one place
+        final_spec[:@graph] += (spec["@graph"])
+      end
+
+      final_spec
     end
   end
 end

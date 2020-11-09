@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_02_131905) do
+ActiveRecord::Schema.define(version: 2020_11_09_134708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -179,13 +179,17 @@ ActiveRecord::Schema.define(version: 2020_11_02_131905) do
     t.index ["user_id"], name: "index_specifications_on_user_id"
   end
 
+  create_table "specifications_terms", id: false, force: :cascade do |t|
+    t.bigint "specification_id", null: false
+    t.bigint "term_id", null: false
+    t.index ["specification_id", "term_id"], name: "index_specifications_terms_on_specification_id_and_term_id", unique: true
+  end
+
   create_table "terms", force: :cascade do |t|
     t.string "name"
     t.string "uri", null: false
-    t.bigint "specification_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["specification_id"], name: "index_terms_on_specification_id"
   end
 
   create_table "terms_vocabularies", id: false, force: :cascade do |t|
@@ -234,6 +238,5 @@ ActiveRecord::Schema.define(version: 2020_11_02_131905) do
   add_foreign_key "properties", "terms"
   add_foreign_key "specifications", "domains"
   add_foreign_key "specifications", "users"
-  add_foreign_key "terms", "specifications"
   add_foreign_key "vocabularies", "organizations"
 end

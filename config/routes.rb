@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       get 'mappings/:id/terms' => 'mappings#show_terms'
       post 'specifications/info' => 'specifications#info'
       post 'specifications/filter' => 'specifications#filter'
+      post 'specifications/merge' => 'specifications#merge'
       get 'specifications/:id/terms' => 'terms#from_specification'
       get 'mapping_terms/:id/vocabulary' => 'alignment_vocabularies#show'
     end

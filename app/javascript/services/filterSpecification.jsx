@@ -1,10 +1,9 @@
 import apiRequest from "./api/apiRequest";
-
+/**
+ * @param {String} uri: The identifier of the rdfs:Class selected.
+ * @param {file} file: The file to be filtered, in a JSON format.
+ */
 const filterSpecification = async (uri, file) => {
-  let data = new FormData();
-  data.append("file", file);
-  data.append("uri", uri);
-
   /**
    * This will be the way to get the specification file
    * parsed to get only 1 domain to map from.
@@ -19,14 +18,12 @@ const filterSpecification = async (uri, file) => {
   return await apiRequest({
     url: "/api/v1/specifications/filter",
     method: "post",
-    payload: data,
-    options: {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+    payload: {
+      file: JSON.stringify(file, null, 2),
+      uri: uri,
     },
     defaultResponse: "",
-    successResponse: "specification",
+    successResponse: "filtered",
   });
 };
 
