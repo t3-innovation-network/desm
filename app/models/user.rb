@@ -43,4 +43,13 @@ class User < ApplicationRecord
     assignment.role_id = role_id
     assignment.save!
   end
+
+  ###
+  # @description: Include additional information about the specification in
+  #   json responses. This overrides the ApplicationRecord as_json method.
+  ###
+  def as_json(_options={})
+    super except: %i[created_at updated_at],
+          include: %i[roles organization]
+  end
 end

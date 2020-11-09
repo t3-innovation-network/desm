@@ -1,97 +1,121 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useDrag } from "react-dnd";
-import { ItemTypes } from "./ItemTypes";
-import { useSelector } from "react-redux";
+import React, { Component } from "react";
+import Collapsible from "../shared/Collapsible.jsx";
 
-const TermCard = (props) => {
-  /**
-   * The logged in user
-   */
-  const user = useSelector((state) => state.user);
-
-  /**
-   * Configure the draggable component
-   */
-  const [{ isDragging }, drag] = useDrag({
+/**
+ * Props:
+ * @param {Function} onClick Actions when the user clicks on it
+ * @param {Boolean} disableClick Whether we allow to click on this card. If true, it wil trigger onClick
+ * @param {Object} term The term object
+ * @param {String} origin The name of the organization that created the term specification
+ * @param {Boolean} alwaysEnabled Whether after dragged it remains available to drag again
+ * @param {Function} isMapped The logic to determine whether this term is or not mapped
+ * @param {Boolean} editEnabled Show/Hide the edit option
+ * @param {Function} onEditClick The logic to execute when the user click "edit"
+ */
+export default class TermCard extends Component {
+  state = {
     /**
-     * The item being dragged.
-     * The type will help on recognizing it when dropped.
-     * The "other" element can be configured to accept or not this or other
-     * type of elements
+     * Whether the term is selected or not
      */
-    item: {
-      name: props.term.name,
-      uri: props.term.uri,
-      type: ItemTypes.BOX,
-    },
-    end: (item, monitor) => {
-      /**
-       * The element where it was dropped in
-       */
-      const domainDropped = monitor.getDropResult();
-      if (item && domainDropped) {
-        props.afterDrop(item, domainDropped);
-      }
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  });
+    selected: this.props.term.selected,
+    /**
+     * Whether this card should be available to drag after the first successful drop
+     */
+    alwaysEnabled: this.props.alwaysEnabled,
+  };
 
-  return (
-    <div
-      className={
-        "card with-shadow mb-2" +
-        (props.term.mappedTo
-          ? " disabled-container not-draggable"
-          : " draggable") +
-        (isDragging ? " is-dragging" : "")
-      }
-      ref={props.term.mappedTo ? null : drag}
-    >
-      <div className="card-header no-color-header pb-0">
-        <div className="row">
-          <div className="col-6">
-            {props.term.name}
-          </div>
-          <div className="col-6">
-            <div className="float-right">
-              {props.term.mappedTo ? (
+  /**
+   * Make both the term for this component and the one in the mapping,
+   * selected or not selected
+   */
+  handleTermClick = () => {
+    const { term, onClick } = this.props;
+    const { selected } = this.state;
+
+    // local value (this term)
+    this.setState({ selected: !selected }, () => {
+      // props value (the term inside the list in the parent component)
+      term.selected = !term.selected;
+      onClick(term);
+    });
+  };
+
+  /**
+   * After dragging a term card, if it's not meant to be "always enabled" (multiple times draggable),
+   * it becomes disabled.
+   */
+  disabledTermCard = () => {
+    const { term } = this.props;
+
+    return (
+      <div className="card with-shadow mb-2 disabled-container not-draggable">
+        <div className="card-header no-color-header">
+          <div className="row">
+            <div className="col-8">{term.name}</div>
+            <div className="col-4">
+              <div className="float-right">
                 <i className="fas fa-check"></i>
-              ) : (
-                <React.Fragment>
-                  <button
-                    onClick={() => {
-                      props.onEditClick(props.term);
-                    }}
-                    className="btn"
-                  >
-                    <i className="fa fa-pencil-alt"></i>
-                  </button>
-                  <Link
-                    data-target={"#collapse-term-" + props.term.id}
-                    data-toggle="collapse"
-                    className="btn"
-                    to="#"
-                  >
-                    <i className="fas fa-angle-down"></i>
-                  </Link>
-                </React.Fragment>
-              )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        id={"collapse-term-" + props.term.id}
-        className="collapse card-body pt-0 pb-0"
-      >
-        <p>{props.term.property.comment}</p>
-        <p>{"Origin: " + user.organization.name}</p>
-      </div>
-    </div>
-  );
-};
+    );
+  };
 
-export default TermCard;
+  /**
+   * The content of the header (The component when it's shrinked)
+   */
+  termHeaderContent = () => {
+    const { term, onEditClick, editEnabled, disableClick } = this.props;
+    const { selected } = this.state;
+
+    return (
+      <div className="row">
+        <div className={"col-8 mb-3" + (disableClick ? "" : (selected ? "" : " cursor-pointer"))}>
+          {term.name}
+        </div>
+        <div className="col-4">
+          <div className="float-right">
+            {editEnabled && (
+              <button
+                onClick={() => {
+                  onEditClick(term);
+                }}
+                className="btn"
+              >
+                <i className="fa fa-pencil-alt"></i>
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  render() {
+    const { selected, alwaysEnabled } = this.state;
+    const { term, isMapped, origin, disableClick } = this.props;
+
+    return isMapped(term) && !alwaysEnabled ? (
+      this.disabledTermCard()
+    ) : (
+      <Collapsible
+        cardStyle={
+          "with-shadow mb-2" + (selected ? " draggable term-selected" : "")
+        }
+        cardHeaderStyle={"no-color-header pb-0"}
+        cardHeaderColStyle={disableClick ? "" : (selected ? "" : "cursor-pointer")}
+        handleOnClick={disableClick ? null : this.handleTermClick }
+        headerContent={this.termHeaderContent()}
+        observeOutside={true}
+        bodyContent={
+          <div className="card-body pt-0 pb-0">
+            <p>{term.property.comment}</p>
+            <p>{"Origin: " + origin}</p>
+          </div>
+        }
+      />
+    );
+  }
+}

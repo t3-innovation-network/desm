@@ -6,6 +6,10 @@
 	overflow: hidden;
 }
 
+.desm-check-container-sm{
+	height: 5rem;
+}
+
 .desm-radio label {
 	width: 100%;
 	border-radius: 3px;
@@ -56,8 +60,9 @@
 .desm-radio input[type="radio"]:hover:not(:checked)~label:before,
 .desm-radio input[type="checkbox"]:hover:not(:checked)~label:before {
 	content: '✓';
-	text-indent: .9em;
 	color: $foreground-color;
+	font-weight: bolder;
+	text-indent: .9em;
 }
 
 .desm-radio input[type="radio"]:checked~label,
@@ -68,9 +73,10 @@
 .desm-radio input[type="radio"]:checked~label:before,
 .desm-radio input[type="checkbox"]:checked~label:before {
 	content: '✓';
-	text-indent: .9em;
-	color: #333;
 	background-color: #ccc;
+	color: #333;
+	font-weight: bolder;
+	text-indent: .9em;
 }
 
 .desm-radio input[type="radio"]:focus~label:before,
@@ -88,4 +94,26 @@
 .desm-radio-primary input[type="checkbox"]:checked~label:before {
 	color: #fff;
 	background-color: $on-primary;
+}
+
+/* CUSTOM CONTROLS */
+
+.desm-custom-control-input:focus~.custom-control-label::before {
+  border-color: $primary-color !important;
+	box-shadow: 0 0 0 0.2rem $primary-color-light !important;
+	opacity: 0.5;
+}
+
+.desm-custom-control-input:checked~.custom-control-label::before {
+  border-color: $primary-color !important;
+  background-color: $primary-color !important;
+}
+
+.desm-custom-control-input:focus:not(:checked)~.custom-control-label::before {
+  border-color: $on-primary-light !important;
+}
+
+.desm-custom-control-input:not(:disabled):active~.custom-control-label::before {
+  background-color: $primary-color-highlight !important;
+  border-color: $primary-color-highlight !important;
 }

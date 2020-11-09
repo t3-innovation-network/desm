@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import DashboardContainer from "../DashboardContainer";
 import fetchOrganization from "../../../services/fetchOrganization";
-import ErrorMessage from "../../shared/ErrorMessage";
 import AlertNotice from "../../shared/AlertNotice";
 import deleteOrganization from "../../../services/deleteOrganization";
 import updateOrganization from "../../../services/updateOrganization";
-import {toastr as toast} from 'react-redux-toastr';
+import { toastr as toast } from "react-redux-toastr";
 
 export default class EditOrganization extends Component {
   /**
@@ -25,47 +24,41 @@ export default class EditOrganization extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
-  }
+  };
 
   /**
    * Use the API service to get this organization data
    */
   fetchOrganizationAPI() {
-    fetchOrganization(this.state.organization_id)
-      .then((response) => {
-        /// We have a list of organizations from the backend
-        if (response.success) {
-          this.setState({
-            name: response.organization.name
-          });
-        }
-      })
-      /// Process any server errors
-      .catch((error) => {
+    fetchOrganization(this.state.organization_id).then((response) => {
+      if (response.error) {
         this.setState({
-          errors: ErrorMessage(error)
+          errors: response.error,
         });
+        return;
+      }
+      /// We have a list of organizations from the backend
+      this.setState({
+        name: response.organization.name,
       });
+    });
   }
 
   /**
    * Hit the API service to delete this organization
    */
   deleteOrganizationAPI() {
-    deleteOrganization(this.state.organization_id)
-      .then((response) => {
-        /// We have a list of organizations from the backend
-        if (response.success) {
-          toast.info("Organization successfully removed");
-          this.props.history.push("/dashboard/organizations");
-        }
-      })
-      /// Process any server errors
-      .catch((error) => {
+    deleteOrganization(this.state.organization_id).then((response) => {
+      if (response.error) {
         this.setState({
-          errors: ErrorMessage(error)
+          errors: response.error,
         });
-      });
+        return;
+      }
+      /// We have a list of organizations from the backend
+      toast.info("Organization successfully removed");
+      this.props.history.push("/dashboard/organizations");
+    });
   }
 
   /**
@@ -82,34 +75,38 @@ export default class EditOrganization extends Component {
   handleSubmit = (event) => {
     const { name } = this.state;
 
-    updateOrganization(this.state.organization_id, name)
-      .then((response) => {
-        if (response.success) {
-          toast.success(
-            "Organization " + name + " (" + this.state.organization_id + ") was successfully updated"
-          );
-          this.props.history.push("/dashboard/organizations");
-        }
-      })
-      .catch((error) => {
+    updateOrganization(this.state.organization_id, name).then((response) => {
+      if (response.error) {
         this.setState({
-          errors: ErrorMessage(error)
+          errors: response.error,
         });
-      });
+        return;
+      }
+      toast.success(
+        "Organization " +
+          name +
+          " (" +
+          this.state.organization_id +
+          ") was successfully updated"
+      );
+      this.props.history.push("/dashboard/organizations");
+    });
 
     event.preventDefault();
-  }
+  };
 
   render() {
     return (
       <DashboardContainer>
         <div className="col-lg-6 mx-auto mt-5">
-          {this.state.errors && <AlertNotice message={this.state.errors} /> }
+          {this.state.errors && <AlertNotice message={this.state.errors} />}
 
           <div className="card mt-5">
             <div className="card-header">
               <i className="fa fa-building"></i>
-              <span className="pl-2 subtitle">Organization {this.state.name}</span>
+              <span className="pl-2 subtitle">
+                Organization {this.state.name}
+              </span>
               <button
                 className="btn btn-dark float-right"
                 data-toggle="tooltip"

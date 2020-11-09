@@ -1,10 +1,14 @@
-import apiService from "./apiService";
+import apiRequest from "./api/apiRequest";
 
 const createMapping = async (specification_id) => {
-  const response = await apiService
-    .post("/api/v1/mappings", {
+  const response = await apiRequest({
+    url: "/api/v1/mappings",
+    method: "post",
+    successResponse: "mapping",
+    payload: {
       specification_id: specification_id
-    });
+    }
+  });
   return response;
 };
 

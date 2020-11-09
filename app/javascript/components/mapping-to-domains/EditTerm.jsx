@@ -9,6 +9,9 @@ import { toastr as toast } from "react-redux-toastr";
 import deleteTerm from "../../services/deleteTerm";
 import { Controlled as CodeMirror } from "react-codemirror2";
 import fetchVocabularies from "../../services/fetchVocabularies";
+import rawTerm from "./rawTerm";
+import AlertNotice from "../shared/AlertNotice";
+import ExpandableOptions from "../shared/ExpandableOptions";
 
 export default class EditTerm extends Component {
   /**
@@ -20,6 +23,10 @@ export default class EditTerm extends Component {
       property: {},
       vocabularies: [],
     },
+    /**
+     * Manages the errors on this view
+     */
+    error: null,
     /**
      * Whether the page is loading or not
      */
@@ -36,10 +43,59 @@ export default class EditTerm extends Component {
   };
 
   /**
-   * Vocabulary change method
+   * Prepare the domains of a term to be listed as options for the expandable component
+   *
+   * @param {Array} domains
+   */
+  domainsAsOptions = (domains) => {
+    return domains
+      ? domains.map((domain) => {
+          return {
+            id: domain,
+            name: domain,
+          };
+        })
+      : [];
+  };
+
+  /**
+   * Prepare the domains of a term to be listed as options for the expandable component
+   *
+   * @param {Array} domains
+   */
+  rangeAsOptions = (range) => {
+    return range
+      ? range.map((rng) => {
+          return {
+            id: rng,
+            name: rng,
+          };
+        })
+      : [];
+  };
+
+  /**
+   * Domain change
+   */
+  handleDomainChange = (val) => {
+    let tempTerm = this.state.term;
+    tempTerm.property.selected_domain = val;
+    this.setState({ term: tempTerm });
+  };
+
+  /**
+   * Range change
+   */
+  handleRangeChange = (val) => {
+    let tempTerm = this.state.term;
+    tempTerm.property.selected_range = val;
+    this.setState({ term: tempTerm });
+  };
+
+  /**
+   * Vocabulary change
    */
   handleVocabularyChange = (val) => {
-    // @todo implement vocabulary change logic
     let tempTerm = this.state.term;
     if (tempTerm.vocabularies.find((vocab) => vocab.id == val)) {
       tempTerm.vocabularies = tempTerm.vocabularies.filter(
@@ -67,10 +123,12 @@ export default class EditTerm extends Component {
    */
   handleSaveTerm = () => {
     updateTerm(this.state.term).then((response) => {
-      if (response.success) {
-        this.props.onRequestClose();
-        toast.success("Changes Saved to  " + this.state.term.name);
+      if (response.error) {
+        this.setState({ error: response.error });
+        return;
       }
+      this.props.onRequestClose();
+      toast.success("Changes Saved to  " + this.state.term.name);
     });
   };
 
@@ -79,11 +137,12 @@ export default class EditTerm extends Component {
    */
   handleRemoveTerm = () => {
     deleteTerm(this.state.term.id).then((response) => {
-      if (response.removed) {
-        this.props.onRemoveTerm(this.state.term);
-        this.props.onRequestClose();
-        toast.info("Term removed: " + this.state.term.name);
+      if (response.error) {
+        this.setState({ error: response.error });
       }
+      this.props.onRemoveTerm(this.state.term);
+      this.props.onRequestClose();
+      toast.info("Term removed: " + this.state.term.name);
     });
   };
 
@@ -113,8 +172,12 @@ export default class EditTerm extends Component {
   fetchTermFromApi = () => {
     if (this.props.termId) {
       fetchTerm(this.props.termId).then((response) => {
+        if (response.error) {
+          this.setState({ error: response.error });
+          return;
+        }
         this.setState({
-          term: response,
+          term: response.term,
           loading: false,
         });
       });
@@ -131,7 +194,11 @@ export default class EditTerm extends Component {
 
   getVocabularies = () => {
     fetchVocabularies().then((response) => {
-      this.setState({ vocabularies: response });
+      if (response.error) {
+        this.setState({ error: response.error });
+        return;
+      }
+      this.setState({ vocabularies: response.vocabularies });
     });
   };
 
@@ -150,7 +217,7 @@ export default class EditTerm extends Component {
         onRequestClose={this.closeRequested}
         onAfterOpen={this.fetchTermFromApi}
         contentLabel="Edit Term"
-        style={ModalStyles}
+        style={{ ...ModalStyles }}
         shouldCloseOnEsc={true}
         shouldCloseOnOverlayClick={true}
       >
@@ -175,13 +242,13 @@ export default class EditTerm extends Component {
           </div>
 
           <div className="card-body">
+            {this.state.error ? <AlertNotice message={this.state.error} /> : ""}
             {this.state.loading ? (
               <Loader />
             ) : (
               <React.Fragment>
                 <div className="row">
                   {/* LEFT COLUMN */}
-
                   <div
                     className={
                       (this.state.uploadingVocabulary
@@ -189,31 +256,69 @@ export default class EditTerm extends Component {
                         : "") + "col-6"
                     }
                   >
-                    <div className="form-group">
-                      <label>Class/Type</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="classtype"
-                        placeholder="Class/Type"
-                        value={this.state.term.property.classtype}
-                        onChange={(e) => this.handlePropertyChange(e)}
-                        disabled={this.state.uploadingVocabulary}
-                        autoFocus
-                      />
-                    </div>
+                    <div className="card">
+                      <div className="card-body">
+                        <h5>
+                          <strong>Element/Property</strong>
+                        </h5>
 
-                    <div className="form-group">
-                      <label>Element/Property</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="element"
-                        placeholder="Element/Property"
-                        value={this.state.term.property.element}
-                        onChange={(e) => this.handlePropertyChange(e)}
-                        disabled={this.state.uploadingVocabulary}
-                      />
+                        <div className="form-group row">
+                          <div className="col-3">
+                            <label>
+                              <strong>Property URI</strong>
+                            </label>
+                          </div>
+                          <div className="col-9">
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="uri"
+                              placeholder="Property URI"
+                              value={this.state.term.property.uri}
+                              onChange={(e) => this.handlePropertyChange(e)}
+                              disabled={this.state.uploadingVocabulary}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="form-group row">
+                          <div className="col-3">
+                            <label>
+                              <strong>Source URI</strong>
+                            </label>
+                          </div>
+                          <div className="col-9">
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="source_uri"
+                              placeholder="Source URI"
+                              value={this.state.term.property.source_uri || ""}
+                              onChange={(e) => this.handlePropertyChange(e)}
+                              disabled={this.state.uploadingVocabulary}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="form-group row">
+                          <div className="col-3">
+                            <label>
+                              <strong>Property label</strong>
+                            </label>
+                          </div>
+                          <div className="col-9">
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="label"
+                              placeholder="Porperty Label"
+                              value={this.state.term.property.label}
+                              onChange={(e) => this.handlePropertyChange(e)}
+                              disabled={this.state.uploadingVocabulary}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     <div className="form-group">
@@ -228,60 +333,104 @@ export default class EditTerm extends Component {
                     </div>
 
                     <div className="form-group">
-                      <label>Path (optional)</label>
-                      <textarea
-                        className="form-control"
-                        name="source_path"
-                        value={this.state.term.property.source_path || ""}
-                        onChange={(e) => this.handlePropertyChange(e)}
-                        disabled={this.state.uploadingVocabulary}
-                      >
-                        {this.state.term.property.source_path || ""}
-                      </textarea>
+                      <label>Domain</label>
+
+                      <ExpandableOptions
+                        options={this.domainsAsOptions(
+                          this.state.term.property.domain
+                        )}
+                        selectedOption={this.state.term.property.domain.find(
+                          (d) => d === this.state.term.property.selected_domain
+                        )}
+                        onClose={(domain) => this.handleDomainChange(domain.id)}
+                      />
                     </div>
 
                     <div className="form-group">
-                      <label>Vocabulary (optional)</label>
-                      <div
-                        className="card mt-2 mb-2 has-scrollbar scrollbar"
-                        style={{ maxHeight: "10rem" }}
-                      >
-                        <div className="card-body">
-                          <div className="desm-radio">
-                            {this.state.vocabularies.map((vocab) => {
-                              return (
-                                <div
-                                  className={"desm-radio-primary"}
-                                  key={vocab.id}
-                                >
-                                  <input
-                                    type="checkbox"
-                                    value={vocab.id}
-                                    id={vocab.id}
-                                    name="vocabularies[]"
-                                    onChange={(e) =>
-                                      this.handleVocabularyChange(
-                                        e.target.value
-                                      )
-                                    }
-                                    checked={this.state.term.vocabularies.some(
-                                      (v) => v.id == vocab.id
-                                    )}
-                                    disabled={this.state.uploadingVocabulary}
-                                  />
-                                  <label htmlFor={vocab.id}>{vocab.name}</label>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      </div>
+                      <label>Range</label>
+
+                      <ExpandableOptions
+                        options={this.rangeAsOptions(
+                          this.state.term.property.range
+                        )}
+                        selectedOption={this.state.term.property.range.find(
+                          (r) => r === this.state.term.property.selected_range
+                        )}
+                        onClose={(range) => this.handleRangeChange(range.id)}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>XPath/JSON Path (optional)</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="path"
+                        placeholder="XPath or JSON Path"
+                        value={this.state.term.property.path || ""}
+                        onChange={(e) => this.handlePropertyChange(e)}
+                        disabled={this.state.uploadingVocabulary}
+                      ></input>
                     </div>
                   </div>
 
                   {/* RIGHT COLUMN */}
 
                   <div className="col-6">
+                    {!this.state.uploadingVocabulary && (
+                      <div className="form-group">
+                        <label>Vocabulary (optional)</label>
+                        <div className="card mb-2 has-scrollbar scrollbar desm-check-container-sm">
+                          <div className="card-body">
+                            <div className="desm-radio">
+                              {this.state.vocabularies.map((vocab) => {
+                                return (
+                                  <div
+                                    className={"desm-radio-primary"}
+                                    key={vocab.id}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      value={vocab.id}
+                                      id={vocab.id}
+                                      name="vocabularies[]"
+                                      onChange={(e) =>
+                                        this.handleVocabularyChange(
+                                          e.target.value
+                                        )
+                                      }
+                                      checked={this.state.term.vocabularies.some(
+                                        (v) => v.id == vocab.id
+                                      )}
+                                      disabled={this.state.uploadingVocabulary}
+                                    />
+                                    <label htmlFor={vocab.id}>
+                                      {vocab.name}
+                                    </label>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="row">
+                          <div className="col">
+                            {!this.state.uploadingVocabulary && (
+                              <a
+                                className="col-on-primary cursor-pointer float-right"
+                                onClick={() =>
+                                  this.setState({ uploadingVocabulary: true })
+                                }
+                              >
+                                Add Vocabulary
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     {this.state.uploadingVocabulary ? (
                       <UploadVocabulary
                         term={this.state.term}
@@ -294,22 +443,16 @@ export default class EditTerm extends Component {
                       />
                     ) : (
                       <React.Fragment>
-                        <div className="form-group">
-                          <label>Datatype</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            name="datatype"
-                            value={this.state.term.property.datatype || ""}
-                            onChange={(e) => this.handlePropertyChange(e)}
-                            placeholder="Datatype"
-                          />
-                        </div>
-
                         <div style={{ height: "78%" }}>
-                          <label>Raw</label>
+                          <label>
+                            <strong>Raw</strong>
+                          </label>
                           <CodeMirror
-                            value={JSON.stringify(this.state.term, null, 2)}
+                            value={JSON.stringify(
+                              rawTerm(this.state.term),
+                              null,
+                              2
+                            )}
                             options={{ lineNumbers: true }}
                             disabled={this.state.uploadingVocabulary}
                           />
@@ -320,29 +463,17 @@ export default class EditTerm extends Component {
                 </div>
 
                 <div className="row ">
-                  <div className="col float-left">
-                    {!this.state.uploadingVocabulary && (
-                      <button
-                        className="btn btn-dark"
-                        onClick={() =>
-                          this.setState({ uploadingVocabulary: true })
-                        }
-                      >
-                        Add Vocabulary
-                      </button>
-                    )}
-                  </div>
-                  <div className="col float-right">
+                  <div className="col">
                     {!this.state.uploadingVocabulary && (
                       <React.Fragment>
                         <button
-                          className="btn btn-outline-secondary mr-2"
+                          className="btn btn-outline-secondary ml-2 float-right"
                           onClick={this.handleRemoveTerm}
                         >
                           Remove Term
                         </button>
                         <button
-                          className="btn btn-dark"
+                          className="btn btn-dark float-right"
                           onClick={this.handleSaveTerm}
                         >
                           Save and Exit

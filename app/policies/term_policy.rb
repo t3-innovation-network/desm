@@ -37,4 +37,12 @@ class TermPolicy < ApplicationPolicy
   def destroy?
     @user.present?
   end
+
+  ###
+  # @description: Determines if the user can list all the terms from a specific specification
+  # @return [TrueClass]
+  ###
+  def from_specification?
+    @user.present?
+  end
 end

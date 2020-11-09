@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import AlertNotice from "../components/shared/AlertNotice";
 import checkLoginStatus from "./../services/checkLoginStatus";
-import ErrorMessage from "./shared/ErrorMessage";
 import { useSelector } from "react-redux";
 import { doLogin, setUser } from "../actions/sessions";
 import { useDispatch } from "react-redux";
 import Routes from "./Routes";
 import Loader from "./shared/Loader";
-import ReduxToastr from 'react-redux-toastr'
-import {toastr as toast} from 'react-redux-toastr';
+import ReduxToastr from "react-redux-toastr";
+import { toastr as toast } from "react-redux-toastr";
 
 const App = () => {
   const isLoggedIn = useSelector((state) => state.loggedIn);
@@ -24,19 +23,19 @@ const App = () => {
   };
 
   const checkLoginStatusAPI = async () => {
-    await checkLoginStatus({ loggedIn: isLoggedIn })
-      .then((response) => {
-        /// If we have something to change
-        if ((response !== undefined)&&(response.user.logged_in !== false)) {
-          dispatch(doLogin());
-          dispatch(setUser(response.user));
-        }
-        setLoading(false);
-      })
+    await checkLoginStatus({ loggedIn: isLoggedIn }).then((response) => {
       /// Process any server errors
-      .catch((error) => {
-        setErrors(ErrorMessage(error));
-      });
+      if (response.error) {
+        setErrors(response.error);
+        return;
+      }
+      /// If we have something to change
+      if (response.loggedIn) {
+        dispatch(doLogin());
+        dispatch(setUser(response.user));
+      }
+      setLoading(false);
+    });
   };
 
   /**
@@ -48,13 +47,18 @@ const App = () => {
     checkLoginStatusAPI();
   }, []);
 
-  return loading ? (
-    <Loader />
-  ) : (
+  return (
     <React.Fragment>
-      {errors && <AlertNotice message={errors} />}
-      <ReduxToastr position="top-center" className="desm-toast"/>
-      <Routes handleLogin={handleLogin} />
+      {loading ? (
+        <Loader />
+      ) : errors ? (
+        <AlertNotice message={errors} />
+      ) : (
+        <React.Fragment>
+          <ReduxToastr position="top-center" className="desm-toast" />
+          <Routes handleLogin={handleLogin} />
+        </React.Fragment>
+      )}
     </React.Fragment>
   );
 };

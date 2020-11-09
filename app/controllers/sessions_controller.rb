@@ -29,7 +29,10 @@ class SessionsController < ApplicationController
   ###
   def session_status
     if @current_user
-      render json: @current_user, include: %i[roles organization]
+      render json: {
+        logged_in: true,
+        user: @current_user
+      }
     else
       render json: {
         logged_in: false
@@ -45,7 +48,7 @@ class SessionsController < ApplicationController
     reset_session
     render json: {
       status: 200,
-      logged_out: true
+      success: true
     }
   end
 end

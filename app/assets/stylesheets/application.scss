@@ -7,13 +7,18 @@
   src: url('../fonts/proxima-light/Proxima Nova Condensed Light.otf')
 }
 
-html,body,.container-fluid,.row,.wrapper,body>div {
+html,body,.container-fluid,.container-fluid>.row,.wrapper,body>div {
   height:100%;
+  font-size: 13px;
 }
 
 .subtitle {
   font-weight: bold;
   font-size: 18px;
+}
+
+.small-text {
+  font-size: 11px;
 }
 
 section {
@@ -29,8 +34,8 @@ a:hover {
 }
 
 .wrapper {
-  margin-right: 12%;
-  margin-left: 12%;
+  margin-right: 7%;
+  margin-left: 7%;
   font-family: "Proxima Nova Condensed Light", sans-serif;
 }
 
@@ -70,6 +75,19 @@ a:hover {
   left: 50%;
 }
 
+.desm-col-header {
+  min-height: 10rem;
+}
+
+.hover-col-primary:hover{
+  background-color: $primary-color;
+  color: $foreground-color;
+}
+
+.underlined {
+  text-decoration: underline;
+}
+
 /* Main view Styles */
 
 .bg-col-secondary {
@@ -96,6 +114,10 @@ a:hover {
   color: $primary-color !important;
 }
 
+.col-success {
+  color: $success-color !important;
+}
+
 .no-color-header {
   background-color: unset !important;
   border-bottom: unset !important;
@@ -107,6 +129,17 @@ a:hover {
 
 .col-header {
   min-height: 10vw;
+}
+
+.float-over {
+  position: absolute !important;
+  width: 90%;
+  z-index: 3;
+}
+
+.comment-dot {
+  position: relative;
+  left: -10px;
 }
 
 /* Scrollbar */
@@ -124,6 +157,12 @@ a:hover {
 .scrollbar::-webkit-scrollbar-thumb {
   background-color: $on-primary-light;
   border-radius: 8px;
+}
+
+/* Others */
+
+.desm-tooltip {
+  color: $primary-color;
 }
 
 .disabled-container {

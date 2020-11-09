@@ -9,8 +9,6 @@ const ModalStyles = {
     border: "none",
     minWidth: "60%",
     maxWidth: "70%",
-    minHeight: "70%",
-    maxHeight: "80%",
   },
 };
 

@@ -1,13 +1,11 @@
-import apiService from "./apiService";
+import apiRequest from "./api/apiRequest";
 
-const fetchOrganizations = () => {
-  return apiService.get("/api/v1/organizations").then((response) => {
-    /// We don't have a valid response
-    if (response.status != 200) {
-      return [];
-    }
-    /// We have a list of organizations from the backend
-    return response.data;
+const fetchOrganizations = async () => {
+  return await apiRequest({
+    url: "/api/v1/organizations",
+    method: "get",
+    defaultResponse: [],
+    successResponse: "organizations",
   });
 };
 

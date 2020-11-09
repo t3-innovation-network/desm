@@ -40,6 +40,7 @@ const MultipleDomainsModal = (props) => {
                   placeholder="Search by name"
                   value={props.inputValue}
                   onChange={props.filterOnChange}
+                  autoFocus
                 />
               </div>
             </div>

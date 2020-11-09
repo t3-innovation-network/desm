@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import createVocabulary from "../../services/createVocabulary";
 import FileInfo from "../mapping/FileInfo";
-import isJSON from "is-valid-json";
 import { toastr as toast } from "react-redux-toastr";
+
+var isJSON = require("is-valid-json");
 
 const UploadVocabulary = (props) => {
   /**
@@ -72,41 +73,49 @@ const UploadVocabulary = (props) => {
 
   /**
    * Manages to corroborate that the file content is a valid JSON
-   * 
-   * @param {String} content 
+   *
+   * @param {String} content
    */
   const validateJSON = (content) => {
     let isValid = isJSON(content);
 
     if (!isValid) {
-      toast.error("Invalid JSON!\nBe sure to validate the file before uploading");
+      toast.error(
+        "Invalid JSON!\nBe sure to validate the file before uploading"
+      );
     }
 
     return isValid;
-  }
+  };
 
   /**
    * Send the file with the vocabulary to the backend
    */
   const handleCreateVocabulary = (event) => {
-    if(validateJSON(fileContent)) {
+    if (validateJSON(fileContent)) {
       let data = {
-        name: name,
-        content: fileContent,
+        vocabulary: {
+          name: name,
+          content: JSON.parse(fileContent),
+        }
       };
 
       createVocabulary(data).then((response) => {
+        if (response.error) {
+          toast.error("Error! " + e.response.data.message);
+          return;
+        }
+
         props.onVocabularyAdded({
           id: response.vocabulary.id,
           name: response.vocabulary.name,
         });
+
         props.onRequestClose();
-      }).catch(e => {
-        console.log(e);
-        toast.error("Error! " + e.response.data.message);
       });
+
+      event.preventDefault();
     }
-    event.preventDefault();
   };
 
   return (
@@ -172,18 +181,15 @@ const UploadVocabulary = (props) => {
               </div>
             </div>
             <small className="mt-5">
-              You can upload your concept scheme file as RDF, JSON, XML or JSONLD
-              format
+              You can upload your concept scheme file as RDF, JSON, XML or
+              JSONLD format
             </small>
           </div>
 
           {fileData()}
 
           {file != null && (
-            <button
-              className="btn btn-dark float-right mt-3"
-              type="submit"
-            >
+            <button className="btn btn-dark float-right mt-3" type="submit">
               Upload
             </button>
           )}

@@ -1,15 +1,16 @@
-import apiService from "./apiService";
+import apiRequest from "./api/apiRequest";
 
-const createOrganization = (name) => {
-  return apiService
-    .post("/api/v1/organizations", {
+const createOrganization = async (name) => {
+  const response = await apiRequest({
+    url: "/api/v1/organizations",
+    method:"post",
+    payload: {
       organization: {
         name: name,
       },
-    })
-    .then((response) => {
-      return { success: response.data.success };
-    });
+    }
+  });
+  return response;
 };
 
 export default createOrganization;

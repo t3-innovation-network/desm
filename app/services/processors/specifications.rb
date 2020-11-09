@@ -177,7 +177,7 @@ module Processors
         spec = JSON.parse(spec)
 
         spec["@graph"].each do |node|
-          create_one_term(specification, node)
+          create_one_term(specification, node) unless node["@type"] == "rdfs:Class"
         end
       end
     end
@@ -195,8 +195,8 @@ module Processors
 
       Property.create!(
         term: term,
-        classtype: node["@type"],
-        element: node["@id"],
+        uri: term.desm_uri,
+        source_uri: node["@id"],
         comment: Parsers::Specifications.read!(node, "comment"),
         label: Parsers::Specifications.read!(node, "label"),
         domain: Parsers::Specifications.read(node, "domain"),

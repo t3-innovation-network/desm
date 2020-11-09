@@ -1,12 +1,11 @@
-import apiService from "./apiService";
+import apiRequest from "./api/apiRequest";
 
-const deleteOrganization = (organization_id) => {
-  return apiService
-    .delete("/api/v1/organizations/" + organization_id)
-    .then((response) => {
-      /// We have a successfull response from the backend
-      return { success: response.data.status == "removed" };
-    });
+const deleteOrganization = async (organization_id) => {
+  const response = await apiRequest({
+    url: "/api/v1/organizations/" + organization_id,
+    method: "delete",
+  });
+  return response;
 };
 
 export default deleteOrganization;

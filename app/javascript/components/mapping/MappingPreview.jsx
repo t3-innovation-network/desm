@@ -39,39 +39,39 @@ const MappingPreview = (props) => {
     /// Send the specifications to the backend
     mappingFormData.specifications = previewSpecs;
 
-    createSpec(mappingFormData)
-      .then((response) => {
-        dispatch(unsetSpecToPreview());
-        dispatch(unsetFiles());
-        dispatch(doUnsubmit());
-        setCreatingSpec(false);
+    createSpec(mappingFormData).then((response) => {
+      setCreatingSpec(false);
+      dispatch(doUnsubmit());
+      dispatch(unsetSpecToPreview());
+      dispatch(unsetFiles());
 
-        // if it's the spine, show a message to the user and return to home
-        if (response["spine?"]) {
-          toast.success(
-            "You created a spine for this domain: " + response.domain.uri
-          );
-          props.redirect("/");
-        } else {
-          // If it's not the spine, the user is uploading a specification to map,
-          // so let's create the mapping and (with the id returned) load the
-          // mapping page
-          createMapping(response.id).then((response) => {
-            props.redirect("/mappings/" + response.data.id);
-          });
-        }
-      })
-      .catch((e) => {
-        toast.error(e.response.data.message);
-        setCreatingSpec(false);
-      });
+      if (response.error) {
+        toast.error(response.error);
+        return;
+      }
+
+      // if it's the spine, show a message to the user and return to home
+      if (response["spine?"]) {
+        toast.success(
+          "You created a spine for this domain: " + response.domain.uri
+        );
+        props.redirect("/");
+      } else {
+        // If it's not the spine, the user is uploading a specification to map,
+        // so let's create the mapping and (with the id returned) load the
+        // mapping page
+        createMapping(response.id).then((response) => {
+          props.redirect("/mappings/" + response.mapping.id);
+        });
+      }
+    });
   };
 
   return (
     <div className="col-lg-6 p-lg-5 pt-5 bg-col-secondary">
       <React.Fragment>
         {processingFile ? (
-          <Loader message="We're processing the file. Please wait ..."/>
+          <Loader message="We're processing the file. Please wait ..." />
         ) : (
           submitted && (
             <React.Fragment>
@@ -99,7 +99,11 @@ const MappingPreview = (props) => {
                   </div>
                 </div>
               </div>
-              {creatingSpec ? <Loader message="We're processing the specification. Please wait ..."/> : <FileContent />}
+              {creatingSpec ? (
+                <Loader message="We're processing the specification. Please wait ..." />
+              ) : (
+                <FileContent />
+              )}
             </React.Fragment>
           )
         )}

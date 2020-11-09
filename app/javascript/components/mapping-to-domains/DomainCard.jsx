@@ -1,26 +1,12 @@
 import React from "react";
-import { useDrop } from "react-dnd";
-import { ItemTypes } from "./ItemTypes";
+import { DraggableItemTypes } from "../shared/DraggableItemTypes";
+import DropZone from "../shared/DropZone";
 
 const DomainCard = (props) => {
-  const [{ canDrop, isOver }, drop] = useDrop({
-    accept: ItemTypes.BOX,
-    drop: () => ({
-      name: props.domain.name,
-      uri: props.domain.id,
-    }),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
-  });
-
-  const isActive = canDrop && isOver;
-
   return (
     <div
       className={
-        "card mb-2" + (props.domain.spine ? "" : " disabled-container")
+        "card mb-2" + (props.domain.spine_id ? "" : " disabled-container")
       }
       key={props.domain.id}
     >
@@ -28,27 +14,20 @@ const DomainCard = (props) => {
         <div className="row">
           <div className="col-4">
             <h5>
-              <strong>{props.domain.name}</strong>
+              <strong>{props.domain.pref_label}</strong>
             </h5>
             {props.mappedTerms.length + " Added"}
           </div>
           <div className="col-8">
             {/* Only accept mappingTerms if the domain has a spine */}
-            <div
-              className={
-                "card domain-drag-box pl-5 pr-5 pt-2 pb-2" +
-                (isActive ? " dnd-active" : " border-dotted")
-              }
-              ref={props.domain.spine ? drop : null}
-            >
-              {isActive ? (
-                <p className="mb-0 fully-centered">Add 1 Record</p>
-              ) : (
-                <p className="mb-0 fully-centered">
-                  Drag elements or groups of elements to this domain
-                </p>
-              )}
-            </div>
+            <DropZone
+              droppedItem={{
+                name: props.domain.name,
+                uri: props.domain.id,
+              }}
+              acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
+              selectedCount={props.selectedTermsCount}
+            />
           </div>
         </div>
       </div>

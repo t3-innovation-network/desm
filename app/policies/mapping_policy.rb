@@ -32,10 +32,44 @@ class MappingPolicy < ApplicationPolicy
   end
 
   ###
+  # @description: Determines if the user can see this resource terms
+  # @return [TrueClass]
+  ###
+  def show_terms?
+    # Signed in users
+    @user.present?
+  end
+
+  ###
+  # @description: Determines if the user can see this resource selected terms
+  # @return [TrueClass]
+  ###
+  def show_selected_terms?
+    # Signed in users
+    @user.present?
+  end
+
+  ###
   # @description: Determines if the user can create an instance of this resource
   # @return [TrueClass]
   ###
   def create?
+    @user.present?
+  end
+
+  ###
+  # @description: Determines if the user can create an instance of this resource's selected terms
+  # @return [TrueClass]
+  ###
+  def create_selected_terms?
+    @user.present?
+  end
+
+  ###
+  # @description: Determines if the user can update an instance of this resource
+  # @return [TrueClass]
+  ###
+  def update?
     @user.present?
   end
 end

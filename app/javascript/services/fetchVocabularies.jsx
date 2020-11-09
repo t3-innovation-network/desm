@@ -1,12 +1,12 @@
-import apiService from "./apiService";
+import apiRequest from "./api/apiRequest";
 
 const fetchVocabularies = async () => {
-  const response = await apiService.get("/api/v1/vocabularies");
-  /// We don't have a valid response
-  if (response.status != 200) {
-    return [];
-  }
-  return response.data;
+  return await apiRequest({
+    url: "/api/v1/vocabularies",
+    method: "get",
+    defaultResponse: [],
+    successResponse: "vocabularies"
+  });
 };
 
 export default fetchVocabularies;
