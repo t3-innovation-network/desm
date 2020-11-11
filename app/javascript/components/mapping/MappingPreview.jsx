@@ -7,6 +7,7 @@ import Loader from "./../shared/Loader";
 import createSpec from "../../services/createSpec";
 import { toastr as toast } from "react-redux-toastr";
 import createMapping from "../../services/createMapping";
+import { unsetVocabularies } from "../../actions/vocabularies";
 
 const MappingPreview = (props) => {
   const submitted = useSelector((state) => state.submitted);

@@ -11,7 +11,7 @@ module Processors
     # @param [ActionDispatch::Http::UploadedFile] file The json file to be processed
     ###
     def self.process_domains_from_file(file)
-      # Make the file content available as a dpcjson object
+      # Make the file content available as a json object
       file_content = JSON.parse(file)
 
       # The domains are listed under the '@graph' object, because at this
@@ -68,7 +68,7 @@ module Processors
     ###
     def self.filter_specification(spec, uri)
       # Make the spec content available as a json object
-      spec = JSON.parse(spec) if spec.class.name == "String"
+      spec = JSON.parse(spec) if spec.is_a?(String)
 
       vocabularies = filter_vocabularies(spec)
       spec = filter_specification_by_domain_uri(spec, uri)
@@ -98,11 +98,12 @@ module Processors
         # Get all the concepts for this cocept scheme
         vocab = Processors::Skos.identify_concepts(spec["@graph"], Parsers::Specifications.read!(scheme_node, "id"))
 
-        # Place the cheme node at the beginning
+        # Place the scheme node at the beginning
         vocab.unshift(scheme_node)
 
         # Place the context at the beginning
-        vocab.unshift(spec["@context"])
+        # @todo: Modify the context to be only the elements needed by the vocabulary
+        # vocab.unshift(spec["@context"])
 
         # Add the voabulary to the list
         vocabs << vocab
@@ -143,7 +144,7 @@ module Processors
     #
     # @param [Array] nodes The collection of all the nodes to be processed to find
     #   the related ones
-    # @param [String] uri The id (URI) of the property to find related ones
+    # @param [String] uri The id (URI) of the class or property to find related ones
     ###
     def self.build_nodes_for_uri(nodes, uri)
       # Find all related properties

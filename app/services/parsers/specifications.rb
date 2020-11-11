@@ -60,6 +60,20 @@ module Parsers
     end
 
     ###
+    # @description: If the context is a reference to an external service endpoint, go get it
+    # @param [String] context_uri: The URI to fetch the context from
+    # @return {Struct}
+    ###
+    def self.resolve_context context_uri
+      response = http_get(context_uri)
+
+      # Avoid having the context nested twice
+      return response["@context"] if response["@context"].present?
+
+      response
+    end
+
+    ###
     # @description: Put together the content of the uploaded files to get only one object with
     #   all the necessary data to process
     # @param [Array] specifications: The list of file contents uploaded
@@ -74,11 +88,13 @@ module Parsers
       specifications.each do |spec|
         spec = JSON.parse(spec) if spec.is_a?(String)
 
+        context = spec["@context"]
+
         # Ensure we're dealing with a hash, otherwise the "merge!" method below will not work
-        spec["@context"] = http_get(spec["@context"]) if spec["@context"].is_a?(String) && uri?(spec["@context"])
+        context = resolve_context(context) if context.is_a?(String) && uri?(context)
 
         # merge the context so we have all the context info
-        final_spec[:@context].merge!(spec["@context"])
+        final_spec[:@context].merge!(context)
 
         # merge the graph so we have all the elements in one place
         final_spec[:@graph] += (spec["@graph"])
