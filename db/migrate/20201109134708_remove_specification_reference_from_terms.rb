@@ -2,6 +2,6 @@
 
 class RemoveSpecificationReferenceFromTerms < ActiveRecord::Migration[6.0]
   def change
-    remove_column :terms, :specification_id
+    remove_column :terms, :specification_id, :bigint
   end
 end

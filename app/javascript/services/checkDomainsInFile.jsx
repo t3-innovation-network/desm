@@ -6,9 +6,9 @@ const checkDomainsInFile = async (file) => {
     url: "/api/v1/specifications/info",
     method: "post",
     payload: {
-      file: JSON.stringify(file, null, 2),
+      file: JSON.stringify(file),
     },
-    deafultResponse: [],
+    defaultResponse: [],
     successResponse: "domains",
   });
   return response;

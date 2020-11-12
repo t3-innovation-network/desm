@@ -92,14 +92,15 @@ module Processors
       Processors::Skos.scheme_nodes_from_graph(spec["@graph"]).each do |scheme_node|
         # Get all the concepts for this cocept scheme
         vocab = {
+          "@context": nil,
           "@graph": Processors::Skos.identify_concepts(spec["@graph"], Parsers::Specifications.read!(scheme_node, "id"))
         }
 
+        # Place the context at the beginning
+        vocab[:@context] = vocab_context(vocab, spec["@context"])
+
         # Place the scheme node at the beginning
         vocab[:@graph].unshift(scheme_node)
-
-        # Place the context at the beginning
-        vocab[:@graph].unshift(vocab_context(vocab, spec["@context"]))
 
         # Add the voabulary to the list
         vocabs << vocab

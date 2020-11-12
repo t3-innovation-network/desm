@@ -76,9 +76,9 @@ module Processors
     # @param [String] scheme_uri
     # @return [TrueClass|FalseClass]
     ###
-    def self.concept_of_scheme?(node, _scheme_uri)
+    def self.concept_of_scheme?(node, scheme_uri)
       concept_in_scheme = lambda {
-        return false if node["skos:inScheme"].present?
+        return false unless node["skos:inScheme"].present?
 
         return node["skos:inScheme"].any? {|s_uri| s_uri == scheme_uri } if node["skos:inScheme"].is_a?(Array)
 

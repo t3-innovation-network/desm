@@ -19,7 +19,7 @@ const filterSpecification = async (uri, file) => {
     url: "/api/v1/specifications/filter",
     method: "post",
     payload: {
-      file: JSON.stringify(file, null, 2),
+      file: JSON.stringify(file),
       uri: uri,
     },
     defaultResponse: "",

@@ -9,6 +9,7 @@ import {
   startProcessingFile,
   stopProcessingFile,
   setMappingFormData,
+  doUnsubmit,
 } from "../../actions/mappingform";
 import fetchDomains from "../../services/fetchDomains";
 import { toastr as toast } from "react-redux-toastr";
@@ -65,6 +66,9 @@ const MappingForm = () => {
 
   /// Whether the form was submitted or not, in order to show the preview
   const submitted = useSelector((state) => state.submitted);
+
+  /// Whether we are processing the file or not
+  const processingFile = useSelector((state) => state.processingFile);
 
   const dispatch = useDispatch();
 
@@ -321,7 +325,7 @@ const MappingForm = () => {
 
       <div
         className={
-          (submitted ? "disabled-container " : " ") + "col-lg-6 p-lg-5 pt-5"
+          (submitted || processingFile ? "disabled-container " : " ") + "col-lg-6 p-lg-5 pt-5"
         }
       >
         {errors && <AlertNotice message={errors} />}
