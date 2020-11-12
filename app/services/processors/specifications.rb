@@ -62,24 +62,90 @@ module Processors
     #  So we are going to return a json-ld file with the context and a graph
     #  node with only one class, all it's properties and recursively, all the
     #  related properties
+    # @param [String] file: The file to be filtered
+    # @param [String] uri: The identifier of the selected rdfs:Class that will be used to filter the file
+    # @return [Hash] The collectio of vocabularies, if any, and the new filtered specification
     ###
-    def self.filter_specification(file, uri)
-      # Make the file content available as a json object
-      specification = JSON.parse(file)
+    def self.filter_specification(spec, uri)
+      # Make the spec content available as a json object
+      spec = JSON.parse(spec) if spec.is_a?(String)
 
-      filter_specification_by_domain_uri(specification, uri)
+      vocabularies = filter_vocabularies(spec)
+      spec = filter_specification_by_domain_uri(spec, uri)
+
+      {
+        vocabularies: vocabularies,
+        specification: spec
+      }
+    end
+
+    ###
+    # @description: Get a collection of all the vocabularies found in the specification in a proper way
+    # @param [Struct] spec: The specification to be filtered
+    # @return [Array]
+    ###
+    def self.filter_vocabularies(spec)
+      vocabs = []
+
+      # Get all the concept scheme nodes. With the pupose of separate all the vocabularies, we
+      # need the concept schemes, which represents the vocabularies main nodes.
+      Processors::Skos.scheme_nodes_from_graph(spec["@graph"]).each do |scheme_node|
+        # Get all the concepts for this cocept scheme
+        vocab = {
+          "@context": nil,
+          "@graph": Processors::Skos.identify_concepts(spec["@graph"], Parsers::Specifications.read!(scheme_node, "id"))
+        }
+
+        # Place the context at the beginning
+        vocab[:@context] = vocab_context(vocab, spec["@context"])
+
+        # Place the scheme node at the beginning
+        vocab[:@graph].unshift(scheme_node)
+
+        # Add the voabulary to the list
+        vocabs << vocab
+      end
+
+      vocabs
+    end
+
+    ###
+    # @description: From a wide context, generate a new one, containing only the keys that are needed for the
+    #   given vocabulary
+    # @param [Hash] vocab: The vocabulary to be analyzed
+    # @return [Hash] context: The wider context to be used as context source
+    ###
+    def self.vocab_context(vocab, context)
+      final_context = {}
+
+      # We only have concepts at this point, so accessing the graph is fine.
+      # Proceed to iterate through each concept in the graph
+      vocab[:@graph].each do |concept|
+        # Each concept will have different keys (here, the concepts are represented as hashes)
+        # We iterate through each key of the concept, wich represents each "attribute"
+        concept.keys.each do |attr_key|
+          # We are only interested in those keys that uses the uris from the main context
+          # If so, we add the key and value to our new context
+          if Processors::Skos.using_context_uri(context, attr_key)
+            k, v = context.find {|key, _value| key.include?(attr_key.split(":").first) }
+            final_context[k] = v
+          end
+        end
+      end
+
+      final_context
     end
 
     ###
     # @description: Build a specification from the one uploaded, but only
     #   with the domain selected by the user, and the related properties
     #
-    # @param [Json|String] specification The entinre specification, as
+    # @param [Json|String] specification: The entire specification, as
     #   when the user uploaded it.
-    # @param [String] domain_uri The id (URI) of the domain selecteed by the user
+    # @param [String] domain_uri: The id (URI) of the domain selecteed by the user
     ###
     def self.filter_specification_by_domain_uri(specification, domain_uri)
-      # First we need the context and an empty "@graph" whixh will
+      # First we need the context and an empty "@graph" which will
       # contain all the nodes of the specification
       final_spec = {
         "@context": specification["@context"],
@@ -102,13 +168,15 @@ module Processors
     #
     # @param [Array] nodes The collection of all the nodes to be processed to find
     #   the related ones
-    # @param [String] uri The id (URI) of the property to find related ones
+    # @param [String] uri The id (URI) of the class or property to find related ones
     ###
     def self.build_nodes_for_uri(nodes, uri)
       # Find all related properties
       related_properties = nodes.select do |node|
-        node["@type"] == "rdf:Property" && (property_of?(node, "domainIncludes", uri) ||
-                                            property_of?(node, "rangeIncludes", uri))
+        (
+          (node["@type"] == "rdf:Property" || node["@type"] == uri) &&
+          (property_of?(node, "domainIncludes", uri) || property_of?(node, "rangeIncludes", uri))
+        )
       end
 
       # Base case
@@ -159,9 +227,10 @@ module Processors
         uri: "uri"
       )
 
-      s.save!
-
-      create_terms(s, data[:specs])
+      ActiveRecord::Base.transaction do
+        s.save!
+        create_terms(s, data[:spec])
+      end
 
       s
     end
@@ -169,40 +238,39 @@ module Processors
     ###
     # @description: Create each of the terms related to the specification
     # @param [Specification] spec The parent specification for the specs to create
-    # @param [Array] specifications The specifications uploaded by the user. It
-    #   It should be an array of json formatted strings
+    # @param [Object] spec The unified specification data uploaded by the user. It
+    #   It should be json formatted string
     ###
-    def self.create_terms(specification, specifications)
-      specifications.each do |spec|
-        spec = JSON.parse(spec)
+    def self.create_terms(specification, spec)
+      spec = JSON.parse(spec)
 
-        spec["@graph"].each do |node|
-          create_one_term(specification, node) unless node["@type"] == "rdfs:Class"
-        end
+      spec["@graph"].select {|elem| elem["@type"] == "rdf:Property" }.each do |node|
+        specification.terms << create_one_term(node)
       end
     end
 
     ###
-    # @description: Handles to create a term with its related property
+    # @description: Handles to find or create a term with its related property
     # @param [Object] node: The node to be evaluated in order to create a term
     ###
-    def self.create_one_term(spec, node)
-      term = Term.create!(
-        specification: spec,
-        uri: node["@id"],
-        name: Parsers::Specifications.read!(node, "label")
-      )
+    def self.create_one_term(node)
+      # Retrieve the term, if not found, create one with these properties
+      term = Term.find_or_initialize_by(uri: node["@id"], name: Parsers::Specifications.read!(node, "label"))
 
-      Property.create!(
-        term: term,
-        uri: term.desm_uri,
-        source_uri: node["@id"],
-        comment: Parsers::Specifications.read!(node, "comment"),
-        label: Parsers::Specifications.read!(node, "label"),
-        domain: Parsers::Specifications.read(node, "domain"),
-        range: Parsers::Specifications.read(node, "range"),
-        subproperty_of: Parsers::Specifications.read!(node, "subproperty")
-      )
+      unless term.property.present?
+        Property.create!(
+          term: term,
+          uri: term.desm_uri,
+          source_uri: node["@id"],
+          comment: Parsers::Specifications.read!(node, "comment"),
+          label: Parsers::Specifications.read!(node, "label"),
+          domain: Parsers::Specifications.read(node, "domain"),
+          range: Parsers::Specifications.read(node, "range"),
+          subproperty_of: Parsers::Specifications.read!(node, "subproperty")
+        )
+      end
+
+      term
     end
   end
 end

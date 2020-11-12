@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { unsetFiles, unsetSpecToPreview } from "../../actions/files";
+import { unsetFiles, unsetMergedFile, unsetSpecToPreview } from "../../actions/files";
 import FileContent from "./FileContent";
 import { doUnsubmit, startProcessingFile, stopProcessingFile } from "../../actions/mappingform";
 import Loader from "./../shared/Loader";
 import createSpec from "../../services/createSpec";
 import { toastr as toast } from "react-redux-toastr";
 import createMapping from "../../services/createMapping";
+import { unsetVocabularies } from "../../actions/vocabularies";
 
 const MappingPreview = (props) => {
   const submitted = useSelector((state) => state.submitted);
   const processingFile = useSelector((state) => state.processingFile);
   const previewSpecs = useSelector((state) => state.previewSpecs);
+  const mergedFile = useSelector((state) => state.mergedFile);
   const mappingFormData = useSelector((state) => state.mappingFormData);
   const [creatingSpec, setCreatingSpec] = useState(false);
   const dispatch = useDispatch();
@@ -27,6 +29,10 @@ const MappingPreview = (props) => {
     dispatch(unsetSpecToPreview());
     // Change the form status to unsubmitted
     dispatch(doUnsubmit());
+    // Remove unified file
+    dispatch(unsetMergedFile());
+    // Remove vocabularies
+    dispatch(unsetVocabularies());
     // Reset the file uploader
     $("#file-uploader").val("");
   };
@@ -37,7 +43,7 @@ const MappingPreview = (props) => {
   const createSpecification = () => {
     setCreatingSpec(true);
     /// Send the specifications to the backend
-    mappingFormData.specifications = previewSpecs;
+    mappingFormData.specification = mergedFile;
 
     createSpec(mappingFormData).then((response) => {
       setCreatingSpec(false);
@@ -82,7 +88,7 @@ const MappingPreview = (props) => {
         ) : (
           submitted && (
             <React.Fragment>
-              <div className="card">
+              <div className="card mb-5">
                 <div className="card-header">
                   <div className="row">
                     <div className="col-6 align-self-center">

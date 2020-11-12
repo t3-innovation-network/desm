@@ -9,8 +9,7 @@ class Api::V1::SpecificationsController < ApplicationController
   #   the related information, like how many domains it contains
   ###
   def info
-    file = File.read(params[:file])
-    domains = Processors::Specifications.process_domains_from_file(file)
+    domains = Processors::Specifications.process_domains_from_file(params[:file])
 
     render json: domains
   end
@@ -21,8 +20,17 @@ class Api::V1::SpecificationsController < ApplicationController
   #  related properties
   ###
   def filter
-    file = File.read(params[:file])
-    render json: Processors::Specifications.filter_specification(file, params[:uri])
+    render json: Processors::Specifications.filter_specification(params[:file], params[:uri])
+  end
+
+  ###
+  # @description: Merge 2 or more files to get a big json-ld graph with all the nodes.
+  #   This, in order to ease the frontend and backend working with multiple files.
+  ###
+  def merge
+    files = params[:files].map {|file| Parsers::FormatConverter.convert_to_jsonld(file) }
+
+    render json: Parsers::Specifications.merge_specs(files)
   end
 
   ###
@@ -30,11 +38,8 @@ class Api::V1::SpecificationsController < ApplicationController
   #   filtered JSON object
   ###
   def create
+    # Process the file
     spec = Processors::Specifications.create(valid_params)
-
-    # If there's no specification for the user's company and the selected domain to
-    # map to, then it's the spine.
-    spec.spine! unless spec.domain.spine?
 
     render json: spec
   end
@@ -55,10 +60,13 @@ class Api::V1::SpecificationsController < ApplicationController
   # @return [ActionController::Parameters]
   ###
   def valid_params
+    # We assume we received one only file with all the data
+    unified_spec_data = params[:specification][:content]
+
     permitted_params.merge(
       user: current_user,
-      domain_to: params[:domain_to],
-      specs: params[:specifications]
+      domain_to: params[:specification][:domain_to],
+      spec: unified_spec_data
     )
   end
 

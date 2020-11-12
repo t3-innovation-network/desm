@@ -28,6 +28,7 @@
     "react-redux": "^7.2.1",
     "react-redux-toastr": "^7.6.5",
     "react-router-dom": "^5.2.0",
+    "react-tabs": "^3.1.1",
     "redux": "^4.0.5",
     "styled-components": "^5.2.0",
     "turbolinks": "^5.2.0",

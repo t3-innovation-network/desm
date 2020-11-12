@@ -67,7 +67,7 @@
       "id": "http://desm.org/concepts/employment",
       "type": "skos:Concept",
       "prefLabel": {"en-us": "Employment"},
-      "definition": {"en-us": "The condition of a person having paid work"},
+      "definition": {"en-us": "The condition of a persin having paid work"},
       "inScheme": "http://desm.org/concepts/mappingClasses"
     },
     {
@@ -82,13 +82,6 @@
       "type": "skos:Concept",
       "prefLabel": {"en-us": "Program of Study"},
       "definition": {"en-us": "A program of study means any course or grouping of courses prerequisite to or indicative of a degree."},
-      "inScheme": "http://desm.org/concepts/mappingClasses"
-    },
-    {
-      "id": "http://desm.org/concepts/earnings",
-      "type": "skos:Concept",
-      "prefLabel": {"en-us": "Earnings"},
-      "definition": {"en-us": "Aggregate data on the earnings of persons."},
       "inScheme": "http://desm.org/concepts/mappingClasses"
     }
   ]

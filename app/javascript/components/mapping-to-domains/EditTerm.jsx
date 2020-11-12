@@ -48,6 +48,10 @@ export default class EditTerm extends Component {
    * @param {Array} domains
    */
   domainsAsOptions = (domains) => {
+    if (!_.isArray(domains)) {
+      domains = [domains];
+    }
+
     return domains
       ? domains.map((domain) => {
           return {
@@ -59,11 +63,41 @@ export default class EditTerm extends Component {
   };
 
   /**
+   * Returns the currently selected domain for a term
+   * 
+   * @param {Array|String} domains 
+   */
+  setSelectedDomain = (domains) => {
+    if (!_.isArray(domains)) {
+      return domains;
+    }
+
+    domains.find((d) => d === this.state.term.property.selected_domain);
+  };
+
+  /**
+   * Returns the currently selected range for a term
+   * 
+   * @param {Array|String} range 
+   */
+  setSelectedRange = (range) => {
+    if (!_.isArray(range)) {
+      return range;
+    }
+
+    range.find((r) => r === this.state.term.property.selected_range);
+  };
+
+  /**
    * Prepare the domains of a term to be listed as options for the expandable component
    *
    * @param {Array} domains
    */
   rangeAsOptions = (range) => {
+    if (!_.isArray(range)) {
+      range = [range];
+    }
+
     return range
       ? range.map((rng) => {
           return {
@@ -339,8 +373,8 @@ export default class EditTerm extends Component {
                         options={this.domainsAsOptions(
                           this.state.term.property.domain
                         )}
-                        selectedOption={this.state.term.property.domain.find(
-                          (d) => d === this.state.term.property.selected_domain
+                        selectedOption={this.setSelectedDomain(
+                          this.state.term.property.domain
                         )}
                         onClose={(domain) => this.handleDomainChange(domain.id)}
                       />
@@ -353,8 +387,8 @@ export default class EditTerm extends Component {
                         options={this.rangeAsOptions(
                           this.state.term.property.range
                         )}
-                        selectedOption={this.state.term.property.range.find(
-                          (r) => r === this.state.term.property.selected_range
+                        selectedOption={this.setSelectedRange(
+                          this.state.term.property.range
                         )}
                         onClose={(range) => this.handleRangeChange(range.id)}
                       />

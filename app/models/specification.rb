@@ -6,10 +6,26 @@
 #   form.
 ###
 class Specification < ApplicationRecord
+  ###
+  # @description: The user that created this specification
+  ###
   belongs_to :user
-  belongs_to :domain
-  has_many :terms, dependent: :destroy
 
+  ###
+  # @description: The class (domain) that this specification is representing
+  ###
+  belongs_to :domain
+
+  ###
+  # @description: The properties this specification has
+  ###
+  has_and_belongs_to_many :terms
+
+  ###
+  # @description: If there's no specification for the user's company and the selected domain
+  #   to map to, then it's the spine.
+  ###
+  after_create :spine!, unless: proc { domain.spine }
   before_create :assign_uri
   before_destroy :nullify_domain_spine
 

@@ -5,12 +5,14 @@ const createSpec = async (data) => {
     url: "/api/v1/specifications",
     method: "post",
     payload: {
-      name: data.name,
-      version: data.version,
-      use_case: data.useCase,
-      domain_to: data.domainTo,
-      domain_from: data.domainFrom,
-      specifications: data.specifications,
+      specification: {
+        name: data.name,
+        version: data.version,
+        use_case: data.useCase,
+        domain_to: data.domainTo,
+        domain_from: data.domainFrom,
+        content: JSON.stringify(data.specification),
+      }
     },
   });
   return response;

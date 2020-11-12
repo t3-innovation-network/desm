@@ -52,5 +52,76 @@ module Processors
         end
       end
     end
+
+    ###
+    # @description: Identify all the concepts for a given vocabulary id (scheme uri).
+    # @param [Array] graph: the collection of nodes. It can contain all kind of nodes, we will find only those with
+    #   type "skos:Concept" and related to the given scheme.
+    # @param [String] scheme_uri: The id of the scheme containing the concepts
+    # @return [Array]
+    ###
+    def self.identify_concepts graph, scheme_uri
+      concepts = []
+
+      graph.each do |node|
+        concepts << node if concept_of_scheme?(node, scheme_uri)
+      end
+
+      concepts
+    end
+
+    ###
+    # @description: Determines whether a concept belongs to a concept scheme or not
+    # @param [Hash] node
+    # @param [String] scheme_uri
+    # @return [TrueClass|FalseClass]
+    ###
+    def self.concept_of_scheme?(node, scheme_uri)
+      concept_in_scheme = lambda {
+        return false unless node["skos:inScheme"].present?
+
+        return node["skos:inScheme"].any? {|s_uri| s_uri == scheme_uri } if node["skos:inScheme"].is_a?(Array)
+
+        node["skos:inScheme"] == scheme_uri
+      }
+
+      node_type = Parsers::Specifications.read!(node, "type")
+
+      node_type.is_a?(String) && node_type.downcase == "skos:concept" && concept_in_scheme
+    end
+
+    ###
+    # @description: Generate a list of uris defined in a context (e.g. "rdf", "rdfs", "xsd")
+    # @param [Hash] context: The context to be evaluated
+    # @return [Array]
+    ###
+    def self.context_uris_list context
+      context.keys.map do |key|
+        key.split(":").first
+      end
+    end
+
+    ###
+    # @description: Returns all the concept scheme nodes (vocabulary "main" nodes)
+    # @param [Array] graph: An array of hashes, representing the nodes, that could be any "@type",
+    #   like "rdfsClass", "rdf:Property", among others
+    # @return [Array]
+    ###
+    def self.scheme_nodes_from_graph(graph)
+      graph.select {|node|
+        Parsers::Specifications.read!(node, "type").is_a?(String) &&
+        Parsers::Specifications.read!(node, "type").downcase == "skos:conceptscheme"
+      }
+    end
+
+    ###
+    # @description: Determines whether a key (an attribute of a node) id using a uri that's defined inside a context
+    # @param [Hash] context.
+    # @param [String] attribute_key
+    # @return [TrueClass|FalseClass]
+    ###
+    def self.using_context_uri(context, attribute_key)
+      context_uris_list(context).include?(attribute_key.split(":").first)
+    end
   end
 end

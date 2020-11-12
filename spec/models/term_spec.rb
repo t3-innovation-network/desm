@@ -8,5 +8,5 @@ describe Term, type: :model do
   end
 
   it { should validate_presence_of(:uri) }
-  it { should belong_to(:specification) }
+  it { should have_and_belong_to_many(:specifications) }
 end
