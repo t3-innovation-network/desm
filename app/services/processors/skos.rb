@@ -18,7 +18,9 @@ module Processors
         @vocabulary = create_vocabulary(data)
 
         @vocabulary.concepts = create_concepts(
-          data[:attrs][:content]["@graph"].select {|concept| concept["type"].downcase == "skos:concept" }
+          data[:attrs][:content]["@graph"].select {|concept|
+            Parsers::Specifications.read!(concept, "type").downcase == "skos:concept"
+          }
         )
       end
 
@@ -33,11 +35,14 @@ module Processors
     # @return {Vocabulary}: The created vocabulary
     ###
     def self.create_vocabulary data
-      @vocabulary = Vocabulary.create!(
-        name: data[:attrs][:name],
-        organization: data[:organization],
-        content: data[:attrs][:content]["@graph"].select {|concept| concept["type"].downcase == "skos:conceptscheme" }
-      )
+      @vocabulary = Vocabulary.find_or_initialize_by(name: data[:attrs][:name]) do |vocab|
+        vocab.update(
+          organization: data[:organization],
+          content: data[:attrs][:content]["@graph"].select {|concept|
+            Parsers::Specifications.read!(concept, "type").downcase == "skos:conceptscheme"
+          }
+        )
+      end
     end
 
     ###

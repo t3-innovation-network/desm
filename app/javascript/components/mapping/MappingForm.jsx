@@ -267,10 +267,8 @@ const MappingForm = () => {
   /**
    * File content to be displayed after
    * file upload is complete
-   *
-   * @returns {React.Fragment}
    */
-  const fileData = () => {
+  const FileData = () => {
     let fileCards = [];
 
     if (files.length > 0) {
@@ -462,8 +460,7 @@ const MappingForm = () => {
                 Import Specification
               </button>
             </section>
-
-            {fileData()}
+            <FileData />
           </form>
         </section>
       </div>
