@@ -6,6 +6,8 @@
 export const vocabName = (graph) => {
   let schemeNode = graphMainNode(graph);
 
+  if (!schemeNode) throw "ConceptScheme node not found!";
+
   /// Look for an attribute with a name for the vocabulary in the concept scheme node
   let name = "";
   for (let attr in schemeNode) {
@@ -59,12 +61,43 @@ const readNodeAttribute = (node, attr) => {
  * @param {Array} graph
  */
 export const graphMainNode = (graph) => {
-  let schemeNode = graph.find((node) => {
-    let typeAttribute = node["type"] || node["@type"];
-    return typeAttribute.toLowerCase() === "skos:conceptscheme";
+  return graph.find((node) => {
+    return nodeType(node).toLowerCase() === "skos:conceptscheme";
   });
+};
 
-  if (!schemeNode) throw "ConceptScheme node not found!";
+/**
+ * Return the content of the node type attribute
+ *
+ * @param {Object} node
+ * @returns String
+ */
+const nodeType = (node) => {
+  return node["type"] || node["@type"];
+};
 
-  return schemeNode;
+/**
+ * Validate it's a skos file with a vocabulary inside.
+ * It must have:
+ * - A context
+ * - A graph
+ * - A main node (of type skos:ConceptScheme) inside the graph
+ * - At least one concept node inside the graph
+ *
+ * @param {Object} vocab
+ */
+export const isValidVocabulary = (vocab) => {
+  /// Ensure we deal with a JSON (object, not string)
+  if (_.isString(vocab)) vocab = JSON.parse(vocab);
+
+  let hasContext = vocab["@context"];
+  let hasGraph = vocab["@graph"];
+  let hasMainNode = hasGraph && graphMainNode(vocab["@graph"]);
+  let hasConcepts =
+    hasGraph &&
+    vocab["@graph"].some(
+      (node) => nodeType(node).toLowerCase() === "skos:concept"
+    );
+
+  return hasContext && hasGraph && hasMainNode && hasConcepts;
 };

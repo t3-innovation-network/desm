@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import createVocabulary from "../../services/createVocabulary";
 import FileInfo from "../mapping/FileInfo";
 import { toastr as toast } from "react-redux-toastr";
+import { isValidVocabulary } from "../../helpers/Vocabularies";
 
 var isJSON = require("is-valid-json");
 
@@ -82,7 +82,7 @@ const UploadVocabulary = (props) => {
    *
    * @param {String} content
    */
-  const validateJSON = (content) => {
+  const isValidJson = (content) => {
     let isValid = isJSON(content);
 
     if (!isValid) {
@@ -95,12 +95,45 @@ const UploadVocabulary = (props) => {
   };
 
   /**
+   * Determines the vocabulary validity
+   *
+   * @param {Object} vocab
+   */
+  const vocabularyIsValid = (vocab) => {
+
+    let isValid = isValidVocabulary(vocab);
+
+    if (!isValid) {
+      toast.error(
+        "Invalid vocabulary!\
+        \nPlease check the vocabulary is a skos file with:\
+        \n- A context.\
+        \n- A graph.\
+        \n- A concept scheme node inside the graph.\
+        \n- At least one concept node inside the graph."
+      );
+    }
+
+    return isValid;
+  };
+
+  /**
+   * Perform file validation
+   *
+   * @param {String} vocab: Important! This needs to be string at this stage.
+   *   each task/layer will validate and transform if necessary.
+   */
+  const validateVocabulary = (vocab) => {
+    return isValidJson(vocab) && vocabularyIsValid(vocab);
+  };
+
+  /**
    * Send the file with the vocabulary to the backend
    */
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (validateJSON(fileContent)) {
+    if (validateVocabulary(fileContent)) {
       props.onVocabularyAdded({
         vocabulary: {
           name: name,
@@ -177,7 +210,8 @@ const UploadVocabulary = (props) => {
               </div>
             </div>
             <small className="mt-5">
-              You can upload your concept scheme file in JSONLD format (skos file)
+              You can upload your concept scheme file in JSONLD format (skos
+              file)
             </small>
           </div>
 
