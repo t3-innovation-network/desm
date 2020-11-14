@@ -12,6 +12,7 @@ import fetchVocabularies from "../../services/fetchVocabularies";
 import rawTerm from "./rawTerm";
 import AlertNotice from "../shared/AlertNotice";
 import ExpandableOptions from "../shared/ExpandableOptions";
+import createVocabulary from "../../services/createVocabulary";
 
 export default class EditTerm extends Component {
   /**
@@ -64,8 +65,8 @@ export default class EditTerm extends Component {
 
   /**
    * Returns the currently selected domain for a term
-   * 
-   * @param {Array|String} domains 
+   *
+   * @param {Array|String} domains
    */
   setSelectedDomain = (domains) => {
     if (!_.isArray(domains)) {
@@ -77,8 +78,8 @@ export default class EditTerm extends Component {
 
   /**
    * Returns the currently selected range for a term
-   * 
-   * @param {Array|String} range 
+   *
+   * @param {Array|String} range
    */
   setSelectedRange = (range) => {
     if (!_.isArray(range)) {
@@ -185,19 +186,27 @@ export default class EditTerm extends Component {
    *
    * @param {Object} vocab
    */
-  handleVocabularyAdded = (vocab) => {
-    let tempTerm = this.state.term;
-    /// Add new vocabulary to the list of available ones
-    this.state.vocabularies.push({
-      id: vocab.id,
-      name: vocab.name,
+  handleVocabularyAdded = (data) => {
+    createVocabulary(data).then((response) => {
+      if (response.error) {
+        toast.error("Error! " + e.response.data.message);
+        return;
+      }
+      
+      let tempTerm = this.state.term;
+      /// Add new vocabulary to the list of available ones
+      this.state.vocabularies.push({
+        id: response.vocabulary.id,
+        name: response.vocabulary.name,
+      });
+      /// Add new vocabulary to the term selected vocabularies
+      tempTerm.vocabularies.push({
+        id: response.vocabulary.id,
+        name: response.vocabulary.name,
+      });
+
+      this.setState({ term: tempTerm });
     });
-    /// Add new vocabulary to the term selected vocabularies
-    tempTerm.vocabularies.push({
-      id: vocab.id,
-      name: vocab.name,
-    });
-    this.setState({ term: tempTerm });
   };
 
   /**
@@ -467,7 +476,6 @@ export default class EditTerm extends Component {
 
                     {this.state.uploadingVocabulary ? (
                       <UploadVocabulary
-                        term={this.state.term}
                         onVocabularyAdded={this.handleVocabularyAdded}
                         onRequestClose={() =>
                           this.setState({

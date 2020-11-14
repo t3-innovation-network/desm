@@ -15,9 +15,10 @@ import Loader from "./../shared/Loader";
 import createSpec from "../../services/createSpec";
 import { toastr as toast } from "react-redux-toastr";
 import createMapping from "../../services/createMapping";
-import { unsetVocabularies } from "../../actions/vocabularies";
+import { setVocabularies, unsetVocabularies } from "../../actions/vocabularies";
 import createVocabulary from "../../services/createVocabulary";
 import { vocabName } from "../../helpers/Vocabularies";
+import UploadVocabulary from "../mapping-to-domains/UploadVocabulary";
 
 const MappingPreview = (props) => {
   /**
@@ -52,6 +53,10 @@ const MappingPreview = (props) => {
    * Flag to know whether we are creating the specification.
    */
   const [creatingSpec, setCreatingSpec] = useState(false);
+  /**
+   * Flag to know whether we are adding a new vocabulary.
+   */
+  const [addingVocabulary, setAddingVocabulary] = useState(false);
   /**
    * Flag to know whether we are crating the vocabularies.
    */
@@ -120,6 +125,22 @@ const MappingPreview = (props) => {
       return "";
     }
   };
+
+  /**
+   * Actions after the vocabulary was successfully added into the api service
+   *
+   * @param {Object} vocab
+   */
+  const handleVocabularyAdded = (data) => {
+    /// Manage the vocabularies in the store
+    let tempVocabs = vocabularies;
+
+    /// Add the new vocabulary
+    tempVocabs.push(data.vocabulary.content);
+
+    /// Refresh the UI
+    dispatch(setVocabularies([]));
+    dispatch(setVocabularies(tempVocabs));  };
 
   /**
    * Use the api service to create one only vocabulary.
@@ -235,10 +256,33 @@ const MappingPreview = (props) => {
                   </div>
                 </div>
               </div>
+              <div className="row mb-3">
+                <div className="col">
+                  <label
+                    className="col-primary cursor-pointer float-right"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Add a new vocabulary"
+                    onClick={() => setAddingVocabulary(true)}
+                  >
+                    Add Vocabulary
+                  </label>
+                </div>
+              </div>
+
+              {addingVocabulary ? (
+                <UploadVocabulary
+                  onVocabularyAdded={handleVocabularyAdded}
+                  onRequestClose={() => setAddingVocabulary(false)}
+                />
+              ) : (
+                ""
+              )}
+
               {creatingSpec ? (
                 <Loader message="We're processing the specification. Please wait ..." />
               ) : (
-                <FileContent />
+                <FileContent disabled={addingVocabulary}/>
               )}
             </React.Fragment>
           )

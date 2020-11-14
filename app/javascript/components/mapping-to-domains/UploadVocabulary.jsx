@@ -7,11 +7,17 @@ var isJSON = require("is-valid-json");
 
 const UploadVocabulary = (props) => {
   /**
-   * The uploaded file whixh will contain the specification of
+   * The uploaded file which will contain the specification of
    * a vocabulary in a concept scheme json-ld format
    */
   const [file, setFile] = useState(null);
+  /**
+   * The content of the file. Set after reading it with a "FileReader"
+   */
   const [fileContent, setFileContent] = useState("");
+  /**
+   * Name for the vocabulary
+   */
   const [name, setName] = useState("");
 
   /**
@@ -38,7 +44,7 @@ const UploadVocabulary = (props) => {
    *
    * @returns {React.Fragment}
    */
-  const fileData = () => {
+  const FileData = () => {
     return file != null ? (
       <FileInfo selectedFile={file} key={Date.now() + file.lastModified} />
     ) : (
@@ -91,30 +97,18 @@ const UploadVocabulary = (props) => {
   /**
    * Send the file with the vocabulary to the backend
    */
-  const handleCreateVocabulary = (event) => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
     if (validateJSON(fileContent)) {
-      let data = {
+      props.onVocabularyAdded({
         vocabulary: {
           name: name,
           content: JSON.parse(fileContent),
-        }
-      };
-
-      createVocabulary(data).then((response) => {
-        if (response.error) {
-          toast.error("Error! " + e.response.data.message);
-          return;
-        }
-
-        props.onVocabularyAdded({
-          id: response.vocabulary.id,
-          name: response.vocabulary.name,
-        });
-
-        props.onRequestClose();
+        },
       });
 
-      event.preventDefault();
+      props.onRequestClose();
     }
   };
 
@@ -137,7 +131,7 @@ const UploadVocabulary = (props) => {
       </div>
 
       <div className="card-body">
-        <form onSubmit={handleCreateVocabulary}>
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>
               Name
@@ -167,32 +161,35 @@ const UploadVocabulary = (props) => {
                   className="file"
                   data-show-upload="true"
                   data-show-caption="true"
-                  id="file-uploader"
+                  id="file-vocab-uploader"
                   aria-describedby="upload-help"
-                  // accept=".rdf, .json, .jsonld, .xml"
                   accept=".json, .jsonld"
                   onChange={handleFileChange}
                   required={true}
                 />
-                <label className="custom-file-label" htmlFor="file-uploader">
+                <label
+                  className="custom-file-label"
+                  htmlFor="file-vocab-uploader"
+                >
                   Attach File
                   <span className="text-danger">*</span>
                 </label>
               </div>
             </div>
             <small className="mt-5">
-              You can upload your concept scheme file as RDF, JSON, XML or
-              JSONLD format
+              You can upload your concept scheme file in JSONLD format (skos file)
             </small>
           </div>
 
-          {fileData()}
+          <FileData />
 
-          {file != null && (
-            <button className="btn btn-dark float-right mt-3" type="submit">
-              Upload
-            </button>
-          )}
+          <button
+            className="btn btn-dark float-right mt-3"
+            type="submit"
+            disabled={!file}
+          >
+            Upload
+          </button>
         </form>
       </div>
     </div>
