@@ -90,6 +90,8 @@ export const isValidVocabulary = (vocab) => {
   /// Ensure we deal with a JSON (object, not string)
   if (_.isString(vocab)) vocab = JSON.parse(vocab);
 
+  let errors = [];
+
   let hasContext = vocab["@context"];
   let hasGraph = vocab["@graph"];
   let hasMainNode = hasGraph && graphMainNode(vocab["@graph"]);
@@ -99,5 +101,13 @@ export const isValidVocabulary = (vocab) => {
       (node) => nodeType(node).toLowerCase() === "skos:concept"
     );
 
-  return hasContext && hasGraph && hasMainNode && hasConcepts;
+  if (!hasContext) errors.push("Missing context.");
+  if (!hasGraph) errors.push("Missing graph.");
+  if (!hasMainNode) errors.push("Missing concept scheme node.");
+  if (!hasConcepts) errors.push("Missing concept nodes");
+
+  return {
+    errors: errors,
+    result: hasContext && hasGraph && hasMainNode && hasConcepts,
+  };
 };

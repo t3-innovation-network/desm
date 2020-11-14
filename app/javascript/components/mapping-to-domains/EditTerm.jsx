@@ -261,8 +261,8 @@ export default class EditTerm extends Component {
         onAfterOpen={this.fetchTermFromApi}
         contentLabel="Edit Term"
         style={{ ...ModalStyles }}
-        shouldCloseOnEsc={true}
-        shouldCloseOnOverlayClick={true}
+        shouldCloseOnEsc={false}
+        shouldCloseOnOverlayClick={false}
       >
         <div className="card ">
           <div className="card-header no-color-header">
@@ -284,7 +284,7 @@ export default class EditTerm extends Component {
             </div>
           </div>
 
-          <div className="card-body">
+          <div className="card-body scrollbar has-scrollbar">
             {this.state.error ? <AlertNotice message={this.state.error} /> : ""}
             {this.state.loading ? (
               <Loader />

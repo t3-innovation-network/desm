@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import FileInfo from "../mapping/FileInfo";
-import { toastr as toast } from "react-redux-toastr";
 import { isValidVocabulary } from "../../helpers/Vocabularies";
+import AlertNotice from "../shared/AlertNotice";
 
 var isJSON = require("is-valid-json");
 
 const UploadVocabulary = (props) => {
+  /**
+   * Representation of an error on this page process
+   */
+  const [errors, setErrors] = useState([]);
   /**
    * The uploaded file which will contain the specification of
    * a vocabulary in a concept scheme json-ld format
@@ -71,7 +75,9 @@ const UploadVocabulary = (props) => {
      * Update callback for errors
      */
     reader.onerror = function (e) {
-      setErrors("File could not be read! Code: " + e.target.error.code);
+      let tempErrors = errors;
+      tempErrors.push("File could not be read! Code: " + e.target.error.code);
+      setErrors(tempErrors);
     };
 
     reader.readAsText(file);
@@ -86,9 +92,7 @@ const UploadVocabulary = (props) => {
     let isValid = isJSON(content);
 
     if (!isValid) {
-      toast.error(
-        "Invalid JSON!\nBe sure to validate the file before uploading"
-      );
+      setErrors(["Invalid JSON!\nBe sure to validate the file before uploading"]);
     }
 
     return isValid;
@@ -100,21 +104,13 @@ const UploadVocabulary = (props) => {
    * @param {Object} vocab
    */
   const vocabularyIsValid = (vocab) => {
+    let validity = isValidVocabulary(vocab);
 
-    let isValid = isValidVocabulary(vocab);
-
-    if (!isValid) {
-      toast.error(
-        "Invalid vocabulary!\
-        \nPlease check the vocabulary is a skos file with:\
-        \n- A context.\
-        \n- A graph.\
-        \n- A concept scheme node inside the graph.\
-        \n- At least one concept node inside the graph."
-      );
+    if (!_.isEmpty(validity.errors)) {
+      setErrors(validity.errors);
     }
 
-    return isValid;
+    return validity.result;
   };
 
   /**
@@ -124,6 +120,7 @@ const UploadVocabulary = (props) => {
    *   each task/layer will validate and transform if necessary.
    */
   const validateVocabulary = (vocab) => {
+    setErrors([]);
     return isValidJson(vocab) && vocabularyIsValid(vocab);
   };
 
@@ -146,87 +143,90 @@ const UploadVocabulary = (props) => {
   };
 
   return (
-    <div className="card">
-      <div className="card-header">
-        <div className="row">
-          <div className="col-10">
-            <h4>Uploading Vocabulary</h4>
-          </div>
-          <div className="col-2">
-            <a
-              className="float-right cursor-pointer"
-              onClick={props.onRequestClose}
-            >
-              <i className="fa fa-arrow-left" aria-hidden="true"></i>
-            </a>
+    <Fragment>
+      {errors.length ? <AlertNotice message={errors} /> : ""}
+      <div className="card">
+        <div className="card-header">
+          <div className="row">
+            <div className="col-10">
+              <h4>Uploading Vocabulary</h4>
+            </div>
+            <div className="col-2">
+              <a
+                className="float-right cursor-pointer"
+                onClick={props.onRequestClose}
+              >
+                <i className="fa fa-arrow-left" aria-hidden="true"></i>
+              </a>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="card-body">
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>
-              Name
-              <span className="text-danger">*</span>
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              name="name"
-              placeholder="Enter a name for this vocabulary"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              autoFocus
-              required
-            />
-          </div>
-          <div className="form-group">
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="upload-help">
-                  Upload
-                </span>
-              </div>
-              <div className="custom-file">
-                <input
-                  type="file"
-                  className="file"
-                  data-show-upload="true"
-                  data-show-caption="true"
-                  id="file-vocab-uploader"
-                  aria-describedby="upload-help"
-                  accept=".json, .jsonld"
-                  onChange={handleFileChange}
-                  required={true}
-                />
-                <label
-                  className="custom-file-label"
-                  htmlFor="file-vocab-uploader"
-                >
-                  Attach File
-                  <span className="text-danger">*</span>
-                </label>
-              </div>
+        <div className="card-body">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>
+                Name
+                <span className="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                name="name"
+                placeholder="Enter a name for this vocabulary"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                autoFocus
+                required
+              />
             </div>
-            <small className="mt-5">
-              You can upload your concept scheme file in JSONLD format (skos
-              file)
-            </small>
-          </div>
+            <div className="form-group">
+              <div className="input-group">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="upload-help">
+                    Upload
+                  </span>
+                </div>
+                <div className="custom-file">
+                  <input
+                    type="file"
+                    className="file"
+                    data-show-upload="true"
+                    data-show-caption="true"
+                    id="file-vocab-uploader"
+                    aria-describedby="upload-help"
+                    accept=".json, .jsonld"
+                    onChange={handleFileChange}
+                    required={true}
+                  />
+                  <label
+                    className="custom-file-label"
+                    htmlFor="file-vocab-uploader"
+                  >
+                    Attach File
+                    <span className="text-danger">*</span>
+                  </label>
+                </div>
+              </div>
+              <small className="mt-5">
+                You can upload your concept scheme file in JSONLD format (skos
+                file)
+              </small>
+            </div>
 
-          <FileData />
+            <FileData />
 
-          <button
-            className="btn btn-dark float-right mt-3"
-            type="submit"
-            disabled={!file}
-          >
-            Upload
-          </button>
-        </form>
+            <button
+              className="btn btn-dark float-right mt-3"
+              type="submit"
+              disabled={!file}
+            >
+              Upload
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </Fragment>
   );
 };
 
