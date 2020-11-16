@@ -154,7 +154,7 @@ const UploadVocabulary = (props) => {
       return;
     }
 
-    if(isValidJson(response.vocabulary)){
+    if (isValidJson(response.vocabulary)) {
       setFetchedVocabulary(response.vocabulary);
       handleSetFetchedVocabularyName(response.vocabulary);
     }
@@ -236,6 +236,122 @@ const UploadVocabulary = (props) => {
     }
   };
 
+  /**
+   * Structure of the form to upload a vocabulary from the filesystem
+   */
+  const FileUploadForm = () => {
+    return (
+      <div className="form-group">
+        <div className="input-group">
+          <div className="input-group-prepend">
+            <span className="input-group-text" id="upload-help">
+              Upload
+            </span>
+          </div>
+          <div className="custom-file">
+            <input
+              type="file"
+              className="file"
+              data-show-upload="true"
+              data-show-caption="true"
+              id="file-vocab-uploader"
+              aria-describedby="upload-help"
+              accept=".json, .jsonld"
+              onChange={handleFileChange}
+              required={true}
+            />
+            <label className="custom-file-label" htmlFor="file-vocab-uploader">
+              Attach File
+              <span className="text-danger">*</span>
+            </label>
+          </div>
+        </div>
+        <small className="mt-5">
+          You can upload your concept scheme file in JSONLD format (skos file)
+        </small>
+        <div className="row">
+          <div className="col">
+            <label
+              className="mt-3 mb-3 col-primary cursor-pointer float-right"
+              onClick={() => setUploadMode(uploadModes.FETCH_BY_URL)}
+            >
+              Fetch by URL
+            </label>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  /**
+   * Structure of the form to upload a vocabulary using an external URL
+   */
+  const URLUploadForm = () => {
+    return (
+      <div className="form-group">
+        <label htmlFor="vocabulary-url-input">Vocabulary URL</label>
+        <div className="row">
+          <div className="col-10">
+            <input
+              type="text"
+              className="form-control"
+              id="vocabulary-url-input"
+              name="vocabulary-url-input"
+              value={vocabularyURL}
+              onChange={(e) => setVocabularyURL(e.target.value)}
+              onBlur={handleVocabularyURLBlur}
+            />
+          </div>
+          <div className="col-2">
+            <a
+              className="btn btn-outline-secondary"
+              onClick={handleFetchVocabulary}
+              disabled={!vocabularyURL}
+            >
+              Fetch
+            </a>
+          </div>
+        </div>
+        <small className="form-text text-muted">It must be a valid URL</small>
+        <div className="row">
+          <div className="col">
+            <label
+              className="mt-3 mb-3 col-primary cursor-pointer float-right"
+              onClick={() => setUploadMode(uploadModes.FILE_UPLOAD)}
+            >
+              Upload a file from your system
+            </label>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  /**
+   * Returns a card with basic information about the recognized vocabulary
+   */
+  const FetchedVocabularyPreview = () => {
+    return (
+      <div className="row">
+        <div className="col">
+          <div className="card">
+            <div className="card-header">
+              <div className="row">
+                <div className="col-6">{fetchedVocabularyName}</div>
+                <div className="col-6">
+                  {handleFetchedVocabularyCantConcepts() + " concepts found"}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  /**
+   * Render
+   */
   return (
     <Fragment>
       {errors.length ? <AlertNotice message={errors} /> : ""}
@@ -275,110 +391,15 @@ const UploadVocabulary = (props) => {
               />
             </div>
             {uploadMode == uploadModes.FILE_UPLOAD ? (
-              <div className="form-group">
-                <div className="input-group">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text" id="upload-help">
-                      Upload
-                    </span>
-                  </div>
-                  <div className="custom-file">
-                    <input
-                      type="file"
-                      className="file"
-                      data-show-upload="true"
-                      data-show-caption="true"
-                      id="file-vocab-uploader"
-                      aria-describedby="upload-help"
-                      accept=".json, .jsonld"
-                      onChange={handleFileChange}
-                      required={true}
-                    />
-                    <label
-                      className="custom-file-label"
-                      htmlFor="file-vocab-uploader"
-                    >
-                      Attach File
-                      <span className="text-danger">*</span>
-                    </label>
-                  </div>
-                </div>
-                <small className="mt-5">
-                  You can upload your concept scheme file in JSONLD format (skos
-                  file)
-                </small>
-                <div className="row">
-                  <div className="col">
-                    <label
-                      className="mt-3 mb-3 col-primary cursor-pointer float-right"
-                      onClick={() => setUploadMode(uploadModes.FETCH_BY_URL)}
-                    >
-                      Fetch by URL
-                    </label>
-                  </div>
-                </div>
-              </div>
+              <FileUploadForm />
             ) : (
-              <div className="form-group">
-                <label htmlFor="vocabulary-url-input">Vocabulary URL</label>
-                <div className="row">
-                  <div className="col-10">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="vocabulary-url-input"
-                      name="vocabulary-url-input"
-                      value={vocabularyURL}
-                      onChange={(e) => setVocabularyURL(e.target.value)}
-                      onBlur={handleVocabularyURLBlur}
-                    />
-                  </div>
-                  <div className="col-2">
-                    <a
-                      className="btn btn-outline-secondary"
-                      onClick={handleFetchVocabulary}
-                      disabled={!vocabularyURL}
-                    >
-                      Fetch
-                    </a>
-                  </div>
-                </div>
-                <small className="form-text text-muted">
-                  It must be a valid URL
-                </small>
-                <div className="row">
-                  <div className="col">
-                    <label
-                      className="mt-3 mb-3 col-primary cursor-pointer float-right"
-                      onClick={() => setUploadMode(uploadModes.FILE_UPLOAD)}
-                    >
-                      Upload a file from your system
-                    </label>
-                  </div>
-                </div>
-              </div>
+              <URLUploadForm />
             )}
 
             {uploadMode == uploadModes.FILE_UPLOAD && <FileData />}
 
             {uploadMode == uploadModes.FETCH_BY_URL &&
-              !_.isEmpty(fetchedVocabulary) && (
-                <div className="row">
-                  <div className="col">
-                    <div className="card">
-                      <div className="card-header">
-                        <div className="row">
-                          <div className="col-6">{fetchedVocabularyName}</div>
-                          <div className="col-6">
-                            {handleFetchedVocabularyCantConcepts() +
-                              " concepts found"}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+              !_.isEmpty(fetchedVocabulary) && <FetchedVocabularyPreview />}
 
             <div className="row">
               <div className="col">
