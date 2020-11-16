@@ -38,7 +38,8 @@ module Processors
       @vocabulary = Vocabulary.find_or_initialize_by(name: data[:attrs][:name]) do |vocab|
         vocab.update(
           organization: data[:organization],
-          content: data[:attrs][:content]["@graph"].select {|concept|
+          context: data[:attrs][:content]["@context"],
+          content: data[:attrs][:content]["@graph"].find {|concept|
             Parsers::Specifications.read!(concept, "type").downcase == "skos:conceptscheme"
           }
         )

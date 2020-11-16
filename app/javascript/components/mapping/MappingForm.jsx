@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import validator from "validator";
 import AlertNotice from "../shared/AlertNotice";
 import FileInfo from "./FileInfo";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,6 +17,7 @@ import checkDomainsInFile from "../../services/checkDomainsInFile";
 import filterSpecification from "../../services/filterSpecification";
 import mergeFiles from "../../services/mergeFiles";
 import { setVocabularies } from "../../actions/vocabularies";
+import { validURL } from "../../helpers/URL";
 
 const MappingForm = () => {
   const [errors, setErrors] = useState("");
@@ -85,7 +85,7 @@ const MappingForm = () => {
    * out the "use case" input
    */
   const handleUseCaseBlur = () => {
-    if (!validator.isURL(useCase)) {
+    if (!validURL(useCase)) {
       setErrors("'Use case' must be a valid URL");
     } else {
       setErrors("");

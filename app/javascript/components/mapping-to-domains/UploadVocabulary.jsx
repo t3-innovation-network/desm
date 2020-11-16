@@ -1,7 +1,13 @@
 import React, { Fragment, useEffect, useState } from "react";
 import FileInfo from "../mapping/FileInfo";
-import { isValidVocabulary } from "../../helpers/Vocabularies";
+import {
+  validVocabulary,
+  vocabName,
+  cantConcepts,
+} from "../../helpers/Vocabularies";
 import AlertNotice from "../shared/AlertNotice";
+import fetchExternalVocabulary from "./../../services/fetchExternalVocabulary";
+import { validURL } from "../../helpers/URL";
 
 var isJSON = require("is-valid-json");
 
@@ -10,6 +16,17 @@ const UploadVocabulary = (props) => {
    * Representation of an error on this page process
    */
   const [errors, setErrors] = useState([]);
+  /**
+   * Represents the available types of fetching a vocabulary
+   */
+  const uploadModes = {
+    FILE_UPLOAD: "file-upload",
+    FETCH_BY_URL: "fetch-by-url",
+  };
+  /**
+   * The current upload mode
+   */
+  const [uploadMode, setUploadMode] = useState(uploadModes.FILE_UPLOAD);
   /**
    * The uploaded file which will contain the specification of
    * a vocabulary in a concept scheme json-ld format
@@ -23,6 +40,21 @@ const UploadVocabulary = (props) => {
    * Name for the vocabulary
    */
   const [name, setName] = useState("");
+
+  /**
+   * URL to fetch the vocabulary from
+   */
+  const [vocabularyURL, setVocabularyURL] = useState("");
+
+  /**
+   * The vocabulary that's fetched using an external URL
+   */
+  const [fetchedVocabulary, setFetchedVocabulary] = useState({});
+
+  /**
+   * The name of the vocabulary that's fetched using an external URL
+   */
+  const [fetchedVocabularyName, setFetchedVocabularyName] = useState("");
 
   /**
    * Update the files in the redux store (main application state) when
@@ -84,6 +116,17 @@ const UploadVocabulary = (props) => {
   };
 
   /**
+   * Fetch the vocabulary from the provided URL
+   */
+  const handleVocabularyURLBlur = () => {
+    if (!validURL(vocabularyURL)) {
+      setErrors(["It must be a valid URL"]);
+      return;
+    }
+    setErrors([]);
+  };
+
+  /**
    * Manages to corroborate that the file content is a valid JSON
    *
    * @param {String} content
@@ -92,10 +135,55 @@ const UploadVocabulary = (props) => {
     let isValid = isJSON(content);
 
     if (!isValid) {
-      setErrors(["Invalid JSON!\nBe sure to validate the file before uploading"]);
+      setErrors([
+        "Invalid JSON!\nBe sure to validate the file before uploading",
+      ]);
     }
 
     return isValid;
+  };
+
+  /**
+   * Fetch the vocabulary from the provided URL
+   */
+  const handleFetchVocabulary = async () => {
+    let response = await fetchExternalVocabulary(vocabularyURL);
+
+    if (response.error) {
+      setErrors([response.error]);
+      return;
+    }
+
+    if(isValidJson(response.vocabulary)){
+      setFetchedVocabulary(response.vocabulary);
+      handleSetFetchedVocabularyName(response.vocabulary);
+    }
+  };
+
+  /**
+   * Safely try to get the vocabulary name
+   */
+  const handleSetFetchedVocabularyName = (vocab) => {
+    let name = "";
+    try {
+      name = vocabName(vocab["@graph"]);
+      setFetchedVocabularyName(name);
+    } catch (e) {
+      setErrors([e]);
+    }
+  };
+
+  /**
+   * Returns the number of conepts recognized inside the fetched vocabulary
+   *
+   * @returns {Integer}
+   */
+  const handleFetchedVocabularyCantConcepts = () => {
+    if (!_.isEmpty(fetchedVocabulary)) {
+      return cantConcepts(fetchedVocabulary);
+    }
+
+    return 0;
   };
 
   /**
@@ -103,8 +191,9 @@ const UploadVocabulary = (props) => {
    *
    * @param {Object} vocab
    */
-  const vocabularyIsValid = (vocab) => {
-    let validity = isValidVocabulary(vocab);
+  const handleVocabularyValidity = (vocab) => {
+    setErrors([]);
+    let validity = validVocabulary(vocab);
 
     if (!_.isEmpty(validity.errors)) {
       setErrors(validity.errors);
@@ -114,14 +203,17 @@ const UploadVocabulary = (props) => {
   };
 
   /**
-   * Perform file validation
-   *
-   * @param {String} vocab: Important! This needs to be string at this stage.
-   *   each task/layer will validate and transform if necessary.
+   * Generates the content for the vocabulary to be submitted
+   * Case 1: The vocabulary was submitted using a file from the filesystem
+   * Case 2: The vocabulary was uploaded by using a service by HTTP (an external URL)
    */
-  const validateVocabulary = (vocab) => {
-    setErrors([]);
-    return isValidJson(vocab) && vocabularyIsValid(vocab);
+  const vocabularyToSubmit = () => {
+    switch (uploadMode) {
+      case uploadModes.FETCH_BY_URL:
+        return fetchedVocabulary;
+      case uploadModes.FILE_UPLOAD:
+        return JSON.parse(fileContent);
+    }
   };
 
   /**
@@ -130,11 +222,13 @@ const UploadVocabulary = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (validateVocabulary(fileContent)) {
+    let vocab = vocabularyToSubmit();
+
+    if (handleVocabularyValidity(vocab)) {
       props.onVocabularyAdded({
         vocabulary: {
           name: name,
-          content: JSON.parse(fileContent),
+          content: vocab,
         },
       });
 
@@ -180,49 +274,123 @@ const UploadVocabulary = (props) => {
                 required
               />
             </div>
-            <div className="form-group">
-              <div className="input-group">
-                <div className="input-group-prepend">
-                  <span className="input-group-text" id="upload-help">
-                    Upload
-                  </span>
+            {uploadMode == uploadModes.FILE_UPLOAD ? (
+              <div className="form-group">
+                <div className="input-group">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text" id="upload-help">
+                      Upload
+                    </span>
+                  </div>
+                  <div className="custom-file">
+                    <input
+                      type="file"
+                      className="file"
+                      data-show-upload="true"
+                      data-show-caption="true"
+                      id="file-vocab-uploader"
+                      aria-describedby="upload-help"
+                      accept=".json, .jsonld"
+                      onChange={handleFileChange}
+                      required={true}
+                    />
+                    <label
+                      className="custom-file-label"
+                      htmlFor="file-vocab-uploader"
+                    >
+                      Attach File
+                      <span className="text-danger">*</span>
+                    </label>
+                  </div>
                 </div>
-                <div className="custom-file">
-                  <input
-                    type="file"
-                    className="file"
-                    data-show-upload="true"
-                    data-show-caption="true"
-                    id="file-vocab-uploader"
-                    aria-describedby="upload-help"
-                    accept=".json, .jsonld"
-                    onChange={handleFileChange}
-                    required={true}
-                  />
-                  <label
-                    className="custom-file-label"
-                    htmlFor="file-vocab-uploader"
-                  >
-                    Attach File
-                    <span className="text-danger">*</span>
-                  </label>
+                <small className="mt-5">
+                  You can upload your concept scheme file in JSONLD format (skos
+                  file)
+                </small>
+                <div className="row">
+                  <div className="col">
+                    <label
+                      className="mt-3 mb-3 col-primary cursor-pointer float-right"
+                      onClick={() => setUploadMode(uploadModes.FETCH_BY_URL)}
+                    >
+                      Fetch by URL
+                    </label>
+                  </div>
                 </div>
               </div>
-              <small className="mt-5">
-                You can upload your concept scheme file in JSONLD format (skos
-                file)
-              </small>
+            ) : (
+              <div className="form-group">
+                <label htmlFor="vocabulary-url-input">Vocabulary URL</label>
+                <div className="row">
+                  <div className="col-10">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="vocabulary-url-input"
+                      name="vocabulary-url-input"
+                      value={vocabularyURL}
+                      onChange={(e) => setVocabularyURL(e.target.value)}
+                      onBlur={handleVocabularyURLBlur}
+                    />
+                  </div>
+                  <div className="col-2">
+                    <a
+                      className="btn btn-outline-secondary"
+                      onClick={handleFetchVocabulary}
+                      disabled={!vocabularyURL}
+                    >
+                      Fetch
+                    </a>
+                  </div>
+                </div>
+                <small className="form-text text-muted">
+                  It must be a valid URL
+                </small>
+                <div className="row">
+                  <div className="col">
+                    <label
+                      className="mt-3 mb-3 col-primary cursor-pointer float-right"
+                      onClick={() => setUploadMode(uploadModes.FILE_UPLOAD)}
+                    >
+                      Upload a file from your system
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {uploadMode == uploadModes.FILE_UPLOAD && <FileData />}
+
+            {uploadMode == uploadModes.FETCH_BY_URL &&
+              !_.isEmpty(fetchedVocabulary) && (
+                <div className="row">
+                  <div className="col">
+                    <div className="card">
+                      <div className="card-header">
+                        <div className="row">
+                          <div className="col-6">{fetchedVocabularyName}</div>
+                          <div className="col-6">
+                            {handleFetchedVocabularyCantConcepts() +
+                              " concepts found"}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            <div className="row">
+              <div className="col">
+                <button
+                  className="btn btn-dark float-right mt-3"
+                  type="submit"
+                  disabled={!fileContent && _.isEmpty(fetchedVocabulary)}
+                >
+                  Upload
+                </button>
+              </div>
             </div>
-
-            <FileData />
-
-            <button
-              className="btn btn-dark float-right mt-3"
-              type="submit"
-              disabled={!file}
-            >
-              Upload
-            </button>
           </form>
         </div>
       </div>

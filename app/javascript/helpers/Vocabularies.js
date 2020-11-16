@@ -25,6 +25,64 @@ export const vocabName = (graph) => {
 };
 
 /**
+ * Return the main node from a graph of a vocabulary (Returns the node of
+ * type "concept scheme").
+ *
+ * @param {Array} graph
+ */
+export const graphMainNode = (graph) => {
+  return graph.find((node) => {
+    return nodeType(node).toLowerCase() === "skos:conceptscheme";
+  });
+};
+
+/**
+ * Validate it's a skos file with a vocabulary inside.
+ * It must have:
+ * - A context
+ * - A graph
+ * - A main node (of type skos:ConceptScheme) inside the graph
+ * - At least one concept node inside the graph
+ *
+ * @param {String|Object} vocab
+ */
+export const validVocabulary = (vocab) => {
+  /// Ensure we deal with a JSON (object, not string)
+  if (_.isString(vocab)) vocab = JSON.parse(vocab);
+
+  let errors = [];
+
+  let hasContext = vocab["@context"];
+  let hasGraph = vocab["@graph"];
+  let hasMainNode = hasGraph && graphMainNode(vocab["@graph"]);
+  let hasConcepts =
+    hasGraph &&
+    vocab["@graph"].some(
+      (node) => nodeType(node).toLowerCase() === "skos:concept"
+    );
+
+  if (!hasContext) errors.push("Missing context.");
+  if (!hasGraph) errors.push("Missing graph.");
+  if (!hasMainNode) errors.push("Missing concept scheme node.");
+  if (!hasConcepts) errors.push("Missing concept nodes");
+
+  return {
+    errors: errors,
+    result: hasContext && hasGraph && hasMainNode && hasConcepts,
+  };
+};
+
+/**
+ * The number of concepts inside
+ * @param {Object} vocab
+ */
+export const cantConcepts = (vocab) => {
+  return vocab["@graph"].map(
+    (node) => nodeType(node).toLowerCase() === "skos:concept"
+  ).length;
+};
+
+/**
  * Safely read the skos concept attribute.
  *
  * @param {Object} node
@@ -55,18 +113,6 @@ const readNodeAttribute = (node, attr) => {
 };
 
 /**
- * Return the main node from a graph of a vocabulary (Returns the node of
- * type "concept scheme").
- *
- * @param {Array} graph
- */
-export const graphMainNode = (graph) => {
-  return graph.find((node) => {
-    return nodeType(node).toLowerCase() === "skos:conceptscheme";
-  });
-};
-
-/**
  * Return the content of the node type attribute
  *
  * @param {Object} node
@@ -74,40 +120,4 @@ export const graphMainNode = (graph) => {
  */
 const nodeType = (node) => {
   return node["type"] || node["@type"];
-};
-
-/**
- * Validate it's a skos file with a vocabulary inside.
- * It must have:
- * - A context
- * - A graph
- * - A main node (of type skos:ConceptScheme) inside the graph
- * - At least one concept node inside the graph
- *
- * @param {Object} vocab
- */
-export const isValidVocabulary = (vocab) => {
-  /// Ensure we deal with a JSON (object, not string)
-  if (_.isString(vocab)) vocab = JSON.parse(vocab);
-
-  let errors = [];
-
-  let hasContext = vocab["@context"];
-  let hasGraph = vocab["@graph"];
-  let hasMainNode = hasGraph && graphMainNode(vocab["@graph"]);
-  let hasConcepts =
-    hasGraph &&
-    vocab["@graph"].some(
-      (node) => nodeType(node).toLowerCase() === "skos:concept"
-    );
-
-  if (!hasContext) errors.push("Missing context.");
-  if (!hasGraph) errors.push("Missing graph.");
-  if (!hasMainNode) errors.push("Missing concept scheme node.");
-  if (!hasConcepts) errors.push("Missing concept nodes");
-
-  return {
-    errors: errors,
-    result: hasContext && hasGraph && hasMainNode && hasConcepts,
-  };
 };
