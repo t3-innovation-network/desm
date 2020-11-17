@@ -20,6 +20,7 @@ import createSpineTerm from "../../services/createSpineTerm";
 import Draggable from "../shared/Draggable";
 import { DraggableItemTypes } from "../shared/DraggableItemTypes";
 import updateMapping from "../../services/updateMapping";
+import MappingChangeLog from "./MappingChangeLog";
 
 const AlignAndFineTune = (props) => {
   /**
@@ -590,7 +591,6 @@ const AlignAndFineTune = (props) => {
     }
   };
 
-
   /**
    * Get the mapping
    */
@@ -710,6 +710,13 @@ const AlignAndFineTune = (props) => {
                     mappingTerms={mappingTerms}
                   />
                   <div className="mt-5">
+                    {/* CHANGELOG */}
+                    <MappingChangeLog
+                      predicates={predicates}
+                      mapping={mapping}
+                    />
+
+                    {/* CANCEL SYNTHETIC TERM FORM */}
                     {addingSynthetic && (
                       <div className="row">
                         <div className="col mb-3">
