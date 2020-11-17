@@ -688,7 +688,7 @@ const AlignAndFineTune = (props) => {
     <React.Fragment>
       <div className="wrapper">
         <TopNav centerContent={navCenterOptions} />
-        {errors.length ? <AlertNotice message={errors.join("\n")} /> : ""}
+        {errors.length ? <AlertNotice message={errors} /> : ""}
         <div className="container-fluid container-wrapper">
           <div className="row">
             {loading ? (

@@ -36,6 +36,7 @@ Rails.application.routes.draw do
       post 'specifications/merge' => 'specifications#merge'
       get 'specifications/:id/terms' => 'terms#from_specification'
       get 'mapping_terms/:id/vocabulary' => 'alignment_vocabularies#show'
+      get 'vocabularies/:id/flat' => 'vocabularies#flat'
     end
   end
 

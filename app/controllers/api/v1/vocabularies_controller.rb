@@ -24,6 +24,18 @@ class Api::V1::VocabulariesController < ApplicationController
   end
 
   ###
+  # @description: returns the vocabulary with the json structure as it is. Without ids
+  #   nor internal representation data. This endpoint will give us a vocabulary with the
+  #   exact structure we need: A JSON object with a "@context" and a "@graph".
+  ###
+  def flat
+    render json: {
+      "@context": @instance.context,
+      "@graph": [@instance.content].concat(@instance.concepts.map(&:raw))
+    }
+  end
+
+  ###
   # @description: Creates a vocabulary
   ###
   def create
