@@ -20,7 +20,7 @@ import createSpineTerm from "../../services/createSpineTerm";
 import Draggable from "../shared/Draggable";
 import { DraggableItemTypes } from "../shared/DraggableItemTypes";
 import updateMapping from "../../services/updateMapping";
-import MappingChangeLog from "./MappingChangeLog";
+import MappingChangeLog from "./mapping-changelog/MappingChangeLog";
 
 const AlignAndFineTune = (props) => {
   /**
