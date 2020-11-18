@@ -38,6 +38,17 @@ const MappingChangeLog = (props) => {
   };
 
   /**
+   * Find the spine term related to a mapping term
+   *
+   * @param {Integer} mTermId The id of the mappng term
+   */
+  const spineTermForMappingTerm = (mTermId) => {
+    let mTerm = mappingTerms.find((mt) => mt.id == mTermId);
+
+    return spineTerms.find((sTerm) => sTerm.id == mTerm.spine_term_id);
+  };
+
+  /**
    * Use effect with an emtpy array as second parameter, will trigger the action of fetching the changes
    * at the 'mounted' event of this functional component (It's not actually mounted, but
    * it mimics the same action).
@@ -59,9 +70,17 @@ const MappingChangeLog = (props) => {
                 <div className="ml-3">
                   <div className="row">
                     {/* <strong>{change.created_at}</strong> */}
-                    <strong>{Moment(change.created_at).format('MMMM Do YYYY, h:mm:ss a')}</strong>
+                    <strong>
+                      {Moment(change.created_at).format(
+                        "MMMM Do YYYY, h:mm:ss a"
+                      )}
+                    </strong>
                   </div>
-                  <ChangeDetails change={change} predicates={predicates} />
+                  <ChangeDetails
+                    spineTerm={spineTermForMappingTerm(change.auditable_id)}
+                    change={change}
+                    predicates={predicates}
+                  />
                 </div>
               </li>
             );

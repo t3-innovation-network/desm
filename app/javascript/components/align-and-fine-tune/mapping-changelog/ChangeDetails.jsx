@@ -4,12 +4,13 @@ import React from "react";
  * Props
  * @param {Object} change
  * @param {Array} predicates
+ * @param {Object} spineTerm
  */
 const ChangeDetails = (props) => {
   /**
    * Elements from props
    */
-  const { change, predicates } = props;
+  const { change, predicates, spineTerm } = props;
 
   /**
    * Returns the name of the predicate to be printed
@@ -63,7 +64,8 @@ const ChangeDetails = (props) => {
     changeRows.push(
       <div className="row" key={changeRows.length}>
         <p>
-          <strong>{printProperty(property)}</strong>
+          For <strong>{spineTerm.name + ", "}</strong>
+          {" " + printProperty(property)}
           {
             /// We are fetching only audits with action: "update". It implies that the auditable
             /// changes comes as an array, being the first index for the old value, and the second
