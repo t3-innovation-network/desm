@@ -39,6 +39,18 @@ module Parsers
     end
 
     ###
+    # @description: Read an attribute from a node and return it's content as an array
+    # @param [Hash] node: The node to be evaluated
+    # @param [String] attribute_name: The node to be evaluated
+    # @return [Array]
+    ###
+    def self.read_as_array(node, attribute_name)
+      val = read(node, attribute_name)
+
+      Array(val)
+    end
+
+    ###
     # @description: Find the first node attribute which the key contains the string given
     #   as the name of the attribute to read
     # @param [Hash] node: The node to be evaluated

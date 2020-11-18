@@ -264,8 +264,8 @@ module Processors
           source_uri: node["@id"],
           comment: Parsers::Specifications.read!(node, "comment"),
           label: Parsers::Specifications.read!(node, "label"),
-          domain: Parsers::Specifications.read(node, "domain"),
-          range: Parsers::Specifications.read(node, "range"),
+          domain: Parsers::Specifications.read_as_array(node, "domain"),
+          range: Parsers::Specifications.read_as_array(node, "range"),
           subproperty_of: Parsers::Specifications.read!(node, "subproperty")
         )
       end

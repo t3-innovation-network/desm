@@ -203,7 +203,7 @@ const MappingPreview = (props) => {
       toast.success(
         "You created a spine for this domain: " + specResponse.domain.uri
       );
-      props.redirect("/");
+      props.redirect("/specifications/" + specResponse.id);
       return;
     }
 
