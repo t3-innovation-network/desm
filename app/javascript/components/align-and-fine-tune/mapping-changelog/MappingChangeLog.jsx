@@ -12,12 +12,13 @@ import Moment from "moment";
  * @param {Array} mappingTerms
  * @param {Array} spineTerms
  * @param {Array} predicates
+ * @param {String} dateMapped
  */
 const MappingChangeLog = (props) => {
   /**
    * Elements from props
    */
-  const { mappingTerms, spineTerms, predicates } = props;
+  const { mappingTerms, spineTerms, predicates, dateMapped } = props;
   /**
    * The changes data (JSON)
    */
@@ -32,6 +33,7 @@ const MappingChangeLog = (props) => {
       className: "MappingTerm",
       instanceIds: mappingTerms.map((mt) => mt.id),
       auditAction: "update",
+      dateFrom: dateMapped,
     });
 
     setChanges(response.audits);
@@ -61,42 +63,48 @@ const MappingChangeLog = (props) => {
    * Presentation of the changes when fetched
    */
   const ChangelogStruct = () => {
-    if (!_.isEmpty(changes)) {
-      return (
-        <ul>
-          {changes.map((change, i) => {
-            return (
-              <li key={i}>
-                <div className="ml-3">
-                  <div className="row">
-                    {/* <strong>{change.created_at}</strong> */}
-                    <strong>
-                      {Moment(change.created_at).format(
-                        "MMMM Do YYYY, h:mm:ss a"
-                      )}
-                    </strong>
-                  </div>
-                  <ChangeDetails
-                    spineTerm={spineTermForMappingTerm(change.auditable_id)}
-                    change={change}
-                    predicates={predicates}
-                  />
+    return (
+      <ul>
+        {changes.map((change, i) => {
+          return (
+            <li key={i}>
+              <div className="ml-3">
+                <div className="row">
+                  {/* <strong>{change.created_at}</strong> */}
+                  <strong>
+                    {Moment(change.created_at).format(
+                      "MMMM Do YYYY, h:mm:ss a"
+                    )}
+                  </strong>
                 </div>
-              </li>
-            );
-          })}
-        </ul>
-      );
-    }
+                <ChangeDetails
+                  spineTerm={spineTermForMappingTerm(change.auditable_id)}
+                  change={change}
+                  predicates={predicates}
+                />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    );
   };
 
-  return (
+  /**
+   * Returns a collapsible element, with the title being "Changelog and the content a specically structured
+   * list of changes".
+   *
+   * Render taking care of having changes present.
+   */
+  return !_.isEmpty(changes) ? (
     <Collapsible
       cardStyle={"mb-3 alert-info"}
       cardHeaderStyle={"borderless"}
       bodyContent={<ChangelogStruct />}
       headerContent={<h4>Changelog</h4>}
     />
+  ) : (
+    ""
   );
 };
 

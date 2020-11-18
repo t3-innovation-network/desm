@@ -34,8 +34,11 @@ class Api::V1::AuditsController < ApplicationController
   #   filtering itself.
   ###
   def instantiate_params
+    # The ids of the entities to look for changes
     @ids = JSON.parse(params[:instance_ids])
-    @date_from = Date.parse(params[:date_from]) if @date_from.present?
+    # Adding a second after the mapping was marked as "mapped" to exclude operations completed
+    # in the same transaction
+    @date_from = (Time.parse(params[:date_from]) + 1) if params[:date_from].present?
   end
 
   ###
@@ -51,7 +54,7 @@ class Api::V1::AuditsController < ApplicationController
     audits = audits.where(action: params[:audit_action]) if params[:audit_action].present?
 
     # The consumer can specify "date_from" param to only retrieve audits from that date on
-    audits = audits.where(created_at: @date_from..Date.today) if @date_from.present?
+    audits = audits.where(created_at: @date_from..Time.now) if @date_from.present?
 
     # The order of the audits will be in ascendent way, meaning the newest first
     audits.order(created_at: :desc)

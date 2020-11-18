@@ -21,6 +21,7 @@ import Draggable from "../shared/Draggable";
 import { DraggableItemTypes } from "../shared/DraggableItemTypes";
 import updateMapping from "../../services/updateMapping";
 import MappingChangeLog from "./mapping-changelog/MappingChangeLog";
+import fetchAudits from "../../services/fetchAudits";
 
 const AlignAndFineTune = (props) => {
   /**
@@ -85,6 +86,11 @@ const AlignAndFineTune = (props) => {
    * Whether to hide mapped spine terms or not
    */
   const [hideMappedSelectedTerms, setHideMappedSelectedTerms] = useState(false);
+
+  /**
+   * The date the mapping was marked as "mapped", which is "completed".
+   */
+  const [dateMapped, setDateMapped] = useState(null);
 
   /**
    * The value of the input that the user is typing in the search box
@@ -649,6 +655,28 @@ const AlignAndFineTune = (props) => {
   };
 
   /**
+   * Fetch changes from the api service. This is only used to get the exact date
+   * when the mapping changed from "in-progress" to "mapped".
+   */
+  const handleFetchMappingChanges = async (mapping) => {
+    if (mapping.status == "mapped") {
+      let response = await fetchAudits({
+        className: "Mapping",
+        instanceIds: mapping.id,
+        auditAction: "update",
+      });
+
+      let statusChangedAudit = response.audits.find(
+        (audit) => audit.audited_changes["status"]
+      );
+
+      if (statusChangedAudit) {
+        setDateMapped(statusChangedAudit.created_at);
+      }
+    }
+  };
+
+  /**
    * Get the data from the service
    */
   const fetchDataFromAPI = async () => {
@@ -666,6 +694,9 @@ const AlignAndFineTune = (props) => {
 
     // Get the predicates
     await handleFetchPredicates();
+
+    // Get the audits
+    await handleFetchMappingChanges(response.mapping);
   };
 
   /**
@@ -711,12 +742,15 @@ const AlignAndFineTune = (props) => {
                   />
                   <div className="mt-5">
                     {/* CHANGELOG */}
-                    <MappingChangeLog
-                      predicates={predicates}
-                      mapping={mapping}
-                      spineTerms={spineTerms}
-                      mappingTerms={mappingTerms}
-                    />
+                    {dateMapped && (
+                      <MappingChangeLog
+                        predicates={predicates}
+                        mapping={mapping}
+                        spineTerms={spineTerms}
+                        mappingTerms={mappingTerms}
+                        dateMapped={dateMapped}
+                      />
+                    )}
 
                     {/* CANCEL SYNTHETIC TERM FORM */}
                     {addingSynthetic && (
