@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   
   namespace :api do
     namespace :v1 do
+      resources :audits, only: [:index]
       resources :domains, only: [:index, :show]
       resources :mappings, only: [:create, :show, :index, :update]
       resources :mapping_terms, only: [:update]

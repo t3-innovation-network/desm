@@ -1,24 +1,41 @@
 import React, { useEffect, useState } from "react";
+import fetchAudits from "../../../services/fetchAudits";
 import Collapsible from "../../shared/Collapsible";
 import ChangeDetails from "./ChangeDetails";
+import Moment from "moment";
 
 /**
  * @description Renders a card with information about the changes in the mapping provided
  *   in props. The information is fetched from the api service.
  *
  * Props:
- * @param {Object} mapping
+ * @param {Array} mappingTerms
+ * @param {Array} spineTerms
  * @param {Array} predicates
  */
 const MappingChangeLog = (props) => {
   /**
    * Elements from props
    */
-  const { mapping, predicates } = props;
+  const { mappingTerms, spineTerms, predicates } = props;
   /**
-   * The changes to show in the box
+   * The changes data (JSON)
    */
-  const [changelog, setChangelog] = useState([]);
+  const [changes, setChanges] = useState([]);
+
+  /**
+   * Manage to get the changes from the api service
+   */
+  const handleFetchChanges = async () => {
+    // Get changes from the api service
+    let response = await fetchAudits({
+      className: "MappingTerm",
+      instanceIds: mappingTerms.map((mt) => mt.id),
+      auditAction: "update",
+    });
+
+    setChanges(response.audits);
+  };
 
   /**
    * Use effect with an emtpy array as second parameter, will trigger the action of fetching the changes
@@ -26,41 +43,39 @@ const MappingChangeLog = (props) => {
    * it mimics the same action).
    */
   useEffect(() => {
-    /// @todo: replace with api service request
-    let changes = [
-      {
-        created_at: "2020-11-15 05:14:47",
-        action: "create",
-        audited_changes: { predicate_id: [null, 6] },
-        user: "User 2",
-      },
-      {
-        created_at: "2020-11-16 20:42:06",
-        audited_changes: { comment: [null, "testing comment"] },
-        action: "update",
-        user: "User 2",
-      },
-    ];
-
-    let tempChangelog = changes.map((change, i) => {
-      return (
-        <div className="ml-3" key={i}>
-          <div className="row">
-            <strong>{change.created_at}</strong>
-          </div>
-          <ChangeDetails change={change} predicates={predicates} />
-        </div>
-      );
-    });
-
-    setChangelog(tempChangelog);
+    handleFetchChanges();
   }, []);
+
+  /**
+   * Presentation of the changes when fetched
+   */
+  const ChangelogStruct = () => {
+    if (!_.isEmpty(changes)) {
+      return (
+        <ul>
+          {changes.map((change, i) => {
+            return (
+              <li key={i}>
+                <div className="ml-3">
+                  <div className="row">
+                    {/* <strong>{change.created_at}</strong> */}
+                    <strong>{Moment(change.created_at).format('MMMM Do YYYY, h:mm:ss a')}</strong>
+                  </div>
+                  <ChangeDetails change={change} predicates={predicates} />
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      );
+    }
+  };
 
   return (
     <Collapsible
-      cardStyle={"mb-3 alert-danger"}
+      cardStyle={"mb-3 alert-info"}
       cardHeaderStyle={"borderless"}
-      bodyContent={changelog}
+      bodyContent={<ChangelogStruct />}
       headerContent={<h4>Changelog</h4>}
     />
   );

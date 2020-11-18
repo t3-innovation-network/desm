@@ -714,6 +714,8 @@ const AlignAndFineTune = (props) => {
                     <MappingChangeLog
                       predicates={predicates}
                       mapping={mapping}
+                      spineTerms={spineTerms}
+                      mappingTerms={mappingTerms}
                     />
 
                     {/* CANCEL SYNTHETIC TERM FORM */}
