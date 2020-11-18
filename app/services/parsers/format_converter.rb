@@ -9,14 +9,29 @@ module Parsers
   # @TODO this is a hook to integrate the conversion of file formats work. delete this comment when
   #   the integration is completed
   ###
+  # rubocop:disable Style/RescueStandardError
   class FormatConverter
+    CONVERTERS = {
+      csv: Converters::Ceds,
+      xml: Converters::XmlSchema,
+      xsd: Converters::XmlSchema,
+      zip: Converters::JsonSchemaZip
+    }.freeze
+
     ###
     # @description:
     # @param [ActionDispatch::Http::UploadedFile]: the file to be converted
-    # @return [Struct]
+    # @return [Hash]
     ###
-    def self.convert_to_jsonld file
-      File.read(file)
+    def self.convert_to_jsonld(file)
+      extension = File.extname(file).delete(".").downcase.strip
+      converter = CONVERTERS[extension]
+      return File.read(file) unless converter
+
+      converter.convert(file)
+    rescue => e
+      raise "Failed to convert #{File.basename(file.path)} to JSON-LD: #{e.message}"
     end
   end
+  # rubocop:enable Style/RescueStandardError
 end
