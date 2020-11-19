@@ -65,10 +65,11 @@ module Parsers
     # @return {Struct}
     ###
     def self.resolve_context context_uri
+      # Try resolving with an http request
       response = http_get(context_uri)
 
       # Avoid having the context nested twice
-      return response["@context"] if response["@context"].present?
+      return response["@context"] if response && response["@context"].present?
 
       response
     end
@@ -94,7 +95,7 @@ module Parsers
         context = resolve_context(context) if context.is_a?(String) && uri?(context)
 
         # merge the context so we have all the context info
-        final_spec[:@context].merge!(context)
+        final_spec[:@context].merge!(context) if context
 
         # merge the graph so we have all the elements in one place
         final_spec[:@graph] += (spec["@graph"])
