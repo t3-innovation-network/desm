@@ -8,13 +8,7 @@ const fetchAudits = async (filters) => {
    */
   const buildFilter = (filters) => {
     let filterString =
-      "?class_name=" +
-      filters.className +
-      "&audit_action=" +
-      filters.auditAction +
-      "&instance_ids=[" +
-      filters.instanceIds +
-      "]" +
+      `?class_name=${filters.className}&audit_action=${filters.auditAction}&instance_ids=[${filters.instanceIds}]` +
       (filters.dateFrom ? "&date_from=" + filters.dateFrom : "");
 
     return filterString;

@@ -667,7 +667,7 @@ const AlignAndFineTune = (props) => {
       });
 
       let statusChangedAudit = response.audits.find(
-        (audit) => (audit.audited_changes["status"] = [1, 2])
+        (audit) => audit.audited_changes["status"].toString() == "1,2"
       );
 
       if (statusChangedAudit) {

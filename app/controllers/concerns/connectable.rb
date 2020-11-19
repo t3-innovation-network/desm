@@ -30,7 +30,7 @@ module Connectable
     def http_get uri
       HTTParty.get(uri)
     rescue StandardError => e
-      puts e.inspect
+      Rails.logger.error(e.inspect)
       false
     end
   end
