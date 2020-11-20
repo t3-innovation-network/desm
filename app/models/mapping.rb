@@ -8,6 +8,12 @@
 #   already has a spine (a previous specification was uploaded for it).
 ###
 class Mapping < ApplicationRecord
+  ###
+  # @description: This will allow to keep track of every change in this model thorugh
+  #   the 'audits' method
+  ###
+  audited
+
   belongs_to :user
   belongs_to :specification
   belongs_to :spine, foreign_key: "spine_id", class_name: :Specification

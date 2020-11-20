@@ -29,6 +29,9 @@ module Connectable
     ###
     def http_get uri
       HTTParty.get(uri)
+    rescue StandardError => e
+      Rails.logger.error(e.inspect)
+      false
     end
   end
 end

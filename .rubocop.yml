@@ -5,6 +5,7 @@ AllCops:
     - 'node_modules/**/*'
     - 'db/*'
     - 'db/fixtures/**/*'
+    - 'db/migrate/**/*'
     - 'tmp/**/*'
     - 'config/**/*'
     - 'config.ru'

@@ -9,6 +9,12 @@
 ###
 class MappingTerm < ApplicationRecord
   ###
+  # @description: This will allow to keep track of every change in this model thorugh
+  #   the 'audits' method
+  ###
+  audited
+
+  ###
   # @description: The mapping this term belongs to.
   ###
   belongs_to :mapping

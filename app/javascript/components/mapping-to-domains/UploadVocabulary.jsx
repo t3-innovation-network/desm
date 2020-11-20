@@ -258,7 +258,6 @@ const UploadVocabulary = (props) => {
               aria-describedby="upload-help"
               accept=".json, .jsonld"
               onChange={handleFileChange}
-              required={true}
             />
             <label className="custom-file-label" htmlFor="file-vocab-uploader">
               Attach File
