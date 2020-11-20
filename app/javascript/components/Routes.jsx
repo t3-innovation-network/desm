@@ -11,9 +11,10 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import Mapping from "./mapping/Mapping";
 import MainDashboard from "./dashboard/MainDashboard";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import SpecList from "./specifications-list/SpecList";
+import SpecsList from "./specifications-list/SpecsList";
 import AlignAndFineTune from "./align-and-fine-tune/AlignAndFineTune";
 import MappingToDomains from "./mapping-to-domains/MappingToDomains";
+import EditSpecification from "./edit-specification/EditSpecification";
 
 const Routes = (props) => {
   let manageLogin = props.handleLogin;
@@ -36,7 +37,13 @@ const Routes = (props) => {
           exact
           path="/mappings"
           allowNonAdmins={true}
-          component={SpecList} />
+          component={SpecsList} />
+
+        <ProtectedRoute
+          exact
+          path="/specifications/:id"
+          allowNonAdmins={true}
+          component={EditSpecification} />
 
         <ProtectedRoute
           exact

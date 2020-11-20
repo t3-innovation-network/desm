@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       resources :vocabularies, only: [:index, :create, :show]
       resources :alignment_vocabulary_concepts, only: [:update]
       resources :alignment_synthetic_concepts, only: [:create]
+      resources :spine_specifications, only: :index
 
       # Mapping selected terms
       post 'mappings/:id/selected_terms' => 'mapping_selected_terms#create'

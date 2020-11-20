@@ -292,13 +292,14 @@ const UploadVocabulary = (props) => {
         <div className="row">
           <div className="col-10">
             <input
-              type="text"
+              type="url"
               className="form-control"
               id="vocabulary-url-input"
               name="vocabulary-url-input"
               value={vocabularyURL}
               onChange={(e) => setVocabularyURL(e.target.value)}
               onBlur={handleVocabularyURLBlur}
+              required={true}
             />
           </div>
           <div className="col-2">
