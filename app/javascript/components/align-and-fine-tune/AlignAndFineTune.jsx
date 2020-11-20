@@ -666,12 +666,14 @@ const AlignAndFineTune = (props) => {
         auditAction: "update",
       });
 
-      let statusChangedAudit = response.audits.find(
-        (audit) => audit.audited_changes["status"].toString() == "1,2"
-      );
+      if (!anyError(response)) {
+        let statusChangedAudit = response.audits.find(
+          (audit) => audit.audited_changes["status"].toString() == "1,2"
+        );
 
-      if (statusChangedAudit) {
-        setDateMapped(statusChangedAudit.created_at);
+        if (statusChangedAudit) {
+          setDateMapped(statusChangedAudit.created_at);
+        }
       }
     }
   };

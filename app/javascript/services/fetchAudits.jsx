@@ -1,4 +1,6 @@
 import apiRequest from "./api/apiRequest";
+import queryString from "query-string";
+import { decamelizeKeys } from 'humps';
 
 const fetchAudits = async (filters) => {
   /**
@@ -7,15 +9,17 @@ const fetchAudits = async (filters) => {
    * @param {Object} filters
    */
   const buildFilter = (filters) => {
-    let filterString =
-      `?class_name=${filters.className}&audit_action=${filters.auditAction}&instance_ids=[${filters.instanceIds}]` +
-      (filters.dateFrom ? "&date_from=" + filters.dateFrom : "");
+    /// Use decamelized parameter names ffor the backend (underscored)
+    const query = decamelizeKeys(filters);
 
-    return filterString;
+    /// Return the filter in a query string format
+    return queryString.stringify(query, { arrayFormat: "comma" });
   };
 
+  if (_.isEmpty(filters)) throw "No parameters received"
+
   return await apiRequest({
-    url: "/api/v1/audits" + buildFilter(filters),
+    url: "/api/v1/audits?" + buildFilter(filters),
     method: "get",
     successResponse: "audits",
   });

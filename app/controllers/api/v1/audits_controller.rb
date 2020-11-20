@@ -34,8 +34,9 @@ class Api::V1::AuditsController < ApplicationController
   #   filtering itself.
   ###
   def instantiate_params
-    # The ids of the entities to look for changes
-    @ids = JSON.parse(params[:instance_ids])
+    # The ids of the entities to look for changes. We need it to be in an array format
+    @ids = params[:instance_ids].split(",")
+
     # Adding a second after the mapping was marked as "mapped" to exclude operations completed
     # in the same transaction
     @date_from = (Time.parse(params[:date_from]) + 1) if params[:date_from].present?
