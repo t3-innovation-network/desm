@@ -14,15 +14,13 @@ module Processors
     # @return {Vocabulary}: The created vocabulary
     ###
     def self.create data
-      ActiveRecord::Base.transaction do
-        @vocabulary = create_vocabulary(data)
+      @vocabulary = create_vocabulary(data)
 
-        @vocabulary.concepts = create_concepts(
-          data[:attrs][:content]["@graph"].select {|concept|
-            Parsers::Specifications.read!(concept, "type").downcase == "skos:concept"
-          }
-        )
-      end
+      @vocabulary.concepts = create_concepts(
+        data[:attrs][:content]["@graph"].select {|concept|
+          Parsers::Specifications.read!(concept, "type").downcase == "skos:concept"
+        }
+      )
 
       @vocabulary
     end
@@ -53,9 +51,16 @@ module Processors
     ###
     def self.create_concepts concepts_list
       concepts_list.map do |concept|
-        SkosConcept.find_or_initialize_by(uri: Parsers::Specifications.read!(concept, "id")) do |skos_concept|
-          skos_concept.update(raw: concept)
-        end
+        SkosConcept.find_or_initialize_by(
+          uri: Parsers::Specifications.read!(concept, "id")
+        ) {|c_concept|
+          c_concept.update(
+            raw: concept
+          )
+        }
+      rescue StandardError => e
+        Rails.logger.error(e.inspect)
+        SkosConcept.find_by_uri(Parsers::Specifications.read!(concept, "id"))
       end
     end
 
@@ -69,7 +74,13 @@ module Processors
     def self.identify_concepts graph, scheme_uri
       concepts = []
 
-      graph.each do |node|
+      # Get only the concept nodes (avoid processing the properties, classes, or concept schemes)
+      concept_nodes = graph.select {|node|
+        Parsers::Specifications.read!(node, "type").downcase == "skos:concept"
+      }
+
+      # Process each concept to add the correct ones to the current vocabulary being processed
+      concept_nodes.each do |node|
         concepts << node if concept_of_scheme?(node, scheme_uri)
       end
 
@@ -83,17 +94,9 @@ module Processors
     # @return [TrueClass|FalseClass]
     ###
     def self.concept_of_scheme?(node, scheme_uri)
-      concept_in_scheme = lambda {
-        return false unless node["skos:inScheme"].present?
+      return false unless node["skos:inScheme"].present?
 
-        return node["skos:inScheme"].any? {|s_uri| s_uri == scheme_uri } if node["skos:inScheme"].is_a?(Array)
-
-        node["skos:inScheme"] == scheme_uri
-      }
-
-      node_type = Parsers::Specifications.read!(node, "type")
-
-      node_type.is_a?(String) && node_type.downcase == "skos:concept" && concept_in_scheme
+      Array(node["skos:inScheme"]).any? {|s_uri| s_uri == scheme_uri }
     end
 
     ###
