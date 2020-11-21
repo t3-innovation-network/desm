@@ -18,7 +18,13 @@ module Processors
       # stage we are dealing with a json-ld file
       raise InvalidSpecification unless file_content["@graph"].present?
 
-      domains = file_content["@graph"]
+      # Since we're looking for domains inside the file,
+      # we only care about the nodes with type 'rdf:Class'
+      domains = file_content["@graph"].select {|node|
+        Array(Parsers::Specifications.read!(node, "type")).any? {|type|
+          type.downcase == "rdfs:class"
+        }
+      }
 
       process_domains(domains)
     end
@@ -37,9 +43,6 @@ module Processors
       counter = 0
       domains.each do |domain|
         domain = domain.with_indifferent_access
-        # Since we're looking for domains inside the file,
-        # we only care about the nodes with type 'rdf:Class'
-        next if domain[:@type] != "rdfs:Class"
 
         counter += 1
         label = domain["rdfs:label"]["@value"] || domain["rdfs:label"]["en-US"] || domain["rdfs:label"]
