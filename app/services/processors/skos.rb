@@ -68,23 +68,52 @@ module Processors
     # @description: Identify all the concepts for a given vocabulary id (scheme uri).
     # @param [Array] graph: the collection of nodes. It can contain all kind of nodes, we will find only those with
     #   type "skos:Concept" and related to the given scheme.
-    # @param [String] scheme_uri: The id of the scheme containing the concepts
+    # @param [Object] scheme_node: The scheme node containing the uri of the related concepts
     # @return [Array]
     ###
-    def self.identify_concepts graph, scheme_uri
-      concepts = []
+    def self.identify_concepts graph, scheme_node
+      concept_nodes = concept_nodes(graph)
 
-      # Get only the concept nodes (avoid processing the properties, classes, or concept schemes)
-      concept_nodes = graph.select {|node|
-        Parsers::Specifications.read!(node, "type").downcase == "skos:concept"
+      child_concepts_uris(scheme_node).map {|concept_uri|
+        concept_nodes.find {|c_node|
+          Parsers::Specifications.read!(c_node, "id").downcase == concept_uri.downcase
+        }
       }
+    end
 
-      # Process each concept to add the correct ones to the current vocabulary being processed
-      concept_nodes.each do |node|
-        concepts << node if concept_of_scheme?(node, scheme_uri)
+    ###
+    # @description: Filter a collection of nodes of any type to get a new collection of only those nodes of
+    #   type "skos:concept".
+    # @param [Array] graph The graph containing all the Properties, Classes, Concepts, Concept Scheme nodes
+    #   and more.
+    # @return [Array] A collection of only nodes of type "skos:concept".
+    ###
+    def self.concept_nodes graph
+      graph.select {|node|
+        Array(Parsers::Specifications.read!(node, "type")).any? {|type|
+          type.downcase == "skos:concept"
+        }
+      }
+    end
+
+    ###
+    # @description: Get the concept nodes belonging to a concept scheme by reading the childs list
+    # @param [Hash] The concept scheme node
+    # @return [Array] A collection of uris to identify the child concept nodes
+    ###
+    def self.child_concepts_uris concept_scheme_node
+      child_nodes = Array(Parsers::Specifications.read!(concept_scheme_node, "hasConcept"))
+
+      # Some specification may not use "hasConcept", but "hasTopConcept"
+      if child_nodes.all?(&:empty?)
+        child_nodes = Array(Parsers::Specifications.read!(concept_scheme_node, "hasTopConcept"))
       end
 
-      concepts
+      if child_nodes.all?(&:empty?)
+        raise "No concept nodes found for Vocabulary #{Parsers::Specifications.read!(concept_scheme_node, 'id')}"
+      end
+
+      child_nodes
     end
 
     ###

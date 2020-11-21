@@ -90,10 +90,10 @@ module Processors
       # Get all the concept scheme nodes. With the pupose of separate all the vocabularies, we
       # need the concept schemes, which represents the vocabularies main nodes.
       Processors::Skos.scheme_nodes_from_graph(spec["@graph"]).each do |scheme_node|
-        # Get all the concepts for this cocept scheme
         vocab = {
           "@context": nil,
-          "@graph": Processors::Skos.identify_concepts(spec["@graph"], Parsers::Specifications.read!(scheme_node, "id"))
+          # Get all the concepts for this concept scheme
+          "@graph": Processors::Skos.identify_concepts(spec["@graph"], scheme_node)
         }
 
         # Place the context at the beginning
