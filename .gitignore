@@ -36,4 +36,5 @@ yarn-debug.log*
 .yarn-integrity
 
 # Ignore environment files
-.env
+.env*
+!.env.example
