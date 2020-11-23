@@ -4,16 +4,18 @@ const fetchDomains = async () => {
   const response = await apiRequest({
     url: "/api/v1/domains",
     method: "get",
-    successResponse: "domains"
+    successResponse: "domains",
   });
 
-  if(!response.error){
+  if (!response.error) {
     return {
       domains: response.domains.map((domain) => {
         return {
-          id: domain.uri,
+          id: domain.id,
+          uri: domain.uri,
           name: domain.pref_label,
           spine: domain.spine_id !== null,
+          spineId: domain.spine_id,
         };
       }),
     };

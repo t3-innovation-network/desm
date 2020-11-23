@@ -386,6 +386,7 @@ export default class EditTerm extends Component {
                           this.state.term.property.domain
                         )}
                         onClose={(domain) => this.handleDomainChange(domain.id)}
+                        cardCssClass={"with-shadow"}
                       />
                     </div>
 
@@ -400,6 +401,7 @@ export default class EditTerm extends Component {
                           this.state.term.property.range
                         )}
                         onClose={(range) => this.handleRangeChange(range.id)}
+                        cardCssClass={"with-shadow"}
                       />
                     </div>
 

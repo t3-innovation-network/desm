@@ -99,7 +99,7 @@ const MappingChangeLog = (props) => {
   return !_.isEmpty(changes) ? (
     <Collapsible
       cardStyle={"mb-3 alert-info"}
-      cardHeaderStyle={"borderless"}
+      cardHeaderStyle={"bottom-borderless"}
       bodyContent={<ChangelogStruct />}
       headerContent={<h4>Changelog</h4>}
     />

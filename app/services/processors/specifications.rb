@@ -219,14 +219,14 @@ module Processors
     # @param [Hash] data The collection of data to create the specification
     ###
     def self.create(data)
-      domain = Domain.find_by_uri(data[:domain_to])
+      @current_user = data[:user]
 
       s = Specification.new(
         name: data[:name],
         version: data[:version],
         use_case: data[:use_case],
-        user: data[:user],
-        domain: domain,
+        user: @current_user,
+        domain: Domain.find(data[:domain_id]),
         uri: "uri"
       )
 
@@ -258,7 +258,11 @@ module Processors
     ###
     def self.create_one_term(node)
       # Retrieve the term, if not found, create one with these properties
-      term = Term.find_or_initialize_by(uri: node["@id"], name: Parsers::Specifications.read!(node, "label"))
+      term = Term.find_or_initialize_by(
+        uri: node["@id"],
+        name: Parsers::Specifications.read!(node, "label"),
+        organization: @current_user.organization
+      )
 
       unless term.property.present?
         Property.create!(

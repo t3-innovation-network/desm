@@ -9,7 +9,7 @@ const createSpec = async (data) => {
         name: data.name,
         version: data.version,
         use_case: data.useCase,
-        domain_to: data.domainTo,
+        domain_id: data.domainId,
         domain_from: data.domainFrom,
         content: JSON.stringify(data.specification),
       }

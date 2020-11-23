@@ -65,7 +65,7 @@ class Api::V1::SpecificationsController < ApplicationController
 
     permitted_params.merge(
       user: current_user,
-      domain_to: params[:specification][:domain_to],
+      domain_id: params[:specification][:domain_id],
       spec: unified_spec_data
     )
   end

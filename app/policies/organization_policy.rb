@@ -8,17 +8,9 @@ class OrganizationPolicy < ApplicationPolicy
   def initialize(user, record)
     @user = user || @current_user
     @record = record
-    @admin_role_name = (ENV["ADMIN_ROLE_NAME"] || "Admin").downcase.to_sym
 
-    raise Pundit::NotAuthorizedError unless user&.role?(@admin_role_name)
-  end
-
-  ###
-  # @description: Determines if the user has access to the index for this resource
-  # @return [TrueClass]
-  ###
-  def index?
-    @user.role?(@admin_role_name)
+    # Signed in users
+    raise Pundit::NotAuthorizedError unless user.present?
   end
 
   ###

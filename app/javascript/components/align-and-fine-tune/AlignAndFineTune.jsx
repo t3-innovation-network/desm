@@ -337,13 +337,15 @@ const AlignAndFineTune = (props) => {
         >
           Save and Exit
         </button>
-        <button
-          className="btn bg-col-primary col-background"
-          onClick={handleDoneAlignment}
-          disabled={loading || !allTermsMapped}
-        >
-          Done Alignment
-        </button>
+        {mapping.status !== "mapped" && (
+          <button
+            className="btn bg-col-primary col-background"
+            onClick={handleDoneAlignment}
+            disabled={loading || !allTermsMapped}
+          >
+            Done Alignment
+          </button>
+        )}
       </React.Fragment>
     );
   };
@@ -479,26 +481,27 @@ const AlignAndFineTune = (props) => {
 
     let response = await createSpineTerm({
       synthetic: {
-        spine_term: {
-          name: spineTerm.name,
-          uri: tempUri,
-          specification_id: mapping.spine_id,
-          property_attributes: {
-            uri: tempUri,
-            label: tempUri,
-            comment: "Synthetic element added to the spine",
-          },
-        },
-        mapping_term: {
+        mappingTerm: {
           comment:
             "Alignment for a synthetic element added to the spine. Synthetic uri: " +
             tempUri,
           uri: tempUri,
-          predicate_id: predicates.find((p) =>
+          predicateId: predicates.find((p) =>
             p.uri.toLowerCase().includes("nomatch")
           ).id,
-          mapping_id: mapping.id,
-          mapped_terms: mTerm.mapped_terms.map((term) => term.id),
+          mappingId: mapping.id,
+          mappedTerms: mTerm.mapped_terms.map((term) => term.id),
+        },
+        specification_id: mapping.spine_id,
+        spineTerm: {
+          name: spineTerm.name,
+          propertyAttributes: {
+            uri: tempUri,
+            label: tempUri,
+            comment: "Synthetic element added to the spine",
+          },
+          organizationId: user.organization.id,
+          uri: tempUri,
         },
       },
     });

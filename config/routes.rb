@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       resources :audits, only: [:index]
       resources :domains, only: [:index, :show]
       resources :mappings, only: [:create, :show, :index, :update]
-      resources :mapping_terms, only: [:update]
+      resources :mapping_terms, only: [:index, :update]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :predicates, only: [:index]
       resources :roles, only: [:index]
@@ -32,12 +32,12 @@ Rails.application.routes.draw do
       get 'mappings/:id/selected_terms' => 'mapping_selected_terms#show'
       delete 'mappings/:id/selected_terms' => 'mapping_selected_terms#destroy'
 
+      get 'mapping_terms/:id/vocabulary' => 'alignment_vocabularies#show'
       get 'mappings/:id/terms' => 'mappings#show_terms'
       post 'specifications/info' => 'specifications#info'
       post 'specifications/filter' => 'specifications#filter'
       post 'specifications/merge' => 'specifications#merge'
-      get 'specifications/:id/terms' => 'terms#from_specification'
-      get 'mapping_terms/:id/vocabulary' => 'alignment_vocabularies#show'
+      get 'specifications/:id/terms' => 'terms#index'
       get 'vocabularies/:id/flat' => 'vocabularies#flat'
     end
   end

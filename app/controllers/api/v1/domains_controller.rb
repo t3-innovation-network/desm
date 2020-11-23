@@ -4,7 +4,7 @@
 # @description: Place all the actions related to domains
 ###
 class Api::V1::DomainsController < ApplicationController
-  before_action :authorize_with_policy
+  before_action :with_instance, only: :show
 
   ###
   # @description: Lists all the domains
@@ -20,14 +20,5 @@ class Api::V1::DomainsController < ApplicationController
   ###
   def show
     render json: @instance
-  end
-
-  private
-
-  ###
-  # @description: Execute the authorization policy
-  ###
-  def authorize_with_policy
-    authorize(with_instance)
   end
 end

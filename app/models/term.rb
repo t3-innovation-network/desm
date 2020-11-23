@@ -5,6 +5,13 @@
 ###
 class Term < ApplicationRecord
   ###
+  # @description: At the time of creation, the organization would be the user's organization.
+  #   When adding a synthetic term, the organization is received by param (would be the
+  #   organization of the user that's adding the synthetic).
+  ###
+  belongs_to :organization
+
+  ###
   # @description: The specifications in which this term appears. Can be many
   ###
   has_and_belongs_to_many :specifications

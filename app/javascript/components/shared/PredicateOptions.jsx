@@ -48,6 +48,7 @@ const PredicateOptions = (props) => {
       options={predicatesAsOptions()}
       onClose={(predicate) => handlePredicateSelected(predicate)}
       selectedOption={predicate}
+      cardCssClass={"with-shadow"}
     />
   );
 };
