@@ -1,0 +1,13 @@
+default: &default
+  rails:
+    configuration:
+      asset_pipeline_enabled: true
+      asset_pipeline_precompile: true
+      operating_system: ubuntu1804
+      ruby_version: 2.7.1
+
+production:
+  <<: *default
+
+staging:
+  <<: *default

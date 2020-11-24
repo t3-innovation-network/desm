@@ -19,6 +19,7 @@ import { toastr as toast } from "react-redux-toastr";
 import createSpineTerm from "../../services/createSpineTerm";
 import Draggable from "../shared/Draggable";
 import { DraggableItemTypes } from "../shared/DraggableItemTypes";
+import updateMapping from "../../services/updateMapping";
 
 const AlignAndFineTune = (props) => {
   /**
@@ -283,11 +284,14 @@ const AlignAndFineTune = (props) => {
     mappingTerm.changed = true;
     let tempMappingTerms = mappingTerms;
 
+    /// Manage synthetic name (valid only when the spine term is synthetic)
     let [firstSelectedTerm] = selectedTerms;
     setSyntheticName(spineTerm.id, firstSelectedTerm.name);
 
     /// Deselect terms
     selectedTerms.forEach((term) => (term.selected = !term.selected));
+
+    /// Redraw the mapping selected terms
     setMappingSelectedTerms([...mappingSelectedTerms]);
 
     /// Redraw the mapped terms
@@ -296,6 +300,21 @@ const AlignAndFineTune = (props) => {
     /// Warn to save changes
     setChangesPerformed(changesPerformed + 1);
     setLoading(false);
+  };
+
+  /**
+   * Mark the term not mapped.
+   *
+   * @param {Object} mappingTerm Also called "alignment", containing the information about the spine term, predicate and mapped terms
+   * @param {Object} mappedTerm The mapped term that's going to be dettached from the mapping term
+   */
+  const handleRevertMapping = (mappingTerm, mappedTerm) => {
+    mappingTerm.changed = true;
+    mappingTerm.mapped_terms = mappingTerm.mapped_terms.filter(
+      (mTerm) => mTerm.id !== mappedTerm.id
+    );
+    setChangesPerformed(changesPerformed + 1);
+    setMappingTerms([...mappingTerms]);
   };
 
   /**
@@ -551,12 +570,26 @@ const AlignAndFineTune = (props) => {
   };
 
   /**
-   * Mark the mapping as aligned
+   * Domain mappping complete. Confirm to save status in the backend
    */
-  const handleDoneAlignment = () => {
-    // @todo: Implement done alignment (take to next screen on mockups)
-    handleSaveAlignment();
+  const handleDoneAlignment = async () => {
+    /// Change the mapping satus to "mapped", so we confirm it's finish the
+    /// mapping phase
+    let response = await updateMapping({
+      id: mapping.id,
+      status: "mapped",
+    });
+
+    if (!anyError(response)) {
+      /// Save changes if necessary
+      if (changesPerformed) {
+        handleSaveAlignment();
+      }
+      /// Redirect to the specifications list
+      props.history.push("/mappings");
+    }
   };
+
 
   /**
    * Get the mapping
@@ -709,6 +742,12 @@ const AlignAndFineTune = (props) => {
                             origin={mapping.origin}
                             spineOrigin={mapping.spine_origin}
                             onPredicateSelected={onPredicateSelected}
+                            onRevertMapping={(mappedTerm) =>
+                              handleRevertMapping(
+                                mappingTermForSpineTerm(term.id),
+                                mappedTerm
+                              )
+                            }
                           />
                         );
                       })}

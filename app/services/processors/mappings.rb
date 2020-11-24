@@ -46,27 +46,5 @@ module Processors
         )
       end
     end
-
-    ###
-    # @description: Creates the terms for the mapping.
-    # @param [Mapping] mapping: The mapping for which the terms are going to be created.
-    # @params [Array] terms: The list of terms as an array of objects. These are the
-    #   specification terms, selected to be mapped against the spine.
-    #
-    # @return [Array]
-    ###
-    def self.create_selected_terms(mapping, terms)
-      ActiveRecord::Base.transaction do
-        terms.each do |term|
-          term = Term.find(term[:id])
-          # Do not add this term as selected for this mapping if there's already one
-          # with the same uri
-          next if mapping.selected_terms.include?(term)
-
-          mapping.selected_terms << term
-        end
-        mapping.save!
-      end
-    end
   end
 end

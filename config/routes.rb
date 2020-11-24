@@ -25,8 +25,11 @@ Rails.application.routes.draw do
       resources :alignment_vocabulary_concepts, only: [:update]
       resources :alignment_synthetic_concepts, only: [:create]
 
-      post 'mappings/selected_terms' => 'mappings#create_selected_terms'
-      get 'mappings/:id/selected_terms' => 'mappings#show_selected_terms'
+      # Mapping selected terms
+      post 'mappings/:id/selected_terms' => 'mapping_selected_terms#create'
+      get 'mappings/:id/selected_terms' => 'mapping_selected_terms#show'
+      delete 'mappings/:id/selected_terms' => 'mapping_selected_terms#destroy'
+
       get 'mappings/:id/terms' => 'mappings#show_terms'
       post 'specifications/info' => 'specifications#info'
       post 'specifications/filter' => 'specifications#filter'

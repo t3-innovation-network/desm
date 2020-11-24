@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import TopNav from "../shared/TopNav";
 import Loader from "../shared/Loader";
 import fetchMapping from "../../services/fetchMapping";
@@ -10,11 +10,12 @@ import DomainCard from "./DomainCard";
 import EditTerm from "./EditTerm";
 import fetchSpecification from "../../services/fetchSpecification";
 import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
-import createMappingSelectedTerms from "../../services/createMappingSelectedTerms";
+import updateMappingSelectedTerms from "../../services/updateMappingSelectedTerms";
 import { toastr as toast } from "react-redux-toastr";
 import updateMapping from "../../services/updateMapping";
 import Draggable from "../shared/Draggable";
 import { DraggableItemTypes } from "../shared/DraggableItemTypes";
+import deleteMappingSelectedTerm from "../../services/deleteMappingSelectedTerm";
 
 const MappingToDomains = (props) => {
   /**
@@ -43,9 +44,14 @@ const MappingToDomains = (props) => {
   const [loading, setLoading] = useState(true);
 
   /**
+   * Whether we are saving changes to the mapping
+   */
+  const [savingChanges, setSavingChanges] = useState(false);
+
+  /**
    * Whether any change awas performed after the page loads
    */
-  const [anyTermMapped, setAnyTermMapped] = useState(false);
+  const [changesPerformed, setChangesPerformed] = useState(0);
 
   /**
    * Whether to hide mapped terms or not
@@ -121,14 +127,18 @@ const MappingToDomains = (props) => {
    * Action to perform after a term is dropped
    */
   const afterDropTerm = () => {
+    /// Mark the terms as not selected and mapped
     let tempTerms = selectedTerms;
     tempTerms.forEach((termToMap) => {
       termToMap.mapped = true;
       termToMap.selected = !termToMap.selected;
     });
-    tempTerms = [...terms];
-    setTerms(tempTerms);
-    setAnyTermMapped(true);
+
+    /// Count the amont of changes
+    setChangesPerformed(changesPerformed + tempTerms.length);
+
+    /// Refresh the UI
+    setTerms([...terms]);
   };
 
   /**
@@ -151,7 +161,7 @@ const MappingToDomains = (props) => {
         mapSpecification={true}
         stepper={true}
         stepperStep={2}
-        customcontent={<DoneDomainMapping />}
+        customcontent={<SaveButtonOptions />}
       />
     );
   };
@@ -191,6 +201,48 @@ const MappingToDomains = (props) => {
   };
 
   /**
+   * Mark the term as "selectable" again. Remove it from the "mapped terms".
+   *
+   * @param {Object} term
+   */
+  const handleRevertMapping = async (termId) => {
+    let tempTerms = [...terms];
+    let term = tempTerms.find((t) => t.id == termId);
+
+    /// Revert the mapping without interact with the API.
+    if (term.mapped) {
+      term.mapped = false;
+      setTerms(tempTerms);
+      setChangesPerformed(changesPerformed - 1);
+      return;
+    }
+
+    /// Update through the api service
+    let response = await deleteMappingSelectedTerm({
+      mappingId: mapping.id,
+      termId: termId,
+    });
+
+    /// Handle errors
+    if (response.error) {
+      toast.error(e.response.data.message);
+      return;
+    }
+
+    /// Update the mapping selected terms
+    let tempMapping = mapping;
+    tempMapping.selected_terms = tempMapping.selected_terms.filter(
+      (term) => term.id !== termId
+    );
+
+    /// Update the UI
+    setMapping(tempMapping);
+    setTerms([...terms]);
+
+    toast.success("Changes saved");
+  };
+
+  /**
    * Button to accept the mapping, create the mapping terms and go to the next screen
    */
   const DoneDomainMapping = () => {
@@ -206,6 +258,28 @@ const MappingToDomains = (props) => {
   };
 
   /**
+   * Options to show on the topbar
+   */
+  const SaveButtonOptions = () => {
+    return (
+      <Fragment>
+        <DoneDomainMapping />
+        <button
+          className="btn btn-dark ml-3"
+          onClick={handleSaveChanges}
+          disabled={!changesPerformed || savingChanges}
+        >
+          {savingChanges ? (
+            <Loader noPadding={true} smallSpinner={true} />
+          ) : (
+            "Save Changes"
+          )}
+        </button>
+      </Fragment>
+    );
+  };
+
+  /**
    * Comain mappping complete. Confirm to save status in the backend
    */
   const handleDoneDomainMapping = async () => {
@@ -217,7 +291,7 @@ const MappingToDomains = (props) => {
     });
     if (!anyError(response)) {
       // Save changes if necessary
-      if (anyTermMapped) {
+      if (changesPerformed) {
         handleSaveChanges();
       }
       // Redirect to 3rd step mapping ("Align and Fine Tune")
@@ -229,16 +303,25 @@ const MappingToDomains = (props) => {
    * Create the mapping terms
    */
   const handleSaveChanges = () => {
-    createMappingSelectedTerms({
+    setSavingChanges(true);
+
+    updateMappingSelectedTerms({
       mappingId: mapping.id,
-      terms: mappedTerms,
+      termIds: mappedTerms.map((t) => t.id),
     }).then((response) => {
-      if (response.error) {
-        toast.error(e.response.data.message);
-        return;
+      if (!anyError(response)) {
+        // Mark the terms marked as mapped in memory not mapped, since we already know it's part of the selected terms now
+        terms.filter(t => t.mapped).forEach((term) => {
+          term.mapped = false;
+          let tempMapping = mapping
+          tempMapping.selected_terms.push(term);
+          setMapping(tempMapping);
+        });
+
+        toast.success("Changes saved");
+        setChangesPerformed(0);
+        setSavingChanges(false);
       }
-      toast.success("Changes saved");
-      setAnyTermMapped(false);
     });
   };
 
@@ -386,15 +469,9 @@ const MappingToDomains = (props) => {
                       />
                     )}
                   </div>
-                  <div className="mt-2"></div>
-                  {<DoneDomainMapping />}
-                  <button
-                    className="btn btn-dark ml-3"
-                    onClick={handleSaveChanges}
-                    disabled={!anyTermMapped}
-                  >
-                    Save Changes
-                  </button>
+                  <div className="mt-2">
+                    <SaveButtonOptions />
+                  </div>
                 </div>
 
                 {/* RIGHT SIDE */}
@@ -484,6 +561,7 @@ const MappingToDomains = (props) => {
                             editEnabled={true}
                             onEditClick={onEditTermClick}
                             origin={mapping.origin}
+                            onRevertMapping={handleRevertMapping}
                           />
                         );
                       })}

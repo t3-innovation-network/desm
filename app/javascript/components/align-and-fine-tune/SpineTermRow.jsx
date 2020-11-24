@@ -15,7 +15,8 @@ import VocabularyLabel from "./match-vocabulary/VocabularyLabel";
  * @param {Object} term The spine term
  * @param {Array} predicates The collection of predicates
  * @param {Function} onPredicateSelected The actions to execute when a predicate is selected
- * @param {Function} mappedTermsToSpineTerm The list of terms that are mapped toa given spine term
+ * @param {Function} mappedTermsToSpineTerm The list of terms that are mapped to a given spine term
+ * @param {Function} onRevertMapping The actoins to execute when the user eants to revert a term from being mapped
  */
 const SpineTermRow = (props) => {
   /**
@@ -27,6 +28,7 @@ const SpineTermRow = (props) => {
     spineOrigin,
     origin,
     mappedTermsToSpineTerm,
+    onRevertMapping,
   } = props;
 
   /**
@@ -289,7 +291,22 @@ const SpineTermRow = (props) => {
           {props.mappedTermsToSpineTerm(term).map((term) => {
             return (
               <Collapsible
-                headerContent={<strong>{term.name}</strong>}
+                headerContent={
+                  <div className="row">
+                    <div
+                      className="col-1 cursor-pointer"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Revert selecting this term"
+                      onClick={() => onRevertMapping(term)}
+                    >
+                      <i className="fas fa-times"></i>
+                    </div>
+                    <div className="col-10">
+                      <strong>{term.name}</strong>
+                    </div>
+                  </div>
+                }
                 cardStyle={"with-shadow mb-2"}
                 key={term.id}
                 observeOutside={false}
