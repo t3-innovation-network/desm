@@ -143,7 +143,7 @@ const MappingForm = () => {
       name: name,
       version: version,
       useCase: useCase,
-      domainTo: selectedDomainId,
+      domainId: selectedDomainId,
     };
   };
 

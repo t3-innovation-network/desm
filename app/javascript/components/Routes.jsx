@@ -15,6 +15,7 @@ import SpecsList from "./specifications-list/SpecsList";
 import AlignAndFineTune from "./align-and-fine-tune/AlignAndFineTune";
 import MappingToDomains from "./mapping-to-domains/MappingToDomains";
 import EditSpecification from "./edit-specification/EditSpecification";
+import PropertyMappingList from "./property-mapping-list/PropertyMappingList";
 
 const Routes = (props) => {
   let manageLogin = props.handleLogin;
@@ -31,6 +32,12 @@ const Routes = (props) => {
           exact
           path={"/sign-in"}
           render={(props) => <SignIn {...props} handleLogin={manageLogin}/>}
+        />
+
+        <Route
+          exact
+          path={"/mapping-list"}
+          render={(props) => <PropertyMappingList {...props} handleLogin={manageLogin}/>}
         />
 
         <ProtectedRoute

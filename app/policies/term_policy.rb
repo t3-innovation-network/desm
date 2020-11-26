@@ -42,7 +42,7 @@ class TermPolicy < ApplicationPolicy
   # @description: Determines if the user can list all the terms from a specific specification
   # @return [TrueClass]
   ###
-  def from_specification?
+  def index?
     @user.present?
   end
 end

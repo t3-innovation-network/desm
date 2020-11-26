@@ -4,7 +4,17 @@
 # @description: Place all the actions related to mappings
 ###
 class Api::V1::MappingTermsController < ApplicationController
-  before_action :authorize_with_policy
+  before_action :authorize_with_policy, except: :index
+
+  ###
+  # @description: List of alignments. It can be filtered by passing a list of possible filter
+  #   values detailed in filter method
+  ###
+  def index
+    terms = filter
+
+    render json: terms, include: %i[mapped_terms spine_term predicate]
+  end
 
   ###
   # @description: Updates a single mapping term, firstly updating its mapped terms
@@ -27,6 +37,18 @@ class Api::V1::MappingTermsController < ApplicationController
   ###
   def authorize_with_policy
     authorize(with_instance)
+  end
+
+  ###
+  # @description: Applies the filter/s from the params
+  # @return [ActiveRecord::Relation]
+  ###
+  def filter
+    terms = MappingTerm.all
+
+    terms = MappingTerm.where(spine_term_id: params[:spine_term_id]) if params[:spine_term_id].present?
+
+    terms.order(:uri)
   end
 
   ###

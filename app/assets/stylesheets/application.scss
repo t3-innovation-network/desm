@@ -91,7 +91,7 @@ a:hover {
 /* Main view Styles */
 
 .bg-col-secondary {
-  background-color: $background-color-dark;
+  background-color: $background-color-dark !important;
 }
 
 .bg-col-primary {
@@ -110,6 +110,10 @@ a:hover {
   color: $on-primary !important;
 }
 
+.col-on-primary-light {
+  color: $on-primary-light;
+}
+
 .col-primary {
   color: $primary-color !important;
 }
@@ -124,7 +128,11 @@ a:hover {
 }
 
 .borderless {
-  border-bottom: unset !important;
+  border: unset !important;
+}
+
+.bottom-borderless {
+  border: unset !important;
 }
 
 .mandatory-fields-notice{
@@ -149,6 +157,37 @@ a:hover {
 .rounded-divider {
   border-top: 2px solid #bbb;
   border-radius: 5px;
+}
+
+.desm-rounded {
+  border-radius: 0.5rem !important;
+}
+
+.selected-item {
+  border-bottom: solid 4px $primary-color-light !important;
+}
+
+.desm-tab-item:hover {
+  background-color: $primary-color;
+  color: $primary-color-highlight;
+}
+
+.bottom-border-white {
+  border-color: white;
+}
+
+.top-border-strong {
+  border-top: solid 2px $on-primary;
+}
+
+.non-selectable {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
 }
 
 /* Scrollbar */
