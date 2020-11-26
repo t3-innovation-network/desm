@@ -32,7 +32,8 @@
         "http://desm.org/concepts/credential",
         "http://desm.org/concepts/employment",
         "http://desm.org/concepts/competency",
-        "http://desm.org/concepts/programOfStudy"
+        "http://desm.org/concepts/programOfStudy",
+        "http://desm.org/concepts/earnings"
       ]
     },
     {
