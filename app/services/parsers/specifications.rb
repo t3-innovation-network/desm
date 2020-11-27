@@ -19,11 +19,13 @@ module Parsers
 
       return "" unless node.key?(key)
 
-      return node[key]["@value"] if valid_node_key?(node[key], "@value")
+      node_key = node[key].is_a?(Array) && node[key].one? ? node[key].first : node[key]
 
-      return node[key]["en-US"] if valid_node_key?(node[key], "en-US")
+      return node_key["@value"] if valid_node_key?(node_key, "@value")
 
-      node[key]
+      return node_key["en-US"] if valid_node_key?(node_key, "en-US")
+
+      node_key
     end
 
     ###
@@ -45,9 +47,7 @@ module Parsers
     # @return [Array]
     ###
     def self.read_as_array(node, attribute_name)
-      val = read(node, attribute_name)
-
-      Array(val)
+      Array(read(node, attribute_name))
     end
 
     ###
@@ -58,7 +58,15 @@ module Parsers
     # @return [Object]
     ###
     def self.find_node_key(node, attribute_name)
-      node.select {|key| key.to_s.downcase.match(Regexp.new(attribute_name.downcase)) }.keys.first
+      selected_node = node.select {|key|
+        key.to_s.downcase.match(
+          Regexp.new(attribute_name.downcase)
+        )
+      }
+
+      selected_node = selected_node.first if selected_node.is_a?(Array) && selected_node.first.is_a?(Hash)
+
+      selected_node.keys.first
     end
 
     ###
@@ -99,7 +107,7 @@ module Parsers
       }
 
       specifications.each do |spec|
-        spec = JSON.parse(spec) if spec.is_a?(String)
+        spec = validate_spec_format(spec)
 
         context = spec["@context"]
 
@@ -114,6 +122,32 @@ module Parsers
       end
 
       final_spec
+    end
+
+    ###
+    # @description: We will work only with a json-ld file that contains both a '@context' and a '@graph'.
+    #   - CASE A: It can be the case of a file only containing a graph (without a context), so we set the context
+    #   to an empty entry.
+    #   - CASE B: It also might be possible to deal with a file with only nodes (an array of terms of any type),
+    #   so we both set the context as an empty entry and wrap the whole array into a '@graph' key.
+    # @param [String|Hash] spec
+    # @return [Hash]
+    ###
+    def self.validate_spec_format spec
+      spec = JSON.parse(spec) if spec.is_a?(String)
+
+      # CASE A
+      spec["@context"] = {} if spec.is_a?(Hash) && !spec["@context"].present?
+
+      # CASE B
+      if spec.is_a?(Array)
+        spec = {
+          "@context": {},
+          "@graph": spec
+        }
+      end
+
+      spec.with_indifferent_access
     end
   end
 end

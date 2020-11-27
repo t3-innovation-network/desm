@@ -1,9 +1,9 @@
 import apiRequest from "./api/apiRequest";
 /**
- * @param {String} uri: The identifier of the rdfs:Class selected.
  * @param {file} file: The file to be filtered, in a JSON format.
+ * @param {Array} uri: The list of identifiers of the rdfs:Class'es selected.
  */
-const filterSpecification = async (uri, file) => {
+const filterSpecification = async (uris, file) => {
   /**
    * This will be the way to get the specification file
    * parsed to get only 1 domain to map from.
@@ -20,7 +20,7 @@ const filterSpecification = async (uri, file) => {
     method: "post",
     payload: {
       file: JSON.stringify(file),
-      uri: uri,
+      uris: uris,
     },
     defaultResponse: "",
     successResponse: "filtered",

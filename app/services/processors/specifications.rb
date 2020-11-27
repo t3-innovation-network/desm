@@ -21,8 +21,8 @@ module Processors
       # Since we're looking for domains inside the file,
       # we only care about the nodes with type 'rdf:Class'
       domains = file_content["@graph"].select {|node|
-        Array(Parsers::Specifications.read!(node, "type")).any? {|type|
-          type.downcase == "rdfs:class"
+        node_types(node).any? {|type|
+          type.downcase.include?("class")
         }
       }
 
@@ -45,7 +45,7 @@ module Processors
         domain = domain.with_indifferent_access
 
         counter += 1
-        label = domain["rdfs:label"]["@value"] || domain["rdfs:label"]["en-US"] || domain["rdfs:label"]
+        label = Parsers::Specifications.read!(domain, "label")
 
         domains_in_file << {
           id: counter,
@@ -66,15 +66,15 @@ module Processors
     #  node with only one class, all it's properties and recursively, all the
     #  related properties
     # @param [String] file: The file to be filtered
-    # @param [String] uri: The identifier of the selected rdfs:Class that will be used to filter the file
+    # @param [Array] uris: The identifier of the selected rdfs:Class'es that will be used to filter the file
     # @return [Hash] The collectio of vocabularies, if any, and the new filtered specification
     ###
-    def self.filter_specification(spec, uri)
+    def self.filter_specification(spec, uris)
       # Make the spec content available as a json object
       spec = JSON.parse(spec) if spec.is_a?(String)
 
       vocabularies = filter_vocabularies(spec)
-      spec = filter_specification_by_domain_uri(spec, uri)
+      spec = filter_specification_by_domain_uri(spec, uris)
 
       {
         vocabularies: vocabularies,
@@ -145,24 +145,46 @@ module Processors
     #
     # @param [Json|String] specification: The entire specification, as
     #   when the user uploaded it.
-    # @param [String] domain_uri: The id (URI) of the domain selecteed by the user
+    # @param [Array] domain_uris: The ids (URI's) of the domain/s selecteed by the user
     ###
-    def self.filter_specification_by_domain_uri(specification, domain_uri)
+    def self.filter_specification_by_domain_uri(specification, domain_uris)
       # First we need the context and an empty "@graph" which will
       # contain all the nodes of the specification
       final_spec = {
         "@context": specification["@context"],
-        "@graph": []
+        "@graph": generate_nodes(specification, domain_uris)
       }
 
-      # The first node of our graph will be the actual selected domain
-      final_spec[:@graph] << specification["@graph"].find {|node| node["@id"] == domain_uri }
+      # Avoid duplicate nodes
+      final_spec[:@graph].uniq!
+
+      final_spec
+    end
+
+    ###
+    # @description: Fill the specification graph with all the classes and property
+    #   nodes that are needed.
+    # @param [Hash] spec The specification object to analyze
+    # @param [Hash] domain_uris The ids (URI's) of the domain/s selecteed by the
+    #   user
+    # @return [Array]
+    ###
+    def self.generate_nodes spec, domain_uris
+      final_graph = []
+
+      # The first node/s of our graph will be the ones from the uris selected by the user
+      class_nodes = filter_classes(spec["@graph"]).select {|node|
+        domain_uris.any? {|uri| uri == node["@id"] }
+      }
+      class_nodes.each {|class_node| final_graph << class_node }
 
       # The rest of the nodes will be added recursively looking for
       # those nodes related to a URI
-      final_spec[:@graph] += build_nodes_for_uri(specification["@graph"], domain_uri)
+      domain_uris.each {|domain_uri|
+        final_graph += build_nodes_for_uri(spec["@graph"], domain_uri)
+      }
 
-      final_spec
+      final_graph
     end
 
     ###
@@ -171,16 +193,16 @@ module Processors
     #
     # @param [Array] nodes The collection of all the nodes to be processed to find
     #   the related ones
-    # @param [String] uri The id (URI) of the class or property to find related ones
+    # @param [String] class_uri The id (URI) of the class or property to find related ones
     ###
-    def self.build_nodes_for_uri(nodes, uri)
+    def self.build_nodes_for_uri(nodes, class_uri)
+      # Get only the properties
+      props = filter_properties(nodes, class_uri)
+
       # Find all related properties
-      related_properties = nodes.select do |node|
-        (
-          (node["@type"] == "rdf:Property" || node["@type"] == uri) &&
-          (property_of?(node, "domainIncludes", uri) || property_of?(node, "rangeIncludes", uri))
-        )
-      end
+      related_properties = props.select {|node|
+        property_of?(node, "domain", class_uri) || property_of?(node, "range", class_uri)
+      }
 
       # Base case
       return [] if related_properties.empty?
@@ -192,6 +214,51 @@ module Processors
       end
 
       related_properties
+    end
+
+    ###
+    # @description: Filter a given graph to return a new one containing only classes
+    # @param [Hash] node
+    # @return [Array]:
+    ###
+    def self.filter_classes nodes
+      nodes.select {|node|
+        node_types(node).any? {|type|
+          type.downcase.include?("class")
+        }
+      }
+    end
+
+    ###
+    # @description: Filter a given graph to return a new one containing only properties
+    #   or elements of a given class
+    # @param [Hash] node
+    # @param [String] class_uri
+    # @return [TrueClass|FalseClass]:
+    ###
+    def self.filter_properties nodes, class_uri=nil
+      nodes.select {|node|
+        node_types(node).any? {|type|
+          type.downcase.include?("property")
+        } ||
+        (
+          class_uri.present? &&
+          node_types(node).any? {|type|
+            type.downcase.include?(class_uri)
+          }
+        )
+      }
+    end
+
+    ###
+    # @description: Reads the node to return the type of it
+    # @param [Hash] node
+    # @return [String|any]
+    ###
+    def self.node_types node
+      node = node.first if node.is_a?(Array) && node.first.is_a?(Hash)
+
+      Array(Parsers::Specifications.read!(node, "type"))
     end
 
     ###
@@ -247,7 +314,7 @@ module Processors
     def self.create_terms(specification, spec)
       spec = JSON.parse(spec)
 
-      spec["@graph"].select {|elem| elem["@type"] == "rdf:Property" }.each do |node|
+      filter_properties(spec["@graph"]).each do |node|
         specification.terms << create_one_term(node)
       end
     end
