@@ -226,7 +226,7 @@ const MappingPreview = (props) => {
     <div className="col-lg-6 p-lg-5 pt-5 bg-col-secondary">
       <React.Fragment>
         {processingFile ? (
-          <Loader message="We're processing the file. Please wait ..." />
+          <Loader message="We're processing the file/s. Please wait ..." />
         ) : creatingVocabularies ? (
           <Loader message="We're processing vocabularies. Please wait ..." />
         ) : (

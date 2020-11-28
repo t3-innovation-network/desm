@@ -32,7 +32,9 @@ export const vocabName = (graph) => {
  */
 export const graphMainNode = (graph) => {
   return graph.find((node) => {
-    return nodeType(node).toLowerCase() === "skos:conceptscheme";
+    return nodeTypes(node).find((type) =>
+      type.toLowerCase().includes("conceptscheme")
+    );
   });
 };
 
@@ -57,8 +59,12 @@ export const validVocabulary = (vocab) => {
   let hasMainNode = hasGraph && graphMainNode(vocab["@graph"]);
   let hasConcepts =
     hasGraph &&
-    vocab["@graph"].some(
-      (node) => nodeType(node).toLowerCase() === "skos:concept"
+    vocab["@graph"].some((node) =>
+      nodeTypes(node).some(
+        (type) =>
+          type.toLowerCase().includes("concept") &&
+          !type.toLowerCase().includes("conceptscheme")
+      )
     );
 
   if (!hasContext) errors.push("Missing context.");
@@ -77,8 +83,12 @@ export const validVocabulary = (vocab) => {
  * @param {Object} vocab
  */
 export const cantConcepts = (vocab) => {
-  return vocab["@graph"].map(
-    (node) => nodeType(node).toLowerCase() === "skos:concept"
+  return vocab["@graph"].map((node) =>
+    nodeTypes(node).some(
+      (type) =>
+        type.toLowerCase().includes("concept") &&
+        !type.toLowerCase().includes("conceptscheme")
+    )
   ).length;
 };
 
@@ -88,17 +98,22 @@ export const cantConcepts = (vocab) => {
  * @param {Object} node
  * @param {String} attr
  */
-const readNodeAttribute = (node, attr) => {
+export const readNodeAttribute = (node, attr) => {
   /// Return straight if it is a String
   if (_.isString(node[attr])) return node[attr];
 
-  /// We are reading an attribute that contains the words "title" or "label", but it's
-  /// not a String. It contains one more level of nesting.  It can be the i18n management:
-  /// "en-US": "a description", or "en-us": "a description" (lowercased).
+  /// We are reading an attribute that's not a String. It contains one more
+  /// levels of nesting.  It can be the i18n management:
+  /// "en-US": "a description", or "en-us": "a description" (lowercased). or anything
   ///
   /// So our solution is to read the its attributes by using recursion, until one gives
-  /// us a string.
+  /// us a string, firstly prioritizing "@value" and "@id"
   if (_.isObject(node[attr])) {
+    /// If we recognize the "@value" key, we can return that
+    if (node[attr]["@value"]) return readNodeAttribute(node[attr], "@value");
+    /// If we recognize the "@id" key, we can return that
+    if (node[attr]["@id"]) return readNodeAttribute(node[attr], "@id");
+
     for (let a in node[attr]) {
       return readNodeAttribute(node[attr], a);
     }
@@ -118,6 +133,8 @@ const readNodeAttribute = (node, attr) => {
  * @param {Object} node
  * @returns String
  */
-const nodeType = (node) => {
-  return node["type"] || node["@type"];
+const nodeTypes = (node) => {
+  let type = node["type"] || node["@type"];
+
+  return _.isArray(type) ? type : [type];
 };

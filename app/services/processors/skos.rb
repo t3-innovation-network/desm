@@ -18,7 +18,9 @@ module Processors
 
       @vocabulary.concepts = create_concepts(
         data[:attrs][:content]["@graph"].select {|concept|
-          Parsers::Specifications.read!(concept, "type").downcase == "skos:concept"
+          Array(Parsers::Specifications.read!(concept, "type")).any? {|type|
+            type.downcase.include?("concept") && !type.downcase.include?("conceptscheme")
+          }
         }
       )
 
@@ -37,11 +39,21 @@ module Processors
         vocab.update(
           organization: data[:organization],
           context: data[:attrs][:content]["@context"],
-          content: data[:attrs][:content]["@graph"].find {|concept|
-            Parsers::Specifications.read!(concept, "type").downcase == "skos:conceptscheme"
-          }
+          content: first_concept_scheme_node(data[:attrs][:content]["@graph"])
         )
       end
+    end
+
+    ###
+    # @description: Returns the first concept scheme in a graph. Useful for when we have a single
+    #   vocabulary and need only the concept scheme node.
+    # @param [Array] graph
+    # @return [Hash]
+    ###
+    def self.first_concept_scheme_node graph
+      graph.find {|concept|
+        Parsers::Specifications.read!(concept, "type").downcase.include?("conceptscheme")
+      }
     end
 
     ###
@@ -91,7 +103,7 @@ module Processors
     def self.concept_nodes graph
       graph.select {|node|
         Array(Parsers::Specifications.read!(node, "type")).any? {|type|
-          type.downcase == "skos:concept"
+          type.downcase.include?("concept") && !type.downcase.include?("conceptscheme")
         }
       }
     end
@@ -113,7 +125,23 @@ module Processors
         raise "No concept nodes found for Vocabulary #{Parsers::Specifications.read!(concept_scheme_node, 'id')}"
       end
 
-      child_nodes
+      process_node_uris(child_nodes)
+    end
+
+    ###
+    # @description: Process an array of uris to ensure returning an  array of string uris. It might
+    #   contain an array of objects with its uri's in it.
+    # @param [Array] nodes
+    # @return [Array]
+    ###
+    def self.process_node_uris nodes
+      nodes.map {|node|
+        if node.is_a?(String)
+          node
+        else
+          node.is_a?(Hash) && (node["@id"] || node[:@id]) ? (node["@id"] || node[:@id]) : nil
+        end
+      }
     end
 
     ###
@@ -123,9 +151,9 @@ module Processors
     # @return [TrueClass|FalseClass]
     ###
     def self.concept_of_scheme?(node, scheme_uri)
-      return false unless node["skos:inScheme"].present?
+      return false unless Parsers::Specifications.read!(node, "inScheme").present?
 
-      Array(node["skos:inScheme"]).any? {|s_uri| s_uri == scheme_uri }
+      Array(Parsers::Specifications.read!(node, "inScheme")).any? {|s_uri| s_uri == scheme_uri }
     end
 
     ###
@@ -147,8 +175,9 @@ module Processors
     ###
     def self.scheme_nodes_from_graph(graph)
       graph.select {|node|
-        Parsers::Specifications.read!(node, "type").is_a?(String) &&
-        Parsers::Specifications.read!(node, "type").downcase == "skos:conceptscheme"
+        Array(Parsers::Specifications.read!(node, "type")).any? {|type|
+          type.downcase.include?("conceptscheme")
+        }
       }
     end
 

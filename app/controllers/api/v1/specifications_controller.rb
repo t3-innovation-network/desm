@@ -20,7 +20,7 @@ class Api::V1::SpecificationsController < ApplicationController
   #  related properties
   ###
   def filter
-    render json: Processors::Specifications.filter_specification(params[:file], params[:uri])
+    render json: Processors::Specifications.filter_specification(params[:file], params[:uris])
   end
 
   ###

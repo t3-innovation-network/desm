@@ -226,10 +226,10 @@ const MappingForm = () => {
    * Filter the specification to have only those properties related to the
    * selected domain.
    *
-   * @param {String} id: The uri of the selected domain
+   * @param {Array} uris: The uri's of the selected domains
    */
-  const handleFilterSpecification = async (id) => {
-    let response = await filterSpecification(id, mergedFile);
+  const handleFilterSpecification = async (uris) => {
+    let response = await filterSpecification(uris, mergedFile);
 
     if (response.error) {
       toast.error(response.error);
@@ -247,13 +247,15 @@ const MappingForm = () => {
    *
    * Then filter the file content to only show the selected domain an
    * related properties.
+   *
+   * @param {Array} uris The list of identifiers of the rdfs:Class'es selected.
    */
-  const onSelectDomainFromFile = async (id) => {
+  const onSelectDomainsFromFile = async (uris) => {
     dispatch(startProcessingFile());
     setMultipleDomainsInFile(false);
 
     let tempSpecs = [];
-    let specification = await handleFilterSpecification(id);
+    let specification = await handleFilterSpecification(uris);
     dispatch(setMergedFile(specification));
 
     tempSpecs.push(JSON.stringify(specification, null, 2));
@@ -261,7 +263,10 @@ const MappingForm = () => {
     dispatch(setSpecToPreview(tempSpecs));
     dispatch(stopProcessingFile());
 
-    toast.info("Great! You selected the domain with URI: " + id);
+    toast.info(
+      "Great! You selected the following domains: " +
+        uris.map((uri) => uri.toString()).join("\n")
+    );
   };
 
   /**
@@ -314,16 +319,18 @@ const MappingForm = () => {
   return (
     <React.Fragment>
       <MultipleDomainsModal
+        domains={filteredDomainsInFile}
+        inputValue={inputValue}
         modalIsOpen={multipleDomainsInFile}
         onRequestClose={unsetMultipleDomains}
-        domains={filteredDomainsInFile}
-        onSelectDomain={onSelectDomainFromFile}
-        filterOnChange={filterOnChange}
+        onSubmit={onSelectDomainsFromFile}
+        onFilterChange={filterOnChange}
       />
 
       <div
         className={
-          (submitted || processingFile ? "disabled-container " : " ") + "col-lg-6 p-lg-5 pt-5"
+          (submitted || processingFile ? "disabled-container " : " ") +
+          "col-lg-6 p-lg-5 pt-5"
         }
       >
         {errors && <AlertNotice message={errors} />}
