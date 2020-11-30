@@ -4,6 +4,8 @@ import fetchSpineSpecifications from "../../services/fetchSpineSpecifications";
 import { Link } from "react-router-dom";
 import { toastr as toast } from "react-redux-toastr";
 import ConfirmDialog from "../shared/ConfirmDialog";
+import AlertNotice from "../shared/AlertNotice";
+import Loader from "../shared/Loader";
 
 /**
  * @description A list of spine specifications from the user or all the users of the organization
@@ -17,23 +19,27 @@ const SpineSpecsList = (props) => {
    * Elements from props
    */
   const { filter } = props;
-
-  /**
-   * Representation of an error on this page process
-   */
-  const [errors, setErrors] = useState([]);
-
   /**
    * Controls displaying the removal confirmation dialog
    */
   const [confirmingRemove, setConfirmingRemove] = useState(false);
-
+  /**
+   * Representation of an error on this page process
+   */
+  const [errors, setErrors] = useState([]);
+  /**
+   * Representation of an error on this page process while removing a spine
+   */
+  const [errorsWhileRemoving, setErrorsWhileRemoving] = useState([]);
+  /**
+   * Whether the page is loading results or not
+   */
+  const [loading, setLoading] = useState(true);
   /**
    * The identifier of the spine to be removed. Saved in state, because the id is in an iterator,
    * and the clicked handles confirmation, and the confirmation is outside the iterator.
    */
   const [spineIdToRemove, setSpineIdToRemove] = useState(null);
-
   /**
    * The collection of spine specifications
    */
@@ -43,13 +49,13 @@ const SpineSpecsList = (props) => {
    * Handle showing the errors on screen, if any
    *
    * @param {HttpResponse} response
+   * @param {Array} errorsList
+   * @param {Function} updateErrors
    */
-  function anyError(response) {
+  function anyError(response, errorsList, updateErrors) {
     if (response.error) {
-      let tempErrors = errors;
-      tempErrors.push(response.error);
-      setErrors([]);
-      setErrors(tempErrors);
+      errorsList.push(response.error);
+      updateErrors([...new Set(errorsList)]);
     }
     /// It will return a truthy value (depending no the existence
     /// of the errors on the response object)
@@ -72,7 +78,7 @@ const SpineSpecsList = (props) => {
   const handleRemoveSpine = async () => {
     let response = await deleteSpecification(spineIdToRemove);
 
-    if (!anyError(response)) {
+    if (!anyError(response, errorsWhileRemoving, setErrorsWhileRemoving)) {
       toast.success("Spine removed");
 
       /// Update the UI
@@ -87,13 +93,22 @@ const SpineSpecsList = (props) => {
   const handleFetchSpineSpecs = async () => {
     let response = await fetchSpineSpecifications(filter);
 
-    if (!anyError(response)) {
+    if (!anyError(response, errors, setErrors)) {
       setSpines(response.specifications);
     }
   };
 
+  /**
+   * Use effect with an emtpy array as second parameter, will trigger the 'handleFetchSpineSpecs'
+   * action at the 'mounted' event of this functional component (It's not actually mounted,
+   * but it mimics the same action).
+   */
   useEffect(() => {
-    handleFetchSpineSpecs();
+    handleFetchSpineSpecs().then(() => {
+      if (!errors.length) {
+        setLoading(false);
+      }
+    });
   }, []);
 
   return (
@@ -105,38 +120,49 @@ const SpineSpecsList = (props) => {
         onConfirm={() => handleRemoveSpine()}
         visible={confirmingRemove}
       >
+        {errorsWhileRemoving.length ? (
+          <AlertNotice message={errorsWhileRemoving} />
+        ) : null}
         <h2 className="text-center">You are removing the spine</h2>
         <h5 className="mt-3 text-center">Please confirm this action.</h5>
       </ConfirmDialog>
 
-      {spines.map((spine) => {
-        return (
-          <tr key={spine.id}>
-            <td>
-              {spine.name + " "}{" "}
-              <strong className="col-primary">- Spine</strong>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-              <Link
-                to={"/specifications/" + spine.id}
-                className="btn btn-sm btn-dark ml-2"
-              >
-                Edit
-              </Link>
-              <button
-                onClick={() => handleConfirmRemove(spine.id)}
-                className="btn btn-sm btn-dark ml-2"
-              >
-                Remove
-              </button>
-            </td>
-          </tr>
-        );
-      })}
+      {loading ? (
+        <tr>
+          <td>
+            <Loader />
+          </td>
+        </tr>
+      ) : (
+        spines.map((spine) => {
+          return (
+            <tr key={spine.id}>
+              <td>
+                {spine.name + " "}{" "}
+                <strong className="col-primary">- Spine</strong>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>
+                <Link
+                  to={"/specifications/" + spine.id}
+                  className="btn btn-sm btn-dark ml-2"
+                >
+                  Edit
+                </Link>
+                <button
+                  onClick={() => handleConfirmRemove(spine.id)}
+                  className="btn btn-sm btn-dark ml-2"
+                >
+                  Remove
+                </button>
+              </td>
+            </tr>
+          );
+        })
+      )}
     </Fragment>
   );
 };
