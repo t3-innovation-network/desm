@@ -19,7 +19,7 @@ Rails.application.routes.draw do
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :predicates, only: [:index]
       resources :roles, only: [:index]
-      resources :specifications, only: [:create, :show]
+      resources :specifications, only: [:create, :destroy, :show]
       resources :spine_terms, only: [:create]
       resources :terms, only: [:show, :update, :destroy]
       resources :vocabularies, only: [:index, :create, :show]

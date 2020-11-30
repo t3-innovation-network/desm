@@ -1,6 +1,9 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import deleteSpecification from "../../services/deleteSpecification";
 import fetchSpineSpecifications from "../../services/fetchSpineSpecifications";
+import { Link } from "react-router-dom";
+import { toastr as toast } from "react-redux-toastr";
+import ConfirmDialog from "../shared/ConfirmDialog";
 
 /**
  * @description A list of spine specifications from the user or all the users of the organization
@@ -16,26 +19,77 @@ const SpineSpecsList = (props) => {
   const { filter } = props;
 
   /**
-   * Error message to present on the UI
+   * Representation of an error on this page process
    */
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState([]);
+
+  /**
+   * Controls displaying the removal confirmation dialog
+   */
+  const [confirmingRemove, setConfirmingRemove] = useState(false);
+
+  /**
+   * The identifier of the spine to be removed. Saved in state, because the id is in an iterator,
+   * and the clicked handles confirmation, and the confirmation is outside the iterator.
+   */
+  const [spineIdToRemove, setSpineIdToRemove] = useState(null);
+
   /**
    * The collection of spine specifications
    */
   const [spines, setSpines] = useState([]);
 
   /**
-   * Retrieve all the spine specification for this user or organization
+   * Handle showing the errors on screen, if any
+   *
+   * @param {HttpResponse} response
+   */
+  function anyError(response) {
+    if (response.error) {
+      let tempErrors = errors;
+      tempErrors.push(response.error);
+      setErrors([]);
+      setErrors(tempErrors);
+    }
+    /// It will return a truthy value (depending no the existence
+    /// of the errors on the response object)
+    return !_.isUndefined(response.error);
+  }
+
+  /**
+   * Prepare the data to remove the spine. Ask the user to confirm removal.
+   *
+   * @param {Integer} spineId
+   */
+  const handleConfirmRemove = (spineId) => {
+    setConfirmingRemove(true);
+    setSpineIdToRemove(spineId);
+  };
+
+  /**
+   * Send a request to delete the selected spine.
+   */
+  const handleRemoveSpine = async () => {
+    let response = await deleteSpecification(spineIdToRemove);
+
+    if (!anyError(response)) {
+      toast.success("Spine removed");
+
+      /// Update the UI
+      setSpines(spines.filter((spine) => spine.id != spineIdToRemove));
+      setConfirmingRemove(false);
+    }
+  };
+
+  /**
+   * Retrieve all the spine specification for this user or organization.
    */
   const handleFetchSpineSpecs = async () => {
     let response = await fetchSpineSpecifications(filter);
 
-    if (response.error) {
-      setError(response.error);
-      return;
+    if (!anyError(response)) {
+      setSpines(response.specifications);
     }
-
-    setSpines(response.specifications);
   };
 
   useEffect(() => {
@@ -44,7 +98,17 @@ const SpineSpecsList = (props) => {
 
   return (
     <Fragment>
-      {!_.isEmpty(error) && <AlertNotice message={error} />}
+      {errors.length ? <AlertNotice message={errors} /> : null}
+
+      <ConfirmDialog
+        onRequestClose={() => setConfirmingRemove(false)}
+        onConfirm={() => handleRemoveSpine()}
+        visible={confirmingRemove}
+      >
+        <h2 className="text-center">You are removing the spine</h2>
+        <h5 className="mt-3 text-center">Please confirm this action.</h5>
+      </ConfirmDialog>
+
       {spines.map((spine) => {
         return (
           <tr key={spine.id}>
@@ -63,6 +127,12 @@ const SpineSpecsList = (props) => {
               >
                 Edit
               </Link>
+              <button
+                onClick={() => handleConfirmRemove(spine.id)}
+                className="btn btn-sm btn-dark ml-2"
+              >
+                Remove
+              </button>
             </td>
           </tr>
         );
