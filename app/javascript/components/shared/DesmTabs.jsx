@@ -18,13 +18,18 @@ export default class DesmTabs extends Component {
         {values.map((value) => {
           return (
             <div className="col" key={value.id}>
-              <div className="card borderless desm-tab-item cursor-pointer">
+              <div
+                className={
+                  "card borderless desm-tab-item cursor-pointer" +
+                  (selectedId == value.id
+                    ? " selected-item bg-col-secondary"
+                    : "")
+                }
+              >
                 <div
                   className={
                     "card-header text-center" +
-                    (selectedId == value.id
-                      ? " selected-item"
-                      : " bottom-borderless")
+                    (selectedId == value.id ? "" : " bottom-borderless")
                   }
                   onClick={() => onTabClick(value.id)}
                 >

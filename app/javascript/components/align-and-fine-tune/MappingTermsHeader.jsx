@@ -69,6 +69,7 @@ const MappingTermsHeaders = (props) => {
             maxValue={mappingSelectedTerms.length}
             currentValue={mappedSelectedTerms.length}
             messageReport="Mapped"
+            cssClass="bg-col-on-primary"
           />
         </div>
       </div>

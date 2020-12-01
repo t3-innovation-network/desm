@@ -19,6 +19,7 @@ import { setVocabularies, unsetVocabularies } from "../../actions/vocabularies";
 import createVocabulary from "../../services/createVocabulary";
 import { vocabName } from "../../helpers/Vocabularies";
 import UploadVocabulary from "../mapping-to-domains/UploadVocabulary";
+import Pluralize from "pluralize";
 
 const MappingPreview = (props) => {
   /**
@@ -36,6 +37,10 @@ const MappingPreview = (props) => {
    *    content, not a collection
    */
   const previewSpecs = useSelector((state) => state.previewSpecs);
+  /**
+   * The files uploaded by the user.
+   */
+  const files = useSelector((state) => state.files);
   /**
    * The files content already merged. If its only one file, the same result.
    */
@@ -226,7 +231,7 @@ const MappingPreview = (props) => {
     <div className="col-lg-6 p-lg-5 pt-5 bg-col-secondary">
       <React.Fragment>
         {processingFile ? (
-          <Loader message="We're processing the file/s. Please wait ..." />
+          <Loader message={"We're processing the " + Pluralize("file", files.length) + ". Please wait ..."} />
         ) : creatingVocabularies ? (
           <Loader message="We're processing vocabularies. Please wait ..." />
         ) : (

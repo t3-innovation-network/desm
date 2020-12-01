@@ -44,7 +44,7 @@ class Api::V1::MappingTermsController < ApplicationController
   # @return [ActiveRecord::Relation]
   ###
   def filter
-    terms = MappingTerm.all
+    terms = MappingTerm.joins(:mapping).where(mappings: {status: :mapped})
 
     terms = MappingTerm.where(spine_term_id: params[:spine_term_id]) if params[:spine_term_id].present?
 

@@ -42,6 +42,6 @@ class Term < ApplicationRecord
   # @return [String]: the desm namespaced uri
   ###
   def desm_uri
-    "desm:#{uri.split(':').last}"
+    "desm-#{organization.name.downcase.strip}:#{uri.split(':').last}"
   end
 end

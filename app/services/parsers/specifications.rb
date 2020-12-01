@@ -8,6 +8,7 @@ module Parsers
   ###
   class Specifications
     include Connectable
+
     ###
     # @description: Read an attribute from a node and return it's content as String
     # @param [Hash] node: The node to being evaluated
@@ -15,17 +16,35 @@ module Parsers
     # @return [String]
     ###
     def self.read!(node, attribute_name)
+      # Use approximation to get the exact key we're going to read in the hash
       key = find_node_key(node, attribute_name)
 
+      # If we can't find the key, return an empty string
       return "" unless node.key?(key)
 
-      node_key = node[key].is_a?(Array) && node[key].one? ? node[key].first : node[key]
+      # Read the value, safely, it can be an array, so we ensure we can read it
+      val = node[key].is_a?(Array) && node[key].one? ? node[key].first : node[key]
 
-      return node_key["@value"] if valid_node_key?(node_key, "@value")
+      # What we have now, can be the final result (what we were looking for), or it can
+      # still be a hash, so we read it again.
+      val.is_a?(Hash) ? node_value(val) : val
+    end
 
-      return node_key["en-US"] if valid_node_key?(node_key, "en-US")
+    ###
+    # @description: Reads the vaule of a node, assuming it's a final depth node. E.g. the
+    #   only value to read in depth left is a key in the hash called value, title, or a
+    #   lang key like en-us.
+    # @param [Hash] node
+    # @return [String]
+    ###
+    def self.node_value node
+      node = node.with_indifferent_access
 
-      node_key
+      return node[:@value] if valid_node_key?(node, :@value)
+
+      lang_value = node["en-US"] || node["en-us"]
+
+      lang_value || node
     end
 
     ###
@@ -76,7 +95,7 @@ module Parsers
     # @return [TrueClass|FalseClass]
     ###
     def self.valid_node_key?(node, key)
-      node.is_a?(Hash) && node.key?(key)
+      node.is_a?(Hash) && (node.key?(key) || node.key?(key.downcase))
     end
 
     ###

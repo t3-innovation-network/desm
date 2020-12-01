@@ -114,8 +114,8 @@ const AlignmentCard = (props) => {
   const { alignment } = props;
 
   return (
-    <div className="card borderless">
-      <div className="card-header desm-rounded bottom-borderless bg-col-background">
+    <div className="card borderless mb-3">
+      <div className="card-header desm-rounded bottom-borderless bg-col-secondary">
         <div className="row">
           <div className="col-2">
             <small className="mt-3 col-on-primary-light">Organization</small>

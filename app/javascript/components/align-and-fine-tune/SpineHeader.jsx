@@ -23,7 +23,7 @@ const SpineHeader = (props) => {
     spineTermsInputValue,
     filterSpineTermsOnChange,
     handleAddSynthetic,
-    mappingTerms
+    mappingTerms,
   } = props;
 
   return (
@@ -63,8 +63,11 @@ const SpineHeader = (props) => {
         >
           <ProgressReportBar
             maxValue={mappingTerms.length}
-            currentValue={mappingTerms.filter(mTerm => mTerm.mapped_terms.length).length}
+            currentValue={
+              mappingTerms.filter((mTerm) => mTerm.mapped_terms.length).length
+            }
             messageReport="Mapped"
+            cssClass="bg-col-on-primary"
           />
         </div>
       </div>

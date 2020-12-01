@@ -325,26 +325,36 @@ module Processors
     ###
     def self.create_one_term(node)
       # Retrieve the term, if not found, create one with these properties
-      term = Term.find_or_initialize_by(
-        uri: node["@id"],
-        name: Parsers::Specifications.read!(node, "label"),
-        organization: @current_user.organization
-      )
-
-      unless term.property.present?
-        Property.create!(
-          term: term,
-          uri: term.desm_uri,
-          source_uri: node["@id"],
-          comment: Parsers::Specifications.read!(node, "comment"),
-          label: Parsers::Specifications.read!(node, "label"),
-          domain: Parsers::Specifications.read_as_array(node, "domain"),
-          range: Parsers::Specifications.read_as_array(node, "range"),
-          subproperty_of: Parsers::Specifications.read!(node, "subproperty")
+      term = Term.find_or_initialize_by(uri: node["@id"]) do |t|
+        t.update!(
+          name: Parsers::Specifications.read!(node, "label"),
+          organization: @current_user.organization
         )
       end
 
+      create_property_term(term, node)
+
       term
+    end
+
+    ###
+    # @description: Creates a property if not found for the provided term
+    # @param [Term] term
+    # @param [Hash] node
+    ###
+    def self.create_property_term term, node
+      return if term.property.present?
+
+      Property.create!(
+        term: term,
+        uri: term.desm_uri,
+        source_uri: node["@id"],
+        comment: Parsers::Specifications.read!(node, "comment"),
+        label: Parsers::Specifications.read!(node, "label"),
+        domain: Parsers::Specifications.read_as_array(node, "domain"),
+        range: Parsers::Specifications.read_as_array(node, "range"),
+        subproperty_of: Parsers::Specifications.read!(node, "subproperty")
+      )
     end
   end
 end
