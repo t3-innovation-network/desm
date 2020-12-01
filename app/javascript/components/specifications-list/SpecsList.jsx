@@ -6,11 +6,43 @@ import Loader from "../shared/Loader";
 import TopNavOptions from "../shared/TopNavOptions";
 import SpineSpecsList from "./SpineSpecsList";
 import _ from "lodash";
+import ConfirmDialog from "../shared/ConfirmDialog";
+import { toastr as toast } from "react-redux-toastr";
+import deleteMapping from "../../services/deleteMapping";
 
 const SpecsList = () => {
-  const [mappings, setMappings] = useState([]);
-  const [loading, setLoading] = useState(true);
+  /**
+   * Controls displaying the removal confirmation dialog
+   */
+  const [confirmingRemove, setConfirmingRemove] = useState(false);
+  /**
+   * Representation of an error on this page process
+   */
+  const [errors, setErrors] = useState([]);
+  /**
+   * Representation of an error on this page process while removing a mapping
+   */
+  const [errorsWhileRemoving, setErrorsWhileRemoving] = useState([]);
+  /**
+   * Represents the filter value to configure the query to get the specifications
+   */
   const [filter, setFilter] = useState("user");
+  /**
+   * Whether the page is loading results or not
+   */
+  const [loading, setLoading] = useState(true);
+  /**
+   * The list of mappings to display
+   */
+  const [mappings, setMappings] = useState([]);
+  /**
+   * The identifier of the mapping to be removed. Saved in state, because the id is in an iterator,
+   * and the clicked handles confirmation, and the confirmation is outside the iterator.
+   */
+  const [mappingIdToRemove, setMappingIdToRemove] = useState(null);
+  /**
+   * The options object to use in the select component
+   */
   const filterOptions = [
     {
       key: "user",
@@ -30,6 +62,47 @@ const SpecsList = () => {
   };
 
   /**
+   * Handle showing the errors on screen, if any
+   *
+   * @param {HttpResponse} response
+   * @param {Array} errorsList
+   * @param {Function} updateErrors
+   */
+  function anyError(response, errorsList, updateErrors) {
+    if (response.error) {
+      errorsList.push(response.error);
+      updateErrors([...new Set(errorsList)]);
+    }
+    /// It will return a truthy value (depending no the existence
+    /// of the errors on the response object)
+    return !_.isUndefined(response.error);
+  }
+
+  /**
+   * Actions to take when the user confirms to remove a mapping
+   */
+  const handleConfirmRemove = (mappingId) => {
+    setConfirmingRemove(true);
+    setMappingIdToRemove(mappingId);
+  };
+
+  /**
+   * Send a request to delete the selected mapping.
+   */
+  const handleRemoveMapping = async () => {
+    let response = await deleteMapping(mappingIdToRemove);
+
+    if (!anyError(response, errorsWhileRemoving, setErrorsWhileRemoving)) {
+      toast.success("Mapping removed");
+
+      setMappings(
+        mappings.filter((mapping) => mapping.id != mappingIdToRemove)
+      );
+      setConfirmingRemove(false);
+    }
+  };
+
+  /**
    * Change the filter for the listed mappings
    */
   const handleFilterChange = (value) => {
@@ -40,12 +113,13 @@ const SpecsList = () => {
   /**
    * Get the mappings from the service
    */
-  const goForTheMappings = (value) => {
+  const goForTheMappings = async (value) => {
     let filterValue = value || filter;
-    fetchMappings(filterValue).then((response) => {
+    let response = await fetchMappings(filterValue);
+
+    if (!anyError(response, errors, setErrors)) {
       setMappings(response.mappings);
-      setLoading(false);
-    });
+    }
   };
 
   /**
@@ -54,7 +128,11 @@ const SpecsList = () => {
    * but it mimics the same action).
    */
   useEffect(() => {
-    goForTheMappings();
+    goForTheMappings().then(() => {
+      if (!errors.length) {
+        setLoading(false);
+      }
+    });
   }, []);
 
   return (
@@ -68,6 +146,19 @@ const SpecsList = () => {
               <Loader />
             ) : (
               <Fragment>
+                <ConfirmDialog
+                  onRequestClose={() => setConfirmingRemove(false)}
+                  onConfirm={() => handleRemoveMapping()}
+                  visible={confirmingRemove}
+                >
+                  <h2 className="text-center">
+                    You are removing a specification
+                  </h2>
+                  <h5 className="mt-3 text-center">
+                    Please confirm this action.
+                  </h5>
+                </ConfirmDialog>
+
                 <div className="table-responsive">
                   <table className="table">
                     <thead>
@@ -138,6 +229,15 @@ const SpecsList = () => {
                                 >
                                   View
                                 </Link>
+
+                                <button
+                                  onClick={() =>
+                                    handleConfirmRemove(mapping.id)
+                                  }
+                                  className="btn btn-sm btn-dark ml-2"
+                                >
+                                  Remove
+                                </button>
                               </td>
                             </tr>
                           );

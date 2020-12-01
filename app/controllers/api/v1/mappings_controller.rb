@@ -28,6 +28,17 @@ class Api::V1::MappingsController < ApplicationController
   end
 
   ###
+  # @description: Removes a mapping from the database
+  ###
+  def destroy
+    @instance.destroy!
+
+    render json: {
+      success: true
+    }
+  end
+
+  ###
   # @description: Udates the attributes of a mapping
   ###
   def update
