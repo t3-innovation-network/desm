@@ -18,7 +18,13 @@ module Processors
       # stage we are dealing with a json-ld file
       raise InvalidSpecification unless file_content["@graph"].present?
 
-      domains = file_content["@graph"]
+      # Since we're looking for domains inside the file,
+      # we only care about the nodes with type 'rdf:Class'
+      domains = file_content["@graph"].select {|node|
+        node_types(node).any? {|type|
+          type.downcase.include?("class")
+        }
+      }
 
       process_domains(domains)
     end
@@ -37,12 +43,9 @@ module Processors
       counter = 0
       domains.each do |domain|
         domain = domain.with_indifferent_access
-        # Since we're looking for domains inside the file,
-        # we only care about the nodes with type 'rdf:Class'
-        next if domain[:@type] != "rdfs:Class"
 
         counter += 1
-        label = domain["rdfs:label"]["@value"] || domain["rdfs:label"]["en-US"] || domain["rdfs:label"]
+        label = Parsers::Specifications.read!(domain, "label")
 
         domains_in_file << {
           id: counter,
@@ -62,38 +65,126 @@ module Processors
     #  So we are going to return a json-ld file with the context and a graph
     #  node with only one class, all it's properties and recursively, all the
     #  related properties
+    # @param [String] file: The file to be filtered
+    # @param [Array] uris: The identifier of the selected rdfs:Class'es that will be used to filter the file
+    # @return [Hash] The collectio of vocabularies, if any, and the new filtered specification
     ###
-    def self.filter_specification(file, uri)
-      # Make the file content available as a json object
-      specification = JSON.parse(file)
+    def self.filter_specification(spec, uris)
+      # Make the spec content available as a json object
+      spec = JSON.parse(spec) if spec.is_a?(String)
 
-      filter_specification_by_domain_uri(specification, uri)
+      vocabularies = filter_vocabularies(spec)
+      spec = filter_specification_by_domain_uri(spec, uris)
+
+      {
+        vocabularies: vocabularies,
+        specification: spec
+      }
+    end
+
+    ###
+    # @description: Get a collection of all the vocabularies found in the specification in a proper way
+    # @param [Struct] spec: The specification to be filtered
+    # @return [Array]
+    ###
+    def self.filter_vocabularies(spec)
+      vocabs = []
+
+      # Get all the concept scheme nodes. With the pupose of separate all the vocabularies, we
+      # need the concept schemes, which represents the vocabularies main nodes.
+      Processors::Skos.scheme_nodes_from_graph(spec["@graph"]).each do |scheme_node|
+        vocab = {
+          "@context": nil,
+          # Get all the concepts for this concept scheme
+          "@graph": Processors::Skos.identify_concepts(spec["@graph"], scheme_node)
+        }
+
+        # Place the context at the beginning
+        vocab[:@context] = vocab_context(vocab, spec["@context"])
+
+        # Place the scheme node at the beginning
+        vocab[:@graph].unshift(scheme_node)
+
+        # Add the voabulary to the list
+        vocabs << vocab
+      end
+
+      vocabs
+    end
+
+    ###
+    # @description: From a wide context, generate a new one, containing only the keys that are needed for the
+    #   given vocabulary
+    # @param [Hash] vocab: The vocabulary to be analyzed
+    # @return [Hash] context: The wider context to be used as context source
+    ###
+    def self.vocab_context(vocab, context)
+      final_context = {}
+
+      # We only have concepts at this point, so accessing the graph is fine.
+      # Proceed to iterate through each concept in the graph
+      vocab[:@graph].each do |concept|
+        # Each concept will have different keys (here, the concepts are represented as hashes)
+        # We iterate through each key of the concept, wich represents each "attribute"
+        concept.keys.each do |attr_key|
+          # We are only interested in those keys that uses the uris from the main context
+          # If so, we add the key and value to our new context
+          if Processors::Skos.using_context_uri(context, attr_key)
+            k, v = context.find {|key, _value| key.include?(attr_key.split(":").first) }
+            final_context[k] = v
+          end
+        end
+      end
+
+      final_context
     end
 
     ###
     # @description: Build a specification from the one uploaded, but only
     #   with the domain selected by the user, and the related properties
     #
-    # @param [Json|String] specification The entinre specification, as
+    # @param [Json|String] specification: The entire specification, as
     #   when the user uploaded it.
-    # @param [String] domain_uri The id (URI) of the domain selecteed by the user
+    # @param [Array] domain_uris: The ids (URI's) of the domain/s selecteed by the user
     ###
-    def self.filter_specification_by_domain_uri(specification, domain_uri)
-      # First we need the context and an empty "@graph" whixh will
+    def self.filter_specification_by_domain_uri(specification, domain_uris)
+      # First we need the context and an empty "@graph" which will
       # contain all the nodes of the specification
       final_spec = {
         "@context": specification["@context"],
-        "@graph": []
+        "@graph": generate_nodes(specification, domain_uris)
       }
 
-      # The first node of our graph will be the actual selected domain
-      final_spec[:@graph] << specification["@graph"].find {|node| node["@id"] == domain_uri }
+      # Avoid duplicate nodes
+      final_spec[:@graph].uniq!
+
+      final_spec
+    end
+
+    ###
+    # @description: Fill the specification graph with all the classes and property
+    #   nodes that are needed.
+    # @param [Hash] spec The specification object to analyze
+    # @param [Hash] domain_uris The ids (URI's) of the domain/s selecteed by the
+    #   user
+    # @return [Array]
+    ###
+    def self.generate_nodes spec, domain_uris
+      final_graph = []
+
+      # The first node/s of our graph will be the ones from the uris selected by the user
+      class_nodes = filter_classes(spec["@graph"]).select {|node|
+        domain_uris.any? {|uri| uri == node["@id"] }
+      }
+      class_nodes.each {|class_node| final_graph << class_node }
 
       # The rest of the nodes will be added recursively looking for
       # those nodes related to a URI
-      final_spec[:@graph] += build_nodes_for_uri(specification["@graph"], domain_uri)
+      domain_uris.each {|domain_uri|
+        final_graph += build_nodes_for_uri(spec["@graph"], domain_uri)
+      }
 
-      final_spec
+      final_graph
     end
 
     ###
@@ -102,14 +193,16 @@ module Processors
     #
     # @param [Array] nodes The collection of all the nodes to be processed to find
     #   the related ones
-    # @param [String] uri The id (URI) of the property to find related ones
+    # @param [String] class_uri The id (URI) of the class or property to find related ones
     ###
-    def self.build_nodes_for_uri(nodes, uri)
+    def self.build_nodes_for_uri(nodes, class_uri)
+      # Get only the properties
+      props = filter_properties(nodes, class_uri)
+
       # Find all related properties
-      related_properties = nodes.select do |node|
-        node["@type"] == "rdf:Property" && (property_of?(node, "domainIncludes", uri) ||
-                                            property_of?(node, "rangeIncludes", uri))
-      end
+      related_properties = props.select {|node|
+        property_of?(node, "domain", class_uri) || property_of?(node, "range", class_uri)
+      }
 
       # Base case
       return [] if related_properties.empty?
@@ -121,6 +214,51 @@ module Processors
       end
 
       related_properties
+    end
+
+    ###
+    # @description: Filter a given graph to return a new one containing only classes
+    # @param [Hash] node
+    # @return [Array]:
+    ###
+    def self.filter_classes nodes
+      nodes.select {|node|
+        node_types(node).any? {|type|
+          type.downcase.include?("class")
+        }
+      }
+    end
+
+    ###
+    # @description: Filter a given graph to return a new one containing only properties
+    #   or elements of a given class
+    # @param [Hash] node
+    # @param [String] class_uri
+    # @return [TrueClass|FalseClass]:
+    ###
+    def self.filter_properties nodes, class_uri=nil
+      nodes.select {|node|
+        node_types(node).any? {|type|
+          type.downcase.include?("property")
+        } ||
+        (
+          class_uri.present? &&
+          node_types(node).any? {|type|
+            type.downcase.include?(class_uri)
+          }
+        )
+      }
+    end
+
+    ###
+    # @description: Reads the node to return the type of it
+    # @param [Hash] node
+    # @return [String|any]
+    ###
+    def self.node_types node
+      node = node.first if node.is_a?(Array) && node.first.is_a?(Hash)
+
+      Array(Parsers::Specifications.read!(node, "type"))
     end
 
     ###
@@ -148,20 +286,21 @@ module Processors
     # @param [Hash] data The collection of data to create the specification
     ###
     def self.create(data)
-      domain = Domain.find_by_uri(data[:domain_to])
+      @current_user = data[:user]
 
       s = Specification.new(
         name: data[:name],
         version: data[:version],
         use_case: data[:use_case],
-        user: data[:user],
-        domain: domain,
+        user: @current_user,
+        domain: Domain.find(data[:domain_id]),
         uri: "uri"
       )
 
-      s.save!
-
-      create_terms(s, data[:specs])
+      ActiveRecord::Base.transaction do
+        s.save!
+        create_terms(s, data[:spec])
+      end
 
       s
     end
@@ -169,40 +308,43 @@ module Processors
     ###
     # @description: Create each of the terms related to the specification
     # @param [Specification] spec The parent specification for the specs to create
-    # @param [Array] specifications The specifications uploaded by the user. It
-    #   It should be an array of json formatted strings
+    # @param [Object] spec The unified specification data uploaded by the user. It
+    #   It should be json formatted string
     ###
-    def self.create_terms(specification, specifications)
-      specifications.each do |spec|
-        spec = JSON.parse(spec)
+    def self.create_terms(specification, spec)
+      spec = JSON.parse(spec)
 
-        spec["@graph"].each do |node|
-          create_one_term(specification, node) unless node["@type"] == "rdfs:Class"
-        end
+      filter_properties(spec["@graph"]).each do |node|
+        specification.terms << create_one_term(node)
       end
     end
 
     ###
-    # @description: Handles to create a term with its related property
+    # @description: Handles to find or create a term with its related property
     # @param [Object] node: The node to be evaluated in order to create a term
     ###
-    def self.create_one_term(spec, node)
-      term = Term.create!(
-        specification: spec,
+    def self.create_one_term(node)
+      # Retrieve the term, if not found, create one with these properties
+      term = Term.find_or_initialize_by(
         uri: node["@id"],
-        name: Parsers::Specifications.read!(node, "label")
+        name: Parsers::Specifications.read!(node, "label"),
+        organization: @current_user.organization
       )
 
-      Property.create!(
-        term: term,
-        uri: term.desm_uri,
-        source_uri: node["@id"],
-        comment: Parsers::Specifications.read!(node, "comment"),
-        label: Parsers::Specifications.read!(node, "label"),
-        domain: Parsers::Specifications.read(node, "domain"),
-        range: Parsers::Specifications.read(node, "range"),
-        subproperty_of: Parsers::Specifications.read!(node, "subproperty")
-      )
+      unless term.property.present?
+        Property.create!(
+          term: term,
+          uri: term.desm_uri,
+          source_uri: node["@id"],
+          comment: Parsers::Specifications.read!(node, "comment"),
+          label: Parsers::Specifications.read!(node, "label"),
+          domain: Parsers::Specifications.read_as_array(node, "domain"),
+          range: Parsers::Specifications.read_as_array(node, "range"),
+          subproperty_of: Parsers::Specifications.read!(node, "subproperty")
+        )
+      end
+
+      term
     end
   end
 end

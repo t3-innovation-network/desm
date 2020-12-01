@@ -8,13 +8,38 @@
 #   already has a spine (a previous specification was uploaded for it).
 ###
 class Mapping < ApplicationRecord
+  ###
+  # @description: This will allow to keep track of every change in this model thorugh
+  #   the 'audits' method
+  ###
+  audited
+  ###
+  # @description: The user that this mapping belongs to
+  ###
   belongs_to :user
-  belongs_to :specification
+  ###
+  # @description: The specification that was uploaded to create this mapping
+  ###
+  belongs_to :specification, dependent: :destroy
+  ###
+  # @description: The specification chosen to map to
+  ###
   belongs_to :spine, foreign_key: "spine_id", class_name: :Specification
+  ###
+  # @description: Each term that conforms the mapping. The terms of the mapping contains informatio
+  #   about the type of alignment (predicate), which term from the spine was mapped to which of the
+  #   original specification, and more.
+  ###
   has_many :terms, class_name: :MappingTerm, dependent: :destroy
+  ###
+  # @description: The selected terms from the original uploaded specification. The user can select one
+  #   ore more terms from it.
+  ###
   has_and_belongs_to_many :selected_terms, join_table: :mapping_selected_terms, class_name: :Term
+  ###
+  # @description: Validates the presence of a name for the mapping
+  ###
   validates :name, presence: true
-
   # The possible status of a mapping
   # 1. "uploaded" It means that there's a specification uploaded but not
   #    terms mapped

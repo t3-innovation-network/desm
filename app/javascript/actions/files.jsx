@@ -45,3 +45,27 @@ export const unsetSpecToPreview = (specs) => {
     payload: specs,
   };
 };
+
+/**
+ * Represents setting the merged file to valid unified file, containing
+ * the user selected files as only one
+ *
+ * @returns {Array}
+ */
+export const setMergedFile = (file) => {
+  return {
+    type: "SET_MERGED_FILE",
+    payload: file,
+  };
+};
+
+/**
+ * Represents setting the merged file to an empty object
+ *
+ * @returns {Array}
+ */
+export const unsetMergedFile = () => {
+  return {
+    type: "UNSET_MERGED_FILE",
+  };
+};

@@ -1,3 +1,4 @@
+import { decamelizeKeys } from "humps";
 import apiRequest from "./api/apiRequest";
 
 const updateTerm = async (term) => {
@@ -7,7 +8,7 @@ const updateTerm = async (term) => {
     payload: {
       term: {
         name: term.name,
-        property_attributes: term.property,
+        property_attributes: decamelizeKeys(term.property),
         vocabulary_ids: term.vocabularies.map((v) => v.id),
       },
     },

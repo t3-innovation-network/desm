@@ -68,13 +68,13 @@ class ExpandableOptions extends Component {
 
   render() {
     const { expanded, selectedOption } = this.state;
-    const { options } = this.props;
+    const { cardCssClass, cardHeaderCssClass } = this.props;
 
     return (
       <OutsideAlerter onOutsideAlert={() => this.handleShrink()}>
         {expanded ? (
           <SlideInDown className="float-over">
-            <div className="card with-shadow">
+            <div className={"card" + (cardCssClass ? " " + cardCssClass : "")}>
               {this.props.options.map((option) => {
                 return (
                   <div
@@ -90,11 +90,12 @@ class ExpandableOptions extends Component {
           </SlideInDown>
         ) : (
           <FadeIn>
-            <div className="card with-shadow">
+            <div className={"card" + (cardCssClass ? " " + cardCssClass : "")}>
               <div
                 className={
-                  "card-header cursor-pointer" +
-                  (selectedOption ? " pb-0" : " pb-4")
+                  "card-header cursor-pointer form-control form-control-lg" +
+                  (selectedOption ? " pb-0" : " pb-4") +
+                  (cardHeaderCssClass ? " " + cardHeaderCssClass : "")
                 }
                 onClick={this.handleExpand}
               >

@@ -4,7 +4,16 @@
 # @description: Place all the actions related to terms
 ###
 class Api::V1::TermsController < ApplicationController
-  before_action :authorize_with_policy
+  before_action :authorize_with_policy, except: :index
+
+  ###
+  # @description: All the terms from a specification
+  ###
+  def index
+    terms = Specification.find(params[:id]).terms
+
+    render json: terms, include: %i[property vocabularies]
+  end
 
   ###
   # @description: Returns the term with id equal to the one passed in params
@@ -31,15 +40,6 @@ class Api::V1::TermsController < ApplicationController
     render json: {status: :removed}
   end
 
-  ###
-  # @description: All the terms from a specification
-  ###
-  def from_specification
-    terms = Specification.find(params[:id]).terms
-
-    render json: terms, include: %i[property vocabularies]
-  end
-
   private
 
   ###
@@ -57,7 +57,7 @@ class Api::V1::TermsController < ApplicationController
     params.require(:term).permit(
       :name, :uri, :specification_id, {vocabulary_ids: []},
       property_attributes: [
-        :source_uri, :uri, :subproperty_of, :value_space, :label, :comment,
+        :id, :source_uri, :uri, :subproperty_of, :value_space, :label, :comment,
         {range: []}, :path, {domain: []}, :selected_domain, :selected_range
       ]
     )

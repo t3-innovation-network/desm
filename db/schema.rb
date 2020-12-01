@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_02_131905) do
+ActiveRecord::Schema.define(version: 2020_11_26_105128) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,28 @@ ActiveRecord::Schema.define(version: 2020_11_02_131905) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["role_id"], name: "index_assignments_on_role_id"
     t.index ["user_id"], name: "index_assignments_on_user_id"
+  end
+
+  create_table "audits", force: :cascade do |t|
+    t.integer "auditable_id"
+    t.string "auditable_type"
+    t.integer "associated_id"
+    t.string "associated_type"
+    t.integer "user_id"
+    t.string "user_type"
+    t.string "username"
+    t.string "action"
+    t.text "audited_changes"
+    t.integer "version", default: 0
+    t.string "comment"
+    t.string "remote_address"
+    t.string "request_uuid"
+    t.datetime "created_at"
+    t.index ["associated_type", "associated_id"], name: "associated_index"
+    t.index ["auditable_type", "auditable_id", "version"], name: "auditable_index"
+    t.index ["created_at"], name: "index_audits_on_created_at"
+    t.index ["request_uuid"], name: "index_audits_on_request_uuid"
+    t.index ["user_id", "user_type"], name: "user_index"
   end
 
   create_table "domain_sets", force: :cascade do |t|
@@ -179,13 +201,19 @@ ActiveRecord::Schema.define(version: 2020_11_02_131905) do
     t.index ["user_id"], name: "index_specifications_on_user_id"
   end
 
+  create_table "specifications_terms", id: false, force: :cascade do |t|
+    t.bigint "specification_id", null: false
+    t.bigint "term_id", null: false
+    t.index ["specification_id", "term_id"], name: "index_specifications_terms_on_specification_id_and_term_id", unique: true
+  end
+
   create_table "terms", force: :cascade do |t|
     t.string "name"
     t.string "uri", null: false
-    t.bigint "specification_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["specification_id"], name: "index_terms_on_specification_id"
+    t.bigint "organization_id"
+    t.index ["organization_id"], name: "index_terms_on_organization_id"
   end
 
   create_table "terms_vocabularies", id: false, force: :cascade do |t|
@@ -211,6 +239,7 @@ ActiveRecord::Schema.define(version: 2020_11_02_131905) do
     t.jsonb "content", default: "{}", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.jsonb "context", default: {}, null: false
     t.index ["organization_id"], name: "index_vocabularies_on_organization_id"
   end
 
@@ -234,6 +263,6 @@ ActiveRecord::Schema.define(version: 2020_11_02_131905) do
   add_foreign_key "properties", "terms"
   add_foreign_key "specifications", "domains"
   add_foreign_key "specifications", "users"
-  add_foreign_key "terms", "specifications"
+  add_foreign_key "terms", "organizations"
   add_foreign_key "vocabularies", "organizations"
 end

@@ -66,6 +66,14 @@ class MappingPolicy < ApplicationPolicy
   end
 
   ###
+  # @description: Determines if the user can remove an instance of this resource
+  # @return [TrueClass]
+  ###
+  def destroy?
+    @user.present?
+  end
+
+  ###
   # @description: Determines if the user can update an instance of this resource
   # @return [TrueClass]
   ###

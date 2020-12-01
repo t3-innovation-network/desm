@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
-import validator from "validator";
 import AlertNotice from "../shared/AlertNotice";
 import FileInfo from "./FileInfo";
 import { useSelector, useDispatch } from "react-redux";
-import { setFiles, setSpecToPreview } from "../../actions/files";
+import { setFiles, setMergedFile, setSpecToPreview } from "../../actions/files";
 import {
   doSubmit,
   startProcessingFile,
   stopProcessingFile,
   setMappingFormData,
+  doUnsubmit,
 } from "../../actions/mappingform";
 import fetchDomains from "../../services/fetchDomains";
 import { toastr as toast } from "react-redux-toastr";
 import MultipleDomainsModal from "./MultipleDomainsModal";
 import checkDomainsInFile from "../../services/checkDomainsInFile";
 import filterSpecification from "../../services/filterSpecification";
+import mergeFiles from "../../services/mergeFiles";
+import { setVocabularies } from "../../actions/vocabularies";
+import { validURL } from "../../helpers/URL";
 
 const MappingForm = () => {
   const [errors, setErrors] = useState("");
@@ -54,12 +57,18 @@ const MappingForm = () => {
   /// The files uploaded by the user
   const files = useSelector((state) => state.files);
 
+  /// The unified file from the ones the user uploaded
+  const mergedFile = useSelector((state) => state.mergedFile);
+
   /// The preview files (files already prepared to be previewed, as
   /// without the unrelated domains and properties)
   const previewSpecs = useSelector((state) => state.previewSpecs);
 
   /// Whether the form was submitted or not, in order to show the preview
   const submitted = useSelector((state) => state.submitted);
+
+  /// Whether we are processing the file or not
+  const processingFile = useSelector((state) => state.processingFile);
 
   const dispatch = useDispatch();
 
@@ -76,7 +85,7 @@ const MappingForm = () => {
    * out the "use case" input
    */
   const handleUseCaseBlur = () => {
-    if (!validator.isURL(useCase)) {
+    if (!validURL(useCase)) {
       setErrors("'Use case' must be a valid URL");
     } else {
       setErrors("");
@@ -134,46 +143,102 @@ const MappingForm = () => {
       name: name,
       version: version,
       useCase: useCase,
-      domainTo: selectedDomainId,
+      domainId: selectedDomainId,
     };
+  };
+
+  /**
+   * Unify the files by using the service
+   * If we recognize more than 1 file uploaded by the user, we use the service to
+   * merge the files into one big graph. And from now on, we manage to work with
+   * the file content and not with the file object/s.
+   *
+   * Note that if there's only one file, nothing changes. The backend will just
+   * return the file as its needed, and with the proper format to be processed here
+   */
+  const handleMergeFiles = async () => {
+    let response = await mergeFiles(files);
+
+    if (response.error) {
+      toast.error(response.error);
+      return;
+    }
+
+    dispatch(setMergedFile(response.specification));
+
+    files.map((file) => sendFileToPreview(file));
+
+    return response.specification;
+  };
+
+  /**
+   * Be sure that the uploaded file contains only one domain to map to
+   */
+  const handleCheckDomainsInFile = async (spec) => {
+    let response = await checkDomainsInFile(spec);
+
+    if (response.error) {
+      toast.error(response.error);
+      return;
+    }
+
+    if (response.domains.length > 1) {
+      setMultipleDomainsInFile(true);
+      setDomainsInFile(response.domains);
+      return;
+    }
+  };
+
+  /**
+   * Manage to work with only 1 file with all the information.
+   */
+  const processFiles = async () => {
+    let spec = await handleMergeFiles();
+
+    await handleCheckDomainsInFile(spec);
   };
 
   /**
    * Send the file/s to the API service to be parsed
    */
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // Check the form validity
     if (errors) {
       toast.error("Please correct the errors first");
       event.preventDefault();
       return;
     }
 
+    // Update the shared state
     dispatch(startProcessingFile());
     dispatch(setMappingFormData(formData()));
 
-    /**
-     * Be sure the file uploaded contains only one domain to map to
-     */
-    files.map(async (file) => {
-      let response = await checkDomainsInFile(file);
+    // Manage file tasks with the service
+    await processFiles();
 
-      if (response.error) {
-        toast.error(response.error);
-        return;
-      }
-
-      if (response.domains.length > 1) {
-        setMultipleDomainsInFile(true);
-        setDomainsInFile(response.domains);
-        return;
-      }
-
-      dispatch(stopProcessingFile());
-      sendFileToPreview(file);
-    });
-
+    // Update the shared state
+    dispatch(stopProcessingFile());
     dispatch(doSubmit());
-    event.preventDefault();
+  };
+
+  /**
+   * Filter the specification to have only those properties related to the
+   * selected domain.
+   *
+   * @param {Array} uris: The uri's of the selected domains
+   */
+  const handleFilterSpecification = async (uris) => {
+    let response = await filterSpecification(uris, mergedFile);
+
+    if (response.error) {
+      toast.error(response.error);
+      return;
+    }
+
+    dispatch(setVocabularies(response.filtered.vocabularies));
+
+    return response.filtered.specification;
   };
 
   /**
@@ -182,34 +247,33 @@ const MappingForm = () => {
    *
    * Then filter the file content to only show the selected domain an
    * related properties.
+   *
+   * @param {Array} uris The list of identifiers of the rdfs:Class'es selected.
    */
-  const onSelectDomainFromFile = (id) => {
+  const onSelectDomainsFromFile = async (uris) => {
     dispatch(startProcessingFile());
     setMultipleDomainsInFile(false);
 
     let tempSpecs = [];
-    files.map((file) => {
-      filterSpecification(id, file).then((response) => {
-        if (response.error) {
-          toast.error(response.error);
-          return;
-        }
-        tempSpecs.push(JSON.stringify(response.specification, null, 2));
-        dispatch(setSpecToPreview(tempSpecs));
-        dispatch(stopProcessingFile());
-      });
-    });
+    let specification = await handleFilterSpecification(uris);
+    dispatch(setMergedFile(specification));
 
-    toast.info("Great! You selected the domain with URI: " + id);
+    tempSpecs.push(JSON.stringify(specification, null, 2));
+
+    dispatch(setSpecToPreview(tempSpecs));
+    dispatch(stopProcessingFile());
+
+    toast.info(
+      "Great! You selected the following domains: " +
+        uris.map((uri) => uri.toString()).join("\n")
+    );
   };
 
   /**
    * File content to be displayed after
    * file upload is complete
-   *
-   * @returns {React.Fragment}
    */
-  const fileData = () => {
+  const FileData = () => {
     let fileCards = [];
 
     if (files.length > 0) {
@@ -255,16 +319,18 @@ const MappingForm = () => {
   return (
     <React.Fragment>
       <MultipleDomainsModal
+        domains={filteredDomainsInFile}
+        inputValue={inputValue}
         modalIsOpen={multipleDomainsInFile}
         onRequestClose={unsetMultipleDomains}
-        domains={filteredDomainsInFile}
-        onSelectDomain={onSelectDomainFromFile}
-        filterOnChange={filterOnChange}
+        onSubmit={onSelectDomainsFromFile}
+        onFilterChange={filterOnChange}
       />
 
       <div
         className={
-          (submitted ? "disabled-container " : " ") + "col-lg-6 p-lg-5 pt-5"
+          (submitted || processingFile ? "disabled-container " : " ") +
+          "col-lg-6 p-lg-5 pt-5"
         }
       >
         {errors && <AlertNotice message={errors} />}
@@ -401,8 +467,7 @@ const MappingForm = () => {
                 Import Specification
               </button>
             </section>
-
-            {fileData()}
+            <FileData />
           </form>
         </section>
       </div>

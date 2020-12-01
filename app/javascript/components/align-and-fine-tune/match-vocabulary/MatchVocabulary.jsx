@@ -424,7 +424,7 @@ export default class MatchVocabulary extends Component {
           </div>
           <div className="card-body">
             {/* Manage to show the errors, if any */}
-            {errors.length ? <AlertNotice message={errors.join("\n")} /> : ""}
+            {errors.length ? <AlertNotice message={errors} /> : ""}
 
             {loading ? (
               <Loader />

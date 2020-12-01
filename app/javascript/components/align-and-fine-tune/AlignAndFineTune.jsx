@@ -20,6 +20,8 @@ import createSpineTerm from "../../services/createSpineTerm";
 import Draggable from "../shared/Draggable";
 import { DraggableItemTypes } from "../shared/DraggableItemTypes";
 import updateMapping from "../../services/updateMapping";
+import MappingChangeLog from "./mapping-changelog/MappingChangeLog";
+import fetchAudits from "../../services/fetchAudits";
 
 const AlignAndFineTune = (props) => {
   /**
@@ -84,6 +86,11 @@ const AlignAndFineTune = (props) => {
    * Whether to hide mapped spine terms or not
    */
   const [hideMappedSelectedTerms, setHideMappedSelectedTerms] = useState(false);
+
+  /**
+   * The date the mapping was marked as "mapped", which is "completed".
+   */
+  const [dateMapped, setDateMapped] = useState(null);
 
   /**
    * The value of the input that the user is typing in the search box
@@ -330,13 +337,15 @@ const AlignAndFineTune = (props) => {
         >
           Save and Exit
         </button>
-        <button
-          className="btn bg-col-primary col-background"
-          onClick={handleDoneAlignment}
-          disabled={loading || !allTermsMapped}
-        >
-          Done Alignment
-        </button>
+        {mapping.status !== "mapped" && (
+          <button
+            className="btn bg-col-primary col-background"
+            onClick={handleDoneAlignment}
+            disabled={loading || !allTermsMapped}
+          >
+            Done Alignment
+          </button>
+        )}
       </React.Fragment>
     );
   };
@@ -472,26 +481,27 @@ const AlignAndFineTune = (props) => {
 
     let response = await createSpineTerm({
       synthetic: {
-        spine_term: {
-          name: spineTerm.name,
-          uri: tempUri,
-          specification_id: mapping.spine_id,
-          property_attributes: {
-            uri: tempUri,
-            label: tempUri,
-            comment: "Synthetic element added to the spine",
-          },
-        },
-        mapping_term: {
+        mappingTerm: {
           comment:
             "Alignment for a synthetic element added to the spine. Synthetic uri: " +
             tempUri,
           uri: tempUri,
-          predicate_id: predicates.find((p) =>
+          predicateId: predicates.find((p) =>
             p.uri.toLowerCase().includes("nomatch")
           ).id,
-          mapping_id: mapping.id,
-          mapped_terms: mTerm.mapped_terms.map((term) => term.id),
+          mappingId: mapping.id,
+          mappedTerms: mTerm.mapped_terms.map((term) => term.id),
+        },
+        specification_id: mapping.spine_id,
+        spineTerm: {
+          name: spineTerm.name,
+          propertyAttributes: {
+            uri: tempUri,
+            label: tempUri,
+            comment: "Synthetic element added to the spine",
+          },
+          organizationId: user.organization.id,
+          uri: tempUri,
         },
       },
     });
@@ -590,7 +600,6 @@ const AlignAndFineTune = (props) => {
     }
   };
 
-
   /**
    * Get the mapping
    */
@@ -649,6 +658,30 @@ const AlignAndFineTune = (props) => {
   };
 
   /**
+   * Fetch changes from the api service. This is only used to get the exact date
+   * when the mapping changed from "in-progress" to "mapped".
+   */
+  const handleFetchMappingChanges = async (mapping) => {
+    if (mapping.status == "mapped") {
+      let response = await fetchAudits({
+        className: "Mapping",
+        instanceIds: mapping.id,
+        auditAction: "update",
+      });
+
+      if (!anyError(response)) {
+        let statusChangedAudit = response.audits.find(
+          (audit) => audit.audited_changes["status"].toString() == "1,2"
+        );
+
+        if (statusChangedAudit) {
+          setDateMapped(statusChangedAudit.created_at);
+        }
+      }
+    }
+  };
+
+  /**
    * Get the data from the service
    */
   const fetchDataFromAPI = async () => {
@@ -666,6 +699,9 @@ const AlignAndFineTune = (props) => {
 
     // Get the predicates
     await handleFetchPredicates();
+
+    // Get the audits
+    await handleFetchMappingChanges(response.mapping);
   };
 
   /**
@@ -688,7 +724,7 @@ const AlignAndFineTune = (props) => {
     <React.Fragment>
       <div className="wrapper">
         <TopNav centerContent={navCenterOptions} />
-        {errors.length ? <AlertNotice message={errors.join("\n")} /> : ""}
+        {errors.length ? <AlertNotice message={errors} /> : ""}
         <div className="container-fluid container-wrapper">
           <div className="row">
             {loading ? (
@@ -710,6 +746,18 @@ const AlignAndFineTune = (props) => {
                     mappingTerms={mappingTerms}
                   />
                   <div className="mt-5">
+                    {/* CHANGELOG */}
+                    {dateMapped && (
+                      <MappingChangeLog
+                        predicates={predicates}
+                        mapping={mapping}
+                        spineTerms={spineTerms}
+                        mappingTerms={mappingTerms}
+                        dateMapped={dateMapped}
+                      />
+                    )}
+
+                    {/* CANCEL SYNTHETIC TERM FORM */}
                     {addingSynthetic && (
                       <div className="row">
                         <div className="col mb-3">

@@ -12,29 +12,33 @@ Rails.application.routes.draw do
   
   namespace :api do
     namespace :v1 do
+      resources :audits, only: [:index]
       resources :domains, only: [:index, :show]
-      resources :mappings, only: [:create, :show, :index, :update]
-      resources :mapping_terms, only: [:update]
+      resources :mappings, only: [:create, :destroy, :show, :index, :update]
+      resources :mapping_terms, only: [:index, :update]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :predicates, only: [:index]
       resources :roles, only: [:index]
-      resources :specifications, only: [:create, :show]
+      resources :specifications, only: [:create, :destroy, :show]
       resources :spine_terms, only: [:create]
       resources :terms, only: [:show, :update, :destroy]
       resources :vocabularies, only: [:index, :create, :show]
       resources :alignment_vocabulary_concepts, only: [:update]
       resources :alignment_synthetic_concepts, only: [:create]
+      resources :spine_specifications, only: :index
 
       # Mapping selected terms
       post 'mappings/:id/selected_terms' => 'mapping_selected_terms#create'
       get 'mappings/:id/selected_terms' => 'mapping_selected_terms#show'
       delete 'mappings/:id/selected_terms' => 'mapping_selected_terms#destroy'
 
+      get 'mapping_terms/:id/vocabulary' => 'alignment_vocabularies#show'
       get 'mappings/:id/terms' => 'mappings#show_terms'
       post 'specifications/info' => 'specifications#info'
       post 'specifications/filter' => 'specifications#filter'
-      get 'specifications/:id/terms' => 'terms#from_specification'
-      get 'mapping_terms/:id/vocabulary' => 'alignment_vocabularies#show'
+      post 'specifications/merge' => 'specifications#merge'
+      get 'specifications/:id/terms' => 'terms#index'
+      get 'vocabularies/:id/flat' => 'vocabularies#flat'
     end
   end
 

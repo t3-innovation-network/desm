@@ -1,3 +1,4 @@
+import { camelizeKeys } from "humps";
 import apiRequest from "./api/apiRequest";
 
 const fetchSpecificationTerms = async (specId) => {
@@ -7,7 +8,7 @@ const fetchSpecificationTerms = async (specId) => {
     successResponse: "terms",
     method: "get"
   })
-  return response;
+  return camelizeKeys(response);
 };
 
 export default fetchSpecificationTerms;
