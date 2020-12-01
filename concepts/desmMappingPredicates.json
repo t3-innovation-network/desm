@@ -19,6 +19,7 @@
     "title": {"@id": "dcterms:title", "@container": "@language"} ,
     "weight": {"@id": "desm:weight", "@type": "xsd:integer"}
   },
+  
   "@graph": [
      {
       "id": "http://desmsolutions.org/concepts/desmMappingPredicates",
