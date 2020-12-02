@@ -4,6 +4,8 @@
 # @description: Place all the actions related to specifications
 ###
 class Api::V1::SpecificationsController < ApplicationController
+  before_action :with_instance
+
   ###
   # @description: Process a specification file to organiza and return
   #   the related information, like how many domains it contains
@@ -51,6 +53,17 @@ class Api::V1::SpecificationsController < ApplicationController
     @specification = Specification.find(params[:id])
 
     render json: @specification, include: %i[user domain]
+  end
+
+  ###
+  # @description: Delete the given specification from the database
+  ###
+  def destroy
+    @instance.destroy!
+
+    render json: {
+      success: true
+    }
   end
 
   private

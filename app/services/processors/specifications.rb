@@ -49,7 +49,7 @@ module Processors
 
         domains_in_file << {
           id: counter,
-          uri: domain[:@id],
+          uri: Parsers::Specifications.read!(domain, "id"),
           label: label
         }
       end
@@ -207,11 +207,13 @@ module Processors
       # Base case
       return [] if related_properties.empty?
 
-      related_properties.each do |prop|
-        # For each of the related properties we return the prop
-        # plus all its related props, recursivelly
-        related_properties += build_nodes_for_uri(nodes, prop["@id"])
-      end
+      # @todo: Review nesting for ASN
+      #
+      # related_properties.each do |prop|
+      #   # For each of the related properties we return the prop
+      #   # plus all its related props, recursivelly
+      #   related_properties += build_nodes_for_uri(nodes, prop["@id"])
+      # end
 
       related_properties
     end
