@@ -13,7 +13,7 @@ class Api::V1::MappingTermsController < ApplicationController
   def index
     terms = filter
 
-    render json: terms, include: %i[mapped_terms spine_term predicate]
+    render json: terms, include: [:spine_term, :predicate, {mapped_terms: {include: :property}}]
   end
 
   ###
@@ -44,9 +44,9 @@ class Api::V1::MappingTermsController < ApplicationController
   # @return [ActiveRecord::Relation]
   ###
   def filter
-    terms = MappingTerm.all
+    terms = MappingTerm.joins(:mapping).where(mappings: {status: :mapped})
 
-    terms = MappingTerm.where(spine_term_id: params[:spine_term_id]) if params[:spine_term_id].present?
+    terms = terms.where(spine_term_id: params[:spine_term_id]) if params[:spine_term_id].present?
 
     terms.order(:uri)
   end

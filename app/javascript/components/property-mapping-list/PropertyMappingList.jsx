@@ -239,6 +239,7 @@ export default class PropertyMappingList extends Component {
                 />
 
                 <PropertiesList
+                  predicates={predicates}
                   selectedDomain={selectedDomain}
                   selectedAlignmentOrganizations={
                     selectedAlignmentOrganizations

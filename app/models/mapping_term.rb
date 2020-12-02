@@ -54,4 +54,20 @@ class MappingTerm < ApplicationRecord
   def update_mapped_terms ids
     self.mapped_term_ids = ids
   end
+
+  ###
+  # @description: The organization that originated this alignment
+  # @return [String]
+  ###
+  def origin
+    mapping.origin
+  end
+
+  ###
+  # @description: Include additional information about the mapping in
+  #   json responses. This overrides the ApplicationRecord as_json method.
+  ###
+  def as_json(options={})
+    super options.merge(methods: %i[origin])
+  end
 end

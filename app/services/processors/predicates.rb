@@ -49,20 +49,34 @@ module Processors
         predicate = predicate.with_indifferent_access
 
         # The concept scheme is processed, let's start with the proper predicates
-        next if predicate[:type] == "skos:ConceptScheme"
-
-        next if already_exists?(Predicate, predicate, print_message: true)
+        next unless valid_predicate(predicate)
 
         Predicate.create!({
+                            definition: Parsers::Specifications.read!(predicate, "definition"),
+                            pref_label: Parsers::Specifications.read!(predicate, "prefLabel"),
                             uri: predicate[:id],
-                            pref_label: predicate[:prefLabel]["en-us"],
-                            definition: predicate[:definition]["en-us"]
+                            weight: Parsers::Specifications.read!(predicate, "weight")
                           })
 
         processed += 1
       end
 
       processed
+    end
+
+    ###
+    # @description: Determines if a predicate is valid to incorporate to our records. It should not be of
+    #   type: "concept scheme" and it should not be already present.
+    # @param [Hash] predicate
+    # @return [TrueClass|FalseClass]
+    ###
+    def self.valid_predicate predicate
+      !(
+        Array(Parsers::Specifications.read!(predicate, "type")).any? {|type|
+          type.downcase.include?("conceptscheme")
+        } ||
+        already_exists?(Predicate, predicate, print_message: true)
+      )
     end
   end
 end

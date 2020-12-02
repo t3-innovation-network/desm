@@ -49,7 +49,7 @@ module Processors
 
         domains_in_file << {
           id: counter,
-          uri: domain[:@id],
+          uri: Parsers::Specifications.read!(domain, "id"),
           label: label
         }
       end
@@ -174,7 +174,7 @@ module Processors
 
       # The first node/s of our graph will be the ones from the uris selected by the user
       class_nodes = filter_classes(spec["@graph"]).select {|node|
-        domain_uris.any? {|uri| uri == node["@id"] }
+        domain_uris.any? {|uri| uri == Parsers::Specifications.read!(node, "id") }
       }
       class_nodes.each {|class_node| final_graph << class_node }
 
@@ -207,11 +207,13 @@ module Processors
       # Base case
       return [] if related_properties.empty?
 
-      related_properties.each do |prop|
-        # For each of the related properties we return the prop
-        # plus all its related props, recursivelly
-        related_properties += build_nodes_for_uri(nodes, prop["@id"])
-      end
+      # @todo: Review nesting for ASN
+      #
+      # related_properties.each do |prop|
+      #   # For each of the related properties we return the prop
+      #   # plus all its related props, recursivelly
+      #   related_properties += build_nodes_for_uri(nodes, prop["@id"])
+      # end
 
       related_properties
     end
@@ -277,7 +279,18 @@ module Processors
       # Ensure we're dealing with array (when it's only 1 it can be a single object)
       related_nodes = [related_nodes] if related_nodes.present? && !related_nodes.is_a?(Array)
 
-      related_nodes.present? && related_nodes.any? {|d| d["@id"] == uri || d == uri }
+      related_nodes.present? && related_nodes.any? {|d|
+        node_uri_is?(d, uri)
+      }
+    end
+
+    ###
+    # @description: Determines if a node uri is equal to a given uri
+    # @param [Hash|String]
+    # @return [TrueClass|FalseClass]
+    ###
+    def self.node_uri_is?(node, uri)
+      node["id"] == uri || node["@id"] == uri || node == uri
     end
 
     ###
@@ -325,26 +338,36 @@ module Processors
     ###
     def self.create_one_term(node)
       # Retrieve the term, if not found, create one with these properties
-      term = Term.find_or_initialize_by(
-        uri: node["@id"],
-        name: Parsers::Specifications.read!(node, "label"),
-        organization: @current_user.organization
-      )
-
-      unless term.property.present?
-        Property.create!(
-          term: term,
-          uri: term.desm_uri,
-          source_uri: node["@id"],
-          comment: Parsers::Specifications.read!(node, "comment"),
-          label: Parsers::Specifications.read!(node, "label"),
-          domain: Parsers::Specifications.read_as_array(node, "domain"),
-          range: Parsers::Specifications.read_as_array(node, "range"),
-          subproperty_of: Parsers::Specifications.read!(node, "subproperty")
+      term = Term.find_or_initialize_by(uri: Parsers::Specifications.read!(node, "id")) do |t|
+        t.update!(
+          name: Parsers::Specifications.read!(node, "label"),
+          organization: @current_user.organization
         )
       end
 
+      create_property_term(term, node)
+
       term
+    end
+
+    ###
+    # @description: Creates a property if not found for the provided term
+    # @param [Term] term
+    # @param [Hash] node
+    ###
+    def self.create_property_term term, node
+      return if term.property.present?
+
+      Property.create!(
+        term: term,
+        uri: term.desm_uri,
+        source_uri: Parsers::Specifications.read!(node, "id"),
+        comment: Parsers::Specifications.read!(node, "comment"),
+        label: Parsers::Specifications.read!(node, "label"),
+        domain: Parsers::Specifications.read_as_array(node, "domain"),
+        range: Parsers::Specifications.read_as_array(node, "range"),
+        subproperty_of: Parsers::Specifications.read!(node, "subproperty")
+      )
     end
   end
 end

@@ -140,18 +140,21 @@ export default class PropertiesList extends Component {
     /**
      * Elements from props
      */
-    const { selectedDomain, organizations } = this.props;
+    const { predicates, organizations, selectedDomain } = this.props;
 
     return loading ? (
       <Loader />
+    ) : errors.length ? (
+      /* ERRORS */
+      <AlertNotice message={errors} />
     ) : spineExists ? (
       properties.map((term) => {
         return (
           <div className="row mt-3" key={term.id}>
             <div className="col-4">
               <PropertyCard
-                errors={errors}
                 organizations={organizations}
+                predicates={predicates}
                 selectedDomain={selectedDomain}
                 term={term}
               />
