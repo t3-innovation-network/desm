@@ -445,7 +445,7 @@ const MappingToDomains = (props) => {
                       <div className="col-7">
                         <div className="progress terms-progress">
                           <div
-                            className="progress-bar"
+                            className="progress-bar bg-col-on-primary"
                             role="progressbar"
                             style={{
                               width:

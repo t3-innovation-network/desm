@@ -174,7 +174,7 @@ module Processors
 
       # The first node/s of our graph will be the ones from the uris selected by the user
       class_nodes = filter_classes(spec["@graph"]).select {|node|
-        domain_uris.any? {|uri| uri == node["@id"] }
+        domain_uris.any? {|uri| uri == Parsers::Specifications.read!(node, "id") }
       }
       class_nodes.each {|class_node| final_graph << class_node }
 
@@ -279,7 +279,18 @@ module Processors
       # Ensure we're dealing with array (when it's only 1 it can be a single object)
       related_nodes = [related_nodes] if related_nodes.present? && !related_nodes.is_a?(Array)
 
-      related_nodes.present? && related_nodes.any? {|d| d["@id"] == uri || d == uri }
+      related_nodes.present? && related_nodes.any? {|d|
+        node_uri_is?(d, uri)
+      }
+    end
+
+    ###
+    # @description: Determines if a node uri is equal to a given uri
+    # @param [Hash|String]
+    # @return [TrueClass|FalseClass]
+    ###
+    def self.node_uri_is?(node, uri)
+      node["id"] == uri || node["@id"] == uri || node == uri
     end
 
     ###
@@ -327,7 +338,7 @@ module Processors
     ###
     def self.create_one_term(node)
       # Retrieve the term, if not found, create one with these properties
-      term = Term.find_or_initialize_by(uri: node["@id"]) do |t|
+      term = Term.find_or_initialize_by(uri: Parsers::Specifications.read!(node, "id")) do |t|
         t.update!(
           name: Parsers::Specifications.read!(node, "label"),
           organization: @current_user.organization
@@ -350,7 +361,7 @@ module Processors
       Property.create!(
         term: term,
         uri: term.desm_uri,
-        source_uri: node["@id"],
+        source_uri: Parsers::Specifications.read!(node, "id"),
         comment: Parsers::Specifications.read!(node, "comment"),
         label: Parsers::Specifications.read!(node, "label"),
         domain: Parsers::Specifications.read_as_array(node, "domain"),
