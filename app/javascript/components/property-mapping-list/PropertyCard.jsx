@@ -58,7 +58,7 @@ export default class PropertyCard extends Component {
 
     let response = await fetchAlignmentsForSpineTerm(term.id);
 
-    if (!this.anyError(response)) {
+    if (!this.anyError(response) && !_.isEmpty(response.alignments)) {
       this.setState({
         currentMappingWeight: this.calculateCurrentWeight(response.alignments),
         maxMappingWeight:
@@ -152,7 +152,7 @@ export default class PropertyCard extends Component {
             <small className="mt-3 col-on-primary-light">Definition</small>
             <p>{term.property.comment}</p>
 
-            <small className="mt-3 col-on-primary-light">Origin</small>
+            <small className="mt-3 col-on-primary-light">Organization</small>
             <p>{this.getOrganizationName(term.organizationId)}</p>
 
             {/* ↓↓↓ TODO: Is this correct? ↓↓↓ */}
