@@ -14,17 +14,19 @@ module Processors
       name = "#{user.organization.name} - #{specification.domain.pref_label}"
       spine = specification.domain.spine
 
-      mapping = Mapping.create!(
-        name: name,
-        title: name,
-        user: user,
-        specification: specification,
-        spine_id: spine.id
-      )
+      ActiveRecord::Base.transaction do
+        mapping = Mapping.create!(
+          name: name,
+          title: name,
+          user: user,
+          specification: specification,
+          spine_id: spine.id
+        )
 
-      create_mapping_terms(mapping)
+        create_mapping_terms(mapping)
 
-      mapping
+        mapping
+      end
     end
 
     ###
@@ -34,8 +36,8 @@ module Processors
     # @return [Array]
     ###
     def self.create_mapping_terms mapping
-      spine = mapping.spine
-      spine.terms.each do |term|
+      terms = 0
+      mapping.spine.terms.each do |term|
         # Do not create this term if there's already one with the same uri
         next if MappingTerm.find_by(uri: term.desm_uri)
 
@@ -44,7 +46,16 @@ module Processors
           mapping: mapping,
           spine_term_id: term.id
         )
+
+        terms += 1
       end
+
+      # The mapping should have terms assigned
+      return if terms.positive?
+
+      throw "Could not create candidate alignments because the terms already "\
+        "exists in our records. Please review the previously uploaded specifications "\
+        "and mappings"
     end
   end
 end

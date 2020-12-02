@@ -1,39 +1,146 @@
 import React, { Component, Fragment } from "react";
+import { MAX_MAPPING_WEIGHT_PER_ORGANIZATION } from "../../helpers/Constants";
+import fetchAlignmentsForSpineTerm from "../../services/fetchAlignmentsForSpineTerm";
 import AlertNotice from "../shared/AlertNotice";
+import Loader from "../shared/Loader";
+import ProgressReportBar from "../shared/ProgressReportBar";
 
 /**
  * Props:
- * @param {Array} errors
  * @param {Array} organizations
+ * @param {Array} predicates
  * @param {Object} term
  * @param {Object} selectedDomain
  */
 export default class PropertyCard extends Component {
+  /**
+   * Representation of the state of this component
+   */
+  state = {
+    /**
+     * The current mapping weight value for this term
+     */
+    currentMappingWeight: 0,
+    /**
+     * Representation of an errors on this page process
+     */
+    errors: [],
+    /**
+     * Whether the page is loading results or not
+     */
+    loading: true,
+    /**
+     * The maximum possible mapping weight value for this term
+     */
+    maxMappingWeight: 5,
+  };
+
   /**
    * Correctly fetch the organization name
    *
    * @param {Integer} orgId
    */
   getOrganizationName = (orgId) => {
-    const {organizations} = this.props;
+    const { organizations } = this.props;
     let org = organizations.find((org) => org.id == orgId);
 
     return org ? org.name : "Not found";
   };
 
+  /**
+   * @description Performs the calculation for a given spine term of the mapping weight. This is
+   * the sum of the weights of every predicate of a term mapped to it.
+   * It also performs the calculation of the maximum possible value that the mapping weight can take.
+   * It depends on the amount of organizations that mapped to the given term.
+   */
+  calculateMappingWeights = async () => {
+    const { term } = this.props;
+
+    let response = await fetchAlignmentsForSpineTerm(term.id);
+
+    if (!this.anyError(response) && !_.isEmpty(response.alignments)) {
+      this.setState({
+        currentMappingWeight: this.calculateCurrentWeight(response.alignments),
+        maxMappingWeight:
+          response.alignments.length * MAX_MAPPING_WEIGHT_PER_ORGANIZATION,
+      });
+    }
+  };
+
+  /**
+   * Performs the sum of the weight of the predicates involved in the fetched alignments
+   *
+   * @param {Array} alignments
+   */
+  calculateCurrentWeight = (alignments) => {
+    return alignments.reduce(
+      (a, b) => a + this.predicateWeight(b.predicateId),
+      0
+    );
+  };
+
+  /**
+   * Returns the weight of the predicate with the given id
+   *
+   * @param {Integer} predicateId
+   */
+  predicateWeight = (predicateId) => {
+    const { predicates } = this.props;
+    let pred = predicates.find((predicate) => predicate.id == predicateId);
+
+    return pred.weight;
+  };
+
+  /**
+   * Handle showing the errors on screen, if any
+   *
+   * @param {HttpResponse} response
+   */
+  anyError(response) {
+    const { errors } = this.state;
+
+    if (response.error) {
+      let tempErrors = errors;
+      tempErrors.push(response.error);
+      this.setState({ errors: tempErrors });
+    }
+    /// It will return a truthy value (depending no the existence
+    /// of the error on the response object)
+    return !_.isUndefined(response.error);
+  }
+
+  /**
+   * Perform the necessary tasks needed when the component finish mounting
+   */
+  componentDidMount() {
+    this.calculateMappingWeights().then(() => {
+      this.setState({ loading: false });
+    });
+  }
+
   render() {
     /**
      * Elements from props
      */
-    const { term, errors, selectedDomain, organizations } = this.props;
+    const { term, selectedDomain } = this.props;
+
+    /**
+     * Elements from state
+     */
+    const {
+      currentMappingWeight,
+      errors,
+      loading,
+      maxMappingWeight,
+    } = this.state;
 
     return (
       <Fragment>
         {/* ERRORS */}
-        {errors.length ? <AlertNotice message={errors} /> : ""}
+        {errors.length ? <AlertNotice message={errors} /> : null}
 
-        <div className="card borderless bg-col-background">
-          <div className="card-header desm-rounded bottom-borderless bg-col-background">
+        <div className="card borderless bg-col-secondary">
+          <div className="card-header desm-rounded bottom-borderless bg-col-secondary">
             <small className="mt-3 col-on-primary-light">
               Element/Property
             </small>
@@ -45,12 +152,23 @@ export default class PropertyCard extends Component {
             <small className="mt-3 col-on-primary-light">Definition</small>
             <p>{term.property.comment}</p>
 
-            <small className="mt-3 col-on-primary-light">Origin</small>
+            <small className="mt-3 col-on-primary-light">Organization</small>
             <p>{this.getOrganizationName(term.organizationId)}</p>
 
             {/* ↓↓↓ TODO: Is this correct? ↓↓↓ */}
             <small className="mt-3 col-on-primary-light">Schema</small>
             <p>{this.getOrganizationName(term.organizationId)}</p>
+
+            {loading ? (
+              <Loader />
+            ) : (
+              <ProgressReportBar
+                currentValue={currentMappingWeight}
+                maxValue={maxMappingWeight}
+                percentageMode={true}
+                cssClass={"bg-col-success"}
+              />
+            )}
           </div>
         </div>
       </Fragment>

@@ -79,7 +79,7 @@ export default class TermCard extends Component {
               >
                 <i className="fas fa-times"></i>
               </div>
-              <div className="col-7">{term.name}</div>
+              <div className="col-7 non-selectable">{term.name}</div>
               <div className="col-4">
                 <div className="float-right">
                   <i className="fas fa-check"></i>
