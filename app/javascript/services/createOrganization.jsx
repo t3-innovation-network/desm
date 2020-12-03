@@ -1,14 +1,10 @@
 import apiRequest from "./api/apiRequest";
 
-const createOrganization = async (name) => {
+const createOrganization = async (data) => {
   const response = await apiRequest({
     url: "/api/v1/organizations",
     method:"post",
-    payload: {
-      organization: {
-        name: name,
-      },
-    }
+    payload: data
   });
   return response;
 };

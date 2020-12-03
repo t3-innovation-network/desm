@@ -62,6 +62,7 @@ export default class OrganizationsIndex extends Component {
                   <thead>
                     <tr>
                       <th>Name</th>
+                      <th>Email</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -70,6 +71,7 @@ export default class OrganizationsIndex extends Component {
                       return (
                         <tr key={organization.id}>
                           <td>{organization.name}</td>
+                          <td>{organization.email}</td>
                           <td>
                             <Link
                               to={"/dashboard/organizations/" + organization.id}
