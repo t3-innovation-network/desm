@@ -99,8 +99,11 @@ export const cantConcepts = (vocab) => {
  * @param {String} attr
  */
 export const readNodeAttribute = (node, attr) => {
+  let key = findNodeKey(node, attr);
+  if (!key) return;
+
   /// Return straight if it is a String
-  if (_.isString(node[attr])) return node[attr];
+  if (_.isString(node[key])) return node[key];
 
   /// We are reading an attribute that's not a String. It contains one more
   /// levels of nesting.  It can be the i18n management:
@@ -108,23 +111,35 @@ export const readNodeAttribute = (node, attr) => {
   ///
   /// So our solution is to read the its attributes by using recursion, until one gives
   /// us a string, firstly prioritizing "@value" and "@id"
-  if (_.isObject(node[attr])) {
+  if (_.isObject(node[key])) {
     /// If we recognize the "@value" key, we can return that
-    if (node[attr]["@value"]) return readNodeAttribute(node[attr], "@value");
+    if (node[key]["@value"]) return readNodeAttribute(node[key], "@value");
     /// If we recognize the "@id" key, we can return that
-    if (node[attr]["@id"]) return readNodeAttribute(node[attr], "@id");
+    if (node[key]["@id"]) return readNodeAttribute(node[key], "@id");
 
-    for (let a in node[attr]) {
-      return readNodeAttribute(node[attr], a);
+    for (let a in node[key]) {
+      return readNodeAttribute(node[key], a);
     }
   }
 
   /// If it's an array, return the first element assuming it's a string. If it
   /// is not a string, just return an empty string.
-  if (_.isArray(node[attr])) {
-    [firstNode] = node[attr];
+  if (_.isArray(node[key])) {
+    [firstNode] = node[key];
     return _.isString(firstNode) ? firstNode : "";
   }
+};
+
+/**
+ * Find the node key by approximation
+ * 
+ * @param {Object} node 
+ * @param {String} attr 
+ */
+const findNodeKey = (node, attr) => {
+  
+  var objectKeys = Object.keys(node).filter(k => k.includes(attr));
+  return !_.isEmpty(objectKeys) ? objectKeys[0] : null;
 };
 
 /**

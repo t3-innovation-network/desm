@@ -47,7 +47,7 @@ class Api::V1::SpineTermsController < ApplicationController
         ]
       ],
       mapping_term: %i[
-        comment predicate_id mapping_id uri
+        comment predicate_id mapping_id uri synthetic
       ]
     )
   end

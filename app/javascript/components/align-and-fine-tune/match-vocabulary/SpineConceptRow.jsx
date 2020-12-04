@@ -86,6 +86,7 @@ const SpineConceptRow = (props) => {
             selectedCount={selectedCount}
             acceptedItemType={DraggableItemTypes.CONCEPTS_SET}
             textStyle={{ fontSize: "12px" }}
+            placeholder="Drag a matching concept here"
           />
         )}
       </div>

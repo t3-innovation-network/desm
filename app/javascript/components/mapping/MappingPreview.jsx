@@ -5,7 +5,7 @@ import {
   unsetMergedFile,
   unsetSpecToPreview,
 } from "../../actions/files";
-import FileContent from "./FileContent";
+import SpecsPreviewTabs from "./SpecsPreviewTabs";
 import {
   doUnsubmit,
   startProcessingFile,
@@ -23,45 +23,13 @@ import Pluralize from "pluralize";
 
 const MappingPreview = (props) => {
   /**
-   * Whether the form is submitted. This means all the fields are already filled, and the
-   * file/s are uploaded. We can proceed with preview.
+   * Flag to know whether we are adding a new vocabulary.
    */
-  const submitted = useSelector((state) => state.submitted);
-  /**
-   * Whether we are processing the specification file. Used for filtering, seeking domains, and merging.
-   */
-  const processingFile = useSelector((state) => state.processingFile);
-  /**
-   * The specifcation contents ready to preview. THese are not the files object, but its contents
-   * @todo: After the refactoring to merge the files to work with only one, this ahouls be only one file
-   *    content, not a collection
-   */
-  const previewSpecs = useSelector((state) => state.previewSpecs);
-  /**
-   * The files uploaded by the user.
-   */
-  const files = useSelector((state) => state.files);
-  /**
-   * The files content already merged. If its only one file, the same result.
-   */
-  const mergedFile = useSelector((state) => state.mergedFile);
-  /**
-   * The data to send when submitting in order to create the specification, vocabularies, and mapping if
-   * necessary (if its the spine, no mapping will be created)
-   */
-  const mappingFormData = useSelector((state) => state.mappingFormData);
-  /**
-   * The vocabularies content ready to be printed. JSON format.
-   */
-  const vocabularies = useSelector((state) => state.vocabularies);
+  const [addingVocabulary, setAddingVocabulary] = useState(false);
   /**
    * Flag to know whether we are creating the specification.
    */
   const [creatingSpec, setCreatingSpec] = useState(false);
-  /**
-   * Flag to know whether we are adding a new vocabulary.
-   */
-  const [addingVocabulary, setAddingVocabulary] = useState(false);
   /**
    * Flag to know whether we are crating the vocabularies.
    */
@@ -70,26 +38,57 @@ const MappingPreview = (props) => {
    * Redux statement to be able to change the store.
    */
   const dispatch = useDispatch();
-
+  /**
+   * The files uploaded by the user.
+   */
+  const files = useSelector((state) => state.files);
+  /**
+   * The data to send when submitting in order to create the specification, vocabularies, and mapping if
+   * necessary (if its the spine, no mapping will be created)
+   */
+  const mappingFormData = useSelector((state) => state.mappingFormData);
+  /**
+   * The files content already merged. If its only one file, the same result.
+   */
+  const mergedFile = useSelector((state) => state.mergedFile);
+  /**
+   * The specifcation contents ready to preview. THese are not the files object, but its contents
+   */
+  const previewSpecs = useSelector((state) => state.previewSpecs);
+  /**
+   * Whether we are processing the specification file. Used for filtering, seeking domains, and merging.
+   */
+  const processingFile = useSelector((state) => state.processingFile);
+  /**
+   * Whether the form is submitted. This means all the fields are already filled, and the
+   * file/s are uploaded. We can proceed with preview.
+   */
+  const submitted = useSelector((state) => state.submitted);
+  /**
+   * The vocabularies content ready to be printed. JSON format.
+   */
+  const vocabularies = useSelector((state) => state.vocabularies);
+  
   /**
    * Resets the files on redux global state, this way
    * The files collection is blanked and the use can re-import files
    */
   const handleOnReimport = () => {
-    // Remove files from store
+    /// Remove files from store
     dispatch(unsetFiles());
-    // Remove previews
+    /// Remove previews
     dispatch(unsetSpecToPreview());
-    // Change the form status to unsubmitted
+    /// Change the form status to unsubmitted
     dispatch(doUnsubmit());
-    // Remove unified file
+    /// Remove unified file
     dispatch(unsetMergedFile());
-    // Remove vocabularies
+    /// Remove vocabularies
     dispatch(unsetVocabularies());
-    // Reset the file uploader
+    
+    /// Reset the file uploader
     $("#file-uploader").val("");
   };
-
+  
   /**
    * Create the specification using the api service
    */
@@ -287,7 +286,7 @@ const MappingPreview = (props) => {
               {creatingSpec ? (
                 <Loader message="We're processing the specification. Please wait ..." />
               ) : (
-                <FileContent disabled={addingVocabulary}/>
+                <SpecsPreviewTabs disabled={addingVocabulary}/>
               )}
             </React.Fragment>
           )

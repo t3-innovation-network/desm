@@ -172,12 +172,12 @@ export default class MatchVocabulary extends Component {
     let nextSpineConceptId = _.maxBy(spineConcepts, "id").id + 1;
     let nextAlignmentId = _.maxBy(alignmentConcepts, "id").id + 1;
 
-    // Add a synthetic concept to have the chance to match elements to
+    // Add a synthetic concept to have the chance to match concepts to
     // the "No Match" predicate option.
     spineConcepts.push({
       id: nextSpineConceptId,
       name: "",
-      definition: "Synthetic element added to the vocabulary",
+      definition: "Synthetic concept added to the vocabulary",
       synthetic: true,
     });
 
@@ -398,7 +398,7 @@ export default class MatchVocabulary extends Component {
           <div className="col-3">
             <div className="float-right">
               {this.filteredMappingConcepts({ pickSelected: true }).length +
-                " elements selected"}
+                " concepts selected"}
             </div>
           </div>
         </div>

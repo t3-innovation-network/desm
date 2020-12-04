@@ -212,10 +212,10 @@ const SpecsList = () => {
                                   <Link
                                     to={
                                       mapping["uploaded?"]
-                                        ? // There's terms mapped, but not finished selecting the terms from the specification
+                                        ? /// This mapping has mapped terms, but it has not finished selecting the terms from the specification
                                           "/mappings/" + mapping.id
-                                        : // It's on the 3d step (algin and fine tune), already selected
-                                          // the terms from the specification, and now it's mapping terms into the spine terms
+                                        : /// It's on the 3d step (algin and fine tune), already selected the terms from the specification, and
+                                          /// now it's mapping terms into the spine terms
                                           "/mappings/" + mapping.id + "/align"
                                     }
                                     className="btn btn-sm bg-col-primary col-background"
@@ -223,12 +223,17 @@ const SpecsList = () => {
                                     Resume
                                   </Link>
                                 )}
-                                <Link
-                                  to={"/mappings/" + mapping.id}
-                                  className="btn btn-sm btn-dark ml-2"
-                                >
-                                  View
-                                </Link>
+
+                                {mapping["mapped?"] ? (
+                                  <Link
+                                    to={"/mappings-list?abstractClass=" + mapping.domain}
+                                    className="btn btn-sm btn-dark ml-2"
+                                  >
+                                    View
+                                  </Link>
+                                ) : (
+                                  ""
+                                )}
 
                                 <button
                                   onClick={() =>

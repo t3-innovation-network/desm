@@ -300,6 +300,7 @@ module Processors
     ###
     def self.create(data)
       @current_user = data[:user]
+      @scheme = data[:scheme]
 
       s = Specification.new(
         name: data[:name],
@@ -366,7 +367,8 @@ module Processors
         label: Parsers::Specifications.read!(node, "label"),
         domain: Parsers::Specifications.read_as_array(node, "domain"),
         range: Parsers::Specifications.read_as_array(node, "range"),
-        subproperty_of: Parsers::Specifications.read!(node, "subproperty")
+        subproperty_of: Parsers::Specifications.read!(node, "subproperty"),
+        scheme: @scheme
       )
     end
   end

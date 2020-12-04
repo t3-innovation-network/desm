@@ -10,6 +10,7 @@ import DesmTabs from "../shared/DesmTabs";
 import PropertiesList from "./PropertiesList";
 import PropertyMappingsFilter from "./PropertyMappingsFilter";
 import SearchBar from "./SearchBar";
+import qs from "qs";
 
 export default class PropertyMappingList extends Component {
   state = {
@@ -21,6 +22,10 @@ export default class PropertyMappingList extends Component {
      * Representation of an error on this page process
      */
     errors: [],
+    /**
+     * Flag to determine whether to show or not the spine terms with no mapped terms
+     */
+    hideSpineTermsWithNoAlignments: false,
     /**
      * Whether the page is loading results or not
      */
@@ -146,7 +151,7 @@ export default class PropertyMappingList extends Component {
     if (!this.anyError(response)) {
       this.setState({
         predicates: response.predicates,
-        selectedPredicates: [response.predicates[0]],
+        selectedPredicates: response.predicates,
       });
     }
   };
@@ -159,6 +164,30 @@ export default class PropertyMappingList extends Component {
     await this.handleFetchOrganizations();
     await this.handleFetchPredicates();
   };
+
+  /**
+   * Manages to set the domain to show in the UI if there's a correct domain selected in the URL parameters
+   */
+  setSelectedDomain = () => {
+    const { domains } = this.state;
+
+    /// Get the abstract class name from the query string URL parameters
+    var selectedAbstractClassName = qs
+      .parse(this.props.location.search, { ignoreQueryPrefix: true }).abstractClass;
+
+    if (selectedAbstractClassName) {
+      /// Find the selected domain from the list of domains, searching by name.
+      let selectedAbstractClass = domains.find(
+        (d) => d.name.toLowerCase() == selectedAbstractClassName.toLowerCase()
+      );
+
+      if (selectedAbstractClass) {
+        /// Update the UI to show directly that domain alignments
+        this.setState({ selectedDomain: selectedAbstractClass });
+      }
+    }
+  };
+
   /**
    * Tasks before mount
    */
@@ -167,6 +196,7 @@ export default class PropertyMappingList extends Component {
 
     this.handleFetchDataFromAPI().then(() => {
       if (!errors.length) {
+        this.setSelectedDomain();
         this.setState({ loading: false });
       }
     });
@@ -179,6 +209,7 @@ export default class PropertyMappingList extends Component {
     const {
       domains,
       errors,
+      hideSpineTermsWithNoAlignments,
       loading,
       organizations,
       predicates,
@@ -216,6 +247,11 @@ export default class PropertyMappingList extends Component {
                   onType={(val) => {
                     this.setState({ propertiesInputValue: val });
                   }}
+                  onHideSpineTermsWithNoAlignmentsChange={(val) => {
+                    this.setState({
+                      hideSpineTermsWithNoAlignments: val,
+                    });
+                  }}
                 />
 
                 <PropertyMappingsFilter
@@ -247,6 +283,10 @@ export default class PropertyMappingList extends Component {
                   selectedPredicates={selectedPredicates}
                   selectedSpineOrganizations={selectedSpineOrganizations}
                   organizations={organizations}
+                  inputValue={propertiesInputValue}
+                  hideSpineTermsWithNoAlignments={
+                    hideSpineTermsWithNoAlignments
+                  }
                 />
               </div>
             )}

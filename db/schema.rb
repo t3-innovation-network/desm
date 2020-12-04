@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_01_122921) do
+ActiveRecord::Schema.define(version: 2020_12_04_173854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(version: 2020_12_01_122921) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "vocabulary_id"
+    t.boolean "synthetic", default: false, null: false
     t.index ["mapping_id"], name: "index_mapping_terms_on_mapping_id"
     t.index ["predicate_id"], name: "index_mapping_terms_on_predicate_id"
     t.index ["vocabulary_id"], name: "index_mapping_terms_on_vocabulary_id"
@@ -140,6 +141,7 @@ ActiveRecord::Schema.define(version: 2020_12_01_122921) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "email", null: false
   end
 
   create_table "predicates", force: :cascade do |t|
@@ -167,6 +169,7 @@ ActiveRecord::Schema.define(version: 2020_12_01_122921) do
     t.string "path"
     t.string "selected_domain"
     t.string "selected_range"
+    t.string "scheme"
     t.index ["term_id"], name: "index_properties_on_term_id"
   end
 
