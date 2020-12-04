@@ -88,6 +88,6 @@ class Api::V1::SpecificationsController < ApplicationController
   # @return [ActionController::Parameters]
   ###
   def permitted_params
-    params.require(:specification).permit(:name, :version, :uri, :use_case)
+    params.require(:specification).permit(:name, :version, :uri, :use_case, :scheme)
   end
 end

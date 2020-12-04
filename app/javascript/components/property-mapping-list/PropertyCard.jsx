@@ -157,7 +157,7 @@ export default class PropertyCard extends Component {
 
             {/* ↓↓↓ TODO: Is this correct? ↓↓↓ */}
             <small className="mt-3 col-on-primary-light">Schema</small>
-            <p>{this.getOrganizationName(term.organizationId)}</p>
+            <p>{term.property.scheme}</p>
 
             {loading ? (
               <Loader />

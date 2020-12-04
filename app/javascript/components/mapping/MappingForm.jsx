@@ -144,6 +144,9 @@ const MappingForm = () => {
       version: version,
       useCase: useCase,
       domainId: selectedDomainId,
+    /// Set the file name to send to the service. This will appear as "scheme" in all
+    /// further properties created.
+      scheme: files[0].name
     };
   };
 
@@ -194,7 +197,6 @@ const MappingForm = () => {
    */
   const processFiles = async () => {
     let spec = await handleMergeFiles();
-
     await handleCheckDomainsInFile(spec);
   };
 

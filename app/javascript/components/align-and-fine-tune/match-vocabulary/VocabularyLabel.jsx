@@ -17,7 +17,7 @@ const VocabularyLabel = (props) => {
       className={
         "col-primary underlined" + (clickable ? " cursor-pointer" : "")
       }
-      onClick={() => onVocabularyClick && onVocabularyClick(term)}
+      onClick={() => (onVocabularyClick ? onVocabularyClick(term) : null)}
     >
       {term.vocabularies[0].name}
     </p>

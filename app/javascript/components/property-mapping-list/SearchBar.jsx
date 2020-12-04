@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ExpandableOptions from "../shared/ExpandableOptions";
+import { alignmentOrderOptions, spineOrderOptions } from "./SortOptions";
 
 /**
  * @description A complete row with a search bar to filter properties
@@ -16,6 +17,10 @@ export default class SearchBar extends Component {
      * The typed characters in the searchbox
      */
     inputValue: "",
+    /**
+     * Flag to determine whether to show or not the spine terms with no mapped terms
+     */
+    hideSpineTermsWithNoAlignments: false,
   };
 
   /**
@@ -34,11 +39,26 @@ export default class SearchBar extends Component {
     });
   };
 
+  /**
+   * Handle to perform the necessary the actions when the user clicks on the checkbox to hide/show
+   * the spine terms with no mapped properties.
+   */
+  handleHideSpineTermsWithNoAlignmentsChange = () => {
+    const { hideSpineTermsWithNoAlignments } = this.state;
+    const { onHideSpineTermsWithNoAlignmentsChange } = this.props;
+
+    this.setState({
+      hideSpineTermsWithNoAlignments: !hideSpineTermsWithNoAlignments,
+    });
+
+    onHideSpineTermsWithNoAlignmentsChange(!hideSpineTermsWithNoAlignments);
+  };
+
   render() {
     /**
      * Elements from state
      */
-    const { inputValue } = this.state;
+    const { inputValue, hideSpineTermsWithNoAlignments } = this.state;
 
     return (
       <div className="row mt-5">
@@ -61,10 +81,7 @@ export default class SearchBar extends Component {
           <label>Sort Spine By</label>
           <ExpandableOptions
             selectedOption={"Name"}
-            options={[
-              { id: 1, name: "Overall Alignment Score" },
-              { id: 2, name: "Name" },
-            ]}
+            options={spineOrderOptions}
             cardHeaderCssClass={"bottom-borderless"}
           />
         </div>
@@ -73,10 +90,7 @@ export default class SearchBar extends Component {
           <label>Sort Aligned Items By</label>
           <ExpandableOptions
             selectedOption={"Organization"}
-            options={[
-              { id: 1, name: "Organization" },
-              { id: 2, name: "Property" },
-            ]}
+            options={alignmentOrderOptions}
             cardHeaderCssClass={"bottom-borderless"}
           />{" "}
         </div>
@@ -88,8 +102,8 @@ export default class SearchBar extends Component {
               type="checkbox"
               className="custom-control-input desm-custom-control-input"
               id="hide-spine-elems"
-              value={true}
-              onChange={() => {}}
+              value={hideSpineTermsWithNoAlignments}
+              onChange={() => this.handleHideSpineTermsWithNoAlignmentsChange()}
             />
             <label className="custom-control-label" htmlFor="hide-spine-elems">
               Hide spine items with no results

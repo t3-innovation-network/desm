@@ -348,6 +348,7 @@ const SpineTermRow = (props) => {
               selectedCount={selectedMappingTerms.length}
               acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
               droppedItem={{ id: term.id }}
+              placeholder="Drag a matching property here"
             />
           )}
         </div>

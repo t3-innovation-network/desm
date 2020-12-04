@@ -1,6 +1,16 @@
 import React from "react";
 
+/**
+ * Prints a card with basic information about the selected file.
+ *
+ * @param {File} selectedFile
+ */
 const FileInfo = (props) => {
+  /**
+   * Elements from props
+   */
+  const { selectedFile } = props;
+
   return (
     <div className="card mt-3">
       <div className="card-header">
@@ -9,14 +19,14 @@ const FileInfo = (props) => {
       </div>
       <div className="card-body">
         <p>
-          <strong>File Name:</strong> {props.selectedFile.name}
+          <strong>File Name:</strong> {selectedFile.name}
         </p>
         <p>
-          <strong>File Type:</strong> {props.selectedFile.type}
+          <strong>File Type:</strong> {selectedFile.type}
         </p>
         <p>
           <strong>Last Modified:</strong>{" "}
-          {" " + props.selectedFile.lastModifiedDate.toDateString()}
+          {" " + selectedFile.lastModifiedDate.toDateString()}
         </p>
       </div>
     </div>

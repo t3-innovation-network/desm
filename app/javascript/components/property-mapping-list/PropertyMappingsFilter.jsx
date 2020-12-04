@@ -4,13 +4,14 @@ import HoverableLabel from "../shared/HoverableLabel";
 /**
  * Props
  * @param {Array} organizations
+ * @param {Function} onAlignmentOrganizationSelected
+ * @param {Function} onPredicateSelected
+ * @param {Function} onSpineOrganizationSelected
  * @param {Array} predicates
+ * @param {Array} selectedAlignmentOrganizations
  * @param {String} selectedDomain
  * @param {Array} selectedPredicates
  * @param {Array} selectedSpineOrganizations
- * @param {Array} selectedAlignmentOrganizations
- * @param {Function} onSpineOrganizationSelected
- * @param {Function} onAlignmentOrganizationSelected
  */
 export default class PropertyMappingsFilter extends Component {
   /**

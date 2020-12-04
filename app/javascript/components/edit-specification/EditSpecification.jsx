@@ -8,6 +8,7 @@ import AlertNotice from "../shared/AlertNotice";
 import Loader from "../shared/Loader";
 import TopNav from "../shared/TopNav";
 import TopNavOptions from "../shared/TopNavOptions";
+import Pluralize from "pluralize";
 
 const EditSpecification = (props) => {
   /**
@@ -217,7 +218,7 @@ const EditSpecification = (props) => {
                 <div className="pr-5 mt-5">
                   <AlertNotice
                     cssClass="bg-col-primary col-background"
-                    title={terms.length + " elements recognized for this spine"}
+                    title={terms.length + " " + Pluralize("property", terms.length) + " recognized for this spine"}
                     message="You can edit each term of your specification until you are confident with names, vocabularies, uri's and more."
                   />
                   <div className="has-scrollbar scrollbar pr-5">

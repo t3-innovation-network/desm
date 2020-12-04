@@ -1,5 +1,6 @@
 import React from "react";
 import ProgressReportBar from "../shared/ProgressReportBar";
+import Pluralize from "pluralize";
 
 /**
  * Props
@@ -37,7 +38,8 @@ const MappingTermsHeaders = (props) => {
         </div>
         <div className="col-6">
           <p className="float-right">
-            <strong>{selectedMappingTerms.length}</strong> elements selected
+            <strong>{selectedMappingTerms.length}</strong>{" "}
+            {Pluralize("property", selectedMappingTerms.length) + " selected"}
           </p>
         </div>
       </div>
