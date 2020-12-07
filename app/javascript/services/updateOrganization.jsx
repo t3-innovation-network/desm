@@ -1,14 +1,10 @@
 import apiRequest from "./api/apiRequest";
 
-const updateOrganization = async (organization_id, name) => {
+const updateOrganization = async (id, data) => {
   return await apiRequest({
-    url: "/api/v1/organizations/" + organization_id,
+    url: "/api/v1/organizations/" + id,
     method: "put",
-    payload: {
-      organization: {
-        name: name,
-      },
-    },
+    payload: data,
   });
 };
 

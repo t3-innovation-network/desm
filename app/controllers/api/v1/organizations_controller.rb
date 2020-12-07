@@ -39,6 +39,7 @@ class Api::V1::OrganizationsController < ApplicationController
   ###
   def update
     @instance.update(permitted_params)
+
     render json: @instance
   end
 
@@ -67,6 +68,6 @@ class Api::V1::OrganizationsController < ApplicationController
   # @return [ActionController::Parameters]
   ###
   def permitted_params
-    params.require(:organization).permit(:name)
+    params.require(:organization).permit(:name, :email)
   end
 end
