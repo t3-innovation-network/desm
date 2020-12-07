@@ -10,8 +10,17 @@ export default class CreateOrganization extends Component {
    * going to be sent to the API service in order to create an organization
    */
   state = {
-    name: "",
+    /**
+     * Errors from this component's actions
+     */
     errors: "",
+    /**
+     * The representation of the organization in the state of this component
+     */
+    organization: {
+      name: "",
+      email: "",
+    },
   };
 
   /**
@@ -19,10 +28,11 @@ export default class CreateOrganization extends Component {
    * the result to be shown to the user
    */
   handleSubmit = async (event) => {
-    const { name } = this.state;
+    const { organization } = this.state;
+
     event.preventDefault();
 
-    let response = await createOrganization(name);
+    let response = await createOrganization(organization);
 
     if (response.error) {
       this.setState({
@@ -32,7 +42,7 @@ export default class CreateOrganization extends Component {
     }
 
     if (response.success) {
-      toast.success("Organization " + name + " was successfully created");
+      toast.success("Organization " + organization.name + " was successfully created");
       this.props.history.push("/dashboard/organizations");
       return;
     }
@@ -42,17 +52,27 @@ export default class CreateOrganization extends Component {
    * Update the component state on every change in the input control in the form
    */
   handleOnChange = (event) => {
+    const { organization } = this.state;
+
+    let org = organization;
+    org[event.target.name] = event.target.value;
+
     this.setState({
-      [event.target.name]: event.target.value,
+      organization: org,
     });
   };
 
   render() {
+    /**
+     * Elements from state
+     */
+    const { errors, organization } = this.state;
+
     return (
       <React.Fragment>
         <DashboardContainer>
           <div className="col-lg-6 mx-auto mt-5">
-            {this.state.errors && <AlertNotice message={this.state.errors} />}
+            {errors && <AlertNotice message={errors} />}
 
             <div className="card mt-5">
               <div className="card-header">
@@ -71,9 +91,25 @@ export default class CreateOrganization extends Component {
                       className="form-control"
                       name="name"
                       placeholder="Enter a name for this organization"
-                      value={this.state.name}
+                      value={organization.name}
                       onChange={this.handleOnChange}
                       autoFocus
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>
+                      Email
+                      <span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      name="email"
+                      placeholder="Enter an email for the organization"
+                      value={organization.email}
+                      onChange={(e) => this.handleOnChange(e)}
                       required
                     />
                   </div>

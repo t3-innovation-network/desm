@@ -23,12 +23,13 @@ const SpineTermRow = (props) => {
    * The data passed in props
    */
   const {
-    term,
-    predicates,
-    spineOrigin,
-    origin,
     mappedTermsToSpineTerm,
+    origin,
     onRevertMapping,
+    predicates,
+    selectedMappingTerms,
+    spineOrigin,
+    term,
   } = props;
 
   /**
@@ -184,7 +185,21 @@ const SpineTermRow = (props) => {
   };
 
   /**
-   * MAnages the actions when a user clicks to open the match vocabulary
+   * @description Handles the reverting action, by both calling the callback in props and ensurin
+   * the local state is updated.
+   * 
+   * @param {Object} mTerm The mapped term that's going to be dettached from the alignment 
+   */
+  const handleRevertMapping = (mTerm) => {
+    onRevertMapping(mTerm);
+
+    if (!mappingTerm.mapped_terms.length) {
+      setPredicate(null);
+    }
+  };
+
+  /**
+   * Manages the actions when a user clicks to open the match vocabulary
    */
   const handleMatchVocabularyClick = (mappedTerm) => {
     setMappedTermMatching(mappedTerm);
@@ -224,9 +239,9 @@ const SpineTermRow = (props) => {
       )}
 
       {term.vocabularies?.length &&
-      props
-        .mappedTermsToSpineTerm(term)
-        .some((mTerm) => mTerm.vocabularies && mTerm.vocabularies.length) ? (
+      mappedTermsToSpineTerm(term).some(
+        (mTerm) => mTerm.vocabularies && mTerm.vocabularies.length
+      ) ? (
         <MatchVocabulary
           modalIsOpen={matchingVocab}
           onRequestClose={onRequestVocabsClose}
@@ -288,7 +303,7 @@ const SpineTermRow = (props) => {
         </div>
 
         <div className="col-4">
-          {props.mappedTermsToSpineTerm(term).map((term) => {
+          {mappedTermsToSpineTerm(term).map((term) => {
             return (
               <Collapsible
                 headerContent={
@@ -298,7 +313,7 @@ const SpineTermRow = (props) => {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Revert selecting this term"
-                      onClick={() => onRevertMapping(term)}
+                      onClick={() => handleRevertMapping(term)}
                     >
                       <i className="fas fa-times"></i>
                     </div>
@@ -328,9 +343,9 @@ const SpineTermRow = (props) => {
               />
             );
           })}
-          {!props.mappedTermsToSpineTerm(term).length && (
+          {!mappedTermsToSpineTerm(term).length && (
             <DropZone
-              selectedCount={props.selectedMappingTerms.length}
+              selectedCount={selectedMappingTerms.length}
               acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
               droppedItem={{ id: term.id }}
             />

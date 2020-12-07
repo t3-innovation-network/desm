@@ -12,34 +12,49 @@ export default class EditOrganization extends Component {
    * going to be sent to the API service in order to update an organization
    */
   state = {
-    name: "",
+    /**
+     * Errors from this component's actions
+     */
     errors: "",
-    organization_id: this.props.match.params.id,
+    /**
+     * The representation of the organization in the state of this component
+     */
+    organization: {
+      name: "",
+      email: "",
+    },
   };
 
   /**
    * Update the component state on every change in the input control in the form
    */
   handleOnChange = (event) => {
+    const { organization } = this.state;
+
+    let org = organization;
+    org[event.target.name] = event.target.value;
+
     this.setState({
-      [event.target.name]: event.target.value,
+      organization: org,
     });
   };
 
   /**
    * Use the API service to get this organization data
    */
-  fetchOrganizationAPI() {
-    fetchOrganization(this.state.organization_id).then((response) => {
+  handleFetchOrganization() {
+    let orgId = this.props.match.params.id;
+
+    fetchOrganization(orgId).then((response) => {
       if (response.error) {
         this.setState({
           errors: response.error,
         });
         return;
       }
-      /// We have a list of organizations from the backend
+      /// We have the organization data from the API service
       this.setState({
-        name: response.organization.name,
+        organization: response.organization,
       });
     });
   }
@@ -48,7 +63,9 @@ export default class EditOrganization extends Component {
    * Hit the API service to delete this organization
    */
   deleteOrganizationAPI() {
-    deleteOrganization(this.state.organization_id).then((response) => {
+    const { organization } = this.state;
+
+    deleteOrganization(organization.id).then((response) => {
       if (response.error) {
         this.setState({
           errors: response.error,
@@ -65,7 +82,7 @@ export default class EditOrganization extends Component {
    * Perform the necessary tasks needed when the component finish mounting
    */
   componentDidMount() {
-    this.fetchOrganizationAPI();
+    this.handleFetchOrganization();
   }
 
   /**
@@ -73,9 +90,12 @@ export default class EditOrganization extends Component {
    * the result to be shown to the user
    */
   handleSubmit = (event) => {
-    const { name } = this.state;
+    const { organization } = this.state;
 
-    updateOrganization(this.state.organization_id, name).then((response) => {
+    updateOrganization(organization.id, {
+      email: organization.email,
+      name: organization.name,
+    }).then((response) => {
       if (response.error) {
         this.setState({
           errors: response.error,
@@ -84,9 +104,9 @@ export default class EditOrganization extends Component {
       }
       toast.success(
         "Organization " +
-          name +
+          organization.name +
           " (" +
-          this.state.organization_id +
+          organization.id +
           ") was successfully updated"
       );
       this.props.history.push("/dashboard/organizations");
@@ -96,16 +116,21 @@ export default class EditOrganization extends Component {
   };
 
   render() {
+    /**
+     * Elements from state
+     */
+    const { errors, organization } = this.state;
+
     return (
       <DashboardContainer>
         <div className="col-lg-6 mx-auto mt-5">
-          {this.state.errors && <AlertNotice message={this.state.errors} />}
+          {errors && <AlertNotice message={errors} />}
 
           <div className="card mt-5">
             <div className="card-header">
               <i className="fa fa-building"></i>
               <span className="pl-2 subtitle">
-                Organization {this.state.name}
+                Organization {organization.name}
               </span>
               <button
                 className="btn btn-dark float-right"
@@ -139,9 +164,25 @@ export default class EditOrganization extends Component {
                       className="form-control"
                       name="name"
                       placeholder="Enter the name for the organization"
-                      value={this.state.name}
+                      value={organization.name}
                       onChange={(e) => this.handleOnChange(e)}
                       autoFocus
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>
+                      Email
+                      <span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      name="email"
+                      placeholder="Enter an email for the organization"
+                      value={organization.email}
+                      onChange={(e) => this.handleOnChange(e)}
                       required
                     />
                   </div>

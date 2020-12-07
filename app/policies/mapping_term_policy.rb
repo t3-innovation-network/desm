@@ -20,4 +20,12 @@ class MappingTermPolicy < ApplicationPolicy
   def update?
     @user.present?
   end
+
+  ###
+  # @description: Determines if the user can remove an instance of this resource
+  # @return [TrueClass]
+  ###
+  def destroy?
+    @user.present?
+  end
 end

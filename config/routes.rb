@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       resources :audits, only: [:index]
       resources :domains, only: [:index, :show]
       resources :mappings, only: [:create, :destroy, :show, :index, :update]
-      resources :mapping_terms, only: [:index, :update]
+      resources :mapping_terms, only: [:destroy, :index, :update]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :predicates, only: [:index]
       resources :roles, only: [:index]

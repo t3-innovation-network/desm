@@ -41,7 +41,12 @@ class MappingTerm < ApplicationRecord
   ###
   has_one :vocabulary, class_name: :AlignmentVocabulary
 
+  ###
+  # @description: Validates the presence of a uri before creating
+  ###
   validates :uri, presence: true
+
+  before_destroy :remove_spine_term, if: :synthetic
 
   ###
   # @description: Associate the terms to this alignment. NOTE: This method will replace the previous
@@ -61,6 +66,13 @@ class MappingTerm < ApplicationRecord
   ###
   def origin
     mapping.origin
+  end
+
+  ###
+  # @description: Removes the related spine term
+  ###
+  def remove_spine_term
+    spine_term.destroy!
   end
 
   ###

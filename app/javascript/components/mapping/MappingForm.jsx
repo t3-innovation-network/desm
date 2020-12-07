@@ -85,7 +85,7 @@ const MappingForm = () => {
    * out the "use case" input
    */
   const handleUseCaseBlur = () => {
-    if (!validURL(useCase)) {
+    if (!_.isEmpty(useCase) && !validURL(useCase)){
       setErrors("'Use case' must be a valid URL");
     } else {
       setErrors("");
@@ -346,6 +346,20 @@ const MappingForm = () => {
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
+              {Boolean(files.length) && !submitted && !processingFile && (
+                <section>
+                  <button
+                    type="submit"
+                    className="btn bg-col-primary col-background with-shadow floating-spec-btn mt-3"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Import the specification"
+                    disabled={submitted}
+                  >
+                    <i className="fas fa-arrow-right col-background"></i>
+                  </button>
+                </section>
+              )}
               <label htmlFor="specification_name">
                 Name of your specification
               </label>
@@ -372,7 +386,6 @@ const MappingForm = () => {
                 className="form-control"
                 value={version}
                 onChange={(e) => setVersion(e.target.value)}
-                required
                 disabled={submitted}
               />
             </div>
@@ -458,15 +471,6 @@ const MappingForm = () => {
               </label>
             </div>
 
-            <section>
-              <button
-                type="submit"
-                className="btn btn-dark mt-3"
-                disabled={submitted}
-              >
-                Import Specification
-              </button>
-            </section>
             <FileData />
           </form>
         </section>

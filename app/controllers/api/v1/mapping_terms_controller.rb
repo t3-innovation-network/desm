@@ -30,6 +30,17 @@ class Api::V1::MappingTermsController < ApplicationController
     render json: @instance, include: %i[mapped_terms]
   end
 
+  ###
+  # @description: Removes an alignment from our records
+  ###
+  def destroy
+    @instance.destroy!
+
+    render json: {
+      success: true
+    }
+  end
+
   private
 
   ###
