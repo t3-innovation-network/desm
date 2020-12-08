@@ -1,63 +1,24 @@
 /**
- * Options to sort the spine terms
+ * Options for sorting a collection of spine terms
  */
-export const spineOrderOptions = [
-  {
-    id: 1,
-    name: "Overall Alignment Score",
-  },
-  {
-    id: 2,
-    name: "Total Identicall Alignments",
-  },
-  {
-    id: 3,
-    name: "Organization",
-  },
-  {
-    id: 4,
-    name: "Spine Class / Type",
-  },
-  {
-    id: 5,
-    name: "Spine Property",
-  },
-  {
-    id: 6,
-    name: "Has Alignment Issue(s)",
-  },
-  {
-    id: 7,
-    name: "Source Data Order",
-  },
-];
+export const spineSortOptions = {
+  OVERALL_ALIGNMENT_SCORE:  "Overall Alignment Score",
+  TOTAL_IDENTICAL_ALIGNMENTS: "Total Identical Alignments",
+  ORGANIZATION: "Organization",
+  SPINE_CLASS_TYPE: "Spine Class/Type",
+  SPINE_PROPERTY: "Spine Property",
+  HAS_ALIGNMENT_ISSUES: "Has Alignment Issues",
+  SOURCE_DATA_ORDER: "Source Data Order",
+};
 
 /**
- * Options to sort the alignments
+ * Options for sorting a collection of alignments
  */
-export const alignmentOrderOptions = [
-  {
-    id: 1,
-    name: "Organization",
-  },
-  {
-    id: 2,
-    name: "Class / Type",
-  },
-  {
-    id: 3,
-    name: "Alignment Score",
-  },
-  {
-    id: 4,
-    name: "Property",
-  },
-  {
-    id: 5,
-    name: "Has Alignment Issue(s)",
-  },
-  {
-    id: 6,
-    name: "Source Data Order",
-  },
-];
+export const alignmentSortOptions = {
+  ORGANIZATION: "Organization",
+  CLASS_TYPE: "Class/Type",
+  ALIGNMENT_SCORE: "Alignment Score",
+  PROPERTY: "Property",
+  HAS_ALIGNMENT_ISSUES: "Has Alignment Issues",
+  SOURCE_DATA_ORDER: "Source Data Order",
+};
