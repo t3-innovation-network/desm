@@ -11,6 +11,7 @@ import PropertiesList from "./PropertiesList";
 import PropertyMappingsFilter from "./PropertyMappingsFilter";
 import SearchBar from "./SearchBar";
 import qs from "qs";
+import { alignmentSortOptions, spineSortOptions } from "./SortOptions";
 
 export default class PropertyMappingList extends Component {
   state = {
@@ -58,6 +59,14 @@ export default class PropertyMappingList extends Component {
      * The predicates the user selected to use in filter
      */
     selectedPredicates: [],
+    /**
+     * The order the user wants to see the alignments to the spine terms
+     */
+    selectedAlignmentOrderOption: alignmentSortOptions.ORGANIZATION,
+    /**
+     * The order the user wants to see the spine terms
+     */
+    selectedSpineOrderOption: spineSortOptions.OVERALL_ALIGNMENT_SCORE,
   };
 
   /**
@@ -172,8 +181,9 @@ export default class PropertyMappingList extends Component {
     const { domains } = this.state;
 
     /// Get the abstract class name from the query string URL parameters
-    var selectedAbstractClassName = qs
-      .parse(this.props.location.search, { ignoreQueryPrefix: true }).abstractClass;
+    var selectedAbstractClassName = qs.parse(this.props.location.search, {
+      ignoreQueryPrefix: true,
+    }).abstractClass;
 
     if (selectedAbstractClassName) {
       /// Find the selected domain from the list of domains, searching by name.
@@ -214,9 +224,11 @@ export default class PropertyMappingList extends Component {
       organizations,
       predicates,
       propertiesInputValue,
+      selectedAlignmentOrderOption,
       selectedAlignmentOrganizations,
       selectedDomain,
       selectedPredicates,
+      selectedSpineOrderOption,
       selectedSpineOrganizations,
     } = this.state;
 
@@ -252,6 +264,10 @@ export default class PropertyMappingList extends Component {
                       hideSpineTermsWithNoAlignments: val,
                     });
                   }}
+                  onSpineOrderChange={(option) => this.setState({selectedSpineOrderOption: option})}
+                  onAlignmentOrderChange={(option) => this.setState({selectedAlignmentOrderOption: option})}
+                  selectedSpineOrderOption={selectedSpineOrderOption}
+                  selectedAlignmentOrderOption={selectedAlignmentOrderOption}
                 />
 
                 <PropertyMappingsFilter

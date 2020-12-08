@@ -1,12 +1,18 @@
 import React, { Component } from "react";
+import { iterableSelectableOptions } from "../../helpers/Iterables";
 import ExpandableOptions from "../shared/ExpandableOptions";
-import { alignmentOrderOptions, spineOrderOptions } from "./SortOptions";
+import { alignmentSortOptions, spineSortOptions } from "./SortOptions";
 
 /**
  * @description A complete row with a search bar to filter properties
  *
  * Props:
+ * @param {Function} onAlignmentOrderChange
+ * @param {Function} onHideSpineTermsWithNoAlignmentsChange
+ * @param {Function} onSpineOrderChange
  * @param {Function} onType Actions when a character is typed
+ * @param {String} selectedAlignmentOrderOption
+ * @param {String} selectedSpineOrderOption
  */
 export default class SearchBar extends Component {
   /**
@@ -21,6 +27,14 @@ export default class SearchBar extends Component {
      * Flag to determine whether to show or not the spine terms with no mapped terms
      */
     hideSpineTermsWithNoAlignments: false,
+    /**
+     * The order the user wants to see the spine terms
+     */
+    selectedAlignmentOrderOption: this.props.selectedAlignmentOrderOption,
+    /**
+     * The order the user wants to see the spine terms
+     */
+    selectedSpineOrderOption: this.props.selectedSpineOrderOption,
   };
 
   /**
@@ -54,11 +68,46 @@ export default class SearchBar extends Component {
     onHideSpineTermsWithNoAlignmentsChange(!hideSpineTermsWithNoAlignments);
   };
 
+  /**
+   * Actions to perform when the user selects a different spine term order option
+   *
+   * @param {String} option
+   */
+  handleSpineOrderOptionsChanged = (option) => {
+    const { onSpineOrderChange } = this.props;
+
+    this.setState({ selectedSpineOrderOption: option });
+
+    if (onSpineOrderChange) {
+      onSpineOrderChange(option);
+    }
+  };
+
+  /**
+   * Actions to perform when the user selects a different alignment order option
+   *
+   * @param {String} option
+   */
+  handleAlignmentOrderOptionsChanged = (option) => {
+    const { onAlignmentOrderChange } = this.props;
+
+    this.setState({ selectedAlignmentOrderOption: option });
+
+    if (onAlignmentOrderChange) {
+      onAlignmentOrderChange(option);
+    }
+  };
+
   render() {
     /**
      * Elements from state
      */
-    const { inputValue, hideSpineTermsWithNoAlignments } = this.state;
+    const {
+      inputValue,
+      hideSpineTermsWithNoAlignments,
+      selectedAlignmentOrderOption,
+      selectedSpineOrderOption,
+    } = this.state;
 
     return (
       <div className="row mt-5">
@@ -80,19 +129,25 @@ export default class SearchBar extends Component {
         <div className="col-3">
           <label>Sort Spine By</label>
           <ExpandableOptions
-            selectedOption={"Name"}
-            options={spineOrderOptions}
             cardHeaderCssClass={"bottom-borderless"}
+            onClose={(option) =>
+              this.handleSpineOrderOptionsChanged(option.name)
+            }
+            options={iterableSelectableOptions(_.values(spineSortOptions))}
+            selectedOption={selectedSpineOrderOption}
           />
         </div>
 
         <div className="col-3">
           <label>Sort Aligned Items By</label>
           <ExpandableOptions
-            selectedOption={"Organization"}
-            options={alignmentOrderOptions}
             cardHeaderCssClass={"bottom-borderless"}
-          />{" "}
+            options={iterableSelectableOptions(_.values(alignmentSortOptions))}
+            onClose={(option) =>
+              this.handleAlignmentOrderOptionsChanged(option.name)
+            }
+            selectedOption={selectedAlignmentOrderOption}
+          />
         </div>
 
         <div className="col-3">
