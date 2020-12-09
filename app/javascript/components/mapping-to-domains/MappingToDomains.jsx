@@ -16,6 +16,7 @@ import updateMapping from "../../services/updateMapping";
 import Draggable from "../shared/Draggable";
 import { DraggableItemTypes } from "../shared/DraggableItemTypes";
 import deleteMappingSelectedTerm from "../../services/deleteMappingSelectedTerm";
+import Pluralize from "pluralize";
 
 const MappingToDomains = (props) => {
   /**
@@ -311,12 +312,14 @@ const MappingToDomains = (props) => {
     }).then((response) => {
       if (!anyError(response)) {
         // Mark the terms marked as mapped in memory not mapped, since we already know it's part of the selected terms now
-        terms.filter(t => t.mapped).forEach((term) => {
-          term.mapped = false;
-          let tempMapping = mapping
-          tempMapping.selected_terms.push(term);
-          setMapping(tempMapping);
-        });
+        terms
+          .filter((t) => t.mapped)
+          .forEach((term) => {
+            term.mapped = false;
+            let tempMapping = mapping;
+            tempMapping.selected_terms.push(term);
+            setMapping(tempMapping);
+          });
 
         toast.success("Changes saved");
         setChangesPerformed(0);
@@ -432,14 +435,18 @@ const MappingToDomains = (props) => {
                 <div className="col-lg-6 p-lg-5 pt-5">
                   <div className="border-bottom">
                     <h6 className="subtitle">
-                      2. Add your elements to the proper domain
+                      2. Add the properties to the proper domain
                     </h6>
                     <h1>Mapping {mapping.name}</h1>
                     <div className="row">
                       <div className="col-5">
                         <p>
                           <strong>{mappedTerms.length}</strong>
-                          {" of " + terms.length + " elements added to domains"}
+                          {" of " +
+                            terms.length +
+                            " " +
+                            Pluralize("property", terms.length) +
+                            " added to domains"}
                         </p>
                       </div>
                       <div className="col-7">
@@ -495,7 +502,7 @@ const MappingToDomains = (props) => {
                             className="form-check-label"
                             htmlFor="hideElems"
                           >
-                            Hide mapped elements
+                            Hide mapped properties
                           </label>
                         </div>
                       </div>
@@ -513,15 +520,23 @@ const MappingToDomains = (props) => {
                       </div>
                     </div>
                     <p>
-                      <strong>{selectedTerms.length}</strong> elements selected
+                      <strong>{selectedTerms.length}</strong>{" "}
+                      {" " +
+                        Pluralize("property", selectedTerms.length) +
+                        " selected"}
                     </p>
                   </div>
 
                   <div className="pr-5 mt-5">
                     <AlertNotice
                       cssClass="bg-col-primary col-background"
-                      title={terms.length + " elements have been uploaded"}
-                      message="Drag your individual elements below to the matching domains on the left to begin mapping your specification"
+                      title={
+                        terms.length +
+                        " " +
+                        Pluralize("property", terms.length) +
+                        " have been uploaded"
+                      }
+                      message="Drag the individual properties below to the matching domains on the left to begin mapping your specification"
                     />
                     <div className="has-scrollbar scrollbar pr-5">
                       {/* SELECTED TERMS */}

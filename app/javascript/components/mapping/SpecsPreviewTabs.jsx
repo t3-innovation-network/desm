@@ -12,7 +12,7 @@ import { vocabName } from "../../helpers/Vocabularies";
  *
  * @param {Boolean} disabled
  */
-const FileContent = (props) => {
+const SpecsPreviewTabs = (props) => {
   /**
    * Elements from props
    */
@@ -108,4 +108,4 @@ const FileContent = (props) => {
   );
 };
 
-export default FileContent;
+export default SpecsPreviewTabs;

@@ -8,12 +8,19 @@ import Pluralize from "pluralize";
  * @param {Integer} selectedCount The number of elements being dragged
  * @param {Style} textStyle CSS styles for the text inside
  * @param {ItemType} acceptedItemType The type of item that this box accepts
+ * @param {String} placeholder The text that is going to appear by default
  */
 const DropZone = (props) => {
   /**
    * Elements from props
    */
-  const { droppedItem, selectedCount, textStyle, acceptedItemType } = props;
+  const {
+    acceptedItemType,
+    droppedItem,
+    placeholder,
+    selectedCount,
+    textStyle,
+  } = props;
 
   /**
    * Draggable configuration
@@ -43,7 +50,7 @@ const DropZone = (props) => {
       <p className="mb-0 fully-centered" style={textStyle}>
         {isActive
           ? "Add " + (selectedCount + " " + Pluralize("Record", selectedCount))
-          : "Drag a matching element here"}
+          : placeholder}
       </p>
     </div>
   );

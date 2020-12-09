@@ -27,6 +27,7 @@ const DomainCard = (props) => {
               }}
               acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
               selectedCount={props.selectedTermsCount}
+              placeholder="Drag a matching property here"
             />
           </div>
         </div>

@@ -437,7 +437,7 @@ const AlignAndFineTune = (props) => {
   };
 
   /**
-   * Adds an extra element to the spineTerms collection
+   * Adds an extra property to the spineTerms collection
    */
   const addSyntheticTerm = () => {
     let tempSpineTerms = spineTerms;
@@ -448,7 +448,7 @@ const AlignAndFineTune = (props) => {
       name: "",
       synthetic: true,
       property: {
-        comment: "Synthetic element added to spine",
+        comment: "Synthetic property added to spine",
       },
     });
 
@@ -458,7 +458,7 @@ const AlignAndFineTune = (props) => {
   };
 
   /**
-   * Adds an extra element to the mappingTerms collection (alignments)
+   * Adds an extra property to the mappingTerms collection (alignments)
    *
    * @param {Integer} syntheticTermId
    */
@@ -478,7 +478,7 @@ const AlignAndFineTune = (props) => {
   };
 
   /**
-   * Adds a synthetic element to the spine. It also handles the alignment object to be created.
+   * Adds a synthetic property to the spine. It also handles the alignment object to be created.
    */
   const handleAddSynthetic = () => {
     setLoading(true);
@@ -499,7 +499,7 @@ const AlignAndFineTune = (props) => {
   };
 
   /**
-   * Save a synthetic element added to the spine to the service
+   * Save a synthetic property added to the spine to the service
    *
    * It const of saving both:
    * - The spine term, which is a property in the specification marked
@@ -526,7 +526,7 @@ const AlignAndFineTune = (props) => {
       synthetic: {
         mappingTerm: {
           comment:
-            "Alignment for a synthetic element added to the spine. Synthetic uri: " +
+            "Alignment for a synthetic property added to the spine. Synthetic uri: " +
             tempUri,
           uri: tempUri,
           predicateId: predicates.find((p) =>
@@ -542,7 +542,7 @@ const AlignAndFineTune = (props) => {
           propertyAttributes: {
             uri: tempUri,
             label: tempUri,
-            comment: "Synthetic element added to the spine",
+            comment: "Synthetic property added to the spine",
           },
           organizationId: user.organization.id,
           uri: tempUri,
@@ -573,7 +573,7 @@ const AlignAndFineTune = (props) => {
    * Process each alignment to save, and save it in parallel
    */
   const saveAllAlignments = async () => {
-    /// Check for synthetic elements and save it if any
+    /// Check for synthetic properties and save it if any
     let synthetics = mappingTerms.filter((mTerm) => mTerm.synthetic);
     let alignments = mappingTerms.filter(
       (mTerm) => !mTerm.synthetic && mTerm.changed
@@ -889,10 +889,14 @@ const AlignAndFineTune = (props) => {
                       title={
                         mappingSelectedTerms.length +
                         " " +
-                        Pluralize("element", mappingSelectedTerms.length) +
+                        Pluralize("property", mappingSelectedTerms.length) +
                         " have been selected from the original specification"
                       }
-                      message="The items below have been added to Person Domain. Now you can align them to the spine."
+                      message={
+                        "The items below have been added to the " +
+                        _.capitalize(mapping.domain) +
+                        " domain. Now you can align them to the spine."
+                      }
                     />
                     <div className="has-scrollbar scrollbar pr-5">
                       {/* SELECTED TERMS */}

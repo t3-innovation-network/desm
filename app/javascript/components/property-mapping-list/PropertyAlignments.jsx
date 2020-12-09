@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import fetchAlignmentsForSpineTerm from "../../services/fetchAlignmentsForSpineTerm";
 import Loader from "../shared/Loader";
 
 /**
@@ -8,6 +7,13 @@ import Loader from "../shared/Loader";
  *
  * Props:
  * @param {Object} spineTerm The term of the spine to look for alignments
+ * @param {Array} selectedPredicates The list of predicates selected by the user in the filter
+ * @param {Array} selectedAlignmentOrganizations The list of organizations that made alignments, selected by the user
+ *   in the filter.
+ * @param {Array} selectedSpineOrganizations The list of organizations that has properties with alignments, selected
+ *   by the user in the filter. This refers to the origin of the property. Initially, a spine specification will have
+ *   all its properties with the same organization. When a synthetic property is created, it will keep the organization
+ *   of origin.
  */
 export default class PropertyAlignments extends Component {
   /**
@@ -17,7 +23,7 @@ export default class PropertyAlignments extends Component {
     /**
      * List of alignments being shown
      */
-    alignments: [],
+    alignments: this.props.spineTerm.alignments,
     /**
      * Representation of an errors on this page process
      */
@@ -29,65 +35,44 @@ export default class PropertyAlignments extends Component {
   };
 
   /**
-   * Handle showing the errors on screen, if any
-   *
-   * @param {HttpResponse} response
+   * The list of ids for the selected predicates
    */
-  anyError(response) {
-    const { errors } = this.state;
-
-    if (response.error) {
-      let tempErrors = errors;
-      tempErrors.push(response.error);
-      this.setState({ errors: tempErrors });
-    }
-    /// It will return a truthy value (depending no the existence
-    /// of the error on the response object)
-    return !_.isUndefined(response.error);
-  }
+  selectedPredicateIds = () =>
+    this.props.selectedPredicates.map((predicate) => predicate.id);
 
   /**
-   * Use the service to get all the available alignments of a spine specification term
+   * The list of ids for the selected alignment organizations
    */
-  handleFetchAlignmentsForSpineTerm = async (spineTermId) => {
-    let response = await fetchAlignmentsForSpineTerm(spineTermId);
-
-    if (!this.anyError(response)) {
-      this.setState({
-        alignments: response.alignments.filter(
-          (alignment) => alignment.predicateId
-        ),
-      });
-    }
-  };
+  selectedAlignmentOrganizationIds = () =>
+    this.props.selectedAlignmentOrganizations.map((org) => org.id);
 
   /**
-   * Use the service to get all the necessary data
+   * The list of ids for the selected spine organizations
    */
-  fetchData = () => {
-    const { errors } = this.state;
+  selectedSpineOrganizationIds = () =>
+    this.props.selectedSpineOrganizations.map((org) => org.id);
+
+  /**
+   * The list of alignments filtered using the values in the filters bar
+   */
+  filteredAlignments = () => {
     const { spineTerm } = this.props;
-    this.setState({ loading: true });
+    const { alignments } = this.state;
 
-    this.handleFetchAlignmentsForSpineTerm(spineTerm.id).then(() => {
-      if (!errors.length) {
-        this.setState({ loading: false });
-      }
-    });
+    return alignments.filter(
+      (alignment) =>
+        /// It matches the selected predicates
+        this.selectedPredicateIds().includes(alignment.predicateId) &&
+        /// It matches the selected alignment organizations
+        alignment.mappedTerms.some((mTerm) =>
+          this.selectedAlignmentOrganizationIds().includes(mTerm.organizationId)
+        ) &&
+        /// It matches the selected alignment organizations
+        this.selectedSpineOrganizationIds().includes(spineTerm.organizationId)
+    );
   };
-
-  /**
-   * Tasks when the component mount
-   */
-  componentDidMount() {
-    this.fetchData();
-  }
 
   render() {
-    /**
-     * Elements from state
-     */
-    const { alignments } = this.state;
     /**
      * Elements from props
      */
@@ -96,8 +81,12 @@ export default class PropertyAlignments extends Component {
     return loading ? (
       <Loader />
     ) : (
-      alignments.map((alignment) => {
-        return <AlignmentCard alignment={alignment} key={alignment.id} />;
+      this.filteredAlignments().map((alignment) => {
+        return alignment.mappedTerms.length ? (
+          <AlignmentCard alignment={alignment} key={alignment.id} />
+        ) : (
+          ""
+        );
       })
     );
   }
@@ -169,7 +158,7 @@ class AlignmentCard extends Component {
               <h5>{alignment.origin}</h5>
 
               <small className="mt-3 col-on-primary-light">Schema</small>
-              <h5>{alignment.origin}</h5>
+              <h5>{alignment.mappedTerms[0].property.scheme}</h5>
             </div>
             <div className="col-2">
               <small className="mt-3 col-on-primary-light">

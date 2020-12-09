@@ -240,7 +240,7 @@ const SpineTermRow = (props) => {
 
       {term.vocabularies?.length &&
       mappedTermsToSpineTerm(term).some(
-        (mTerm) => mTerm.vocabularies && mTerm.vocabularies.length
+        (mTerm) => mTerm.vocabularies?.length
       ) ? (
         <MatchVocabulary
           modalIsOpen={matchingVocab}
@@ -348,6 +348,7 @@ const SpineTermRow = (props) => {
               selectedCount={selectedMappingTerms.length}
               acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
               droppedItem={{ id: term.id }}
+              placeholder="Drag a matching property here"
             />
           )}
         </div>

@@ -36,7 +36,7 @@ const Routes = (props) => {
 
         <Route
           exact
-          path={"/mapping-list"}
+          path={"/mappings-list"}
           render={(props) => <PropertyMappingList {...props} handleLogin={manageLogin}/>}
         />
 
