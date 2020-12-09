@@ -16,8 +16,10 @@ import PropertyCard from "./PropertyCard";
  * @param {String} inputValue
  * @param {Array} organizations
  * @param {Object} selectedDomain
+ * @param {String} selectedAlignmentOrderOption
  * @param {Array} selectedAlignmentOrganizations
  * @param {Array} selectedPredicates
+ * @param {String} selectedSpineOrderOption
  * @param {Array} selectedSpineOrganizations
  */
 export default class PropertiesList extends Component {

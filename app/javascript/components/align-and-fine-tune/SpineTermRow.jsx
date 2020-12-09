@@ -240,7 +240,7 @@ const SpineTermRow = (props) => {
 
       {term.vocabularies?.length &&
       mappedTermsToSpineTerm(term).some(
-        (mTerm) => mTerm.vocabularies && mTerm.vocabularies.length
+        (mTerm) => mTerm.vocabularies?.length
       ) ? (
         <MatchVocabulary
           modalIsOpen={matchingVocab}

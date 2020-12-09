@@ -20,7 +20,6 @@
     "pluralize": "^8.0.0",
     "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
-    "qs": "^6.9.4",
     "query-string": "^6.13.7",
     "react": "^16.13.1",
     "react-animations": "^1.0.0",

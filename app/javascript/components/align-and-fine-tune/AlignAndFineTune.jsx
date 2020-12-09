@@ -892,7 +892,11 @@ const AlignAndFineTune = (props) => {
                         Pluralize("property", mappingSelectedTerms.length) +
                         " have been selected from the original specification"
                       }
-                      message={"The items below have been added to the " + _.capitalize(mapping.domain) + " domain. Now you can align them to the spine."}
+                      message={
+                        "The items below have been added to the " +
+                        _.capitalize(mapping.domain) +
+                        " domain. Now you can align them to the spine."
+                      }
                     />
                     <div className="has-scrollbar scrollbar pr-5">
                       {/* SELECTED TERMS */}

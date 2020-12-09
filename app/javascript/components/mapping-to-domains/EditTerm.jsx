@@ -357,7 +357,7 @@ export default class EditTerm extends Component {
                               name="uri"
                               placeholder="Property URI"
                               value={term.property.uri}
-                              onChange={(e) => this.handlePropertyChange(e)}
+                              onChange={this.handlePropertyChange}
                               disabled={uploadingVocabulary}
                             />
                           </div>
@@ -376,7 +376,7 @@ export default class EditTerm extends Component {
                               name="source_uri"
                               placeholder="Source URI"
                               value={term.property.sourceUri || ""}
-                              onChange={(e) => this.handlePropertyChange(e)}
+                              onChange={this.handlePropertyChange}
                               disabled={uploadingVocabulary}
                             />
                           </div>
@@ -395,7 +395,7 @@ export default class EditTerm extends Component {
                               name="label"
                               placeholder="Porperty Label"
                               value={term.property.label}
-                              onChange={(e) => this.handlePropertyChange(e)}
+                              onChange={this.handlePropertyChange}
                               disabled={uploadingVocabulary}
                             />
                           </div>
@@ -414,7 +414,7 @@ export default class EditTerm extends Component {
                               name="scheme"
                               placeholder="Porperty Scheme"
                               value={term.property.scheme}
-                              onChange={(e) => this.handlePropertyChange(e)}
+                              onChange={this.handlePropertyChange}
                               disabled={uploadingVocabulary}
                             />
                           </div>
@@ -428,7 +428,7 @@ export default class EditTerm extends Component {
                         className="form-control"
                         name="comment"
                         value={term.property.comment}
-                        onChange={(e) => this.handlePropertyChange(e)}
+                        onChange={this.handlePropertyChange}
                         disabled={uploadingVocabulary}
                       />
                     </div>
@@ -463,7 +463,7 @@ export default class EditTerm extends Component {
                         name="path"
                         placeholder="XPath or JSON Path"
                         value={term.property.path || ""}
-                        onChange={(e) => this.handlePropertyChange(e)}
+                        onChange={this.handlePropertyChange}
                         disabled={uploadingVocabulary}
                       ></input>
                     </div>
