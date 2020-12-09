@@ -11,6 +11,7 @@ import MappingConceptsList from "./MappingConceptsList";
 import SpineConceptRow from "./SpineConceptRow";
 import { toastr as toast } from "react-redux-toastr";
 import createSyntheticVocabularyConcept from "../../../services/createSyntheticVocabularyConcept";
+import Pluralize from "pluralize";
 
 /**
  * Props
@@ -397,8 +398,8 @@ export default class MatchVocabulary extends Component {
           </div>
           <div className="col-3">
             <div className="float-right">
-              {this.filteredMappingConcepts({ pickSelected: true }).length +
-                " concepts selected"}
+              {this.filteredMappingConcepts({ pickSelected: true }).length + " " +
+                Pluralize("concept", this.filteredMappingConcepts({ pickSelected: true }).length) + " concepts selected"}
             </div>
           </div>
         </div>
