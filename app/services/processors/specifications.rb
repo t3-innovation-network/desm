@@ -339,16 +339,13 @@ module Processors
     ###
     def self.create_one_term(node)
       # Retrieve the term, if not found, create one with these properties
-      term = Term.find_or_initialize_by(uri: Parsers::Specifications.read!(node, "id")) do |t|
+      Term.find_or_initialize_by(uri: Parsers::Specifications.read!(node, "id")) do |t|
         t.update!(
           name: Parsers::Specifications.read!(node, "label"),
           organization: @current_user.organization
         )
+        create_property_term(t, node)
       end
-
-      create_property_term(term, node)
-
-      term
     end
 
     ###
@@ -359,14 +356,18 @@ module Processors
     def self.create_property_term term, node
       return if term.property.present?
 
+      domain = Parsers::Specifications.read_as_array(node, "domain")
+      range = Parsers::Specifications.read_as_array(node, "range")
+
       Property.create!(
         term: term,
         uri: term.desm_uri,
         source_uri: Parsers::Specifications.read!(node, "id"),
         comment: Parsers::Specifications.read!(node, "comment"),
         label: Parsers::Specifications.read!(node, "label"),
-        domain: Parsers::Specifications.read_as_array(node, "domain"),
-        range: Parsers::Specifications.read_as_array(node, "range"),
+        domain: domain,
+        selected_domain: domain&.first,
+        range: range&.first,
         subproperty_of: Parsers::Specifications.read!(node, "subproperty"),
         scheme: @scheme
       )

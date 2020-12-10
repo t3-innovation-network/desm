@@ -38,10 +38,18 @@ class Term < ApplicationRecord
   accepts_nested_attributes_for :property, allow_destroy: true
 
   ###
+  # @description: Include additional information about the specification in
+  #   json responses. This overrides the ApplicationRecord as_json method.
+  ###
+  def as_json(options={})
+    super options.merge(methods: %i[organization])
+  end
+
+  ###
   # @description: Build and return the uri with the "desm" prefix
   # @return [String]: the desm namespaced uri
   ###
-  def desm_uri
-    "desm-#{organization.name.downcase.strip}:#{uri.split(':').last}"
+  def desm_uri domain=nil
+    "desm-#{organization.name.downcase.strip}-#{domain&.pref_label&.downcase&.strip}:#{uri.split(':').last}"
   end
 end

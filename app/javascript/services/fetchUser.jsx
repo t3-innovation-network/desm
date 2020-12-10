@@ -14,7 +14,7 @@ async function fetchUser(user_id) {
         fullname: response.user.fullname,
         email: response.user.email,
         organization_id: response.user.organization_id,
-        role_id: response.user.assignments[0].role_id,
+        role_id: response.user.roles[0].id,
       },
     };
   }

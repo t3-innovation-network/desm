@@ -58,60 +58,10 @@ export default class EditTerm extends Component {
       ? domains.map((domain, i) => {
           return {
             id: i,
-            name: _.isString(domain)
-              ? domain
-              : readNodeAttribute(domain, "@id"),
+            name: readNodeAttribute(domain, "@id"),
           };
         })
       : [];
-  };
-
-  /**
-   * Returns the currently selected domain for a term
-   *
-   * @param {Object} property
-   */
-  setSelectedDomain = (property) => {
-    /// Do not proceed if none selected
-    if (!property.selectedDomain) return null;
-
-    /// Instantiate the list of available domains
-    let domains = property.domain;
-
-    /// If it's only 1, return it
-    if (_.isString(domains)) return domains;
-
-    /// Get the currently selected domain
-    let selectedDomain = property.domain[property.selectedDomain];
-
-    /// Parse the response
-    return _.isString(selectedDomain)
-      ? selectedDomain
-      : readNodeAttribute(selectedDomain, "@id");
-  };
-
-  /**
-   * Returns the currently selected range for a term
-   *
-   * @param {Object} property
-   */
-  setSelectedRange = (property) => {
-    /// Do not proceed if none selected
-    if (!property.selectedRange) return null;
-
-    /// Instantiate the list of available ranges
-    let ranges = property.range;
-
-    /// If it's only 1, return it
-    if (_.isString(ranges)) return ranges;
-
-    /// Get the currently selected range
-    let selectedRange = property.range[property.selectedRange];
-
-    /// Parse the response
-    return _.isString(selectedRange)
-      ? selectedRange
-      : readNodeAttribute(selectedRange, "@id");
   };
 
   /**
@@ -128,7 +78,7 @@ export default class EditTerm extends Component {
       ? range.map((rng, i) => {
           return {
             id: i,
-            name: _.isString(rng) ? rng : readNodeAttribute(rng, "@id"),
+            name: readNodeAttribute(rng, "@id"),
           };
         })
       : [];
@@ -413,7 +363,7 @@ export default class EditTerm extends Component {
                               className="form-control"
                               name="scheme"
                               placeholder="Porperty Scheme"
-                              value={term.property.scheme}
+                              value={term.property.scheme || ""}
                               onChange={this.handlePropertyChange}
                               disabled={uploadingVocabulary}
                             />
@@ -438,8 +388,10 @@ export default class EditTerm extends Component {
 
                       <ExpandableOptions
                         options={this.domainsAsOptions(term.property.domain)}
-                        selectedOption={this.setSelectedDomain(term.property)}
-                        onClose={(domain) => this.handleDomainChange(domain.id)}
+                        selectedOption={term.property.selectedDomain}
+                        onClose={(domain) =>
+                          this.handleDomainChange(domain.name)
+                        }
                         cardCssClass={"with-shadow"}
                       />
                     </div>
@@ -449,8 +401,8 @@ export default class EditTerm extends Component {
 
                       <ExpandableOptions
                         options={this.rangeAsOptions(term.property.range)}
-                        selectedOption={this.setSelectedRange(term.property)}
-                        onClose={(range) => this.handleRangeChange(range.id)}
+                        selectedOption={term.property.selectedRange}
+                        onClose={(range) => this.handleRangeChange(range.name)}
                         cardCssClass={"with-shadow"}
                       />
                     </div>

@@ -44,12 +44,12 @@ const SpineHeader = (props) => {
           <div className="custom-control custom-checkbox mb-3">
             <input
               type="checkbox"
-              className="custom-control-input desm-custom-control-input"
+              className="custom-control-input desm-custom-control-input cursor-pointer"
               id="hideSpineElems"
-              value={hideMappedSpineTerms}
+              checked={hideMappedSpineTerms}
               onChange={() => setHideMappedSpineTerms(!hideMappedSpineTerms)}
             />
-            <label className="custom-control-label" htmlFor="hideSpineElems">
+            <label className="custom-control-label cursor-pointer" htmlFor="hideSpineElems">
               Hide Mapped Elements
             </label>
           </div>

@@ -1,3 +1,4 @@
+import { filter } from "lodash";
 import React, { Component } from "react";
 import fetchAlignmentsForSpineTerm from "../../services/fetchAlignmentsForSpineTerm";
 import fetchDomain from "../../services/fetchDomain";
@@ -6,6 +7,7 @@ import Loader from "../shared/Loader";
 import NoSpineAlert from "./NoSpineAlert";
 import PropertyAlignments from "./PropertyAlignments";
 import PropertyCard from "./PropertyCard";
+import { implementSpineSort } from "./SortOptions";
 
 /**
  * @description: The list of properties with its alignments. Contains all the information about the property
@@ -78,10 +80,14 @@ export default class PropertiesList extends Component {
    * Returns the list of properties filtered by the value the user typed in the searchbar
    */
   filteredProperties = () => {
-    const { inputValue, hideSpineTermsWithNoAlignments } = this.props;
+    const {
+      inputValue,
+      hideSpineTermsWithNoAlignments,
+      selectedSpineOrderOption,
+    } = this.props;
     const { properties } = this.state;
 
-    return properties.filter(
+    let filteredProps = properties.filter(
       (property) =>
         /// Filter by the search input value
         property.name.toLowerCase().includes(inputValue.toLowerCase()) &&
@@ -106,6 +112,8 @@ export default class PropertiesList extends Component {
               property.organizationId
             )))
     );
+
+    return implementSpineSort(filteredProps, selectedSpineOrderOption);
   };
 
   /**
@@ -220,6 +228,19 @@ export default class PropertiesList extends Component {
   };
 
   /**
+   * Set the alignment score from the calculation when its done
+   *
+   * @param {Object} property
+   * @param {Float} score
+   */
+  handleAlignmentScoreFetched = (property, score) => {
+    const { properties } = this.state;
+    property.alignmentScore = score;
+
+    this.setState({ properties: [...properties] });
+  };
+
+  /**
    * Tasks when the component updates itself
    */
   componentDidUpdate(prevProps) {
@@ -247,6 +268,7 @@ export default class PropertiesList extends Component {
     const {
       predicates,
       organizations,
+      selectedAlignmentOrderOption,
       selectedAlignmentOrganizations,
       selectedDomain,
       selectedPredicates,
@@ -268,10 +290,14 @@ export default class PropertiesList extends Component {
                 predicates={predicates}
                 selectedDomain={selectedDomain}
                 term={term}
+                onAlignmentScoreFetched={(score) =>
+                  this.handleAlignmentScoreFetched(term, score)
+                }
               />
             </div>
             <div className="col-8">
               <PropertyAlignments
+              selectedAlignmentOrderOption={selectedAlignmentOrderOption}
                 selectedAlignmentOrganizations={selectedAlignmentOrganizations}
                 selectedPredicates={selectedPredicates}
                 selectedSpineOrganizations={selectedSpineOrganizations}

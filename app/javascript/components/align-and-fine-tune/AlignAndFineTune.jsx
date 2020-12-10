@@ -185,13 +185,15 @@ const AlignAndFineTune = (props) => {
   const mappedSelectedTerms = mappingSelectedTerms.filter(selectedTermIsMapped);
 
   /**
-   * Returns whether all the terms from the specification are already mapped
+   * Returns whether all the terms from the specification are already mapped.
+   * For a term to be correctly mapped, we ensure to detect the predicate for it.
    */
-  const allTermsMapped = mappingSelectedTerms.every((term) =>
-    mappingTerms.some((mTerm) =>
-      mTerm.mapped_terms.some((t) => t.id === term.id)
-    )
-  );
+  const allTermsMapped =
+    mappingSelectedTerms.every((term) =>
+      mappingTerms.some((mTerm) =>
+        mTerm.mapped_terms.some((t) => t.id === term.id)
+      )
+    ) && mappingTerms.every((mTerm) => mTerm.predicate_id);
 
   /**
    * Returns wether the term is already mapped to the spine. It can be 1 of 2 options:

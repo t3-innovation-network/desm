@@ -48,14 +48,14 @@ const MappingTermsHeaders = (props) => {
           <div className="custom-control custom-checkbox mb-3">
             <input
               type="checkbox"
-              className="custom-control-input desm-custom-control-input"
+              className="custom-control-input desm-custom-control-input cursor-pointer"
               id="hideMappingElems"
-              value={hideMappedSelectedTerms}
+              checked={hideMappedSelectedTerms}
               onChange={(e) =>
                 setHideMappedSelectedTerms(!hideMappedSelectedTerms)
               }
             />
-            <label className="custom-control-label" htmlFor="hideMappingElems">
+            <label className="custom-control-label cursor-pointer" htmlFor="hideMappingElems">
               Hide Mapped Elements
             </label>
           </div>

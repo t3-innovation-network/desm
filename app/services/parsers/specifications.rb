@@ -66,7 +66,12 @@ module Parsers
     # @return [Array]
     ###
     def self.read_as_array(node, attribute_name)
-      Array(read(node, attribute_name))
+      node_attribute = read(node, attribute_name)
+      values = Array(node_attribute) unless node_attribute.is_a?(Hash)
+      values = node_attribute.values if node_attribute.is_a?(Hash)
+
+      # We need the string values, each of it could be sorrounded by "@id" key as an object
+      values.map {|value| (value.is_a?(Hash) && (value[:@id] || value["@id"])) || value }
     end
 
     ###
