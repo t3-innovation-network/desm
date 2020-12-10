@@ -74,7 +74,9 @@ export default class TermCard extends Component {
             <div className="row">
               <div
                 className="col-1 cursor-pointer"
-                data-toggle="tooltip" data-placement="top" title="Revert selecting this term"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Revert selecting this term"
                 onClick={() => this.handleOnRevertMapping(term.id)}
               >
                 <i className="fas fa-times"></i>
@@ -104,10 +106,13 @@ export default class TermCard extends Component {
         <div
           className={
             "col-8 mb-3" +
-            (disableClick ? "" : selected ? "" : " cursor-pointer")
+            (disableClick || selected ? "" : " cursor-pointer")
           }
         >
-          {term.name}
+          <strong>{term.name}</strong>{" "}
+          {term.property.selectedDomain
+            ? " [" + term.property.selectedDomain + "]"
+            : ""}
         </div>
         <div className="col-4">
           <div className="float-right">
