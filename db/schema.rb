@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(version: 2020_12_07_172343) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.float "weight", default: 0.0, null: false
+    t.string "color"
     t.index ["uri"], name: "index_predicates_on_uri", unique: true
   end
 

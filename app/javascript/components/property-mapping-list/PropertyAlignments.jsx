@@ -175,7 +175,13 @@ class AlignmentCard extends Component {
             </div>
             <div className="col-2">
               <div className="card borderless">
-                <div className="card-hader text-center bg-col-success col-background desm-rounded p-3">
+                <div
+                  className="card-hader text-center desm-rounded p-3"
+                  style={{
+                    backgroundColor: alignment.predicate.color || "unset",
+                    color: alignment.predicate.color ? "White" : "DarkSlateGrey"
+                   }}
+                >
                   <strong>
                     {alignment.predicate ? alignment.predicate.prefLabel : ""}
                   </strong>
