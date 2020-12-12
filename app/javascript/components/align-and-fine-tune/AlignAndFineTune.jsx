@@ -574,7 +574,10 @@ const AlignAndFineTune = (props) => {
    */
   const saveAllAlignments = async () => {
     /// Check for synthetic properties and save it if any
-    let synthetics = mappingTerms.filter((mTerm) => mTerm.synthetic);
+    /// Do not create a synthetic if it's already persisted
+    let synthetics = mappingTerms.filter(
+      (mTerm) => mTerm.synthetic & !mTerm.persisted
+    );
     let alignments = mappingTerms.filter(
       (mTerm) => !mTerm.synthetic && mTerm.changed
     );
@@ -674,8 +677,11 @@ const AlignAndFineTune = (props) => {
   const handleFetchMappingTerms = async (mappingId) => {
     let response = await fetchMappingTerms(mappingId);
     if (!anyError(response)) {
+      let mTerms = response.terms;
+      mTerms.forEach((term) => (term.persisted = true));
+
       // Set the mapping terms on state
-      setMappingTerms(response.terms);
+      setMappingTerms(mTerms);
     }
   };
 

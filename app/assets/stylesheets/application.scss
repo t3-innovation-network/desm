@@ -173,6 +173,7 @@ a:hover {
 
 .selected-item {
   border-bottom: solid 4px $primary-color-light !important;
+  z-index: 3;
 }
 
 .desm-tab-item:hover {
