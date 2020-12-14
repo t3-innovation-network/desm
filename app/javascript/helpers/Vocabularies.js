@@ -99,10 +99,15 @@ export const cantConcepts = (vocab) => {
  * @param {String} attr
  */
 export const readNodeAttribute = (node, attr) => {
+  if (_.isNull(node)) return "";
+
+  /// Return straight if the node itself is a String
+  if (_.isString(node)) return node;
+
   let key = findNodeKey(node, attr);
   if (!key) return;
 
-  /// Return straight if it is a String
+  /// Return straight if the attribute is a String
   if (_.isString(node[key])) return node[key];
 
   /// We are reading an attribute that's not a String. It contains one more
@@ -132,13 +137,13 @@ export const readNodeAttribute = (node, attr) => {
 
 /**
  * Find the node key by approximation
- * 
- * @param {Object} node 
- * @param {String} attr 
+ *
+ * @param {Object} node
+ * @param {String} attr
  */
 const findNodeKey = (node, attr) => {
-  
-  var objectKeys = Object.keys(node).filter(k => k.includes(attr));
+  var objectKeys = Object.keys(node).filter((k) => k.includes(attr));
+
   return !_.isEmpty(objectKeys) ? objectKeys[0] : null;
 };
 

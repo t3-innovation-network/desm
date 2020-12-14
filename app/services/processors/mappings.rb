@@ -12,7 +12,7 @@ module Processors
     ###
     def self.create(specification, user)
       name = "#{user.organization.name} - #{specification.domain.pref_label}"
-      spine = specification.domain.spine
+      @spine = specification.domain.spine
 
       ActiveRecord::Base.transaction do
         mapping = Mapping.create!(
@@ -20,7 +20,7 @@ module Processors
           title: name,
           user: user,
           specification: specification,
-          spine_id: spine.id
+          spine_id: @spine.id
         )
 
         create_mapping_terms(mapping)
@@ -39,10 +39,10 @@ module Processors
       terms = 0
       mapping.spine.terms.each do |term|
         # Do not create this term if there's already one with the same uri
-        next if MappingTerm.find_by(uri: term.desm_uri)
+        # next if MappingTerm.find_by(uri: term.desm_uri)
 
         MappingTerm.create!(
-          uri: term.desm_uri,
+          uri: term.desm_uri(@spine.domain),
           mapping: mapping,
           spine_term_id: term.id
         )

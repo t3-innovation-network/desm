@@ -7,6 +7,7 @@ import ProgressReportBar from "../shared/ProgressReportBar";
 
 /**
  * Props:
+ * @param {Function} onAlignmentScoreFetched
  * @param {Array} organizations
  * @param {Array} predicates
  * @param {Object} term
@@ -33,18 +34,6 @@ export default class PropertyCard extends Component {
      * The maximum possible mapping weight value for this term
      */
     maxMappingWeight: 5,
-  };
-
-  /**
-   * Correctly fetch the organization name
-   *
-   * @param {Integer} orgId
-   */
-  getOrganizationName = (orgId) => {
-    const { organizations } = this.props;
-    let org = organizations.find((org) => org.id == orgId);
-
-    return org ? org.name : "Not found";
   };
 
   /**
@@ -118,6 +107,22 @@ export default class PropertyCard extends Component {
     });
   }
 
+  /**
+   * Actions to perform when this component os updated.
+   * It manages to execute the callback to set the score in the property
+   *
+   * @param {Object} prevProps
+   * @param {Object} prevState
+   */
+  componentDidUpdate(prevProps, prevState) {
+    const { currentMappingWeight, maxMappingWeight } = this.state;
+    const { onAlignmentScoreFetched } = this.props;
+
+    if (currentMappingWeight != prevState.currentMappingWeight) {
+      onAlignmentScoreFetched((currentMappingWeight * 100) / maxMappingWeight);
+    }
+  }
+
   render() {
     /**
      * Elements from props
@@ -147,15 +152,14 @@ export default class PropertyCard extends Component {
             <h3>{term.name}</h3>
 
             <small className="mt-3 col-on-primary-light">Class/Type</small>
-            <p>{selectedDomain.name}</p>
+            <p>{term.property.selectedDomain}</p>
 
             <small className="mt-3 col-on-primary-light">Definition</small>
             <p>{term.property.comment}</p>
 
             <small className="mt-3 col-on-primary-light">Organization</small>
-            <p>{this.getOrganizationName(term.organizationId)}</p>
+            <p>{term.organization.name}</p>
 
-            {/* ↓↓↓ TODO: Is this correct? ↓↓↓ */}
             <small className="mt-3 col-on-primary-light">Schema</small>
             <p>{term.property.scheme}</p>
 

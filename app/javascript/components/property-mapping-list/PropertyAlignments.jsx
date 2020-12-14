@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Loader from "../shared/Loader";
+import { implementAlignmentSort } from "./SortOptions";
 
 /**
  * @description A list of alignments with information like predicate, comment, and more.
@@ -8,6 +9,7 @@ import Loader from "../shared/Loader";
  * Props:
  * @param {Object} spineTerm The term of the spine to look for alignments
  * @param {Array} selectedPredicates The list of predicates selected by the user in the filter
+ * @param {String} selectedAlignmentOrderOption The option selected by the user to order the list of alignments
  * @param {Array} selectedAlignmentOrganizations The list of organizations that made alignments, selected by the user
  *   in the filter.
  * @param {Array} selectedSpineOrganizations The list of organizations that has properties with alignments, selected
@@ -56,10 +58,10 @@ export default class PropertyAlignments extends Component {
    * The list of alignments filtered using the values in the filters bar
    */
   filteredAlignments = () => {
-    const { spineTerm } = this.props;
+    const { spineTerm, selectedAlignmentOrderOption } = this.props;
     const { alignments } = this.state;
 
-    return alignments.filter(
+    let filteredAl = alignments.filter(
       (alignment) =>
         /// It matches the selected predicates
         this.selectedPredicateIds().includes(alignment.predicateId) &&
@@ -70,6 +72,8 @@ export default class PropertyAlignments extends Component {
         /// It matches the selected alignment organizations
         this.selectedSpineOrganizationIds().includes(spineTerm.organizationId)
     );
+
+    return implementAlignmentSort(filteredAl, selectedAlignmentOrderOption);
   };
 
   render() {
@@ -167,7 +171,7 @@ class AlignmentCard extends Component {
               <h5>{this.printMappedTermProperty("name")}</h5>
 
               <small className="mt-3 col-on-primary-light">Class/Type</small>
-              <h5>{this.printMappedTermProperty("uri")}</h5>
+              <h5>{alignment.mappedTerms[0].property.selectedDomain}</h5>
             </div>
             <div className="col-6">
               <small className="mt-3 col-on-primary-light">Definition</small>
