@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Welcome to desmsolutions.org, <%= @user.fullname %></h1>
+    <p>
+      You have successfully signed up to desmsolutions.org,
+      your username is: <%= @user.email %>.<br>
+    </p>
+    <p>
+      To login to the site, you can just <a href="<%= @url %>" target="_blank">click here</a>.
+    </p>
+    <p>Thanks for joining!</p>
+  </body>
+</html>
