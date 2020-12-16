@@ -15,6 +15,8 @@ class User < ApplicationRecord
   validates_presence_of :email
   validates_uniqueness_of :email
 
+  after_create :send_welcome
+
   ###
   # @description: Validates whether a user has or not a given role
   # @param [Symbol] role
@@ -45,11 +47,62 @@ class User < ApplicationRecord
   end
 
   ###
+  # @description: Creates a token to rset the password of this user
+  ###
+  def generate_password_token!
+    update_columns(
+      reset_password_token: generate_token,
+      reset_password_sent_at: Time.now.utc
+    )
+  end
+
+  ###
+  # @description: Notify the user on how to reset the password
+  ###
+  def send_reset_password_instructions
+    UserMailer.with(user: self).forgot_pass.deliver_now
+  end
+
+  ###
+  # @description: Determines the validity of this user's password token
+  ###
+  def password_token_valid?
+    (reset_password_sent_at + 4.hours) > Time.now.utc
+  end
+
+  ###
+  # @description: Welcomes the user with an email which let's him sign in with
+  #   a new password.
+  ###
+  def send_welcome
+    UserMailer.with(user: User.last).welcome.deliver_now
+  end
+
+  ###
+  # @description: Update a user's password
+  # @param password [String]
+  ###
+  def reset_password!(password)
+    self.reset_password_token = nil
+    self.password = password
+    self.password_confirmation = password
+    save!
+  end
+
+  ###
   # @description: Include additional information about the specification in
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
-  def as_json(_options={})
-    super except: %i[created_at updated_at],
-          include: %i[roles organization]
+  def as_json(options={})
+    super options.merge(methods: %i[roles organization])
+  end
+
+  private
+
+  ###
+  # @description: Generates a secure token
+  ###
+  def generate_token
+    SecureRandom.hex(10)
   end
 end

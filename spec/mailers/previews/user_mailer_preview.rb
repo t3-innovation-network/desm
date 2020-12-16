@@ -5,4 +5,8 @@ class UserMailerPreview < ActionMailer::Preview
   def welcome
     UserMailer.with(user: User.all.sample).welcome
   end
+
+  def forgot_pass
+    UserMailer.with(user: User.all.sample).forgot_pass
+  end
 end
