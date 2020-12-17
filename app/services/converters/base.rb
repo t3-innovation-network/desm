@@ -58,6 +58,23 @@ module Converters
     end
 
     ##
+    # Returns the resource for a given entity from the cache.
+    # Builds and caches a resource for the entity in the case of a cache miss.
+    #
+    # @param cache [Hash]
+    # @param entity [Object]
+    # @param builder [Method]
+    # @param options [Hash]
+    # @return [Hash, nil]
+    def fetch_cached_resource(cache, entity, builder, **options)
+      resource = cache.fetch(entity, builder.call(entity, **options))
+      return unless resource
+
+      resources << resource
+      cache[entity] = resource
+    end
+
+    ##
     # Returns the concept scheme for a given entity from the cache.
     # Builds and caches a scheme for the entity in the case of a cache miss.
     #
@@ -65,14 +82,12 @@ module Converters
     # @param options [Hash]
     # @return [Hash, nil]
     def fetch_concept_scheme(entity, **options)
-      concept_scheme = concept_scheme_cache[entity]
-      return concept_scheme if concept_scheme
-
-      concept_scheme = build_concept_scheme(entity, **options)
-      return unless concept_scheme
-
-      resources << concept_scheme
-      concept_scheme_cache[entity] = concept_scheme
+      fetch_cached_resource(
+        concept_scheme_cache,
+        entity,
+        method(:build_concept_scheme),
+        **options
+      )
     end
 
     ##
@@ -83,12 +98,12 @@ module Converters
     # @param options [Hash]
     # @return [Hash]
     def fetch_domain_class(entity, **options)
-      domain_class = domain_class_cache[entity]
-      return domain_class if domain_class
-
-      domain_class = build_domain_class(entity, **options)
-      resources << domain_class
-      domain_class_cache[entity] = domain_class
+      fetch_cached_resource(
+        domain_class_cache,
+        entity,
+        method(:build_domain_class),
+        **options
+      )
     end
   end
 end
