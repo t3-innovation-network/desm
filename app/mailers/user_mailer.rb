@@ -31,6 +31,5 @@ class UserMailer < ApplicationMailer
   ###
   def set_params
     @user = params[:user]
-    @config = Rails.configuration.action_mailer.default_options
   end
 end

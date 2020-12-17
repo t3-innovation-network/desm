@@ -30,7 +30,7 @@ class ResetPass extends Component {
       !_.isEmpty(passwordConfirmation) &&
       password != passwordConfirmation
     ) {
-      this.setState({ errors: "Passwords doesn't match" });
+      this.setState({ errors: "Passwords don't match" });
       return;
     }
 
@@ -80,7 +80,7 @@ class ResetPass extends Component {
       );
 
       /// Redirect the user to home
-      this.props.history.push("/");
+      this.props.history.push("/sign-in");
     });
   };
 
@@ -92,7 +92,7 @@ class ResetPass extends Component {
   };
 
   componentDidMount() {
-    /// Get the abstract class name from the query string URL parameters
+    /// Get the token from the query string URL parameters
     let token = queryString.parse(this.props.location.search).token;
 
     this.setState({ token: token });

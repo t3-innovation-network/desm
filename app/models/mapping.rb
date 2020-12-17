@@ -106,13 +106,7 @@ class Mapping < ApplicationRecord
   # @description: Get the users who worked in this mapping
   ###
   def involved_users
-    user_ids = terms.map {|term|
-      term.audits.map(&:user_id)
-    }.flatten.uniq!
-
-    user_ids.map {|user_id|
-      User.find(user_id)
-    }
+    User.where(id: terms.joins(:audits).select("audits.user_id"))
   end
 
   ###

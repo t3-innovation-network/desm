@@ -20,6 +20,5 @@ class MappingMailer < ApplicationMailer
   def set_params
     @mapping = params[:mapping]
     @user = params[:user]
-    @config = Rails.configuration.action_mailer.default_options
   end
 end
