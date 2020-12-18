@@ -4,6 +4,9 @@
 class MappingPreview < ActionMailer::Preview
   # Preview this email at http://localhost:3000/rails/mailers/mapping/updated
   def updated
-    MappingMailer.with(mapping: Mapping.all.sample, user: User.all.sample).updated
+    MappingMailer.with(
+      mapping: Mapping.all.sample || FactoryBot.build(:mapping),
+      user: User.all.sample
+    ).updated
   end
 end
