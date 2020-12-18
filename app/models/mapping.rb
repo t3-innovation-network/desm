@@ -98,7 +98,7 @@ class Mapping < ApplicationRecord
   ###
   def notify_updated
     involved_users.each {|user|
-      MappingMailer.with(mapping: self, user: user).updated.deliver_now
+      MappingMailer.with(mapping: self, user: user).updated.deliver_later
     }
   end
 

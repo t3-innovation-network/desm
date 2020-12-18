@@ -92,7 +92,7 @@ class User < ApplicationRecord
   # @description: Notify the user on how to reset the password
   ###
   def send_reset_password_instructions
-    UserMailer.with(user: self).forgot_pass.deliver_now
+    UserMailer.with(user: self).forgot_pass.deliver_later
   end
 
   ###
@@ -107,7 +107,7 @@ class User < ApplicationRecord
   #   a new password.
   ###
   def send_welcome
-    UserMailer.with(user: self).welcome.deliver_now
+    UserMailer.with(user: self).welcome.deliver_later
   end
 
   ###

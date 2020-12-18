@@ -6,6 +6,7 @@ import TopNavOptions from "../shared/TopNavOptions";
 import { Link } from "react-router-dom";
 import { toastr as toast } from "react-redux-toastr";
 import queryString from "query-string";
+import Loader from "./../shared/Loader";
 
 class ResetPass extends Component {
   /**
@@ -55,7 +56,7 @@ class ResetPass extends Component {
 
     event.preventDefault();
 
-    this.setState({working: true});
+    this.setState({ working: true });
 
     resetPassword(password, token).then((response) => {
       /// Manage the errors
@@ -63,7 +64,7 @@ class ResetPass extends Component {
         this.setState({
           errors:
             response.error + "\n. We were not able to reset your password.",
-            working: false,
+          working: false,
         });
         return;
       }
@@ -79,7 +80,7 @@ class ResetPass extends Component {
         "Your password was successfully updated! Please try signing in now."
       );
 
-      /// Redirect the user to home
+      /// Redirect the user to the sign in page
       this.props.history.push("/sign-in");
     });
   };
@@ -170,7 +171,11 @@ class ResetPass extends Component {
                           className="btn btn-dark"
                           disabled={!_.isEmpty(errors)}
                         >
-                          {working ? <Loader /> : "Reset Password" }
+                          {working ? (
+                            <Loader noPadding={true} smallSpinner={true} />
+                          ) : (
+                            "Reset Password"
+                          )}
                         </button>
                       </form>
                       <Link className="col-primary" to={"/sign-in"}>
