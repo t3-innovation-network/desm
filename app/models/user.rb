@@ -9,6 +9,23 @@ class User < ApplicationRecord
   ###
   has_secure_password
   ###
+  # INCLUSIONS
+  ###
+
+  ###
+  # @description: Generates secure, unique tokens
+  ###
+  include Tokenable
+  ###
+  # @description: Added because Tokenable needs the model that inclides it to have a "token" named attribute
+  ###
+  alias_attribute :token, :reset_password_token
+
+  ###
+  # RELATIONSHIPS
+  ###
+
+  ###
   # @description: The organization the user belongs to
   ###
   belongs_to :organization
@@ -20,34 +37,58 @@ class User < ApplicationRecord
   # @description: The user's roles
   ###
   has_many :roles, through: :assignments
+
+  ###
+  # VALIDATIONS
+  ###
+
   ###
   # @description: It should have a fullname
   ###
-  validates_presence_of :fullname
+  validates :fullname, presence: true
   ###
   # @description: It should be part of an organization
   ###
-  validates_presence_of :organization_id
+  validates :organization_id, presence: true
   ###
   # @description: Email should be present
   ###
-  validates_presence_of :email
+  validates :email, presence: true, uniqueness: true
   ###
-  # @description: Email should be unique
+  # @description: Rules to use in the password_strength policy
   ###
-  validates_uniqueness_of :email
+  PASSWORD_VALIDATION_RULES = {
+    ###
+    # @description: Level of deductibility. 18 is the library's default, known as an acceptable level
+    #   of entropy.
+    ###
+    min_entropy: 15,
+    ###
+    # @description: The mimimum acceptable length of the password.
+    ###
+    min_word_length: MIN_PASSWORD_LENGTH,
+    ###
+    # @description: Use a dictionary to improve the validation of the password.
+    ###
+    use_dictionary: true
+  }.freeze
+  ###
+  # @description: Uses entropy based password validation
+  ###
+  validates :password, password_strength: PASSWORD_VALIDATION_RULES
+
+  ###
+  # CALLBACKS
+  ###
+
   ###
   # @description: Send a welcome email to the user after creation
   ###
   after_create :send_welcome
+
   ###
-  # @description: Generates secure, unique tokens
+  # METHODS
   ###
-  include Tokenable
-  ###
-  # @description: Added because Tokenable needs the model that inclides it to have a "token" named attribute
-  ###
-  alias_attribute :token, :reset_password_token
 
   ###
   # @description: Validates whether a user has or not a given role

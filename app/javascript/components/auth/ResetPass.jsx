@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import { toastr as toast } from "react-redux-toastr";
 import queryString from "query-string";
 import Loader from "./../shared/Loader";
+import passwordStrength from "../../services/passwordStrength";
+import { encode } from "../../helpers/Encoder";
 
 class ResetPass extends Component {
   /**
@@ -15,6 +17,7 @@ class ResetPass extends Component {
   state = {
     password: "",
     passwordConfirmation: "",
+    passwordIsValid: false,
     token: "",
     errors: "",
     working: false,
@@ -42,9 +45,36 @@ class ResetPass extends Component {
    * Update the component state on every change in the input control in the form
    */
   handleOnChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
+    const { password } = this.state;
+
+    this.setState(
+      {
+        [event.target.name]: event.target.value,
+      },
+      async () => {
+        /**
+         * The miminum acceptable password length
+         */
+        if (password.length - 1 > minPasswordLength) {
+          let response = await passwordStrength(encode({password: password}));
+
+          /// Manage the errors
+          if (response.error) {
+            this.setState({
+              errors: response.error,
+              working: false,
+            });
+            return;
+          }
+
+          /// Reset the errors in state
+          this.setState({
+            errors: "",
+            passwordIsValid: response.valid,
+          });
+        }
+      }
+    );
   };
 
   /**
@@ -58,7 +88,7 @@ class ResetPass extends Component {
 
     this.setState({ working: true });
 
-    resetPassword(password, token).then((response) => {
+    resetPassword(encode({password: password}), token).then((response) => {
       /// Manage the errors
       if (response.error) {
         this.setState({
@@ -107,6 +137,7 @@ class ResetPass extends Component {
       errors,
       password,
       passwordConfirmation,
+      passwordIsValid,
       token,
       working,
     } = this.state;
@@ -130,12 +161,18 @@ class ResetPass extends Component {
                       <p>Please type a strong password below.</p>
                     </div>
                     <div className="card-body">
+                      <PasswordStrengthInfo />
                       <form className="mb-3" onSubmit={this.handleSubmit}>
                         <div className="form-group">
                           <label>
                             New Password
                             <span className="text-danger">*</span>
                           </label>
+                          {passwordIsValid ? (
+                            <span className="fa fa-check form-control-feedback right-aligned col-success"></span>
+                          ) : (
+                            ""
+                          )}
                           <input
                             autoFocus
                             className="form-control"
@@ -169,7 +206,12 @@ class ResetPass extends Component {
                         <button
                           type="submit"
                           className="btn btn-dark"
-                          disabled={!_.isEmpty(errors)}
+                          disabled={
+                            !_.isEmpty(errors) ||
+                            !passwordIsValid ||
+                            _.isEmpty(password) ||
+                            _.isEmpty(passwordConfirmation)
+                          }
                         >
                           {working ? (
                             <Loader noPadding={true} smallSpinner={true} />
@@ -192,5 +234,39 @@ class ResetPass extends Component {
     );
   }
 }
+
+const PasswordStrengthInfo = () => {
+  return (
+    <div className="alert alert-dismissible alert-info">
+      <h4>
+        <strong>Important</strong>
+      </h4>
+      <p>
+        We validate the password based on its deductibility. You can try a
+        combination of the following suggestions:
+      </p>
+      <ul>
+        <li>Include uppercase letter/s</li>
+        <li>Include lowercase letter/s</li>
+        <li>Include numbers</li>
+        <li>Include symbols</li>
+        <li>{"Make its length as minimum" + minPasswordLength}</li>
+      </ul>
+      <button
+        type="button"
+        className="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  );
+};
+
+/**
+ * The miminum acceptable password length
+ */
+const minPasswordLength = process.env.MIN_PASSWORD_LENGTH || 7;
 
 export default ResetPass;

@@ -508,7 +508,7 @@ const MappingToDomains = (props) => {
                       </div>
                     </div>
                     <div className="row">
-                      <div className="col-12 form-group has-search">
+                      <div className="col-12 form-group input-group-has-icon">
                         <span className="fa fa-search form-control-feedback"></span>
                         <input
                           type="text"
