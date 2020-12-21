@@ -114,6 +114,7 @@ GEM
     json (2.4.1)
     json_schema_tools (0.6.6)
       json
+    jwt (2.2.2)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -250,6 +251,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    strong_password (0.0.9)
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -293,6 +295,7 @@ DEPENDENCIES
   httparty
   jbuilder (~> 2.7)
   json_schema_tools (~> 0.6)
+  jwt
   listen (~> 3.2)
   mailgun_rails
   pg (>= 0.18, < 2.0)
@@ -309,6 +312,7 @@ DEPENDENCIES
   shoulda-matchers
   spring
   spring-watcher-listen (~> 2.0.0)
+  strong_password (~> 0.0.8)
   turbolinks (~> 5)
   tzinfo-data
   web-console (>= 3.3.0)

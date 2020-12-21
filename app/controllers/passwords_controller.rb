@@ -5,8 +5,11 @@
 ###
 class PasswordsController < ApplicationController
   include CurrentUserConcern
+  include Encodeable
+
   before_action :validate_email, only: :forgot
   before_action :validate_token, only: :reset
+  before_action :validate_password, only: %i[strength reset]
 
   ###
   # @description: Manages to generate a token and send it to the user via email with
@@ -25,10 +28,24 @@ class PasswordsController < ApplicationController
   # @description: Resets the user's password
   ###
   def reset
-    @user.reset_password!(permitted_params[:password])
+    @user.reset_password!(@password)
 
     render json: {
       success: true
+    }
+  end
+
+  ###
+  # @description: Calculates the entropy of a password, and returns if it's acceptable or not, based
+  #   on the password validation rules in the user model.
+  # @see User::PASSWORD_VALIDATION_RULES
+  ###
+  def strength
+    checker = StrongPassword::StrengthChecker.new(User::PASSWORD_VALIDATION_RULES)
+
+    render json: {
+      valid: checker.is_strong?(@password),
+      entropy: checker.calculate_entropy(@password)
     }
   end
 
@@ -42,6 +59,17 @@ class PasswordsController < ApplicationController
     raise "Email not present" unless permitted_params[:email].present?
 
     @user = User.find_by_email!(permitted_params[:email])
+  end
+
+  ###
+  # @description: Validates the presence of the passowrd bofore calculating its strength
+  ###
+  def validate_password
+    raise "Password not provided" unless permitted_params[:password].present?
+
+    decoded = decode(permitted_params[:password])
+
+    @password = decoded[:password]
   end
 
   ###

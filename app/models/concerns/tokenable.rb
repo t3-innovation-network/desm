@@ -14,6 +14,11 @@ module Tokenable
 
   included do
     before_create :generate_token
+    MIN_PASSWORD_LENGTH = begin
+                            Integer(ENV["MIN_PASSWORD_LENGTH"])
+                          rescue TypeError
+                            8
+                          end
   end
 
   protected

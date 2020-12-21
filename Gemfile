@@ -55,8 +55,14 @@ gem "json_schema_tools", "~> 0.6"
 
 gem "rubyzip", "~> 2.3", require: "zip"
 
-# USe mailgun servers for sending mails
+# Use mailgun servers for sending mails
 gem "mailgun_rails"
+
+# Validate the use of strong passwords
+gem "strong_password", "~> 0.0.8"
+
+# Deal with sensitive data (encoding/decoding)
+gem "jwt"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

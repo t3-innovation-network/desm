@@ -76,7 +76,7 @@ const MappingTermsHeaders = (props) => {
         </div>
       </div>
       <div className="row">
-        <div className="col form-group has-search">
+        <div className="col form-group input-group-has-icon">
           <span className="fa fa-search form-control-feedback"></span>
           <input
             type="text"
