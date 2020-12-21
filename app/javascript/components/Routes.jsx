@@ -16,69 +16,85 @@ import AlignAndFineTune from "./align-and-fine-tune/AlignAndFineTune";
 import MappingToDomains from "./mapping-to-domains/MappingToDomains";
 import EditSpecification from "./edit-specification/EditSpecification";
 import PropertyMappingList from "./property-mapping-list/PropertyMappingList";
+import ForgotPass from "./auth/ForgotPass";
+import ResetPass from "./auth/ResetPass";
 
 const Routes = (props) => {
-  let manageLogin = props.handleLogin;
+  const { handleLogin } = props;
 
   return (
     <Router>
       <Switch>
-        <Route
-          exact
-          path={"/"}
-          component={Home} />
+        <Route exact path={"/"} component={Home} />
 
         <Route
           exact
           path={"/sign-in"}
-          render={(props) => <SignIn {...props} handleLogin={manageLogin}/>}
+          render={(props) => <SignIn {...props} handleLogin={handleLogin} />}
+        />
+
+        <Route
+          exact
+          path={"/forgot-password"}
+          render={(props) => (
+            <ForgotPass {...props} handleLogin={handleLogin} />
+          )}
+        />
+
+        <Route
+          exact
+          path={"/reset-password"}
+          render={(props) => (
+            <ResetPass {...props} handleLogin={handleLogin} />
+          )}
         />
 
         <Route
           exact
           path={"/mappings-list"}
-          render={(props) => <PropertyMappingList {...props} handleLogin={manageLogin}/>}
+          render={(props) => (
+            <PropertyMappingList {...props} handleLogin={handleLogin} />
+          )}
         />
 
         <ProtectedRoute
           exact
           path="/mappings"
           allowNonAdmins={true}
-          component={SpecsList} />
+          component={SpecsList}
+        />
 
         <ProtectedRoute
           exact
           path="/specifications/:id"
           allowNonAdmins={true}
-          component={EditSpecification} />
+          component={EditSpecification}
+        />
 
         <ProtectedRoute
           exact
           path="/new-mapping"
           allowNonAdmins={true}
-          component={Mapping} />
+          component={Mapping}
+        />
 
         <ProtectedRoute
           exact
           path="/mappings/:id"
           allowNonAdmins={true}
-          component={MappingToDomains} />
+          component={MappingToDomains}
+        />
 
         <ProtectedRoute
           exact
           path="/mappings/:id/align"
           allowNonAdmins={true}
-          component={AlignAndFineTune} />
+          component={AlignAndFineTune}
+        />
 
-        <ProtectedRoute
-          exact
-          path="/dashboard"
-          component={MainDashboard} />
+        <ProtectedRoute exact path="/dashboard" component={MainDashboard} />
 
-        <ProtectedRoute
-          exact
-          path="/dashboard/users"
-          component={UsersIndex} />
+        <ProtectedRoute exact path="/dashboard/users" component={UsersIndex} />
 
         <ProtectedRoute
           exact

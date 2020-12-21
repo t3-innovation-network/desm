@@ -48,6 +48,15 @@ class MappingTerm < ApplicationRecord
 
   before_destroy :remove_spine_term, if: :synthetic
 
+  after_update :notify_mapping_updated, if: proc { mapping.mapped? }
+
+  ###
+  # @description: Notify the user about changes on the mapping
+  ###
+  def notify_mapping_updated
+    mapping.notify_updated
+  end
+
   ###
   # @description: Associate the terms to this alignment. NOTE: This method will replace the previous
   #   associated terms, so if you need to add terms, maintaining the previous ones, include the

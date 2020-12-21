@@ -55,6 +55,9 @@ gem "json_schema_tools", "~> 0.6"
 
 gem "rubyzip", "~> 2.3", require: "zip"
 
+# USe mailgun servers for sending mails
+gem "mailgun_rails"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
