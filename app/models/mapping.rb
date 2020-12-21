@@ -94,6 +94,22 @@ class Mapping < ApplicationRecord
   end
 
   ###
+  # @description: Notify the user about changes on the mapping
+  ###
+  def notify_updated
+    involved_users.each {|user|
+      MappingMailer.with(mapping: self, user: user).updated.deliver_later
+    }
+  end
+
+  ###
+  # @description: Get the users who worked in this mapping
+  ###
+  def involved_users
+    User.where(id: terms.joins(:audits).select("audits.user_id"))
+  end
+
+  ###
   # @description: Include additional information about the mapping in
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###

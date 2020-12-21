@@ -1,47 +1,20 @@
 import React, { Component } from "react";
 import TopNav from "../shared/TopNav";
-import signIn from "../../services/signIn";
+import forgotPassword from "../../services/forgotPassword";
 import AlertNotice from "../shared/AlertNotice";
 import TopNavOptions from "../shared/TopNavOptions";
 import { Link } from "react-router-dom";
+import { toastr } from "react-redux-toastr";
+import Loader from "../shared/Loader";
 
-class SignIn extends Component {
+class ForgotPass extends Component {
   /**
-   * Represents the state of this component. It contains all the fields that are
-   * going to be sent to the API service in order to create a session
+   * Represents the state of this component.
    */
   state = {
     email: "",
-    password: "",
     errors: "",
-  };
-
-  /**
-   * On a successfull response from the service, we go and update the store,
-   * then redirect the user to home
-   */
-  handleSuccessfullAuth(user) {
-    this.props.handleLogin(user);
-    this.props.history.push("/");
-  }
-
-  /**
-   * Send the data prepared in the form to the API service, and expect
-   * the result to be shown to the user
-   */
-  handleSubmit = (event) => {
-    const { email, password } = this.state;
-
-    signIn(email, password).then((response) => {
-      if (response.error) {
-        this.setState({
-          errors: response.error + "\nWe were not able to sign you in.",
-        });
-      }
-      this.handleSuccessfullAuth(response.user);
-    });
-
-    event.preventDefault();
+    sending: false,
   };
 
   /**
@@ -54,6 +27,44 @@ class SignIn extends Component {
   };
 
   /**
+   * Send the data prepared in the form to the API service, and expect
+   * the result to be shown to the user
+   */
+  handleSubmit = (event) => {
+    const { email } = this.state;
+
+    event.preventDefault();
+
+    this.setState({ sending: true });
+
+    forgotPassword(email).then((response) => {
+      /// Manage the errors
+      if (response.error) {
+        this.setState({
+          errors:
+            response.error + "\n. We were not able to reset your password.",
+          sending: false,
+        });
+        return;
+      }
+
+      /// Reset the errors in state
+      this.setState({
+        errors: "",
+        sending: false,
+      });
+
+      /// Notify the user
+      toastr.success(
+        "We sent you an email with instructions on how to reset your password"
+      );
+
+      /// Redirect the user to home
+      this.props.history.push("/");
+    });
+  };
+
+  /**
    * Configure the options to see at the center of the top navigation bar
    */
   navCenterOptions = () => {
@@ -61,6 +72,11 @@ class SignIn extends Component {
   };
 
   render() {
+    /**
+     * Elements from state
+     */
+    const { email, errors, sending } = this.state;
+
     return (
       <React.Fragment>
         <div className="wrapper">
@@ -68,14 +84,16 @@ class SignIn extends Component {
           <div className="container-fluid container-wrapper">
             <div className="row mt-5">
               <div className="col-lg-6 mx-auto">
-                {this.state.errors && (
-                  <AlertNotice message={this.state.errors} />
-                )}
+                {errors && <AlertNotice message={errors} />}
 
                 <div className="card">
                   <div className="card-header">
-                    <i className="fa fa-users"></i>
-                    <span className="pl-2 subtitle">Sign In</span>
+                    <i className="fa fa-key"></i>
+                    <span className="pl-2 subtitle">Forgot your password?</span>
+                    <p>
+                      Please type your email, and we will send you an email with
+                      instructions on how to reset your password.
+                    </p>
                   </div>
                   <div className="card-body">
                     <form className="mb-3" onSubmit={this.handleSubmit}>
@@ -89,35 +107,23 @@ class SignIn extends Component {
                           className="form-control"
                           name="email"
                           placeholder="Enter your email"
-                          value={this.state.email}
+                          value={email}
                           onChange={this.handleOnChange}
                           required
                           autoFocus
                         />
                       </div>
 
-                      <div className="form-group">
-                        <label>
-                          Password
-                          <span className="text-danger">*</span>
-                        </label>
-                        <input
-                          type="password"
-                          className="form-control"
-                          name="password"
-                          placeholder="Enter your password"
-                          value={this.state.password}
-                          onChange={this.handleOnChange}
-                          required
-                        />
-                      </div>
-
                       <button type="submit" className="btn btn-dark">
-                        Sign In
+                        {sending ? (
+                          <Loader noPadding={true} smallSpinner={true} />
+                        ) : (
+                          "Send"
+                        )}
                       </button>
                     </form>
-                    <Link className="col-primary" to={"forgot-password"}>
-                      Forgot password?
+                    <Link className="col-primary" to={"/sign-in"}>
+                      Login
                     </Link>
                   </div>
                 </div>
@@ -130,4 +136,4 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn;
+export default ForgotPass;

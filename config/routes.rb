@@ -8,7 +8,8 @@ Rails.application.routes.draw do
   resources :registrations, only: [:create]
   delete :logout, to: 'sessions#logout'
   get :session_status, to: 'sessions#session_status'
-  
+  post 'password/forgot', to: 'passwords#forgot'
+  post 'password/reset', to: 'passwords#reset'
   
   namespace :api do
     namespace :v1 do
