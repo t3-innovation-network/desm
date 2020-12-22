@@ -23,4 +23,8 @@ The project will be accessible from any device within your network
 1. Execute `chmod +x scripts/*.bash`
 2. Execute `./scripts/install-hooks.sh`
 
-> Admin user email: "admin@t3converter.com", and the password will be the one in the ".env" file.
+> Admin user email: "admin@schema.com", and the password will be the one in the ".env" file.
+
+# Jobs
+
+To configure jobs, run `whenever --update-crontab`. See [docs](https://github.com/javan/whenever).

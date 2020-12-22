@@ -18,4 +18,11 @@
 ###
 class MergedFile < ApplicationRecord
   validates :content, presence: true
+
+  ###
+  # @description: Return those MergedFiles that can be removed.
+  ###
+  scope :needs_removal, lambda {
+    where("created_at < ?", 5.hours.ago)
+  }
 end
