@@ -161,7 +161,6 @@ const MappingPreview = (props) => {
     });
 
     if (response.error) {
-      toast.error(response.error);
       return false;
     }
 

@@ -48,6 +48,13 @@ gem "httparty"
 # Audit changes
 gem "audited", "~> 4.9"
 
+# Load env variables in dev & test modes
+gem "dotenv-rails", "~> 2.7", groups: %i[development test]
+
+gem "json_schema_tools", "~> 0.6"
+
+gem "rubyzip", "~> 2.3", require: "zip"
+
 # Use mailgun servers for sending mails
 gem "mailgun_rails"
 

@@ -83,6 +83,10 @@ GEM
     connection_pool (2.2.3)
     crass (1.0.6)
     diff-lcs (1.4.4)
+    dotenv (2.7.6)
+    dotenv-rails (2.7.6)
+      dotenv (= 2.7.6)
+      railties (>= 3.2)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     erubi (1.9.0)
@@ -108,6 +112,8 @@ GEM
     jbuilder (2.10.0)
       activesupport (>= 5.0.0)
     json (2.4.1)
+    json_schema_tools (0.6.6)
+      json
     jwt (2.2.2)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -228,6 +234,7 @@ GEM
     rubocop-ast (0.2.0)
       parser (>= 2.7.0.1)
     ruby-progressbar (1.10.1)
+    rubyzip (2.3.0)
     seed-fu (2.3.9)
       activerecord (>= 3.1)
       activesupport (>= 3.1)
@@ -282,10 +289,12 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   capybara
+  dotenv-rails (~> 2.7)
   factory_bot_rails
   faker
   httparty
   jbuilder (~> 2.7)
+  json_schema_tools (~> 0.6)
   jwt
   listen (~> 3.2)
   mailgun_rails
@@ -298,6 +307,7 @@ DEPENDENCIES
   rerun
   rspec-rails (~> 4.0.1)
   rubocop
+  rubyzip (~> 2.3)
   seed-fu
   shoulda-matchers
   spring
