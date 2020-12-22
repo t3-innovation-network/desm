@@ -156,7 +156,11 @@ module Processors
       }
 
       # Avoid duplicate nodes
-      final_spec[:@graph].uniq!
+      final_spec[:@graph].uniq! {|node|
+        [node["id"], node["@id"]]
+      }&.sort_by! {|node|
+        Parsers::Specifications.read!(node, "label")
+      }
 
       final_spec
     end
