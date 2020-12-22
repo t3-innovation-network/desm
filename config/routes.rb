@@ -36,9 +36,9 @@ Rails.application.routes.draw do
 
       get 'mapping_terms/:id/vocabulary' => 'alignment_vocabularies#show'
       get 'mappings/:id/terms' => 'mappings#show_terms'
-      post 'specifications/info' => 'specifications#info'
-      post 'specifications/filter' => 'specifications#filter'
-      post 'specifications/merge' => 'specifications#merge'
+      post 'merged_files/:id/classes' => 'merged_files#classes'
+      post 'merged_files/:id/filter' => 'merged_files#filter'
+      post 'merged_files/create' => 'merged_files#create'
       get 'specifications/:id/terms' => 'terms#index'
       get 'vocabularies/:id/flat' => 'vocabularies#flat'
     end

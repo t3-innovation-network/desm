@@ -17,7 +17,7 @@ const allReducers = combineReducers({
   files: fileReducer,
   loggedIn: loggedReducer,
   mappingFormData: mappingFormReducer,
-  mergedFile: mergedFileReducer,
+  mergedFileId: mergedFileReducer,
   previewSpecs: previewSpecReducer,
   processingFile: fileProcessingReducer,
   submitted: submittedReducer,

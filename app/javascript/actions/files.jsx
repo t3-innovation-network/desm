@@ -52,10 +52,10 @@ export const unsetSpecToPreview = (specs) => {
  *
  * @returns {Array}
  */
-export const setMergedFile = (file) => {
+export const setMergedFileId = (fileId) => {
   return {
     type: "SET_MERGED_FILE",
-    payload: file,
+    payload: fileId,
   };
 };
 
@@ -64,7 +64,7 @@ export const setMergedFile = (file) => {
  *
  * @returns {Array}
  */
-export const unsetMergedFile = () => {
+export const unsetMergedFileId = () => {
   return {
     type: "UNSET_MERGED_FILE",
   };
