@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import AlertNotice from "../shared/AlertNotice";
 import FileInfo from "./FileInfo";
 import { useSelector, useDispatch } from "react-redux";
-import { setFiles, setMergedFile, setSpecToPreview } from "../../actions/files";
+import { setFiles, setMergedFileId, setSpecToPreview } from "../../actions/files";
 import {
   doSubmit,
   startProcessingFile,
@@ -58,7 +58,7 @@ const MappingForm = () => {
   const files = useSelector((state) => state.files);
 
   /// The unified file from the ones the user uploaded
-  const mergedFile = useSelector((state) => state.mergedFile);
+  const mergedFileId = useSelector((state) => state.mergedFileId);
 
   /// The preview files (files already prepared to be previewed, as
   /// without the unrelated domains and properties)
@@ -167,18 +167,20 @@ const MappingForm = () => {
       return;
     }
 
-    dispatch(setMergedFile(response.specification));
+    dispatch(setMergedFileId(response.mergedFileId));
 
-    files.map((file) => sendFileToPreview(file));
+    // files.map((file) => sendFileToPreview(file));
 
-    return response.specification;
+    return response.mergedFileId;
   };
 
   /**
    * Be sure that the uploaded file contains only one domain to map to
+   * 
+   * @param {Integer} mergedFileId
    */
-  const handleCheckDomainsInFile = async (spec) => {
-    let response = await checkDomainsInFile(spec);
+  const handleCheckDomainsInFile = async (mergedFileId) => {
+    let response = await checkDomainsInFile(mergedFileId);
 
     if (response.error) {
       toast.error(response.error);
@@ -196,8 +198,10 @@ const MappingForm = () => {
    * Manage to work with only 1 file with all the information.
    */
   const processFiles = async () => {
-    let spec = await handleMergeFiles();
-    await handleCheckDomainsInFile(spec);
+    let mergedFileId = await handleMergeFiles();
+    if(!errors.length){
+      await handleCheckDomainsInFile(mergedFileId);
+    }
   };
 
   /**
@@ -231,7 +235,7 @@ const MappingForm = () => {
    * @param {Array} uris: The uri's of the selected domains
    */
   const handleFilterSpecification = async (uris) => {
-    let response = await filterSpecification(uris, mergedFile);
+    let response = await filterSpecification(uris, mergedFileId);
 
     if (response.error) {
       toast.error(response.error);
@@ -258,7 +262,8 @@ const MappingForm = () => {
 
     let tempSpecs = [];
     let specification = await handleFilterSpecification(uris);
-    dispatch(setMergedFile(specification));
+    // @todo remove if not necessary
+    //dispatch(setMergedFileId(specification));
 
     tempSpecs.push(JSON.stringify(specification, null, 2));
 

@@ -78,14 +78,12 @@ module Processors
 
     ###
     # @description: Identify all the concepts for a given vocabulary id (scheme uri).
-    # @param [Array] graph: the collection of nodes. It can contain all kind of nodes, we will find only those with
-    #   type "skos:Concept" and related to the given scheme.
+    # @param [Array] concept_nodes: the collection of nodes. It contains nodes with type "skos:Concept".
+    #   We will find those related to the given scheme node.
     # @param [Object] scheme_node: The scheme node containing the uri of the related concepts
     # @return [Array]
     ###
-    def self.identify_concepts graph, scheme_node
-      concept_nodes = concept_nodes(graph)
-
+    def self.identify_concepts concept_nodes, scheme_node
       child_concepts_uris(scheme_node).map {|concept_uri|
         concept_nodes.find {|c_node|
           Parsers::Specifications.read!(c_node, "id").downcase == concept_uri.downcase
@@ -177,6 +175,20 @@ module Processors
       graph.select {|node|
         Array(Parsers::Specifications.read!(node, "type")).any? {|type|
           type.downcase.include?("conceptscheme")
+        }
+      }
+    end
+
+    ###
+    # @description: Returns all those nodes that are not skos types (concepts or concept schemes)
+    # @param [Array] graph: An array of hashes, representing the nodes, that could be any "@type",
+    #   like "rdfsClass", "rdf:Property", among others
+    # @return [Array]
+    ###
+    def self.exclude_skos_types(graph)
+      graph.reject {|node|
+        Array(Parsers::Specifications.read!(node, "type")).any? {|type|
+          type.downcase.include?("conceptscheme") || type.downcase.include?("concept")
         }
       }
     end

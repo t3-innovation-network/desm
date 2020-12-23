@@ -23,4 +23,9 @@ The project will be accessible from any device within your network
 1. Execute `chmod +x scripts/*.bash`
 2. Execute `./scripts/install-hooks.sh`
 
-> Admin user email: "admin@t3converter.com", and the password will be the one in the ".env" file.
+> Admin user email: "admin@schema.com", and the password will be the one in the ".env" file.
+
+# Jobs
+
+Jobs in production are being scheduled with server configuration running commands in a periodical basis.
+If you want to run these jobs using a local scheduler, check out `whenever` gem. See [docs](https://github.com/javan/whenever).
