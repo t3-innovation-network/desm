@@ -133,7 +133,7 @@ export default class MultipleDomainsModal extends Component {
                   Please select one or more domains from the list to begin
                   mapping
                 </strong>
-                <div className="form-group has-search">
+                <div className="form-group input-group-has-icon">
                   <span className="fa fa-search form-control-feedback"></span>
                   <input
                     type="text"

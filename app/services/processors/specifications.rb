@@ -8,12 +8,9 @@ module Processors
     ###
     # @description: Process a given file which must contain json data, to
     #   organize the domains information
-    # @param [ActionDispatch::Http::UploadedFile] file The json file to be processed
+    # @param [Hash] file_content The json file to be processed
     ###
-    def self.process_domains_from_file(file)
-      # Make the file content available as a json object
-      file_content = JSON.parse(file)
-
+    def self.process_domains_from_file(file_content)
       # The domains are listed under the '@graph' object, because at this
       # stage we are dealing with a json-ld file
       raise InvalidSpecification unless file_content["@graph"].present?
@@ -70,15 +67,9 @@ module Processors
     # @return [Hash] The collectio of vocabularies, if any, and the new filtered specification
     ###
     def self.filter_specification(spec, uris)
-      # Make the spec content available as a json object
-      spec = JSON.parse(spec) if spec.is_a?(String)
-
-      vocabularies = filter_vocabularies(spec)
-      spec = filter_specification_by_domain_uri(spec, uris)
-
       {
-        vocabularies: vocabularies,
-        specification: spec
+        vocabularies: filter_vocabularies(spec),
+        specification: filter_specification_by_domain_uri(spec, uris)
       }
     end
 
@@ -90,13 +81,15 @@ module Processors
     def self.filter_vocabularies(spec)
       vocabs = []
 
+      concept_nodes = Processors::Skos.concept_nodes(spec["@graph"])
+
       # Get all the concept scheme nodes. With the pupose of separate all the vocabularies, we
       # need the concept schemes, which represents the vocabularies main nodes.
       Processors::Skos.scheme_nodes_from_graph(spec["@graph"]).each do |scheme_node|
         vocab = {
           "@context": nil,
           # Get all the concepts for this concept scheme
-          "@graph": Processors::Skos.identify_concepts(spec["@graph"], scheme_node)
+          "@graph": Processors::Skos.identify_concepts(concept_nodes, scheme_node)
         }
 
         # Place the context at the beginning
@@ -156,7 +149,11 @@ module Processors
       }
 
       # Avoid duplicate nodes
-      final_spec[:@graph].uniq!
+      final_spec[:@graph].uniq! {|node|
+        [node["id"], node["@id"]]
+      }&.sort_by! {|node|
+        Parsers::Specifications.read!(node, "label")
+      }
 
       final_spec
     end
@@ -181,7 +178,10 @@ module Processors
       # The rest of the nodes will be added recursively looking for
       # those nodes related to a URI
       domain_uris.each {|domain_uri|
-        final_graph += build_nodes_for_uri(spec["@graph"], domain_uri)
+        final_graph += build_nodes_for_uri(
+          Processors::Skos.exclude_skos_types(spec["@graph"]),
+          domain_uri
+        )
       }
 
       final_graph

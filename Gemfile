@@ -51,6 +51,25 @@ gem "httparty"
 # Audit changes
 gem "audited", "~> 4.9"
 
+# Load env variables in dev & test modes
+gem "dotenv-rails", "~> 2.7", groups: %i[development test]
+
+gem "json_schema_tools", "~> 0.6"
+
+gem "rubyzip", "~> 2.3", require: "zip"
+
+# Use mailgun servers for sending mails
+gem "mailgun_rails"
+
+# Validate the use of strong passwords
+gem "strong_password", "~> 0.0.8"
+
+# Deal with sensitive data (encoding/decoding)
+gem "jwt"
+
+# Centralize access to tasks
+gem "rake"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]

@@ -26,7 +26,7 @@ const FileInfo = (props) => {
         </p>
         <p>
           <strong>Last Modified:</strong>{" "}
-          {" " + selectedFile.lastModifiedDate.toDateString()}
+          {" " + new Date(selectedFile.lastModified).toDateString()}
         </p>
       </div>
     </div>

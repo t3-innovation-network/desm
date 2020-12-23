@@ -1,0 +1,11 @@
+en:
+  mailers:
+    welcome:
+      subject: "T3 Desm - Welcome to desmsolutions.org!"
+      title: "Welcome!"
+    forgot_pass:
+      subject: "T3 Desm - Instructions to reset your password"
+      title: "How to reset your password"
+    mapping_updated:
+      title: "A mapping you were working on was updated"
+      subject: "T3 Desm - Mapping udpated"

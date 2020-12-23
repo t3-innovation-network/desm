@@ -3,6 +3,7 @@ import TopNav from "../shared/TopNav";
 import signIn from "../../services/signIn";
 import AlertNotice from "../shared/AlertNotice";
 import TopNavOptions from "../shared/TopNavOptions";
+import { Link } from "react-router-dom";
 
 class SignIn extends Component {
   /**
@@ -77,7 +78,7 @@ class SignIn extends Component {
                     <span className="pl-2 subtitle">Sign In</span>
                   </div>
                   <div className="card-body">
-                    <form onSubmit={this.handleSubmit}>
+                    <form className="mb-3" onSubmit={this.handleSubmit}>
                       <div className="form-group">
                         <label>
                           Email
@@ -115,6 +116,9 @@ class SignIn extends Component {
                         Sign In
                       </button>
                     </form>
+                    <Link className="col-primary" to={"forgot-password"}>
+                      Forgot password?
+                    </Link>
                   </div>
                 </div>
               </div>

@@ -105,14 +105,15 @@ export default class TermCard extends Component {
       <div className="row">
         <div
           className={
-            "col-8 mb-3" +
-            (disableClick || selected ? "" : " cursor-pointer")
+            "col-8 mb-3" + (disableClick || selected ? "" : " cursor-pointer")
           }
         >
-          <strong>{term.name}</strong>{" "}
-          {term.property.selectedDomain
-            ? " [" + term.property.selectedDomain + "]"
-            : ""}
+          <strong>
+            <span>{term.name}</span>{" "}
+            {term.property.selectedDomain
+              ? " [" + term.property.selectedDomain + "]"
+              : ""}
+          </strong>
         </div>
         <div className="col-4">
           <div className="float-right">

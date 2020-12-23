@@ -7,35 +7,6 @@ class Api::V1::SpecificationsController < ApplicationController
   before_action :with_instance
 
   ###
-  # @description: Process a specification file to organiza and return
-  #   the related information, like how many domains it contains
-  ###
-  def info
-    domains = Processors::Specifications.process_domains_from_file(params[:file])
-
-    render json: domains
-  end
-
-  ###
-  # @description: Return a json-ld file with the context and a graph
-  #  node with only one class, all it's properties and recursively, all the
-  #  related properties
-  ###
-  def filter
-    render json: Processors::Specifications.filter_specification(params[:file], params[:uris])
-  end
-
-  ###
-  # @description: Merge 2 or more files to get a big json-ld graph with all the nodes.
-  #   This, in order to ease the frontend and backend working with multiple files.
-  ###
-  def merge
-    files = params[:files].map {|file| Parsers::FormatConverter.convert_to_jsonld(file) }
-
-    render json: Parsers::Specifications.merge_specs(files)
-  end
-
-  ###
   # @description: Create a specification with its terms. Store it from an already
   #   filtered JSON object
   ###

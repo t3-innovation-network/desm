@@ -98,6 +98,11 @@ module Recuperable
         message_key: "errors.invalid_json",
         status_code: :unprocessable_entity,
         include_original_error_message: false
+      },
+      "Net::SMTPAuthenticationError": {
+        message_key: "errors.email_account_not_configured",
+        status_code: :internal_server_error,
+        include_original_error_message: true
       }
     }
   end

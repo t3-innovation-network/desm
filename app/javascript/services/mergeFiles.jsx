@@ -7,11 +7,11 @@ const mergeFiles = async (files) => {
 
   /// Send the files to the api to analyze
   const response = await apiRequest({
-    url: "/api/v1/specifications/merge",
+    url: "/api/v1/merged_files/create",
     method: "post",
     payload: data,
     deafultResponse: [],
-    successResponse: "specification",
+    successResponse: "mergedFileId",
     options: {
       headers: {
         "Content-Type": "multipart/form-data",

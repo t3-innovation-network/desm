@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
 
     session[:user_id] = user.id
 
-    render json: user, include: %i[roles organization]
+    render json: user
   end
 
   ###

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   unsetFiles,
-  unsetMergedFile,
+  unsetMergedFileId,
   unsetSpecToPreview,
 } from "../../actions/files";
 import SpecsPreviewTabs from "./SpecsPreviewTabs";
@@ -81,7 +81,7 @@ const MappingPreview = (props) => {
     /// Change the form status to unsubmitted
     dispatch(doUnsubmit());
     /// Remove unified file
-    dispatch(unsetMergedFile());
+    dispatch(unsetMergedFileId());
     /// Remove vocabularies
     dispatch(unsetVocabularies());
     
@@ -161,7 +161,6 @@ const MappingPreview = (props) => {
     });
 
     if (response.error) {
-      toast.error(response.error);
       return false;
     }
 

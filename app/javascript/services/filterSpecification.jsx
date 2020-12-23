@@ -1,9 +1,9 @@
 import apiRequest from "./api/apiRequest";
 /**
- * @param {file} file: The file to be filtered, in a JSON format.
+ * @param {Integer} mergedFileId: The id of the file to be filtered.
  * @param {Array} uri: The list of identifiers of the rdfs:Class'es selected.
  */
-const filterSpecification = async (uris, file) => {
+const filterSpecification = async (uris, mergedFileId) => {
   /**
    * This will be the way to get the specification file
    * parsed to get only 1 domain to map from.
@@ -16,10 +16,9 @@ const filterSpecification = async (uris, file) => {
    * that's also related to the selected class and so on.
    */
   return await apiRequest({
-    url: "/api/v1/specifications/filter",
+    url: "/api/v1/merged_files/" + mergedFileId + "/filter",
     method: "post",
     payload: {
-      file: JSON.stringify(file),
       uris: uris,
     },
     defaultResponse: "",
