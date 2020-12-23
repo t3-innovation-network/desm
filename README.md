@@ -27,4 +27,5 @@ The project will be accessible from any device within your network
 
 # Jobs
 
-To configure jobs, run `whenever --update-crontab`. See [docs](https://github.com/javan/whenever).
+Jobs in production are being scheduled with server configuration running commands in a periodical basis.
+If you want to run these jobs using a local scheduler, check out `whenever` gem. See [docs](https://github.com/javan/whenever).
