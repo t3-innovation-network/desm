@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import AlertNotice from "../shared/AlertNotice";
 import FileInfo from "./FileInfo";
 import { useSelector, useDispatch } from "react-redux";
-import { setFiles, setMergedFileId, setSpecToPreview } from "../../actions/files";
+import { setFiles, setFilteredFile, setMergedFileId, setSpecToPreview } from "../../actions/files";
 import {
   doSubmit,
   startProcessingFile,
@@ -243,6 +243,7 @@ const MappingForm = () => {
     }
 
     dispatch(setVocabularies(response.filtered.vocabularies));
+    dispatch(setFilteredFile(response.filtered.specification))
 
     return response.filtered.specification;
   };

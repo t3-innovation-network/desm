@@ -69,3 +69,26 @@ export const unsetMergedFileId = () => {
     type: "UNSET_MERGED_FILE",
   };
 };
+
+/**
+ * Represents the file filtered by the classes the user selected
+ *
+ * @returns {Array}
+ */
+export const setFilteredFile = (fileContent) => {
+  return {
+    type: "SET_FILTERED_FILE",
+    payload: fileContent,
+  };
+};
+
+/**
+ * Represents setting the filtered file to an empty object
+ *
+ * @returns {Array}
+ */
+export const unsetFilteredFile = () => {
+  return {
+    type: "UNSET_FILTERED_FILE",
+  };
+};

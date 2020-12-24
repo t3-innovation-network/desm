@@ -50,7 +50,7 @@ const MappingPreview = (props) => {
   /**
    * The files content already merged. If its only one file, the same result.
    */
-  const mergedFile = useSelector((state) => state.mergedFile);
+  const filteredFile = useSelector((state) => state.filteredFile);
   /**
    * The specifcation contents ready to preview. THese are not the files object, but its contents
    */
@@ -96,7 +96,7 @@ const MappingPreview = (props) => {
     setCreatingSpec(true);
 
     /// Send the specifications to the backend
-    mappingFormData.specification = mergedFile;
+    mappingFormData.specification = filteredFile;
     let response = await createSpec(mappingFormData);
 
     setCreatingSpec(false);
