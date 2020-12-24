@@ -1,9 +1,10 @@
 /**
- * Sets the unified file object to an empty object or a valid one
+ * Sets the filtered file object to an empty object or a valid one
  * depending on the action
  * 
- * This represents the file that's uploaded by the user on the "mapping form".
- * If it's more than one, it gets merged
+ * This represents a new version of the file that the user uploaded, now
+ * containing only those properties that are related to the classes the
+ * user selected.
  * 
  * @returns {Array}
  */
