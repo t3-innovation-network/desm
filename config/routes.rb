@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       # Mapping selected terms
       post 'mappings/:id/selected_terms' => 'mapping_selected_terms#create'
       get 'mappings/:id/selected_terms' => 'mapping_selected_terms#show'
+      get 'mappings/:id/export' => 'mappings#export'
       delete 'mappings/:id/selected_terms' => 'mapping_selected_terms#destroy'
 
       get 'mapping_terms/:id/vocabulary' => 'alignment_vocabularies#show'

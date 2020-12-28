@@ -9,6 +9,8 @@ import _ from "lodash";
 import ConfirmDialog from "../shared/ConfirmDialog";
 import { toastr as toast } from "react-redux-toastr";
 import deleteMapping from "../../services/deleteMapping";
+import fetchMappingToExport from "../../services/fetchMappingToExport";
+import { downloadFile } from "../../helpers/Export";
 
 const SpecsList = () => {
   /**
@@ -84,6 +86,20 @@ const SpecsList = () => {
   const handleConfirmRemove = (mappingId) => {
     setConfirmingRemove(true);
     setMappingIdToRemove(mappingId);
+  };
+
+  /**
+   * Manages to request the mapping in JSON-LD version to export as
+   * a JSON file
+   *
+   * @param {Integer} mappingId
+   */
+  const handleExportMapping = async (mappingId) => {
+    let response = await fetchMappingToExport(mappingId);
+
+    if (!anyError(response)) {
+      downloadFile(response.exportedMapping);
+    }
   };
 
   /**
@@ -205,8 +221,11 @@ const SpecsList = () => {
                                   <Link
                                     to={"/mappings/" + mapping.id + "/align"}
                                     className="btn btn-sm btn-dark ml-2"
+                                    data-toggle="tooltip"
+                                    data-placement="top"
+                                    title="Edit this mapping"
                                   >
-                                    Edit
+                                    <i className="fas fa-pencil-alt"></i>
                                   </Link>
                                 ) : (
                                   <Link
@@ -218,18 +237,27 @@ const SpecsList = () => {
                                           /// now it's mapping terms into the spine terms
                                           "/mappings/" + mapping.id + "/align"
                                     }
-                                    className="btn btn-sm bg-col-primary col-background"
+                                    className="btn btn-sm ml-2 bg-col-primary col-background"
+                                    data-toggle="tooltip"
+                                    data-placement="top"
+                                    title="Resume, continue mapping"
                                   >
-                                    Resume
+                                    <i className="fas fa-layer-group"></i>
                                   </Link>
                                 )}
 
                                 {mapping["mapped?"] ? (
                                   <Link
-                                    to={"/mappings-list?abstractClass=" + mapping.domain}
+                                    to={
+                                      "/mappings-list?abstractClass=" +
+                                      mapping.domain
+                                    }
                                     className="btn btn-sm btn-dark ml-2"
+                                    data-toggle="tooltip"
+                                    data-placement="top"
+                                    title="View this mapping"
                                   >
-                                    View
+                                    <i className="fas fa-eye"></i>
                                   </Link>
                                 ) : (
                                   ""
@@ -240,9 +268,27 @@ const SpecsList = () => {
                                     handleConfirmRemove(mapping.id)
                                   }
                                   className="btn btn-sm btn-dark ml-2"
+                                  data-toggle="tooltip"
+                                  data-placement="top"
+                                  title="Remove this mapping"
                                 >
-                                  Remove
+                                  <i className="fas fa-trash"></i>
                                 </button>
+                                {mapping["mapped?"] ? (
+                                  <button
+                                    className="btn btn-sm btn-dark ml-2"
+                                    onClick={() =>
+                                      handleExportMapping(mapping.id)
+                                    }
+                                    data-toggle="tooltip"
+                                    data-placement="top"
+                                    title="Export this mapping"
+                                  >
+                                    <i className="fas fa-download"></i>
+                                  </button>
+                                ) : (
+                                  ""
+                                )}
                               </td>
                             </tr>
                           );
