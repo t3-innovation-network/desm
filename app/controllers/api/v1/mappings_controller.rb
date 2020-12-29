@@ -7,24 +7,15 @@ class Api::V1::MappingsController < ApplicationController
   before_action :authorize_with_policy
 
   ###
-  # @description: Lists all the mappings for the current user's organization
-  ###
-  def index
-    mappings = filter
-
-    render json: mappings, include: [:terms, :selected_terms, {specification: {include: %i[user terms]}}]
-  end
-
-  ###
   # @description: Creates a mapping with its related specification
   ###
   def create
     spec = Specification.find(params[:specification_id])
 
     # Proceed to create the mapping if this is not the spine
-    mapping = Processors::Mappings.create(spec, current_user) unless spec.spine?
+    @instance = Processors::Mappings.create(spec, current_user) unless spec.spine?
 
-    render json: mapping, include: :specification
+    render json: @instance, include: :specification
   end
 
   ###
@@ -39,12 +30,20 @@ class Api::V1::MappingsController < ApplicationController
   end
 
   ###
-  # @description: Udates the attributes of a mapping
+  # @description: Returns a JSON string to let the user download it as the
+  #   mapping JSON-LD version.
   ###
-  def update
-    @instance.update!(permitted_params)
+  def export
+    render json: @instance.export
+  end
 
-    render json: @instance
+  ###
+  # @description: Lists all the mappings for the current user's organization
+  ###
+  def index
+    mappings = filter
+
+    render json: mappings, include: [:terms, :selected_terms, {specification: {include: %i[user terms]}}]
   end
 
   ###
@@ -61,6 +60,15 @@ class Api::V1::MappingsController < ApplicationController
   ###
   def show_terms
     render json: @instance.terms.order(:uri), include: {mapped_terms: {include: %i[property vocabularies]}}
+  end
+
+  ###
+  # @description: Udates the attributes of a mapping
+  ###
+  def update
+    @instance.update!(permitted_params)
+
+    render json: @instance
   end
 
   private

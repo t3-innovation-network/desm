@@ -7,24 +7,13 @@ class LeftSideHome extends React.Component {
       <div className="col-lg-6 p-lg-5 pt-5">
         <section>
           <h6 className="subtitle">View Specification</h6>
-          <p>
-            Description goes here Lorem ipsum dolor sit amet, consectetur
-            adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua.
-          </p>
+          <p>To see crosswalks currently in process.</p>
           <Link to="/mappings-list" className="btn wide-btn btn-dark">
             View Specifications
           </Link>
         </section>
         <section>
-          <h6 className="subtitle">Map your specification to the T3 spine</h6>
-          <p>
-            Description goes here Lorem ipsum dolor sit amet consectetur
-            adipiscing elit lobortis ridiculus suscipit, risus etiam per auctor
-            cum viverra proin dapibus dis rhoncus felis, hendrerit at integer
-            inceptos curabitur ad volutpat quam urna. Posuere quis nam vehicula
-            nisi odio rhoncus molestie volutpat.
-          </p>
+          <h6 className="subtitle">Map your specification to a base schema</h6>
         </section>
         <section>
           <ol className="usage-explanation">
