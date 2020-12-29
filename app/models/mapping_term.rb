@@ -78,21 +78,6 @@ class MappingTerm < ApplicationRecord
   end
 
   ###
-  # @description: Exports the content of this alignment as JSON, with a proper format. This method works along with
-  #   the homominus in the +Mapping+ class.
-  ###
-  def export
-    to_json
-  end
-
-  ###
-  # @description: The first of the mapped terms
-  ###
-  def mapped_term
-    mapped_terms.first
-  end
-
-  ###
   # @description: Notify the user about changes on the mapping
   ###
   def notify_mapping_updated
