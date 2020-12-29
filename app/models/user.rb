@@ -4,14 +4,16 @@
 # @description: Represents a user of this application
 ###
 class User < ApplicationRecord
-  ###
-  # @description: Generates the password_digest to ensure it's stored in a secure way
-  ###
-  has_secure_password
+  attr_accessor :skip_sending_welcome_email
+
   ###
   # INCLUSIONS
   ###
 
+  ###
+  # @description: Generates the password_digest to ensure it's stored in a secure way
+  ###
+  has_secure_password
   ###
   # @description: Generates secure, unique tokens
   ###
@@ -84,7 +86,7 @@ class User < ApplicationRecord
   ###
   # @description: Send a welcome email to the user after creation
   ###
-  after_create :send_welcome
+  after_create :send_welcome_email, unless: :skip_sending_welcome_email
 
   ###
   # METHODS
@@ -147,7 +149,7 @@ class User < ApplicationRecord
   # @description: Welcomes the user with an email which let's him sign in with
   #   a new password.
   ###
-  def send_welcome
+  def send_welcome_email
     UserMailer.with(user: self).welcome.deliver_later
   end
 
