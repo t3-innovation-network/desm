@@ -1,3 +1,4 @@
+import mime from "mime";
 import React from "react";
 
 /**
@@ -22,7 +23,7 @@ const FileInfo = (props) => {
           <strong>File Name:</strong> {selectedFile.name}
         </p>
         <p>
-          <strong>File Type:</strong> {selectedFile.type}
+          <strong>File Type:</strong> {mime.getType(selectedFile.name)}
         </p>
         <p>
           <strong>Last Modified:</strong>{" "}
