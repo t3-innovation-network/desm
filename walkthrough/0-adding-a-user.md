@@ -1,6 +1,6 @@
 # Adding a user
 
-![T3 Innovation Network Logo](https://res.cloudinary.com/ricardo-gamarra/image/upload/v1609273002/T3Logo_lv3xpn.png)
+![T3 Innovation Network Logo](https://res.cloudinary.com/ricardo-gamarra/image/upload/v1609273002/t3-desm/T3Logo_lv3xpn.png)
 
 An administrator will have access to the dashboard by singing. A default administrator user is provided with email `admin@desmsolutions.org` and the password specified in the `.env` file. Remember that a user can always reset the password using the reset password functionality. You can see [How to reset password](https://github.com/t3-innovation-network/desm/tree/master/walkthrough/1-welcome-to-the-tool.md) for instructions.
 
