@@ -18,13 +18,13 @@ admin = User.create!(fullname: "admin",
 
 # Then 2 users for different organizations
 user1 = User.create!(fullname: "user",
-  email: "user@desmsolutions.org",
+  email: "user1@desmsolutions.org",
   password: ENV["DEFAULT_PASS"],
   organization: Organization.first,
   skip_sending_welcome_email: true
 )
 user2 = User.create!(fullname: "user",
-  email: "user@credreg.com",
+  email: "user2@desmsolutions.org",
   password: ENV["DEFAULT_PASS"],
   organization: Organization.find(2),
   skip_sending_welcome_email: true
