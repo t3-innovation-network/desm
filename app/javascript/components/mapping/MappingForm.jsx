@@ -461,7 +461,7 @@ const MappingForm = () => {
                     data-show-caption="true"
                     id="file-uploader"
                     aria-describedby="upload-help"
-                    accept=".csv, .json, .jsonld, .xml, .xsd, .zip"
+                    accept=".csv, .json, .jsonld, .rdf, .xml, .xsd, .zip"
                     onChange={handleFileChange}
                     required={true}
                     disabled={submitted}
