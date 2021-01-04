@@ -39,11 +39,12 @@ class Api::V1::VocabulariesController < ApplicationController
   # @description: Creates a vocabulary
   ###
   def create
-    @instance = Processors::Skos
-                .create({
-                          organization: current_user.organization,
-                          attrs: permitted_params
-                        })
+    processor = Processors::Vocabulary.new(permitted_params[:content])
+
+    @instance = processor.create({
+                                   organization: current_user.organization,
+                                   attrs: permitted_params
+                                 })
 
     render json: @instance, include: :concepts
   end

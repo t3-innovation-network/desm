@@ -42,9 +42,16 @@ namespace :seeders do
         end
 
         if (option == "y") || (!args[:interactive])
+          # Read the file, then initialize the processor and create the predicate set with its domains
           file = File.read(path.join(filename))
+          processor = Processors::Domains.new(file)
+          d_set = processor.create
 
-          Processors::Domains.process_from_file(file)
+          # Inform the user
+          puts "\n#{ActionController::Base.helpers.pluralize(d_set.domains.count, 'predicate')} processed." +
+          (
+            d_set.domains.count < 1 ? " Be sure to correctly format the file as a json-ld skos concepts file." : ""
+          )
 
           processed += 1
         end
@@ -84,9 +91,16 @@ namespace :seeders do
         end
 
         if (option == "y") || (!args[:interactive])
+          # Read the file, then initialize the processor and create the predicate set with its predicates
           file = File.read(path.join(filename))
+          processor = Processors::Predicates.new(file)
+          p_set = processor.create
 
-          Processors::Predicates.process_from_file(file)
+          # Inform the user
+          puts "\n#{ActionController::Base.helpers.pluralize(p_set.predicates.count, 'predicate')} processed." +
+          (
+            p_set.predicates.count < 1 ? " Be sure to correctly format the file as a json-ld skos concepts file." : ""
+          )
 
           processed += 1
         end

@@ -81,19 +81,19 @@ module Processors
     def self.filter_vocabularies(spec)
       vocabs = []
 
-      concept_nodes = Processors::Skos.concept_nodes(spec["@graph"])
+      processor = Processors::Vocabulary.new(spec)
 
       # Get all the concept scheme nodes. With the pupose of separate all the vocabularies, we
       # need the concept schemes, which represents the vocabularies main nodes.
-      Processors::Skos.scheme_nodes_from_graph(spec["@graph"]).each do |scheme_node|
+      processor.scheme_nodes.each do |scheme_node|
         vocab = {
           "@context": nil,
           # Get all the concepts for this concept scheme
-          "@graph": Processors::Skos.identify_concepts(concept_nodes, scheme_node)
+          "@graph": processor.identify_concepts(scheme_node)
         }
 
         # Place the context at the beginning
-        vocab[:@context] = vocab_context(vocab, spec["@context"])
+        vocab[:@context] = processor.filter_vocabulary_context(vocab, spec["@context"])
 
         # Place the scheme node at the beginning
         vocab[:@graph].unshift(scheme_node)
@@ -103,33 +103,6 @@ module Processors
       end
 
       vocabs
-    end
-
-    ###
-    # @description: From a wide context, generate a new one, containing only the keys that are needed for the
-    #   given vocabulary
-    # @param [Hash] vocab: The vocabulary to be analyzed
-    # @return [Hash] context: The wider context to be used as context source
-    ###
-    def self.vocab_context(vocab, context)
-      final_context = {}
-
-      # We only have concepts at this point, so accessing the graph is fine.
-      # Proceed to iterate through each concept in the graph
-      vocab[:@graph].each do |concept|
-        # Each concept will have different keys (here, the concepts are represented as hashes)
-        # We iterate through each key of the concept, wich represents each "attribute"
-        concept.keys.each do |attr_key|
-          # We are only interested in those keys that uses the uris from the main context
-          # If so, we add the key and value to our new context
-          if Processors::Skos.using_context_uri(context, attr_key)
-            k, v = context.find {|key, _value| key.include?(attr_key.split(":").first) }
-            final_context[k] = v
-          end
-        end
-      end
-
-      final_context
     end
 
     ###

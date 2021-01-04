@@ -14,40 +14,44 @@ module Processors
   #   the project. That directory is configured by setting the environment
   #   variable called: "CONCEPTS_DIRECTORY_PATH"
   ###
-  class Predicates
-    extend Validatable
+  class Predicates < Skos
+    include Validatable
 
     ###
     # @description: Process a given file which must contain json data, to
     #   create predicates into the db.
-    # @param [File] file The already loaded json file to be processed
+    # @return [PredicateSet]
     ###
-    def self.process_from_file(file)
-      file_content = JSON.parse(file)
+    def create
+      @predicate_set = create_predicate_set
+      create_predicates
 
-      # The predicates are listed under the '@graph' object
-      predicates = file_content["@graph"]
+      @predicate_set
+    end
 
-      predicate_set = process_predicate_set(predicates)
+    ###
+    # @description: Process a given concept scheme (predicate set) to create it
+    #   if necessary
+    # @param [Object] nodes the collection of nodes to be processed
+    ###
+    def create_predicate_set
+      predicate_set = first_concept_scheme_node
 
-      processed = process_predicates(predicates, predicate_set)
+      already_exists?(PredicateSet, predicate_set, print_message: true)
 
-      puts "\n#{ActionController::Base.helpers.pluralize(processed, 'predicate')} processed." +
-      (
-        processed < 1 ? " Be sure to correctly format the file as an json-ld skos concepts file." : ""
-      )
+      PredicateSet.first_or_create!({
+                                      uri: predicate_set[:id],
+                                      title: predicate_set[:title]["en-us"],
+                                      description: predicate_set[:description]["en-us"],
+                                      creator: predicate_set[:creator]["en-us"]
+                                    })
     end
 
     ###
     # @description: Process a given set of predicates
-    # @param [Array] predicates The predicates to be processed. It's an array of
-    #   generic Objects
-    # @param [DomainSet] The predicate set to be assigned as a parent for each
-    #   predicate to be created
     ###
-    def self.process_predicates(predicates, predicate_set)
-      processed = 0
-      predicates.each do |predicate|
+    def create_predicates
+      @concept_nodes.each do |predicate|
         predicate = predicate.with_indifferent_access
 
         # The concept scheme is processed, let's start with the proper predicates
@@ -58,14 +62,12 @@ module Processors
                             pref_label: Parsers::Specifications.read!(predicate, "prefLabel"),
                             uri: predicate[:id],
                             weight: Parsers::Specifications.read!(predicate, "weight"),
-                            predicate_set: predicate_set
+                            predicate_set: @predicate_set
                           })
-
-        processed += 1
       end
-
-      processed
     end
+
+    private
 
     ###
     # @description: Determines if a predicate is valid to incorporate to our records. It should not be of
@@ -73,32 +75,13 @@ module Processors
     # @param [Hash] predicate
     # @return [TrueClass|FalseClass]
     ###
-    def self.valid_predicate predicate
+    def valid_predicate predicate
       !(
         Array(Parsers::Specifications.read!(predicate, "type")).any? {|type|
           type.downcase.include?("conceptscheme")
         } ||
         already_exists?(Predicate, predicate, print_message: true)
       )
-    end
-
-    ###
-    # @description: Process a given concept scheme (predicate set) to create it
-    #   if necessary
-    # @param [Object] nodes the collection of nodes to be processed
-    ###
-    def self.process_predicate_set(nodes)
-      predicate_set = nodes.select {|d| d["type"] == "skos:ConceptScheme" }.first
-      predicate_set = predicate_set.with_indifferent_access
-
-      already_exists?(PredicateSet, predicate_set, print_message: true)
-
-      PredicateSet.first_or_create!({
-                                      uri: predicate_set[:id],
-                                      title: predicate_set[:title]["en-us"],
-                                      description: predicate_set[:description]["en-us"],
-                                      creator: predicate_set[:creator]["en-us"]
-                                    })
     end
   end
 end
