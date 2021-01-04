@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import updateMappingTerm from "../../services/updateMappingTerm";
 import AlertNotice from "../shared/AlertNotice";
@@ -13,17 +13,18 @@ const EditAlignment = (props) => {
    */
   const {
     mappingTerm,
-    spineTerm,
-    predicate,
-    predicates,
+    mode,
     onCommentUpdated,
     onPredicateUpdated,
+    predicate,
+    predicates,
+    spineTerm,
   } = props;
 
   /**
    * The mode to use this form. It can be either "comment" or "edit"
    */
-  const [mode, setMode] = useState(props.mode);
+  const [currentMode, setCurrentMode] = useState(currentMode);
 
   /**
    * Controls the button to save the comment. Not to be available when there are no changes to save.
@@ -106,6 +107,13 @@ const EditAlignment = (props) => {
     });
   };
 
+  /**
+   * Update the state each time the modl window opens
+   */
+  useEffect(() => {
+    setCurrentMode(props.mode);
+  }, [props.mode]);
+
   return (
     <Modal
       isOpen={props.modalIsOpen}
@@ -135,14 +143,16 @@ const EditAlignment = (props) => {
               </div>
             </div>
             <div className="col-4">
-              {mode === "comment" ? (
+              {currentMode === "comment" ? (
                 <div className="card">
                   <div className="card-header">{predicate.pref_label}</div>
                 </div>
               ) : (
                 <PredicateOptions
                   predicates={predicates}
-                  onPredicateSelected={(predicate) => handlePredicateSelected(predicate)}
+                  onPredicateSelected={(predicate) =>
+                    handlePredicateSelected(predicate)
+                  }
                   predicate={predicate.pref_label}
                 />
               )}
@@ -160,7 +170,7 @@ const EditAlignment = (props) => {
 
           <div className="row mt-3">
             <div className="col form-group">
-              {mode === "comment" ? (
+              {currentMode === "comment" ? (
                 <textarea
                   className="form-control"
                   placeholder="add a comment about this alignment"
@@ -174,7 +184,7 @@ const EditAlignment = (props) => {
           </div>
           <div className="row">
             <div className="col">
-              {mode === "comment" ? (
+              {currentMode === "comment" ? (
                 <button
                   className="btn btn-dark mt-3 mr-3"
                   onClick={handleSaveComment}
@@ -191,17 +201,17 @@ const EditAlignment = (props) => {
                   Save
                 </button>
               )}
-              {mode === "comment" ? (
+              {currentMode === "comment" ? (
                 <a
                   className="btn col-primary cursor-pointer mt-3"
-                  onClick={() => setMode("edit")}
+                  onClick={() => setCurrentMode("edit")}
                 >
                   Edit
                 </a>
               ) : (
                 <a
                   className="btn col-primary cursor-pointer mt-3"
-                  onClick={() => setMode("comment")}
+                  onClick={() => setCurrentMode("comment")}
                 >
                   Comment
                 </a>

@@ -82,12 +82,12 @@ export default class Collapsible extends Component {
                 >
                   {headerContent}
                 </div>
-                <div className="col-2">
+                <div className="col">
                   <span
                     className="cursor-pointer float-right"
                     onClick={this.toggleShowBody}
                   >
-                    <i className="fas fa-angle-down" />
+                    {showBody ? "▲" : "▼"}
                   </span>
                 </div>
               </div>

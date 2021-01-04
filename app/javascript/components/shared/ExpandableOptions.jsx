@@ -93,16 +93,19 @@ class ExpandableOptions extends Component {
             <div className={"card" + (cardCssClass ? " " + cardCssClass : "")}>
               <div
                 className={
-                  "card-header cursor-pointer form-control form-control-lg" +
-                  (selectedOption ? " pb-0" : " pb-4") +
+                  "card-header cursor-pointer" +
                   (cardHeaderCssClass ? " " + cardHeaderCssClass : "")
                 }
                 onClick={this.handleExpand}
               >
-                <p>
-                  <strong>{selectedOption}</strong>
-                  <i className="fas fa-angle-down float-right"></i>
-                </p>
+                <div className="row">
+                  <div className="col-10">
+                    <strong>{selectedOption}</strong>
+                  </div>
+                  <div className="col">
+                    <span className="float-right">▼</span>
+                  </div>
+                </div>
               </div>
             </div>
           </FadeIn>
