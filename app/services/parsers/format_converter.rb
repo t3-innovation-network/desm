@@ -11,6 +11,8 @@ module Parsers
     CONVERTERS = {
       csv: Converters::Ceds,
       rdf: Converters::RdfXml,
+      nt: Converters::Turtle,
+      ttl: Converters::Turtle,
       xml: Converters::XmlSchema,
       xsd: Converters::XmlSchema,
       zip: Converters::JsonSchemaZip
