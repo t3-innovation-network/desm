@@ -3,7 +3,7 @@
 ###
 # @description: Error module to Handle errors globally
 ###
-module Recuperable
+module Recoverable
   ###
   # @description: Prepare for all the possible errors rescuing in a different
   #   way per class of error

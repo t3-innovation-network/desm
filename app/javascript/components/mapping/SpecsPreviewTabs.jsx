@@ -49,7 +49,11 @@ const SpecsPreviewTabs = (props) => {
 
   return (
     <React.Fragment>
-      <Tabs className={"mt-3" + (disabled ? " disabled-container" : "")}>
+      <Tabs
+        className={"mt-3" + (disabled ? " disabled-container" : "")}
+        defaultFocus={true}
+        defaultIndex={0}
+      >
         <TabList>
           {previewSpecs.map((content, i) => {
             return <Tab key={i}>{"Spec"}</Tab>;

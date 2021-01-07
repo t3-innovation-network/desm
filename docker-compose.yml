@@ -9,19 +9,10 @@ services:
       - "3000:3000"
     depends_on:
       - db
+      - redis
     environment:
-      - ADMIN_ROLE_NAME=${ADMIN_ROLE_NAME}
-      - API_URL=${API_URL}
-      - CONCEPTS_DIRECTORY_PATH=${CONCEPTS_DIRECTORY_PATH}
-      - DEFAULT_PASS=${DEFAULT_PASS}
-      - JWT_ALGORITHM=${JWT_ALGORITHM}
-      - JWT_SECRET=${JWT_SECRET}
-      - MAIL_PASSWORD=${MAIL_PASSWORD}
-      - MAIL_USERNAME=${MAIL_USERNAME}
-      - MAILGUN_API_KEY=${MAILGUN_API_KEY}
-      - MAILGUN_DOMAIN=${MAILGUN_DOMAIN}
-      - MIN_PASSWORD_LENGTH=${MIN_PASSWORD_LENGTH}
       - WEBPACKER_DEV_SERVER_HOST=webpack
+    env_file: .env
 
   db:
     image: postgres
@@ -42,7 +33,14 @@ services:
       - "NODE_ENV=development"
       - "RAILS_ENV=development"
       - "WEBPACKER_DEV_SERVER_HOST=0.0.0.0"
+  redis:
+    image: 'redis:5-alpine'
+    command: redis-server
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis:/data'
 
 volumes:
   pg_data:
-    driver: local
+  redis:

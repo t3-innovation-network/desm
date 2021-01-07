@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from "react";
-import AlertNotice from "../shared/AlertNotice";
 import FileInfo from "./FileInfo";
 import { useSelector, useDispatch } from "react-redux";
-import { setFiles, setFilteredFile, setMergedFileId, setSpecToPreview } from "../../actions/files";
+import {
+  setFiles,
+  setFilteredFile,
+  setMergedFileId,
+  setSpecToPreview,
+} from "../../actions/files";
 import {
   doSubmit,
   startProcessingFile,
   stopProcessingFile,
   setMappingFormData,
   doUnsubmit,
+  setMappingFormErrors,
+  unsetMappingFormErrors,
 } from "../../actions/mappingform";
 import fetchDomains from "../../services/fetchDomains";
+import fetchMergedFile from "../../services/fetchMergedFile";
 import { toastr as toast } from "react-redux-toastr";
 import MultipleDomainsModal from "./MultipleDomainsModal";
 import checkDomainsInFile from "../../services/checkDomainsInFile";
@@ -20,56 +27,77 @@ import { setVocabularies } from "../../actions/vocabularies";
 import { validURL } from "../../helpers/URL";
 
 const MappingForm = () => {
-  const [errors, setErrors] = useState("");
-
-  /// Name of the specification
-  const [name, setName] = useState("");
-
-  /// Version of this specification
-  const [version, setVersion] = useState("");
-
-  /// Use case for this specification
-  const [useCase, setUseCase] = useState("");
-
-  /// The list  of domains (from the skos file)
+  /**
+   * The list  of domains (from the skos file)
+   */
   const [domains, setDomains] = useState([]);
-
-  /// The selected domain to map to
-  const [selectedDomainId, setSelectedDomainId] = useState(null);
-
-  /// Whether there's more than one domain found in the uploaded file
-  const [multipleDomainsInFile, setMultipleDomainsInFile] = useState(false);
-
-  /// Which domains were found in the uploaded file (the api parses
-  /// the file to get to it)
+  /**
+   * Which domains were found in the uploaded file (the api parses
+   * the file to get to it)
+   */
   const [domainsInFile, setDomainsInFile] = useState([]);
-
-  /// The value of the input that the user is typing in the search box
-  /// when there are many domains in the uploaded file
+  /**
+   * The files uploaded by the user
+   */
+  const files = useSelector((state) => state.files);
+  /**
+   * The value of the input that the user is typing in the search box
+   * when there are many domains in the uploaded file
+   */
   const [inputValue, setInputValue] = useState("");
-
-  /// The domains that includes the string typed by the user in the
-  /// search box when there are many domains in the uploaded file
+  /**
+   * The domains that includes the string typed by the user in the
+   * search box when there are many domains in the uploaded file
+   */
   const filteredDomainsInFile = domainsInFile.filter((domain) => {
     return domain.label.toLowerCase().includes(inputValue.toLowerCase());
   });
-
-  /// The files uploaded by the user
-  const files = useSelector((state) => state.files);
-
-  /// The unified file from the ones the user uploaded
+  /**
+   * The data to send when submitting in order to create the specification, vocabularies, and mapping if
+   * necessary (if its the spine, no mapping will be created)
+   */
+  const mappingFormData = useSelector((state) => state.mappingFormData);
+  /**
+   * The errors in the mapping form accross different components
+   */
+  const mappingFormErrors = useSelector((state) => state.mappingFormErrors);
+  /**
+   * The unified file from the ones the user uploaded
+   */
   const mergedFileId = useSelector((state) => state.mergedFileId);
-
-  /// The preview files (files already prepared to be previewed, as
-  /// without the unrelated domains and properties)
+  /**
+   * Whether there's more than one domain found in the uploaded file
+   */
+  const [multipleDomainsInFile, setMultipleDomainsInFile] = useState(false);
+  /**
+   * Name of the specification
+   */
+  const [name, setName] = useState("");
+  /**
+   * The preview files (files already prepared to be previewed, as
+   * without the unrelated domains and properties)
+   */
   const previewSpecs = useSelector((state) => state.previewSpecs);
-
-  /// Whether the form was submitted or not, in order to show the preview
-  const submitted = useSelector((state) => state.submitted);
-
-  /// Whether we are processing the file or not
+  /**
+   * Whether we are processing the file or not
+   */
   const processingFile = useSelector((state) => state.processingFile);
-
+  /**
+   * The selected domain to map to
+   */
+  const [selectedDomainId, setSelectedDomainId] = useState(null);
+  /**
+   * Whether the form was submitted or not, in order to show the preview
+   */
+  const submitted = useSelector((state) => state.submitted);
+  /**
+   * Use case for this specification
+   */
+  const [useCase, setUseCase] = useState("");
+  /**
+   * Version of this specification
+   */
+  const [version, setVersion] = useState("");
   const dispatch = useDispatch();
 
   /**
@@ -81,14 +109,29 @@ const MappingForm = () => {
   };
 
   /**
+   * Handle showing the errors on screen, if any
+   *
+   * @param {HttpResponse} response
+   */
+  const anyError = (response) => {
+    if(response.error){
+      dispatch(setMappingFormErrors([response.error]));
+    }else{
+      dispatch(unsetMappingFormErrors());
+    }
+
+    return !_.isUndefined(response.error);
+  }
+
+  /**
    * Validates the use case to be a valid URL after the user focuses
    * out the "use case" input
    */
   const handleUseCaseBlur = () => {
-    if (!_.isEmpty(useCase) && !validURL(useCase)){
-      setErrors("'Use case' must be a valid URL");
+    if (!_.isEmpty(useCase) && !validURL(useCase)) {
+      dispatch(setMappingFormErrors(["'Use case' must be a valid URL"]));
     } else {
-      setErrors("");
+      dispatch(unsetMappingFormErrors());
     }
   };
 
@@ -108,45 +151,15 @@ const MappingForm = () => {
     setInputValue(event.target.value);
   };
 
-  /**
-   * Send the file content to be ready to preview
-   */
-  const sendFileToPreview = (file) => {
-    const reader = new FileReader();
-
-    /**
-     * When reading the file content
-     */
-    reader.onload = () => {
-      /// Get the content of the file
-      let content = reader.result;
-
-      /// Get it into the specs list and put it on the previews
-      let tempSpecs = previewSpecs;
-      tempSpecs.push(content);
-      dispatch(setSpecToPreview([]));
-      dispatch(setSpecToPreview(tempSpecs));
-    };
-
-    /**
-     * Update callback for errors
-     */
-    reader.onerror = function (e) {
-      setErrors("File could not be read! Code: " + e.target.error.code);
-    };
-
-    reader.readAsText(file);
-  };
-
   const formData = () => {
     return {
       name: name,
       version: version,
       useCase: useCase,
       domainId: selectedDomainId,
-    /// Set the file name to send to the service. This will appear as "scheme" in all
-    /// further properties created.
-      scheme: files[0].name
+      /// Set the file name to send to the service. This will appear as "scheme" in all
+      /// further properties created.
+      scheme: files[0].name,
     };
   };
 
@@ -162,35 +175,51 @@ const MappingForm = () => {
   const handleMergeFiles = async () => {
     let response = await mergeFiles(files);
 
-    if (response.error) {
-      toast.error(response.error);
-      return;
+    if(!anyError(response)){
+      dispatch(setMergedFileId(response.mergedFileId));
+      
+      return response.mergedFileId;
     }
-
-    dispatch(setMergedFileId(response.mergedFileId));
-
-    // files.map((file) => sendFileToPreview(file));
-
-    return response.mergedFileId;
   };
 
   /**
    * Be sure that the uploaded file contains only one domain to map to
-   * 
+   *
    * @param {Integer} mergedFileId
    */
   const handleCheckDomainsInFile = async (mergedFileId) => {
     let response = await checkDomainsInFile(mergedFileId);
 
-    if (response.error) {
-      toast.error(response.error);
-      return;
+    if(!anyError(response)) {
+      if (!Boolean(response.domains.length)) {
+        dispatch(setMappingFormErrors(["We couldn't find any classes in the provided file"]));
+        return;
+      }
+      
+      if (response.domains.length > 1) {
+        setMultipleDomainsInFile(true);
+        setDomainsInFile(response.domains);
+        return;
+      }
     }
 
-    if (response.domains.length > 1) {
-      setMultipleDomainsInFile(true);
-      setDomainsInFile(response.domains);
-      return;
+    previewSingleDomainFile(mergedFileId);
+  };
+
+  /**
+   * The uploaded file is a single domain file. Let's just get the content and show in preview
+   *
+   * @param {int} mergedFileId
+   */
+  const previewSingleDomainFile = async (mergedFileId) => {
+    let response = await fetchMergedFile(mergedFileId);
+
+    if (!anyError(response)) {
+      let tempSpecs = [];
+      tempSpecs.push(JSON.stringify(response.mergedFile, null, 2));
+      
+      dispatch(setSpecToPreview(tempSpecs));
+      dispatch(setFilteredFile(response.mergedFile));
     }
   };
 
@@ -199,7 +228,7 @@ const MappingForm = () => {
    */
   const processFiles = async () => {
     let mergedFileId = await handleMergeFiles();
-    if(!errors.length){
+    if (!mappingFormErrors.length) {
       await handleCheckDomainsInFile(mergedFileId);
     }
   };
@@ -209,8 +238,9 @@ const MappingForm = () => {
    */
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     // Check the form validity
-    if (errors) {
+    if (mappingFormErrors.length) {
       toast.error("Please correct the errors first");
       event.preventDefault();
       return;
@@ -237,15 +267,12 @@ const MappingForm = () => {
   const handleFilterSpecification = async (uris) => {
     let response = await filterSpecification(uris, mergedFileId);
 
-    if (response.error) {
-      toast.error(response.error);
-      return;
+    if (!anyError(response)) {
+      dispatch(setVocabularies(response.filtered.vocabularies));
+      dispatch(setFilteredFile(response.filtered.specification));
+      
+      return response.filtered.specification;
     }
-
-    dispatch(setVocabularies(response.filtered.vocabularies));
-    dispatch(setFilteredFile(response.filtered.specification))
-
-    return response.filtered.specification;
   };
 
   /**
@@ -261,10 +288,11 @@ const MappingForm = () => {
     dispatch(startProcessingFile());
     setMultipleDomainsInFile(false);
 
+    mappingFormData.selectedDomains = uris;
+    dispatch(setMappingFormData(mappingFormData));
+
     let tempSpecs = [];
     let specification = await handleFilterSpecification(uris);
-    // @todo remove if not necessary
-    //dispatch(setMergedFileId(specification));
 
     tempSpecs.push(JSON.stringify(specification, null, 2));
 
@@ -306,12 +334,9 @@ const MappingForm = () => {
    */
   const fillWithDomains = () => {
     fetchDomains().then((response) => {
-      if (response.error) {
-        toast.error(response.error);
-        return;
+      if (!anyError(response)) {
+        setDomains(response.domains);
       }
-      setDomains(response.domains);
-      setSelectedDomainId(response.domains[0].id);
     });
   };
 
@@ -341,8 +366,6 @@ const MappingForm = () => {
           "col-lg-6 p-lg-5 pt-5"
         }
       >
-        {errors && <AlertNotice message={errors} />}
-
         <div className="mandatory-fields-notice">
           <small className="form-text text-muted">
             Fields with <span className="text-danger">*</span> are mandatory!
@@ -433,12 +456,22 @@ const MappingForm = () => {
                         name="domain-options-form"
                         onChange={(e) => setSelectedDomainId(e.target.value)}
                         disabled={submitted}
+                        required={true}
                       />
                       <label htmlFor={dom.id}>{dom.name}</label>
                     </div>
                   );
                 })}
               </div>
+
+              {_.isNull(selectedDomainId) &&
+                Boolean(files.length) &&
+                !submitted &&
+                !processingFile && (
+                  <span style={{ color: "red" }}>
+                    Please select a domain from the list ☝️{" "}
+                  </span>
+                )}
 
               <small className="mt-3 mb-3 float-right">
                 Domains in <span className="badge badge-success">green</span>{" "}

@@ -10,6 +10,7 @@ import fileProcessingReducer from "./fileProcessingReducer";
 import mappingFormReducer from "./mappingFormReducer";
 import vocabulariesReducer from "./vocabulariesReducer";
 import filteredFileReducer from "./filteredFileReducer";
+import mappingFormErrorsReducer from "./mappingFormErrorsReducer";
 
 /**
  * Represents a single reducer that contains all the reducers.
@@ -19,6 +20,7 @@ const allReducers = combineReducers({
   filteredFile: filteredFileReducer,
   loggedIn: loggedReducer,
   mappingFormData: mappingFormReducer,
+  mappingFormErrors: mappingFormErrorsReducer,
   mergedFileId: mergedFileReducer,
   previewSpecs: previewSpecReducer,
   processingFile: fileProcessingReducer,

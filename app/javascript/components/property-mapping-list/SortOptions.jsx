@@ -38,7 +38,7 @@ export const implementSpineSort = (properties, sortOption) => {
     case spineSortOptions.OVERALL_ALIGNMENT_SCORE:
       return properties.sort((a, b) => b.alignmentScore - a.alignmentScore);
     /**
-     * @todo Find out the meaning of this sorting strategy.
+     * Sort by "identical" alignments ("identical" predicate label)
      */
     case spineSortOptions.TOTAL_IDENTICAL_ALIGNMENTS:
       return properties.sort((a, b) =>

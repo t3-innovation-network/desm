@@ -18,9 +18,7 @@ module Processors
 
       @vocabulary.concepts = create_concepts(
         data[:attrs][:content]["@graph"].select {|concept|
-          Array(Parsers::Specifications.read!(concept, "type")).any? {|type|
-            type.downcase.include?("concept") && !type.downcase.include?("conceptscheme")
-          }
+          Parsers::JsonLd::Node.new(concept).types.concept_scheme?
         }
       )
 
@@ -52,7 +50,7 @@ module Processors
     ###
     def self.first_concept_scheme_node graph
       graph.find {|concept|
-        Parsers::Specifications.read!(concept, "type").downcase.include?("conceptscheme")
+        Parsers::JsonLd::Node.new(concept).read!("type").downcase.include?("conceptscheme")
       }
     end
 
@@ -64,7 +62,7 @@ module Processors
     def self.create_concepts concepts_list
       concepts_list.map do |concept|
         SkosConcept.find_or_initialize_by(
-          uri: Parsers::Specifications.read!(concept, "id")
+          uri: Parsers::JsonLd::Node.new(concept).read!("id")
         ) {|c_concept|
           c_concept.update(
             raw: concept
@@ -72,7 +70,7 @@ module Processors
         }
       rescue StandardError => e
         Rails.logger.error(e.inspect)
-        SkosConcept.find_by_uri(Parsers::Specifications.read!(concept, "id"))
+        SkosConcept.find_by_uri(Parsers::JsonLd::Node.new(concept).read!("id"))
       end
     end
 
@@ -86,7 +84,7 @@ module Processors
     def self.identify_concepts concept_nodes, scheme_node
       child_concepts_uris(scheme_node).map {|concept_uri|
         concept_nodes.find {|c_node|
-          Parsers::Specifications.read!(c_node, "id").downcase == concept_uri.downcase
+          Parsers::JsonLd::Node.new(c_node)&.read!("id")&.downcase&.eql?(concept_uri.downcase)
         }
       }
     end
@@ -100,7 +98,7 @@ module Processors
     ###
     def self.concept_nodes graph
       graph.select {|node|
-        Array(Parsers::Specifications.read!(node, "type")).any? {|type|
+        Array(Parsers::JsonLd::Node.new(node).read!("type")).any? {|type|
           type.downcase.include?("concept") && !type.downcase.include?("conceptscheme")
         }
       }
@@ -112,16 +110,13 @@ module Processors
     # @return [Array] A collection of uris to identify the child concept nodes
     ###
     def self.child_concepts_uris concept_scheme_node
-      child_nodes = Array(Parsers::Specifications.read!(concept_scheme_node, "hasConcept"))
+      parser = Parsers::JsonLd::Node.new(concept_scheme_node)
+      child_nodes = Array(parser.read!("hasConcept"))
 
       # Some specification may not use "hasConcept", but "hasTopConcept"
-      if child_nodes.all?(&:empty?)
-        child_nodes = Array(Parsers::Specifications.read!(concept_scheme_node, "hasTopConcept"))
-      end
+      child_nodes = Array(parser.read!("hasTopConcept")) if child_nodes.all?(&:empty?)
 
-      if child_nodes.all?(&:empty?)
-        raise "No concept nodes found for Vocabulary #{Parsers::Specifications.read!(concept_scheme_node, 'id')}"
-      end
+      raise "No concept nodes found for Vocabulary #{parser.read!('id')}" if child_nodes.all?(&:empty?)
 
       process_node_uris(child_nodes)
     end
@@ -149,9 +144,10 @@ module Processors
     # @return [TrueClass|FalseClass]
     ###
     def self.concept_of_scheme?(node, scheme_uri)
-      return false unless Parsers::Specifications.read!(node, "inScheme").present?
+      parser = Parsers::JsonLd::Node.new(node)
+      return false unless parser.read!("inScheme").present?
 
-      Array(Parsers::Specifications.read!(node, "inScheme")).any? {|s_uri| s_uri == scheme_uri }
+      Array(parser.read!("inScheme")).any? {|s_uri| s_uri == scheme_uri }
     end
 
     ###
@@ -173,9 +169,7 @@ module Processors
     ###
     def self.scheme_nodes_from_graph(graph)
       graph.select {|node|
-        Array(Parsers::Specifications.read!(node, "type")).any? {|type|
-          type.downcase.include?("conceptscheme")
-        }
+        Parsers::JsonLd::Node.new(node).types.concept_scheme?
       }
     end
 
@@ -187,9 +181,7 @@ module Processors
     ###
     def self.exclude_skos_types(graph)
       graph.reject {|node|
-        Array(Parsers::Specifications.read!(node, "type")).any? {|type|
-          type.downcase.include?("conceptscheme") || type.downcase.include?("concept")
-        }
+        Parsers::JsonLd::Node.new(node).types.skos_type?
       }
     end
 
@@ -201,6 +193,34 @@ module Processors
     ###
     def self.using_context_uri(context, attribute_key)
       context_uris_list(context).include?(attribute_key.split(":").first)
+    end
+
+    ###
+    # @description: From a wide context, generate a new one, containing only the keys that are needed for the
+    #   given vocabulary
+    #
+    # @param [Hash] vocab: The vocabulary to be analyzed
+    # @return [Hash] context: The wider context to be used as context source
+    ###
+    def self.vocab_context(vocab, context)
+      final_context = {}
+
+      # We only have concepts at this point, so accessing the graph is fine.
+      # Proceed to iterate through each concept in the graph
+      vocab[:@graph].each do |concept|
+        # Each concept will have different keys (here, the concepts are represented as hashes)
+        # We iterate through each key of the concept, wich represents each "attribute"
+        concept.keys.each do |attr_key|
+          # We are only interested in those keys that uses the uris from the main context
+          # If so, we add the key and value to our new context
+          if Processors::Skos.using_context_uri(context, attr_key)
+            k, v = context.find {|key, _value| key.include?(attr_key.split(":").first) }
+            final_context[k] = v
+          end
+        end
+      end
+
+      final_context
     end
   end
 end

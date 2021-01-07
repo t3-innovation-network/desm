@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Modal from "react-modal";
+import HoverableText from "../shared/HoverableText";
 import ModalStyles from "../shared/ModalStyles";
 
 /**
@@ -159,7 +160,11 @@ export default class MultipleDomainsModal extends Component {
                       id={"chk-" + dom.id}
                       onClick={() => this.handleDomainClick(dom.id)}
                     />
-                    <label htmlFor={"chk-" + dom.id}>{dom.label}</label>
+                    <HoverableText
+                      forComponent={"chk-" + dom.id}
+                      primaryContent={dom.label}
+                      secondaryContent={dom.uri}
+                    />
                   </div>
                 );
               })}
