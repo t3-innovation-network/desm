@@ -11,7 +11,6 @@ class Api::V1::SpecificationsController < ApplicationController
   #   filtered JSON object
   ###
   def create
-    # Process the file
     spec = Processors::Specifications.create(valid_params)
 
     render json: spec
@@ -44,13 +43,12 @@ class Api::V1::SpecificationsController < ApplicationController
   # @return [ActionController::Parameters]
   ###
   def valid_params
-    # We assume we received one only file with all the data
-    unified_spec_data = params[:specification][:content]
-
     permitted_params.merge(
-      user: current_user,
       domain_id: params[:specification][:domain_id],
-      spec: unified_spec_data
+      user: current_user,
+      # We assume we received one only file with all the data
+      spec: params[:specification][:content],
+      selected_domains: params[:specification][:selected_domains]
     )
   end
 
@@ -59,6 +57,6 @@ class Api::V1::SpecificationsController < ApplicationController
   # @return [ActionController::Parameters]
   ###
   def permitted_params
-    params.require(:specification).permit(:name, :version, :uri, :use_case, :scheme)
+    params.require(:specification).permit(:name, :scheme, :use_case, :uri, :version)
   end
 end

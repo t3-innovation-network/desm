@@ -68,3 +68,26 @@ export const unsetMappingFormData = () => {
     type: "UNSET_MAPPING_FORM_DATA",
   };
 };
+
+/**
+ * Put the mapping form errors in the store.
+ *
+ * @returns {Object}
+ */
+export const setMappingFormErrors = (errors) => {
+  return {
+    type: "SET_MAPPING_FORM_ERRORS",
+    payload: errors,
+  };
+};
+
+/**
+ * Remove the mapping form errors in the store
+ *
+ * @returns {Object}
+ */
+export const unsetMappingFormErrors = () => {
+  return {
+    type: "UNSET_MAPPING_FORM_ERRORS",
+  };
+};

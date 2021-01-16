@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_22_173736) do
+ActiveRecord::Schema.define(version: 2021_01_14_133934) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -180,6 +180,14 @@ ActiveRecord::Schema.define(version: 2020_12_22_173736) do
     t.index ["term_id"], name: "index_properties_on_term_id"
   end
 
+  create_table "rdfs_class_nodes", force: :cascade do |t|
+    t.string "uri"
+    t.jsonb "definition"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["uri"], name: "index_rdfs_class_nodes_on_uri", unique: true
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -207,6 +215,7 @@ ActiveRecord::Schema.define(version: 2020_12_22_173736) do
     t.bigint "domain_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.jsonb "selected_domains_from_file"
     t.index ["domain_id"], name: "index_specifications_on_domain_id"
     t.index ["uri"], name: "index_specifications_on_uri", unique: true
     t.index ["user_id"], name: "index_specifications_on_user_id"

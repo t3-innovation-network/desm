@@ -8,8 +8,10 @@ import {
 import SpecsPreviewTabs from "./SpecsPreviewTabs";
 import {
   doUnsubmit,
+  setMappingFormErrors,
   startProcessingFile,
   stopProcessingFile,
+  unsetMappingFormErrors,
 } from "../../actions/mappingform";
 import Loader from "./../shared/Loader";
 import createSpec from "../../services/createSpec";
@@ -69,6 +71,13 @@ const MappingPreview = (props) => {
    */
   const vocabularies = useSelector((state) => state.vocabularies);
   
+  const anyError = (response) => {
+    if(response.error) {
+      dispatch(setMappingFormErrors([response.error]));
+    }
+
+    return !_.isUndefined(response.error);
+  }
   /**
    * Resets the files on redux global state, this way
    * The files collection is blanked and the use can re-import files
@@ -84,6 +93,8 @@ const MappingPreview = (props) => {
     dispatch(unsetMergedFileId());
     /// Remove vocabularies
     dispatch(unsetVocabularies());
+    /// Reset errors
+    dispatch(unsetMappingFormErrors())
     
     /// Reset the file uploader
     $("#file-uploader").val("");
@@ -96,7 +107,7 @@ const MappingPreview = (props) => {
     setCreatingSpec(true);
 
     /// Send the specifications to the backend
-    mappingFormData.specification = filteredFile;
+    mappingFormData.content = JSON.stringify(filteredFile);
     let response = await createSpec(mappingFormData);
 
     setCreatingSpec(false);
@@ -108,7 +119,7 @@ const MappingPreview = (props) => {
 
     /// Manage errors
     if (response.error) {
-      toast.error(response.error);
+      dispatch(setMappingFormErrors([response.error]));
       return;
     }
 
