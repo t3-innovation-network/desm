@@ -112,7 +112,7 @@ const SpecsList = () => {
       toast.success("Mapping removed");
 
       setMappings(
-        mappings.filter((mapping) => mapping.id != mappingIdToRemove)
+        mappings.filter((mapping) => mapping.id !== mappingIdToRemove)
       );
       setConfirmingRemove(false);
     }
@@ -121,9 +121,9 @@ const SpecsList = () => {
   /**
    * Change the filter for the listed mappings
    */
-  const handleFilterChange = (value) => {
+  const handleFilterChange = async (value) => {
     setFilter(value);
-    goForTheMappings(value);
+    await goForTheMappings(value);
   };
 
   /**
@@ -139,7 +139,7 @@ const SpecsList = () => {
   };
 
   /**
-   * Use effect with an emtpy array as second parameter, will trigger the 'goForTheMapping'
+   * Use effect with an empty array as second parameter, will trigger the 'goForTheMapping'
    * action at the 'mounted' event of this functional component (It's not actually mounted,
    * but it mimics the same action).
    */
@@ -225,7 +225,7 @@ const SpecsList = () => {
                                     data-placement="top"
                                     title="Edit this mapping"
                                   >
-                                    <i className="fas fa-pencil-alt"></i>
+                                    <i className="fas fa-pencil-alt"/>
                                   </Link>
                                 ) : (
                                   <Link
@@ -233,7 +233,7 @@ const SpecsList = () => {
                                       mapping["uploaded?"]
                                         ? /// This mapping has mapped terms, but it has not finished selecting the terms from the specification
                                           "/mappings/" + mapping.id
-                                        : /// It's on the 3d step (algin and fine tune), already selected the terms from the specification, and
+                                        : /// It's on the 3d step (align and fine tune), already selected the terms from the specification, and
                                           /// now it's mapping terms into the spine terms
                                           "/mappings/" + mapping.id + "/align"
                                     }
@@ -242,7 +242,7 @@ const SpecsList = () => {
                                     data-placement="top"
                                     title="Resume, continue mapping"
                                   >
-                                    <i className="fas fa-layer-group"></i>
+                                    <i className="fas fa-layer-group"/>
                                   </Link>
                                 )}
 
@@ -257,7 +257,7 @@ const SpecsList = () => {
                                     data-placement="top"
                                     title="View this mapping"
                                   >
-                                    <i className="fas fa-eye"></i>
+                                    <i className="fas fa-eye"/>
                                   </Link>
                                 ) : (
                                   ""
@@ -272,7 +272,7 @@ const SpecsList = () => {
                                   data-placement="top"
                                   title="Remove this mapping"
                                 >
-                                  <i className="fas fa-trash"></i>
+                                  <i className="fas fa-trash"/>
                                 </button>
                                 {mapping["mapped?"] ? (
                                   <button
@@ -284,7 +284,7 @@ const SpecsList = () => {
                                     data-placement="top"
                                     title="Export this mapping"
                                   >
-                                    <i className="fas fa-download"></i>
+                                    <i className="fas fa-download"/>
                                   </button>
                                 ) : (
                                   ""
@@ -294,14 +294,14 @@ const SpecsList = () => {
                           );
                         })
                       ) : (
-                        <tr></tr>
+                        <tr/>
                       )}
                     </tbody>
                   </table>
 
                   <hr className="rounded-divider" />
 
-                  {mappings.length == 0 && (
+                  {mappings.length === 0 && (
                     <div className="card text-center">
                       <div className="card-header bg-col-on-primary-highlight">
                         <p>

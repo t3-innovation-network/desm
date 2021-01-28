@@ -27,11 +27,11 @@ import ConfirmDialog from "../shared/ConfirmDialog";
 
 const AlignAndFineTune = (props) => {
   /**
-   * Whether any change awas performed after the page loads
+   * Flag to control when the user is adding a synthetic property
    */
   const [addingSynthetic, setAddingSynthetic] = useState(false);
   /**
-   * Whether any change awas performed after the page loads
+   * Controls the amount of changes performed after the page loads
    */
   const [changesPerformed, setChangesPerformed] = useState(0);
   /**
@@ -88,7 +88,7 @@ const AlignAndFineTune = (props) => {
   const [mappingTermToRemove, setMappingTermToRemove] = useState(null);
   /**
    * The predicates from DB. These will be used to match a mapping term to a spine
-   * term in a meaningful way. E.g. "Identicall", "Agregatted", ...
+   * term in a meaningful way. E.g. "Identical", "Aggregated", ...
    */
   const [predicates, setPredicates] = useState([]);
   /**
@@ -146,8 +146,8 @@ const AlignAndFineTune = (props) => {
    * @param {Object} spineTerm
    */
   const mappedTermsToSpineTerm = (spineTerm) => {
-    let mterm = mappingTerms.find((mt) => mt.spine_term_id === spineTerm.id);
-    return mterm ? mterm.mapped_terms : [];
+    let mTerm = mappingTerms.find((mt) => mt.spine_term_id === spineTerm.id);
+    return mTerm ? mTerm.mapped_terms : [];
   };
 
   /**
@@ -379,6 +379,9 @@ const AlignAndFineTune = (props) => {
           className="btn btn-dark mr-2"
           onClick={handleSaveAlignment}
           disabled={!changesPerformed || loading}
+          data-toggle="tooltip"
+          data-placement="bottom"
+          title={"You can save the changes to continue mapping later" + (changesPerformed ? "" : ". Try making a change!")}
         >
           Save and Exit
         </button>
@@ -387,6 +390,13 @@ const AlignAndFineTune = (props) => {
             className="btn bg-col-primary col-background"
             onClick={handleDoneAlignment}
             disabled={loading || !allTermsMapped}
+            data-toggle="tooltip"
+            data-placement="bottom"
+            title={
+              allTermsMapped
+                ? "Mark this mapping as finished"
+                : "Be sure to map all the properties to the spine, and to set a predicate to each alignment"
+            }
           >
             Done Alignment
           </button>
@@ -491,7 +501,7 @@ const AlignAndFineTune = (props) => {
   };
 
   /**
-   * CAncel adding a synthetic term to the spine
+   * Cancel adding a synthetic term to the spine
    */
   const handleCancelSynthetic = () => {
     setMappingTerms(mappingTerms.filter((mt) => !mt.synthetic));
@@ -629,10 +639,10 @@ const AlignAndFineTune = (props) => {
   };
 
   /**
-   * Domain mappping complete. Confirm to save status in the backend
+   * Domain mapping complete. Confirm to save status in the backend
    */
   const handleDoneAlignment = async () => {
-    /// Change the mapping satus to "mapped", so we confirm it's finish the
+    /// Change the mapping status to "mapped", so we confirm it's finish the
     /// mapping phase
     let response = await updateMapping({
       id: mapping.id,
@@ -642,7 +652,7 @@ const AlignAndFineTune = (props) => {
     if (!anyError(response)) {
       /// Save changes if necessary
       if (changesPerformed) {
-        handleSaveAlignment();
+        await handleSaveAlignment();
       }
       /// Redirect to the specifications list
       props.history.push("/mappings");
@@ -714,7 +724,7 @@ const AlignAndFineTune = (props) => {
    * when the mapping changed from "in-progress" to "mapped".
    */
   const handleFetchMappingChanges = async (mapping) => {
-    if (mapping.status == "mapped") {
+    if (mapping.status === "mapped") {
       let response = await fetchAudits({
         className: "Mapping",
         instanceIds: mapping.id,
@@ -723,7 +733,7 @@ const AlignAndFineTune = (props) => {
 
       if (!anyError(response)) {
         let statusChangedAudit = response.audits.find(
-          (audit) => audit.audited_changes["status"].toString() == "1,2"
+          (audit) => audit.audited_changes["status"].toString() === "1,2"
         );
 
         if (statusChangedAudit) {
@@ -757,7 +767,7 @@ const AlignAndFineTune = (props) => {
   };
 
   /**
-   * Use effect with an emtpy array as second parameter, will trigger the 'fetchDataFromAPI'
+   * Use effect with an empty array as second parameter, will trigger the 'fetchDataFromAPI'
    * action at the 'mounted' event of this functional component (It's not actually mounted, but
    * it mimics the same action).
    */

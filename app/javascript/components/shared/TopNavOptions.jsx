@@ -8,7 +8,13 @@ const TopNavOptions = (props) => {
       <ul className="navbar-nav mr-auto">
         {props.viewMappings && (
           <li className="nav-item selected-item mt-0 ml-0 ml-lg-3 mr-0 mr-lg-3">
-            <Link to="/mappings" className="nav-link nav-title-highlited">
+            <Link
+                to="/mappings"
+                className="nav-link nav-title-highlighted"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="See the list of your specifications (and those of your organization)"
+            >
               View Mappings
             </Link>
           </li>
@@ -18,6 +24,9 @@ const TopNavOptions = (props) => {
             <Link
               to="/new-mapping"
               className="btn wide-btn btn-outline-secondary"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Create a mapping between 2 specifications"
             >
               Map a Specification
             </Link>
@@ -29,11 +38,15 @@ const TopNavOptions = (props) => {
           </li>
         )}
       </ul>
-      <ul className="navbar-nav mr-auto">
-        <li className="mt-0 mb-2 ml-0 ml-lg-3 mr-0 mr-lg-3">
-          {props.customcontent}
-        </li>
-      </ul>
+        {
+            props.customcontent ? (
+                <ul className="navbar-nav mr-auto">
+                    <li className="mt-0 mb-2 ml-0 ml-lg-3 mr-0 mr-lg-3">
+                        {props.customcontent}
+                    </li>
+                </ul>
+            ) : ""
+        }
     </React.Fragment>
   );
 };

@@ -3,7 +3,6 @@ import userReducer from "./userReducer";
 import fileReducer from "./fileReducer";
 import mergedFileReducer from "./mergedFileReducer";
 import submittedReducer from "./submittedReducer";
-import previewSpecReducer from "./previewSpecReducer";
 import { combineReducers } from "redux";
 import { reducer as toastrReducer } from "react-redux-toastr";
 import fileProcessingReducer from "./fileProcessingReducer";
@@ -22,7 +21,6 @@ const allReducers = combineReducers({
   mappingFormData: mappingFormReducer,
   mappingFormErrors: mappingFormErrorsReducer,
   mergedFileId: mergedFileReducer,
-  previewSpecs: previewSpecReducer,
   processingFile: fileProcessingReducer,
   submitted: submittedReducer,
   toastr: toastrReducer,

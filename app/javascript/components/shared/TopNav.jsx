@@ -14,7 +14,7 @@ const TopNav = (props) => {
 {/* BRAND BOX */}
 
             <div className="brand-box-container">
-              <Link to="/" className="navbar-brand nav-item brand-box"></Link>
+              <Link to="/" className="navbar-brand nav-item brand-box"/>
             </div>
             <button
               className="navbar-toggler"
@@ -25,7 +25,7 @@ const TopNav = (props) => {
               aria-expanded="false"
               aria-label="Toggle Navigation"
             >
-              <i className="fa fa-bars" aria-hidden="true"></i>
+              <i className="fa fa-bars" aria-hidden="true"/>
             </button>
           </div>
 

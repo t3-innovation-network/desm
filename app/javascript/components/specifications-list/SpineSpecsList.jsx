@@ -11,7 +11,7 @@ import Loader from "../shared/Loader";
  * @description A list of spine specifications from the user or all the users of the organization
  *
  * Props:
- * @param {String} filter The filter or the list of specifications. It can be either "all or "user",
+ * @prop {String} filter The filter or the list of specifications. It can be either "all or "user",
  * this last meaning only those spine specifications belonging to the current user.
  */
 const SpineSpecsList = (props) => {
@@ -82,7 +82,7 @@ const SpineSpecsList = (props) => {
       toast.success("Spine removed");
 
       /// Update the UI
-      setSpines(spines.filter((spine) => spine.id != spineIdToRemove));
+      setSpines(spines.filter((spine) => spine.id !== spineIdToRemove));
       setConfirmingRemove(false);
     }
   };
@@ -99,7 +99,7 @@ const SpineSpecsList = (props) => {
   };
 
   /**
-   * Use effect with an emtpy array as second parameter, will trigger the 'handleFetchSpineSpecs'
+   * Use effect with an empty array as second parameter, will trigger the 'handleFetchSpineSpecs'
    * action at the 'mounted' event of this functional component (It's not actually mounted,
    * but it mimics the same action).
    */
@@ -141,22 +141,28 @@ const SpineSpecsList = (props) => {
                 {spine.name + " "}{" "}
                 <strong className="col-primary">- Spine</strong>
               </td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td/>
+              <td/>
+              <td/>
+              <td/>
               <td>
                 <Link
                   to={"/specifications/" + spine.id}
                   className="btn btn-sm btn-dark ml-2"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Edit the spine. You can edit each property here."
                 >
-                  Edit
+                  <i className="fas fa-pencil-alt"/>
                 </Link>
                 <button
                   onClick={() => handleConfirmRemove(spine.id)}
                   className="btn btn-sm btn-dark ml-2"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Remove the spine"
                 >
-                  Remove
+                  <i className="fas fa-trash"/>
                 </button>
               </td>
             </tr>

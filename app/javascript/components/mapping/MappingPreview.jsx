@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   unsetFiles,
+  unsetFilteredFile,
   unsetMergedFileId,
   unsetSpecToPreview,
 } from "../../actions/files";
@@ -54,13 +55,15 @@ const MappingPreview = (props) => {
    */
   const filteredFile = useSelector((state) => state.filteredFile);
   /**
-   * The specifcation contents ready to preview. THese are not the files object, but its contents
-   */
-  const previewSpecs = useSelector((state) => state.previewSpecs);
-  /**
    * Whether we are processing the specification file. Used for filtering, seeking domains, and merging.
    */
   const processingFile = useSelector((state) => state.processingFile);
+  /**
+   * Gives the amount of properties found in the specification
+   */
+  const propertiesCount =
+    (filteredFile["@graph"]?.length || 0) -
+    (mappingFormData?.selectedDomains?.length || 0);
   /**
    * Whether the form is submitted. This means all the fields are already filled, and the
    * file/s are uploaded. We can proceed with preview.
@@ -70,14 +73,20 @@ const MappingPreview = (props) => {
    * The vocabularies content ready to be printed. JSON format.
    */
   const vocabularies = useSelector((state) => state.vocabularies);
-  
+
+  /**
+   * Determines whether there are errors in the form
+   *
+   * @param {HttpResponse} response
+   */
   const anyError = (response) => {
-    if(response.error) {
+    if (response.error) {
       dispatch(setMappingFormErrors([response.error]));
     }
 
     return !_.isUndefined(response.error);
-  }
+  };
+
   /**
    * Resets the files on redux global state, this way
    * The files collection is blanked and the use can re-import files
@@ -87,19 +96,21 @@ const MappingPreview = (props) => {
     dispatch(unsetFiles());
     /// Remove previews
     dispatch(unsetSpecToPreview());
-    /// Change the form status to unsubmitted
+    /// Change the form status to not submitted
     dispatch(doUnsubmit());
     /// Remove unified file
     dispatch(unsetMergedFileId());
     /// Remove vocabularies
     dispatch(unsetVocabularies());
     /// Reset errors
-    dispatch(unsetMappingFormErrors())
-    
+    dispatch(unsetMappingFormErrors());
+    /// Reset errors
+    dispatch(unsetFilteredFile());
+
     /// Reset the file uploader
     $("#file-uploader").val("");
   };
-  
+
   /**
    * Create the specification using the api service
    */
@@ -118,17 +129,14 @@ const MappingPreview = (props) => {
     dispatch(unsetFiles());
 
     /// Manage errors
-    if (response.error) {
-      dispatch(setMappingFormErrors([response.error]));
-      return;
+    if (!anyError(response)) {
+      return response;
     }
-
-    return response;
   };
 
   /**
-   * Look for the vocabulary name, being the vocabulary an object conatining only
-   * a grapha and a context.
+   * Look for the vocabulary name, being the vocabulary an object containing only
+   * a graph and a context.
    *
    * @param {Object} vocab
    */
@@ -144,7 +152,7 @@ const MappingPreview = (props) => {
   /**
    * Actions after the vocabulary was successfully added into the api service
    *
-   * @param {Object} vocab
+   * @param {Object} data
    */
   const handleVocabularyAdded = (data) => {
     /// Manage the vocabularies in the store
@@ -155,7 +163,8 @@ const MappingPreview = (props) => {
 
     /// Refresh the UI
     dispatch(setVocabularies([]));
-    dispatch(setVocabularies(tempVocabs));  };
+    dispatch(setVocabularies(tempVocabs));
+  };
 
   /**
    * Use the api service to create one only vocabulary.
@@ -185,7 +194,7 @@ const MappingPreview = (props) => {
     let cantSaved = 0;
 
     setCreatingVocabularies(true);
-    /// Iterate thorugh all the vocabularies, creating one by one using the api service
+    /// Iterate through all the vocabularies, creating one by one using the api service
     await Promise.all(
       vocabularies.map(async (vocab) => {
         /// Set the vocabulary name
@@ -193,7 +202,7 @@ const MappingPreview = (props) => {
 
         /// Do not continue if we didn't manage to get the vocabulary name, since this
         /// will generate an error in the backend.
-        if (vName == "" || _.isUndefined(vName)) return;
+        if (vName === "" || _.isUndefined(vName)) return;
 
         if (await handleSaveOneVocabulary(vName, vocab)) {
           cantSaved++;
@@ -240,7 +249,13 @@ const MappingPreview = (props) => {
     <div className="col-lg-6 p-lg-5 pt-5 bg-col-secondary">
       <React.Fragment>
         {processingFile ? (
-          <Loader message={"We're processing the " + Pluralize("file", files.length) + ". Please wait ..."} />
+          <Loader
+            message={
+              "We're processing the " +
+              Pluralize("file", files.length) +
+              ". Please wait ..."
+            }
+          />
         ) : creatingVocabularies ? (
           <Loader message="We're processing vocabularies. Please wait ..." />
         ) : (
@@ -261,8 +276,19 @@ const MappingPreview = (props) => {
                       </button>
                       <button
                         className="btn bg-col-primary col-background ml-2"
-                        disabled={creatingSpec || !previewSpecs.length}
+                        disabled={
+                          creatingSpec ||
+                          !filteredFile ||
+                          !propertiesCount
+                        }
                         onClick={handleLooksGood}
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title={
+                          !propertiesCount
+                            ? "No properties were found in the uploaded file/s. Please review it an try again"
+                            : "Create the specification"
+                        }
                       >
                         Looks Good
                       </button>
@@ -296,7 +322,10 @@ const MappingPreview = (props) => {
               {creatingSpec ? (
                 <Loader message="We're processing the specification. Please wait ..." />
               ) : (
-                <SpecsPreviewTabs disabled={addingVocabulary}/>
+                <SpecsPreviewTabs
+                  disabled={addingVocabulary}
+                  propertiesCount={propertiesCount}
+                />
               )}
             </React.Fragment>
           )
