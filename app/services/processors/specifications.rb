@@ -46,10 +46,11 @@ module Processors
 
     ###
     # @description: Create each of the terms related to the specification
+    # @param instance [Specification]
     ###
     def create_terms instance
       filter_properties(instance.selected_domains_from_file).each do |node|
-        instance.terms << create_one_term(node)
+        instance.terms << create_one_term(instance, node)
       end
     end
 
@@ -252,15 +253,16 @@ module Processors
 
     ###
     # @description: Handles to find or create a term with its related property
+    # @param instance [Specification]
     # @param [Object] node: The node to be evaluated in order to create a term
     ###
-    def create_one_term(node)
+    def create_one_term(instance, node)
       parser = Parsers::JsonLd::Node.new(node)
       # Retrieve the term, if not found, create one with these properties
       Term.find_or_initialize_by(uri: parser.read!("id")) do |t|
         t.update!(
           name: parser.read!("label") || parser.read!("id"),
-          organization: @instance.user.organization
+          organization: instance.user.organization
         )
         create_property_term(t, node)
       end

@@ -58,7 +58,7 @@ const MappingForm = () => {
    */
   const mappingFormData = useSelector((state) => state.mappingFormData);
   /**
-   * The errors in the mapping form accross different components
+   * The errors in the mapping form across different components
    */
   const mappingFormErrors = useSelector((state) => state.mappingFormErrors);
   /**
@@ -73,11 +73,6 @@ const MappingForm = () => {
    * Name of the specification
    */
   const [name, setName] = useState("");
-  /**
-   * The preview files (files already prepared to be previewed, as
-   * without the unrelated domains and properties)
-   */
-  const previewSpecs = useSelector((state) => state.previewSpecs);
   /**
    * Whether we are processing the file or not
    */
@@ -203,7 +198,7 @@ const MappingForm = () => {
       }
     }
 
-    previewSingleDomainFile(mergedFileId);
+    await previewSingleDomainFile(mergedFileId);
   };
 
   /**
@@ -282,7 +277,7 @@ const MappingForm = () => {
    * Then filter the file content to only show the selected domain an
    * related properties.
    *
-   * @param {Array} uris The list of identifiers of the rdfs:Class'es selected.
+   * @param {Array} uris The list of identifiers of the rdfs:Class(es) selected.
    */
   const onSelectDomainsFromFile = async (uris) => {
     dispatch(startProcessingFile());
@@ -329,7 +324,7 @@ const MappingForm = () => {
   };
 
   /**
-   * Fecth the domains to be listed in the new mapping form
+   * Fetch the domains to be listed in the new mapping form
    * then put it in the local sate
    */
   const fillWithDomains = () => {
@@ -341,7 +336,7 @@ const MappingForm = () => {
   };
 
   /**
-   * Use effect with an emtpy array as second parameter, will trigger the 'fillWithDomains'
+   * Use effect with an empty array as second parameter, will trigger the 'fillWithDomains'
    * action at the 'mounted' event of this functional component (It's not actually mounted,
    * but it mimics the same action).
    */
@@ -387,7 +382,7 @@ const MappingForm = () => {
                     title="Import the specification"
                     disabled={submitted}
                   >
-                    <i className="fas fa-arrow-right col-background"></i>
+                    <i className="fas fa-arrow-right col-background"/>
                   </button>
                 </section>
               )}

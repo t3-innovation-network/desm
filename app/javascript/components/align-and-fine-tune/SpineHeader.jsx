@@ -1,17 +1,18 @@
 import React from "react";
 import ProgressReportBar from "../shared/ProgressReportBar";
+import {Link} from "react-router-dom";
 
 /**
  * Props:
- * @param {Object} domain,
- * @param {Boolean} hideMappedSpineTerms,
- * @param {Function} setHideMappedSpineTerms,
- * @param {Array} mappingSelectedTerms,
- * @param {Array} mappedSelectedTerms,
- * @param {String} spineTermsInputValue,
- * @param {Function} filterSpineTermsOnChange,
- * @param {Function} handleAddSynthetic,
- * @param {Array} mappingTerms
+ * @prop {Object} domain,
+ * @prop {Boolean} hideMappedSpineTerms,
+ * @prop {Function} setHideMappedSpineTerms,
+ * @prop {Array} mappingSelectedTerms,
+ * @prop {Array} mappedSelectedTerms,
+ * @prop {String} spineTermsInputValue,
+ * @prop {Function} filterSpineTermsOnChange,
+ * @prop {Function} handleAddSynthetic,
+ * @prop {Array} mappingTerms
  */
 const SpineHeader = (props) => {
   const {
@@ -45,11 +46,11 @@ const SpineHeader = (props) => {
             <input
               type="checkbox"
               className="custom-control-input desm-custom-control-input cursor-pointer"
-              id="hideSpineElems"
+              id="hideSpineElms"
               checked={hideMappedSpineTerms}
               onChange={() => setHideMappedSpineTerms(!hideMappedSpineTerms)}
             />
-            <label className="custom-control-label cursor-pointer" htmlFor="hideSpineElems">
+            <label className="custom-control-label cursor-pointer" htmlFor="hideSpineElms">
               Hide Mapped Elements
             </label>
           </div>
@@ -74,7 +75,7 @@ const SpineHeader = (props) => {
       <div className="row mb-2">
         <div className="col-5">
           <div className="form-group input-group-has-icon">
-            <span className="fa fa-search form-control-feedback"></span>
+            <span className="fa fa-search form-control-feedback"/>
             <input
               type="text"
               className="form-control"
@@ -84,12 +85,15 @@ const SpineHeader = (props) => {
             />
           </div>
         </div>
-        <div className="col-5"></div>
+        <div className="col-5"/>
         <div className="col-2">
           <button
             className="btn btn-block btn-dark"
             onClick={handleAddSynthetic}
             disabled={props.addingSynthetic}
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Add a synthetic property to the spine. This new property will be available to map for this and further mappings"
           >
             + Add Synthetic
           </button>
