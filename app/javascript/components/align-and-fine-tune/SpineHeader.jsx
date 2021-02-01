@@ -12,7 +12,7 @@ import {Link} from "react-router-dom";
  * @prop {String} spineTermsInputValue,
  * @prop {Function} filterSpineTermsOnChange,
  * @prop {Function} handleAddSynthetic,
- * @prop {Array} mappingTerms
+ * @prop {Array} alignments
  */
 const SpineHeader = (props) => {
   const {
@@ -24,7 +24,7 @@ const SpineHeader = (props) => {
     spineTermsInputValue,
     filterSpineTermsOnChange,
     handleAddSynthetic,
-    mappingTerms,
+    alignments,
   } = props;
 
   return (
@@ -63,9 +63,9 @@ const SpineHeader = (props) => {
           }}
         >
           <ProgressReportBar
-            maxValue={mappingTerms.length}
+            maxValue={alignments.length}
             currentValue={
-              mappingTerms.filter((mTerm) => mTerm.mapped_terms.length).length
+              alignments.filter((alignment) => alignment.mapped_terms.length).length
             }
             messageReport="Mapped"
             cssClass="bg-col-on-primary"

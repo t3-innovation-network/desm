@@ -9,16 +9,16 @@ import Moment from "moment";
  *   in props. The information is fetched from the api service.
  *
  * Props:
- * @param {Array} mappingTerms
- * @param {Array} spineTerms
- * @param {Array} predicates
- * @param {String} dateMapped
+ * @prop {Array} alignments
+ * @prop {Array} spineTerms
+ * @prop {Array} predicates
+ * @prop {String} dateMapped
  */
 const MappingChangeLog = (props) => {
   /**
    * Elements from props
    */
-  const { mappingTerms, spineTerms, predicates, dateMapped } = props;
+  const { alignments, spineTerms, predicates, dateMapped } = props;
   /**
    * The changes data (JSON)
    */
@@ -30,8 +30,8 @@ const MappingChangeLog = (props) => {
   const handleFetchChanges = async () => {
     // Get changes from the api service
     let response = await fetchAudits({
-      className: "MappingTerm",
-      instanceIds: mappingTerms.map((mt) => mt.id),
+      className: "Alignment",
+      instanceIds: alignments.map((mt) => mt.id),
       auditAction: "update",
       dateFrom: dateMapped,
     });
@@ -42,16 +42,16 @@ const MappingChangeLog = (props) => {
   /**
    * Find the spine term related to a mapping term
    *
-   * @param {Integer} mTermId The id of the mappng term
+   * @param {Integer} alignmentId The id of the mapping term
    */
-  const spineTermForMappingTerm = (mTermId) => {
-    let mTerm = mappingTerms.find((mt) => mt.id == mTermId);
+  const spineTermForAlignment = (alignmentId) => {
+    let alignment = alignments.find((alignment) => alignment.id === alignmentId);
 
-    return spineTerms.find((sTerm) => sTerm.id == mTerm.spine_term_id);
+    return spineTerms.find((sTerm) => sTerm.id === alignment.spine_term_id);
   };
 
   /**
-   * Use effect with an emtpy array as second parameter, will trigger the action of fetching the changes
+   * Use effect with an empty array as second parameter, will trigger the action of fetching the changes
    * at the 'mounted' event of this functional component (It's not actually mounted, but
    * it mimics the same action).
    */
@@ -70,7 +70,6 @@ const MappingChangeLog = (props) => {
             <li key={i}>
               <div className="ml-3">
                 <div className="row">
-                  {/* <strong>{change.created_at}</strong> */}
                   <strong>
                     {Moment(change.created_at).format(
                       "MMMM Do YYYY, h:mm:ss a"
@@ -78,7 +77,7 @@ const MappingChangeLog = (props) => {
                   </strong>
                 </div>
                 <ChangeDetails
-                  spineTerm={spineTermForMappingTerm(change.auditable_id)}
+                  spineTerm={spineTermForAlignment(change.auditable_id)}
                   change={change}
                   predicates={predicates}
                 />
@@ -91,7 +90,7 @@ const MappingChangeLog = (props) => {
   };
 
   /**
-   * Returns a collapsible element, with the title being "Changelog and the content a specically structured
+   * Returns a collapsible element, with the title being "Changelog and the content a specifically structured
    * list of changes".
    *
    * Render taking care of having changes present.

@@ -35,7 +35,7 @@ class Mapping < ApplicationRecord
   #   about the type of alignment (predicate), which term from the spine was mapped to which of the
   #   original specification, and more.
   ###
-  has_many :terms, class_name: :MappingTerm, dependent: :destroy
+  has_many :terms, class_name: :Alignment, dependent: :destroy
   ###
   # @description: The selected terms from the original uploaded specification. The user can select one
   #   ore more terms from it.

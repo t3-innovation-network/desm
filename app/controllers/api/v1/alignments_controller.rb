@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 ###
-# @description: Place all the actions related to mappings
+# @description: Place all the actions related to mapping alignments
 ###
-class Api::V1::MappingTermsController < ApplicationController
+class Api::V1::AlignmentsController < ApplicationController
   before_action :authorize_with_policy, except: :index
 
   ###
@@ -21,9 +21,7 @@ class Api::V1::MappingTermsController < ApplicationController
   ###
   def update
     ActiveRecord::Base.transaction do
-      unless params[:mapping_term][:mapped_terms].nil?
-        @instance.update_mapped_terms(params[:mapping_term][:mapped_terms])
-      end
+      @instance.update_mapped_terms(params[:alignment][:mapped_terms]) unless params[:alignment][:mapped_terms].nil?
       @instance.update!(permitted_params)
     end
 
@@ -55,7 +53,7 @@ class Api::V1::MappingTermsController < ApplicationController
   # @return [ActiveRecord::Relation]
   ###
   def filter
-    terms = MappingTerm.joins(:mapping).where(mappings: {status: :mapped})
+    terms = Alignment.joins(:mapping).where(mappings: {status: :mapped})
 
     terms = terms.where(spine_term_id: params[:spine_term_id]) if params[:spine_term_id].present?
 
@@ -67,6 +65,6 @@ class Api::V1::MappingTermsController < ApplicationController
   # @return [ActionController::Parameters]
   ###
   def permitted_params
-    params.require(:mapping_term).permit(:comment, :predicate_id)
+    params.require(:alignment).permit(:comment, :predicate_id)
   end
 end

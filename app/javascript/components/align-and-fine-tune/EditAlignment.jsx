@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import updateMappingTerm from "../../services/updateMappingTerm";
+import updateAlignment from "../../services/updateAlignment";
 import AlertNotice from "../shared/AlertNotice";
 import ModalStyles from "../shared/ModalStyles";
 import PredicateOptions from "../shared/PredicateOptions";
@@ -12,7 +12,7 @@ const EditAlignment = (props) => {
    * Elements from props
    */
   const {
-    mappingTerm,
+    alignment,
     spineTerm,
     predicate,
     predicates,
@@ -43,7 +43,7 @@ const EditAlignment = (props) => {
   /**
    * The value for the comment on the alignment
    */
-  const [comment, setComment] = useState(props.mappingTerm.comment);
+  const [comment, setComment] = useState(props.alignment.comment);
 
   /**
    * The predicate selected when editing an alignment
@@ -62,8 +62,8 @@ const EditAlignment = (props) => {
    * Saves the comment in the alignment
    */
   const handleSaveComment = async () => {
-    let response = await updateMappingTerm({
-      id: mappingTerm.id,
+    let response = await updateAlignment({
+      id: alignment.id,
       comment: comment,
     });
 
@@ -89,8 +89,8 @@ const EditAlignment = (props) => {
    * Save the changes after editing the alignment
    */
   const handleSaveAlignment = async () => {
-    let response = await updateMappingTerm({
-      id: mappingTerm.id,
+    let response = await updateAlignment({
+      id: alignment.id,
       predicate_id: selectedPredicate.id,
     });
 
@@ -101,7 +101,7 @@ const EditAlignment = (props) => {
 
     onPredicateUpdated({
       saved: true,
-      term: mappingTerm,
+      term: alignment,
       predicate: selectedPredicate,
     });
   };
@@ -148,7 +148,7 @@ const EditAlignment = (props) => {
               )}
             </div>
             <div className="col-4">
-              {mappingTerm.mapped_terms.map((mTerm) => {
+              {alignment.mapped_terms.map((mTerm) => {
                 return (
                   <div key={mTerm.id} className="card mb-3">
                     <div className="card-header">{mTerm.name}</div>

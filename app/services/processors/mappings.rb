@@ -23,25 +23,25 @@ module Processors
           spine_id: @spine.id
         )
 
-        create_mapping_terms(mapping)
+        create_alignments(mapping)
 
         mapping
       end
     end
 
     ###
-    # @description: Creates the terms for the mapping.
+    # @description: Creates the terms for the mapping (alignments).
     # @param [Mapping] mapping: The mapping for which the terms are going to be created.
     #
     # @return [Array]
     ###
-    def self.create_mapping_terms mapping
+    def self.create_alignments mapping
       terms = 0
       mapping.spine.terms.each do |term|
         # Do not create this term if there's already one with the same uri
-        # next if MappingTerm.find_by(uri: term.desm_uri)
+        # next if Alignment.find_by(uri: term.desm_uri)
 
-        MappingTerm.create!(
+        Alignment.create!(
           uri: term.desm_uri(@spine.domain),
           mapping: mapping,
           spine_term_id: term.id

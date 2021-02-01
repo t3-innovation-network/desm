@@ -1,12 +1,12 @@
 import apiRequest from "./api/apiRequest";
 
-const fetchMappingTerms = async (mappingId) => {
+const fetchAlignments = async (mappingId) => {
   return await apiRequest({
     url: "/api/v1/mappings/" + mappingId + "/terms",
     method: "get",
     defaultResponse: [],
-    successResponse: "terms"
+    successResponse: "alignments"
   });
 };
 
-export default fetchMappingTerms;
+export default fetchAlignments;

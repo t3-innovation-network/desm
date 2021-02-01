@@ -1,9 +1,9 @@
 import apiRequest from "./api/apiRequest";
 import { shapeConcepts } from "./api/helper";
 
-const fetchAlginmentVocabulary = async (mTermId) => {
+const fetchAlignmentVocabulary = async (alignmentId) => {
   const response = await apiRequest({
-    url: "/api/v1/mapping_terms/" + mTermId + "/vocabulary",
+    url: "/api/v1/alignments/" + alignmentId + "/vocabulary",
     method: "get",
     defaultResponse: [],
     successResponse: "vocabulary",
@@ -24,4 +24,4 @@ const fetchAlginmentVocabulary = async (mTermId) => {
   });
 };
 
-export default fetchAlginmentVocabulary;
+export default fetchAlignmentVocabulary;

@@ -9,7 +9,7 @@
 # This last in order to represent the multiple alignment between concepts
 ###
 class AlignmentVocabulary < ApplicationRecord
-  belongs_to :mapping_term
+  belongs_to :alignment
   has_many :concepts, class_name: :AlignmentVocabularyConcept, dependent: :destroy
 
   after_create :assign_concepts_from_spine, unless: proc { concepts.count.positive? }
@@ -19,7 +19,7 @@ class AlignmentVocabulary < ApplicationRecord
   # @return [Vocabulary]
   ###
   def spine_vocabulary
-    mapping_term.spine_term.vocabularies.first
+    alignment.spine_term.vocabularies.first
   end
 
   ###

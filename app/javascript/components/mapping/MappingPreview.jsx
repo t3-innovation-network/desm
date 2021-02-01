@@ -253,11 +253,15 @@ const MappingPreview = (props) => {
             message={
               "We're processing the " +
               Pluralize("file", files.length) +
-              ". Please wait ..."
+              ". Please wait, this might take a while ..."
             }
+            showImage={true}
           />
         ) : creatingVocabularies ? (
-          <Loader message="We're processing vocabularies. Please wait ..." />
+          <Loader
+            message="We're processing vocabularies. Please wait, this might take a while ..."
+            showImage={true}
+          />
         ) : (
           submitted && (
             <React.Fragment>
@@ -277,9 +281,7 @@ const MappingPreview = (props) => {
                       <button
                         className="btn bg-col-primary col-background ml-2"
                         disabled={
-                          creatingSpec ||
-                          !filteredFile ||
-                          !propertiesCount
+                          creatingSpec || !filteredFile || !propertiesCount
                         }
                         onClick={handleLooksGood}
                         data-toggle="tooltip"
@@ -320,7 +322,10 @@ const MappingPreview = (props) => {
               )}
 
               {creatingSpec ? (
-                <Loader message="We're processing the specification. Please wait ..." />
+                <Loader
+                  message="We're processing the specification. Please wait, this might take a while ..."
+                  showImage={true}
+                />
               ) : (
                 <SpecsPreviewTabs
                   disabled={addingVocabulary}

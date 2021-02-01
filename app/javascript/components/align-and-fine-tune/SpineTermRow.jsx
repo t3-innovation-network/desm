@@ -10,13 +10,13 @@ import VocabularyLabel from "./match-vocabulary/VocabularyLabel";
 
 /**
  * Props:
- * @param {String} origin The organization name of the mapping
- * @param {String} spineOrigin The organization name of the spine specification
- * @param {Object} term The spine term
- * @param {Array} predicates The collection of predicates
- * @param {Function} onPredicateSelected The actions to execute when a predicate is selected
- * @param {Function} mappedTermsToSpineTerm The list of terms that are mapped to a given spine term
- * @param {Function} onRevertMapping The actoins to execute when the user eants to revert a term from being mapped
+ * @prop {String} origin The organization name of the mapping
+ * @prop {String} spineOrigin The organization name of the spine specification
+ * @prop {Object} term The spine term
+ * @prop {Array} predicates The collection of predicates
+ * @prop {Function} onPredicateSelected The actions to execute when a predicate is selected
+ * @prop {Function} mappedTermsToSpineTerm The list of terms that are mapped to a given spine term
+ * @prop {Function} onRevertMapping The actions to execute when the user wants to revert a term from being mapped
  */
 const SpineTermRow = (props) => {
   /**
@@ -27,7 +27,7 @@ const SpineTermRow = (props) => {
     origin,
     onRevertMapping,
     predicates,
-    selectedMappingTerms,
+    selectedAlignments,
     spineOrigin,
     term,
   } = props;
@@ -35,7 +35,7 @@ const SpineTermRow = (props) => {
   /**
    * The mapping term (alignment) representing this row
    */
-  const [mappingTerm, setMappingTerm] = useState(props.mappingTerm);
+  const [alignment, setAlignment] = useState(props.alignment);
 
   /**
    * The selected mode to open the edit window
@@ -49,7 +49,7 @@ const SpineTermRow = (props) => {
 
   /**
    * Whether we are editing the alignment or not. Set to true when
-   * the user selects an option from the alginment dropdown after selecting a predicate
+   * the user selects an option from the alignment dropdown after selecting a predicate
    */
   const [editing, setEditing] = useState(false);
 
@@ -70,15 +70,15 @@ const SpineTermRow = (props) => {
    * If the mapping term (alignment) has a predicate selected, lets find it
    */
   function findPredicate() {
-    return mappingTerm.predicate_id
+    return alignment.predicate_id
       ? predicates.find(
-          (predicate) => predicate.id === mappingTerm.predicate_id
+          (predicate) => predicate.id === alignment.predicate_id
         ).pref_label
       : null;
   }
 
   /**
-   * Return the options for an alignment that is a mappingTerm that has
+   * Return the options for an alignment that is a alignment that has
    * already a predicate selected.
    */
   const alignmentOptions = () => {
@@ -111,8 +111,8 @@ const SpineTermRow = (props) => {
   const predicateSelectedCard = () => {
     return (
       <React.Fragment>
-        {mappingTerm.comment && (
-          <i className="fas fa-circle fa-xs col-success float-left comment-dot"></i>
+        {alignment.comment && (
+          <i className="fas fa-circle fa-xs col-success float-left comment-dot"/>
         )}
         <strong>{predicate}</strong>
       </React.Fragment>
@@ -153,7 +153,7 @@ const SpineTermRow = (props) => {
   /**
    * Actions to take when a predicate has been selected for a mapping term
    *
-   * @param {Object} predicate
+   * @param {Object} result
    */
   const handleOnPredicateUpdated = (result) => {
     if (result.saved) {
@@ -168,7 +168,7 @@ const SpineTermRow = (props) => {
   /**
    * After saving the comment on the alignment.
    *
-   * @param {String} comment
+   * @param {String} result
    */
   const handleOnCommentUpdated = (result) => {
     if (result.saved) {
@@ -177,23 +177,23 @@ const SpineTermRow = (props) => {
 
     /// Update the mapping term in state (if there's a comment, we need to
     /// redraw in order to let the orange dot to appear)
-    let tempMappingTerm = mappingTerm;
-    mappingTerm.comment = result.comment;
-    setMappingTerm(tempMappingTerm);
+    let tempAlignment = alignment;
+    alignment.comment = result.comment;
+    setAlignment(tempAlignment);
 
     setEditing(false);
   };
 
   /**
-   * @description Handles the reverting action, by both calling the callback in props and ensurin
+   * @description Handles the reverting action, by both calling the callback in props and ensuring
    * the local state is updated.
    * 
-   * @param {Object} mTerm The mapped term that's going to be dettached from the alignment 
+   * @param {Object} mTerm The mapped term that's going to be detached from the alignment
    */
   const handleRevertMapping = (mTerm) => {
     onRevertMapping(mTerm);
 
-    if (!mappingTerm.mapped_terms.length) {
+    if (!alignment.mapped_terms.length) {
       setPredicate(null);
     }
   };
@@ -222,16 +222,16 @@ const SpineTermRow = (props) => {
 
   return (
     <React.Fragment>
-      {mappingTerm.predicate_id && (
+      {alignment.predicate_id && (
         <EditAlignment
           modalIsOpen={editing}
           onCommentUpdated={(result) => handleOnCommentUpdated(result)}
           onPredicateUpdated={(result) => handleOnPredicateUpdated(result)}
           predicates={predicates}
-          mappingTerm={mappingTerm}
+          alignment={alignment}
           spineTerm={term}
           predicate={predicates.find(
-            (predicate) => predicate.id === mappingTerm.predicate_id
+            (predicate) => predicate.id === alignment.predicate_id
           )}
           mode={editMode}
           onRequestClose={onRequestEditClose}
@@ -250,7 +250,7 @@ const SpineTermRow = (props) => {
           spineTerm={term}
           mappedTerm={mappedTermMatching}
           predicates={predicates}
-          mappingTerm={mappingTerm}
+          alignment={alignment}
         />
       ) : (
         ""
@@ -345,7 +345,7 @@ const SpineTermRow = (props) => {
           })}
           {!mappedTermsToSpineTerm(term).length && (
             <DropZone
-              selectedCount={selectedMappingTerms.length}
+              selectedCount={selectedAlignments.length}
               acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
               droppedItem={{ id: term.id }}
               placeholder="Drag a matching property here"
