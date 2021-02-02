@@ -3,7 +3,7 @@
 module Parsers
   module JsonLd
     ###
-    # @description:
+    # @description: Represents a node in a json ld specification representation.
     ###
     class Node
       include NodeTypes
@@ -155,7 +155,7 @@ module Parsers
       end
 
       ###
-      # @description: Reads the vaule of a node, assuming it's a final depth node. E.g. the
+      # @description: Reads the value of a node, assuming it's a final depth node. E.g. the
       #   only value to read in depth left is a key in the hash called value, title, or a
       #   lang key like en-us.
       # @param [Hash] node
@@ -184,7 +184,7 @@ module Parsers
       ###
       # @description: Validates whether a node contains a key
       # @param [Hash] node: The node being evaluated
-      # @param [String] key: The key to evaulate against the node
+      # @param [String] key: The key to evaluate against the node
       # @return [TrueClass|FalseClass]
       ###
       def valid_node_key?(node, key)
