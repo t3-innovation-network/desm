@@ -47,8 +47,8 @@ const SpineConceptRow = (props) => {
    * The name of the selected predicate
    */
   const predicateLabel = () => {
-    return alignment.predicate_id
-      ? predicates.find((p) => p.id === alignment.predicate_id).pref_label
+    return alignment.predicateId
+      ? predicates.find((p) => p.id === alignment.predicateId).pref_label
       : null;
   };
 
@@ -69,8 +69,8 @@ const SpineConceptRow = (props) => {
         )}
       </div>
       <div className="col-4">
-        {alignment.mapped_concepts && alignment.mapped_concepts.length ? (
-          alignment.mapped_concepts.map((concept) => {
+        {alignment.mappedConceptsList && alignment.mappedConceptsList.length ? (
+          alignment.mappedConceptsList.map((concept) => {
             return (
               <SimpleConceptCard
                 key={concept.id}

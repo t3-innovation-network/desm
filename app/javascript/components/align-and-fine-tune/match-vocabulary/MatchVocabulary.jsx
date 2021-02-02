@@ -15,14 +15,14 @@ import Pluralize from "pluralize";
 
 /**
  * Props
- * @param {Function} onRequestClose
- * @param {Boolean} modalIsOpen
- * @param {String} spineOrigin
- * @param {String} mappingOrigin
- * @param {Object} mappedTerm
- * @param {Object} alignment
- * @param {Object} spineTerm
- * @param {Array} predicates
+ * @prop {Function} onRequestClose
+ * @prop {Boolean} modalIsOpen
+ * @prop {String} spineOrigin
+ * @prop {String} mappingOrigin
+ * @prop {Object} mappedTerm
+ * @prop {Object} alignment
+ * @prop {Object} spineTerm
+ * @prop {Array} predicates
  */
 export default class MatchVocabulary extends Component {
   /**
@@ -93,9 +93,9 @@ export default class MatchVocabulary extends Component {
     const { alignmentConcepts, changesPerformed } = this.state;
 
     let alignment = alignmentConcepts.find(
-      (conc) => conc.spine_concept_id === concept.id
+      (conc) => conc.spineConceptId === concept.id
     );
-    alignment.predicate_id = predicate.id;
+    alignment.predicateId = predicate.id;
     alignment.updated = true;
 
     this.setState({
@@ -114,11 +114,11 @@ export default class MatchVocabulary extends Component {
 
     /// Instantiate the spine concept
     let spineConcept = spineConcepts.find(
-      (concept) => concept.id === alignment.spine_concept_id
+      (concept) => concept.id === alignment.spineConceptId
     );
 
     /// Name the synthetic spine concept
-    let [mappedConcept] = alignment.mapped_concepts;
+    let [mappedConcept] = alignment.mappedConceptsList;
     spineConcept.name = mappedConcept.name;
 
     /// Add a new synthetic row
@@ -135,11 +135,11 @@ export default class MatchVocabulary extends Component {
 
     /// Get the alignment (information about vocabulary being mapped)
     let alignment = alignmentConcepts.find(
-      (concept) => concept.spine_concept_id === spineData.spineConceptId
+      (concept) => concept.spineConceptId === spineData.spineConceptId
     );
 
     /// Update the mapped concepts
-    alignment.mapped_concepts = this.filteredMappingConcepts({
+    alignment.mappedConceptsList = this.filteredMappingConcepts({
       pickSelected: true,
     });
 
@@ -225,8 +225,8 @@ export default class MatchVocabulary extends Component {
       .forEach((alignment) => {
         let response = updateAlignmentVocabularyConcept({
           id: alignment.id,
-          predicate_id: alignment.predicate_id,
-          mapped_concepts: alignment.mapped_concepts.map(
+          predicate_id: alignment.predicateId,
+          mapped_concepts: alignment.mappedConceptsList.map(
             (concept) => concept.id
           ),
         });
@@ -248,7 +248,7 @@ export default class MatchVocabulary extends Component {
       .filter((a) => a.synthetic)
       .forEach((alignment) => {
         let spineConcept = spineConcepts.find(
-          (sc) => sc.id === alignment.spine_concept_id
+          (sc) => sc.id === alignment.spineConceptId
         );
         let response = createSyntheticVocabularyConcept({
           spine_concept: {
@@ -269,8 +269,8 @@ export default class MatchVocabulary extends Component {
           },
           alignment: {
             predicate_id: 7,
-            alignment_vocabulary_id: 1,
-            mapped_concepts: alignment.mapped_concepts.map((mc) => mc.id),
+            alignment_vocabulary_id: alignmentConcepts[0].alignmentVocabularyId,
+            mappedConcepts: alignment.mappedConceptsList.map((mc) => mc.id),
           },
         });
 
@@ -304,7 +304,7 @@ export default class MatchVocabulary extends Component {
 
     if (!this.anyError(response)) {
       // Set the spine vocabulary concepts on state
-      this.setState({ spineConcepts: response });
+      this.setState({ spineConcepts: response.vocabulary?.concepts });
     }
   };
 
@@ -318,7 +318,7 @@ export default class MatchVocabulary extends Component {
 
     if (!this.anyError(response)) {
       // Set the mapping vocabulary concepts on state
-      this.setState({ mappingConcepts: response.vocabulary });
+      this.setState({ mappingConcepts: response.vocabulary?.concepts });
     }
   };
 
@@ -332,7 +332,7 @@ export default class MatchVocabulary extends Component {
 
     if (!this.anyError(response)) {
       // Set the alignment vocabulary concepts on state
-      this.setState({ alignmentConcepts: response });
+      this.setState({ alignmentConcepts: response.alignmentConcepts });
     }
   };
 
@@ -349,10 +349,26 @@ export default class MatchVocabulary extends Component {
   };
 
   /**
+   * Use the API to get the information and update the internal status
+   */
+  handleFetchDataFromAPI = () => {
+    const { errors } = this.state;
+    this.setState({ loading: true });
+
+    this.fetchDataFromAPI().then(() => {
+      if (_.isEmpty(errors)) {
+        this.addSyntheticConceptRow();
+      }
+      this.setState({ loading: false });
+    });
+  }
+
+  /**
    * Set the window properly in the body element at the load stage
    */
   componentDidMount = () => {
     Modal.setAppElement("body");
+    this.handleFetchDataFromAPI();
   };
 
   /**
@@ -362,15 +378,7 @@ export default class MatchVocabulary extends Component {
    */
   componentDidUpdate = (prevProps) => {
     if (this.props.mappedTerm !== prevProps.mappedTerm) {
-      const { errors } = this.state;
-      this.setState({ loading: true });
-
-      this.fetchDataFromAPI().then(() => {
-        if (_.isEmpty(errors)) {
-          this.addSyntheticConceptRow();
-        }
-        this.setState({ loading: false });
-      });
+      this.handleFetchDataFromAPI();
     }
   };
 
@@ -456,10 +464,10 @@ export default class MatchVocabulary extends Component {
                          */
                         let _alignment = alignmentConcepts.find(
                           (alignment) =>
-                            alignment.spine_concept_id === concept.id
+                            alignment.spineConceptId === concept.id
                         );
 
-                        return (
+                        return !_.isUndefined(_alignment) ? (
                           <SpineConceptRow
                             key={concept.id}
                             alignment={_alignment}
@@ -476,7 +484,7 @@ export default class MatchVocabulary extends Component {
                               }).length
                             }
                           />
-                        );
+                        ) : "";
                       })}
                     </div>
                     <div className="col-4 bg-col-secondary pt-3">

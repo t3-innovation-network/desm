@@ -91,7 +91,7 @@ const MappingPreview = (props) => {
    * Resets the files on redux global state, this way
    * The files collection is blanked and the use can re-import files
    */
-  const handleOnReimport = () => {
+  const unsetFormValues = () => {
     /// Remove files from store
     dispatch(unsetFiles());
     /// Remove previews
@@ -240,7 +240,7 @@ const MappingPreview = (props) => {
         return;
       }
 
-      dispatch(stopProcessingFile());
+      unsetFormValues();
       props.redirect("/mappings/" + response.mapping.id);
     });
   };
@@ -274,7 +274,7 @@ const MappingPreview = (props) => {
                     <div className="col-6 text-right">
                       <button
                         className="btn btn-dark"
-                        onClick={handleOnReimport}
+                        onClick={unsetFormValues}
                       >
                         Re-import
                       </button>

@@ -70,7 +70,7 @@ module Processors
     def self.filter_specification(spec, uris)
       processor = new(spec)
       {
-        vocabularies: processor.filter_vocabularies(spec),
+        vocabularies: processor.filter_vocabularies,
         specification: processor.filter_specification_by_domain(uris)
       }
     end
@@ -124,29 +124,16 @@ module Processors
     # @param [Struct] spec: The specification to be filtered
     # @return [Array]
     ###
-    def filter_vocabularies(_spec)
+    def filter_vocabularies
       vocabs = []
 
-      concept_nodes = Processors::Skos.concept_nodes(@graph)
+      parser = Parsers::Skos.new(context: @context, graph: @graph)
 
       # Get all the concept scheme nodes. With the pupose of separate all the vocabularies, we
       # need the concept schemes, which represents the vocabularies main nodes.
-      Processors::Skos.scheme_nodes_from_graph(@graph).each do |scheme_node|
-        vocab = {
-          "@context": nil,
-          # Get all the concepts for this concept scheme
-          "@graph": Processors::Skos.identify_concepts(concept_nodes, scheme_node)
-        }
-
-        # Place the context at the beginning
-        vocab[:@context] = Processors::Skos.vocab_context(vocab, @context)
-
-        # Place the scheme node at the beginning
-        vocab[:@graph].unshift(scheme_node)
-
-        # Add the vocabulary to the list
-        vocabs << vocab
-      end
+      parser.scheme_nodes.each {|scheme_node|
+        vocabs << parser.build_vocabulary(scheme_node)
+      }
 
       vocabs
     end
@@ -174,6 +161,30 @@ module Processors
 
       # Return the specification, since the above statement ends in 'sort' which doesn't returns the specification as
       # we need.
+      final_spec
+    end
+
+    ###
+    # @description: Put together the content of the uploaded files to get only one object with
+    #   all the necessary data to process
+    # @return [Object]: The unified specification
+    ###
+    def self.merge_specs specs
+      final_spec = {
+        "@context": {},
+        "@graph": []
+      }.with_indifferent_access
+
+      specs.each do |spec|
+        parser = Parsers::Specification.from_file(spec)
+
+        # merge the context so we have all the context info
+        final_spec[:@context].merge!(parser.context)
+
+        # merge the graph so we have all the elements in one place
+        final_spec[:@graph] += parser.graph
+      end
+
       final_spec
     end
 
@@ -209,7 +220,7 @@ module Processors
     # @param [String] class_uri The id (URI) of the class or property to find related ones
     ###
     def build_nodes_for_uri(class_uri)
-      nodes = Processors::Skos.exclude_skos_types(@graph)
+      nodes = Parsers::Skos.exclude_skos_types(@graph)
 
       # Get only the properties
       props = filter_properties([class_uri], nodes)

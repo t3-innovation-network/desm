@@ -7,5 +7,6 @@ FactoryBot.define do
   factory :organization do
     sequence(:id) {|number| number }
     name { Faker::Company.name }
+    email { Faker::Internet.email }
   end
 end

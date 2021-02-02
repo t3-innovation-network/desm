@@ -24,10 +24,9 @@ class Api::V1::MergedFilesController < ApplicationController
   ###
   def create
     specs = params[:files].map {|file| Parsers::FormatConverter.convert_to_jsonld(file) }
-    parser = Parsers::Specifications.new(specs)
 
     @instance = MergedFile.create!(
-      content: parser.merge_specs
+      content: Processors::Specifications.merge_specs(specs)
     )
 
     render json: @instance.id
