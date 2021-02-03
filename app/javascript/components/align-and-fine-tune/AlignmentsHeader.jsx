@@ -4,15 +4,15 @@ import Pluralize from "pluralize";
 
 /**
  * Props
- * @props {String} organizationName
- * @props {Object} domain
- * @props {Array} selectedAlignments
- * @props {Boolean} hideMappedSelectedTerms
- * @props {Function} setHideMappedSelectedTerms
- * @props {Array} mappingSelectedTerms
- * @props {Array} mappedSelectedTerms
- * @props {String} mappingSelectedTermsInputValue
- * @props {Function} filterMappingSelectedTermsOnChange
+ * @prop {String} organizationName
+ * @prop {Object} domain
+ * @prop {Array} selectedAlignments
+ * @prop {Boolean} hideMappedSelectedTerms
+ * @prop {Function} setHideMappedSelectedTerms
+ * @prop {Array} mappingSelectedTerms
+ * @prop {Array} mappedSelectedTerms
+ * @prop {String} mappingSelectedTermsInputValue
+ * @prop {Function} filterMappingSelectedTermsOnChange
  */
 const AlignmentsHeader = (props) => {
   const {

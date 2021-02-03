@@ -15,7 +15,8 @@ module Converters
       context = reader.prefixes.map {|key, term| [key.to_s, term.value] }.to_h
       JSON::LD::API.compact(expanded_resources, context).symbolize_keys
     rescue StandardError
-      File.read(file)
+      file_content = File.read(file)
+      JSON.parse(file_content)
     end
   end
 end
