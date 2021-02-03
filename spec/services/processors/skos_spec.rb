@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe Processors::Skos do
   describe ".create" do
     let(:file_content) { File.read(file) }
-    let(:organization) { Organization.first }
+    let(:organization) { FactoryBot.build(:organization) }
     let(:file) do
       Rack::Test::UploadedFile.new(
         Rails.root.join("spec", "fixtures", "DisabilityLevelCodeList.json")
