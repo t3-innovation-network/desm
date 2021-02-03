@@ -91,7 +91,7 @@ const EditAlignment = (props) => {
   const handleSaveAlignment = async () => {
     let response = await updateAlignment({
       id: alignment.id,
-      predicate_id: selectedPredicate.id,
+      predicateId: selectedPredicate.id,
     });
 
     if (response.error) {
@@ -148,7 +148,7 @@ const EditAlignment = (props) => {
               )}
             </div>
             <div className="col-4">
-              {alignment.mapped_terms.map((mTerm) => {
+              {alignment.mappedTerms.map((mTerm) => {
                 return (
                   <div key={mTerm.id} className="card mb-3">
                     <div className="card-header">{mTerm.name}</div>

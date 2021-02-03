@@ -146,8 +146,8 @@ const AlignAndFineTune = (props) => {
    * @param {Object} spineTerm
    */
   const mappedTermsToSpineTerm = (spineTerm) => {
-    let alignment = alignments.find((alg) => alg.spine_term_id === spineTerm.id);
-    return alignment ? alignment.mapped_terms : [];
+    let alignment = alignments.find((alg) => alg.spineTermId === spineTerm.id);
+    return alignment ? alignment.mappedTerms : [];
   };
 
   /**
@@ -191,9 +191,9 @@ const AlignAndFineTune = (props) => {
   const allTermsMapped =
     mappingSelectedTerms.every((term) =>
       alignments.some((alignment) =>
-        alignment.mapped_terms.some((t) => t.id === term.id)
+        alignment.mappedTerms.some((t) => t.id === term.id)
       )
-    ) && alignments.every((alignment) => alignment.predicate_id);
+    ) && alignments.every((alignment) => alignment.predicateId);
 
   /**
    * Returns whether the term is already mapped to the spine. It can be 1 of 2 options:
@@ -204,7 +204,7 @@ const AlignAndFineTune = (props) => {
    */
   function selectedTermIsMapped(alignment) {
     return alignments.some((alg) =>
-      alg.mapped_terms.some((mappedTerm) => mappedTerm.id === alignment.id)
+      alg.mappedTerms.some((mappedTerm) => mappedTerm.id === alignment.id)
     );
   }
 
@@ -216,8 +216,8 @@ const AlignAndFineTune = (props) => {
    * 2. The mapping term is already mapped in the backend (is one of the mapping terms mapped in DB).
    */
   const spineTermIsMapped = (spineTerm) => {
-    let alg = alignments.find((alignment) => alignment.spine_term_id === spineTerm.id);
-    return alg.mapped_terms.length;
+    let alg = alignments.find((alignment) => alignment.spineTermId === spineTerm.id);
+    return alg.mappedTerms.length;
   };
 
   /**
@@ -241,7 +241,7 @@ const AlignAndFineTune = (props) => {
    * @param {Integer} spineTermId
    */
   const alignmentForSpineTerm = (spineTermId) =>
-    alignments.find((mt) => mt.spine_term_id === spineTermId);
+    alignments.find((alg) => alg.spineTermId === spineTermId);
 
   /**
    * Link the predicate to the corresponding mapping term
@@ -252,9 +252,9 @@ const AlignAndFineTune = (props) => {
   const onPredicateSelected = (spineTerm, predicate) => {
     let tempAlignments = alignments;
     let selectedAlignment = tempAlignments.find(
-      (alg) => alg.spine_term_id === spineTerm.id
+      (alg) => alg.spineTermId === spineTerm.id
     );
-    selectedAlignment.predicate_id = predicate.id;
+    selectedAlignment.predicateId = predicate.id;
     selectedAlignment.changed = true;
 
     setAlignments(tempAlignments);
@@ -286,8 +286,8 @@ const AlignAndFineTune = (props) => {
     setLoading(true);
     /// Set the selected terms as mapped for the mapping terms dropped on
     let selectedTerms = selectedAlignments;
-    let alignment = alignments.find((mt) => mt.spine_term_id === spineTerm.id);
-    alignment.mapped_terms = selectedTerms;
+    let alignment = alignments.find((alg) => alg.spineTermId === spineTerm.id);
+    alignment.mappedTerms = selectedTerms;
     alignment.changed = true;
     let tempAlignments = alignments;
 
@@ -322,7 +322,7 @@ const AlignAndFineTune = (props) => {
       ]);
       setSpineTerms([
         ...spineTerms.filter(
-          (sTerm) => sTerm.id !== alignmentToRemove.spine_term_id
+          (sTerm) => sTerm.id !== alignmentToRemove.spineTermId
         ),
       ]);
 
@@ -347,14 +347,14 @@ const AlignAndFineTune = (props) => {
    */
   const handleRevertMapping = (alignment, mappedTerm) => {
     alignment.changed = true;
-    alignment.mapped_terms = alignment.mapped_terms.filter(
+    alignment.mappedTerms = alignment.mappedTerms.filter(
       (mTerm) => mTerm.id !== mappedTerm.id
     );
 
     /// If there's no mapped terms after removing the selected one to remove (this was the last mapped
     /// term, and we removed it)
-    if (!alignment.mapped_terms.length) {
-      alignment.predicate_id = null;
+    if (!alignment.mappedTerms.length) {
+      alignment.predicateId = null;
       if (alignment.synthetic) {
         setAlignmentToRemove(alignment);
         setConfirmingRemoveAlignment(true);
@@ -479,9 +479,9 @@ const AlignAndFineTune = (props) => {
     tempAlignments.push({
       id: nextId(tempAlignments),
       synthetic: true,
-      mapped_terms: [],
-      spine_term_id: syntheticTermId,
-      predicate_id: null,
+      mappedTerms: [],
+      spineTermId: syntheticTermId,
+      predicateId: null,
       comment: null,
     });
 
@@ -521,16 +521,16 @@ const AlignAndFineTune = (props) => {
    * new synthetic term and with which predicate.
    */
   const saveSynthetic = async (alignment) => {
-    if (!alignment.mapped_terms.length) {
+    if (!alignment.mappedTerms.length) {
       let tempErrors = errors;
       tempErrors.push("You must select at least 1 term to add the synthetic!");
       setErrors(tempErrors);
       return false;
     }
-    let [mappedTerm] = alignment.mapped_terms;
+    let [mappedTerm] = alignment.mappedTerms;
     let tempUri = mappedTerm.uri + "-synthetic";
     let spineTerm = spineTerms.find(
-      (sTerm) => sTerm.id === alignment.spine_term_id
+      (sTerm) => sTerm.id === alignment.spineTermId
     );
 
     let response = await createSpineTerm({
@@ -544,10 +544,10 @@ const AlignAndFineTune = (props) => {
             p.uri.toLowerCase().includes("nomatch")
           ).id,
           mappingId: mapping.id,
-          mappedTerms: alignment.mapped_terms.map((term) => term.id),
+          mappedTerms: alignment.mappedTerms.map((term) => term.id),
           synthetic: true,
         },
-        specification_id: mapping.spine_id,
+        specificationId: mapping.spine_id,
         spineTerm: {
           name: spineTerm.name,
           propertyAttributes: {
@@ -572,9 +572,9 @@ const AlignAndFineTune = (props) => {
   const saveOneAlignment = async (alignment) => {
     let response = await updateAlignment({
       id: alignment.id,
-      predicate_id: alignment.predicate_id,
-      mapped_terms: alignment.mapped_terms
-        ? alignment.mapped_terms.map((mt) => mt.id)
+      predicateId: alignment.predicateId,
+      mappedTerms: alignment.mappedTerms
+        ? alignment.mappedTerms.map((mt) => mt.id)
         : [],
     });
 
@@ -771,10 +771,7 @@ const AlignAndFineTune = (props) => {
    * it mimics the same action).
    */
   useEffect(() => {
-    async function fetchData() {
-      await fetchDataFromAPI();
-    }
-    fetchData().then(() => {
+    fetchDataFromAPI().then(() => {
       if (_.isEmpty(errors)) {
         setLoading(false);
       }

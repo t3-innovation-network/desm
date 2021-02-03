@@ -1,3 +1,4 @@
+import { decamelizeKeys } from "humps";
 import apiRequest from "./api/apiRequest";
 
 const updateAlignmentVocabularyConcept = async (data) => {
@@ -5,7 +6,7 @@ const updateAlignmentVocabularyConcept = async (data) => {
     url: "/api/v1/alignment_vocabulary_concepts/" + data.id,
     method: "put",
     payload: {
-      alignment_vocabulary_concept: data,
+      alignment_vocabulary_concept: decamelizeKeys(data),
     },
   });
 };
