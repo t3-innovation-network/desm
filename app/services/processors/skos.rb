@@ -28,11 +28,13 @@ module Processors
     def create
       @vocabulary = create_vocabulary
 
-      @vocabulary.concepts = create_concepts(
+      @vocabulary.concept_ids = create_concepts(
         @parser.graph.select {|concept|
           Parsers::JsonLd::Node.new(concept).types.concept?
         }
       )
+
+      @vocabulary.save!
 
       @vocabulary
     end
@@ -57,11 +59,11 @@ module Processors
     # @description: Returns the first concept scheme in a graph. Useful for when we have a single
     #   vocabulary and need only the concept scheme node.
     # @param [Array] graph
-    # @return [Hash]
+    # @return [Hash,nil]
     ###
     def first_concept_scheme_node graph
       graph.find {|concept|
-        Parsers::JsonLd::Node.new(concept).read!("type").downcase.include?("conceptscheme")
+        Parsers::JsonLd::Node.new(concept).read!("type")&.downcase&.include?("conceptscheme")
       }
     end
 
@@ -71,7 +73,7 @@ module Processors
     # @return {Array}: The array of Concepts
     ###
     def create_concepts concepts_list
-      concepts_list.map do |concept|
+      created_concepts = concepts_list.map do |concept|
         SkosConcept.find_or_initialize_by(
           uri: Parsers::JsonLd::Node.new(concept).read!("id")
         ) {|c_concept|
@@ -81,8 +83,10 @@ module Processors
         }
       rescue StandardError => e
         Rails.logger.error(e.inspect)
-        SkosConcept.find_by_uri(Parsers::JsonLd::Node.new(concept).read!("id"))
+        SkosConcept.find_by_uri(Parsers::JsonLd::Node.new(concept).read!("id")).id
       end
+
+      created_concepts.map(&:id)
     end
   end
 end
