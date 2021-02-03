@@ -185,10 +185,10 @@ export default class MatchVocabulary extends Component {
     // Add the corresponding synthetic alignment
     alignmentConcepts.push({
       id: nextAlignmentId,
-      predicate_id: predicates.find((predicate) =>
+      predicateId: predicates.find((predicate) =>
         predicate.uri.toLowerCase().includes("nomatch")
       ).id,
-      spine_concept_id: nextSpineConceptId,
+      spineConceptId: nextSpineConceptId,
       synthetic: true,
     });
 
@@ -225,8 +225,8 @@ export default class MatchVocabulary extends Component {
       .forEach((alignment) => {
         let response = updateAlignmentVocabularyConcept({
           id: alignment.id,
-          predicate_id: alignment.predicateId,
-          mapped_concepts: alignment.mappedConceptsList.map(
+          predicateId: alignment.predicateId,
+          mappedConcepts: alignment.mappedConceptsList.map(
             (concept) => concept.id
           ),
         });
@@ -242,7 +242,7 @@ export default class MatchVocabulary extends Component {
    * Save all those alignments added manually
    */
   saveSyntheticAlignments = () => {
-    const { spineConcepts } = this.state;
+    const { spineConcepts, alignmentConcepts } = this.state;
 
     this.changedAlignments()
       .filter((a) => a.synthetic)
@@ -269,8 +269,8 @@ export default class MatchVocabulary extends Component {
           },
           alignment: {
             predicate_id: 7,
-            alignment_vocabulary_id: alignmentConcepts[0].alignmentVocabularyId,
-            mappedConcepts: alignment.mappedConceptsList.map((mc) => mc.id),
+            alignment_vocabulary_id: alignmentConcepts[0]?.alignmentVocabularyId,
+            mapped_concepts: alignment.mappedConceptsList.map((mc) => mc.id),
           },
         });
 

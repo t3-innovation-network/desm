@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ###
-# @description: Place all the actions related to vocabulariy mappings
+# @description: Place all the actions related to vocabulary mappings
 ###
 class Api::V1::AlignmentSyntheticConceptsController < ApplicationController
   before_action :validate_mapped_concepts, only: [:create]

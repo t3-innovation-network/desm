@@ -8,13 +8,13 @@ import SimpleConceptCard from "./SimpleConceptCard";
  * List the concepts for the spine term vocabulary as cards with the options to map.
  *
  * Props:
- * @props {Object} alignment
- * @props {Object} concept
- * @props {String} mappingOrigin
- * @props {String} spineOrigin
- * @props {Array} predicates
- * @props {Function} onPredicateSelected
- * @props {Integer} selectedCount
+ * @prop {Object} alignment
+ * @prop {Object} concept
+ * @prop {String} mappingOrigin
+ * @prop {String} spineOrigin
+ * @prop {Array} predicates
+ * @prop {Function} onPredicateSelected
+ * @prop {Integer} selectedCount
  */
 const SpineConceptRow = (props) => {
   /**

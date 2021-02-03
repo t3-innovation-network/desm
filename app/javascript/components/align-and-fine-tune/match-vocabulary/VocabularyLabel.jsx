@@ -5,14 +5,17 @@ import React from "react";
  * but we only can match 1 vocabulary to another.
  *
  * Props:
- * @param {Object} term
- * @param {Function} onVocabularyClick
- * @param {Boolean} clickable
+ * @prop {Object} term
+ * @prop {Function} onVocabularyClick
+ * @prop {Boolean} clickable
  */
 const VocabularyLabel = (props) => {
+  /**
+   * Elements from props
+   */
   const { term, onVocabularyClick, clickable } = props;
 
-  return term.vocabularies && term.vocabularies.length ? (
+  return (
     <p
       className={
         "col-primary underlined" + (clickable ? " cursor-pointer" : "")
@@ -21,8 +24,6 @@ const VocabularyLabel = (props) => {
     >
       {term.vocabularies[0].name}
     </p>
-  ) : (
-    ""
   );
 };
 

@@ -19,8 +19,6 @@ const SpineHeader = (props) => {
     domain,
     hideMappedSpineTerms,
     setHideMappedSpineTerms,
-    mappingSelectedTerms,
-    mappedSelectedTerms,
     spineTermsInputValue,
     filterSpineTermsOnChange,
     handleAddSynthetic,
@@ -65,7 +63,7 @@ const SpineHeader = (props) => {
           <ProgressReportBar
             maxValue={alignments.length}
             currentValue={
-              alignments.filter((alignment) => alignment.mapped_terms.length).length
+              alignments.filter((alignment) => alignment.mappedTerms.length).length
             }
             messageReport="Mapped"
             cssClass="bg-col-on-primary"
