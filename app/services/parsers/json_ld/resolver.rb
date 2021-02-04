@@ -29,8 +29,12 @@ module Parsers
         return unless json_definition[:@graph].present?
 
         # Find the node we are looking for in the fetched definition
-        node_in_definition = json_definition[:@graph].find {|node| node["@id"]&.eql?(@full_definition_uri) }
-        return unless !node_in_definition.nil? && Parsers::JsonLd::Node.new(node_in_definition).types.rdfs_class?
+        node_in_definition = json_definition[:@graph].find {|node|
+          node["@id"]&.eql?(@full_definition_uri)
+        }
+
+        return unless !node_in_definition.nil? &&
+          Parsers::JsonLd::Node.new(node_in_definition).types.rdfs_class?
 
         node_definition_from_db(node_in_definition)
       end
