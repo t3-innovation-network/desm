@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   include Pundit
 
   # Handle errors with a concern
-  include Recoverable
+  # include Recoverable
 
   # We manage our own security for sessions
   skip_before_action :verify_authenticity_token
