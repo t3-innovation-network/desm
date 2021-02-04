@@ -51,7 +51,7 @@ class User < ApplicationRecord
   ###
   # @description: It should be part of an organization
   ###
-  validates :organization_id, presence: true
+  validates :organization, presence: true
   ###
   # @description: Email should be present
   ###
