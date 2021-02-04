@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ###
-# @description: Place all the actions related to vocabulariy mappings
+# @description: Place all the actions related to vocabulary mappings
 ###
 class Api::V1::AlignmentVocabulariesController < ApplicationController
   ###
@@ -9,13 +9,13 @@ class Api::V1::AlignmentVocabulariesController < ApplicationController
   #   with its concepts
   ###
   def show
-    mapping_term = MappingTerm.find(params[:id])
+    alignment = Alignment.find(params[:id])
 
-    @vocabulary = mapping_term.vocabulary ||= AlignmentVocabulary.create!(
-      mapping_term_id: mapping_term.id,
-      title: "Vocabulary for #{mapping_term.uri}"
+    vocabulary = alignment.vocabulary ||= AlignmentVocabulary.create!(
+      alignment_id: alignment.id,
+      title: "Vocabulary for #{alignment.uri}"
     )
 
-    render json: @vocabulary, include: {concepts: {include: :mapped_concepts}}
+    render json: vocabulary.concepts
   end
 end

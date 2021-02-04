@@ -4,11 +4,11 @@ import OutsideAlerter from "./OutsideAlerter.jsx";
 
 /**
  * Props:
- * @param {Boolean} expanded
- * @param {String} selectedOption
- * @param {Function} onClose
- * @param {Function} onExpand
- * @param {Array} options
+ * @prop {Boolean} expanded
+ * @prop {String} selectedOption
+ * @prop {Function} onClose
+ * @prop {Function} onExpand
+ * @prop {Array} options
  */
 class ExpandableOptions extends Component {
   state = {
@@ -93,7 +93,7 @@ class ExpandableOptions extends Component {
             <div className={"card" + (cardCssClass ? " " + cardCssClass : "")}>
               <div
                 className={
-                  "card-header cursor-pointer form-control form-control-lg" +
+                  "card-header cursor-pointer" +
                   (selectedOption ? " pb-0" : " pb-4") +
                   (cardHeaderCssClass ? " " + cardHeaderCssClass : "")
                 }
@@ -101,7 +101,7 @@ class ExpandableOptions extends Component {
               >
                 <p>
                   <strong>{selectedOption}</strong>
-                  <i className="fas fa-angle-down float-right"></i>
+                  <i className="fas fa-angle-down float-right" />
                 </p>
               </div>
             </div>

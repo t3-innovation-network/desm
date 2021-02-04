@@ -1,15 +1,15 @@
 import { camelizeKeys } from "humps";
 import apiRequest from "./api/apiRequest";
 
-const fetchAlignmentsForSpineTerm = async (spineTermId) => {
+const fetchAlignments = async (mappingId) => {
   let response = await apiRequest({
-    url: "/api/v1/alignments?spine_term_id=" + spineTermId,
+    url: "/api/v1/mappings/" + mappingId + "/terms",
     method: "get",
-    successResponse: "alignments",
     defaultResponse: [],
+    successResponse: "alignments"
   });
 
   return camelizeKeys(response);
 };
 
-export default fetchAlignmentsForSpineTerm;
+export default fetchAlignments;

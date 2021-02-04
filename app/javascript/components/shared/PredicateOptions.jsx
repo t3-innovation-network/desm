@@ -5,8 +5,8 @@ import ExpandableOptions from "./ExpandableOptions";
  * The predicates list as "Expandable"
  *
  * Props:
- * @param {Array} predicates
- * @param {String} predicate
+ * @prop {Array} predicates
+ * @prop {String} predicate
  */
 const PredicateOptions = (props) => {
   /**

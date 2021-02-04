@@ -1,0 +1,71 @@
+{
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "dcterms": "http://purl.org/dc/terms/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#" ,
+    "Concept": {"@id": "skos:Concept"},
+    "ConceptScheme": {"@id": "skos:ConceptScheme"},
+    "created": {"@id": "dcterms:created", "@type": "xsd:date"},
+    "creator": {"@id": "dcterms:creator", "@container": "@language"},
+    "description": {"@id": "dcterms:description", "@container": "@language"},
+    "hasTopConcept": {"@id": "skos:hasTopConcept", "@type": "@id"},
+    "inScheme": {"@id": "skos:inScheme", "@type": "@id"},
+    "prefLabel": {"@id": "skos:prefLabel", "@container": "@language"},
+    "title": {"@id": "dcterms:title", "@container": "@language"}
+  },
+  "@graph": [
+     {
+      "id": "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList",
+      "type": "skos:ConceptScheme",
+      "title": {"en-us": "DisabilityLevelCodeList"},
+      "description": { "en-us": "A value classifying the level of disability.."},
+      "created": "2020-10-22",
+      "hasTopConcept": [
+        "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList/1",
+        "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList/2",
+        "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList/3",
+        "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList/4",
+        "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList/5"
+      ]
+    },
+    {
+      "id": "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList/1",
+      "type": "skos:Concept",
+      "prefLabel": {"en-us": "1"},
+      "definition": {"en-us": "need for another person's assistance with daily life tasks"},
+      "inScheme": "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList"
+    },
+    {
+      "id": "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList/2",
+      "type": "skos:Concept",
+      "prefLabel": {"en-us": "2"},
+      "definition": {"en-us": "inability to perform one or more sensory or physical functions"},
+      "inScheme": "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList"
+    },
+    {
+      "id": "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList/3",
+      "type": "skos:Concept",
+      "prefLabel": {"en-us": "3"},
+      "definition": {"en-us": "experiencing difficulties in multiple sensory or physical functions"},
+      "inScheme": "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList"
+    },
+    {
+      "id": "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList/4",
+      "type": "skos:Concept",
+      "prefLabel": {"en-us": "4"},
+      "definition": {"en-us": "experiencing difficulty in just one function"},
+      "inScheme": "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList"
+    },
+    {
+      "id": "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList/5",
+      "type": "skos:Concept",
+      "prefLabel": {"en-us": "5"},
+      "definition": {"en-us": "no limitations in functioning"},
+      "inScheme": "http://desm.org/concepts/hrOpen/DisabilityLevelCodeList"
+    }
+  ]
+}

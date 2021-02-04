@@ -4,15 +4,14 @@ import OutsideAlerter from "./OutsideAlerter.jsx";
 
 /**
  * Props:
- * @param {Object} mTerm
- * @param {Function} handleOnClick
- * @param {String} cardStyle,
- * @param {String} cardHeaderStyle,
- * @param {String} cardHeaderColStyle,
- * @param {String} bodyStyle,
- * @param {React.Component} bodyContent,
- * @param {React.Component} headerContent,
- * @param {Boolean} observeOutside Whether this component should react or not on an oustise event
+ * @prop {Function} handleOnClick
+ * @prop {String} cardStyle,
+ * @prop {String} cardHeaderStyle,
+ * @prop {String} cardHeaderColStyle,
+ * @prop {String} bodyStyle,
+ * @prop {React.Component} bodyContent,
+ * @prop {React.Component} headerContent,
+ * @prop {Boolean} observeOutside Whether this component should react or not on an outside event
  */
 export default class Collapsible extends Component {
   state = {

@@ -1,0 +1,74 @@
+# frozen_string_literal: true
+
+require "rails_helper"
+
+RSpec.describe Parsers::JsonLd::Node do
+  describe "read!" do
+    subject { described_class.new(schema_node) }
+    let(:schema_node) {
+      {
+        "@id": "http://schema.org/recipeCuisine",
+        "@type": "rdf:Property",
+        "http://schema.org/domainIncludes": {
+          "@id": "http://schema.org/Recipe"
+        },
+        "http://schema.org/rangeIncludes": {
+          "@id": "http://schema.org/Text"
+        },
+        "rdfs:comment": "The cuisine of the recipe (for example, French or Ethiopian).",
+        "rdfs:label": "recipeCuisine"
+      }
+    }
+
+    it "should read the label correctly" do
+      expect(subject.read!("label")).to eq("recipeCuisine")
+    end
+  end
+
+  describe "rdfs_class_node returns the same node when it's explicitly an rdfs:Class" do
+    subject { described_class.new(credential_registry_node) }
+    let(:credential_registry_node) {
+      {
+        "@type": "rdfs:Class",
+        "@id": "ceterms:RuleSet",
+        "rdfs:label": {
+          "en-US": "Rule Set"
+        },
+        "rdfs:comment": {
+          "en-US": "Resource that identifies the rules or methods by which one or more..."
+        },
+        "dct:description": {
+          "en-US": "In the future, there will likely be multiple formally recognized RuleSets."
+        },
+        "vann:usageNote": {
+          "en-US": "Encode the rules using Description Logic."
+        },
+        "vs:term_status": "vs:unstable",
+        "meta:changeHistory": "http://credreg.net/ctdl/termhistory/ceterms/RuleSet/json"
+      }
+    }
+
+    it "should return the same node" do
+      expect(subject.rdfs_class_node).to eq(credential_registry_node)
+    end
+  end
+
+  describe "rdfs_class_node with inference" do
+    subject { described_class.new(node_to_infer) }
+    let(:node_to_infer) {
+      {
+        "@id": "http://schema.org/EventCancelled",
+        "@type": "http://schema.org/EventStatusType",
+        "rdfs:comment": "The event has been cancelled. If the event has multiple startDate values, all are assumed ...",
+        "rdfs:label": "EventCancelled"
+      }
+    }
+
+    it "should infer the node type" do
+      result = subject.rdfs_class_node
+
+      expect(result).not_to be_nil
+      expect(result["@type"]).to eq("http://www.w3.org/2000/01/rdf-schema#Class")
+    end
+  end
+end

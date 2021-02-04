@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import Modal from "react-modal";
-import fetchAlginmentVocabulary from "../../../services/fetchAlignmentVocabulary";
+import fetchAlignmentVocabulary from "../../../services/fetchAlignmentVocabulary";
 import fetchVocabularyConcepts from "../../../services/fetchVocabularyConcepts";
 import updateAlignmentVocabularyConcept from "../../../services/updateAlignmentVocabularyConcept";
 import AlertNotice from "../../shared/AlertNotice";
@@ -15,14 +15,14 @@ import Pluralize from "pluralize";
 
 /**
  * Props
- * @param {Function} onRequestClose
- * @param {Boolean} modalIsOpen
- * @param {String} spineOrigin
- * @param {String} mappingOrigin
- * @param {Object} mappedTerm
- * @param {Object} mappingTerm
- * @param {Object} spineTerm
- * @param {Array} predicates
+ * @prop {Function} onRequestClose
+ * @prop {Boolean} modalIsOpen
+ * @prop {String} spineOrigin
+ * @prop {String} mappingOrigin
+ * @prop {Object} mappedTerm
+ * @prop {Object} alignment
+ * @prop {Object} spineTerm
+ * @prop {Array} predicates
  */
 export default class MatchVocabulary extends Component {
   /**
@@ -50,7 +50,7 @@ export default class MatchVocabulary extends Component {
      */
     alignmentConcepts: [],
     /**
-     * Whether any change awas performed after the page loads
+     * Whether any change was performed after the page loads
      */
     changesPerformed: 0,
   };
@@ -76,7 +76,7 @@ export default class MatchVocabulary extends Component {
    */
   onMappingConceptClick = (clickedConcept) => {
     const { mappingConcepts } = this.state;
-    let concept = mappingConcepts.find((c) => c.id == clickedConcept.id);
+    let concept = mappingConcepts.find((c) => c.id === clickedConcept.id);
     concept.selected = !concept.selected;
 
     this.setState({ mappingConcepts: mappingConcepts });
@@ -84,17 +84,18 @@ export default class MatchVocabulary extends Component {
 
   /**
    * Actions to take when a predicate has been selected for a mapping term
-   * The alginment vocabulary concept is matched with the selected predicate in memory
+   * The alignment vocabulary concept is matched with the selected predicate in memory
    *
+   * @param concept
    * @param {Object} predicate
    */
   handleOnPredicateSelected = (concept, predicate) => {
     const { alignmentConcepts, changesPerformed } = this.state;
 
     let alignment = alignmentConcepts.find(
-      (conc) => conc.spine_concept_id === concept.id
+      (conc) => conc.spineConceptId === concept.id
     );
-    alignment.predicate_id = predicate.id;
+    alignment.predicateId = predicate.id;
     alignment.updated = true;
 
     this.setState({
@@ -113,11 +114,11 @@ export default class MatchVocabulary extends Component {
 
     /// Instantiate the spine concept
     let spineConcept = spineConcepts.find(
-      (concept) => concept.id == alignment.spine_concept_id
+      (concept) => concept.id === alignment.spineConceptId
     );
 
     /// Name the synthetic spine concept
-    let [mappedConcept] = alignment.mapped_concepts;
+    let [mappedConcept] = alignment.mappedConceptsList;
     spineConcept.name = mappedConcept.name;
 
     /// Add a new synthetic row
@@ -127,19 +128,18 @@ export default class MatchVocabulary extends Component {
   /**
    * Actions when a concept or set of concepts are dropped into an alignment
    *
-   * @param {Object} alignment
-   * @param {Object} concept
+   * @param spineData
    */
   handleAfterDropConcept = (spineData) => {
     const { alignmentConcepts, mappingConcepts, changesPerformed } = this.state;
 
     /// Get the alignment (information about vocabulary being mapped)
     let alignment = alignmentConcepts.find(
-      (conc) => conc.spine_concept_id == spineData.spineConceptId
+      (concept) => concept.spineConceptId === spineData.spineConceptId
     );
 
     /// Update the mapped concepts
-    alignment.mapped_concepts = this.filteredMappingConcepts({
+    alignment.mappedConceptsList = this.filteredMappingConcepts({
       pickSelected: true,
     });
 
@@ -151,7 +151,7 @@ export default class MatchVocabulary extends Component {
 
     /// Deselect the selected concepts
     this.filteredMappingConcepts({ pickSelected: true }).forEach(
-      (conc) => (conc.selected = false)
+      (concept) => (concept.selected = false)
     );
 
     /// Update the UI
@@ -185,10 +185,10 @@ export default class MatchVocabulary extends Component {
     // Add the corresponding synthetic alignment
     alignmentConcepts.push({
       id: nextAlignmentId,
-      predicate_id: predicates.find((predicate) =>
+      predicateId: predicates.find((predicate) =>
         predicate.uri.toLowerCase().includes("nomatch")
       ).id,
-      spine_concept_id: nextSpineConceptId,
+      spineConceptId: nextSpineConceptId,
       synthetic: true,
     });
 
@@ -225,8 +225,8 @@ export default class MatchVocabulary extends Component {
       .forEach((alignment) => {
         let response = updateAlignmentVocabularyConcept({
           id: alignment.id,
-          predicate_id: alignment.predicate_id,
-          mapped_concepts: alignment.mapped_concepts.map(
+          predicateId: alignment.predicateId,
+          mappedConcepts: alignment.mappedConceptsList.map(
             (concept) => concept.id
           ),
         });
@@ -239,16 +239,16 @@ export default class MatchVocabulary extends Component {
   };
 
   /**
-   * Save all those alignments added mannually
+   * Save all those alignments added manually
    */
   saveSyntheticAlignments = () => {
-    const { spineConcepts } = this.state;
+    const { spineConcepts, alignmentConcepts } = this.state;
 
     this.changedAlignments()
       .filter((a) => a.synthetic)
       .forEach((alignment) => {
         let spineConcept = spineConcepts.find(
-          (sc) => sc.id == alignment.spine_concept_id
+          (sc) => sc.id === alignment.spineConceptId
         );
         let response = createSyntheticVocabularyConcept({
           spine_concept: {
@@ -269,8 +269,8 @@ export default class MatchVocabulary extends Component {
           },
           alignment: {
             predicate_id: 7,
-            alignment_vocabulary_id: 1,
-            mapped_concepts: alignment.mapped_concepts.map((mc) => mc.id),
+            alignment_vocabulary_id: alignmentConcepts[0]?.alignmentVocabularyId,
+            mapped_concepts: alignment.mappedConceptsList.map((mc) => mc.id),
           },
         });
 
@@ -282,7 +282,7 @@ export default class MatchVocabulary extends Component {
   };
 
   /**
-   * Saves the alginment changes
+   * Saves the alignment changes
    */
   handleSave = () => {
     const { onRequestClose } = this.props;
@@ -304,7 +304,7 @@ export default class MatchVocabulary extends Component {
 
     if (!this.anyError(response)) {
       // Set the spine vocabulary concepts on state
-      this.setState({ spineConcepts: response });
+      this.setState({ spineConcepts: response.vocabulary?.concepts });
     }
   };
 
@@ -318,7 +318,7 @@ export default class MatchVocabulary extends Component {
 
     if (!this.anyError(response)) {
       // Set the mapping vocabulary concepts on state
-      this.setState({ mappingConcepts: response });
+      this.setState({ mappingConcepts: response.vocabulary?.concepts });
     }
   };
 
@@ -326,13 +326,13 @@ export default class MatchVocabulary extends Component {
    * Get the alignment vocabulary. This is the vocabulary for the
    */
   handleFetchAlignmentVocabulary = async () => {
-    const { mappingTerm } = this.props;
+    const { alignment } = this.props;
 
-    let response = await fetchAlginmentVocabulary(mappingTerm.id);
+    let response = await fetchAlignmentVocabulary(alignment.id);
 
     if (!this.anyError(response)) {
       // Set the alignment vocabulary concepts on state
-      this.setState({ alignmentConcepts: response });
+      this.setState({ alignmentConcepts: response.alignmentConcepts });
     }
   };
 
@@ -349,22 +349,37 @@ export default class MatchVocabulary extends Component {
   };
 
   /**
-   * Use effect with an emtpy array as second parameter, will trigger the 'fetchDataFromAPI'
-   * action at the 'mounted' event of this functional component (It's not actually mounted,
-   * but it mimics the same action).
+   * Use the API to get the information and update the internal status
    */
-  componentDidMount = async () => {
+  handleFetchDataFromAPI = () => {
     const { errors } = this.state;
-
-    Modal.setAppElement("body");
-
     this.setState({ loading: true });
-    await this.fetchDataFromAPI().then(() => {
+
+    this.fetchDataFromAPI().then(() => {
       if (_.isEmpty(errors)) {
         this.addSyntheticConceptRow();
-        this.setState({ loading: false });
       }
+      this.setState({ loading: false });
     });
+  }
+
+  /**
+   * Set the window properly in the body element at the load stage
+   */
+  componentDidMount = () => {
+    Modal.setAppElement("body");
+    this.handleFetchDataFromAPI();
+  };
+
+  /**
+   * Fetch the date from the API, using the mappedTerm and the spineTerm props
+   *
+   * @param prevProps
+   */
+  componentDidUpdate = (prevProps) => {
+    if (this.props.mappedTerm !== prevProps.mappedTerm) {
+      this.handleFetchDataFromAPI();
+    }
   };
 
   render() {
@@ -398,8 +413,13 @@ export default class MatchVocabulary extends Component {
           </div>
           <div className="col-3">
             <div className="float-right">
-              {this.filteredMappingConcepts({ pickSelected: true }).length + " " +
-                Pluralize("concept", this.filteredMappingConcepts({ pickSelected: true }).length) + " concepts selected"}
+              {this.filteredMappingConcepts({ pickSelected: true }).length +
+                " " +
+                Pluralize(
+                  "concept",
+                  this.filteredMappingConcepts({ pickSelected: true }).length
+                ) +
+                " concepts selected"}
             </div>
           </div>
         </div>
@@ -415,66 +435,72 @@ export default class MatchVocabulary extends Component {
         shouldCloseOnEsc={false}
         shouldCloseOnOverlayClick={false}
       >
-        <div className="card p-5">
-          <div className="card-header no-color-header border-bottom pb-3">
-            <HeaderContent
-              onRequestClose={onRequestClose}
-              onRequestSave={this.handleSave}
-              disableSave={!changesPerformed}
-            />
-          </div>
-          <div className="card-body">
-            {/* Manage to show the errors, if any */}
-            {errors.length ? <AlertNotice message={errors} /> : ""}
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className="card p-5">
+            <div className="card-header no-color-header border-bottom pb-3">
+              <HeaderContent
+                onRequestClose={onRequestClose}
+                onRequestSave={this.handleSave}
+                disableSave={!changesPerformed}
+              />
+            </div>
+            <div className="card-body">
+              {/* Manage to show the errors, if any */}
+              {errors.length ? <AlertNotice message={errors} /> : ""}
 
-            {loading ? (
-              <Loader />
-            ) : (
-              <Fragment>
-                <Title />
+              {loading ? (
+                <Loader />
+              ) : (
+                <Fragment>
+                  <Title />
 
-                <div className="row has-scrollbar scrollbar">
-                  <div className="col-8 pt-3">
-                    {spineConcepts.map((concept) => {
-                      /**
-                       * Instantiate the alignment to pass to the spine concept row through props
-                       */
-                      let _alignment = alignmentConcepts.find(
-                        (alignment) => alignment.spine_concept_id == concept.id
-                      );
+                  <div className="row has-scrollbar scrollbar">
+                    <div className="col-8 pt-3">
+                      {spineConcepts.map((concept) => {
+                        /**
+                         * Instantiate the alignment to pass to the spine concept row through props
+                         */
+                        let _alignment = alignmentConcepts.find(
+                          (alignment) =>
+                            alignment.spineConceptId === concept.id
+                        );
 
-                      return (
-                        <SpineConceptRow
-                          key={concept.id}
-                          alignment={_alignment}
-                          concept={concept}
-                          mappingOrigin={mappingOrigin}
-                          spineOrigin={spineOrigin}
-                          predicates={predicates}
-                          onPredicateSelected={(predicate) =>
-                            this.handleOnPredicateSelected(concept, predicate)
-                          }
-                          selectedCount={
-                            this.filteredMappingConcepts({ pickSelected: true })
-                              .length
-                          }
-                        />
-                      );
-                    })}
+                        return !_.isUndefined(_alignment) ? (
+                          <SpineConceptRow
+                            key={concept.id}
+                            alignment={_alignment}
+                            concept={concept}
+                            mappingOrigin={mappingOrigin}
+                            spineOrigin={spineOrigin}
+                            predicates={predicates}
+                            onPredicateSelected={(predicate) =>
+                              this.handleOnPredicateSelected(concept, predicate)
+                            }
+                            selectedCount={
+                              this.filteredMappingConcepts({
+                                pickSelected: true,
+                              }).length
+                            }
+                          />
+                        ) : "";
+                      })}
+                    </div>
+                    <div className="col-4 bg-col-secondary pt-3">
+                      <MappingConceptsList
+                        mappingOrigin={mappingOrigin}
+                        filteredMappingConcepts={this.filteredMappingConcepts}
+                        onMappingConceptClick={this.onMappingConceptClick}
+                        afterDropConcept={this.handleAfterDropConcept}
+                      />
+                    </div>
                   </div>
-                  <div className="col-4 bg-col-secondary pt-3">
-                    <MappingConceptsList
-                      mappingOrigin={mappingOrigin}
-                      filteredMappingConcepts={this.filteredMappingConcepts}
-                      onMappingConceptClick={this.onMappingConceptClick}
-                      afterDropConcept={this.handleAfterDropConcept}
-                    />
-                  </div>
-                </div>
-              </Fragment>
-            )}
+                </Fragment>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </Modal>
     );
   }

@@ -91,7 +91,7 @@ const MappingPreview = (props) => {
    * Resets the files on redux global state, this way
    * The files collection is blanked and the use can re-import files
    */
-  const handleOnReimport = () => {
+  const unsetFormValues = () => {
     /// Remove files from store
     dispatch(unsetFiles());
     /// Remove previews
@@ -240,7 +240,7 @@ const MappingPreview = (props) => {
         return;
       }
 
-      dispatch(stopProcessingFile());
+      unsetFormValues();
       props.redirect("/mappings/" + response.mapping.id);
     });
   };
@@ -253,11 +253,15 @@ const MappingPreview = (props) => {
             message={
               "We're processing the " +
               Pluralize("file", files.length) +
-              ". Please wait ..."
+              ". Please wait, this might take a while ..."
             }
+            showImage={true}
           />
         ) : creatingVocabularies ? (
-          <Loader message="We're processing vocabularies. Please wait ..." />
+          <Loader
+            message="We're processing vocabularies. Please wait, this might take a while ..."
+            showImage={true}
+          />
         ) : (
           submitted && (
             <React.Fragment>
@@ -270,16 +274,14 @@ const MappingPreview = (props) => {
                     <div className="col-6 text-right">
                       <button
                         className="btn btn-dark"
-                        onClick={handleOnReimport}
+                        onClick={unsetFormValues}
                       >
                         Re-import
                       </button>
                       <button
                         className="btn bg-col-primary col-background ml-2"
                         disabled={
-                          creatingSpec ||
-                          !filteredFile ||
-                          !propertiesCount
+                          creatingSpec || !filteredFile || !propertiesCount
                         }
                         onClick={handleLooksGood}
                         data-toggle="tooltip"
@@ -320,7 +322,10 @@ const MappingPreview = (props) => {
               )}
 
               {creatingSpec ? (
-                <Loader message="We're processing the specification. Please wait ..." />
+                <Loader
+                  message="We're processing the specification. Please wait, this might take a while ..."
+                  showImage={true}
+                />
               ) : (
                 <SpecsPreviewTabs
                   disabled={addingVocabulary}
