@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { Fragment } from "react";
 import TopNav from "../shared/TopNav";
 import { Link } from "react-router-dom";
 import fetchMappings from "../../services/fetchMappings";
@@ -11,56 +11,53 @@ import { toastr as toast } from "react-redux-toastr";
 import deleteMapping from "../../services/deleteMapping";
 import fetchMappingToExport from "../../services/fetchMappingToExport";
 import { downloadFile } from "../../helpers/Export";
+import updateMapping from "../../services/updateMapping";
+import { Component } from "react";
 
-const SpecsList = () => {
-  /**
-   * Controls displaying the removal confirmation dialog
-   */
-  const [confirmingRemove, setConfirmingRemove] = useState(false);
-  /**
-   * Representation of an error on this page process
-   */
-  const [errors, setErrors] = useState([]);
-  /**
-   * Representation of an error on this page process while removing a mapping
-   */
-  const [errorsWhileRemoving, setErrorsWhileRemoving] = useState([]);
-  /**
-   * Represents the filter value to configure the query to get the specifications
-   */
-  const [filter, setFilter] = useState("user");
-  /**
-   * Whether the page is loading results or not
-   */
-  const [loading, setLoading] = useState(true);
-  /**
-   * The list of mappings to display
-   */
-  const [mappings, setMappings] = useState([]);
-  /**
-   * The identifier of the mapping to be removed. Saved in state, because the id is in an iterator,
-   * and the clicked handles confirmation, and the confirmation is outside the iterator.
-   */
-  const [mappingIdToRemove, setMappingIdToRemove] = useState(null);
-  /**
-   * The options object to use in the select component
-   */
-  const filterOptions = [
-    {
-      key: "user",
-      value: "Only My Mappings",
-    },
-    {
-      key: "all",
-      value: "All Mappings",
-    },
-  ];
-
-  /**
-   * Configure the options to see at the center of the top navigation bar
-   */
-  const navCenterOptions = () => {
-    return <TopNavOptions viewMappings={true} mapSpecification={true} />;
+export default class SpecsList extends Component {
+  state = {
+    /**
+     * Controls displaying the removal confirmation dialog
+     */
+    confirmingRemove: false,
+    /**
+     * Representation of an error on this page process
+     */
+    errors: [],
+    /**
+     * Representation of an error on this page process while removing a mapping
+     */
+    errorsWhileRemoving: [],
+    /**
+     * Represents the filter value to configure the query to get the specifications
+     */
+    filter: "user",
+    /**
+     * Whether the page is loading results or not
+     */
+    loading: true,
+    /**
+     * The list of mappings to display
+     */
+    mappings: [],
+    /**
+     * The identifier of the mapping to be removed. Saved in state, because the id is in an iterator,
+     * and the clicked handles confirmation, and the confirmation is outside the iterator.
+     */
+    mappingIdToRemove: null,
+    /**
+     * The options object to use in the select component
+     */
+    filterOptions: [
+      {
+        key: "user",
+        value: "Only My Mappings",
+      },
+      {
+        key: "all",
+        value: "All Mappings",
+      },
+    ],
   };
 
   /**
@@ -68,12 +65,13 @@ const SpecsList = () => {
    *
    * @param {HttpResponse} response
    * @param {Array} errorsList
-   * @param {Function} updateErrors
    */
-  function anyError(response, errorsList, updateErrors) {
+  anyError(response, errorsList = this.state.errors) {
     if (response.error) {
       errorsList.push(response.error);
-      updateErrors([...new Set(errorsList)]);
+      this.setState({
+        errorsList: [...new Set(errorsList)],
+      });
     }
     /// It will return a truthy value (depending no the existence
     /// of the errors on the response object)
@@ -81,11 +79,30 @@ const SpecsList = () => {
   }
 
   /**
+   * Use effect with an empty array as second parameter, will trigger the 'goForTheMapping'
+   * action at the 'mounted' event of this functional component (It's not actually mounted,
+   * but it mimics the same action).
+   */
+  componentDidMount() {
+    const { errors } = this.state;
+
+    this.goForTheMappings().then(() => {
+      if (!errors.length) {
+        this.setState({
+          loading: false,
+        });
+      }
+    });
+  }
+
+  /**
    * Actions to take when the user confirms to remove a mapping
    */
-  const handleConfirmRemove = (mappingId) => {
-    setConfirmingRemove(true);
-    setMappingIdToRemove(mappingId);
+  handleConfirmRemove = (mappingId) => {
+    this.setState({
+      confirmingRemove: true,
+      mappingIdToRemove: mappingId,
+    });
   };
 
   /**
@@ -94,10 +111,10 @@ const SpecsList = () => {
    *
    * @param {Integer} mappingId
    */
-  const handleExportMapping = async (mappingId) => {
+  handleExportMapping = async (mappingId) => {
     let response = await fetchMappingToExport(mappingId);
 
-    if (!anyError(response)) {
+    if (!this.anyError(response)) {
       downloadFile(response.exportedMapping);
     }
   };
@@ -105,228 +122,356 @@ const SpecsList = () => {
   /**
    * Send a request to delete the selected mapping.
    */
-  const handleRemoveMapping = async () => {
+  handleRemoveMapping = async () => {
+    const { errorsWhileRemoving, mappings, mappingIdToRemove } = this.state;
     let response = await deleteMapping(mappingIdToRemove);
 
-    if (!anyError(response, errorsWhileRemoving, setErrorsWhileRemoving)) {
+    if (!this.anyError(response, errorsWhileRemoving)) {
       toast.success("Mapping removed");
 
-      setMappings(
-        mappings.filter((mapping) => mapping.id !== mappingIdToRemove)
-      );
-      setConfirmingRemove(false);
+      this.setState({
+        mappings: mappings.filter(
+          (mapping) => mapping.id !== mappingIdToRemove
+        ),
+        confirmingRemove: false,
+      });
     }
   };
 
   /**
    * Change the filter for the listed mappings
    */
-  const handleFilterChange = async (value) => {
-    setFilter(value);
-    await goForTheMappings(value);
+  handleFilterChange = async (value) => {
+    this.setState({
+      filter: value,
+    });
+    await this.goForTheMappings(value);
+  };
+
+  /**
+   * Mark a 'mapped' mapping back to 'in-progress'
+   *
+   * @param {int} mappingId
+   */
+  handleMarkToInProgress = async (mappingId) => {
+    const { mappings } = this.state;
+
+    this.setState({ loading: true });
+
+    /// Change the mapping status
+    let response = await updateMapping({
+      id: mappingId,
+      status: "in_progress",
+    });
+
+    if (!this.anyError(response)) {
+      /// Change 'in-memory' status
+      let mapping = mappings.find((m) => m.id === mappingId);
+      mapping.status = "in_progress";
+      mapping["in_progress?"] = true;
+      mapping["mapped?"] = false;
+
+      this.setState(
+        {
+          mappings: [...mappings],
+        },
+        () => {
+          this.setState({ loading: false });
+        }
+      );
+
+      /// Notify the user
+      toast.success("Status changed!");
+    }
+
+    this.setState({ loading: false });
+  };
+
+  /**
+   * Mark a 'mapped' mapping back to 'uploaded'
+   *
+   * @param {int} mappingId
+   */
+  handleMarkToUploaded = async (mappingId) => {
+    const { mappings } = this.state;
+
+    this.setState({ loading: true });
+
+    /// Change the mapping status
+    let response = await updateMapping({
+      id: mappingId,
+      status: "uploaded",
+    });
+
+    if (!this.anyError(response)) {
+      /// Change 'in-memory' status
+      let mapping = mappings.find((m) => m.id === mappingId);
+      mapping.status = "uploaded";
+      mapping["mapped?"] = false;
+      mapping["in_progress?"] = false;
+      mapping["uploaded?"] = true;
+
+      this.setState(
+        {
+          mappings: [...mappings],
+        },
+        () => {
+          this.setState({ loading: false });
+        }
+      );
+
+      /// Notify the user
+      toast.success("Status changed!");
+    }
+
+    this.setState({ loading: false });
   };
 
   /**
    * Get the mappings from the service
    */
-  const goForTheMappings = async (value) => {
+  goForTheMappings = async (value) => {
+    const { errors, filter } = this.state;
+
     let filterValue = value || filter;
     let response = await fetchMappings(filterValue);
 
-    if (!anyError(response, errors, setErrors)) {
-      setMappings(response.mappings);
+    if (!this.anyError(response, errors)) {
+      this.setState({
+        mappings: response.mappings,
+      });
     }
   };
 
   /**
-   * Use effect with an empty array as second parameter, will trigger the 'goForTheMapping'
-   * action at the 'mounted' event of this functional component (It's not actually mounted,
-   * but it mimics the same action).
+   * Configure the options to see at the center of the top navigation bar
    */
-  useEffect(() => {
-    goForTheMappings().then(() => {
-      if (!errors.length) {
-        setLoading(false);
-      }
-    });
-  }, []);
+  navCenterOptions = () => {
+    return <TopNavOptions viewMappings={true} mapSpecification={true} />;
+  };
 
-  return (
-    <div className="wrapper">
-      <TopNav centerContent={navCenterOptions} />
-      <div className="container-fluid container-wrapper">
-        <div className="row">
-          <div className="col p-lg-5 pt-5">
-            <h4>My Specifications</h4>
-            {loading ? (
-              <Loader />
-            ) : (
-              <Fragment>
-                <ConfirmDialog
-                  onRequestClose={() => setConfirmingRemove(false)}
-                  onConfirm={() => handleRemoveMapping()}
-                  visible={confirmingRemove}
-                >
-                  <h2 className="text-center">
-                    You are removing a specification
-                  </h2>
-                  <h5 className="mt-3 text-center">
-                    Please confirm this action.
-                  </h5>
-                </ConfirmDialog>
+  render() {
+    const {
+      confirmingRemove,
+      filter,
+      filterOptions,
+      loading,
+      mappings,
+    } = this.state;
 
-                <div className="table-responsive">
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Specification Name</th>
-                        <th scope="col">Version</th>
-                        <th scope="col">Mapped</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Author</th>
-                        <th scope="col">
-                          <select
-                            className="form-control"
-                            value={filter}
-                            onChange={(e) => handleFilterChange(e.target.value)}
-                          >
-                            {filterOptions.map(function (option) {
-                              return (
-                                <option key={option.key} value={option.key}>
-                                  {option.value}
-                                </option>
-                              );
-                            })}
-                          </select>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <SpineSpecsList filter={filter} />
-                      {mappings.length > 0 ? (
-                        mappings.map((mapping) => {
-                          return (
-                            <tr key={mapping.id}>
-                              <td>{mapping.title}</td>
-                              <td>{mapping.specification.version}</td>
-                              <td>
-                                {mapping.mapped_terms +
-                                  "/" +
-                                  mapping.selected_terms.length}
-                              </td>
-                              <td>{_.startCase(_.toLower(mapping.status))}</td>
-                              <td>{mapping.specification.user.fullname}</td>
-                              <td>
-                                {mapping["mapped?"] ? (
-                                  <Link
-                                    to={"/mappings/" + mapping.id + "/align"}
-                                    className="btn btn-sm btn-dark ml-2"
-                                    data-toggle="tooltip"
-                                    data-placement="top"
-                                    title="Edit this mapping"
-                                  >
-                                    <i className="fas fa-pencil-alt"/>
-                                  </Link>
-                                ) : (
-                                  <Link
-                                    to={
-                                      mapping["uploaded?"]
-                                        ? /// This mapping has mapped terms, but it has not finished selecting the terms from the specification
-                                          "/mappings/" + mapping.id
-                                        : /// It's on the 3d step (align and fine tune), already selected the terms from the specification, and
-                                          /// now it's mapping terms into the spine terms
+    return (
+      <div className="wrapper">
+        <TopNav centerContent={this.navCenterOptions} />
+        <div className="container-fluid container-wrapper">
+          <div className="row">
+            <div className="col p-lg-5 pt-5">
+              <h4>My Specifications</h4>
+              {loading ? (
+                <Loader />
+              ) : (
+                <Fragment>
+                  <ConfirmDialog
+                    onRequestClose={() =>
+                      this.setState({ confirmingRemove: false })
+                    }
+                    onConfirm={() => this.handleRemoveMapping()}
+                    visible={confirmingRemove}
+                  >
+                    <h2 className="text-center">
+                      You are removing a specification
+                    </h2>
+                    <h5 className="mt-3 text-center">
+                      Please confirm this action.
+                    </h5>
+                  </ConfirmDialog>
+
+                  <div className="table-responsive">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Specification Name</th>
+                          <th scope="col">Version</th>
+                          <th scope="col">Mapped</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Author</th>
+                          <th scope="col">
+                            <select
+                              className="form-control"
+                              value={filter}
+                              onChange={(e) =>
+                                this.handleFilterChange(e.target.value)
+                              }
+                            >
+                              {filterOptions.map(function (option) {
+                                return (
+                                  <option key={option.key} value={option.key}>
+                                    {option.value}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <SpineSpecsList filter={filter} />
+                        {mappings.length > 0 ? (
+                          mappings.map((mapping) => {
+                            return (
+                              <tr key={mapping.id}>
+                                <td>{mapping.title}</td>
+                                <td>{mapping.specification.version}</td>
+                                <td>
+                                  {mapping.mapped_terms +
+                                    "/" +
+                                    mapping.selected_terms.length}
+                                </td>
+                                <td>
+                                  {_.startCase(_.toLower(mapping.status))}
+                                </td>
+                                <td>{mapping.specification.user.fullname}</td>
+                                <td>
+                                  {mapping["mapped?"] ? (
+                                    <Fragment>
+                                    <button
+                                        className="btn btn-sm btn-dark ml-2"
+                                        onClick={() =>
+                                          this.handleMarkToInProgress(
+                                            mapping.id
+                                          )
+                                        }
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="Mark this mapping back to 'in progress'"
+                                      >
+                                        <i className="fas fa-undo" />
+                                      </button>
+
+                                      <Link
+                                        to={
                                           "/mappings/" + mapping.id + "/align"
-                                    }
-                                    className="btn btn-sm ml-2 bg-col-primary col-background"
-                                    data-toggle="tooltip"
-                                    data-placement="top"
-                                    title="Resume, continue mapping"
-                                  >
-                                    <i className="fas fa-layer-group"/>
-                                  </Link>
-                                )}
+                                        }
+                                        className="btn btn-sm btn-dark ml-2"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="Edit this mapping"
+                                      >
+                                        <i className="fas fa-pencil-alt" />
+                                      </Link>
 
-                                {mapping["mapped?"] ? (
-                                  <Link
-                                    to={
-                                      "/mappings-list?abstractClass=" +
-                                      mapping.domain
-                                    }
-                                    className="btn btn-sm btn-dark ml-2"
-                                    data-toggle="tooltip"
-                                    data-placement="top"
-                                    title="View this mapping"
-                                  >
-                                    <i className="fas fa-eye"/>
-                                  </Link>
-                                ) : (
-                                  ""
-                                )}
+                                      <Link
+                                        to={
+                                          "/mappings-list?abstractClass=" +
+                                          mapping.domain
+                                        }
+                                        className="btn btn-sm btn-dark ml-2"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="View this mapping"
+                                      >
+                                        <i className="fas fa-eye" />
+                                      </Link>
 
-                                <button
-                                  onClick={() =>
-                                    handleConfirmRemove(mapping.id)
-                                  }
-                                  className="btn btn-sm btn-dark ml-2"
-                                  data-toggle="tooltip"
-                                  data-placement="top"
-                                  title="Remove this mapping"
-                                >
-                                  <i className="fas fa-trash"/>
-                                </button>
-                                {mapping["mapped?"] ? (
+                                      <button
+                                        className="btn btn-sm btn-dark ml-2"
+                                        onClick={() =>
+                                          this.handleExportMapping(mapping.id)
+                                        }
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="Export this mapping"
+                                      >
+                                        <i className="fas fa-download" />
+                                      </button>
+                                    </Fragment>
+                                  ) : (
+                                    <Fragment>
+                                      {mapping["in_progress?"] ? (
+                                        <button
+                                          className="btn btn-sm btn-dark ml-2"
+                                          onClick={() =>
+                                            this.handleMarkToUploaded(
+                                              mapping.id
+                                            )
+                                          }
+                                          data-toggle="tooltip"
+                                          data-placement="top"
+                                          title="Mark this mapping back to 'uploaded'"
+                                        >
+                                          <i className="fas fa-undo" />
+                                        </button>
+                                      ) : (
+                                        ""
+                                      )}
+                                      <Link
+                                        to={
+                                          mapping["uploaded?"]
+                                            ? /// This mapping has mapped terms, but it has not finished selecting the terms from the specification
+                                              "/mappings/" + mapping.id
+                                            : /// It's on the 3d step (align and fine tune), already selected the terms from the specification, and
+                                              /// now it's mapping terms into the spine terms
+                                              "/mappings/" +
+                                              mapping.id +
+                                              "/align"
+                                        }
+                                        className="btn btn-sm ml-2 bg-col-primary col-background"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="Resume, continue mapping"
+                                      >
+                                        <i className="fas fa-layer-group" />
+                                      </Link>
+                                    </Fragment>
+                                  )}
+
                                   <button
-                                    className="btn btn-sm btn-dark ml-2"
                                     onClick={() =>
-                                      handleExportMapping(mapping.id)
+                                      this.handleConfirmRemove(mapping.id)
                                     }
+                                    className="btn btn-sm btn-dark ml-2"
                                     data-toggle="tooltip"
                                     data-placement="top"
-                                    title="Export this mapping"
+                                    title="Remove this mapping"
                                   >
-                                    <i className="fas fa-download"/>
+                                    <i className="fas fa-trash" />
                                   </button>
-                                ) : (
-                                  ""
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        })
-                      ) : (
-                        <tr/>
-                      )}
-                    </tbody>
-                  </table>
+                                </td>
+                              </tr>
+                            );
+                          })
+                        ) : (
+                          <tr />
+                        )}
+                      </tbody>
+                    </table>
 
-                  <hr className="rounded-divider" />
+                    <hr className="rounded-divider" />
 
-                  {mappings.length === 0 && (
-                    <div className="card text-center">
-                      <div className="card-header bg-col-on-primary-highlight">
-                        <p>
-                          All the specifications you and your team map will be
-                          visible here
-                        </p>
+                    {mappings.length === 0 && (
+                      <div className="card text-center">
+                        <div className="card-header bg-col-on-primary-highlight">
+                          <p>
+                            All the specifications you and your team map will be
+                            visible here
+                          </p>
+                        </div>
+                        <div className="card-body bg-col-on-primary-highlight">
+                          <Link
+                            to="/new-mapping"
+                            className="btn bg-col-primary col-background"
+                          >
+                            Map a specification
+                          </Link>
+                        </div>
                       </div>
-                      <div className="card-body bg-col-on-primary-highlight">
-                        <Link
-                          to="/new-mapping"
-                          className="btn bg-col-primary col-background"
-                        >
-                          Map a specification
-                        </Link>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </Fragment>
-            )}
+                    )}
+                  </div>
+                </Fragment>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-export default SpecsList;
+    );
+  }
+}
