@@ -5,15 +5,14 @@
 ###
 class Api::V1::MappingsController < ApplicationController
   before_action :authorize_with_policy
+  before_action :instantiate_specification, only: :create
 
   ###
   # @description: Creates a mapping with its related specification
   ###
   def create
-    spec = Specification.find(params[:specification_id])
-
     # Proceed to create the mapping if this is not the spine
-    @instance = Processors::Mappings.create(spec, current_user) unless spec.spine?
+    @instance = Processors::Mappings.new(@specification, current_user).create unless @specification.spine?
 
     render json: @instance, include: :specification
   end
@@ -63,7 +62,7 @@ class Api::V1::MappingsController < ApplicationController
   end
 
   ###
-  # @description: Udates the attributes of a mapping
+  # @description: Updates the attributes of a mapping
   ###
   def update
     @instance.update!(permitted_params)
@@ -93,6 +92,15 @@ class Api::V1::MappingsController < ApplicationController
 
     # Return an ordered list
     mappings.order(:title)
+  end
+
+  ###
+  # @description: Find the specification with the id passed in params
+  ###
+  def instantiate_specification
+    raise "Specification id not provided" unless params[:specification_id].present?
+
+    @specification = Specification.find(params[:specification_id])
   end
 
   ###
