@@ -1,11 +1,14 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const OrganizationInfo = (props) => {
   return (
     <div className="col-xl-3 col-sm-6 py-2">
       <div className="card mt-2 h-100">
-        <Link to={"/dashboard/organizations/" + props.organization.id} className="card-header col-on-primary">
+        <Link
+          to={"/dashboard/organizations/" + props.organization.id}
+          className="card-header bg-dashboard-background col-background"
+        >
           <i className="fa fa-building"></i>
           <span className="pl-2 subtitle">{props.organization.name}</span>
         </Link>
@@ -16,6 +19,6 @@ const OrganizationInfo = (props) => {
       </div>
     </div>
   );
-}
+};
 
 export default OrganizationInfo;

@@ -16,10 +16,12 @@ const DashboardContainer = (props) => {
       <TopNav centerContent={navCenterOptions} />
       <div className="container-fluid container-wrapper">
         <div className="row">
-          <div className="col-sm-6 col-md-3 col-lg-2 bg-dashboard-background">
+          <div className="col-sm-6 col-md-3 col-lg-2 bg-dashboard-background no-sides-padding">
             <SideBar />
           </div>
-          <div className="col-sm-6 col-md-9 col-lg-10">{props.children}</div>
+          <div className="col-sm-6 col-md-9 col-lg-10 bg-dashboard-background-light">
+            {props.children}
+          </div>
         </div>
       </div>
     </React.Fragment>

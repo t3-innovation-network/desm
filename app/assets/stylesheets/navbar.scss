@@ -1,5 +1,5 @@
 /*Navbar Styles*/
-@import 'colors.scss';
+@import "colors.scss";
 
 .nav-container {
   padding-left: 0 !important;
@@ -29,19 +29,16 @@
 }
 
 .brand-box {
-  background-image: url('../images/White-T3-Inno-Network-02-reverse.png');
+  background-image: url("../images/t3-logo.png");
   background-repeat: no-repeat;
   background-size: 12rem;
 }
 
 .brand-box-container {
-  background-color: $on-primary;
-  border-bottom: solid 8px $on-primary;
   height: 3.5rem;
   width: 15rem;
 
-  .navbar-brand{
-    background-color: $on-primary;
+  .navbar-brand {
     height: 90%;
     margin-left: 2rem;
     margin-top: 0.4rem;
@@ -49,7 +46,16 @@
   }
 }
 
-.nav-title-highlighted{
+.nav-title-highlighted {
   font-size: 18px;
   font-weight: 600;
+}
+
+.no-sides-padding {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.selected-dashboard-option {
+  border-left: 1px solid $background-color;
 }
