@@ -147,117 +147,115 @@ export default class EditUser extends Component {
   render() {
     return (
       <DashboardContainer>
-        <div className="col-lg-6 mx-auto mt-5">
-          {this.state.errors && <AlertNotice message={this.state.errors} />}
-          <div className="card mt-5">
-            <div className="card-header">
-              <i className="fa fa-user"></i>
-              <span className="pl-2 subtitle">User {this.state.fullname}</span>
-              <button
-                className="btn btn-dark float-right"
-                data-toggle="tooltip"
-                data-placement="bottom"
-                title="Delete this user"
-                onClick={() => {
-                  this.deleteUserAPI();
-                }}
-              >
-                <i className="fa fa-trash" aria-hidden="true"></i>
-              </button>
-            </div>
-            <div className="card-body">
-              <React.Fragment>
-                <div className="mandatory-fields-notice">
-                  <small className="form-text text-muted">
-                    Fields with <span className="text-danger">*</span> are
-                    mandatory!
-                  </small>
+        {this.state.errors && <AlertNotice message={this.state.errors} />}
+        <div className="card mt-5">
+          <div className="card-header">
+            <i className="fa fa-user"></i>
+            <span className="pl-2 subtitle">User {this.state.fullname}</span>
+            <button
+              className="btn btn-dark float-right"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="Delete this user"
+              onClick={() => {
+                this.deleteUserAPI();
+              }}
+            >
+              <i className="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div className="card-body">
+            <React.Fragment>
+              <div className="mandatory-fields-notice">
+                <small className="form-text text-muted">
+                  Fields with <span className="text-danger">*</span> are
+                  mandatory!
+                </small>
+              </div>
+
+              <form onSubmit={this.handleSubmit}>
+                <div className="form-group">
+                  <label>
+                    Fullname
+                    <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="fullname"
+                    placeholder="Enter the fullname for the user"
+                    value={this.state.fullname}
+                    onChange={(e) => this.handleOnChange(e)}
+                    autoFocus
+                    required
+                  />
                 </div>
 
-                <form onSubmit={this.handleSubmit}>
-                  <div className="form-group">
-                    <label>
-                      Fullname
-                      <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="fullname"
-                      placeholder="Enter the fullname for the user"
-                      value={this.state.fullname}
-                      onChange={(e) => this.handleOnChange(e)}
-                      autoFocus
-                      required
-                    />
-                  </div>
+                <div className="form-group">
+                  <label>
+                    Email
+                    <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    name="email"
+                    placeholder="Enter the email for the user"
+                    value={this.state.email}
+                    onChange={(e) => this.handleOnChange(e)}
+                    required
+                  />
+                </div>
 
-                  <div className="form-group">
-                    <label>
-                      Email
-                      <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      name="email"
-                      placeholder="Enter the email for the user"
-                      value={this.state.email}
-                      onChange={(e) => this.handleOnChange(e)}
-                      required
-                    />
-                  </div>
+                <div className="form-group">
+                  <label>
+                    Organization
+                    <span className="text-danger">*</span>
+                  </label>
+                  <select
+                    name="organization_id"
+                    className="form-control"
+                    required
+                    value={this.state.organization_id}
+                    onChange={this.handleOnChange}
+                  >
+                    {this.state.organizations.map(function (org) {
+                      return (
+                        <option key={org.id} value={org.id}>
+                          {org.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
 
-                  <div className="form-group">
-                    <label>
-                      Organization
-                      <span className="text-danger">*</span>
-                    </label>
-                    <select
-                      name="organization_id"
-                      className="form-control"
-                      required
-                      value={this.state.organization_id}
-                      onChange={this.handleOnChange}
-                    >
-                      {this.state.organizations.map(function (org) {
-                        return (
-                          <option key={org.id} value={org.id}>
-                            {org.name}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
+                <div className="form-group">
+                  <label>
+                    Role
+                    <span className="text-danger">*</span>
+                  </label>
+                  <select
+                    name="role_id"
+                    className="form-control"
+                    required
+                    value={this.state.role_id}
+                    onChange={this.handleOnChange}
+                  >
+                    {this.state.roles.map(function (role) {
+                      return (
+                        <option key={role.id} value={role.id}>
+                          {role.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
 
-                  <div className="form-group">
-                    <label>
-                      Role
-                      <span className="text-danger">*</span>
-                    </label>
-                    <select
-                      name="role_id"
-                      className="form-control"
-                      required
-                      value={this.state.role_id}
-                      onChange={this.handleOnChange}
-                    >
-                      {this.state.roles.map(function (role) {
-                        return (
-                          <option key={role.id} value={role.id}>
-                            {role.name}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-
-                  <button type="submit" className="btn btn-dark">
-                    Send
-                  </button>
-                </form>
-              </React.Fragment>
-            </div>
+                <button type="submit" className="btn btn-dark">
+                  Send
+                </button>
+              </form>
+            </React.Fragment>
           </div>
         </div>
       </DashboardContainer>

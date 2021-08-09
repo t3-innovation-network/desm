@@ -98,98 +98,96 @@ class Registration extends Component {
     return (
       <React.Fragment>
         <DashboardContainer>
-          <div className="col-lg-6 mx-auto mt-5">
-            {this.state.errors && <AlertNotice message={this.state.errors} />}
+          {this.state.errors && <AlertNotice message={this.state.errors} />}
 
-            <div className="card mt-5">
-              <div className="card-header">
-                <i className="fa fa-users"></i>
-                <span className="pl-2 subtitle">Create User</span>
-              </div>
-              <div className="card-body">
-                <form onSubmit={this.handleSubmit}>
-                  <div className="form-group">
-                    <label>
-                      Fullname
-                      <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="fullname"
-                      placeholder="Enter the fullname for the user"
-                      value={this.state.fullname}
-                      onChange={this.handleOnChange}
-                      autoFocus
-                      required
-                    />
-                  </div>
+          <div className="card mt-5">
+            <div className="card-header">
+              <i className="fa fa-users"></i>
+              <span className="pl-2 subtitle">Create User</span>
+            </div>
+            <div className="card-body">
+              <form onSubmit={this.handleSubmit}>
+                <div className="form-group">
+                  <label>
+                    Fullname
+                    <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="fullname"
+                    placeholder="Enter the fullname for the user"
+                    value={this.state.fullname}
+                    onChange={this.handleOnChange}
+                    autoFocus
+                    required
+                  />
+                </div>
 
-                  <div className="form-group">
-                    <label>
-                      Email
-                      <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      name="email"
-                      placeholder="Enter the email for the user"
-                      value={this.state.email}
-                      onChange={this.handleOnChange}
-                      required
-                    />
-                  </div>
+                <div className="form-group">
+                  <label>
+                    Email
+                    <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    name="email"
+                    placeholder="Enter the email for the user"
+                    value={this.state.email}
+                    onChange={this.handleOnChange}
+                    required
+                  />
+                </div>
 
-                  <div className="form-group">
-                    <label>
-                      Organization
-                      <span className="text-danger">*</span>
-                    </label>
-                    <select
-                      name="organization_id"
-                      className="form-control"
-                      required
-                      value={this.state.organization_id}
-                      onChange={this.handleOnChange}
-                    >
-                      {this.state.organizations.map(function (org) {
-                        return (
-                          <option key={org.id} value={org.id}>
-                            {org.name}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
+                <div className="form-group">
+                  <label>
+                    Organization
+                    <span className="text-danger">*</span>
+                  </label>
+                  <select
+                    name="organization_id"
+                    className="form-control"
+                    required
+                    value={this.state.organization_id}
+                    onChange={this.handleOnChange}
+                  >
+                    {this.state.organizations.map(function (org) {
+                      return (
+                        <option key={org.id} value={org.id}>
+                          {org.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
 
-                  <div className="form-group">
-                    <label>
-                      Role
-                      <span className="text-danger">*</span>
-                    </label>
-                    <select
-                      name="role_id"
-                      className="form-control"
-                      required
-                      value={this.state.role_id}
-                      onChange={this.handleOnChange}
-                    >
-                      {this.state.roles.map(function (role) {
-                        return (
-                          <option key={role.id} value={role.id}>
-                            {role.name}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
+                <div className="form-group">
+                  <label>
+                    Role
+                    <span className="text-danger">*</span>
+                  </label>
+                  <select
+                    name="role_id"
+                    className="form-control"
+                    required
+                    value={this.state.role_id}
+                    onChange={this.handleOnChange}
+                  >
+                    {this.state.roles.map(function (role) {
+                      return (
+                        <option key={role.id} value={role.id}>
+                          {role.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
 
-                  <button type="submit" className="btn btn-dark">
-                    Create
-                  </button>
-                </form>
-              </div>
+                <button type="submit" className="btn btn-dark">
+                  Create
+                </button>
+              </form>
             </div>
           </div>
         </DashboardContainer>

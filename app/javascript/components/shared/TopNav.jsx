@@ -7,14 +7,13 @@ import UserInfo from "../auth/UserInfo";
 const TopNav = (props) => {
   return (
     <React.Fragment>
-      <nav className="navbar navbar-with-border with-shadow navbar-expand-lg">
+      <nav className="navbar navbar-with-border with-shadow navbar-expand-lg pr-3">
         <div className="container-fluid nav-container">
           <div className="navbar-header">
-
-{/* BRAND BOX */}
+            {/* BRAND BOX */}
 
             <div className="brand-box-container">
-              <Link to="/" className="navbar-brand nav-item brand-box"/>
+              <Link to="/" className="navbar-brand nav-item brand-box" />
             </div>
             <button
               className="navbar-toggler"
@@ -25,16 +24,16 @@ const TopNav = (props) => {
               aria-expanded="false"
               aria-label="Toggle Navigation"
             >
-              <i className="fa fa-bars" aria-hidden="true"/>
+              <i className="fa fa-bars" aria-hidden="true" />
             </button>
           </div>
 
-{/* DYNAMIC CONTENT */}
+          {/* DYNAMIC CONTENT */}
 
           <div className="collapse navbar-collapse" id="toggle-nav">
-            { props.centerContent() }
+            {props.centerContent()}
 
-{/* SESSION INFO & ACTIONS */}
+            {/* SESSION INFO & ACTIONS */}
 
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
@@ -48,8 +47,7 @@ const TopNav = (props) => {
               </li>
             </ul>
 
-{/* END SESSION INFO & ACTIONS */}
-
+            {/* END SESSION INFO & ACTIONS */}
           </div>
         </div>
       </nav>

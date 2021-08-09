@@ -123,76 +123,74 @@ export default class EditOrganization extends Component {
 
     return (
       <DashboardContainer>
-        <div className="col-lg-6 mx-auto mt-5">
-          {errors && <AlertNotice message={errors} />}
+        {errors && <AlertNotice message={errors} />}
 
-          <div className="card mt-5">
-            <div className="card-header">
-              <i className="fa fa-building"></i>
-              <span className="pl-2 subtitle">
-                Organization {organization.name}
-              </span>
-              <button
-                className="btn btn-dark float-right"
-                data-toggle="tooltip"
-                data-placement="bottom"
-                title="Delete this organization"
-                onClick={() => {
-                  this.deleteOrganizationAPI();
-                }}
-              >
-                <i className="fa fa-trash" aria-hidden="true"></i>
-              </button>
-            </div>
-            <div className="card-body">
-              <React.Fragment>
-                <div className="mandatory-fields-notice">
-                  <small className="form-text text-muted">
-                    Fields with <span className="text-danger">*</span> are
-                    mandatory!
-                  </small>
+        <div className="card mt-5">
+          <div className="card-header">
+            <i className="fa fa-building"></i>
+            <span className="pl-2 subtitle">
+              Organization {organization.name}
+            </span>
+            <button
+              className="btn btn-dark float-right"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="Delete this organization"
+              onClick={() => {
+                this.deleteOrganizationAPI();
+              }}
+            >
+              <i className="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div className="card-body">
+            <React.Fragment>
+              <div className="mandatory-fields-notice">
+                <small className="form-text text-muted">
+                  Fields with <span className="text-danger">*</span> are
+                  mandatory!
+                </small>
+              </div>
+
+              <form onSubmit={this.handleSubmit}>
+                <div className="form-group">
+                  <label>
+                    Name
+                    <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="name"
+                    placeholder="Enter the name for the organization"
+                    value={organization.name}
+                    onChange={(e) => this.handleOnChange(e)}
+                    autoFocus
+                    required
+                  />
                 </div>
 
-                <form onSubmit={this.handleSubmit}>
-                  <div className="form-group">
-                    <label>
-                      Name
-                      <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="name"
-                      placeholder="Enter the name for the organization"
-                      value={organization.name}
-                      onChange={(e) => this.handleOnChange(e)}
-                      autoFocus
-                      required
-                    />
-                  </div>
+                <div className="form-group">
+                  <label>
+                    Email
+                    <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    name="email"
+                    placeholder="Enter an email for the organization"
+                    value={organization.email}
+                    onChange={(e) => this.handleOnChange(e)}
+                    required
+                  />
+                </div>
 
-                  <div className="form-group">
-                    <label>
-                      Email
-                      <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      name="email"
-                      placeholder="Enter an email for the organization"
-                      value={organization.email}
-                      onChange={(e) => this.handleOnChange(e)}
-                      required
-                    />
-                  </div>
-
-                  <button type="submit" className="btn btn-dark">
-                    Send
-                  </button>
-                </form>
-              </React.Fragment>
-            </div>
+                <button type="submit" className="btn btn-dark">
+                  Send
+                </button>
+              </form>
+            </React.Fragment>
           </div>
         </div>
       </DashboardContainer>

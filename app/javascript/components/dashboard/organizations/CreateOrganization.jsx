@@ -42,7 +42,9 @@ export default class CreateOrganization extends Component {
     }
 
     if (response.success) {
-      toast.success("Organization " + organization.name + " was successfully created");
+      toast.success(
+        "Organization " + organization.name + " was successfully created"
+      );
       this.props.history.push("/dashboard/organizations");
       return;
     }
@@ -71,54 +73,52 @@ export default class CreateOrganization extends Component {
     return (
       <React.Fragment>
         <DashboardContainer>
-          <div className="col-lg-6 mx-auto mt-5">
-            {errors && <AlertNotice message={errors} />}
+          {errors && <AlertNotice message={errors} />}
 
-            <div className="card mt-5">
-              <div className="card-header">
-                <i className="fa fa-building"></i>
-                <span className="pl-2 subtitle">Create Organization</span>
-              </div>
-              <div className="card-body">
-                <form onSubmit={this.handleSubmit}>
-                  <div className="form-group">
-                    <label>
-                      Name
-                      <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="name"
-                      placeholder="Enter a name for this organization"
-                      value={organization.name}
-                      onChange={this.handleOnChange}
-                      autoFocus
-                      required
-                    />
-                  </div>
+          <div className="card mt-5">
+            <div className="card-header">
+              <i className="fa fa-building"></i>
+              <span className="pl-2 subtitle">Create Organization</span>
+            </div>
+            <div className="card-body">
+              <form onSubmit={this.handleSubmit}>
+                <div className="form-group">
+                  <label>
+                    Name
+                    <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="name"
+                    placeholder="Enter a name for this organization"
+                    value={organization.name}
+                    onChange={this.handleOnChange}
+                    autoFocus
+                    required
+                  />
+                </div>
 
-                  <div className="form-group">
-                    <label>
-                      Email
-                      <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      name="email"
-                      placeholder="Enter an email for the organization"
-                      value={organization.email}
-                      onChange={(e) => this.handleOnChange(e)}
-                      required
-                    />
-                  </div>
+                <div className="form-group">
+                  <label>
+                    Email
+                    <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    name="email"
+                    placeholder="Enter an email for the organization"
+                    value={organization.email}
+                    onChange={(e) => this.handleOnChange(e)}
+                    required
+                  />
+                </div>
 
-                  <button type="submit" className="btn btn-dark">
-                    Create
-                  </button>
-                </form>
-              </div>
+                <button type="submit" className="btn btn-dark">
+                  Create
+                </button>
+              </form>
             </div>
           </div>
         </DashboardContainer>
