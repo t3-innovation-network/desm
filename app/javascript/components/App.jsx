@@ -27,6 +27,7 @@ const App = () => {
       /// Process any server errors
       if (response.error) {
         setErrors(response.error);
+        setLoading(false);
         return;
       }
       /// If we have something to change
