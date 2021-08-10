@@ -7,12 +7,10 @@ import fetchUser from "../../../services/fetchUser";
 import deleteUser from "../../../services/deleteUser";
 import updateUser from "../../../services/updateUser";
 import { toastr as toast } from "react-redux-toastr";
+import { Link } from "react-router-dom";
+import Loader from "../../shared/Loader";
 
 export default class EditUser extends Component {
-  /**
-   * Represents the state of this component. It contains all the fields that are
-   * going to be sent to the API service in order to update a user data
-   */
   state = {
     fullname: "",
     email: "",
@@ -22,76 +20,41 @@ export default class EditUser extends Component {
     organizations: [],
     roles: [],
     errors: "",
+    loading: true,
   };
 
-  /**
-   * Update the component state on every change in the input control in the form
-   */
-  handleOnChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
+  componentDidMount() {
+    this.fetchUserAPI();
+    this.fetchOrganizationsAPI();
+    this.fetchRolesAPI();
+  }
+
+  dashboardPath = () => {
+    return (
+      <div className="float-right">
+        <i className="fas fa-home" />{" "}
+        <span>
+          <Link className="col-on-primary" to="/">
+            Home
+          </Link>
+        </span>{" "}
+        {`>`}{" "}
+        <span>
+          <Link className="col-on-primary" to="/dashboard">
+            Dashboard
+          </Link>
+        </span>{" "}
+        {`>`}{" "}
+        <span>
+          <Link className="col-on-primary" to="/dashboard/users">
+            Users
+          </Link>
+        </span>{" "}
+        {`>`} <span>Edit</span>
+      </div>
+    );
   };
 
-  /**
-   * Use the API service to get this user data
-   */
-  fetchUserAPI() {
-    fetchUser(this.state.user_id).then((response) => {
-      if (response.error) {
-        this.setState({
-          errors: response.error,
-        });
-        return;
-      }
-
-      /// We have a user from the backend
-      this.setState({
-        fullname: response.user.fullname,
-        email: response.user.email,
-        organization_id: response.user.organization_id,
-        role_id: response.user.role_id,
-      });
-    });
-  }
-
-  /**
-   * Use the API service to get the organizations data
-   */
-  fetchOrganizationsAPI() {
-    fetchOrganizations().then((response) => {
-      if (response.errors) {
-        this.setState({
-          errors: response.errors,
-        });
-        return;
-      }
-      this.setState({
-        organizations: response.organizations,
-      });
-    });
-  }
-
-  /**
-   * Use the API service to get all the roles data
-   */
-  fetchRolesAPI() {
-    fetchRoles().then((response) => {
-      if (response.errors) {
-        this.setState({
-          errors: response.errors,
-        });
-        return;
-      }
-      this.setState({
-        roles: response.roles,
-      });
-    });
-  }
-
-  /**
-   * Hit the API service to delete this user
-   */
   deleteUserAPI() {
     deleteUser(this.state.user_id)
       .then((response) => {
@@ -102,27 +65,73 @@ export default class EditUser extends Component {
           return;
         }
 
-        /// We have a list of users from the backend
         toast.info("User successfully removed");
         this.props.history.push("/dashboard/users");
       })
-      /// Process any server errors
       .catch((error) => {});
   }
 
-  /**
-   * Perform the necessary tasks needed when the component finish mounting
-   */
-  componentDidMount() {
-    this.fetchUserAPI();
-    this.fetchOrganizationsAPI();
-    this.fetchRolesAPI();
+  fetchOrganizationsAPI() {
+    this.setState({ loading: true });
+    fetchOrganizations().then((response) => {
+      if (response.errors) {
+        this.setState({
+          errors: response.errors,
+          loading: false,
+        });
+        return;
+      }
+      this.setState({
+        organizations: response.organizations,
+        loading: false,
+      });
+    });
   }
 
-  /**
-   * Send the data prepared in the form to the API service, and expect
-   * the result to be shown to the user
-   */
+  fetchRolesAPI() {
+    this.setState({ loading: true });
+    fetchRoles().then((response) => {
+      if (response.errors) {
+        this.setState({
+          errors: response.errors,
+          loading: false,
+        });
+        return;
+      }
+      this.setState({
+        roles: response.roles,
+        loading: false,
+      });
+    });
+  }
+
+  fetchUserAPI() {
+    this.setState({ loading: true });
+    fetchUser(this.state.user_id).then((response) => {
+      if (response.error) {
+        this.setState({
+          errors: response.error,
+          loading: false,
+        });
+        return;
+      }
+
+      this.setState({
+        fullname: response.user.fullname,
+        email: response.user.email,
+        organization_id: response.user.organization_id,
+        role_id: response.user.role_id,
+        loading: false,
+      });
+    });
+  }
+
+  handleOnChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  };
+
   handleSubmit = (event) => {
     const { email, fullname, organization_id, role_id, user_id } = this.state;
 
@@ -145,14 +154,28 @@ export default class EditUser extends Component {
   };
 
   render() {
+    const {
+      email,
+      errors,
+      fullname,
+      loading,
+      organizations,
+      organization_id,
+      roles,
+      role_id,
+    } = this.state;
+
     return (
       <DashboardContainer>
-        <div className="col-lg-6 mx-auto mt-5">
-          {this.state.errors && <AlertNotice message={this.state.errors} />}
+        {errors && <AlertNotice message={errors} />}
+        {this.dashboardPath()}
+        {loading ? (
+          <Loader />
+        ) : (
           <div className="card mt-5">
             <div className="card-header">
               <i className="fa fa-user"></i>
-              <span className="pl-2 subtitle">User {this.state.fullname}</span>
+              <span className="pl-2 subtitle">User {fullname}</span>
               <button
                 className="btn btn-dark float-right"
                 data-toggle="tooltip"
@@ -185,7 +208,7 @@ export default class EditUser extends Component {
                       className="form-control"
                       name="fullname"
                       placeholder="Enter the fullname for the user"
-                      value={this.state.fullname}
+                      value={fullname}
                       onChange={(e) => this.handleOnChange(e)}
                       autoFocus
                       required
@@ -202,7 +225,7 @@ export default class EditUser extends Component {
                       className="form-control"
                       name="email"
                       placeholder="Enter the email for the user"
-                      value={this.state.email}
+                      value={email}
                       onChange={(e) => this.handleOnChange(e)}
                       required
                     />
@@ -217,10 +240,10 @@ export default class EditUser extends Component {
                       name="organization_id"
                       className="form-control"
                       required
-                      value={this.state.organization_id}
+                      value={organization_id}
                       onChange={this.handleOnChange}
                     >
-                      {this.state.organizations.map(function (org) {
+                      {organizations.map(function (org) {
                         return (
                           <option key={org.id} value={org.id}>
                             {org.name}
@@ -239,10 +262,10 @@ export default class EditUser extends Component {
                       name="role_id"
                       className="form-control"
                       required
-                      value={this.state.role_id}
+                      value={role_id}
                       onChange={this.handleOnChange}
                     >
-                      {this.state.roles.map(function (role) {
+                      {roles.map(function (role) {
                         return (
                           <option key={role.id} value={role.id}>
                             {role.name}
@@ -259,7 +282,7 @@ export default class EditUser extends Component {
               </React.Fragment>
             </div>
           </div>
-        </div>
+        )}
       </DashboardContainer>
     );
   }

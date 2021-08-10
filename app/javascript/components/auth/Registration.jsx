@@ -5,12 +5,10 @@ import fetchRoles from "../../services/fetchRoles";
 import AlertNotice from "../shared/AlertNotice";
 import createUser from "../../services/createUser";
 import { toastr as toast } from "react-redux-toastr";
+import { Link } from "react-router-dom";
+import Loader from "../shared/Loader";
 
 class Registration extends Component {
-  /**
-   * Represents the state of this component. It contains all the fields that are
-   * going to be sent to the API service to create a user
-   */
   state = {
     email: "",
     fullname: "",
@@ -19,48 +17,82 @@ class Registration extends Component {
     organizations: [],
     roles: [],
     errors: "",
+    loading: true,
   };
 
-  /**
-   * Use the API service to get all the organizations data
-   */
+  componentDidMount() {
+    this.fetchOrganizationsAPI();
+    this.fetchRolesAPI();
+  }
+
+  dashboardPath = () => {
+    return (
+      <div className="float-right">
+        <i className="fas fa-home" />{" "}
+        <span>
+          <Link className="col-on-primary" to="/">
+            Home
+          </Link>
+        </span>{" "}
+        {`>`}{" "}
+        <span>
+          <Link className="col-on-primary" to="/dashboard">
+            Dashboard
+          </Link>
+        </span>{" "}
+        {`>`}{" "}
+        <span>
+          <Link className="col-on-primary" to="/dashboard/users">
+            Users
+          </Link>
+        </span>{" "}
+        {`>`} <span>Create</span>
+      </div>
+    );
+  };
+
   fetchOrganizationsAPI() {
+    this.setState({ loading: true });
     fetchOrganizations().then((response) => {
       if (response.errors) {
         this.setState({
           errors: response.errors,
+          loading: false,
         });
         return;
       }
       this.setState({
         organizations: response.organizations,
         organization_id: response.organizations[0].id,
+        loading: false,
       });
     });
   }
 
-  /**
-   * Use the API service to get all the roles data
-   */
   fetchRolesAPI() {
+    this.setState({ loading: true });
     fetchRoles().then((response) => {
       if (response.errors) {
         this.setState({
           errors: response.errors,
+          loading: false,
         });
         return;
       }
       this.setState({
+        loading: false,
         roles: response.roles,
         role_id: response.roles[0].id,
       });
     });
   }
 
-  /**
-   * Prepare the data in the form to be sent to the API service, then call the
-   * service with that data and expect the result to show to the user
-   */
+  handleOnChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  };
+
   handleSubmit = (event) => {
     const { email, fullname, organization_id, role_id } = this.state;
 
@@ -77,30 +109,27 @@ class Registration extends Component {
     event.preventDefault();
   };
 
-  /**
-   * Update the component state on every change in the input control in the form
-   */
-  handleOnChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  /**
-   * Perform the necessary tasks needed when the component finish mounting
-   */
-  componentDidMount() {
-    this.fetchOrganizationsAPI();
-    this.fetchRolesAPI();
-  }
-
   render() {
+    const {
+      email,
+      errors,
+      fullname,
+      loading,
+      organizations,
+      organization_id,
+      roles,
+      role_id,
+    } = this.state;
+
     return (
       <React.Fragment>
         <DashboardContainer>
-          <div className="col-lg-6 mx-auto mt-5">
-            {this.state.errors && <AlertNotice message={this.state.errors} />}
+          {errors && <AlertNotice message={errors} />}
+          {this.dashboardPath()}
 
+          {loading ? (
+            <Loader />
+          ) : (
             <div className="card mt-5">
               <div className="card-header">
                 <i className="fa fa-users"></i>
@@ -118,7 +147,7 @@ class Registration extends Component {
                       className="form-control"
                       name="fullname"
                       placeholder="Enter the fullname for the user"
-                      value={this.state.fullname}
+                      value={fullname}
                       onChange={this.handleOnChange}
                       autoFocus
                       required
@@ -135,7 +164,7 @@ class Registration extends Component {
                       className="form-control"
                       name="email"
                       placeholder="Enter the email for the user"
-                      value={this.state.email}
+                      value={email}
                       onChange={this.handleOnChange}
                       required
                     />
@@ -150,10 +179,10 @@ class Registration extends Component {
                       name="organization_id"
                       className="form-control"
                       required
-                      value={this.state.organization_id}
+                      value={organization_id}
                       onChange={this.handleOnChange}
                     >
-                      {this.state.organizations.map(function (org) {
+                      {organizations.map(function (org) {
                         return (
                           <option key={org.id} value={org.id}>
                             {org.name}
@@ -172,10 +201,10 @@ class Registration extends Component {
                       name="role_id"
                       className="form-control"
                       required
-                      value={this.state.role_id}
+                      value={role_id}
                       onChange={this.handleOnChange}
                     >
-                      {this.state.roles.map(function (role) {
+                      {roles.map(function (role) {
                         return (
                           <option key={role.id} value={role.id}>
                             {role.name}
@@ -191,7 +220,7 @@ class Registration extends Component {
                 </form>
               </div>
             </div>
-          </div>
+          )}
         </DashboardContainer>
       </React.Fragment>
     );

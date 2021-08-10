@@ -8,7 +8,8 @@ RUN apt-get update -qq \
     && apt-get install -y cowsay \
     && apt-get update -qq \
     && apt-get install -y nodejs yarn postgresql-client \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && npm rebuild node-sass
 
 # Specify everything will happen within the /app folder inside the container
 RUN mkdir /app
@@ -32,4 +33,4 @@ RUN chmod +x /usr/bin/init.sh
 ENTRYPOINT ["init.sh"]
 
 # Expose the port
-EXPOSE 3000
+EXPOSE 3030

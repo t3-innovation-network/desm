@@ -3,6 +3,7 @@ import DashboardContainer from "./DashboardContainer";
 import fetchOrganizations from "../../services/fetchOrganizations";
 import AlertNotice from "../shared/AlertNotice";
 import OrganizationInfo from "./organizations/OrganizationInfo";
+import { Link } from "react-router-dom";
 
 export default class MainDashboard extends Component {
   state = {
@@ -10,9 +11,20 @@ export default class MainDashboard extends Component {
     errors: "",
   };
 
-  /**
-   * Get the organizations data to be able to show it in the UI
-   */
+  dashboardPath = () => {
+    return (
+      <div className="float-right">
+        <i className="fas fa-home" />{" "}
+        <span>
+          <Link className="col-on-primary" to="/">
+            Home
+          </Link>
+        </span>{" "}
+        {`>`} <span>Dashboard</span>
+      </div>
+    );
+  };
+
   fetchOrganizationsAPI() {
     fetchOrganizations().then((response) => {
       if (response.errors) {
@@ -27,9 +39,6 @@ export default class MainDashboard extends Component {
     });
   }
 
-  /**
-   * Tasks to execute after the first mount of this component
-   */
   componentDidMount() {
     this.fetchOrganizationsAPI();
   }
@@ -37,6 +46,7 @@ export default class MainDashboard extends Component {
   render() {
     return (
       <DashboardContainer>
+        {this.dashboardPath()}
         <div className="col col-md-10 mt-5">
           <div className="row h-50 ml-5">
             {this.state.errors && <AlertNotice message={this.state.errors} />}

@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   web:
     build: .
@@ -6,7 +6,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "3000:3000"
+      - "3030:3030"
     depends_on:
       - db
       - redis
@@ -28,18 +28,18 @@ services:
     volumes:
       - .:/app
     ports:
-      - '3035:3035'
+      - "3035:3035"
     environment:
       - "NODE_ENV=development"
       - "RAILS_ENV=development"
       - "WEBPACKER_DEV_SERVER_HOST=0.0.0.0"
   redis:
-    image: 'redis:5-alpine'
+    image: "redis:5-alpine"
     command: redis-server
     ports:
-      - '6379:6379'
+      - "6380:6379"
     volumes:
-      - 'redis:/data'
+      - "redis:/data"
 
 volumes:
   pg_data:
