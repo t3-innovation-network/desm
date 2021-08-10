@@ -5,18 +5,35 @@ import fetchOrganizations from "../../../services/fetchOrganizations";
 import AlertNotice from "../../shared/AlertNotice";
 
 export default class OrganizationsIndex extends Component {
-  /**
-   * Represents the state of this component. It contains the list of data
-   * that's going to be shown to the user
-   */
   state = {
     organizations: [],
     errors: "",
   };
 
-  /**
-   * Use the API service to get the organizations data
-   */
+  componentDidMount() {
+    this.fetchOrganizationsAPI();
+  }
+
+  dashboardPath = () => {
+    return (
+      <div className="float-right">
+        <i className="fas fa-home" />{" "}
+        <span>
+          <Link className="col-on-primary" to="/">
+            Home
+          </Link>
+        </span>{" "}
+        {`>`}{" "}
+        <span>
+          <Link className="col-on-primary" to="/dashboard">
+            Dashboard
+          </Link>
+        </span>{" "}
+        {`>`} <span>Organizations</span>
+      </div>
+    );
+  };
+
   fetchOrganizationsAPI() {
     fetchOrganizations().then((response) => {
       if (response.errors) {
@@ -31,17 +48,11 @@ export default class OrganizationsIndex extends Component {
     });
   }
 
-  /**
-   * Perform the necessary tasks needed when the component finish mounting
-   */
-  componentDidMount() {
-    this.fetchOrganizationsAPI();
-  }
-
   render() {
     return (
       <DashboardContainer>
         {this.state.errors && <AlertNotice message={this.state.errors} />}
+        {this.dashboardPath()}
 
         <div className="card mt-5">
           <div className="card-header">

@@ -19,7 +19,7 @@ const DashboardContainer = (props) => {
           <div className="col-sm-6 col-md-3 col-lg-2 bg-dashboard-background no-sides-padding">
             <SideBar />
           </div>
-          <div className="col-sm-6 col-md-9 col-lg-10 bg-dashboard-background-light">
+          <div className="col-sm-6 col-md-9 col-lg-10 bg-dashboard-background-light pt-3">
             {props.children}
           </div>
         </div>

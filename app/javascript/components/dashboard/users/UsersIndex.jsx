@@ -5,18 +5,35 @@ import fetchUsers from "../../../services/fetchUsers";
 import AlertNotice from "../../shared/AlertNotice";
 
 export default class UsersIndex extends Component {
-  /**
-   * Represents the state of this component. It contains the list of data
-   * that's going to be shown to the user
-   */
   state = {
     users: [],
     errors: "",
   };
 
-  /**
-   * Use the API service to get this user data
-   */
+  componentDidMount() {
+    this.fetchUsersAPI();
+  }
+
+  dashboardPath = () => {
+    return (
+      <div className="float-right">
+        <i className="fas fa-home" />{" "}
+        <span>
+          <Link className="col-on-primary" to="/">
+            Home
+          </Link>
+        </span>{" "}
+        {`>`}{" "}
+        <span>
+          <Link className="col-on-primary" to="/dashboard">
+            Dashboard
+          </Link>
+        </span>{" "}
+        {`>`} <span>Users</span>
+      </div>
+    );
+  };
+
   fetchUsersAPI() {
     fetchUsers().then((response) => {
       if (response.error) {
@@ -31,17 +48,11 @@ export default class UsersIndex extends Component {
     });
   }
 
-  /**
-   * Perform the necessary tasks needed when the component finish mounting
-   */
-  componentDidMount() {
-    this.fetchUsersAPI();
-  }
-
   render() {
     return (
       <DashboardContainer>
         {this.state.errors && <AlertNotice message={this.state.errors} />}
+        {this.dashboardPath()}
 
         <div className="card mt-5">
           <div className="card-header">

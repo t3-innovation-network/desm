@@ -5,29 +5,78 @@ import AlertNotice from "../../shared/AlertNotice";
 import deleteOrganization from "../../../services/deleteOrganization";
 import updateOrganization from "../../../services/updateOrganization";
 import { toastr as toast } from "react-redux-toastr";
+import { Link } from "react-router-dom";
 
 export default class EditOrganization extends Component {
-  /**
-   * Represents the state of this component. It contains all the fields that are
-   * going to be sent to the API service in order to update an organization
-   */
   state = {
-    /**
-     * Errors from this component's actions
-     */
     errors: "",
-    /**
-     * The representation of the organization in the state of this component
-     */
     organization: {
       name: "",
       email: "",
     },
   };
 
-  /**
-   * Update the component state on every change in the input control in the form
-   */
+  componentDidMount() {
+    this.handleFetchOrganization();
+  }
+
+  dashboardPath = () => {
+    return (
+      <div className="float-right">
+        <i className="fas fa-home" />{" "}
+        <span>
+          <Link className="col-on-primary" to="/">
+            Home
+          </Link>
+        </span>{" "}
+        {`>`}{" "}
+        <span>
+          <Link className="col-on-primary" to="/dashboard">
+            Dashboard
+          </Link>
+        </span>{" "}
+        {`>`}{" "}
+        <span>
+          <Link className="col-on-primary" to="/dashboard/organizations">
+            Organizations
+          </Link>
+        </span>{" "}
+        {`>`} <span>Edit</span>
+      </div>
+    );
+  };
+
+  deleteOrganizationAPI() {
+    const { organization } = this.state;
+
+    deleteOrganization(organization.id).then((response) => {
+      if (response.error) {
+        this.setState({
+          errors: response.error,
+        });
+        return;
+      }
+      toast.info("Organization successfully removed");
+      this.props.history.push("/dashboard/organizations");
+    });
+  }
+
+  handleFetchOrganization() {
+    let orgId = this.props.match.params.id;
+
+    fetchOrganization(orgId).then((response) => {
+      if (response.error) {
+        this.setState({
+          errors: response.error,
+        });
+        return;
+      }
+      this.setState({
+        organization: response.organization,
+      });
+    });
+  }
+
   handleOnChange = (event) => {
     const { organization } = this.state;
 
@@ -39,56 +88,6 @@ export default class EditOrganization extends Component {
     });
   };
 
-  /**
-   * Use the API service to get this organization data
-   */
-  handleFetchOrganization() {
-    let orgId = this.props.match.params.id;
-
-    fetchOrganization(orgId).then((response) => {
-      if (response.error) {
-        this.setState({
-          errors: response.error,
-        });
-        return;
-      }
-      /// We have the organization data from the API service
-      this.setState({
-        organization: response.organization,
-      });
-    });
-  }
-
-  /**
-   * Hit the API service to delete this organization
-   */
-  deleteOrganizationAPI() {
-    const { organization } = this.state;
-
-    deleteOrganization(organization.id).then((response) => {
-      if (response.error) {
-        this.setState({
-          errors: response.error,
-        });
-        return;
-      }
-      /// We have a list of organizations from the backend
-      toast.info("Organization successfully removed");
-      this.props.history.push("/dashboard/organizations");
-    });
-  }
-
-  /**
-   * Perform the necessary tasks needed when the component finish mounting
-   */
-  componentDidMount() {
-    this.handleFetchOrganization();
-  }
-
-  /**
-   * Send the data prepared in the form to the API service, and expect
-   * the result to be shown to the user
-   */
   handleSubmit = (event) => {
     const { organization } = this.state;
 
@@ -116,14 +115,12 @@ export default class EditOrganization extends Component {
   };
 
   render() {
-    /**
-     * Elements from state
-     */
     const { errors, organization } = this.state;
 
     return (
       <DashboardContainer>
         {errors && <AlertNotice message={errors} />}
+        {this.dashboardPath()}
 
         <div className="card mt-5">
           <div className="card-header">
