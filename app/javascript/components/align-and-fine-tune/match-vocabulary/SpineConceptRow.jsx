@@ -2,20 +2,19 @@ import React from "react";
 import { DraggableItemTypes } from "../../shared/DraggableItemTypes";
 import DropZone from "../../shared/DropZone";
 import PredicateOptions from "../../shared/PredicateOptions";
-import ConceptCard from "./ConceptCard";
 import SimpleConceptCard from "./SimpleConceptCard";
 
 /**
  * List the concepts for the spine term vocabulary as cards with the options to map.
  *
  * Props:
- * @param {Object} alignment
- * @param {Object} concept
- * @param {String} mappingOrigin
- * @param {String} spineOrigin
- * @param {Array} predicates
- * @param {Function} onPredicateSelected
- * @param {Integer} selectedCount
+ * @prop {Object} alignment
+ * @prop {Object} concept
+ * @prop {String} mappingOrigin
+ * @prop {String} spineOrigin
+ * @prop {Array} predicates
+ * @prop {Function} onPredicateSelected
+ * @prop {Integer} selectedCount
  */
 const SpineConceptRow = (props) => {
   /**
@@ -48,8 +47,8 @@ const SpineConceptRow = (props) => {
    * The name of the selected predicate
    */
   const predicateLabel = () => {
-    return alignment.predicate_id
-      ? predicates.find((p) => p.id == alignment.predicate_id).pref_label
+    return alignment.predicateId
+      ? predicates.find((p) => p.id === alignment.predicateId).pref_label
       : null;
   };
 
@@ -70,12 +69,12 @@ const SpineConceptRow = (props) => {
         )}
       </div>
       <div className="col-4">
-        {alignment.mapped_concepts && alignment.mapped_concepts.length ? (
-          alignment.mapped_concepts.map((conc) => {
+        {alignment.mappedConceptsList && alignment.mappedConceptsList.length ? (
+          alignment.mappedConceptsList.map((concept) => {
             return (
               <SimpleConceptCard
-                key={conc.id}
-                concept={conc}
+                key={concept.id}
+                concept={concept}
                 origin={mappingOrigin}
               />
             );

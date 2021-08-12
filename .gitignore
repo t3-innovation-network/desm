@@ -38,3 +38,6 @@ yarn-debug.log*
 # Ignore environment files
 .env*
 !.env.example
+
+# Ignore IDE donfiguration files
+.idea/*

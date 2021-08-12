@@ -4,7 +4,7 @@
 # @description: Represents the ability that a user has to access
 #   organization records.
 ###
-class MappingTermPolicy < ApplicationPolicy
+class AlignmentPolicy < ApplicationPolicy
   def initialize(user, record)
     @user = user || @current_user
     @record = record

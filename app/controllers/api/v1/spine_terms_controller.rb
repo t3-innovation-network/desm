@@ -14,7 +14,7 @@ class Api::V1::SpineTermsController < ApplicationController
     ActiveRecord::Base.transaction do
       spine_term = Term.create!(permitted_params[:spine_term])
       assign_term_to_spine(spine_term, permitted_params[:specification_id])
-      @alignment = MappingTerm.create!(permitted_params[:mapping_term].merge(spine_term_id: spine_term.id))
+      @alignment = Alignment.create!(permitted_params[:alignment].merge(spine_term_id: spine_term.id))
     end
 
     render json: @alignment
@@ -46,7 +46,7 @@ class Api::V1::SpineTermsController < ApplicationController
           uri label comment
         ]
       ],
-      mapping_term: %i[
+      alignment: %i[
         comment predicate_id mapping_id uri synthetic
       ]
     )
@@ -56,13 +56,13 @@ class Api::V1::SpineTermsController < ApplicationController
   # @description: Ensure we have the mapped terms in order to add the new synthetic term to the spine
   ###
   def validate_mapped_terms
-    raise "No mapped terms provided for synthetic" unless params[:synthetic][:mapping_term][:mapped_terms].present?
+    raise "No mapped terms provided for synthetic" unless params[:synthetic][:alignment][:mapped_terms].present?
   end
 
   ###
   # @description: Set the mapped terms to the recently created alignment
   ###
   def set_mapped_terms
-    @alignment.update_mapped_terms(params[:synthetic][:mapping_term][:mapped_terms])
+    @alignment.update_mapped_terms(params[:synthetic][:alignment][:mapped_terms])
   end
 end

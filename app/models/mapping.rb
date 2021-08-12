@@ -9,8 +9,7 @@
 ###
 class Mapping < ApplicationRecord
   ###
-  # @description: This will allow to keep track of every change in this model thorugh
-  #   the 'audits' method
+  # @description: This will allow to keep track of every change in this model using the 'audits' method
   ###
   audited
 
@@ -31,11 +30,11 @@ class Mapping < ApplicationRecord
   ###
   belongs_to :spine, foreign_key: "spine_id", class_name: :Specification
   ###
-  # @description: Each term that conforms the mapping. The terms of the mapping contains informatio
+  # @description: Each term that conforms the mapping. The terms of the mapping contains information
   #   about the type of alignment (predicate), which term from the spine was mapped to which of the
   #   original specification, and more.
   ###
-  has_many :terms, class_name: :MappingTerm, dependent: :destroy
+  has_many :terms, class_name: :Alignment, dependent: :destroy
   ###
   # @description: The selected terms from the original uploaded specification. The user can select one
   #   ore more terms from it.
@@ -59,6 +58,21 @@ class Mapping < ApplicationRecord
   enum status: {uploaded: 0, in_progress: 1, mapped: 2}
 
   ###
+  # CALLBACKS
+  ###
+
+  ###
+  # @description: Every mapping should have the same number of terms as the associated spine terms
+  ###
+  after_create :generate_alignments
+
+  ###
+  # @description: Remove all mapped terms from every alignment if we're going to
+  #   mark the mapping back as "uploaded"
+  ###
+  around_update :remove_alignments_mapped_terms, if: proc { status_changed? && uploaded? }
+
+  ###
   # METHODS
   ###
 
@@ -68,6 +82,19 @@ class Mapping < ApplicationRecord
   ###
   def as_json(options={})
     super options.merge(methods: %i[uploaded? mapped? in_progress? origin spine_origin domain mapped_terms])
+  end
+
+  ###
+  # @description: Creates the terms for the mapping (alignments).
+  ###
+  def generate_alignments
+    spine.terms.each do |term|
+      Alignment.create!(
+        uri: term.desm_uri(spine.domain),
+        mapping: self,
+        spine_term_id: term.id
+      )
+    end
   end
 
   ###
@@ -120,7 +147,18 @@ class Mapping < ApplicationRecord
   end
 
   ###
-  # @description: The organization that originated this the spine
+  # @description: Remove all alignments from a mapping
+  ###
+  def remove_alignments_mapped_terms
+    terms.each {|term|
+      term.mapped_term_ids = []
+      term.predicate_id = nil
+      term.save!
+    }
+  end
+
+  ###
+  # @description: The organization that originated the spine
   # @return [String]
   ###
   def spine_origin

@@ -10,19 +10,18 @@ import { vocabName } from "../../helpers/Vocabularies";
  *
  * Props:
  *
- * @param {Boolean} disabled
+ * @prop {Boolean} disabled
+ * @prop {int} propertiesCount
  */
 const SpecsPreviewTabs = (props) => {
   /**
    * Elements from props
    */
-  const { disabled } = props;
+  const { disabled, propertiesCount } = props;
   /**
-   * The specifcation contents ready to preview. THese are not the files object, but its contents
-   * @todo: After the refactoring to merge the files to work with only one, this ahouls be only one file
-   *    content, not a collection
+   * The files content already merged. If its only one file, the same result.
    */
-  const previewSpecs = useSelector((state) => state.previewSpecs);
+  const filteredFile = useSelector((state) => state.filteredFile);
   /**
    * The vocabularies content ready to be printed. JSON format.
    */
@@ -35,7 +34,7 @@ const SpecsPreviewTabs = (props) => {
   /**
    * Remove a specific vocabulary from the collection of recognized vocabularies
    *
-   * @param {Integer} i: The Vicabulary index to find in the vocabularies collection
+   * @param {Integer} i: The Vocabulary index to find in the vocabularies collection
    */
   const handleRemoveVocabulary = (i) => {
     /// Remove the vocabulary using its index in the collection
@@ -49,29 +48,34 @@ const SpecsPreviewTabs = (props) => {
 
   return (
     <React.Fragment>
-      <Tabs className={"mt-3" + (disabled ? " disabled-container" : "")}>
+      <Tabs
+        className={"mt-3" + (disabled ? " disabled-container" : "")}
+        defaultFocus={true}
+        defaultIndex={0}
+      >
         <TabList>
-          {previewSpecs.map((content, i) => {
-            return <Tab key={i}>{"Spec"}</Tab>;
-          })}
+          <Tab>
+            Spec {" - "}
+            <strong className={propertiesCount < 1 ? "col-primary" : ""}>
+              {propertiesCount + " "}
+            </strong>
+            properties
+          </Tab>
+
           {vocabularies.map((content, i) => {
             return <Tab key={i}>{vocabName(content["@graph"])}</Tab>;
           })}
         </TabList>
 
-        {previewSpecs.map((content, i) => {
-          return (
-            <TabPanel key={i}>
-              <div className="card mt-2 mb-2 has-scrollbar scrollbar">
-                <div className="card-body">
-                  <pre>
-                    <code>{content}</code>
-                  </pre>
-                </div>
-              </div>
-            </TabPanel>
-          );
-        })}
+        <TabPanel>
+          <div className="card mt-2 mb-2 has-scrollbar scrollbar">
+            <div className="card-body">
+              <pre>
+                <code>{JSON.stringify(filteredFile, null, 2)}</code>
+              </pre>
+            </div>
+          </div>
+        </TabPanel>
 
         {vocabularies.map((vocabulary, i) => {
           return (
@@ -91,7 +95,7 @@ const SpecsPreviewTabs = (props) => {
                     <i
                       className="fa fa-trash cursor-pointer"
                       aria-hidden="true"
-                    ></i>
+                    />
                   </button>
                 </div>
                 <div className="card-body  has-scrollbar scrollbar">

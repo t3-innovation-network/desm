@@ -20,7 +20,17 @@ class Api::V1::VocabulariesController < ApplicationController
   # @description: Returns a specific vocabulary
   ###
   def show
-    render json: @instance, include: :concepts
+    parser = Parsers::Skos.new(
+      context: @instance.context,
+      graph: @instance.concepts.map {|concept|
+        concept.raw.merge(key: concept.id)
+      }
+    )
+
+    render json: {
+      "name": @instance.name,
+      "concepts": parser.concepts_list_simplified
+    }
   end
 
   ###
@@ -31,7 +41,9 @@ class Api::V1::VocabulariesController < ApplicationController
   def flat
     render json: {
       "@context": @instance.context,
-      "@graph": [@instance.content].concat(@instance.concepts.map(&:raw))
+      "@graph": [@instance.content].concat(@instance.concepts.map {|concept|
+        concept.raw.merge(key: concept.id)
+      })
     }
   end
 

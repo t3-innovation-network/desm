@@ -6,56 +6,27 @@ module Processors
   ###
   class Mappings
     ###
-    # @description: Create the mapping entry from a specification
-    #
-    # @param [Specification] specification The specification that this mapping is created from
+    # @description: Initializes the mapping processor with a specification and a user
+    # @param specification [Specification] The specification that this mapping is created from
+    # @param user [User]
     ###
-    def self.create(specification, user)
-      name = "#{user.organization.name} - #{specification.domain.pref_label}"
-      @spine = specification.domain.spine
-
-      ActiveRecord::Base.transaction do
-        mapping = Mapping.create!(
-          name: name,
-          title: name,
-          user: user,
-          specification: specification,
-          spine_id: @spine.id
-        )
-
-        create_mapping_terms(mapping)
-
-        mapping
-      end
+    def initialize specification, user
+      @specification = specification
+      @user = user
     end
 
     ###
-    # @description: Creates the terms for the mapping.
-    # @param [Mapping] mapping: The mapping for which the terms are going to be created.
-    #
-    # @return [Array]
+    # @description: Create the mapping instance from a specification
     ###
-    def self.create_mapping_terms mapping
-      terms = 0
-      mapping.spine.terms.each do |term|
-        # Do not create this term if there's already one with the same uri
-        # next if MappingTerm.find_by(uri: term.desm_uri)
-
-        MappingTerm.create!(
-          uri: term.desm_uri(@spine.domain),
-          mapping: mapping,
-          spine_term_id: term.id
-        )
-
-        terms += 1
-      end
-
-      # The mapping should have terms assigned
-      return if terms.positive?
-
-      throw "Could not create candidate alignments because the terms already "\
-        "exists in our records. Please review the previously uploaded specifications "\
-        "and mappings"
+    def create
+      name = "#{@user.organization.name} - #{@specification.domain.pref_label}"
+      Mapping.create!(
+        name: name,
+        title: name,
+        user: @user,
+        specification: @specification,
+        spine: @specification.domain.spine
+      )
     end
   end
 end

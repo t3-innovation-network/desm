@@ -27,6 +27,9 @@ const AuthButton = () => {
       <button
         className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark"
         onClick={handleLogoutClick}
+        data-toggle="tooltip"
+        data-placement="bottom"
+        title="Terminate the session. Be sure you saved your changes"
       >
         Sign Out
       </button>

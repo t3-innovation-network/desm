@@ -57,9 +57,11 @@ module Processors
         # The concept scheme is processed, let's start with the proper predicates
         next unless valid_predicate(predicate)
 
+        parser = Parsers::JsonLd::Node.new(predicate)
+
         Predicate.create!({
-                            definition: Parsers::Specifications.read!(predicate, "definition"),
-                            pref_label: Parsers::Specifications.read!(predicate, "prefLabel"),
+                            definition: parser.read!("definition"),
+                            pref_label: parser.read!("prefLabel"),
                             uri: predicate[:id],
                             weight: Parsers::Specifications.read!(predicate, "weight"),
                             predicate_set: @predicate_set
@@ -77,7 +79,7 @@ module Processors
     ###
     def valid_predicate predicate
       !(
-        Array(Parsers::Specifications.read!(predicate, "type")).any? {|type|
+        Array(parser.read!("type")).any? {|type|
           type.downcase.include?("conceptscheme")
         } ||
         already_exists?(Predicate, predicate, print_message: true)

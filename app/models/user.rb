@@ -19,7 +19,7 @@ class User < ApplicationRecord
   ###
   include Tokenable
   ###
-  # @description: Added because Tokenable needs the model that inclides it to have a "token" named attribute
+  # @description: Added because Tokenable needs the model that includes it to have a "token" named attribute
   ###
   alias_attribute :token, :reset_password_token
 
@@ -51,7 +51,7 @@ class User < ApplicationRecord
   ###
   # @description: It should be part of an organization
   ###
-  validates :organization_id, presence: true
+  validates :organization, presence: true
   ###
   # @description: Email should be present
   ###
@@ -66,7 +66,7 @@ class User < ApplicationRecord
     ###
     min_entropy: 15,
     ###
-    # @description: The mimimum acceptable length of the password.
+    # @description: The minimum acceptable length of the password.
     ###
     min_word_length: MIN_PASSWORD_LENGTH,
     ###

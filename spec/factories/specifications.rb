@@ -8,5 +8,13 @@ FactoryBot.define do
     uri { Faker::Lorem.sentence }
     user
     domain
+    with_terms
+
+    trait :with_terms do
+      after(:build) do |spec|
+        spec.terms = FactoryBot.build_list(:term, 10)
+        spec.save
+      end
+    end
   end
 end

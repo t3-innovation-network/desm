@@ -21,19 +21,19 @@ module Processors
     end
 
     ###
-    # @description: Filter a collection of nodes of any type to get a new collection of only those nodes of
-    #   type "skos:concept".
-    # @param [Array] graph The graph containing all the Properties, Classes, Concepts, Concept Scheme nodes
-    #   and more.
-    # @return [Array] A collection of only nodes of type "skos:concept".
+    # @description: Identify all the concepts for a given vocabulary id (scheme uri).
+    # @param [Object] scheme_node: The scheme node containing the uri of the related concepts
+    # @return [Array]
     ###
-    def filter_concept_nodes
-      @graph.select {|node|
-        Array(Parsers::Specifications.read!(node, "type")).any? {|type|
-          type.downcase.include?("concept") && !type.downcase.include?("conceptscheme")
+    def identify_concepts scheme_node
+      child_concepts_uris(scheme_node).map {|concept_uri|
+        @concept_nodes.find {|c_node|
+          Parsers::Specifications.read!(c_node, "id").downcase == concept_uri.downcase
         }
       }
     end
+
+    protected
 
     ###
     # @description: Returns the first concept scheme in a graph. Useful for when we have a single
@@ -47,31 +47,6 @@ module Processors
     end
 
     ###
-    # @description: Identify all the concepts for a given vocabulary id (scheme uri).
-    # @param [Object] scheme_node: The scheme node containing the uri of the related concepts
-    # @return [Array]
-    ###
-    def identify_concepts scheme_node
-      child_concepts_uris(scheme_node).map {|concept_uri|
-        @concept_nodes.find {|c_node|
-          Parsers::Specifications.read!(c_node, "id").downcase == concept_uri.downcase
-        }
-      }
-    end
-
-    ###
-    # @description: Returns all the concept scheme nodes (vocabulary "main" nodes)
-    # @return [Array]
-    ###
-    def scheme_nodes
-      @graph.select {|node|
-        Array(Parsers::Specifications.read!(node, "type")).any? {|type|
-          type.downcase.include?("conceptscheme")
-        }
-      }
-    end
-
-    ###
     # @description: Determines whether a key (an attribute of a node) id using a uri that's defined inside a context
     # @param [Hash] context.
     # @param [String] attribute_key
@@ -81,21 +56,22 @@ module Processors
       context_uris_list(context).include?(attribute_key.split(":").first)
     end
 
+    private
+
     ###
-    # @description: Returns all those nodes that are not skos types (concepts or concept schemes)
-    # @param [Array] graph: An array of hashes, representing the nodes, that could be any "@type",
-    #   like "rdfsClass", "rdf:Property", among others
-    # @return [Array]
+    # @description: Filter a collection of nodes of any type to get a new collection of only those nodes of
+    #   type "skos:concept".
+    # @param [Array] graph The graph containing all the Properties, Classes, Concepts, Concept Scheme nodes
+    #   and more.
+    # @return [Array] A collection of only nodes of type "skos:concept".
     ###
-    def self.exclude_skos_types(graph)
-      graph.reject {|node|
+    def filter_concept_nodes
+      @graph.select {|node|
         Array(Parsers::Specifications.read!(node, "type")).any? {|type|
-          type.downcase.include?("conceptscheme") || type.downcase.include?("concept")
+          type.downcase.include?("concept") && !type.downcase.include?("conceptscheme")
         }
       }
     end
-
-    private
 
     ###
     # @description: Get the concept nodes belonging to a concept scheme by reading the childs list

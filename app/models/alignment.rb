@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
 ###
-# @description: Represents a mapping term, which is each of terms resulting of
-#   a merge between 2 specifications. It's also called an "Alignment"
+# @description: Represents a mapping term, which is each of terms resulting of a merge between 2 specifications. It's
+# also called an "Alignment".
 #
-#   It's created when the user selects a term from the specification to map
-#   against the spine.
+#   It's created when the user selects a term from the specification to map against the spine.
 ###
-class MappingTerm < ApplicationRecord
+class Alignment < ApplicationRecord
   ###
-  # @description: This will allow to keep track of every change in this model thorugh
-  #   the 'audits' method
+  # @description: This will allow to keep track of every change in this model using the 'audits' method
   ###
   audited
 
@@ -34,7 +32,7 @@ class MappingTerm < ApplicationRecord
   ###
   # @description: After matching some terms from the uploaded specification, we store it here.
   ###
-  has_and_belongs_to_many :mapped_terms, join_table: :mapping_term_mapped_terms, class_name: :Term
+  has_and_belongs_to_many :mapped_terms, join_table: :alignment_mapped_terms, class_name: :Term
   ###
   # @description: If this mapping term has a vocabulary and the spine term also does, it will be
   #   necessary to map the 2 of it

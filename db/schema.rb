@@ -10,17 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_04_135319) do
+ActiveRecord::Schema.define(version: 2021_01_29_204042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "alignment_mapped_terms", force: :cascade do |t|
+    t.bigint "alignment_id"
+    t.bigint "term_id"
+    t.index ["alignment_id", "term_id"], name: "index_alignment_mapped_terms_on_alignment_id_and_term_id", unique: true
+    t.index ["alignment_id"], name: "index_alignment_mapped_terms_on_alignment_id"
+    t.index ["term_id"], name: "index_alignment_mapped_terms_on_term_id"
+  end
+
   create_table "alignment_vocabularies", force: :cascade do |t|
-    t.bigint "mapping_term_id", null: false
+    t.bigint "alignment_id", null: false
     t.string "title"
     t.string "description"
     t.string "creator"
-    t.index ["mapping_term_id"], name: "index_alignment_vocabularies_on_mapping_term_id"
+    t.index ["alignment_id"], name: "index_alignment_vocabularies_on_alignment_id"
   end
 
   create_table "alignment_vocabulary_concept_mapped_concepts", force: :cascade do |t|
@@ -37,6 +45,21 @@ ActiveRecord::Schema.define(version: 2021_01_04_135319) do
     t.integer "spine_concept_id", null: false
     t.index ["alignment_vocabulary_id"], name: "index_alignment_vocabulary_concepts_on_alignment_vocabulary_id"
     t.index ["predicate_id"], name: "index_alignment_vocabulary_concepts_on_predicate_id"
+  end
+
+  create_table "alignments", force: :cascade do |t|
+    t.string "uri"
+    t.text "comment"
+    t.bigint "mapping_id", null: false
+    t.bigint "predicate_id"
+    t.integer "spine_term_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "vocabulary_id"
+    t.boolean "synthetic", default: false, null: false
+    t.index ["mapping_id"], name: "index_alignments_on_mapping_id"
+    t.index ["predicate_id"], name: "index_alignments_on_predicate_id"
+    t.index ["vocabulary_id"], name: "index_alignments_on_vocabulary_id"
   end
 
   create_table "assignments", force: :cascade do |t|
@@ -98,29 +121,6 @@ ActiveRecord::Schema.define(version: 2021_01_04_135319) do
     t.index ["mapping_id", "term_id"], name: "index_mapping_selected_terms_on_mapping_id_and_term_id", unique: true
     t.index ["mapping_id"], name: "index_mapping_selected_terms_on_mapping_id"
     t.index ["term_id"], name: "index_mapping_selected_terms_on_term_id"
-  end
-
-  create_table "mapping_term_mapped_terms", force: :cascade do |t|
-    t.bigint "mapping_term_id"
-    t.bigint "term_id"
-    t.index ["mapping_term_id", "term_id"], name: "index_mapping_term_mapped_terms_on_mapping_term_id_and_term_id", unique: true
-    t.index ["mapping_term_id"], name: "index_mapping_term_mapped_terms_on_mapping_term_id"
-    t.index ["term_id"], name: "index_mapping_term_mapped_terms_on_term_id"
-  end
-
-  create_table "mapping_terms", force: :cascade do |t|
-    t.string "uri"
-    t.text "comment"
-    t.bigint "mapping_id", null: false
-    t.bigint "predicate_id"
-    t.integer "spine_term_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.bigint "vocabulary_id"
-    t.boolean "synthetic", default: false, null: false
-    t.index ["mapping_id"], name: "index_mapping_terms_on_mapping_id"
-    t.index ["predicate_id"], name: "index_mapping_terms_on_predicate_id"
-    t.index ["vocabulary_id"], name: "index_mapping_terms_on_vocabulary_id"
   end
 
   create_table "mappings", force: :cascade do |t|
@@ -191,6 +191,14 @@ ActiveRecord::Schema.define(version: 2021_01_04_135319) do
     t.index ["term_id"], name: "index_properties_on_term_id"
   end
 
+  create_table "rdfs_class_nodes", force: :cascade do |t|
+    t.string "uri"
+    t.jsonb "definition"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["uri"], name: "index_rdfs_class_nodes_on_uri", unique: true
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -218,6 +226,7 @@ ActiveRecord::Schema.define(version: 2021_01_04_135319) do
     t.bigint "domain_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.jsonb "selected_domains_from_file"
     t.index ["domain_id"], name: "index_specifications_on_domain_id"
     t.index ["uri"], name: "index_specifications_on_uri", unique: true
     t.index ["user_id"], name: "index_specifications_on_user_id"
@@ -267,21 +276,21 @@ ActiveRecord::Schema.define(version: 2021_01_04_135319) do
     t.index ["organization_id"], name: "index_vocabularies_on_organization_id"
   end
 
-  add_foreign_key "alignment_vocabularies", "mapping_terms"
+  add_foreign_key "alignment_mapped_terms", "alignments"
+  add_foreign_key "alignment_mapped_terms", "terms"
+  add_foreign_key "alignment_vocabularies", "alignments"
   add_foreign_key "alignment_vocabulary_concept_mapped_concepts", "alignment_vocabulary_concepts"
   add_foreign_key "alignment_vocabulary_concept_mapped_concepts", "skos_concepts"
   add_foreign_key "alignment_vocabulary_concepts", "alignment_vocabularies"
   add_foreign_key "alignment_vocabulary_concepts", "predicates"
+  add_foreign_key "alignments", "mappings"
+  add_foreign_key "alignments", "predicates"
+  add_foreign_key "alignments", "vocabularies"
   add_foreign_key "assignments", "roles"
   add_foreign_key "assignments", "users"
   add_foreign_key "domains", "domain_sets"
   add_foreign_key "mapping_selected_terms", "mappings"
   add_foreign_key "mapping_selected_terms", "terms"
-  add_foreign_key "mapping_term_mapped_terms", "mapping_terms"
-  add_foreign_key "mapping_term_mapped_terms", "terms"
-  add_foreign_key "mapping_terms", "mappings"
-  add_foreign_key "mapping_terms", "predicates"
-  add_foreign_key "mapping_terms", "vocabularies"
   add_foreign_key "mappings", "specifications"
   add_foreign_key "mappings", "users"
   add_foreign_key "properties", "terms"

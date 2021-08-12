@@ -2,7 +2,7 @@ import apiRequest from "./api/apiRequest";
 
 const deleteMapping = async (alignmentId) => {
   return await apiRequest({
-    url: "/api/v1/mapping_terms/" + alignmentId,
+    url: "/api/v1/alignments/" + alignmentId,
     method: "delete"
   });
 };

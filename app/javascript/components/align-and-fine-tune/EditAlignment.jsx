@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
-import updateMappingTerm from "../../services/updateMappingTerm";
+import updateAlignment from "../../services/updateAlignment";
 import AlertNotice from "../shared/AlertNotice";
 import ModalStyles from "../shared/ModalStyles";
 import PredicateOptions from "../shared/PredicateOptions";
@@ -8,63 +8,33 @@ import PredicateOptions from "../shared/PredicateOptions";
 const EditAlignment = (props) => {
   Modal.setAppElement("body");
 
-  /**
-   * Elements from props
-   */
   const {
-    mappingTerm,
+    alignment,
+    modalIsOpen,
     mode,
     onCommentUpdated,
     onPredicateUpdated,
+    onRequestClose,
     predicate,
     predicates,
     spineTerm,
   } = props;
 
-  /**
-   * The mode to use this form. It can be either "comment" or "edit"
-   */
-  const [currentMode, setCurrentMode] = useState(currentMode);
-
-  /**
-   * Controls the button to save the comment. Not to be available when there are no changes to save.
-   */
+  const [currentMode, setCurrentMode] = useState(mode);
   const [commentChanged, setCommentChanged] = useState(false);
-
-  /**
-   * Controls the button to save the predicate. Not to be available when there are no changes to save.
-   */
   const [predicateChanged, setPredicateChanged] = useState(false);
-
-  /**
-   * Manage the errors on this screen
-   */
   const [error, setError] = useState(null);
+  const [comment, setComment] = useState(alignment?.comment);
+  const [selectedPredicate, setSelectedPredicate] = useState(predicate);
 
-  /**
-   * The value for the comment on the alignment
-   */
-  const [comment, setComment] = useState(props.mappingTerm.comment);
-
-  /**
-   * The predicate selected when editing an alignment
-   */
-  const [selectedPredicate, setSelectedPredicate] = useState(props.predicate);
-
-  /**
-   * Keep the value of the comment while changing (while the user types on the textarea)
-   */
   const handleCommentChange = (e) => {
     setCommentChanged(true);
     setComment(e.target.value);
   };
 
-  /**
-   * Saves the comment in the alignment
-   */
   const handleSaveComment = async () => {
-    let response = await updateMappingTerm({
-      id: mappingTerm.id,
+    let response = await updateAlignment({
+      id: alignment.id,
       comment: comment,
     });
 
@@ -76,23 +46,15 @@ const EditAlignment = (props) => {
     onCommentUpdated({ saved: true, comment: comment });
   };
 
-  /**
-   * Manage the change of predicate. Executed when the user clicks on a predicate option
-   *
-   * @param {Object} predicate
-   */
   const handlePredicateSelected = (predicate) => {
     setPredicateChanged(true);
     setSelectedPredicate(predicate);
   };
 
-  /**
-   * Save the changes after editing the alignment
-   */
   const handleSaveAlignment = async () => {
-    let response = await updateMappingTerm({
-      id: mappingTerm.id,
-      predicate_id: selectedPredicate.id,
+    let response = await updateAlignment({
+      id: alignment.id,
+      predicateId: selectedPredicate.id,
     });
 
     if (response.error) {
@@ -102,22 +64,19 @@ const EditAlignment = (props) => {
 
     onPredicateUpdated({
       saved: true,
-      term: mappingTerm,
+      term: alignment,
       predicate: selectedPredicate,
     });
   };
 
-  /**
-   * Update the state each time the modl window opens
-   */
   useEffect(() => {
-    setCurrentMode(props.mode);
-  }, [props.mode]);
+    setCurrentMode(mode);
+  }, [mode]);
 
   return (
     <Modal
-      isOpen={props.modalIsOpen}
-      onRequestClose={props.onRequestClose}
+      isOpen={modalIsOpen}
+      onRequestClose={onRequestClose}
       contentLabel="Comment"
       style={ModalStyles}
       shouldCloseOnEsc={true}
@@ -126,10 +85,7 @@ const EditAlignment = (props) => {
       <div className="card">
         <div className="card-header">
           <i className="fas fa-comment col-primary"></i>
-          <a
-            className="float-right cursor-pointer"
-            onClick={props.onRequestClose}
-          >
+          <a className="float-right cursor-pointer" onClick={onRequestClose}>
             <i className="fas fa-times"></i>
           </a>
         </div>
@@ -158,7 +114,7 @@ const EditAlignment = (props) => {
               )}
             </div>
             <div className="col-4">
-              {mappingTerm.mapped_terms.map((mTerm) => {
+              {alignment.mappedTerms.map((mTerm) => {
                 return (
                   <div key={mTerm.id} className="card mb-3">
                     <div className="card-header">{mTerm.name}</div>

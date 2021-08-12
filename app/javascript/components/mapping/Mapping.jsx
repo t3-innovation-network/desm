@@ -3,8 +3,15 @@ import TopNav from "../shared/TopNav";
 import MappingForm from "./MappingForm";
 import MappingPreview from "./MappingPreview";
 import TopNavOptions from "../shared/TopNavOptions";
+import AlertNotice from "../shared/AlertNotice";
+import { useSelector } from "react-redux";
 
 const Mapping = (props) => {
+  /**
+   * The errors in the mapping form accross different components
+   */
+  const mappingFormErrors = useSelector((state) => state.mappingFormErrors);
+
   /**
    * Here is where the route redirects when the user wants to map
    * a specification, so here is where we can handle redirections.
@@ -32,6 +39,11 @@ const Mapping = (props) => {
       <div className="wrapper">
         <TopNav centerContent={navCenterOptions} />
         <div className="container-fluid container-wrapper">
+          {mappingFormErrors.length ? (
+            <AlertNotice message={mappingFormErrors} />
+          ) : (
+            ""
+          )}
           <div className="row">
             <MappingForm />
             <MappingPreview redirect={handleRedirect} />

@@ -14,10 +14,13 @@ Rails.application.routes.draw do
   
   namespace :api do
     namespace :v1 do
+      resources :alignment_vocabulary_concepts, only: [:update]
+      resources :alignment_synthetic_concepts, only: [:create]
       resources :audits, only: [:index]
       resources :domains, only: [:index, :show]
       resources :mappings, only: [:create, :destroy, :show, :index, :update]
-      resources :mapping_terms, only: [:destroy, :index, :update]
+      resources :alignments, only: [:destroy, :index, :update]
+      resources :merged_files, only: [:create, :show]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :predicates, only: [:index]
       resources :roles, only: [:index]
@@ -25,8 +28,6 @@ Rails.application.routes.draw do
       resources :spine_terms, only: [:create]
       resources :terms, only: [:show, :update, :destroy]
       resources :vocabularies, only: [:index, :create, :show]
-      resources :alignment_vocabulary_concepts, only: [:update]
-      resources :alignment_synthetic_concepts, only: [:create]
       resources :spine_specifications, only: :index
 
       # Mapping selected terms
@@ -35,11 +36,10 @@ Rails.application.routes.draw do
       get 'mappings/:id/export' => 'mappings#export'
       delete 'mappings/:id/selected_terms' => 'mapping_selected_terms#destroy'
 
-      get 'mapping_terms/:id/vocabulary' => 'alignment_vocabularies#show'
+      get 'alignments/:id/vocabulary' => 'alignment_vocabularies#show'
       get 'mappings/:id/terms' => 'mappings#show_terms'
       post 'merged_files/:id/classes' => 'merged_files#classes'
       post 'merged_files/:id/filter' => 'merged_files#filter'
-      post 'merged_files/create' => 'merged_files#create'
       get 'specifications/:id/terms' => 'terms#index'
       get 'vocabularies/:id/flat' => 'vocabularies#flat'
     end

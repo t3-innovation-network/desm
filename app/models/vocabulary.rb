@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ###
-# @description: Represents a vocabularie to be used in a term for
+# @description: Represents a vocabulary to be used in a term for
 #   a specification.
 #   - A term can have many vocabularies associated. And a vocabulary
 #   may be in use by many terms.

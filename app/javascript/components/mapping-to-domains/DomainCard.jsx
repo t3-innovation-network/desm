@@ -19,7 +19,7 @@ const DomainCard = (props) => {
             {props.mappedTerms.length + " Added"}
           </div>
           <div className="col-8">
-            {/* Only accept mappingTerms if the domain has a spine */}
+            {/* Only accept alignments if the domain has a spine */}
             <DropZone
               droppedItem={{
                 name: props.domain.name,

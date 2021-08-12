@@ -8,7 +8,13 @@ class LeftSideHome extends React.Component {
         <section>
           <h6 className="subtitle">View Specification</h6>
           <p>To see crosswalks currently in process.</p>
-          <Link to="/mappings-list" className="btn wide-btn btn-dark">
+          <Link
+              to="/mappings-list"
+              className="btn wide-btn btn-dark"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="See all the finished mappings to a specification (or a specific domain)"
+          >
             View Specifications
           </Link>
         </section>
@@ -19,12 +25,18 @@ class LeftSideHome extends React.Component {
           <ol className="usage-explanation">
             <li>Upload Your Specification</li>
             <li>Coarse Grain Mapping</li>
-            <li>Fine Grain Mapping and Tunning</li>
+            <li>Fine Grain Mapping and Tuning</li>
             <li>Download Mapping</li>
           </ol>
         </section>
         <section>
-          <Link to="/new-mapping" className="btn wide-btn btn-dark">
+          <Link
+              to="/new-mapping"
+              className="btn wide-btn btn-dark"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Create a mapping between 2 specifications"
+          >
             Start Mapping
           </Link>
         </section>

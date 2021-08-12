@@ -1,27 +1,42 @@
 import React from "react";
+import coffeeWait from "../../../assets/images/coffee-wait.gif";
 
 /**
  * Props:
- * @param {String} message
- * @param {Boolean} noPadding
- * @param {Boolean} smallSpinner
+ * @prop {String} message
+ * @prop {Boolean} noPadding
+ * @prop {Boolean} smallSpinner
+ * @prop {Boolean} showImage
  */
 const Loader = (props) => {
   /**
    * Elements from props
    */
-  const { message, noPadding, smallSpinner } = props;
+  const { message, noPadding, smallSpinner, showImage } = props;
 
   return (
     <div className={"container text-center" + (noPadding ? "" : " p-5")}>
-      <div
-        className={"spinner-grow" + (smallSpinner ? " spinner-grow-sm" : "")}
-        role="status"
-      ></div>
-      {props.message ? (
-        <div className="card mt-5">
+      {showImage ? (
+        ""
+      ) : (
+        <div
+          className={"spinner-grow" + (smallSpinner ? " spinner-grow-sm" : "")}
+          role="status"
+        />
+      )}
+      {message ? (
+        <div className="card borderless bg-transparent mt-5">
           <div className="card-body">
             <h3>{message}</h3>
+            {showImage ? (
+              <img
+                src={coffeeWait}
+                alt="Go get a coffee while waiting"
+                style={{ width: "25%", padding: "2rem" }}
+              />
+            ) : (
+              ""
+            )}
           </div>
         </div>
       ) : (

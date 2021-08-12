@@ -7,13 +7,29 @@ class Api::V1::MergedFilesController < ApplicationController
   before_action :with_instance
 
   ###
-  # @description: Process a specification file to organiza and return
+  # @description: Process a specification file to organize and return
   #   the related information, like how many domains it contains
   ###
   def classes
     domains = Processors::Specifications.process_domains_from_file(@instance.content)
 
     render json: domains
+  end
+
+  ###
+  # @description: Relies on the converter to first convert each attached file to json-ld. Then merge the
+  #   json-ld contents into one only file and save it.
+  #   It only returns the id of the saved file, to avoid memory leak. The processing of the following
+  #   operations (info, filter) will be performed on the server side.
+  ###
+  def create
+    specs = params[:files].map {|file| Parsers::FormatConverter.convert_to_jsonld(file) }
+
+    @instance = MergedFile.create!(
+      content: Processors::Specifications.merge_specs(specs)
+    )
+
+    render json: @instance.id
   end
 
   ###
@@ -26,17 +42,10 @@ class Api::V1::MergedFilesController < ApplicationController
   end
 
   ###
-  # @description: Relies on the converter to first convert each attached file to json-ld. Then merge the
-  #   json-ld contents into one only file and save it.
-  #   It only returns the id of the saved file, to avoid memory leak. The processing of the following
-  #   operations (info, filter) will be performed on the server side.
+  # @description: Returns the content of a merged file. Needed only when the file is not too large.
+  #   Mostly, it will be the case of a single domain file with its properties.
   ###
-  def create
-    files = params[:files].map {|file| Parsers::FormatConverter.convert_to_jsonld(file) }
-    @instance = MergedFile.create!(
-      content: Parsers::Specifications.merge_specs(files)
-    )
-
-    render json: @instance.id
+  def show
+    render json: @instance.content
   end
 end

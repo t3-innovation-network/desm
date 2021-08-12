@@ -32,4 +32,25 @@ class AlignmentVocabularyConcept < ApplicationRecord
   def update_mapped_concepts ids
     self.mapped_concept_ids = ids
   end
+
+  ###
+  # @description: A simplified list of concepts to list as standard json
+  # @return [Array]
+  ###
+  def mapped_concepts_list
+    Parsers::Skos.new(
+      graph: mapped_concepts.map {|concept|
+        concept.raw.merge(key: concept.id)
+      }
+    )
+                 .concepts_list_simplified
+  end
+
+  ###
+  # @description: Include additional information about the specification in
+  #   json responses. This overrides the ApplicationRecord as_json method.
+  ###
+  def as_json(options={})
+    super options.merge(methods: %i[mapped_concepts_list])
+  end
 end

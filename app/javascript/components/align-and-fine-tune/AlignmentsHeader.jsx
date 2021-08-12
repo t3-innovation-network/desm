@@ -4,21 +4,21 @@ import Pluralize from "pluralize";
 
 /**
  * Props
- * @param {String} organizationName
- * @param {Object} domain
- * @param {Array} selectedMappingTerms
- * @param {Boolean} hideMappedSelectedTerms
- * @param {Function} setHideMappedSelectedTerms
- * @param {Array} mappingSelectedTerms
- * @param {Array} mappedSelectedTerms
- * @param {String} mappingSelectedTermsInputValue
- * @param {Function} filterMappingSelectedTermsOnChange
+ * @prop {String} organizationName
+ * @prop {Object} domain
+ * @prop {Array} selectedAlignments
+ * @prop {Boolean} hideMappedSelectedTerms
+ * @prop {Function} setHideMappedSelectedTerms
+ * @prop {Array} mappingSelectedTerms
+ * @prop {Array} mappedSelectedTerms
+ * @prop {String} mappingSelectedTermsInputValue
+ * @prop {Function} filterMappingSelectedTermsOnChange
  */
-const MappingTermsHeaders = (props) => {
+const AlignmentsHeader = (props) => {
   const {
     organizationName,
     domain,
-    selectedMappingTerms,
+    selectedAlignments,
     hideMappedSelectedTerms,
     mappedSelectedTerms,
     mappingSelectedTerms,
@@ -38,8 +38,8 @@ const MappingTermsHeaders = (props) => {
         </div>
         <div className="col-6">
           <p className="float-right">
-            <strong>{selectedMappingTerms.length}</strong>{" "}
-            {Pluralize("property", selectedMappingTerms.length) + " selected"}
+            <strong>{selectedAlignments.length}</strong>{" "}
+            {Pluralize("property", selectedAlignments.length) + " selected"}
           </p>
         </div>
       </div>
@@ -77,7 +77,7 @@ const MappingTermsHeaders = (props) => {
       </div>
       <div className="row">
         <div className="col form-group input-group-has-icon">
-          <span className="fa fa-search form-control-feedback"></span>
+          <span className="fa fa-search form-control-feedback"/>
           <input
             type="text"
             className="form-control"
@@ -91,4 +91,4 @@ const MappingTermsHeaders = (props) => {
   );
 };
 
-export default MappingTermsHeaders;
+export default AlignmentsHeader;

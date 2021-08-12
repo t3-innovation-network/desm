@@ -10,7 +10,10 @@ module Parsers
   class FormatConverter
     CONVERTERS = {
       csv: Converters::Ceds,
+      json: Converters::RdfJson,
+      nt: Converters::Turtle,
       rdf: Converters::RdfXml,
+      ttl: Converters::Turtle,
       xml: Converters::XmlSchema,
       xsd: Converters::XmlSchema,
       zip: Converters::JsonSchemaZip
