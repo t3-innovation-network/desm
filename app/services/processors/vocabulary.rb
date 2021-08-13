@@ -45,7 +45,7 @@ module Processors
     def create_concepts
       concept_nodes.map do |concept|
         SkosConcept.find_or_initialize_by(
-          uri: Parsers::Specifications.read!(concept, "id")
+          uri: Parsers::JsonLd::Node.new(concept).read!("id")
         ) {|c_concept|
           c_concept.update(
             raw: concept
@@ -53,7 +53,7 @@ module Processors
         }
       rescue StandardError => e
         Rails.logger.error(e.inspect)
-        SkosConcept.find_by_uri(Parsers::Specifications.read!(concept, "id"))
+        SkosConcept.find_by_uri(Parsers::JsonLd::Node.new(concept).read!("id"))
       end
     end
 

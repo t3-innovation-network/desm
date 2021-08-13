@@ -28,7 +28,7 @@ module Processors
     def identify_concepts scheme_node
       child_concepts_uris(scheme_node).map {|concept_uri|
         @concept_nodes.find {|c_node|
-          Parsers::Specifications.read!(c_node, "id").downcase == concept_uri.downcase
+          Parsers::JsonLd::Node.new(c_node).read!("id").downcase == concept_uri.downcase
         }
       }
     end
@@ -41,9 +41,7 @@ module Processors
     # @return [Hash]
     ###
     def first_concept_scheme_node
-      @graph.find {|concept|
-        Parsers::Specifications.read!(concept, "type").downcase.include?("conceptscheme")
-      }.with_indifferent_access
+      Parsers::Skos.new(graph: @graph).scheme_nodes.first.with_indifferent_access
     end
 
     ###
@@ -67,9 +65,7 @@ module Processors
     ###
     def filter_concept_nodes
       @graph.select {|node|
-        Array(Parsers::Specifications.read!(node, "type")).any? {|type|
-          type.downcase.include?("concept") && !type.downcase.include?("conceptscheme")
-        }
+        Parsers::JsonLd::Node.new(node).types.concept?
       }
     end
 
@@ -79,15 +75,16 @@ module Processors
     # @return [Array] A collection of uris to identify the child concept nodes
     ###
     def child_concepts_uris concept_scheme_node
-      child_nodes = Array(Parsers::Specifications.read!(concept_scheme_node, "hasConcept"))
+      parser = Parsers::JsonLd::Node.new(concept_scheme_node)
+      child_nodes = Array(parser.read!("hasConcept"))
 
       # Some specification may not use "hasConcept", but "hasTopConcept"
       if child_nodes.all?(&:empty?)
-        child_nodes = Array(Parsers::Specifications.read!(concept_scheme_node, "hasTopConcept"))
+        child_nodes = Array(parser.read!("hasTopConcept"))
       end
 
       if child_nodes.all?(&:empty?)
-        raise "No concept nodes found for Vocabulary #{Parsers::Specifications.read!(concept_scheme_node, 'id')}"
+        raise "No concept nodes were found for Vocabulary #{parser.read!('id')}"
       end
 
       process_node_uris(child_nodes)

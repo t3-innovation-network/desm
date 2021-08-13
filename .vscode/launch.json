@@ -5,11 +5,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Launch Chrome against localhost",
-      "url": "http://localhost:3030",
-      "webRoot": "${workspaceFolder}"
+      "name": "Attach to Docker",
+      "type": "Ruby",
+      "request": "attach",
+      "remotePort": "1234",
+      "remoteHost": "127.0.0.1",
+      "remoteWorkspaceRoot": "/app",
+      "cwd": "${workspaceRoot}",
+      "showDebuggerOutput": true
     }
   ]
 }

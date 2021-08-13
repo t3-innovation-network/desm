@@ -38,12 +38,13 @@ module Processors
       predicate_set = first_concept_scheme_node
 
       already_exists?(PredicateSet, predicate_set, print_message: true)
+      parser = Parsers::JsonLd::Node.new(predicate_set)
 
       PredicateSet.first_or_create!({
-                                      uri: predicate_set[:id],
-                                      title: predicate_set[:title]["en-us"],
-                                      description: predicate_set[:description]["en-us"],
-                                      creator: predicate_set[:creator]["en-us"]
+                                      uri: parser.read!('id'),
+                                      title: parser.read!('title'),
+                                      description: parser.read!('description'),
+                                      creator: parser.read!('creator')
                                     })
     end
 
@@ -52,18 +53,16 @@ module Processors
     ###
     def create_predicates
       @concept_nodes.each do |predicate|
-        predicate = predicate.with_indifferent_access
-
-        # The concept scheme is processed, let's start with the proper predicates
-        next unless valid_predicate(predicate)
-
         parser = Parsers::JsonLd::Node.new(predicate)
 
+        # The concept scheme is processed, let's start with the proper predicates
+        next unless valid_predicate(predicate, parser)
+
         Predicate.create!({
-                            definition: parser.read!("definition"),
-                            pref_label: parser.read!("prefLabel"),
-                            uri: predicate[:id],
-                            weight: Parsers::Specifications.read!(predicate, "weight"),
+                            definition: parser.read!('definition'),
+                            pref_label: parser.read!('prefLabel'),
+                            uri: parser.read!('id'),
+                            weight: parser.read!('weight'),
                             predicate_set: @predicate_set
                           })
       end
@@ -77,9 +76,9 @@ module Processors
     # @param [Hash] predicate
     # @return [TrueClass|FalseClass]
     ###
-    def valid_predicate predicate
+    def valid_predicate predicate, predicate_parser
       !(
-        Array(parser.read!("type")).any? {|type|
+        Array(predicate_parser.read!("type")).any? {|type|
           type.downcase.include?("conceptscheme")
         } ||
         already_exists?(Predicate, predicate, print_message: true)
