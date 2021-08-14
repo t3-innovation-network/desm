@@ -24,7 +24,7 @@ RSpec.describe Converters::JsonSchemaZip do
         "skos": "http://www.w3.org/2004/02/skos/core#"
       )
 
-      expect(graph.map {|r| r[:@type] }.uniq).to match(
+      expect(graph.map {|r| r[:@type] }.uniq.sort).to match(
         %w[rdf:Class rdf:Property skos:Concept skos:ConceptScheme]
       )
 

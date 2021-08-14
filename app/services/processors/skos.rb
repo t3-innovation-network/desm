@@ -17,20 +17,8 @@ module Processors
         end
 
       @graph = @file_content["@graph"]
+      @context = @file_content["@context"]
       @concept_nodes = filter_concept_nodes
-    end
-
-    ###
-    # @description: Identify all the concepts for a given vocabulary id (scheme uri).
-    # @param [Object] scheme_node: The scheme node containing the uri of the related concepts
-    # @return [Array]
-    ###
-    def identify_concepts scheme_node
-      child_concepts_uris(scheme_node).map {|concept_uri|
-        @concept_nodes.find {|c_node|
-          Parsers::JsonLd::Node.new(c_node).read!("id").downcase == concept_uri.downcase
-        }
-      }
     end
 
     protected

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Processors::Skos do
+RSpec.describe Processors::Vocabularies do
   describe ".create" do
     let(:file_content) { File.read(file) }
     let(:organization) { FactoryBot.build(:organization) }
@@ -13,14 +13,8 @@ RSpec.describe Processors::Skos do
     end
 
     it "creates a vocabulary with its concepts" do
-      processor = described_class.new({
-                                        organization: organization,
-                                        attrs: {
-                                          name: Faker::App.name,
-                                          content: file_content
-                                        }
-                                      })
-      result = processor.create
+      processor = described_class.new(file_content)
+      result = processor.create(Faker::App.name, organization)
 
       expect(result.concepts.count).to eq(5)
     end

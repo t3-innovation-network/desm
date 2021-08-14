@@ -8,7 +8,7 @@ module Parsers
     class Node
       include NodeTypes
 
-      attr_accessor :types
+      attr_accessor :types, :context
 
       def initialize node, context={}
         @node = node

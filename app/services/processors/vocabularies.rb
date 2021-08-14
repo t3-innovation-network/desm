@@ -5,43 +5,25 @@ module Processors
   # @description: Process skos files and create skos concept schemes with its corresponding
   #   skos concepts as a graph
   ###
-  class Vocabulary < Skos
-    ###
-    # @description: Creates a concept scheme from a raw json content
-    # @param {Hash} data: The necessary data we need in order to create a concept scheme:
-    #   - An organization
-    #   - and an skos file in json-ld format
-    # @return {Vocabulary}: The created vocabulary
-    ###
-    def create data
-      @vocabulary = create_vocabulary(data)
+  class Vocabularies < Skos
+    def create name, organization
+      @vocabulary = create_vocabulary(name, organization)
 
       @vocabulary.concepts = create_concepts
 
       @vocabulary
     end
 
-    ###
-    # @description: Creates a single vocabulary. This should be in an skos format in the data[:raw] parameter
-    # @param {Hash} data: The necessary data we need in order to create a concept scheme:
-    #   - An organization
-    #   - and an skos file in json-ld format
-    # @return {Vocabulary}: The created vocabulary
-    ###
-    def create_vocabulary data
-      @vocabulary = Vocabulary.find_or_initialize_by(name: data[:attrs][:name]) do |vocab|
+    def create_vocabulary name, organization
+      @vocabulary = Vocabulary.find_or_initialize_by(name: name) do |vocab|
         vocab.update(
-          organization: data[:organization],
-          context: data[:attrs][:content]["@context"],
+          organization: organization,
+          context: @context,
           content: first_concept_scheme_node
         )
       end
     end
 
-    ###
-    # @description: Create concepts for a given concept scheme
-    # @return {Array}: The array of Concepts
-    ###
     def create_concepts
       concept_nodes.map do |concept|
         SkosConcept.find_or_initialize_by(
@@ -57,12 +39,6 @@ module Processors
       end
     end
 
-    ###
-    # @description: From a wide context, generate a new one, containing only the keys that are needed for the
-    #   given vocabulary
-    # @param [Hash] vocab: The vocabulary to be analyzed
-    # @return [Hash] context: The wider context to be used as context source
-    ###
     def filter_vocabulary_context(vocab, context)
       final_context = {}
 

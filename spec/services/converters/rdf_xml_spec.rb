@@ -52,7 +52,7 @@ RSpec.describe Converters::RdfXml do
           "rdfs" => "http://www.w3.org/2000/01/rdf-schema#"
         )
 
-        expect(graph.map {|r| r["@type"] }.uniq.compact).to match(
+        expect(graph.map {|r| r["@type"] }.uniq.compact.sort).to match(
           %w[rdf:Property rdfs:Class]
         )
 
