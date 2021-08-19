@@ -6,87 +6,103 @@ module Processors
   #   skos concepts as a graph
   ###
   class Skos
+    attr_reader :file_content, :graph, :concept_nodes
+
+    def initialize file
+      @file_content =
+        if file.is_a?(String)
+          JSON.parse(file)
+        else
+          file
+        end
+
+      @graph = @file_content["@graph"]
+      @context = @file_content["@context"]
+      @concept_nodes = filter_concept_nodes
+    end
+
+    protected
+
     ###
-    # @param {Hash} data: The necessary data we need in order to create a concept scheme:
-    #   - An organization
-    #   - and an skos file in json-ld format
+    # @description: Returns the first concept scheme in a graph. Useful for when we have a single
+    #   vocabulary and need only the concept scheme node.
+    # @return [Hash]
     ###
-    def initialize data
-      @name = data[:attrs][:name]
-      @organization = data[:organization]
-      @content = data[:attrs][:content]
-      @parser = Parsers::Skos.new(file_content: @content)
+    def first_concept_scheme_node
+      Parsers::Skos.new(graph: @graph).scheme_nodes.first.with_indifferent_access
     end
 
     ###
-    # @description: Creates a concept scheme from a raw json content
-    # @param {Hash} data: The necessary data we need in order to create a concept scheme:
-    #   - An organization
-    #   - and an skos file in json-ld format
-    # @return {Vocabulary}: The created vocabulary
+    # @description: Determines whether a key (an attribute of a node) id using a uri that's defined inside a context
+    # @param [Hash] context.
+    # @param [String] attribute_key
+    # @return [TrueClass|FalseClass]
     ###
-    def create
-      @vocabulary = create_vocabulary
-
-      @vocabulary.concept_ids = create_concepts(
-        @parser.graph.select {|concept|
-          Parsers::JsonLd::Node.new(concept).types.concept?
-        }
-      )
-
-      @vocabulary.save!
-
-      @vocabulary
+    def using_context_uri(context, attribute_key)
+      context_uris_list(context).include?(attribute_key.split(":").first)
     end
 
     private
 
     ###
-    # @description: Creates a single vocabulary. This should be in an skos format in the data[:raw] parameter
-    # @return {Vocabulary}: The created vocabulary
+    # @description: Filter a collection of nodes of any type to get a new collection of only those nodes of
+    #   type "skos:concept".
+    # @param [Array] graph The graph containing all the Properties, Classes, Concepts, Concept Scheme nodes
+    #   and more.
+    # @return [Array] A collection of only nodes of type "skos:concept".
     ###
-    def create_vocabulary
-      @vocabulary = Vocabulary.find_or_initialize_by(name: @name) do |vocab|
-        vocab.update(
-          organization: @organization,
-          context: @parser.context,
-          content: first_concept_scheme_node(@parser.graph)
-        )
-      end
-    end
-
-    ###
-    # @description: Returns the first concept scheme in a graph. Useful for when we have a single
-    #   vocabulary and need only the concept scheme node.
-    # @param [Array] graph
-    # @return [Hash,nil]
-    ###
-    def first_concept_scheme_node graph
-      graph.find {|concept|
-        Parsers::JsonLd::Node.new(concept).read!("type")&.downcase&.include?("conceptscheme")
+    def filter_concept_nodes
+      @graph.select {|node|
+        Parsers::JsonLd::Node.new(node).types.concept?
       }
     end
 
     ###
-    # @description: Create concepts for a given concept scheme
-    # @param {Array} concepts_list: The raw array of data (array of objects) for the concepts
-    # @return {Array}: The array of Concepts
+    # @description: Get the concept nodes belonging to a concept scheme by reading the childs list
+    # @param [Hash] The concept scheme node
+    # @return [Array] A collection of uris to identify the child concept nodes
     ###
-    def create_concepts concepts_list
-      created_concepts = concepts_list.map do |concept|
-        SkosConcept.find_or_initialize_by(
-          uri: Parsers::JsonLd::Node.new(concept).read!("id")
-        ) {|c_concept|
-          c_concept.update(
-            raw: concept
-          )
-        }
-      rescue StandardError => e
-        Rails.logger.error(e.inspect)
-        SkosConcept.find_by_uri(Parsers::JsonLd::Node.new(concept).read!("id")).id
+    def child_concepts_uris concept_scheme_node
+      parser = Parsers::JsonLd::Node.new(concept_scheme_node)
+      child_nodes = Array(parser.read!("hasConcept"))
+
+      # Some specification may not use "hasConcept", but "hasTopConcept"
+      if child_nodes.all?(&:empty?)
+        child_nodes = Array(parser.read!("hasTopConcept"))
       end
 
-      created_concepts.map(&:id)
+      if child_nodes.all?(&:empty?)
+        raise "No concept nodes were found for Vocabulary #{parser.read!('id')}"
+      end
+
+      process_node_uris(child_nodes)
+    end
+
+    ###
+    # @description: Generate a list of uris defined in a context (e.g. "rdf", "rdfs", "xsd")
+    # @param [Hash] context: The context to be evaluated
+    # @return [Array]
+    ###
+    def context_uris_list context
+      context.keys.map do |key|
+        key.split(":").first
+      end
+    end
+
+    ###
+    # @description: Process an array of uris to ensure returning an  array of string uris. It might
+    #   contain an array of objects with its uri's in it.
+    # @param [Array] nodes
+    # @return [Array]
+    ###
+    def process_node_uris nodes
+      nodes.map {|node|
+        if node.is_a?(String)
+          node
+        else
+          node.is_a?(Hash) && (node["@id"] || node[:@id]) ? (node["@id"] || node[:@id]) : nil
+        end
+      }
     end
   end
 end

@@ -150,6 +150,16 @@ ActiveRecord::Schema.define(version: 2021_01_29_204042) do
     t.string "email", null: false
   end
 
+  create_table "predicate_sets", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "uri", null: false
+    t.text "description"
+    t.string "creator"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["uri"], name: "index_predicate_sets_on_uri", unique: true
+  end
+
   create_table "predicates", force: :cascade do |t|
     t.string "pref_label"
     t.text "definition"
@@ -158,6 +168,7 @@ ActiveRecord::Schema.define(version: 2021_01_29_204042) do
     t.datetime "updated_at", precision: 6, null: false
     t.float "weight", default: 0.0, null: false
     t.string "color"
+    t.integer "predicate_set_id"
     t.index ["uri"], name: "index_predicates_on_uri", unique: true
   end
 

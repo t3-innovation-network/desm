@@ -30,7 +30,11 @@ module Parsers
 
         # Find the node we are looking for in the fetched definition
         node_in_definition = json_definition[:@graph].find {|node|
-          node["@id"]&.eql?(@full_definition_uri)
+          remove_protocol_from_uri(
+            Parsers::JsonLd::Node.new(node).read!("id")
+          )&.eql?(
+            remove_protocol_from_uri(@full_definition_uri)
+          )
         }
 
         return unless !node_in_definition.nil? &&
@@ -111,6 +115,10 @@ module Parsers
         file.rewind
 
         Converters::RdfJson.convert(file)
+      end
+
+      def remove_protocol_from_uri uri
+        uri.sub(/^https?\:\/\/(www.)?/,'')
       end
     end
   end

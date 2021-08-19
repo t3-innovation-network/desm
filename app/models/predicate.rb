@@ -15,6 +15,7 @@
 #   - "Not Applicable",
 ###
 class Predicate < ApplicationRecord
+  belongs_to :predicate_set
   validates :uri, presence: true, uniqueness: true
   validates :pref_label, presence: true
   before_create :assign_color, unless: :color?

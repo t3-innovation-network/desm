@@ -220,7 +220,7 @@ module Processors
     # @param [String] class_uri The id (URI) of the class or property to find related ones
     ###
     def build_nodes_for_uri(class_uri)
-      nodes = Parsers::Skos.exclude_skos_types(@graph)
+      nodes = Parsers::Skos.new(@graph).exclude_skos_types
 
       # Get only the properties
       props = filter_properties([class_uri], nodes)

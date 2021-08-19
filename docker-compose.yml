@@ -2,17 +2,19 @@ version: "3"
 services:
   web:
     build: .
-    command: ["rerun", "--background", "--force-polling", "rails s -b 0.0.0.0"]
+    command: bundle exec rdebug-ide --debug --host 0.0.0.0 --port 1234 -- bin/rails server -p 3030 -b 0.0.0.0
     volumes:
       - .:/app
     ports:
       - "3030:3030"
+      - "1234:1234"
     depends_on:
       - db
       - redis
     environment:
       - WEBPACKER_DEV_SERVER_HOST=webpack
-    env_file: .env
+    env_file:
+      - .env
 
   db:
     image: postgres
@@ -33,6 +35,8 @@ services:
       - "NODE_ENV=development"
       - "RAILS_ENV=development"
       - "WEBPACKER_DEV_SERVER_HOST=0.0.0.0"
+    env_file:
+      - .env
   redis:
     image: "redis:5-alpine"
     command: redis-server

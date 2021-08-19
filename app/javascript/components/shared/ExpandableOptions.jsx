@@ -12,54 +12,28 @@ import OutsideAlerter from "./OutsideAlerter.jsx";
  */
 class ExpandableOptions extends Component {
   state = {
-    /**
-     * Whether the component is expanded or not
-     */
     expanded: this.props.expanded || false,
-    /**
-     * The options currently selected
-     */
     selectedOption: this.props.selectedOption,
   };
 
-  /**
-   * Shrinks the component without any side effect otr changes.
-   * Used for click outside handler. We want this controls to shrink if the user click outside it
-   */
   handleShrink = () => {
     this.setState({ expanded: false });
   };
 
-  /**
-   * Handle the actions after the user clicks on an option
-   * It also executes the callback function 'onClose' passed in props,
-   * if any, and passes the selectedOption as an argument.
-   *
-   * @param {Object} option
-   */
   handleOptionClick = (option) => {
     const { onClose } = this.props;
-    // Trigger animation
     this.setState({ selectedOption: option.name }, () => {
-      // Change visibility
       this.setState({ expanded: false });
 
-      // Execute the callback, if any.
       if (onClose) {
         onClose(option);
       }
     });
   };
 
-  /**
-   * Set expanded state, to show all the options
-   * It also executes the callback function 'onExpand' passed in props, if any.
-   */
   handleExpand = () => {
     const { onExpand } = this.props;
-    // Change visibility
     this.setState({ expanded: true }, () => {
-      // Execute the callback, if any.
       if (onExpand) {
         onExpand();
       }
@@ -94,15 +68,18 @@ class ExpandableOptions extends Component {
               <div
                 className={
                   "card-header cursor-pointer" +
-                  (selectedOption ? " pb-0" : " pb-4") +
                   (cardHeaderCssClass ? " " + cardHeaderCssClass : "")
                 }
                 onClick={this.handleExpand}
               >
-                <p>
-                  <strong>{selectedOption}</strong>
-                  <i className="fas fa-angle-down float-right" />
-                </p>
+                <div className="row">
+                  <div className="col-10">
+                    <strong>{selectedOption}</strong>
+                  </div>
+                  <div className="col">
+                    <span className="float-right">▼</span>
+                  </div>
+                </div>
               </div>
             </div>
           </FadeIn>

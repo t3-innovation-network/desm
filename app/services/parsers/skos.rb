@@ -9,7 +9,7 @@ module Parsers
     end
 
     ###
-    # @description: Handles the construction of a vocabulary skos structure with a contest and a graph of concepts from
+    # @description: Handles the construction of a vocabulary skos structure with a context and a graph of concepts from
     #   a given scheme node. It will look into the graph for all those related nodes, filtering to exclude nodes of
     #   different types and concept nodes not applicable to the selected scheme node.
     #
@@ -55,7 +55,7 @@ module Parsers
     #   like "rdfsClass", "rdf:Property", among others
     # @return [Array]
     ###
-    def self.exclude_skos_types(graph)
+    def exclude_skos_types(graph)
       graph.reject {|node|
         Parsers::JsonLd::Node.new(node).types.skos_type?
       }

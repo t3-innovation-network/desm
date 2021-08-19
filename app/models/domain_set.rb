@@ -15,4 +15,5 @@
 class DomainSet < ApplicationRecord
   validates :uri, presence: true, uniqueness: true
   validates :title, presence: true
+  has_many :domains
 end

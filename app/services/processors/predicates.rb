@@ -14,57 +14,61 @@ module Processors
   #   the project. That directory is configured by setting the environment
   #   variable called: "CONCEPTS_DIRECTORY_PATH"
   ###
-  class Predicates
-    extend Validatable
+  class Predicates < Skos
+    include Validatable
 
     ###
     # @description: Process a given file which must contain json data, to
     #   create predicates into the db.
-    # @param [File] file The already loaded json file to be processed
+    # @return [PredicateSet]
     ###
-    def self.process_from_file(file)
-      file_content = JSON.parse(file)
+    def create
+      @predicate_set = create_predicate_set
+      create_predicates
 
-      # The predicates are listed under the '@graph' object
-      predicates = file_content["@graph"]
+      @predicate_set
+    end
 
-      processed = process_predicates(predicates)
+    ###
+    # @description: Process a given concept scheme (predicate set) to create it
+    #   if necessary
+    # @param [Object] nodes the collection of nodes to be processed
+    ###
+    def create_predicate_set
+      predicate_set = first_concept_scheme_node
 
-      puts "\n#{ActionController::Base.helpers.pluralize(processed, 'predicate')} processed." +
-      (
-        processed < 1 ? " Be sure to correctly format the file as an json-ld skos concepts file." : ""
-      )
+      already_exists?(PredicateSet, predicate_set, print_message: true)
+      parser = Parsers::JsonLd::Node.new(predicate_set)
+
+      PredicateSet.first_or_create!({
+                                      uri: parser.read!('id'),
+                                      title: parser.read!('title'),
+                                      description: parser.read!('description'),
+                                      creator: parser.read!('creator')
+                                    })
     end
 
     ###
     # @description: Process a given set of predicates
-    # @param [Array] predicates The predicates to be processed. It's an array of
-    #   generic Objects
-    # @param [DomainSet] The predicate set to be assigned as a parent for each
-    #   predicate to be created
     ###
-    def self.process_predicates(predicates)
-      processed = 0
-      predicates.each do |predicate|
-        predicate = predicate.with_indifferent_access
-
-        # The concept scheme is processed, let's start with the proper predicates
-        next unless valid_predicate(predicate)
-
+    def create_predicates
+      @concept_nodes.each do |predicate|
         parser = Parsers::JsonLd::Node.new(predicate)
 
+        # The concept scheme is processed, let's start with the proper predicates
+        next unless valid_predicate(predicate, parser)
+
         Predicate.create!({
-                            definition: parser.read!("definition"),
-                            pref_label: parser.read!("prefLabel"),
-                            uri: predicate[:id],
-                            weight: parser.read!("weight")
+                            definition: parser.read!('definition'),
+                            pref_label: parser.read!('prefLabel'),
+                            uri: parser.read!('id'),
+                            weight: parser.read!('weight'),
+                            predicate_set: @predicate_set
                           })
-
-        processed += 1
       end
-
-      processed
     end
+
+    private
 
     ###
     # @description: Determines if a predicate is valid to incorporate to our records. It should not be of
@@ -72,11 +76,9 @@ module Processors
     # @param [Hash] predicate
     # @return [TrueClass|FalseClass]
     ###
-    def self.valid_predicate predicate
-      parser = Parsers::JsonLd::Node.new(predicate)
-
+    def valid_predicate predicate, predicate_parser
       !(
-        Array(parser.read!("type")).any? {|type|
+        Array(predicate_parser.read!("type")).any? {|type|
           type.downcase.include?("conceptscheme")
         } ||
         already_exists?(Predicate, predicate, print_message: true)

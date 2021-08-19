@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
   end
 
   ###
-  # @description: Reutn a json message when an error happens due to an unpermittted
+  # @description: Returns a json message when an error happens due to an unpermittted
   #   access to an action
   # @param [Exception] _exception The exception that was raised
   ###

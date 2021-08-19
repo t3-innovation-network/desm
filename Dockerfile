@@ -33,4 +33,4 @@ RUN chmod +x /usr/bin/init.sh
 ENTRYPOINT ["init.sh"]
 
 # Expose the port
-EXPOSE 3030
+EXPOSE 3030 1234
