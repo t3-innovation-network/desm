@@ -41,3 +41,5 @@ yarn-debug.log*
 
 # Ignore IDE donfiguration files
 .idea/*
+.vscode/*
+.byebug_histroy
