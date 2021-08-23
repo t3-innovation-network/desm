@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_29_204042) do
+ActiveRecord::Schema.define(version: 2021_08_21_011708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,21 @@ ActiveRecord::Schema.define(version: 2021_01_29_204042) do
     t.index ["user_id", "user_type"], name: "user_index"
   end
 
+  create_table "configuration_profiles", force: :cascade do |t|
+    t.text "description"
+    t.string "name"
+    t.jsonb "structure"
+    t.integer "state", default: 0, null: false
+    t.bigint "domain_set_id"
+    t.bigint "predicate_set_id"
+    t.bigint "administrator_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["administrator_id"], name: "index_configuration_profiles_on_administrator_id"
+    t.index ["domain_set_id"], name: "index_configuration_profiles_on_domain_set_id"
+    t.index ["predicate_set_id"], name: "index_configuration_profiles_on_predicate_set_id"
+  end
+
   create_table "domain_sets", force: :cascade do |t|
     t.string "title", null: false
     t.string "uri", null: false
@@ -148,6 +163,13 @@ ActiveRecord::Schema.define(version: 2021_01_29_204042) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "email", null: false
+    t.bigint "configuration_profile_id", null: false
+    t.bigint "administrator_id"
+    t.text "description"
+    t.string "homepage_url"
+    t.string "standards_page"
+    t.index ["administrator_id"], name: "index_organizations_on_administrator_id"
+    t.index ["configuration_profile_id"], name: "index_organizations_on_configuration_profile_id"
   end
 
   create_table "predicate_sets", force: :cascade do |t|
@@ -262,6 +284,8 @@ ActiveRecord::Schema.define(version: 2021_01_29_204042) do
     t.integer "organization_id"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
+    t.string "phone"
+    t.string "github_handle"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["organization_id"], name: "users_organization_id"
   end
@@ -288,11 +312,16 @@ ActiveRecord::Schema.define(version: 2021_01_29_204042) do
   add_foreign_key "alignments", "vocabularies"
   add_foreign_key "assignments", "roles"
   add_foreign_key "assignments", "users"
+  add_foreign_key "configuration_profiles", "domain_sets"
+  add_foreign_key "configuration_profiles", "predicate_sets"
+  add_foreign_key "configuration_profiles", "users", column: "administrator_id"
   add_foreign_key "domains", "domain_sets"
   add_foreign_key "mapping_selected_terms", "mappings"
   add_foreign_key "mapping_selected_terms", "terms"
   add_foreign_key "mappings", "specifications"
   add_foreign_key "mappings", "users"
+  add_foreign_key "organizations", "configuration_profiles"
+  add_foreign_key "organizations", "users", column: "administrator_id"
   add_foreign_key "properties", "terms"
   add_foreign_key "specifications", "domains"
   add_foreign_key "specifications", "users"
