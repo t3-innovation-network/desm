@@ -8,7 +8,7 @@ class UserPolicy < ApplicationPolicy
   def initialize(user, record)
     @user = user
     @record = record
-    @admin_role_name = (ENV["ADMIN_ROLE_NAME"] || "SuperAdmin").downcase.to_sym
+    @admin_role_name = (ENV["ADMIN_ROLE_NAME"] || "Super Admin").downcase.to_sym
 
     raise Pundit::NotAuthorizedError unless user&.role?(@admin_role_name)
   end

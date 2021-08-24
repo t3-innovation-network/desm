@@ -12,8 +12,7 @@ FactoryBot.define do
 
     trait :with_terms do
       after(:build) do |spec|
-        spec.terms = FactoryBot.build_list(:term, 10)
-        spec.save
+        spec.terms << FactoryBot.build_list(:term, 10)
       end
     end
   end

@@ -287,7 +287,6 @@ ActiveRecord::Schema.define(version: 2021_08_21_011708) do
     t.string "phone"
     t.string "github_handle"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["organization_id"], name: "users_organization_id"
   end
 
   create_table "vocabularies", force: :cascade do |t|

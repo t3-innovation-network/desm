@@ -9,7 +9,7 @@ const ProtectedRoute = ({
 }) => {
   const isLoggedIn = useSelector((state) => state.loggedIn);
   const user = useSelector((state) => state.user);
-  const adminRoleName = process.env.ADMIN_ROLE_NAME || "SuperAdmin";
+  const adminRoleName = process.env.ADMIN_ROLE_NAME || "Super Admin";
 
   return (
     /// If we have a valid session
