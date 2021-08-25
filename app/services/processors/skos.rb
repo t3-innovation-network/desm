@@ -67,13 +67,10 @@ module Processors
       child_nodes = Array(parser.read!("hasConcept"))
 
       # Some specification may not use "hasConcept", but "hasTopConcept"
-      if child_nodes.all?(&:empty?)
-        child_nodes = Array(parser.read!("hasTopConcept"))
-      end
 
-      if child_nodes.all?(&:empty?)
-        raise "No concept nodes were found for Vocabulary #{parser.read!('id')}"
-      end
+      child_nodes = Array(parser.read!("hasTopConcept")) if child_nodes.all?(&:empty?)
+
+      raise "No concept nodes were found for Vocabulary #{parser.read!('id')}" if child_nodes.all?(&:empty?)
 
       process_node_uris(child_nodes)
     end

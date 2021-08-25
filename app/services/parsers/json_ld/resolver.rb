@@ -29,13 +29,7 @@ module Parsers
         return unless json_definition[:@graph].present?
 
         # Find the node we are looking for in the fetched definition
-        node_in_definition = json_definition[:@graph].find {|node|
-          remove_protocol_from_uri(
-            Parsers::JsonLd::Node.new(node).read!("id")
-          )&.eql?(
-            remove_protocol_from_uri(@full_definition_uri)
-          )
-        }
+        node_in_definition = find_original_node_in_fetched_definition(json_definition[:@graph])
 
         return unless !node_in_definition.nil? &&
           Parsers::JsonLd::Node.new(node_in_definition).types.rdfs_class?
@@ -90,6 +84,16 @@ module Parsers
         rdf_to_json_definition(repository.to_rdf_json)
       end
 
+      def find_original_node_in_fetched_definition graph
+        graph.find {|node|
+          remove_protocol_from_uri(
+            Parsers::JsonLd::Node.new(node).read!("id")
+          )&.eql?(
+            remove_protocol_from_uri(@full_definition_uri)
+          )
+        }
+      end
+
       ###
       # @description: Save the node in the local DB if it's an rdfs:Class, and return it
       # @param node_in_definition [Hash]
@@ -118,7 +122,7 @@ module Parsers
       end
 
       def remove_protocol_from_uri uri
-        uri.sub(/^https?\:\/\/(www.)?/,'')
+        uri.sub(%r{^https?\://(www.)?}, "")
       end
     end
   end

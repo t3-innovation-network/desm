@@ -41,10 +41,10 @@ module Processors
       parser = Parsers::JsonLd::Node.new(predicate_set)
 
       PredicateSet.first_or_create!({
-                                      uri: parser.read!('id'),
-                                      title: parser.read!('title'),
-                                      description: parser.read!('description'),
-                                      creator: parser.read!('creator')
+                                      uri: parser.read!("id"),
+                                      title: parser.read!("title"),
+                                      description: parser.read!("description"),
+                                      creator: parser.read!("creator")
                                     })
     end
 
@@ -59,10 +59,10 @@ module Processors
         next unless valid_predicate(predicate, parser)
 
         Predicate.create!({
-                            definition: parser.read!('definition'),
-                            pref_label: parser.read!('prefLabel'),
-                            uri: parser.read!('id'),
-                            weight: parser.read!('weight'),
+                            definition: parser.read!("definition"),
+                            pref_label: parser.read!("prefLabel"),
+                            uri: parser.read!("id"),
+                            weight: parser.read!("weight"),
                             predicate_set: @predicate_set
                           })
       end
