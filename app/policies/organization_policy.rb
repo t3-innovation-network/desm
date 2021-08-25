@@ -8,7 +8,7 @@ class OrganizationPolicy < ApplicationPolicy
   def initialize(user, record)
     @user = user || @current_user
     @record = record
-    @admin_role_name = (ENV["ADMIN_ROLE_NAME"] || "Admin").downcase.to_sym
+    @admin_role_name = (ENV["ADMIN_ROLE_NAME"] || "Super Admin").downcase.to_sym
 
     # Signed in users
     raise Pundit::NotAuthorizedError unless user.present?

@@ -1,13 +1,17 @@
-import React from 'react';
+import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const DashboardBtn = () => {
   const isLoggedIn = useSelector((state) => state.loggedIn);
   const user = useSelector((state) => state.user);
-  const adminRoleName = process.env.ADMIN_ROLE_NAME || "Admin";
+  const adminRoleName = process.env.ADMIN_ROLE_NAME || "Super Admin";
 
-  if (isLoggedIn && user.roles !== undefined && user.roles[0].name.toLowerCase() == adminRoleName.toLowerCase()) {
+  if (
+    isLoggedIn &&
+    user.roles !== undefined &&
+    user.roles[0].name.toLowerCase() == adminRoleName.toLowerCase()
+  ) {
     return (
       <Link
         to="/dashboard"
@@ -17,7 +21,7 @@ const DashboardBtn = () => {
       </Link>
     );
   }
-  return null
-}
+  return null;
+};
 
 export default DashboardBtn;

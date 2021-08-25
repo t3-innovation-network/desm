@@ -5,6 +5,7 @@
 ###
 class Organization < ApplicationRecord
   validates :name, presence: true, uniqueness: true
+  belongs_to :configuration_profile
   has_many :users, dependent: :destroy
   has_many :vocabularies
 

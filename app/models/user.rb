@@ -30,7 +30,7 @@ class User < ApplicationRecord
   ###
   # @description: The organization the user belongs to
   ###
-  belongs_to :organization
+  belongs_to :organization, optional: true
   ###
   # @description: We can assign roles to the user
   ###
@@ -48,10 +48,6 @@ class User < ApplicationRecord
   # @description: It should have a fullname
   ###
   validates :fullname, presence: true
-  ###
-  # @description: It should be part of an organization
-  ###
-  validates :organization, presence: true
   ###
   # @description: Email should be present
   ###

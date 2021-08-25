@@ -9,16 +9,16 @@ const ProtectedRoute = ({
 }) => {
   const isLoggedIn = useSelector((state) => state.loggedIn);
   const user = useSelector((state) => state.user);
-  const adminRoleName = process.env.ADMIN_ROLE_NAME || "Admin";
+  const adminRoleName = process.env.ADMIN_ROLE_NAME || "Super Admin";
 
   return (
     /// If we have a valid session
     isLoggedIn &&
-    /// The signed in user has valid roles
+      /// The signed in user has valid roles
       user.roles !== undefined &&
-    /// We allow this route for non admins OR the signed in user is an admin
-      (allowNonAdmins || user.roles[0].name.toLowerCase() == adminRoleName.toLowerCase()) ? (
-
+      /// We allow this route for non admins OR the signed in user is an admin
+      (allowNonAdmins ||
+        user.roles[0].name.toLowerCase() == adminRoleName.toLowerCase()) ? (
       /// Go render the route
       <Route
         {...rest}

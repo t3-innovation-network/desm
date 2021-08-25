@@ -11,7 +11,7 @@
         "name": {
           "type": "string",
           "title": "The name for this agent to display in the profile. Desirable format: <first name><space><last name>.",
-          "examples": ["Juan Di María", "Lionel Messi"]
+          "examples": ["Sergio Ramos", "Lionel Messi"]
         },
         "email": {
           "title": "Email address for the agent. It will serve as the username in sessions.",
