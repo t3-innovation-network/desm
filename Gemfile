@@ -81,17 +81,17 @@ gem "turbolinks", "~> 5"
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem "webpacker", "~> 4.0"
 
-gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
+gem "mimemagic", github: "mimemagicrb/mimemagic", ref: "01f92d86d15d85cfd0f20dabd025dcbd36a8a60f"
 
 group :development, :test do
-  gem "debase"
-  gem "ruby-debug-ide"
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "capybara"
   gem "database_cleaner"
+  gem "debase"
   gem "factory_bot_rails"
   gem "faker"
   gem "rspec-rails", "~> 4.0.1"
+  gem "ruby-debug-ide"
   gem "shoulda-matchers"
 end
 

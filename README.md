@@ -12,13 +12,13 @@ This application provides the means to map (crosswalk) data specifications (stan
 
 2. Create a ".env" file by copying the ".env.example" file. (It can be modified before the docker images are created)
 
-2. Execute `docker-compose build`
+3. Execute `docker-compose build`
 
-3. Execute `docker-compose up`
+4. Execute `docker-compose up`
 
-4. In a different command prompt, execute `docker-compose run --rm web rake db:create db:migrate db:seed`
+5. In a different command prompt, execute `docker-compose run --rm web rake db:create db:migrate db:seed`
 
-5. Go to http://localhost:3000
+6. Go to http://localhost:3000
 
 The project will be accessible from any device within your network
 
@@ -26,7 +26,7 @@ The project will be accessible from any device within your network
 
 > In order to collaborate, please set up your environment with the git hooks, following the steps below:
 
-1. Execute `chmod +x scripts/*.bash`
+1. Execute `chmod +x scripts/*.sh`
 
 2. Execute `./scripts/install-hooks.sh`
 
