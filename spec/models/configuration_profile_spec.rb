@@ -12,7 +12,7 @@ describe ConfigurationProfile, type: :model do
 
   context "when it is incomplete" do
     it "has incomplete state at creation" do
-      expect(subject.state_class).to be_instance_of(CpState::Incomplete)
+      expect(subject.state_handler).to be_instance_of(CpState::Incomplete)
     end
 
     it "can be removed" do
@@ -24,7 +24,7 @@ describe ConfigurationProfile, type: :model do
     it "can be completed if validates" do
       subject.complete
 
-      expect(subject.state_class).to be_instance_of(CpState::Complete)
+      expect(subject.state_handler).to be_instance_of(CpState::Complete)
     end
 
     it "can not be activated" do
@@ -60,7 +60,7 @@ describe ConfigurationProfile, type: :model do
     it "can be activated" do
       subject.activate
 
-      expect(subject.state_class).to be_instance_of(CpState::Active)
+      expect(subject.state_handler).to be_instance_of(CpState::Active)
     end
 
     it "can be exported" do
@@ -103,7 +103,7 @@ describe ConfigurationProfile, type: :model do
     it "can be deactivated" do
       subject.deactivate
 
-      expect(subject.state_class).to be_instance_of(CpState::Complete)
+      expect(subject.state_handler).to be_instance_of(CpState::Complete)
     end
   end
 end

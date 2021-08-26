@@ -38,13 +38,13 @@ module CpState
     end
 
     def deactivate
-      @configuration_profile.state_class = 1
+      @configuration_profile.transition_to! :complete
     end
   end
 
   class Complete < Base
     def activate
-      @configuration_profile.state_class = 2
+      @configuration_profile.transition_to! :active
       # @todo: generate all the models following the structure
     end
 
@@ -63,7 +63,7 @@ module CpState
     end
 
     def complete
-      @configuration_profile.state_class = 1 if schema_completed?
+      @configuration_profile.transition_to! :complete if schema_completed?
     end
 
     def deactivate

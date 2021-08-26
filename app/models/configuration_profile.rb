@@ -21,31 +21,31 @@ class ConfigurationProfile < ApplicationRecord
   enum state: {incomplete: 0, complete: 1, active: 2}
 
   def activate
-    state_class.activate
+    state_handler.activate
   end
 
   def complete
-    state_class.complete
+    state_handler.complete
   end
 
   def deactivate
-    state_class.deactivate
+    state_handler.deactivate
   end
 
   def export
-    state_class.export
+    state_handler.export
   end
 
   def remove
-    state_class.remove
+    state_handler.remove
   end
 
-  def state_class= new_state
+  def transition_to! new_state
     self.state = new_state
     save!
   end
 
-  def state_class
+  def state_handler
     "CpState::#{state.capitalize}".constantize.new(self)
   end
 end
