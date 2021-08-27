@@ -2,7 +2,6 @@
   "type": "object",
   "title": "Configuration Profile Schema",
   "description": "The accepted structure for a 'configuration profile' in the DESM tool",
-  "default": {},
   "definitions": {
     "Agent": {
       "type": "object",
@@ -24,7 +23,7 @@
         "phone": {
           "type": "string",
           "title": "The american format phone number of the agent",
-          "pattern": "^(([0-9]{3}) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",
+          "pattern": "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$",
           "examples": ["(123) 123-1234"]
         },
         "githubHandle": {
@@ -32,14 +31,12 @@
           "title": "The github username. Pattern is set according to the form validation messages on the 'Join Github' page",
           "pattern": "/^[a-zd](?:[a-zd]|-(?=[a-zd])){0,38}$/i"
         }
-      },
-      "required": ["name", "email"]
+      }
     },
     "DSOSchema": {
       "type": "object",
       "title": "A schema file that will be available to map inside the DESM tool instance for a specific standards organization.",
       "description": "An explanation about the purpose of this instance.",
-      "required": ["name"],
       "properties": {
         "name": {
           "type": "string",
@@ -76,7 +73,7 @@
         },
         "associatedAbstractClass": {
           "title": "The associated abstract classes for this schema file",
-          "$ref": "#/definitions/SkosMetadata"
+          "$ref": "#/definitions/PlausibleUrl"
         }
       }
     },
@@ -87,7 +84,6 @@
     "SkosMetadata": {
       "type": "object",
       "title": "Metadata about the skos file to be incorporated.",
-      "required": ["name", "origin"],
       "properties": {
         "name": {
           "type": "string",
@@ -108,13 +104,11 @@
             "https://example.url.for.skos.predicates.file1,https://example.url.for.skos.predicates.file2"
           ]
         }
-      },
-      "additionalProperties": true
+      }
     },
     "StandardOrganization": {
       "type": "object",
       "title": "An organization that specifies standards for data definitions and uses the DESM tool to map from a specification to another",
-      "required": ["name", "dsoAdministrator", "dsoAgents", "associatedSchema"],
       "properties": {
         "name": {
           "type": "string",
@@ -157,7 +151,6 @@
       }
     }
   },
-  "required": ["name"],
   "properties": {
     "name": {
       "$id": "#/properties/name",

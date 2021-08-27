@@ -1,0 +1,218 @@
+{
+  "type": "object",
+  "title": "Configuration Profile Schema",
+  "description": "The accepted structure for a 'configuration profile' in the DESM tool",
+  "default": {},
+  "definitions": {
+    "Agent": {
+      "type": "object",
+      "title": "The information pertaining an agent that operates the platform",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "The name for this agent to display in the profile. Desirable format: <first name><space><last name>.",
+          "examples": ["Sergio Ramos", "Lionel Messi"]
+        },
+        "email": {
+          "title": "Email address for the agent. It will serve as the username in sessions.",
+          "type": "string",
+          "pattern": "^\\S+@\\S+\\.\\S+$",
+          "format": "email",
+          "minLength": 6,
+          "maxLength": 127
+        },
+        "phone": {
+          "type": "string",
+          "title": "The american format phone number of the agent",
+          "pattern": "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$",
+          "examples": ["(123) 123-1234"]
+        },
+        "githubHandle": {
+          "type": "string",
+          "title": "The github username. Pattern is set according to the form validation messages on the 'Join Github' page",
+          "pattern": "/^[a-zd](?:[a-zd]|-(?=[a-zd])){0,38}$/i"
+        }
+      },
+      "required": ["name", "email"]
+    },
+    "DSOSchema": {
+      "type": "object",
+      "title": "A schema file that will be available to map inside the DESM tool instance for a specific standards organization.",
+      "description": "An explanation about the purpose of this instance.",
+      "required": ["name", "origin", "associatedAbstractClass"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "The name of the schema file"
+        },
+        "description": {
+          "type": "string",
+          "title": "A detailed description of the schema file. E.g. what it represents, which concepts should be expected it to contain."
+        },
+        "encodingSchema": {
+          "type": "string",
+          "title": "The encodingSchema for this schema file"
+        },
+        "version": {
+          "type": "string",
+          "title": "The version of the schema file"
+        },
+        "origin": {
+          "$id": "#/properties/standardsOrganizations/items/anyOf/0/properties/associatedSchema/items/anyOf/0/properties/origin",
+          "type": "string",
+          "title": "The origin schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "https://example.url.for.skos.predicates.file1,https://example.url.for.skos.predicates.file2"
+          ]
+        },
+        "associatedConceptSchemes": {
+          "title": "The associated concept schemes for this schema file",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SkosMetadata"
+          }
+        },
+        "associatedAbstractClass": {
+          "title": "The associated abstract classes for this schema file",
+          "$ref": "#/definitions/PlausibleUrl"
+        }
+      }
+    },
+    "PlausibleUrl": {
+      "anyOf": [{ "$ref": "#/definitions/SaneUrl" }, { "format": "hostname" }]
+    },
+    "SaneUrl": { "format": "uri", "pattern": "^https?://" },
+    "SkosMetadata": {
+      "type": "object",
+      "title": "Metadata about the skos file to be incorporated.",
+      "required": ["name", "origin"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "The name of the skos file."
+        },
+        "version": {
+          "type": "string",
+          "title": "The version of the skos file"
+        },
+        "description": {
+          "type": "string",
+          "title": "A description what the skos file represents."
+        },
+        "origin": {
+          "type": "array",
+          "title": "The URL/s where the file content is available",
+          "examples": [
+            "https://example.url.for.skos.predicates.file1,https://example.url.for.skos.predicates.file2"
+          ]
+        }
+      }
+    },
+    "StandardOrganization": {
+      "type": "object",
+      "title": "An organization that specifies standards for data definitions and uses the DESM tool to map from a specification to another",
+      "required": [
+        "name",
+        "dsoAdministrator",
+        "dsoAgents",
+        "associatedSchemas"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "The name of the organization",
+          "examples": ["Schema.org", "CTDL", "Credential Registry"]
+        },
+        "description": {
+          "type": "string",
+          "title": "A description that provides consistent information about the standards organization"
+        },
+        "homepageURL": {
+          "$ref": "#/definitions/PlausibleUrl",
+          "title": "The homepage URL of the standards organization",
+          "examples": ["https://example.dso.url"]
+        },
+        "standardsPage": {
+          "$ref": "#/definitions/PlausibleUrl",
+          "title": "The homepage URL of the standards organization",
+          "examples": ["https://example.dso.standards-pageurl"]
+        },
+        "dsoAdministrator": {
+          "$ref": "#/definitions/Agent"
+        },
+        "dsoAgents": {
+          "type": "array",
+          "title": "The DSO agents that will use the DESM tool to map from a specification to another",
+          "items": {
+            "$ref": "#/definitions/Agent"
+          }
+        },
+        "associatedSchemas": {
+          "type": "array",
+          "title": "The associated schema files",
+          "description": "An explanation about the purpose of this instance.",
+          "default": [],
+          "items": {
+            "$ref": "#/definitions/DSOSchema"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "name",
+    "standardsOrganizations",
+    "abstractClasses",
+    "mappingPredicates",
+    "profileAdministrator"
+  ],
+  "properties": {
+    "name": {
+      "$id": "#/properties/name",
+      "type": "string",
+      "title": "A name that denotes the purpose of this configuration profile. Preferably a single word",
+      "examples": ["Medical", "Education"]
+    },
+    "description": {
+      "$id": "#/properties/description",
+      "type": "string",
+      "title": "The description of the configuration profile",
+      "description": "An explanation about the purpose of this configuration profile.",
+      "default": "",
+      "examples": [
+        "This configuration profile is meant to hold mapping of specification related to the education area, with domains like student, organization, grade, etc."
+      ]
+    },
+    "createdAt": {
+      "$id": "#/properties/created_at",
+      "type": "string",
+      "title": "The date of creation for this specific configuration profile",
+      "default": "",
+      "examples": ["12-18-2020"]
+    },
+    "updatedAt": {
+      "$id": "#/properties/updated_at",
+      "type": "string",
+      "title": "The date of last modification of this specific configuration profile.",
+      "default": "",
+      "examples": ["12-18-2020"]
+    },
+    "standardsOrganizations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/StandardOrganization"
+      }
+    },
+    "abstractClasses": {
+      "$ref": "#/definitions/SkosMetadata"
+    },
+    "mappingPredicates": {
+      "$ref": "#/definitions/SkosMetadata"
+    },
+    "profileAdministrator": {
+      "$ref": "#/definitions/Agent"
+    }
+  }
+}

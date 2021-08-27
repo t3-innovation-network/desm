@@ -37,6 +37,8 @@ gem "jbuilder", "~> 2.7"
 
 gem "json_schema_tools", "~> 0.6"
 
+gem "json-schema"
+
 # Deal with sensitive data (encoding/decoding)
 gem "jwt"
 
