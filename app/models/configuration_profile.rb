@@ -11,6 +11,7 @@ class ConfigurationProfile < ApplicationRecord
   belongs_to :mapping_predicates, class_name: "PredicateSet", foreign_key: :predicate_set_id, optional: true
   belongs_to :administrator, class_name: "User", foreign_key: :administrator_id
   has_many :standards_ogranizations, class_name: "Organization"
+  after_initialize :setup_schema_validators
 
   # The possible states
   # 1. "incomplete" It does not have a complete structure attribute.
@@ -20,16 +21,21 @@ class ConfigurationProfile < ApplicationRecord
   #   parsing the structure.
   enum state: {incomplete: 0, complete: 1, active: 2}
 
-  def activate
-    state_handler.activate
+  def setup_schema_validators
+    @complete_schema = JSON.parse(File.read(Rails.root.join("ns", "complete.configurationProfile.schema.json")))
+    @valid_schema = JSON.parse(File.read(Rails.root.join("ns", "valid.configurationProfile.schema.json")))
   end
 
-  def complete
-    state_handler.complete
+  def activate!
+    state_handler.activate!
   end
 
-  def deactivate
-    state_handler.deactivate
+  def complete!
+    state_handler.complete!
+  end
+
+  def deactivate!
+    state_handler.deactivate!
   end
 
   def export
@@ -40,12 +46,20 @@ class ConfigurationProfile < ApplicationRecord
     state_handler.remove
   end
 
+  def state_handler
+    "CpState::#{state.capitalize}".constantize.new(self)
+  end
+
+  def structure_valid?
+    JSON::Validator.validate(@valid_schema, structure)
+  end
+
+  def structure_complete?
+    JSON::Validator.validate(@complete_schema, structure)
+  end
+
   def transition_to! new_state
     self.state = new_state
     save!
-  end
-
-  def state_handler
-    "CpState::#{state.capitalize}".constantize.new(self)
   end
 end
