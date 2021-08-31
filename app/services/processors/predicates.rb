@@ -42,7 +42,7 @@ module Processors
 
       PredicateSet.first_or_create!({
                                       uri: parser.read!("id"),
-                                      title: parser.read!("title"),
+                                      title: parser.read!("title") || parser.read!("label"),
                                       description: parser.read!("description"),
                                       creator: parser.read!("creator")
                                     })

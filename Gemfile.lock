@@ -140,6 +140,10 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
+    interactor (3.1.2)
+    interactor-rails (2.2.1)
+      interactor (~> 3.0)
+      rails (>= 4.2)
     jbuilder (2.10.0)
       activesupport (>= 5.0.0)
     json (2.4.1)
@@ -462,6 +466,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   httparty
+  interactor-rails (~> 2.0)
   jbuilder (~> 2.7)
   json-schema
   json_schema_tools (~> 0.6)
