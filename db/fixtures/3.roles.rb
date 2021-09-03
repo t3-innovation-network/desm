@@ -1,5 +1,5 @@
 # Create the roles (Valid roles)
-admin_role_name = (ENV["ADMIN_ROLE_NAME"] || "Super Admin")
+admin_role_name = Desm::ADMIN_ROLE_NAME
 
 Role.seed(:name,
     { name: admin_role_name },

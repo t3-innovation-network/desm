@@ -4,10 +4,6 @@
 # @description: Manage all the sessions logic
 ###
 class RegistrationsController < ApplicationController
-  # Set a default password for every new user, since it's not created by itself,
-  # but by an administrator
-  DEFAULT_PASS = ENV["DEFAULT_PASS"]
-
   ###
   # @description: Creates a user, using the params sent in the HTTP request.
   # @return [String]
@@ -30,8 +26,8 @@ class RegistrationsController < ApplicationController
   ###
   def request_params
     permitted_params.merge(
-      password: DEFAULT_PASS,
-      password_confirmation: DEFAULT_PASS
+      password: Desm::DEFAULT_PASS,
+      password_confirmation: Desm::DEFAULT_PASS
     )
   end
 

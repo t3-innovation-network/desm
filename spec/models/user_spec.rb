@@ -14,7 +14,7 @@ RSpec.describe User, type: :model do
   it { should validate_presence_of(:fullname) }
 
   it "should be an admin if we configure it that way" do
-    admin_role_name = (ENV["ADMIN_ROLE_NAME"] || "Super Admin")
+    admin_role_name = Desm::ADMIN_ROLE_NAME
 
     user.roles << Role.create!(name: admin_role_name)
 
