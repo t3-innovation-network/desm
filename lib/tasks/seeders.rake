@@ -27,7 +27,7 @@ namespace :seeders do
 
     if (option == "y") || (!args[:interactive])
       # Get the concepts directory path from the environment variables
-      path = Rails.root.join(ENV.fetch("CONCEPTS_DIRECTORY_PATH"))
+      path = Rails.root.join(Desm::CONCEPTS_DIRECTORY_PATH)
 
       Dir.foreach(path.to_s) do |filename|
         # Do not process the parent nor the current folder file representations
@@ -76,7 +76,7 @@ namespace :seeders do
 
     if (option == "y") || (!args[:interactive])
       # Get the concepts directory path from the environment variables
-      path = Rails.root.join(ENV.fetch("CONCEPTS_DIRECTORY_PATH"))
+      path = Rails.root.join(Desm::CONCEPTS_DIRECTORY_PATH)
 
       Dir.foreach(path) do |filename|
         # Do not process the parent nor the current folder file representations
