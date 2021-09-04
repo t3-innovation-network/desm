@@ -1,10 +1,8 @@
-default_pass = ENV["DEFAULT_PASS"]
-
 User.seed(:fullname, 
   {
   fullname: "admin",
   email: "admin@desmsolutions.org",
-  password: default_pass,
+  password: Desm::DEFAULT_PASS,
   organization: Organization.first,
   skip_sending_welcome_email: true
   }

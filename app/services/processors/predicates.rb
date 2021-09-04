@@ -11,8 +11,7 @@ module Processors
   #
   #   One of the main tasks of this class will be to handle the existence
   #   of the predicates by reading a skos file placed in a fixed directory in
-  #   the project. That directory is configured by setting the environment
-  #   variable called: "CONCEPTS_DIRECTORY_PATH"
+  #   the project, called 'concepts'.
   ###
   class Predicates < Skos
     include Validatable
