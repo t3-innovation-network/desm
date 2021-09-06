@@ -24,6 +24,6 @@ class CreateAgent
   def user_params
     context.to_h
            .slice(:fullname, :email, :phone, :github_handle, :organization)
-           .merge({password: ENV["DEFAULT_PASS"]})
+           .merge({password: Desm::DEFAULT_PASS})
   end
 end
