@@ -19,6 +19,7 @@ class Predicate < ApplicationRecord
   validates :uri, presence: true, uniqueness: true
   validates :pref_label, presence: true
   before_create :assign_color, unless: :color?
+  before_save :default_values
 
   MAX_ALLOWED_WEIGHT = 5
   MIN_ALLOWED_WEIGHT = 0
@@ -92,6 +93,10 @@ class Predicate < ApplicationRecord
   end
 
   private
+
+  def default_values
+    self.weight ||= 0
+  end
 
   ###
   # @description: Returns the color string for this predicate instance

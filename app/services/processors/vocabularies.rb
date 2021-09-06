@@ -18,7 +18,7 @@ module Processors
       @vocabulary = Vocabulary.find_or_initialize_by(name: name) do |vocab|
         vocab.update(
           organization: organization,
-          context: @context,
+          context: @context || {},
           content: first_concept_scheme_node
         )
       end

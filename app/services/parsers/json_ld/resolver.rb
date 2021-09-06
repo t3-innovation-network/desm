@@ -5,6 +5,7 @@ module Parsers
     class Resolver
       include NodeTypes
       include Connectable
+      include SkosFeedable
 
       attr_accessor :full_definition_uri
 
@@ -20,15 +21,10 @@ module Parsers
         build_full_definition_uri
       end
 
-      ###
-      # @description: Get the rdfs:Class node from the definition in the internet, if possible
-      ###
       def infer_rdfs_class_node
-        # Fetch the definition in the internet
-        json_definition = fetch_definition
+        json_definition = fetch_definition(@full_definition_uri)
         return unless json_definition[:@graph].present?
 
-        # Find the node we are looking for in the fetched definition
         node_in_definition = find_original_node_in_fetched_definition(json_definition[:@graph])
 
         return unless !node_in_definition.nil? &&
@@ -39,49 +35,24 @@ module Parsers
 
       private
 
-      ###
-      # @description: Generates a full uri to get the type from
-      ###
       def build_full_definition_uri
         @full_definition_uri = @type
 
-        # We don't want to continue processing if we've already have a valid URI
         return if uri?(@type)
 
-        # Instantiate the prefix, it's the first part of the string type
-        # e.g. "asn:Statement" -> "asn"
         prefix = @type.split(SEPARATOR).first
 
-        # Check whether we have the value for the prefix in the provided context
-        if @context[prefix].present?
-          # Build the full URI using the value for the prefix in the context, and the
-          # second part of the string type
-          @full_definition_uri = @context[prefix] + @type_name
-        end
+        @full_definition_uri = @context[prefix] + @type_name if @context[prefix].present?
 
         @full_definition_uri
       end
 
-      ###
-      # @description: Generates the name of the type, isolated from the URI
-      ###
       def build_type_name
         @type_name = @type.split("/").last if uri?(@type)
 
         return if uri?(@type)
 
         @type_name = @type.split(SEPARATOR).last
-      end
-
-      ###
-      # @description: Get the definition from the internet
-      # @return [Hash]
-      ###
-      def fetch_definition
-        repository = RDF::Repository.load(@full_definition_uri)
-
-        # Transform the definition to RDF-JSON
-        rdf_to_json_definition(repository.to_rdf_json)
       end
 
       def find_original_node_in_fetched_definition graph
@@ -94,11 +65,6 @@ module Parsers
         }
       end
 
-      ###
-      # @description: Save the node in the local DB if it's an rdfs:Class, and return it
-      # @param node_in_definition [Hash]
-      # @return [RdfsClassNode]
-      ###
       def node_definition_from_db node_in_definition
         node = RdfsClassNode.find_or_initialize_by(
           uri: @full_definition_uri
@@ -107,18 +73,6 @@ module Parsers
         end
 
         node.definition
-      end
-
-      ###
-      # @description: Get a json ld version of the definition to work with
-      # @param [Hash] rdf_json_definition
-      ###
-      def rdf_to_json_definition rdf_json_definition
-        file = Tempfile.new(@type_name)
-        file.write(rdf_json_definition.to_json)
-        file.rewind
-
-        Converters::RdfJson.convert(file)
       end
 
       def remove_protocol_from_uri uri

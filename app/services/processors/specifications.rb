@@ -10,11 +10,12 @@ module Processors
     def initialize file_content
       # The domains are listed under the '@graph' object, because at this
       # stage we are dealing with a json-ld file
+      file_content = file_content.with_indifferent_access
       raise InvalidSpecification unless file_content["@graph"].present?
 
       file_content = JSON.parse(file_content) if file_content.is_a?(String)
       @spec = file_content
-      @context = file_content["@context"]
+      @context = file_content["@context"] || {}
       @graph = file_content["@graph"]
     end
 

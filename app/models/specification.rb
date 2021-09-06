@@ -101,4 +101,6 @@ class Specification < ApplicationRecord
   def nullify_domain_spine
     Domain.where(spine: self).each {|d| d.update_column(:spine_id, nil) }
   end
+
+  scope :for_dso, ->(dso) { where(user: dso.users) }
 end

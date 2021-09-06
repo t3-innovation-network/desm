@@ -4,12 +4,19 @@ require "rails_helper"
 
 describe ConfigurationProfile, type: :model do
   subject { FactoryBot.create(:configuration_profile) }
+
   let(:complete_structure) {
     JSON.parse(File.read(Rails.root.join("spec", "fixtures", "complete.configuration.profile.json")))
   }
   let(:valid_structure_with_invalid_email) {
     JSON.parse(File.read(Rails.root.join("spec", "fixtures", "valid.configuration.profile.with.invalid.email.json")))
   }
+
+  before(:each) do
+    Role.create!(name: "dso admin")
+    Role.create!(name: "mapper")
+    Role.create!(name: "profile admin")
+  end
 
   it "has a valid factory" do
     expect(FactoryBot.build(:configuration_profile)).to be_valid
@@ -20,6 +27,10 @@ describe ConfigurationProfile, type: :model do
   context "when it is incomplete" do
     it "has incomplete state at creation" do
       expect(subject.state_handler).to be_instance_of(CpState::Incomplete)
+    end
+
+    it "has not generated structure" do
+      expect(subject.standards_ogranizations).to be_empty
     end
 
     it "can be removed" do
@@ -55,6 +66,10 @@ describe ConfigurationProfile, type: :model do
       subject.structure = complete_structure
       subject.save!
       subject.complete!
+    end
+
+    it "has not generated structure" do
+      expect(subject.standards_ogranizations).to be_empty
     end
 
     it "can be removed" do
@@ -93,7 +108,15 @@ describe ConfigurationProfile, type: :model do
       subject.activate!
     end
 
-    it "can be removed" do
+    it "has a generated structure" do
+      sdos = subject.standards_ogranizations
+
+      expect(sdos.length).to be(1)
+      expect(sdos.first.name).to eq(complete_structure["standardsOrganizations"][0]["name"])
+    end
+
+    # @todo remove cascade (agents, dsos, abstract classes, mapping predicates, schemas and concept schemes)
+    xit "can be removed" do
       subject.remove
 
       expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
@@ -116,7 +139,48 @@ describe ConfigurationProfile, type: :model do
     it "can be deactivated" do
       subject.deactivate!
 
-      expect(subject.state_handler).to be_instance_of(CpState::Complete)
+      expect(subject.state_handler).to be_instance_of(CpState::Deactivated)
+    end
+  end
+
+  context "when it is deactivated" do
+    before(:each) do
+      subject.update!(structure: complete_structure)
+      subject.complete!
+      subject.activate!
+      subject.deactivate!
+    end
+
+    it "has a not generated structure" do
+      expect(subject.standards_ogranizations.length).to eq(1)
+    end
+
+    # @todo remove cascade (agents, dsos, abstract classes, mapping predicates, schemas and concept schemes)
+    xit "can be removed" do
+      subject.remove
+
+      expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
+    end
+
+    it "can not be completed" do
+      expect(subject.state_handler).to be_instance_of(CpState::Deactivated)
+      expect { subject.complete! }.to raise_error CpState::InvalidStateTransition
+    end
+
+    it "can be activated" do
+      subject.activate!
+
+      expect(subject.state_handler).to be_instance_of(CpState::Active)
+    end
+
+    it "can be exported" do
+      exported_cp = subject.export
+
+      expect(exported_cp).to be_equal(subject.structure)
+    end
+
+    it "can not be deactivated again" do
+      expect { subject.deactivate! }.to raise_error CpState::InvalidStateTransition
     end
   end
 

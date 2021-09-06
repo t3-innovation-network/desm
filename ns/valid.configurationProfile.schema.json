@@ -7,7 +7,7 @@
       "type": "object",
       "title": "The information pertaining an agent that operates the platform",
       "properties": {
-        "name": {
+        "fullname": {
           "type": "string",
           "title": "The name for this agent to display in the profile. Desirable format: <first name><space><last name>.",
           "examples": ["Sergio Ramos", "Lionel Messi"]
@@ -23,7 +23,7 @@
         "phone": {
           "type": "string",
           "title": "The american format phone number of the agent",
-          "pattern": "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$",
+          "pattern": "^(-()[0-9]+)+$",
           "examples": ["(123) 123-1234"]
         },
         "githubHandle": {
@@ -110,6 +110,14 @@
       "type": "object",
       "title": "An organization that specifies standards for data definitions and uses the DESM tool to map from a specification to another",
       "properties": {
+        "email": {
+          "title": "Email address for the agent. It will serve as the username in sessions.",
+          "type": "string",
+          "pattern": "^\\S+@\\S+\\.\\S+$",
+          "format": "email",
+          "minLength": 6,
+          "maxLength": 127
+        },
         "name": {
           "type": "string",
           "title": "The name of the organization",

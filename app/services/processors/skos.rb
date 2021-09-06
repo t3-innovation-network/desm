@@ -16,6 +16,7 @@ module Processors
           file
         end
 
+      @file_content = @file_content.with_indifferent_access
       @graph = @file_content["@graph"]
       @context = @file_content["@context"]
       @concept_nodes = filter_concept_nodes

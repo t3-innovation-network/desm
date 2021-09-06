@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(version: 2021_08_21_011708) do
     t.integer "state", default: 0, null: false
     t.bigint "domain_set_id"
     t.bigint "predicate_set_id"
-    t.bigint "administrator_id", null: false
+    t.bigint "administrator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["administrator_id"], name: "index_configuration_profiles_on_administrator_id"

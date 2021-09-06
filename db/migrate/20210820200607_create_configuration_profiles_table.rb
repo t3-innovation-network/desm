@@ -7,7 +7,7 @@ class CreateConfigurationProfilesTable < ActiveRecord::Migration[6.0]
       t.integer :state, null: false, default: 0
       t.references :domain_set, null: true, foreign_key: true
       t.references :predicate_set, null: true, foreign_key: true
-      t.references :administrator, null: false, foreign_key: { to_table: :users }
+      t.references :administrator, null: true, foreign_key: { to_table: :users }
       t.timestamps
     end
   end

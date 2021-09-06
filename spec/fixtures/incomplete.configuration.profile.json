@@ -1,0 +1,38 @@
+{
+  "name": "Medical",
+  "description": "This configuration profile is meant to hold mapping of specification related to the education area, with domains like student, organization, grade, etc.",
+  "createdAt": "12-18-2020",
+  "updatedAt": "12-18-2020",
+  "standardsOrganizations": [
+    {
+      "name": "Credential Registry",
+      "description": "A description that provides consistent information about the standards organization",
+      "homepageURL": "https://example.dso.url",
+      "standardsPage": "https://example.dso.standards-pageurl",
+      "dsoAdministrator": {
+        "fullname": "Lionel Messi",
+        "email": "lio@messi.com",
+        "phone": "(123) 321-1234"
+      },
+      "associatedSchemas": [
+        {
+          "name": "The name of the schema file",
+          "description": "A detailed description of the schema file. E.g. what it represents, which concepts should be expected it to contain.",
+          "origin": "https://example.url.for.skos.predicates.file1",
+          "associatedAbstractClass": "http://example.org#domain1"
+        },
+        {
+          "name": "The name of the schema file",
+          "description": "A detailed description of the schema file. E.g. what it represents, which concepts should be expected it to contain.",
+          "origin": "https://example.url.for.skos.predicates.file2",
+          "associatedAbstractClass": "http://example.org#domain2"
+        }
+      ]
+    }
+  ],
+  "profileAdministrator": {
+    "fullname": "Sergio Ramos",
+    "email": "sergio@ramos.com",
+    "phone": "(123) 123-1234"
+  }
+}

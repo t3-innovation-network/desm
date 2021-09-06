@@ -9,17 +9,19 @@
 class ConfigurationProfile < ApplicationRecord
   belongs_to :abstract_classes, class_name: "DomainSet", foreign_key: :domain_set_id, optional: true
   belongs_to :mapping_predicates, class_name: "PredicateSet", foreign_key: :predicate_set_id, optional: true
-  belongs_to :administrator, class_name: "User", foreign_key: :administrator_id
+  belongs_to :administrator, class_name: "User", foreign_key: :administrator_id, optional: true
   has_many :standards_ogranizations, class_name: "Organization"
   after_initialize :setup_schema_validators
 
   # The possible states
-  # 1. "incomplete" It does not have a complete structure attribute.
-  # 2. "complete" The 'structure' attribute is complete, validated against a JSON schema. Ready to be activated.
-  # 3. "active" It has the 'structure' attribute complete, validated against a JSON schema file and it has been
+  # 0. "incomplete" It does not have a complete structure attribute.
+  # 1. "complete" The 'structure' attribute is complete, validated against a JSON schema. Ready to be activated.
+  # 2. "active" It has the 'structure' attribute complete, validated against a JSON schema file and it has been
   #   activated, meaning all the entities around it (DSO's, agents, schema files and more) had been created by
   #   parsing the structure.
-  enum state: {incomplete: 0, complete: 1, active: 2}
+  # 3. "deactivated" Can not be operated unless it's for removal or export. It can only be activated again, which
+  #   will not trigger the structure creation again.
+  enum state: {incomplete: 0, complete: 1, active: 2, deactivated: 3}
 
   def setup_schema_validators
     @complete_schema = JSON.parse(File.read(Rails.root.join("ns", "complete.configurationProfile.schema.json")))
@@ -40,6 +42,10 @@ class ConfigurationProfile < ApplicationRecord
 
   def export
     state_handler.export
+  end
+
+  def generate_structure
+    CreateCpStructure.call({configuration_profile: self})
   end
 
   def remove

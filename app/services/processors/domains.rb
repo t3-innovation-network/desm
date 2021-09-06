@@ -38,7 +38,7 @@ module Processors
       parser = Parsers::JsonLd::Node.new(domain_set)
       DomainSet.first_or_create!({
                                    uri: parser.read!("id"),
-                                   title: parser.read!("title"),
+                                   title: parser.read!("title") || parser.read!("label"),
                                    description: parser.read!("description"),
                                    creator: parser.read!("creator")
                                  })

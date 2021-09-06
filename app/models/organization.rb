@@ -8,15 +8,12 @@ class Organization < ApplicationRecord
   belongs_to :configuration_profile
   has_many :users, dependent: :destroy
   has_many :vocabularies
+  belongs_to :administrator, class_name: :User, foreign_key: "administrator_id"
 
   before_destroy :check_for_users, prepend: true
 
   private
 
-  ###
-  # @description: Check the existence of users related to this organization and
-  #   abort if there's any
-  ###
   def check_for_users
     throw(:abort) if users.any?
   end

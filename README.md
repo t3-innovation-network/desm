@@ -24,13 +24,7 @@ The project will be accessible from any device within your network
 
 ## Collaborate
 
-> In order to collaborate, please set up your environment with the git hooks, following the steps below:
-
-1. Execute `chmod +x scripts/*.sh`
-
-2. Execute `./scripts/install-hooks.sh`
-
-> Admin user email: "admin@desmsolutions.org", and the password will be the one in the ".env" file.
+> Please create an issue or a pull request. There's a GitHub Actions linting and testing workflow that will validate quality.
 
 ## Jobs
 

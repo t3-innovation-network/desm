@@ -9,24 +9,25 @@
       "description": "A description that provides consistent information about the standards organization",
       "homepageURL": "https://example.dso.url",
       "standardsPage": "https://example.dso.standards-pageurl",
+      "email": "info@dso.com",
       "dsoAdministrator": {
-        "name": "Lionel Messi",
+        "fullname": "Lionel Messi",
         "email": "lio@messi.com",
         "phone": "(123) 321-1234"
       },
       "dsoAgents": [
         {
-          "name": "Mapper N1",
+          "fullname": "Mapper N1",
           "email": "mapper1@credreg.com",
           "phone": "(123) 321-1235"
         },
         {
-          "name": "Mapper N2",
+          "fullname": "Mapper N2",
           "email": "mapper2@credreg.com",
           "phone": "(123) 321-1236"
         },
         {
-          "name": "Mapper N3",
+          "fullname": "Mapper N3",
           "email": "mapper3@credreg.com",
           "phone": "(123) 321-1237"
         }
@@ -35,14 +36,40 @@
         {
           "name": "The name of the schema file",
           "description": "A detailed description of the schema file. E.g. what it represents, which concepts should be expected it to contain.",
-          "origin": "https://example.url.for.skos.predicates.file1",
-          "associatedAbstractClass": "http://example.org#domain1"
+          "origin": "https://credreg.net/ctdl/schema/encoding/json",
+          "associatedAbstractClass": "https://purl.org/ctdl/vocabs/audience/FormerStudent"
         },
         {
           "name": "The name of the schema file",
           "description": "A detailed description of the schema file. E.g. what it represents, which concepts should be expected it to contain.",
-          "origin": "https://example.url.for.skos.predicates.file2",
-          "associatedAbstractClass": "http://example.org#domain2"
+          "origin": "https://schema.org/version/latest/schemaorg-current-https.jsonld",
+          "associatedAbstractClass": "https://purl.org/ctdl/vocabs/audience/Citizen",
+          "associatedConceptSchemes": [
+            {
+              "name": "Learning Method",
+              "version": "1",
+              "description": "A description what the skos file represents.",
+              "origin": [
+                "https://credreg.net/ctdl/terms/LearningMethod/json?releaseID=20210528"
+              ]
+            },
+            {
+              "name": "Organization Type",
+              "version": "1",
+              "description": "A description what the skos file represents.",
+              "origin": [
+                "https://credreg.net/ctdl/terms/OrganizationType/json?releaseID=20210528"
+              ]
+            },
+            {
+              "name": "Assessment Method",
+              "version": "1",
+              "description": "A description what the skos file represents.",
+              "origin": [
+                "https://credreg.net/ctdl/terms/AssessmentMethod/json?releaseID=20210528"
+              ]
+            }
+          ]
         }
       ]
     }
@@ -52,7 +79,7 @@
     "version": "1",
     "description": "A description what the skos file represents.",
     "origin": [
-      "https://example.url.for.skos.predicates.file1,https://example.url.for.skos.predicates.file2"
+      "https://credreg.net/ctdl/terms/Audience/json?releaseID=20210528"
     ]
   },
   "mappingPredicates": {
@@ -60,11 +87,11 @@
     "version": "1",
     "description": "A description what the skos file represents.",
     "origin": [
-      "https://example.url.for.skos.predicates.file1,https://example.url.for.skos.predicates.file2"
+      "https://credreg.net/ctdl/terms/OrganizationType/json?releaseID=20210528"
     ]
   },
   "profileAdministrator": {
-    "name": "Sergio Ramos",
+    "fullname": "Sergio Ramos",
     "email": "sergio@ramos.com",
     "phone": "(123) 123-1234"
   }

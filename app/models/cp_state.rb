@@ -3,6 +3,8 @@
 module CpState
   class InvalidStateTransition < StandardError; end
   class NotYetReadyForTransition < StandardError; end
+  class ConfigurationProfileStructureError < StandardError; end
+
   class Base
     def initialize configuration_profile
       @configuration_profile = configuration_profile
@@ -39,14 +41,15 @@ module CpState
     end
 
     def deactivate!
-      @configuration_profile.transition_to! :complete
+      @configuration_profile.transition_to! :deactivated
     end
   end
 
   class Complete < Base
     def activate!
+      raise CpState::ConfigurationProfileStructureError unless @configuration_profile.generate_structure
+
       @configuration_profile.transition_to! :active
-      # @todo: generate all the models following the structure
     end
 
     def complete!
@@ -55,6 +58,20 @@ module CpState
 
     def deactivate!
       raise CpState::InvalidStateTransition, "Can not deactivate while complete"
+    end
+  end
+
+  class Deactivated < Base
+    def activate!
+      @configuration_profile.transition_to! :active
+    end
+
+    def complete!
+      raise CpState::InvalidStateTransition, "Can not activate while deactivated"
+    end
+
+    def deactivate!
+      raise CpState::InvalidStateTransition, "Already deactivated"
     end
   end
 
