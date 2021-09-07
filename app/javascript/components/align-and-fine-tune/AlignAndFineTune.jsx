@@ -216,7 +216,9 @@ const AlignAndFineTune = (props) => {
    * 2. The mapping term is already mapped in the backend (is one of the mapping terms mapped in DB).
    */
   const spineTermIsMapped = (spineTerm) => {
-    let alg = alignments.find((alignment) => alignment.spineTermId === spineTerm.id);
+    let alg = alignments.find(
+      (alignment) => alignment.spineTermId === spineTerm.id
+    );
     return alg.mappedTerms.length;
   };
 

@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       resources :domains, only: [:index, :show]
       resources :mappings, only: [:create, :destroy, :show, :index, :update]
       resources :alignments, only: [:destroy, :index, :update]
+      resources :configuration_profiles, only: [:index, :create]
       resources :merged_files, only: [:create, :show]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :predicates, only: [:index]
@@ -42,6 +43,7 @@ Rails.application.routes.draw do
       post 'merged_files/:id/filter' => 'merged_files#filter'
       get 'specifications/:id/terms' => 'terms#index'
       get 'vocabularies/:id/flat' => 'vocabularies#flat'
+      post 'configuration_profiles/:id/action' => 'configuration_profile_actions#call_action'
     end
   end
 

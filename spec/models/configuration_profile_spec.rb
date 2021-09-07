@@ -22,7 +22,7 @@ describe ConfigurationProfile, type: :model do
     expect(FactoryBot.build(:configuration_profile)).to be_valid
   end
 
-  it { should have_many(:standards_ogranizations) }
+  it { should have_many(:standards_organizations) }
 
   context "when it is incomplete" do
     it "has incomplete state at creation" do
@@ -30,11 +30,11 @@ describe ConfigurationProfile, type: :model do
     end
 
     it "has not generated structure" do
-      expect(subject.standards_ogranizations).to be_empty
+      expect(subject.standards_organizations).to be_empty
     end
 
     it "can be removed" do
-      subject.remove
+      subject.remove!
 
       expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
     end
@@ -51,7 +51,7 @@ describe ConfigurationProfile, type: :model do
     end
 
     it "can be exported" do
-      exported_cp = subject.export
+      exported_cp = subject.export!
 
       expect(exported_cp).to be_equal(subject.structure)
     end
@@ -69,11 +69,11 @@ describe ConfigurationProfile, type: :model do
     end
 
     it "has not generated structure" do
-      expect(subject.standards_ogranizations).to be_empty
+      expect(subject.standards_organizations).to be_empty
     end
 
     it "can be removed" do
-      subject.remove
+      subject.remove!
 
       expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
     end
@@ -90,7 +90,7 @@ describe ConfigurationProfile, type: :model do
     end
 
     it "can be exported" do
-      exported_cp = subject.export
+      exported_cp = subject.export!
 
       expect(exported_cp).to be_equal(subject.structure)
     end
@@ -109,7 +109,7 @@ describe ConfigurationProfile, type: :model do
     end
 
     it "has a generated structure" do
-      sdos = subject.standards_ogranizations
+      sdos = subject.standards_organizations
 
       expect(sdos.length).to be(1)
       expect(sdos.first.name).to eq(complete_structure["standardsOrganizations"][0]["name"])
@@ -117,7 +117,7 @@ describe ConfigurationProfile, type: :model do
 
     # @todo remove cascade (agents, dsos, abstract classes, mapping predicates, schemas and concept schemes)
     xit "can be removed" do
-      subject.remove
+      subject.remove!
 
       expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
     end
@@ -131,7 +131,7 @@ describe ConfigurationProfile, type: :model do
     end
 
     it "can be exported" do
-      exported_cp = subject.export
+      exported_cp = subject.export!
 
       expect(exported_cp).to be_equal(subject.structure)
     end
@@ -152,12 +152,12 @@ describe ConfigurationProfile, type: :model do
     end
 
     it "has a not generated structure" do
-      expect(subject.standards_ogranizations.length).to eq(1)
+      expect(subject.standards_organizations.length).to eq(1)
     end
 
     # @todo remove cascade (agents, dsos, abstract classes, mapping predicates, schemas and concept schemes)
     xit "can be removed" do
-      subject.remove
+      subject.remove!
 
       expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
     end
@@ -174,7 +174,7 @@ describe ConfigurationProfile, type: :model do
     end
 
     it "can be exported" do
-      exported_cp = subject.export
+      exported_cp = subject.export!
 
       expect(exported_cp).to be_equal(subject.structure)
     end

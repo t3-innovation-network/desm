@@ -10,7 +10,7 @@ User.seed(:fullname,
   fullname: "mapper 2",
   email: "mapper2@desmsolutions.org",
   password: Desm::DEFAULT_PASS,
-  organization: Organization.find(2),
+  organization: Organization.first,
   skip_sending_welcome_email: true
   },
 )

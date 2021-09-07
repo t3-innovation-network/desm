@@ -22,11 +22,11 @@ module CpState
       raise NotImplementedError
     end
 
-    def export
+    def export!
       @configuration_profile.structure
     end
 
-    def remove
+    def remove!
       @configuration_profile.destroy!
     end
   end
