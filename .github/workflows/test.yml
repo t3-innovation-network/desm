@@ -42,6 +42,10 @@ jobs:
       POSTGRESQL_USERNAME: postgres
       POSTGRESQL_PASSWORD: postgres
       POSTGRESQL_PORT: 5432
+      MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
+      MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
+      MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+      MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
 
     steps:
       - uses: actions/checkout@v2
