@@ -207,7 +207,10 @@ describe ConfigurationProfile, type: :model do
     end
 
     it "accepts as complete a complete and valid json structure for a configuration profile" do
-      subject.structure = complete_structure
+      expect(subject.structure_complete?).to be_falsey
+      expect(subject.state_handler).to be_instance_of(CpState::Incomplete)
+
+      subject.update!(structure: complete_structure)
 
       expect(subject.structure_complete?).to be_truthy
       expect(subject.state_handler).to be_instance_of(CpState::Complete)
