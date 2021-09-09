@@ -11,8 +11,8 @@
       "standardsPage": "https://example.dso.standards-pageurl",
       "email": "info@dso.com",
       "dsoAdministrator": {
-        "fullname": "Lionel Messi",
-        "email": "lio@messi.com",
+        "fullname": "CredReg Admin",
+        "email": "admin@credreg.com",
         "phone": "(123) 321-1234"
       },
       "dsoAgents": [

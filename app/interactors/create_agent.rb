@@ -11,12 +11,12 @@ class CreateAgent
   end
 
   def call
-    agent = User.create!(user_params)
+    agent = User.create!(user_params.merge(skip_sending_welcome_email: true))
     Assignment.create!(role: context.role, user: agent)
 
     context.agent = agent
   rescue StandardError => e
-    context.fail!(errors: e)
+    context.fail!(error: e)
   end
 
   private
