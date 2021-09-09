@@ -42,7 +42,6 @@ describe ConfigurationProfile, type: :model do
     it "can be completed if validates" do
       subject.structure = complete_structure
       subject.save!
-      subject.complete!
       expect(subject.state_handler).to be_instance_of(CpState::Complete)
     end
 
@@ -65,7 +64,6 @@ describe ConfigurationProfile, type: :model do
     before(:each) do
       subject.structure = complete_structure
       subject.save!
-      subject.complete!
     end
 
     it "has not generated structure" do
@@ -104,7 +102,6 @@ describe ConfigurationProfile, type: :model do
     before(:each) do
       subject.structure = complete_structure
       subject.save!
-      subject.complete!
       subject.activate!
     end
 
@@ -146,7 +143,6 @@ describe ConfigurationProfile, type: :model do
   context "when it is deactivated" do
     before(:each) do
       subject.update!(structure: complete_structure)
-      subject.complete!
       subject.activate!
       subject.deactivate!
     end
@@ -212,9 +208,8 @@ describe ConfigurationProfile, type: :model do
 
     it "accepts as complete a complete and valid json structure for a configuration profile" do
       subject.structure = complete_structure
-      expect(subject.structure_complete?).to be_truthy
 
-      subject.complete!
+      expect(subject.structure_complete?).to be_truthy
       expect(subject.state_handler).to be_instance_of(CpState::Complete)
     end
 
