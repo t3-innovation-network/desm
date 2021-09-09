@@ -83,7 +83,7 @@ export default class UsersIndex extends Component {
                       <tr key={user.id}>
                         <td>{user.fullname}</td>
                         <td>{user.email}</td>
-                        <td>{user.organization.name}</td>
+                        <td>{user.organization?.name}</td>
                         <td>
                           <Link
                             to={"/dashboard/users/" + user.id}

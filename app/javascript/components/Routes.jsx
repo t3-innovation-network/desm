@@ -18,6 +18,7 @@ import EditSpecification from "./edit-specification/EditSpecification";
 import PropertyMappingList from "./property-mapping-list/PropertyMappingList";
 import ForgotPass from "./auth/ForgotPass";
 import ResetPass from "./auth/ResetPass";
+import ConfigurationProfilesIndex from "./dashboard/configuration-profiles/ConfigurationProfilesIndex";
 
 const Routes = (props) => {
   const { handleLogin } = props;
@@ -44,9 +45,7 @@ const Routes = (props) => {
         <Route
           exact
           path={"/reset-password"}
-          render={(props) => (
-            <ResetPass {...props} handleLogin={handleLogin} />
-          )}
+          render={(props) => <ResetPass {...props} handleLogin={handleLogin} />}
         />
 
         <Route
@@ -93,6 +92,12 @@ const Routes = (props) => {
         />
 
         <ProtectedRoute exact path="/dashboard" component={MainDashboard} />
+
+        <ProtectedRoute
+          exact
+          path="/dashboard/configuration-profiles"
+          component={ConfigurationProfilesIndex}
+        />
 
         <ProtectedRoute exact path="/dashboard/users" component={UsersIndex} />
 
