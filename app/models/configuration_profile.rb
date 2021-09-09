@@ -12,6 +12,7 @@ class ConfigurationProfile < ApplicationRecord
   belongs_to :administrator, class_name: "User", foreign_key: :administrator_id, optional: true
   has_many :standards_organizations, class_name: "Organization"
   after_initialize :setup_schema_validators
+  before_save :check_structure, if: :incomplete?
 
   # The possible states
   # 0. "incomplete" It does not have a complete structure attribute.
@@ -23,13 +24,12 @@ class ConfigurationProfile < ApplicationRecord
   #   will not trigger the structure creation again.
   enum state: {incomplete: 0, complete: 1, active: 2, deactivated: 3}
 
-  def setup_schema_validators
-    @complete_schema = JSON.parse(File.read(Rails.root.join("ns", "complete.configurationProfile.schema.json")))
-    @valid_schema = JSON.parse(File.read(Rails.root.join("ns", "valid.configurationProfile.schema.json")))
-  end
-
   def activate!
     state_handler.activate!
+  end
+
+  def check_structure
+    complete! if structure_complete?
   end
 
   def complete!
@@ -50,6 +50,11 @@ class ConfigurationProfile < ApplicationRecord
 
   def remove!
     state_handler.remove!
+  end
+
+  def setup_schema_validators
+    @complete_schema = JSON.parse(File.read(Rails.root.join("ns", "complete.configurationProfile.schema.json")))
+    @valid_schema = JSON.parse(File.read(Rails.root.join("ns", "valid.configurationProfile.schema.json")))
   end
 
   def state_handler

@@ -63,7 +63,7 @@ RSpec.describe CreateCpStructure, type: :interactor do
         expect(cp.standards_organizations.length).to eq(1)
         expect(first_org.name).to eq("Credential Registry")
         expect(first_org.configuration_profile).to be(cp)
-        expect(first_org.administrator.fullname).to eq("Lionel Messi")
+        expect(first_org.administrator.fullname).to eq("CredReg Admin")
         expect(first_org.users.find_by_email("mapper1@credreg.com")).to be_present
         expect(first_org.users.find_by_email("mapper1@credreg.com")).to be_present
         expect(Specification.for_dso(first_org).length).to eq(2)
