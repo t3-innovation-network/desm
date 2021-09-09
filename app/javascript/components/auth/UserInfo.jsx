@@ -12,13 +12,12 @@ const UserInfo = () => {
         <React.Fragment>
           <Link to="#" className="nav-link col-on-primary">
             <i className="fas fa-user mr-2"></i>
-            {user && user.organization &&
-              (
-                <span>
-                  { user.fullname + " - " + user.organization.name }
-                </span>
-              )
-            }
+            {user && (
+              <span>
+                {_.capitalize(user.fullname) +
+                  (user.organization ? " - " + user.organization?.name : "")}
+              </span>
+            )}
           </Link>
         </React.Fragment>
       ) : (

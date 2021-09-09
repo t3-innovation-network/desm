@@ -6,6 +6,7 @@ const SideBar = () => {
     dashboard: "/dashboard",
     users: "/dashboard/users",
     organizations: "/dashboard/organizations",
+    configuration_profiles: "/dashboard/configuration-profiles",
   };
 
   return (
@@ -16,43 +17,15 @@ const SideBar = () => {
             <ul className="flex-md-column flex-row navbar-nav w-100 justify-content-between">
               <li className="nav-item">
                 <Link
-                  to={navLinks.dashboard}
+                  to={navLinks.configuration_profiles}
                   className={`${
-                    window.location.pathname === navLinks.dashboard
+                    window.location.pathname === navLinks.configuration_profiles
                       ? "selected-dashboard-option "
                       : ""
                   }nav-link cursor-pointer col-background pl-3`}
                 >
-                  <i className="fa fa-home" aria-hidden="true"></i>
-                  <span className="pl-2">Dashboard</span>
-                </Link>
-              </li>
-
-              <li className="nav-item">
-                <Link
-                  to={navLinks.users}
-                  className={`${
-                    window.location.pathname.includes(navLinks.users)
-                      ? "selected-dashboard-option "
-                      : ""
-                  }nav-link cursor-pointer col-background pl-3`}
-                >
-                  <i className="fa fa-users" aria-hidden="true"></i>
-                  <span className="pl-2">Users</span>
-                </Link>
-              </li>
-
-              <li className="nav-item">
-                <Link
-                  to={navLinks.organizations}
-                  className={`${
-                    window.location.pathname.includes(navLinks.organizations)
-                      ? "selected-dashboard-option "
-                      : ""
-                  }nav-link cursor-pointer col-background pl-3`}
-                >
-                  <i className="fa fa-building" aria-hidden="true"></i>
-                  <span className="pl-2">Organizations</span>
+                  <i className="fa fa-cogs" aria-hidden="true"></i>
+                  <span className="pl-2">Configuration Profiles</span>
                 </Link>
               </li>
             </ul>

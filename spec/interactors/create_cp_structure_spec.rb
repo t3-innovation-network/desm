@@ -53,14 +53,14 @@ RSpec.describe CreateCpStructure, type: :interactor do
       end
 
       it "generates a structure with dso's and its respective admin, agents, schemas and concept schemes" do
-        first_org = cp.standards_ogranizations.first
+        first_org = cp.standards_organizations.first
         first_schema = Specification.for_dso(first_org).first
         second_schema = Specification.for_dso(first_org).last
         learning_method_vocab = Vocabulary.find_by_name "Learning Method"
         org_type_vocab = Vocabulary.find_by_name "Organization Type"
         assessment_method_vocab = Vocabulary.find_by_name "Assessment Method"
 
-        expect(cp.standards_ogranizations.length).to eq(1)
+        expect(cp.standards_organizations.length).to eq(1)
         expect(first_org.name).to eq("Credential Registry")
         expect(first_org.configuration_profile).to be(cp)
         expect(first_org.administrator.fullname).to eq("Lionel Messi")

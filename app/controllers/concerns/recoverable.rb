@@ -103,6 +103,11 @@ module Recoverable
         message_key: "errors.email_account_not_configured",
         status_code: :internal_server_error,
         include_original_error_message: true
+      },
+      "StandardError": {
+        message_key: "errors.general",
+        status_code: :internal_server_error,
+        include_original_error_message: true
       }
     }
   end
