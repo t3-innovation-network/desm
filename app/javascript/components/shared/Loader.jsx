@@ -3,6 +3,7 @@ import coffeeWait from "../../../assets/images/coffee-wait.gif";
 
 /**
  * Props:
+ * @prop {String} cssClass
  * @prop {String} message
  * @prop {Boolean} noPadding
  * @prop {Boolean} smallSpinner
@@ -12,10 +13,16 @@ const Loader = (props) => {
   /**
    * Elements from props
    */
-  const { message, noPadding, smallSpinner, showImage } = props;
+  const { message, noPadding, smallSpinner, showImage, cssClass } = props;
 
   return (
-    <div className={"container text-center" + (noPadding ? "" : " p-5")}>
+    <div
+      className={
+        "container text-center" +
+        (noPadding ? "" : " p-5") +
+        (` ${cssClass}` || "")
+      }
+    >
       {showImage ? (
         ""
       ) : (

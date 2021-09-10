@@ -12,6 +12,7 @@ import OutsideAlerter from "./OutsideAlerter.jsx";
 class EllipsisOptions extends Component {
   state = {
     expanded: this.props.expanded || false,
+    disabled: this.props.disabled || false,
   };
 
   handleShrink = () => {
@@ -29,13 +30,13 @@ class EllipsisOptions extends Component {
 
   render() {
     const { options } = this.props;
-    const { expanded } = this.state;
+    const { disabled, expanded } = this.state;
 
     return (
       <OutsideAlerter onOutsideAlert={() => this.handleShrink()}>
         {expanded ? (
           <Fragment>
-            <button className="btn float-right">
+            <button className="btn float-right" disabled={disabled}>
               <i className="fas fa-ellipsis-v" />
             </button>
             <SlideInDown className="float-over">

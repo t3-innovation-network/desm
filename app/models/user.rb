@@ -27,18 +27,10 @@ class User < ApplicationRecord
   # RELATIONSHIPS
   ###
 
-  ###
-  # @description: The organization the user belongs to
-  ###
   belongs_to :organization, optional: true
-  ###
-  # @description: We can assign roles to the user
-  ###
   has_many :assignments, dependent: :delete_all
-  ###
-  # @description: The user's roles
-  ###
   has_many :roles, through: :assignments
+  has_many :specifications, dependent: :destroy
 
   ###
   # VALIDATIONS

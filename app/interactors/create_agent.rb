@@ -11,7 +11,7 @@ class CreateAgent
   end
 
   def call
-    agent = User.create!(user_params.merge(skip_sending_welcome_email: true))
+    agent = User.first_or_create!(user_params.merge(skip_sending_welcome_email: true))
     Assignment.create!(role: context.role, user: agent)
 
     context.agent = agent
@@ -22,8 +22,15 @@ class CreateAgent
   private
 
   def user_params
-    context.to_h
+    @agent_params = context.to_h
            .slice(:fullname, :email, :phone, :github_handle, :organization)
            .merge({password: Desm::DEFAULT_PASS})
+
+    sanitized_params
+  end
+
+  def sanitized_params
+    @agent_params.except!(:organization) if context.dso_admin
+    @agent_params
   end
 end

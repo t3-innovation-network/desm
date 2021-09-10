@@ -9,5 +9,4 @@ ConfigurationProfile.seed do |cp|
 end
 
 cp = ConfigurationProfile.first
-cp.complete!
 cp.activate!

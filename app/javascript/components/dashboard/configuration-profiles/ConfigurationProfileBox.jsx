@@ -1,11 +1,17 @@
 import React, { Component, Fragment } from "react";
+import Loader from "./../../shared/Loader";
 import AlertNotice from "../../shared/AlertNotice";
 import EllipsisOptions from "../../shared/EllipsisOptions";
 import ConfirmDialog from "../../shared/ConfirmDialog";
 import { CPActionHandlerFactory } from "./CPActionHandler";
 
 const CardBody = (props) => {
-  const { configurationProfile, errors, handleOptionSelected } = props;
+  const {
+    configurationProfile,
+    errors,
+    handleOptionSelected,
+    processing,
+  } = props;
 
   const cpStateOptions = {
     active: [
@@ -57,6 +63,7 @@ const CardBody = (props) => {
       <div className="row no-gutters">
         <div className="col-md-10">
           <h5 className="card-title">{configurationProfile.name}</h5>
+          {processing && <Loader noPadding={true} cssClass={"float-over"} />}
           <p
             className="card-text mb-0"
             style={stateColor(configurationProfile.state)}
@@ -75,6 +82,7 @@ const CardBody = (props) => {
           <EllipsisOptions
             options={cpStateOptions[configurationProfile.state]}
             onOptionSelected={handleOptionSelected}
+            disabled={processing}
           />
         </div>
       </div>
@@ -84,10 +92,12 @@ const CardBody = (props) => {
 
 export default class ConfigurationProfileBox extends Component {
   state = {
-    configurationProfile: this.props.configurationProfile,
-    errors: null,
-    confirmationVisible: false,
     actionHandler: null,
+    configurationProfile: this.props.configurationProfile,
+    confirmationVisible: false,
+    errors: null,
+    processing: false,
+    removed: false,
   };
 
   handleOptionSelected = async (option) => {
@@ -110,11 +120,12 @@ export default class ConfigurationProfileBox extends Component {
 
   async handleExecuteAction() {
     const { actionHandler, configurationProfile } = this.state;
+    this.setState({ processing: true, confirmationVisible: false });
 
     let response = await actionHandler.execute(configurationProfile.id);
 
     if (response.error) {
-      this.setState({ errors: response.error, confirmationVisible: false });
+      this.setState({ errors: response.error, processing: false });
       return;
     }
 
@@ -125,8 +136,12 @@ export default class ConfigurationProfileBox extends Component {
     this.setState({
       configurationProfile: newCP,
       errors: null,
-      confirmationVisible: false,
+      processing: false,
     });
+  }
+
+  handleRemoveResponse(success) {
+    if (success) this.setState({ removed: true });
   }
 
   render() {
@@ -135,6 +150,8 @@ export default class ConfigurationProfileBox extends Component {
       configurationProfile,
       confirmationVisible,
       errors,
+      processing,
+      removed,
     } = this.state;
 
     return (
@@ -152,29 +169,34 @@ export default class ConfigurationProfileBox extends Component {
             </h5>
           </ConfirmDialog>
         )}
-        <div className="card mb-3" style={{ maxWidth: "540px" }}>
-          <div className="row no-gutters">
-            <div
-              className={`col-md-4 bg-dashboard-background col-background p-5 ${
-                configurationProfile.state === "deactivated"
-                  ? "disabled-container"
-                  : ""
-              }`}
-            >
-              <i
-                className="fa fa-cogs fa-3x"
-                style={{ transform: "translateY(30%)" }}
-              ></i>
-            </div>
-            <div className="col-md-8">
-              <CardBody
-                configurationProfile={configurationProfile}
-                errors={errors}
-                handleOptionSelected={this.handleOptionSelected}
-              />
+        {removed ? (
+          ""
+        ) : (
+          <div className="card mb-3" style={{ maxWidth: "540px" }}>
+            <div className="row no-gutters">
+              <div
+                className={`col-md-4 bg-dashboard-background col-background p-5 ${
+                  configurationProfile.state === "deactivated" || processing
+                    ? "disabled-container"
+                    : ""
+                }`}
+              >
+                <i
+                  className="fas fa-cogs fa-3x"
+                  style={{ transform: "translateY(30%) translateX(10%)" }}
+                ></i>
+              </div>
+              <div className="col-md-8">
+                <CardBody
+                  configurationProfile={configurationProfile}
+                  errors={errors}
+                  handleOptionSelected={this.handleOptionSelected}
+                  processing={processing}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </Fragment>
     );
   }

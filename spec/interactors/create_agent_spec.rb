@@ -7,6 +7,10 @@ RSpec.describe CreateAgent, type: :interactor do
     let(:test_role) { FactoryBot.build(:role) }
     let(:org) { FactoryBot.build(:organization) }
 
+    before(:each) do
+      Role.create!(name: "dso admin")
+    end
+
     it "rejects creation if required info isn't provided" do
       result = CreateAgent.call({github_handle: "richard0000"})
       expect(result.error).to be("Email must be present")
@@ -43,6 +47,22 @@ RSpec.describe CreateAgent, type: :interactor do
       expect(result.error).to be_nil
       expect(result.agent).to be_instance_of(User)
       expect(result.agent.organization).to be(org)
+    end
+
+    it "does not include the organization if the role is DSO Admin" do
+      dso_admin_role = Role.find_by_name "dso admin"
+      result = CreateAgent.call({
+                                  github_handle: "richard0000",
+                                  fullname: "test",
+                                  email: "test@test.com",
+                                  role: dso_admin_role,
+                                  organization: org,
+                                  dso_admin: true
+                                })
+
+      expect(result.error).to be_nil
+      expect(result.agent).to be_instance_of(User)
+      expect(result.agent.organization).to be_nil
     end
   end
 end

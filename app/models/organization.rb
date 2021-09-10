@@ -4,17 +4,21 @@
 # @description: Represents an organization in the application
 ###
 class Organization < ApplicationRecord
-  validates :name, presence: true, uniqueness: true
-  belongs_to :configuration_profile
-  has_many :users, dependent: :destroy
-  has_many :vocabularies
   belongs_to :administrator, class_name: :User, foreign_key: "administrator_id"
+  belongs_to :configuration_profile
+  has_many :terms, dependent: :destroy
+  has_many :users
+  has_many :vocabularies, dependent: :destroy
+  
+  before_destroy :remove_agents
 
-  before_destroy :check_for_users, prepend: true
+  validates :name, presence: true, uniqueness: true
 
-  private
+  def remove_agents
+    agents.each(&:destroy!)
+  end
 
-  def check_for_users
-    throw(:abort) if users.any?
+  def agents
+    users.where.not(id: administrator.id)
   end
 end
