@@ -9,7 +9,7 @@ class Organization < ApplicationRecord
   has_many :terms, dependent: :destroy
   has_many :users
   has_many :vocabularies, dependent: :destroy
-  
+
   before_destroy :remove_agents
 
   validates :name, presence: true, uniqueness: true
