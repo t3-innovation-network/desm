@@ -31,7 +31,7 @@ module Tokenable
   def generate_token
     loop do
       random_token = SecureRandom.urlsafe_base64(nil, false)
-      break random_token unless self.class.exists?(token: random_token)
+      break random_token unless self.class.default_scoped.exists?(token: random_token)
     end
   end
 end

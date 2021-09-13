@@ -110,7 +110,7 @@ class User < ApplicationRecord
   end
 
   ###
-  # @description: Creates a token to rset the password of this user
+  # @description: Creates a token to reset this user's password
   ###
   def generate_password_token!
     update_columns(
