@@ -57,7 +57,7 @@ module Processors
         # The concept scheme is processed, let's start with the proper predicates
         next unless valid_predicate(predicate, parser)
 
-        Predicate.create!({
+        Predicate.first_or_create!({
                             definition: parser.read!("definition"),
                             pref_label: parser.read!("prefLabel"),
                             uri: parser.read!("id"),

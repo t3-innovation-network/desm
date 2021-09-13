@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 import React from "react";
-import { FadeIn, SlideInDown } from "./Animations.jsx";
+import { SlideInDown } from "./Animations.jsx";
 
 /**
  * Props:
