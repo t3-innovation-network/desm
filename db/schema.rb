@@ -190,7 +190,8 @@ ActiveRecord::Schema.define(version: 2021_08_21_011708) do
     t.datetime "updated_at", precision: 6, null: false
     t.float "weight", default: 0.0, null: false
     t.string "color"
-    t.integer "predicate_set_id"
+    t.bigint "predicate_set_id"
+    t.index ["predicate_set_id"], name: "index_predicates_on_predicate_set_id"
     t.index ["uri"], name: "index_predicates_on_uri", unique: true
   end
 
@@ -314,13 +315,14 @@ ActiveRecord::Schema.define(version: 2021_08_21_011708) do
   add_foreign_key "configuration_profiles", "domain_sets"
   add_foreign_key "configuration_profiles", "predicate_sets"
   add_foreign_key "configuration_profiles", "users", column: "administrator_id"
-  add_foreign_key "domains", "domain_sets"
+  add_foreign_key "domains", "domain_sets", on_delete: :cascade
   add_foreign_key "mapping_selected_terms", "mappings"
   add_foreign_key "mapping_selected_terms", "terms"
   add_foreign_key "mappings", "specifications"
   add_foreign_key "mappings", "users"
   add_foreign_key "organizations", "configuration_profiles"
   add_foreign_key "organizations", "users", column: "administrator_id"
+  add_foreign_key "predicates", "predicate_sets", on_delete: :cascade
   add_foreign_key "properties", "terms"
   add_foreign_key "specifications", "domains"
   add_foreign_key "specifications", "users"

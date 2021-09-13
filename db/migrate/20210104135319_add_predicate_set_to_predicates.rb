@@ -2,6 +2,6 @@
 
 class AddPredicateSetToPredicates < ActiveRecord::Migration[6.0]
   def change
-    add_column :predicates, :predicate_set_id, :integer, column_options: {null: true}
+    add_reference :predicates, :predicate_set, foreign_key: {on_delete: :cascade}, null: :false
   end
 end

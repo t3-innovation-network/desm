@@ -10,5 +10,5 @@
 class PredicateSet < ApplicationRecord
   validates :uri, presence: true, uniqueness: true
   validates :title, presence: true
-  has_many :predicates, dependent: :destroy
+  has_many :predicates
 end
