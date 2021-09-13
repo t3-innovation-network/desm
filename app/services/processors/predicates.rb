@@ -58,12 +58,12 @@ module Processors
         next unless valid_predicate(predicate, parser)
 
         Predicate.first_or_create!({
-                            definition: parser.read!("definition"),
-                            pref_label: parser.read!("prefLabel"),
-                            uri: parser.read!("id"),
-                            weight: parser.read!("weight"),
-                            predicate_set: @predicate_set
-                          })
+                                     definition: parser.read!("definition"),
+                                     pref_label: parser.read!("prefLabel"),
+                                     uri: parser.read!("id"),
+                                     weight: parser.read!("weight"),
+                                     predicate_set: @predicate_set
+                                   })
       end
     end
 
