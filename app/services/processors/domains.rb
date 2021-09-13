@@ -53,12 +53,13 @@ module Processors
 
         parser = Parsers::JsonLd::Node.new(domain)
 
-        Domain.first_or_create!({
-                                  uri: parser.read!("id"),
-                                  pref_label: parser.read!("prefLabel"),
-                                  definition: parser.read!("definition"),
-                                  domain_set: @domain_set
-                                })
+        Domain.find_or_initialize_by(uri: parser.read!("id")) do |d|
+          d.update!(
+            pref_label: parser.read!("prefLabel"),
+            definition: parser.read!("definition"),
+            domain_set: @domain_set
+          )
+        end
       end
     end
   end

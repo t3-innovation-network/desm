@@ -57,13 +57,14 @@ module Processors
         # The concept scheme is processed, let's start with the proper predicates
         next unless valid_predicate(predicate, parser)
 
-        Predicate.first_or_create!({
-                                     definition: parser.read!("definition"),
-                                     pref_label: parser.read!("prefLabel"),
-                                     uri: parser.read!("id"),
-                                     weight: parser.read!("weight"),
-                                     predicate_set: @predicate_set
-                                   })
+        Predicate.find_or_initialize_by(uri: parser.read!("id")) do |p|
+          p.update!({
+                      definition: parser.read!("definition"),
+                      pref_label: parser.read!("prefLabel"),
+                      weight: parser.read!("weight"),
+                      predicate_set: @predicate_set
+                    })
+        end
       end
     end
 
