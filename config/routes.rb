@@ -14,13 +14,13 @@ Rails.application.routes.draw do
   
   namespace :api do
     namespace :v1 do
+      resources :alignments, only: [:destroy, :index, :update]
       resources :alignment_vocabulary_concepts, only: [:update]
       resources :alignment_synthetic_concepts, only: [:create]
       resources :audits, only: [:index]
+      resources :configuration_profiles, only: [:index, :destroy]
       resources :domains, only: [:index, :show]
       resources :mappings, only: [:create, :destroy, :show, :index, :update]
-      resources :alignments, only: [:destroy, :index, :update]
-      resources :configuration_profiles, only: [:index, :create]
       resources :merged_files, only: [:create, :show]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :predicates, only: [:index]

@@ -112,8 +112,7 @@ describe ConfigurationProfile, type: :model do
       expect(sdos.first.name).to eq(complete_structure["standardsOrganizations"][0]["name"])
     end
 
-    # @todo remove cascade (agents, dsos, abstract classes, mapping predicates, schemas and concept schemes)
-    xit "can be removed" do
+    it "can be removed" do
       subject.remove!
 
       expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
@@ -151,8 +150,7 @@ describe ConfigurationProfile, type: :model do
       expect(subject.standards_organizations.length).to eq(1)
     end
 
-    # @todo remove cascade (agents, dsos, abstract classes, mapping predicates, schemas and concept schemes)
-    xit "can be removed" do
+    it "can be removed" do
       subject.remove!
 
       expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound

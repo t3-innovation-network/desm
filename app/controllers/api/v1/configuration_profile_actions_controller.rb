@@ -21,7 +21,7 @@ class Api::V1::ConfigurationProfileActionsController < ApplicationController
   def permitted_actions
     permitted = params.require(:configuration_profile).permit(:action)
     action = permitted[:action].to_sym
-    raise InvalidConfigurationProfileAction unless %i[activate! complete! deactivate! export! remove!].include?(action)
+    raise InvalidConfigurationProfileAction unless %i[activate! complete! deactivate! export!].include?(action)
 
     action
   end

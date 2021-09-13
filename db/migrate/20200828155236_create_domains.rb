@@ -6,7 +6,7 @@ class CreateDomains < ActiveRecord::Migration[6.0]
       t.string :pref_label, null: false
       t.string :uri, null: false
       t.text :definition
-      t.references :domain_set, null: false, foreign_key: true
+      t.references :domain_set, null: false, foreign_key: {on_delete: :cascade}
 
       t.timestamps
     end

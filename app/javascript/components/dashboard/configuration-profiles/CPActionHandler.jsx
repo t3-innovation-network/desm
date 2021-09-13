@@ -1,5 +1,6 @@
 import { downloadFile } from "../../../helpers/Export";
 import execCPAction from "../../../services/execCPAction";
+import removeCP from "../../../services/removeCP";
 
 export class CPActionHandler {
   constructor(
@@ -16,7 +17,7 @@ export class CPActionHandler {
     return await execCPAction(configurationProfileId, `${this.action}!`);
   }
 
-  handleResponse(configurationProfile, context) {}
+  handleResponse(response, context) {}
 }
 
 export class Activate extends CPActionHandler {
@@ -24,8 +25,8 @@ export class Activate extends CPActionHandler {
     super("activate", false);
   }
 
-  handleResponse(configurationProfile, context) {
-    context.reloadCP(configurationProfile);
+  handleResponse(response, context) {
+    context.reloadCP(response);
   }
 }
 
@@ -51,8 +52,8 @@ export class Deactivate extends CPActionHandler {
     );
   }
 
-  handleResponse(configurationProfile, context) {
-    context.reloadCP(configurationProfile);
+  handleResponse(response, context) {
+    context.reloadCP(response);
   }
 }
 
@@ -61,9 +62,9 @@ export class Export extends CPActionHandler {
     super("export", false);
   }
 
-  handleResponse(configurationProfile, context) {
+  handleResponse(response, context) {
     downloadFile(
-      configurationProfile.structure,
+      response.structure,
       `configuration-profile-${new Date().toISOString()}.json`
     );
   }
@@ -75,8 +76,16 @@ export class Remove extends CPActionHandler {
       "remove",
       true,
       "Attention! Removing this Configuration Profile implies permanently loosing all the data in it. This includes the mapping, \
-       DSO's and agents invloved, and even the metadata. Make sure you export the metadata first. Please confirm."
+       DSO's and agents involved, and even the metadata. Make sure you export the metadata first. Please confirm."
     );
+  }
+
+  async execute(configurationProfileId) {
+    return await removeCP(configurationProfileId);
+  }
+
+  handleResponse(response, context) {
+    context.handleRemoveResponse(response.success);
   }
 }
 
