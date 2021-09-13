@@ -76,7 +76,7 @@ export class Remove extends CPActionHandler {
       "remove",
       true,
       "Attention! Removing this Configuration Profile implies permanently loosing all the data in it. This includes the mapping, \
-       DSO's and agents invloved, and even the metadata. Make sure you export the metadata first. Please confirm."
+       DSO's and agents involved, and even the metadata. Make sure you export the metadata first. Please confirm."
     );
   }
 
