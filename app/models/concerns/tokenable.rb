@@ -13,7 +13,6 @@ module Tokenable
   extend ActiveSupport::Concern
 
   included do
-    before_create :generate_token
     MIN_PASSWORD_LENGTH = begin
                             Integer(Desm::MIN_PASSWORD_LENGTH)
                           rescue TypeError
