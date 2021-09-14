@@ -5,6 +5,7 @@ import EllipsisOptions from "../../shared/EllipsisOptions";
 import ConfirmDialog from "../../shared/ConfirmDialog";
 import { CPActionHandlerFactory } from "./CPActionHandler";
 import ActivateProgress from "./ActivateProgress";
+import { CPBoxContainer } from "./ConfigurationProfilesIndex";
 
 const CardBody = (props) => {
   const {
@@ -189,30 +190,21 @@ export default class ConfigurationProfileBox extends Component {
         {removed ? (
           ""
         ) : (
-          <div className="card mb-3" style={{ maxWidth: "540px" }}>
-            <div className="row no-gutters">
-              <div
-                className={`col-md-4 bg-dashboard-background col-background p-5 ${
-                  configurationProfile.state === "deactivated" || processing
-                    ? "disabled-container"
-                    : ""
-                }`}
-              >
-                <i
-                  className="fas fa-cogs fa-3x"
-                  style={{ transform: "translateY(30%) translateX(10%)" }}
-                ></i>
-              </div>
-              <div className="col-md-8">
-                <CardBody
-                  configurationProfile={configurationProfile}
-                  errors={errors}
-                  handleOptionSelected={this.handleOptionSelected}
-                  processing={processing}
-                />
-              </div>
-            </div>
-          </div>
+          <CPBoxContainer
+            sideBoxClass={`bg-dashboard-background col-background p-5 ${
+              configurationProfile.state === "deactivated" || processing
+                ? "disabled-container"
+                : ""
+            }`}
+            iconClass="fa-cogs"
+          >
+            <CardBody
+              configurationProfile={configurationProfile}
+              errors={errors}
+              handleOptionSelected={this.handleOptionSelected}
+              processing={processing}
+            />
+          </CPBoxContainer>
         )}
       </Fragment>
     );
