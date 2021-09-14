@@ -13,6 +13,8 @@ export class CPActionHandler {
     this.confirmationMsg = confirmationMsg;
   }
 
+  beforeExecute() {}
+
   async execute(configurationProfileId) {
     return await execCPAction(configurationProfileId, `${this.action}!`);
   }
@@ -22,10 +24,20 @@ export class CPActionHandler {
 
 export class Activate extends CPActionHandler {
   constructor() {
-    super("activate", false);
+    super(
+      "activate",
+      true,
+      "By marking this Configuration Profile as 'Active', we will try to generate all the necessary data in this DESM instance.\
+      This task includes the creation of the DSO's, agents and schemas. Please confirm to begin the process."
+    );
+  }
+
+  beforeExecute(context) {
+    context.showActivatingProgress();
   }
 
   handleResponse(response, context) {
+    context.hideActivatingProgress();
     context.reloadCP(response);
   }
 }
@@ -35,9 +47,8 @@ export class Complete extends CPActionHandler {
     super(
       "complete",
       true,
-      "If you mark this Configuration Profile as 'completed', we will evaluate the information provided and generate all the \
-       necessary data in this DESM instance. This task includes the creation of the DSO's, agents and schemas. Please confirm \
-       to begin the process."
+      "If you mark this Configuration Profile as 'completed', we will evaluate the information provided. If it fails, please \
+      review the information is complete."
     );
   }
 }

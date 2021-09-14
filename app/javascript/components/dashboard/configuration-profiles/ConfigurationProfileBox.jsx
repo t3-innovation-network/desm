@@ -4,6 +4,7 @@ import AlertNotice from "../../shared/AlertNotice";
 import EllipsisOptions from "../../shared/EllipsisOptions";
 import ConfirmDialog from "../../shared/ConfirmDialog";
 import { CPActionHandlerFactory } from "./CPActionHandler";
+import ActivateProgress from "./ActivateProgress";
 
 const CardBody = (props) => {
   const {
@@ -93,6 +94,7 @@ const CardBody = (props) => {
 export default class ConfigurationProfileBox extends Component {
   state = {
     actionHandler: null,
+    activating: false,
     configurationProfile: this.props.configurationProfile,
     confirmationVisible: false,
     errors: null,
@@ -121,11 +123,16 @@ export default class ConfigurationProfileBox extends Component {
   async handleExecuteAction() {
     const { actionHandler, configurationProfile } = this.state;
     this.setState({ processing: true, confirmationVisible: false });
+    actionHandler.beforeExecute(this);
+    let response;
 
-    let response = await actionHandler.execute(configurationProfile.id);
-
+    response = await actionHandler.execute(configurationProfile.id);
     if (response.error) {
-      this.setState({ errors: response.error, processing: false });
+      this.setState({
+        errors: response.error,
+        processing: false,
+        activating: false,
+      });
       return;
     }
 
@@ -144,8 +151,17 @@ export default class ConfigurationProfileBox extends Component {
     if (success) this.setState({ removed: true });
   }
 
+  showActivatingProgress() {
+    this.setState({ activating: true });
+  }
+
+  hideActivatingProgress() {
+    this.setState({ activating: false });
+  }
+
   render() {
     const {
+      activating,
       actionHandler,
       configurationProfile,
       confirmationVisible,
@@ -169,6 +185,7 @@ export default class ConfigurationProfileBox extends Component {
             </h5>
           </ConfirmDialog>
         )}
+        <ActivateProgress visible={activating} />
         {removed ? (
           ""
         ) : (
