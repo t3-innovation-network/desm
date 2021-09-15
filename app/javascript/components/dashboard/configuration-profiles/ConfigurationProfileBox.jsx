@@ -5,10 +5,19 @@ import EllipsisOptions from "../../shared/EllipsisOptions";
 import ConfirmDialog from "../../shared/ConfirmDialog";
 import { CPActionHandlerFactory } from "./CPActionHandler";
 import ActivateProgress from "./ActivateProgress";
+import { Link } from "react-router-dom";
 
 export const CPBoxContainer = (props) => {
-  const { children, iconClass, sideBoxClass } = props;
+  const { children, iconClass, linkTo, sideBoxClass } = props;
   const action = props.action || (() => {});
+  const renderIcon = () => {
+    return (
+      <i
+        className={`fas ${iconClass} fa-3x`}
+        style={{ transform: "translateY(20%) translateX(-5%)" }}
+      ></i>
+    );
+  };
 
   return (
     <div className="card mb-3 mr-3" style={{ width: "350px" }}>
@@ -18,10 +27,13 @@ export const CPBoxContainer = (props) => {
           style={{ height: "130px" }}
           onClick={action}
         >
-          <i
-            className={`fas ${iconClass} fa-3x`}
-            style={{ transform: "translateY(20%) translateX(-5%)" }}
-          ></i>
+          {linkTo ? (
+            <Link to={linkTo} className="col-background">
+              {renderIcon()}
+            </Link>
+          ) : (
+            renderIcon()
+          )}
         </div>
         <div className="col-md-8">{children}</div>
       </div>
@@ -219,6 +231,7 @@ export default class ConfigurationProfileBox extends Component {
                 : ""
             }`}
             iconClass="fa-cogs"
+            linkTo={`/dashboard/configuration-profiles/${configurationProfile.id}`}
           >
             <CardBody
               configurationProfile={configurationProfile}

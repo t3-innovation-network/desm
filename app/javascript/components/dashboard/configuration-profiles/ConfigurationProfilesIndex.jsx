@@ -103,6 +103,10 @@ export default class ConfigurationProfilesIndex extends Component {
         });
         return;
       }
+
+      this.props.history.push(
+        `/dashboard/configuration-profiles/${response.configurationProfile.id}`
+      );
     });
   };
 
@@ -111,13 +115,11 @@ export default class ConfigurationProfilesIndex extends Component {
 
     return (
       <DashboardContainer>
-        {errors && <AlertNotice message={errors} />}
         {this.dashboardPath()}
 
         <div className="col mt-5">
+          {errors && <AlertNotice message={errors} />}
           <div className="row h-50 ml-5">
-            {errors && <AlertNotice message={errors} />}
-
             {configurationProfiles.map((cp) => {
               return (
                 <ConfigurationProfileBox

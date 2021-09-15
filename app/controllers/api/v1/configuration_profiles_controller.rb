@@ -1,16 +1,13 @@
 # frozen_string_literal: true
 
 class Api::V1::ConfigurationProfilesController < ApplicationController
-  before_action :with_instance, only: :destroy
+  before_action :with_instance, only: %i[destroy show]
   DEFAULT_CP_NAME = "Desm CP - #{DateTime.now.rfc3339}"
 
   def create
     cp = ConfigurationProfile.create!(creation_params)
 
-    render json: {
-      success: true,
-      configuration_profile: cp
-    }
+    render json: cp
   end
 
   def index
@@ -25,6 +22,10 @@ class Api::V1::ConfigurationProfilesController < ApplicationController
     render json: {
       success: true
     }
+  end
+
+  def show
+    render json: @instance, include: [standards_organizations: {include: :users}]
   end
 
   private
