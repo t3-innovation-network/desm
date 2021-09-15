@@ -268,6 +268,12 @@ a:hover {
   box-shadow: 4px 8px 5px -7px $on-primary-light;
 }
 
+.box-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 40px;
+}
+
 /* Mobile */
 
 @media (max-width: 768px) {

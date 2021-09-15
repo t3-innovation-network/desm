@@ -5,7 +5,29 @@ import EllipsisOptions from "../../shared/EllipsisOptions";
 import ConfirmDialog from "../../shared/ConfirmDialog";
 import { CPActionHandlerFactory } from "./CPActionHandler";
 import ActivateProgress from "./ActivateProgress";
-import { CPBoxContainer } from "./ConfigurationProfilesIndex";
+
+export const CPBoxContainer = (props) => {
+  const { children, iconClass, sideBoxClass } = props;
+  const action = props.action || (() => {});
+
+  return (
+    <div className="card mb-3 mr-3" style={{ width: "350px" }}>
+      <div className="row no-gutters" style={{ height: "130px" }}>
+        <div
+          className={"col-md-4 p-5 cursor-pointer " + (sideBoxClass || "")}
+          style={{ height: "130px" }}
+          onClick={action}
+        >
+          <i
+            className={`fas ${iconClass} fa-3x`}
+            style={{ transform: "translateY(20%) translateX(-5%)" }}
+          ></i>
+        </div>
+        <div className="col-md-8">{children}</div>
+      </div>
+    </div>
+  );
+};
 
 const CardBody = (props) => {
   const {
@@ -64,7 +86,7 @@ const CardBody = (props) => {
     <div className="card-body">
       <div className="row no-gutters">
         <div className="col-md-10">
-          <h5 className="card-title">{configurationProfile.name}</h5>
+          <h5 className="card-title box-title">{configurationProfile.name}</h5>
           {processing && <Loader noPadding={true} cssClass={"float-over"} />}
           <p
             className="card-text mb-0"

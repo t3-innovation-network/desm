@@ -1,49 +1,55 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import DashboardContainer from "../DashboardContainer";
 import { Link } from "react-router-dom";
 import AlertNotice from "../../shared/AlertNotice";
 import fetchConfigurationProfiles from "../../../services/fetchConfigurationProfiles";
-import ConfigurationProfileBox from "./ConfigurationProfileBox";
+import ConfigurationProfileBox, {
+  CPBoxContainer,
+} from "./ConfigurationProfileBox";
 import { camelizeKeys } from "humps";
+import ConfirmDialog from "../../shared/ConfirmDialog";
+import createCP from "../../../services/createCP";
 
-export const CPBoxContainer = (props) => {
-  const { children, iconClass, sideBoxClass } = props;
-  const action = props.action || (() => {});
-
-  return (
-    <div className="card mb-3 mr-3" style={{ maxWidth: "540px" }}>
-      <div className="row no-gutters" style={{ height: "130px" }}>
-        <div
-          className={"col-md-4 p-5 cursor-pointer " + (sideBoxClass || "")}
-          style={{ height: "130px" }}
-          onClick={action}
-        >
-          <i
-            className={`fas ${iconClass} fa-3x`}
-            style={{ transform: "translateY(30%) translateX(10%)" }}
-          ></i>
-        </div>
-        <div className="col-md-8">{children}</div>
-      </div>
-    </div>
-  );
-};
-
-const NewConfigurationProfile = () => {
-  const handleCreate = () => {
-    console.log("Creating a new Configuration Profile");
+class NewConfigurationProfile extends Component {
+  state = {
+    confirmationVisible: false,
+    confirmationMsg:
+      "You are about to create a new empty Configuration Profile. You will be able to fill all the necessary information until\
+       it is complete and ready to be used. Please confirm.",
   };
 
-  return (
-    <CPBoxContainer
-      iconClass="fa-plus"
-      sideBoxClass="bg-dashboard-background-highlight col-background"
-      action={handleCreate}
-    >
-      <h5 className="m-5">Add a Configuration Profile</h5>
-    </CPBoxContainer>
-  );
-};
+  handleCreate = () => {
+    this.setState({ confirmationVisible: false });
+    this.props.handleCreate();
+  };
+
+  render() {
+    const { confirmationMsg, confirmationVisible } = this.state;
+    return (
+      <Fragment>
+        {confirmationVisible && (
+          <ConfirmDialog
+            onRequestClose={() => this.setState({ confirmationVisible: false })}
+            onConfirm={this.handleCreate}
+            visible={confirmationVisible}
+          >
+            <h2 className="text-center">Attention!</h2>
+            <h5 className="mt-3 text-center"> {confirmationMsg}</h5>
+          </ConfirmDialog>
+        )}
+        <CPBoxContainer
+          iconClass="fa-plus"
+          sideBoxClass="bg-dashboard-background-highlight col-background"
+          action={() => {
+            this.setState({ confirmationVisible: true });
+          }}
+        >
+          <h5 className="m-5">Add a Configuration Profile</h5>
+        </CPBoxContainer>
+      </Fragment>
+    );
+  }
+}
 
 export default class ConfigurationProfilesIndex extends Component {
   state = {
@@ -89,6 +95,17 @@ export default class ConfigurationProfilesIndex extends Component {
     });
   }
 
+  handleCreate = () => {
+    createCP().then((response) => {
+      if (response.errors) {
+        this.setState({
+          errors: response.errors,
+        });
+        return;
+      }
+    });
+  };
+
   render() {
     const { configurationProfiles, errors } = this.state;
 
@@ -97,7 +114,7 @@ export default class ConfigurationProfilesIndex extends Component {
         {errors && <AlertNotice message={errors} />}
         {this.dashboardPath()}
 
-        <div className="col col-md-10 mt-5">
+        <div className="col mt-5">
           <div className="row h-50 ml-5">
             {errors && <AlertNotice message={errors} />}
 
@@ -110,7 +127,7 @@ export default class ConfigurationProfilesIndex extends Component {
               );
             })}
 
-            <NewConfigurationProfile />
+            <NewConfigurationProfile handleCreate={this.handleCreate} />
           </div>
         </div>
       </DashboardContainer>
