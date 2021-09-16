@@ -34,7 +34,6 @@ export default class EditConfigurationProfile extends Component {
   };
 
   componentDidMount() {
-    console.log("mounted");
     this.fetchCP();
   }
 

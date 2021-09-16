@@ -10,6 +10,7 @@ import mappingFormReducer from "./mappingFormReducer";
 import vocabulariesReducer from "./vocabulariesReducer";
 import filteredFileReducer from "./filteredFileReducer";
 import mappingFormErrorsReducer from "./mappingFormErrorsReducer";
+import configurationProfileStepReducer from "./configurationProfileStepReducer";
 
 /**
  * Represents a single reducer that contains all the reducers.
@@ -26,6 +27,7 @@ const allReducers = combineReducers({
   toastr: toastrReducer,
   user: userReducer,
   vocabularies: vocabulariesReducer,
+  cpStep: configurationProfileStepReducer,
 });
 
 export default allReducers;
