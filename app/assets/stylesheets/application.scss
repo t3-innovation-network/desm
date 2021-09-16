@@ -111,6 +111,10 @@ a:hover {
   background-color: $dashboard-background-color-highlight !important;
 }
 
+.col-dashboard-highlight {
+  color: $dashboard-background-color-highlight !important;
+}
+
 .bg-col-primary {
   background-color: $primary-color !important;
 }
@@ -272,6 +276,19 @@ a:hover {
   overflow: hidden;
   text-overflow: ellipsis;
   max-height: 40px;
+}
+
+.border-top-dashboard-highlight {
+  border-top: 3px solid $dashboard-background-color-highlight !important;
+}
+
+.cp-container {
+  margin-left: 10% !important;
+  margin-right: 10% !important;
+}
+
+.border-color-dashboard {
+  border: 2px solid $dashboard-background-color-highlight;
 }
 
 /* Mobile */

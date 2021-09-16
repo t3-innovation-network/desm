@@ -4,6 +4,7 @@ import fetchConfigurationProfile from "../../../../services/fetchConfigurationPr
 import AlertNotice from "../../../shared/AlertNotice";
 import Loader from "../../../shared/Loader";
 import DashboardContainer from "../../DashboardContainer";
+import StepsAside from "./StepsAside";
 
 export default class EditConfigurationProfile extends Component {
   state = {
@@ -60,8 +61,8 @@ export default class EditConfigurationProfile extends Component {
           >
             Configuration Profiles
           </Link>
-        </span>
-        <span>Edit</span>
+        </span>{" "}
+        {`>`} <span>Edit</span>
       </div>
     );
   };
@@ -78,8 +79,28 @@ export default class EditConfigurationProfile extends Component {
         ) : (
           <div className="col mt-5">
             {errors && <AlertNotice message={errors} />}
-            <div className="row h-50 ml-5">
-              <h1>{`Configuration Profile ${configurationProfile.name}`}</h1>
+            <div className="row cp-container justify-content-center h-100">
+              <div className="col-3">
+                <StepsAside />
+              </div>
+              <div className="col-9">
+                <div className="card border-top-dashboard-highlight">
+                  <div className="card-body">
+                    <div className="row">
+                      <div className="col-6">
+                        <h3 className="float-left">
+                          {_.capitalize(configurationProfile.name)}
+                        </h3>
+                      </div>
+                      <div className="col-6">
+                        <p className="float-right col-primary">
+                          {_.capitalize(configurationProfile.state)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}

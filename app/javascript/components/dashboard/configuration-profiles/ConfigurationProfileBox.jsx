@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 export const CPBoxContainer = (props) => {
   const { children, iconClass, linkTo, sideBoxClass } = props;
   const action = props.action || (() => {});
+
   const renderIcon = () => {
     return (
       <i
