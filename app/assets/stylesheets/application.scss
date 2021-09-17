@@ -107,6 +107,14 @@ a:hover {
   background-color: $dashboard-background-color !important;
 }
 
+.bg-dashboard-background-highlight {
+  background-color: $dashboard-background-color-highlight !important;
+}
+
+.col-dashboard-highlight {
+  color: $dashboard-background-color-highlight !important;
+}
+
 .bg-col-primary {
   background-color: $primary-color !important;
 }
@@ -262,6 +270,29 @@ a:hover {
   -webkit-box-shadow: 4px 8px 5px -7px $on-primary-light;
   -moz-box-shadow: 4px 8px 5px -7px $on-primary-light;
   box-shadow: 4px 8px 5px -7px $on-primary-light;
+}
+
+.box-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 40px;
+}
+
+.border-top-dashboard-highlight {
+  border-top: 3px solid $dashboard-background-color-highlight !important;
+}
+
+.cp-container {
+  margin-left: 10% !important;
+  margin-right: 10% !important;
+}
+
+.cp-step-row {
+  margin-bottom: 60%;
+}
+
+.border-color-dashboard {
+  border: 2px solid $dashboard-background-color-highlight;
 }
 
 /* Mobile */

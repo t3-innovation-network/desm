@@ -19,6 +19,7 @@ import PropertyMappingList from "./property-mapping-list/PropertyMappingList";
 import ForgotPass from "./auth/ForgotPass";
 import ResetPass from "./auth/ResetPass";
 import ConfigurationProfilesIndex from "./dashboard/configuration-profiles/ConfigurationProfilesIndex";
+import EditConfigurationProfile from "./dashboard/configuration-profiles/edit/EditConfigurationProfile";
 
 const Routes = (props) => {
   const { handleLogin } = props;
@@ -97,6 +98,12 @@ const Routes = (props) => {
           exact
           path="/dashboard/configuration-profiles"
           component={ConfigurationProfilesIndex}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/dashboard/configuration-profiles/:id"
+          component={EditConfigurationProfile}
         />
 
         <ProtectedRoute exact path="/dashboard/users" component={UsersIndex} />

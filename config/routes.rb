@@ -18,7 +18,7 @@ Rails.application.routes.draw do
       resources :alignment_vocabulary_concepts, only: [:update]
       resources :alignment_synthetic_concepts, only: [:create]
       resources :audits, only: [:index]
-      resources :configuration_profiles, only: [:index, :destroy]
+      resources :configuration_profiles, only: [:create, :index, :destroy, :show]
       resources :domains, only: [:index, :show]
       resources :mappings, only: [:create, :destroy, :show, :index, :update]
       resources :merged_files, only: [:create, :show]

@@ -5,6 +5,43 @@ import EllipsisOptions from "../../shared/EllipsisOptions";
 import ConfirmDialog from "../../shared/ConfirmDialog";
 import { CPActionHandlerFactory } from "./CPActionHandler";
 import ActivateProgress from "./ActivateProgress";
+import { Link } from "react-router-dom";
+import { stateStyle } from "./utils";
+
+export const CPBoxContainer = (props) => {
+  const { children, iconClass, linkTo, sideBoxClass } = props;
+  const action = props.action || (() => {});
+
+  const renderIcon = () => {
+    return (
+      <i
+        className={`fas ${iconClass} fa-3x`}
+        style={{ transform: "translateY(20%) translateX(-5%)" }}
+      ></i>
+    );
+  };
+
+  return (
+    <div className="card mb-3 mr-3" style={{ width: "350px" }}>
+      <div className="row no-gutters" style={{ height: "130px" }}>
+        <div
+          className={"col-md-4 p-5 cursor-pointer " + (sideBoxClass || "")}
+          style={{ height: "130px" }}
+          onClick={action}
+        >
+          {linkTo ? (
+            <Link to={linkTo} className="col-background">
+              {renderIcon()}
+            </Link>
+          ) : (
+            renderIcon()
+          )}
+        </div>
+        <div className="col-md-8">{children}</div>
+      </div>
+    </div>
+  );
+};
 
 const CardBody = (props) => {
   const {
@@ -37,19 +74,6 @@ const CardBody = (props) => {
     ],
   };
 
-  const stateColor = (state) => {
-    return {
-      color: stateColorsList[state],
-    };
-  };
-
-  const stateColorsList = {
-    active: "green",
-    deactivated: "grey",
-    incomplete: "red",
-    complete: "orange",
-  };
-
   const totalAgents = () => {
     return (
       configurationProfile.structure?.standardsOrganizations?.reduce(
@@ -63,11 +87,11 @@ const CardBody = (props) => {
     <div className="card-body">
       <div className="row no-gutters">
         <div className="col-md-10">
-          <h5 className="card-title">{configurationProfile.name}</h5>
+          <h5 className="card-title box-title">{configurationProfile.name}</h5>
           {processing && <Loader noPadding={true} cssClass={"float-over"} />}
           <p
             className="card-text mb-0"
-            style={stateColor(configurationProfile.state)}
+            style={stateStyle(configurationProfile.state)}
           >
             {_.capitalize(configurationProfile.state)}
           </p>
@@ -189,30 +213,22 @@ export default class ConfigurationProfileBox extends Component {
         {removed ? (
           ""
         ) : (
-          <div className="card mb-3" style={{ maxWidth: "540px" }}>
-            <div className="row no-gutters">
-              <div
-                className={`col-md-4 bg-dashboard-background col-background p-5 ${
-                  configurationProfile.state === "deactivated" || processing
-                    ? "disabled-container"
-                    : ""
-                }`}
-              >
-                <i
-                  className="fas fa-cogs fa-3x"
-                  style={{ transform: "translateY(30%) translateX(10%)" }}
-                ></i>
-              </div>
-              <div className="col-md-8">
-                <CardBody
-                  configurationProfile={configurationProfile}
-                  errors={errors}
-                  handleOptionSelected={this.handleOptionSelected}
-                  processing={processing}
-                />
-              </div>
-            </div>
-          </div>
+          <CPBoxContainer
+            sideBoxClass={`bg-dashboard-background col-background p-5 ${
+              configurationProfile.state === "deactivated" || processing
+                ? "disabled-container"
+                : ""
+            }`}
+            iconClass="fa-cogs"
+            linkTo={`/dashboard/configuration-profiles/${configurationProfile.id}`}
+          >
+            <CardBody
+              configurationProfile={configurationProfile}
+              errors={errors}
+              handleOptionSelected={this.handleOptionSelected}
+              processing={processing}
+            />
+          </CPBoxContainer>
         )}
       </Fragment>
     );

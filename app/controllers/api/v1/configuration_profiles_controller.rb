@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
 class Api::V1::ConfigurationProfilesController < ApplicationController
-  before_action :with_instance, only: :destroy
+  before_action :with_instance, only: %i[destroy show]
+  DEFAULT_CP_NAME = "Desm CP - #{DateTime.now.rfc3339}"
+
+  def create
+    cp = ConfigurationProfile.create!(creation_params)
+
+    render json: cp
+  end
 
   def index
     cps = ConfigurationProfile.order(name: :asc)
@@ -15,5 +22,19 @@ class Api::V1::ConfigurationProfilesController < ApplicationController
     render json: {
       success: true
     }
+  end
+
+  def show
+    render json: @instance, include: [standards_organizations: {include: :users}]
+  end
+
+  private
+
+  def creation_params
+    permitted_params.merge({name: DEFAULT_CP_NAME, administrator: @current_user})
+  end
+
+  def permitted_params
+    params.require(:configuration_profile).permit(:name, :description, :structure)
   end
 end
