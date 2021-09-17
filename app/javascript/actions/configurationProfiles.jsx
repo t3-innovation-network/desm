@@ -4,3 +4,10 @@ export const setStep = (step) => {
     payload: step,
   };
 };
+
+export const setCurrentConfigurationProfile = (configurationProfile) => {
+  return {
+    type: "SET_CURRENT_CP",
+    payload: configurationProfile,
+  };
+};

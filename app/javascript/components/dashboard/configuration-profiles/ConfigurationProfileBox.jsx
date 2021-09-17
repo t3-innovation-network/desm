@@ -6,6 +6,7 @@ import ConfirmDialog from "../../shared/ConfirmDialog";
 import { CPActionHandlerFactory } from "./CPActionHandler";
 import ActivateProgress from "./ActivateProgress";
 import { Link } from "react-router-dom";
+import { stateStyle } from "./utils";
 
 export const CPBoxContainer = (props) => {
   const { children, iconClass, linkTo, sideBoxClass } = props;
@@ -73,19 +74,6 @@ const CardBody = (props) => {
     ],
   };
 
-  const stateColor = (state) => {
-    return {
-      color: stateColorsList[state],
-    };
-  };
-
-  const stateColorsList = {
-    active: "green",
-    deactivated: "grey",
-    incomplete: "red",
-    complete: "orange",
-  };
-
   const totalAgents = () => {
     return (
       configurationProfile.structure?.standardsOrganizations?.reduce(
@@ -103,7 +91,7 @@ const CardBody = (props) => {
           {processing && <Loader noPadding={true} cssClass={"float-over"} />}
           <p
             className="card-text mb-0"
-            style={stateColor(configurationProfile.state)}
+            style={stateStyle(configurationProfile.state)}
           >
             {_.capitalize(configurationProfile.state)}
           </p>

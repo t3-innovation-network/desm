@@ -1,43 +1,30 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import fetchConfigurationProfile from "../../../../services/fetchConfigurationProfile";
 import AlertNotice from "../../../shared/AlertNotice";
 import Loader from "../../../shared/Loader";
 import DashboardContainer from "../../DashboardContainer";
+import { stateStyle } from "../utils";
 import StepsAside from "./StepsAside";
+import DSOMetaData from "./DSOMetaData";
+import MappingPredicates from "./MappingPredicates";
+import AbstractClasses from "./AbstractClasses";
+import DSOsInfo from "./DSOsInfo";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentConfigurationProfile } from "../../../../actions/configurationProfiles";
+import { camelizeKeys } from "humps";
 
-export default class EditConfigurationProfile extends Component {
-  state = {
-    configurationProfile: {},
-    configurationProfileId: this.props.match.params.id,
-    errors: "",
-    loading: true,
-  };
+const EditConfigurationProfile = (props) => {
+  const [errors, setErrors] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  fetchCP = () => {
-    const { configurationProfileId } = this.state;
+  useEffect(() => {
+    fetchCP();
+  }, []);
 
-    fetchConfigurationProfile(configurationProfileId).then((response) => {
-      if (response.error) {
-        this.setState({
-          errors: response.error,
-          loading: false,
-        });
-        return;
-      }
+  const configurationProfile = useSelector((state) => state.currentCP);
 
-      this.setState({
-        configurationProfile: response.configurationProfile,
-        loading: false,
-      });
-    });
-  };
-
-  componentDidMount() {
-    this.fetchCP();
-  }
-
-  dashboardPath = () => {
+  const dashboardPath = () => {
     return (
       <div className="float-right">
         <i className="fas fa-home" />{" "}
@@ -66,44 +53,93 @@ export default class EditConfigurationProfile extends Component {
     );
   };
 
-  render() {
-    const { configurationProfile, errors, loading } = this.state;
+  const dispatch = useDispatch();
 
-    return (
-      <DashboardContainer>
-        {this.dashboardPath()}
+  const fetchCP = () => {
+    fetchConfigurationProfile(props.match.params.id).then((response) => {
+      if (response.error) {
+        setErrors(response.error);
+        setLoading(false);
+        return;
+      }
 
-        {loading ? (
-          <Loader />
-        ) : (
-          <div className="col mt-5">
-            {errors && <AlertNotice message={errors} />}
-            <div className="row cp-container justify-content-center h-100">
-              <div className="col-3">
-                <StepsAside />
+      dispatch(
+        setCurrentConfigurationProfile(
+          camelizeKeys(response.configurationProfile)
+        )
+      );
+      setLoading(false);
+    });
+  };
+
+  return (
+    <DashboardContainer>
+      {dashboardPath()}
+
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="col mt-5">
+          {errors && <AlertNotice message={errors} />}
+          <div className="row cp-container justify-content-center h-100">
+            <div className="col-3">
+              <div className="row justify-content-center h-100">
+                <div className="col">
+                  <StepsAside />
+                </div>
               </div>
-              <div className="col-9">
-                <div className="card border-top-dashboard-highlight">
-                  <div className="card-body">
-                    <div className="row">
-                      <div className="col-6">
-                        <h3 className="float-left">
-                          {_.capitalize(configurationProfile.name)}
-                        </h3>
-                      </div>
-                      <div className="col-6">
-                        <p className="float-right col-primary">
-                          {_.capitalize(configurationProfile.state)}
-                        </p>
-                      </div>
+            </div>
+            <div className="col-9">
+              <div className="card border-top-dashboard-highlight">
+                <div className="card-body">
+                  <div className="row justify-content-center h-100">
+                    <div className="col-6">
+                      <h3 className="float-left">
+                        {_.capitalize(configurationProfile.name)}
+                      </h3>
                     </div>
+                    <div className="col-6">
+                      <p
+                        className="float-right"
+                        style={stateStyle(configurationProfile.state)}
+                      >
+                        {_.capitalize(configurationProfile.state)}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="row justify-content-center h-100">
+                    <PageStepRenderer />
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        )}
-      </DashboardContainer>
-    );
+        </div>
+      )}
+    </DashboardContainer>
+  );
+};
+
+const PageStepRenderer = () => {
+  const currentStep = useSelector((state) => state.cpStep);
+
+  switch (currentStep) {
+    case 1:
+      return <DSOMetaData />;
+      break;
+    case 2:
+      return <MappingPredicates />;
+      break;
+    case 3:
+      return <AbstractClasses />;
+      break;
+    case 4:
+      return <DSOsInfo />;
+      break;
+    default:
+      return <DSOMetaData />;
+      break;
   }
-}
+};
+
+export default EditConfigurationProfile;
