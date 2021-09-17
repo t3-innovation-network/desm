@@ -29,7 +29,10 @@ const StepsAside = () => {
     <Fragment>
       {steps.map((step) => {
         return (
-          <div className="row justify-content-center h-100" key={step.number}>
+          <div
+            className="row justify-content-center cp-step-row"
+            key={step.number}
+          >
             <div className="col-8">{step.description}</div>
             <div
               className={`col-4 rounded-circle cursor-pointer ${

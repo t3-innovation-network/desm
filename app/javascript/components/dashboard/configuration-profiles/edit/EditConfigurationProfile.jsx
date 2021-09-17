@@ -21,6 +21,7 @@ const EditConfigurationProfile = (props) => {
   const [errors, setErrors] = useState("");
   const [loading, setLoading] = useState(true);
   const configurationProfile = useSelector((state) => state.currentCP);
+  const currentStep = useSelector((state) => state.cpStep);
 
   const dashboardPath = () => {
     return (
@@ -93,9 +94,9 @@ const EditConfigurationProfile = (props) => {
               </div>
             </div>
             <div className="col-9">
-              <div className="card border-top-dashboard-highlight">
-                <div className="card-body">
-                  <div className="row justify-content-center h-100">
+              <div className="card border-top-dashboard-highlight h-100">
+                <div className="card-body d-flex flex-column">
+                  <div className="row justify-content-center">
                     <div className="col-6">
                       <h3 className="float-left">
                         {_.capitalize(configurationProfile.name)}
@@ -110,8 +111,32 @@ const EditConfigurationProfile = (props) => {
                       </p>
                     </div>
                   </div>
-                  <div className="row justify-content-center h-100">
+                  <div className="row justify-content-center">
                     <PageStepRenderer />
+                  </div>
+                  <div className="row mt-auto ml-auto">
+                    {currentStep !== 1 && (
+                      <button
+                        className="btn btn-dark mr-3"
+                        style={{ width: "10rem" }}
+                        onClick={() => {
+                          dispatch(setStep(currentStep - 1));
+                        }}
+                      >
+                        Previous
+                      </button>
+                    )}
+                    {currentStep !== 4 && (
+                      <button
+                        className="btn btn-dark mr-3"
+                        style={{ width: "10rem" }}
+                        onClick={() => {
+                          dispatch(setStep(currentStep + 1));
+                        }}
+                      >
+                        Next
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
