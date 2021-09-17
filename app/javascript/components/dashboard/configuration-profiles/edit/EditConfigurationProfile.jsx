@@ -11,17 +11,15 @@ import MappingPredicates from "./MappingPredicates";
 import AbstractClasses from "./AbstractClasses";
 import DSOsInfo from "./DSOsInfo";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentConfigurationProfile } from "../../../../actions/configurationProfiles";
+import {
+  setCurrentConfigurationProfile,
+  setStep,
+} from "../../../../actions/configurationProfiles";
 import { camelizeKeys } from "humps";
 
 const EditConfigurationProfile = (props) => {
   const [errors, setErrors] = useState("");
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchCP();
-  }, []);
-
   const configurationProfile = useSelector((state) => state.currentCP);
 
   const dashboardPath = () => {
@@ -71,6 +69,11 @@ const EditConfigurationProfile = (props) => {
       setLoading(false);
     });
   };
+
+  useEffect(() => {
+    dispatch(setStep(1));
+    fetchCP();
+  }, []);
 
   return (
     <DashboardContainer>

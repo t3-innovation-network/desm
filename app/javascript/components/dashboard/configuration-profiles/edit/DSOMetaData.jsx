@@ -44,7 +44,6 @@ const DSOMetaData = () => {
             className="form-control input-lg"
             name="createdAt"
             value={configurationProfile.createdAt}
-            autoFocus
             required
           />
         </div>
@@ -58,7 +57,6 @@ const DSOMetaData = () => {
             className="form-control input-lg"
             name="updatedAt"
             value={configurationProfile.updatedAt}
-            autoFocus
             required
           />
         </div>
