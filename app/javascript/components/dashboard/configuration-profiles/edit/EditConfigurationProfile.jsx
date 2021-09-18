@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import fetchConfigurationProfile from "../../../../services/fetchConfigurationProfile";
 import AlertNotice from "../../../shared/AlertNotice";
@@ -13,15 +13,14 @@ import DSOsInfo from "./DSOsInfo";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setCurrentConfigurationProfile,
+  setEditCPErrors,
   setStep,
 } from "../../../../actions/configurationProfiles";
 import { camelizeKeys } from "humps";
 
 const EditConfigurationProfile = (props) => {
-  const [errors, setErrors] = useState("");
   const [loading, setLoading] = useState(true);
-  const configurationProfile = useSelector((state) => state.currentCP);
-  const currentStep = useSelector((state) => state.cpStep);
+  const errors = useSelector((state) => state.editCPErrors);
 
   const dashboardPath = () => {
     return (
@@ -57,7 +56,7 @@ const EditConfigurationProfile = (props) => {
   const fetchCP = () => {
     fetchConfigurationProfile(props.match.params.id).then((response) => {
       if (response.error) {
-        setErrors(response.error);
+        dispatch(setEditCPErrors(response.error));
         setLoading(false);
         return;
       }
@@ -72,6 +71,7 @@ const EditConfigurationProfile = (props) => {
   };
 
   useEffect(() => {
+    dispatch(setEditCPErrors(null));
     dispatch(setStep(1));
     fetchCP();
   }, []);
@@ -97,46 +97,13 @@ const EditConfigurationProfile = (props) => {
               <div className="card border-top-dashboard-highlight h-100">
                 <div className="card-body d-flex flex-column">
                   <div className="row justify-content-center">
-                    <div className="col-6">
-                      <h3 className="float-left">
-                        {_.capitalize(configurationProfile.name)}
-                      </h3>
-                    </div>
-                    <div className="col-6">
-                      <p
-                        className="float-right"
-                        style={stateStyle(configurationProfile.state)}
-                      >
-                        {_.capitalize(configurationProfile.state)}
-                      </p>
-                    </div>
+                    <CPCardHeader />
                   </div>
                   <div className="row justify-content-center">
                     <PageStepRenderer />
                   </div>
                   <div className="row mt-auto ml-auto">
-                    {currentStep !== 1 && (
-                      <button
-                        className="btn btn-dark mr-3"
-                        style={{ width: "10rem" }}
-                        onClick={() => {
-                          dispatch(setStep(currentStep - 1));
-                        }}
-                      >
-                        Previous
-                      </button>
-                    )}
-                    {currentStep !== 4 && (
-                      <button
-                        className="btn btn-dark mr-3"
-                        style={{ width: "10rem" }}
-                        onClick={() => {
-                          dispatch(setStep(currentStep + 1));
-                        }}
-                      >
-                        Next
-                      </button>
-                    )}
+                    <PrevNextButtons />
                   </div>
                 </div>
               </div>
@@ -145,6 +112,34 @@ const EditConfigurationProfile = (props) => {
         </div>
       )}
     </DashboardContainer>
+  );
+};
+
+const CPCardHeader = () => {
+  const configurationProfile = useSelector((state) => state.currentCP);
+  const savingCP = useSelector((state) => state.savingCP);
+
+  return (
+    <Fragment>
+      <div className="col-4">
+        <h3 className="float-left">
+          {_.capitalize(configurationProfile.name)}
+        </h3>
+      </div>
+      <div className="col-4">
+        <p className="text-center col-on-primary-light">
+          {savingCP ? "Saving ..." : "All changes saved"}
+        </p>
+      </div>
+      <div className="col-4">
+        <p
+          className="float-right"
+          style={stateStyle(configurationProfile.state)}
+        >
+          {_.capitalize(configurationProfile.state)}
+        </p>
+      </div>
+    </Fragment>
   );
 };
 
@@ -168,6 +163,37 @@ const PageStepRenderer = () => {
       return <DSOMetaData />;
       break;
   }
+};
+
+const PrevNextButtons = () => {
+  const currentStep = useSelector((state) => state.cpStep);
+
+  return (
+    <Fragment>
+      {currentStep !== 1 && (
+        <button
+          className="btn btn-dark mr-3"
+          style={{ width: "10rem" }}
+          onClick={() => {
+            dispatch(setStep(currentStep - 1));
+          }}
+        >
+          Previous
+        </button>
+      )}
+      {currentStep !== 4 && (
+        <button
+          className="btn btn-dark mr-3"
+          style={{ width: "10rem" }}
+          onClick={() => {
+            dispatch(setStep(currentStep + 1));
+          }}
+        >
+          Next
+        </button>
+      )}
+    </Fragment>
+  );
 };
 
 export default EditConfigurationProfile;

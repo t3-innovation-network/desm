@@ -13,7 +13,9 @@ import mappingFormErrorsReducer from "./mappingFormErrorsReducer";
 import {
   configurationProfileStepReducer,
   currentConfigurationProfileReducer,
-} from "./configurationProfileStepReducer";
+  savingConfigurationProfileReducer,
+  EditCPErrorsReducer,
+} from "./configurationProfilesReducer";
 
 /**
  * Represents a single reducer that contains all the reducers.
@@ -32,6 +34,8 @@ const allReducers = combineReducers({
   vocabularies: vocabulariesReducer,
   cpStep: configurationProfileStepReducer,
   currentCP: currentConfigurationProfileReducer,
+  savingCP: savingConfigurationProfileReducer,
+  editCPErrors: EditCPErrorsReducer,
 });
 
 export default allReducers;

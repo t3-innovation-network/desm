@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::ConfigurationProfilesController < ApplicationController
-  before_action :with_instance, only: %i[destroy show]
+  before_action :with_instance, only: %i[destroy show update]
   DEFAULT_CP_NAME = "Desm CP - #{DateTime.now.rfc3339}"
 
   def create
@@ -28,6 +28,12 @@ class Api::V1::ConfigurationProfilesController < ApplicationController
     render json: @instance, include: [standards_organizations: {include: :users}]
   end
 
+  def update
+    @instance.update(permitted_params)
+
+    render json: @instance, include: [standards_organizations: {include: :users}]
+  end
+
   private
 
   def creation_params
@@ -35,6 +41,6 @@ class Api::V1::ConfigurationProfilesController < ApplicationController
   end
 
   def permitted_params
-    params.require(:configuration_profile).permit(:name, :description, :structure)
+    params.require(:configuration_profile).permit(:created_at, :description, :name, :updated_at, structure: {})
   end
 end
