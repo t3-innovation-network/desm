@@ -167,6 +167,7 @@ const PageStepRenderer = () => {
 
 const PrevNextButtons = () => {
   const currentStep = useSelector((state) => state.cpStep);
+  const dispatch = useDispatch();
 
   return (
     <Fragment>

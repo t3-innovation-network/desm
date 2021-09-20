@@ -6,6 +6,7 @@ import {
   setEditCPErrors,
   setSavingCP,
 } from "../../../../actions/configurationProfiles";
+import { formatDateForInput } from "../utils";
 
 const DSOMetaData = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
@@ -13,8 +14,12 @@ const DSOMetaData = () => {
   const [description, setDescription] = useState(
     configurationProfile.description
   );
-  const [createdAt, setCreatedAt] = useState(configurationProfile.createdAt);
-  const [updatedAt, setUpdatedAt] = useState(configurationProfile.updatedAt);
+  const [createdAt, setCreatedAt] = useState(
+    formatDateForInput(configurationProfile.createdAt)
+  );
+  const [updatedAt, setUpdatedAt] = useState(
+    formatDateForInput(configurationProfile.updatedAt)
+  );
   const dispatch = useDispatch();
 
   const buildCpData = () => {
