@@ -96,7 +96,7 @@ ActiveRecord::Schema.define(version: 2021_08_21_011708) do
   create_table "configuration_profiles", force: :cascade do |t|
     t.text "description"
     t.string "name"
-    t.jsonb "structure"
+    t.jsonb "structure", default: {}
     t.integer "state", default: 0, null: false
     t.bigint "domain_set_id"
     t.bigint "predicate_set_id"

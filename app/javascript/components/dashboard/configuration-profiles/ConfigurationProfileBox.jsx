@@ -48,6 +48,7 @@ const CardBody = (props) => {
     configurationProfile,
     errors,
     handleOptionSelected,
+    linkTo,
     processing,
   } = props;
 
@@ -87,7 +88,15 @@ const CardBody = (props) => {
     <div className="card-body">
       <div className="row no-gutters">
         <div className="col-md-10">
-          <h5 className="card-title box-title">{configurationProfile.name}</h5>
+          <Link
+            className="col-on-primary"
+            to={linkTo}
+            style={{ textDecoration: "none" }}
+          >
+            <h5 className="card-title box-title">
+              {configurationProfile.name}
+            </h5>
+          </Link>
           {processing && <Loader noPadding={true} cssClass={"float-over"} />}
           <p
             className="card-text mb-0"
@@ -227,6 +236,7 @@ export default class ConfigurationProfileBox extends Component {
               errors={errors}
               handleOptionSelected={this.handleOptionSelected}
               processing={processing}
+              linkTo={`/dashboard/configuration-profiles/${configurationProfile.id}`}
             />
           </CPBoxContainer>
         )}

@@ -1,8 +1,53 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import updateCP from "../../../../services/updateCP";
+import {
+  setCurrentConfigurationProfile,
+  setEditCPErrors,
+  setSavingCP,
+} from "../../../../actions/configurationProfiles";
+import { formatDateForInput } from "../utils";
 
 const DSOMetaData = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
+  const [name, setName] = useState(configurationProfile.name);
+  const [description, setDescription] = useState(
+    configurationProfile.description
+  );
+  const [createdAt, setCreatedAt] = useState(
+    formatDateForInput(configurationProfile.createdAt)
+  );
+  const [updatedAt, setUpdatedAt] = useState(
+    formatDateForInput(configurationProfile.updatedAt)
+  );
+  const dispatch = useDispatch();
+
+  const buildCpData = () => {
+    let localCP = configurationProfile;
+    localCP.name = name;
+    localCP.description = description;
+    localCP.structure.name = name;
+    localCP.structure.description = description;
+    localCP.createdAt = createdAt;
+    localCP.updatedAt = updatedAt;
+
+    return localCP;
+  };
+
+  const handleBlur = () => {
+    dispatch(setSavingCP(true));
+
+    updateCP(configurationProfile.id, buildCpData()).then((response) => {
+      if (response.error) {
+        dispatch(setEditCPErrors(response.error));
+        dispatch(setSavingCP(false));
+        return;
+      }
+
+      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
+      dispatch(setSavingCP(false));
+    });
+  };
 
   return (
     <div className="col">
@@ -17,7 +62,11 @@ const DSOMetaData = () => {
             className="form-control input-lg"
             name="name"
             placeholder="Give a descriptive name for the configuration profile"
-            value={configurationProfile.name}
+            value={name}
+            onChange={(event) => {
+              setName(event.target.value);
+            }}
+            onBlur={handleBlur}
             autoFocus
             required
           />
@@ -31,7 +80,12 @@ const DSOMetaData = () => {
             className="form-control input-lg"
             name="description"
             placeholder="A description that provides consistent information about the standards organization"
-            value={configurationProfile.description}
+            value={description || ""}
+            onChange={(event) => {
+              setDescription(event.target.value);
+            }}
+            style={{ height: "20rem" }}
+            onBlur={handleBlur}
           />
         </div>
       </div>
@@ -43,8 +97,11 @@ const DSOMetaData = () => {
             type="date"
             className="form-control input-lg"
             name="createdAt"
-            value={configurationProfile.createdAt}
-            required
+            value={createdAt}
+            onChange={(event) => {
+              setCreatedAt(event.target.value);
+            }}
+            onBlur={handleBlur}
           />
         </div>
       </div>
@@ -56,8 +113,11 @@ const DSOMetaData = () => {
             type="date"
             className="form-control input-lg"
             name="updatedAt"
-            value={configurationProfile.updatedAt}
-            required
+            value={updatedAt}
+            onChange={(event) => {
+              setUpdatedAt(event.target.value);
+            }}
+            onBlur={handleBlur}
           />
         </div>
       </div>

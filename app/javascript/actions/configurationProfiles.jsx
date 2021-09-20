@@ -11,3 +11,11 @@ export const setCurrentConfigurationProfile = (configurationProfile) => {
     payload: configurationProfile,
   };
 };
+
+export const setSavingCP = (value) => {
+  return { type: "SET_SAVING_CP", payload: value };
+};
+
+export const setEditCPErrors = (value) => {
+  return { type: "SET_EDIT_CP_ERRORS", payload: value };
+};
