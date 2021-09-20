@@ -92,7 +92,11 @@ const Routes = (props) => {
           component={AlignAndFineTune}
         />
 
-        <ProtectedRoute exact path="/dashboard" component={MainDashboard} />
+        <ProtectedRoute
+          exact
+          path="/dashboard"
+          component={ConfigurationProfilesIndex}
+        />
 
         <ProtectedRoute
           exact
