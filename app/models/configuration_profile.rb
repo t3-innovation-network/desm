@@ -30,10 +30,9 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def check_ongoing_mappings
-    if standards_organizations.any? {|dso| dso.mappings.any?(&:in_progress?) }
-      self.errors.add(:base, "In progress mappings, unable to remove")
-      throw :abort
-    end
+    return unless standards_organizations.any? {|dso| dso.mappings.any?(&:in_progress?) }
+    errors.add(:base, "In progress mappings, unable to remove")
+    throw :abort
   end
 
   def check_structure
