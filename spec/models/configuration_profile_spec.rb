@@ -62,8 +62,7 @@ describe ConfigurationProfile, type: :model do
 
   context "when it is completed" do
     before(:each) do
-      subject.structure = complete_structure
-      subject.save!
+      subject.update!(structure: complete_structure)
     end
 
     it "has not generated structure" do
@@ -100,8 +99,7 @@ describe ConfigurationProfile, type: :model do
 
   context "when it is active" do
     before(:each) do
-      subject.structure = complete_structure
-      subject.save!
+      subject.update!(structure: complete_structure)
       subject.activate!
     end
 
@@ -221,6 +219,29 @@ describe ConfigurationProfile, type: :model do
       expect(subject.structure_valid?).to be_falsey
       expect(subject.state_handler).to be_instance_of(CpState::Incomplete)
       expect { subject.complete! }.to raise_error CpState::NotYetReadyForTransition
+    end
+  end
+
+  context "when it has to be removed, it checks mappings" do
+    let(:specification) { subject.standards_organizations.first.schemes.first }
+    let(:user) { subject.standards_organizations.first.agents.first }
+    let(:mapping) { Processors::Mappings.new(specification, user).create }
+
+    before(:each) do
+      subject.update!(structure: complete_structure)
+      subject.activate!
+    end
+
+    it "can't be removed if there is at least one in progress mapping" do
+      mapping.update!(status: :in_progress)
+
+      expect { subject.remove! }.to raise_error ActiveRecord::RecordNotDestroyed
+    end
+
+    it "can be removed if there is none in progress mappings" do
+      subject.remove!
+
+      expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
     end
   end
 end

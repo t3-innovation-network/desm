@@ -14,11 +14,19 @@ class Organization < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
+  def agents
+    users.where.not(id: administrator.id)
+  end
+
+  def mappings
+    Mapping.where(user: users)
+  end
+
   def remove_agents
     agents.each(&:destroy!)
   end
 
-  def agents
-    users.where.not(id: administrator.id)
+  def schemes
+    Specification.where(user: users)
   end
 end

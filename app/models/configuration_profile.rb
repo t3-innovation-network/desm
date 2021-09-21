@@ -13,6 +13,7 @@ class ConfigurationProfile < ApplicationRecord
   has_many :standards_organizations, class_name: "Organization", dependent: :destroy
   after_initialize :setup_schema_validators
   before_save :check_structure, if: :incomplete?
+  before_destroy :check_ongoing_mappings, prepend: true
 
   # The possible states
   # 0. "incomplete" It does not have a complete structure attribute.
@@ -26,6 +27,13 @@ class ConfigurationProfile < ApplicationRecord
 
   def activate!
     state_handler.activate!
+  end
+
+  def check_ongoing_mappings
+    if standards_organizations.any? {|dso| dso.mappings.any?(&:in_progress?) }
+      self.errors.add(:base, "In progress mappings, unable to remove")
+      throw :abort
+    end
   end
 
   def check_structure
