@@ -2,7 +2,7 @@
 
 class CreateSchema
   include Interactor
-  include SkosFeedable
+  include SchemeDefinitionFetchable
 
   before do
     context.fail!(error: "domain_id must be present") unless context.domain_id.present?

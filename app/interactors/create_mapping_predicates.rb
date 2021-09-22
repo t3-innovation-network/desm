@@ -2,7 +2,7 @@
 
 class CreateMappingPredicates
   include Interactor
-  include SkosFeedable
+  include SchemeDefinitionFetchable
 
   before do
     context.fail!(error: "uri must be present") unless context.uri.present?

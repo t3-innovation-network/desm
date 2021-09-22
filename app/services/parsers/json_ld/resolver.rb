@@ -5,7 +5,7 @@ module Parsers
     class Resolver
       include NodeTypes
       include Connectable
-      include SkosFeedable
+      include SchemeDefinitionFetchable
 
       attr_accessor :full_definition_uri
 
