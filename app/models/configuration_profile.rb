@@ -11,6 +11,7 @@ class ConfigurationProfile < ApplicationRecord
   belongs_to :mapping_predicates, class_name: "PredicateSet", foreign_key: :predicate_set_id, optional: true
   belongs_to :administrator, class_name: "User", foreign_key: :administrator_id, optional: true
   has_many :standards_organizations, class_name: "Organization", dependent: :destroy
+  has_many :mappings, through: :standards_organizations
   after_initialize :setup_schema_validators
   before_save :check_structure, if: :incomplete?
   before_destroy :check_ongoing_mappings, prepend: true
@@ -30,7 +31,7 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def check_ongoing_mappings
-    return unless standards_organizations.any? {|dso| dso.mappings.any?(&:in_progress?) }
+    return unless mappings.any?(&:in_progress?)
 
     errors.add(:base, "In progress mappings, unable to remove")
     throw :abort
