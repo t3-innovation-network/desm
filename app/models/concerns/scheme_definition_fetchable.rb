@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require 'open-uri'
+
+require "open-uri"
 
 module SchemeDefinitionFetchable
   def fetch_definition uri
