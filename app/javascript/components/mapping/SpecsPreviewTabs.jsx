@@ -4,6 +4,8 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { setVocabularies } from "../../actions/vocabularies";
 import { vocabName } from "../../helpers/Vocabularies";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Reads the file content
@@ -92,9 +94,10 @@ const SpecsPreviewTabs = (props) => {
                     title="Remove this vocabulary"
                     disabled={disabled}
                   >
-                    <i
-                      className="fa fa-trash cursor-pointer"
+                    <FontAwesomeIcon
+                      icon={faTrash}
                       aria-hidden="true"
+                      className="cursor-pointer"
                     />
                   </button>
                 </div>

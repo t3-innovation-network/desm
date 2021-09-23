@@ -14,6 +14,8 @@ import AlertNotice from "../shared/AlertNotice";
 import ExpandableOptions from "../shared/ExpandableOptions";
 import createVocabulary from "../../services/createVocabulary";
 import { readNodeAttribute } from "./../../helpers/Vocabularies";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 export default class EditTerm extends Component {
   /**
@@ -268,7 +270,7 @@ export default class EditTerm extends Component {
                   className="float-right cursor-pointer"
                   onClick={onRequestClose}
                 >
-                  <i className="fa fa-times" aria-hidden="true"></i>
+                  <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
                 </a>
               </div>
             </div>

@@ -4,6 +4,8 @@ import fetchOrganizations from "../../services/fetchOrganizations";
 import AlertNotice from "../shared/AlertNotice";
 import OrganizationInfo from "./organizations/OrganizationInfo";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
 
 export default class MainDashboard extends Component {
   state = {
@@ -14,7 +16,7 @@ export default class MainDashboard extends Component {
   dashboardPath = () => {
     return (
       <div className="float-right">
-        <i className="fas fa-home" />{" "}
+        <FontAwesomeIcon icon={faHome} className="mr-2" />{" "}
         <span>
           <Link className="col-on-primary" to="/">
             Home

@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import AuthButton from "../auth/AuthButton";
 import DashboardBtn from "./DashboardBtn";
 import UserInfo from "../auth/UserInfo";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 const TopNav = (props) => {
   return (
@@ -30,7 +32,7 @@ const TopNav = (props) => {
             aria-expanded="false"
             aria-label="Toggle Navigation"
           >
-            <i className="fa fa-bars" aria-hidden="true" />
+            <FontAwesomeIcon icon={faBars} aria-hidden="true" />
           </button>
 
           <div className="collapse navbar-collapse" id="toggle-nav">

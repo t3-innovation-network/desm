@@ -2,17 +2,18 @@ import React, { Component } from "react";
 import { iterableSelectableOptions } from "../../helpers/Iterables";
 import ExpandableOptions from "../shared/ExpandableOptions";
 import { alignmentSortOptions, spineSortOptions } from "./SortOptions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * @description A complete row with a search bar to filter properties
  *
- * Props:
- * @param {Function} onAlignmentOrderChange
- * @param {Function} onHideSpineTermsWithNoAlignmentsChange
- * @param {Function} onSpineOrderChange
- * @param {Function} onType Actions when a character is typed
- * @param {String} selectedAlignmentOrderOption
- * @param {String} selectedSpineOrderOption
+ * @prop {Function} onAlignmentOrderChange
+ * @prop {Function} onHideSpineTermsWithNoAlignmentsChange
+ * @prop {Function} onSpineOrderChange
+ * @prop {Function} onType Actions when a character is typed
+ * @prop {String} selectedAlignmentOrderOption
+ * @prop {String} selectedSpineOrderOption
  */
 export default class SearchBar extends Component {
   /**
@@ -114,7 +115,10 @@ export default class SearchBar extends Component {
         <div className="col-3">
           <hr className="bottom-border-white" />
           <div className="form-group input-group-has-icon">
-            <span className="fa fa-search form-control-feedback"></span>
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="form-control-feedback"
+            />
             <input
               type="text"
               className="form-control form-control-lg"

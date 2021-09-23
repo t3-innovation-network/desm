@@ -7,6 +7,8 @@ import createUser from "../../services/createUser";
 import { toastr as toast } from "react-redux-toastr";
 import { Link } from "react-router-dom";
 import Loader from "../shared/Loader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUsers, faHome } from "@fortawesome/free-solid-svg-icons";
 
 class Registration extends Component {
   state = {
@@ -28,7 +30,7 @@ class Registration extends Component {
   dashboardPath = () => {
     return (
       <div className="float-right">
-        <i className="fas fa-home" />{" "}
+        <FontAwesomeIcon icon={faHome} />{" "}
         <span>
           <Link className="col-on-primary" to="/">
             Home
@@ -132,7 +134,7 @@ class Registration extends Component {
           ) : (
             <div className="card mt-5">
               <div className="card-header">
-                <i className="fa fa-users"></i>
+                <FontAwesomeIcon icon={faUsers} />
                 <span className="pl-2 subtitle">Create User</span>
               </div>
               <div className="card-body">

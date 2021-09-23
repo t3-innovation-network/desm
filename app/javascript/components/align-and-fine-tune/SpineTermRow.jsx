@@ -8,6 +8,8 @@ import PredicateOptions from "../shared/PredicateOptions";
 import { DraggableItemTypes } from "../shared/DraggableItemTypes";
 import VocabularyLabel from "./match-vocabulary/VocabularyLabel";
 import { Fragment } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Props:
@@ -124,7 +126,10 @@ const SpineTermRow = (props) => {
     return (
       <React.Fragment>
         {alignment.comment && (
-          <i className="fas fa-circle fa-xs col-success float-left comment-dot" />
+          <FontAwesomeIcon
+            icon={faCircle}
+            className="fa-xs col-success float-left comment-dot"
+          />
         )}
         <strong>{predicate}</strong>
       </React.Fragment>
@@ -328,7 +333,7 @@ const SpineTermRow = (props) => {
                       title="Revert selecting this term"
                       onClick={() => handleRevertMapping(mTerm)}
                     >
-                      <i className="fas fa-times"/>
+                      <FontAwesomeIcon icon={faTimes} />
                     </div>
                     <div className="col-10">
                       <strong>{mTerm.name}</strong>
