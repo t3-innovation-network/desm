@@ -13,11 +13,5 @@ class Organization < ApplicationRecord
   has_many :schemes, through: :users, source: :specifications
   has_many :vocabularies, dependent: :destroy
 
-  before_destroy :remove_agents
-
   validates :name, presence: true, uniqueness: true
-
-  def remove_agents
-    agents.each(&:destroy!)
-  end
 end

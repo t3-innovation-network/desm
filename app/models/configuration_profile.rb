@@ -31,7 +31,7 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def check_ongoing_mappings
-    return unless mappings.any?(&:in_progress?)
+    return unless mappings.in_progress.any?
 
     errors.add(:base, "In progress mappings, unable to remove")
     throw :abort
