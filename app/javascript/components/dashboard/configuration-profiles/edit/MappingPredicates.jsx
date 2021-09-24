@@ -40,7 +40,7 @@ const MappingPredicates = () => {
   const handleUrlBlur = () => {
     if (!validURL(origin)) {
       dispatch(
-        setEditCPErrors("The abstract classes origin must be a valid URL")
+        setEditCPErrors("The mapping predicates origin must be a valid URL")
       );
       return;
     }
@@ -79,7 +79,7 @@ const MappingPredicates = () => {
             type="text"
             className="form-control input-lg"
             name="name"
-            placeholder="Give a descriptive name for the configuration profile"
+            placeholder="The name of the skos file."
             value={filename || ""}
             onChange={(event) => {
               setFilename(event.target.value);

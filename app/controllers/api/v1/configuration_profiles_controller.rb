@@ -51,7 +51,8 @@ class Api::V1::ConfigurationProfilesController < ApplicationController
         :description,
         :name,
         :updated_at,
-        mapping_predicates: %i[name version description origin]
+        mapping_predicates: %i[name version description origin],
+        abstract_classes: %i[name version description origin]
       ]
     )
   end
