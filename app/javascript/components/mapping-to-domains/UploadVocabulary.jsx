@@ -8,6 +8,8 @@ import {
 import AlertNotice from "../shared/AlertNotice";
 import fetchExternalVocabulary from "./../../services/fetchExternalVocabulary";
 import { validURL } from "../../helpers/URL";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 var isJSON = require("is-valid-json");
 
@@ -366,7 +368,7 @@ const UploadVocabulary = (props) => {
                 className="float-right cursor-pointer"
                 onClick={props.onRequestClose}
               >
-                <i className="fa fa-arrow-left" aria-hidden="true"></i>
+                <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
               </a>
             </div>
           </div>

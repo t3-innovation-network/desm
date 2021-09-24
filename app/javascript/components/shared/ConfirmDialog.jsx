@@ -1,12 +1,13 @@
 import Modal from "react-modal";
 import React from "react";
 import { SlideInDown } from "./Animations.jsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 /**
- * Props:
- * @param {Function} onConfirm
- * @param {Function} onRequestClose
- * @param {Boolean} visible
+ * @prop {Function} onConfirm
+ * @prop {Function} onRequestClose
+ * @prop {Boolean} visible
  */
 const ConfirmDialog = (props) => {
   Modal.setAppElement("body");
@@ -38,7 +39,7 @@ const ConfirmDialog = (props) => {
                   className="float-right cursor-pointer"
                   onClick={onRequestClose}
                 >
-                  <i className="fa fa-times" aria-hidden="true"></i>
+                  <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
                 </a>
               </div>
             </div>

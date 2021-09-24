@@ -13,6 +13,15 @@ import fetchMappingToExport from "../../services/fetchMappingToExport";
 import { downloadFile } from "../../helpers/Export";
 import updateMapping from "../../services/updateMapping";
 import { Component } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUndo,
+  faPencilAlt,
+  faEye,
+  faDownload,
+  faLayerGroup,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default class SpecsList extends Component {
   state = {
@@ -333,7 +342,7 @@ export default class SpecsList extends Component {
                                 <td>
                                   {mapping["mapped?"] ? (
                                     <Fragment>
-                                    <button
+                                      <button
                                         className="btn btn-sm btn-dark ml-2"
                                         onClick={() =>
                                           this.handleMarkToInProgress(
@@ -344,7 +353,7 @@ export default class SpecsList extends Component {
                                         data-placement="top"
                                         title="Mark this mapping back to 'in progress'"
                                       >
-                                        <i className="fas fa-undo" />
+                                        <FontAwesomeIcon icon={faUndo} />
                                       </button>
 
                                       <Link
@@ -356,7 +365,7 @@ export default class SpecsList extends Component {
                                         data-placement="top"
                                         title="Edit this mapping"
                                       >
-                                        <i className="fas fa-pencil-alt" />
+                                        <FontAwesomeIcon icon={faPencilAlt} />
                                       </Link>
 
                                       <Link
@@ -369,7 +378,7 @@ export default class SpecsList extends Component {
                                         data-placement="top"
                                         title="View this mapping"
                                       >
-                                        <i className="fas fa-eye" />
+                                        <FontAwesomeIcon icon={faEye} />
                                       </Link>
 
                                       <button
@@ -381,7 +390,7 @@ export default class SpecsList extends Component {
                                         data-placement="top"
                                         title="Export this mapping"
                                       >
-                                        <i className="fas fa-download" />
+                                        <FontAwesomeIcon icon={faDownload} />
                                       </button>
                                     </Fragment>
                                   ) : (
@@ -398,7 +407,7 @@ export default class SpecsList extends Component {
                                           data-placement="top"
                                           title="Mark this mapping back to 'uploaded'"
                                         >
-                                          <i className="fas fa-undo" />
+                                          <FontAwesomeIcon icon={faUndo} />
                                         </button>
                                       ) : (
                                         ""
@@ -419,7 +428,7 @@ export default class SpecsList extends Component {
                                         data-placement="top"
                                         title="Resume, continue mapping"
                                       >
-                                        <i className="fas fa-layer-group" />
+                                        <FontAwesomeIcon icon={faLayerGroup} />
                                       </Link>
                                     </Fragment>
                                   )}
@@ -433,7 +442,7 @@ export default class SpecsList extends Component {
                                     data-placement="top"
                                     title="Remove this mapping"
                                   >
-                                    <i className="fas fa-trash" />
+                                    <FontAwesomeIcon icon={faTrash} />
                                   </button>
                                 </td>
                               </tr>

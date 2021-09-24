@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :assignments, dependent: :delete_all
   has_many :roles, through: :assignments
   has_many :specifications, dependent: :destroy
+  has_many :mappings, dependent: :destroy
 
   validates :fullname, presence: true
   validates :email, presence: true, uniqueness: true

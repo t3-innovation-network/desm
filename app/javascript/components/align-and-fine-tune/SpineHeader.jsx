@@ -1,6 +1,7 @@
 import React from "react";
 import ProgressReportBar from "../shared/ProgressReportBar";
-import {Link} from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Props:
@@ -48,7 +49,10 @@ const SpineHeader = (props) => {
               checked={hideMappedSpineTerms}
               onChange={() => setHideMappedSpineTerms(!hideMappedSpineTerms)}
             />
-            <label className="custom-control-label cursor-pointer" htmlFor="hideSpineElms">
+            <label
+              className="custom-control-label cursor-pointer"
+              htmlFor="hideSpineElms"
+            >
               Hide Mapped Elements
             </label>
           </div>
@@ -63,7 +67,8 @@ const SpineHeader = (props) => {
           <ProgressReportBar
             maxValue={alignments.length}
             currentValue={
-              alignments.filter((alignment) => alignment.mappedTerms.length).length
+              alignments.filter((alignment) => alignment.mappedTerms.length)
+                .length
             }
             messageReport="Mapped"
             cssClass="bg-col-on-primary"
@@ -73,7 +78,10 @@ const SpineHeader = (props) => {
       <div className="row mb-2">
         <div className="col-5">
           <div className="form-group input-group-has-icon">
-            <span className="fa fa-search form-control-feedback"/>
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="form-control-feedback"
+            />
             <input
               type="text"
               className="form-control"
@@ -83,7 +91,7 @@ const SpineHeader = (props) => {
             />
           </div>
         </div>
-        <div className="col-5"/>
+        <div className="col-5" />
         <div className="col-2">
           <button
             className="btn btn-block btn-dark"

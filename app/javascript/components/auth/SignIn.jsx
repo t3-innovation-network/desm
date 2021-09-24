@@ -4,6 +4,8 @@ import signIn from "../../services/signIn";
 import AlertNotice from "../shared/AlertNotice";
 import TopNavOptions from "../shared/TopNavOptions";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUsers } from "@fortawesome/free-solid-svg-icons";
 
 class SignIn extends Component {
   /**
@@ -74,7 +76,7 @@ class SignIn extends Component {
 
                 <div className="card">
                   <div className="card-header">
-                    <i className="fa fa-users"></i>
+                    <FontAwesomeIcon icon={faUsers} />
                     <span className="pl-2 subtitle">Sign In</span>
                   </div>
                   <div className="card-body">

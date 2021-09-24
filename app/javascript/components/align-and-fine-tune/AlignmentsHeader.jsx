@@ -1,6 +1,8 @@
 import React from "react";
 import ProgressReportBar from "../shared/ProgressReportBar";
 import Pluralize from "pluralize";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Props
@@ -55,7 +57,10 @@ const AlignmentsHeader = (props) => {
                 setHideMappedSelectedTerms(!hideMappedSelectedTerms)
               }
             />
-            <label className="custom-control-label cursor-pointer" htmlFor="hideMappingElems">
+            <label
+              className="custom-control-label cursor-pointer"
+              htmlFor="hideMappingElems"
+            >
               Hide Mapped Elements
             </label>
           </div>
@@ -77,7 +82,7 @@ const AlignmentsHeader = (props) => {
       </div>
       <div className="row">
         <div className="col form-group input-group-has-icon">
-          <span className="fa fa-search form-control-feedback"/>
+          <FontAwesomeIcon icon={faSearch} className="form-control-feedback" />
           <input
             type="text"
             className="form-control"
