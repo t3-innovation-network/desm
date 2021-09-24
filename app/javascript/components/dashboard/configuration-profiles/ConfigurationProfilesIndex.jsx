@@ -10,7 +10,7 @@ import { camelizeKeys } from "humps";
 import ConfirmDialog from "../../shared/ConfirmDialog";
 import createCP from "../../../services/createCP";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 class NewConfigurationProfile extends Component {
   state = {
@@ -40,7 +40,13 @@ class NewConfigurationProfile extends Component {
           </ConfirmDialog>
         )}
         <CPBoxContainer
-          iconClass="fa-plus"
+          icon={
+            <FontAwesomeIcon
+              icon={faPlus}
+              className="fa-3x"
+              style={{ transform: "translateY(20%) translateX(-5%)" }}
+            />
+          }
           sideBoxClass="bg-dashboard-background-highlight col-background"
           action={() => {
             this.setState({ confirmationVisible: true });
