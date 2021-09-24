@@ -192,6 +192,10 @@ export default class ConfigurationProfileBox extends Component {
     this.setState({ activating: false });
   }
 
+  stopProcessing() {
+    this.setState({ processing: false });
+  }
+
   render() {
     const {
       activating,
