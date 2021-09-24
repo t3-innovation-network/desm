@@ -85,7 +85,7 @@ class Api::V1::MappingsController < ApplicationController
   ###
   def filter
     # Always show only the mappings for the current user's organization
-    mappings = Mapping.where(user: current_user.organization.users)
+    mappings = current_user.organization.mappings
 
     # Filter by current user
     mappings = mappings.where(user: current_user) if params[:filter] != "all"
