@@ -7,6 +7,7 @@ import {
   setSavingCP,
 } from "../../../../actions/configurationProfiles";
 import { formatDateForInput } from "../utils";
+import { camelizeKeys } from "humps";
 
 const DSOMetaData = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
@@ -44,7 +45,11 @@ const DSOMetaData = () => {
         return;
       }
 
-      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
+      dispatch(
+        setCurrentConfigurationProfile(
+          camelizeKeys(response.configurationProfile)
+        )
+      );
       dispatch(setSavingCP(false));
     });
   };
