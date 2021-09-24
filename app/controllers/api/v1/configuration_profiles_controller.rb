@@ -41,6 +41,18 @@ class Api::V1::ConfigurationProfilesController < ApplicationController
   end
 
   def permitted_params
-    params.require(:configuration_profile).permit(:created_at, :description, :name, :updated_at, structure: {})
+    params.require(:configuration_profile).permit(
+      :created_at,
+      :description,
+      :name,
+      :updated_at,
+      structure: [
+        :created_at,
+        :description,
+        :name,
+        :updated_at,
+        mapping_predicates: %i[name version description origin]
+      ]
+    )
   end
 end
