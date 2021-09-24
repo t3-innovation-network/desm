@@ -4,10 +4,8 @@ import createOrganization from "../../../services/createOrganization";
 import { toastr as toast } from "react-redux-toastr";
 import AlertNotice from "../../shared/AlertNotice";
 import { Link } from "react-router-dom";
+import { faBuilding, faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBuilding } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
 
 export default class CreateOrganization extends Component {
   state = {
