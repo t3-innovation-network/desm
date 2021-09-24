@@ -17,6 +17,8 @@ import {
   setStep,
 } from "../../../../actions/configurationProfiles";
 import { camelizeKeys } from "humps";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
 
 const EditConfigurationProfile = (props) => {
   const [loading, setLoading] = useState(true);
@@ -25,7 +27,7 @@ const EditConfigurationProfile = (props) => {
   const dashboardPath = () => {
     return (
       <div className="float-right">
-        <i className="fas fa-home" />{" "}
+        <FontAwesomeIcon icon={faHome} />{" "}
         <span>
           <Link className="col-on-primary" to="/">
             Home

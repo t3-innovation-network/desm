@@ -6,6 +6,8 @@ import TopNavOptions from "../shared/TopNavOptions";
 import { Link } from "react-router-dom";
 import { toastr } from "react-redux-toastr";
 import Loader from "../shared/Loader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faKey } from "@fortawesome/free-solid-svg-icons";
 
 class ForgotPass extends Component {
   /**
@@ -88,7 +90,7 @@ class ForgotPass extends Component {
 
                 <div className="card">
                   <div className="card-header">
-                    <i className="fa fa-key"></i>
+                    <FontAwesomeIcon icon={faKey} />
                     <span className="pl-2 subtitle">Forgot your password?</span>
                     <p>
                       Please type your email, and we will send you an email with

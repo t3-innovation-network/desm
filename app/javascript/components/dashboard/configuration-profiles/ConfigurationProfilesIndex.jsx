@@ -9,6 +9,8 @@ import ConfigurationProfileBox, {
 import { camelizeKeys } from "humps";
 import ConfirmDialog from "../../shared/ConfirmDialog";
 import createCP from "../../../services/createCP";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
 
 class NewConfigurationProfile extends Component {
   state = {
@@ -64,7 +66,7 @@ export default class ConfigurationProfilesIndex extends Component {
   dashboardPath = () => {
     return (
       <div className="float-right">
-        <i className="fas fa-home" />{" "}
+        <FontAwesomeIcon icon={faHome} />{" "}
         <span>
           <Link className="col-on-primary" to="/">
             Home

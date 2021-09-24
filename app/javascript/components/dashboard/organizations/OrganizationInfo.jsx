@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBuilding } from "@fortawesome/free-solid-svg-icons";
 
 const OrganizationInfo = (props) => {
   return (
@@ -9,7 +11,7 @@ const OrganizationInfo = (props) => {
           to={"/dashboard/organizations/" + props.organization.id}
           className="card-header bg-dashboard-background col-background"
         >
-          <i className="fa fa-building"></i>
+          <FontAwesomeIcon icon={faBuilding} />
           <span className="pl-2 subtitle">{props.organization.name}</span>
         </Link>
         <div className="card-body text-center">

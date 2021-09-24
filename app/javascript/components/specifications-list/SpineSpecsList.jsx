@@ -6,6 +6,8 @@ import { toastr as toast } from "react-redux-toastr";
 import ConfirmDialog from "../shared/ConfirmDialog";
 import AlertNotice from "../shared/AlertNotice";
 import Loader from "../shared/Loader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * @description A list of spine specifications from the user or all the users of the organization
@@ -141,10 +143,10 @@ const SpineSpecsList = (props) => {
                 {spine.name + " "}{" "}
                 <strong className="col-primary">- Spine</strong>
               </td>
-              <td/>
-              <td/>
-              <td/>
-              <td/>
+              <td />
+              <td />
+              <td />
+              <td />
               <td>
                 <Link
                   to={"/specifications/" + spine.id}
@@ -153,7 +155,7 @@ const SpineSpecsList = (props) => {
                   data-placement="top"
                   title="Edit the spine. You can edit each property here."
                 >
-                  <i className="fas fa-pencil-alt"/>
+                  <FontAwesomeIcon icon={faPencilAlt} />
                 </Link>
                 <button
                   onClick={() => handleConfirmRemove(spine.id)}
@@ -162,7 +164,7 @@ const SpineSpecsList = (props) => {
                   data-placement="top"
                   title="Remove the spine"
                 >
-                  <i className="fas fa-trash"/>
+                  <FontAwesomeIcon icon={faTrash} />
                 </button>
               </td>
             </tr>

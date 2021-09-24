@@ -3,6 +3,13 @@ import DashboardContainer from "../DashboardContainer";
 import { Link } from "react-router-dom";
 import fetchUsers from "../../../services/fetchUsers";
 import AlertNotice from "../../shared/AlertNotice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUsers,
+  faPlusCircle,
+  faPencilAlt,
+  faHome,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default class UsersIndex extends Component {
   state = {
@@ -17,7 +24,7 @@ export default class UsersIndex extends Component {
   dashboardPath = () => {
     return (
       <div className="float-right">
-        <i className="fas fa-home" />{" "}
+        <FontAwesomeIcon icon={faHome} />{" "}
         <span>
           <Link className="col-on-primary" to="/">
             Home
@@ -56,13 +63,13 @@ export default class UsersIndex extends Component {
 
         <div className="card mt-5">
           <div className="card-header">
-            <i className="fa fa-users"></i>
+            <FontAwesomeIcon icon={faUsers} />
             <span className="pl-2 subtitle">Users</span>
             <Link
               to="/dashboard/users/new"
               className="float-right btn btn-dark btn-sm"
             >
-              <i className="fa fa-fw fa-plus-circle"></i>
+              <FontAwesomeIcon icon={faPlusCircle} />
               <span className="pl-2">Add User</span>
             </Link>
           </div>
@@ -89,10 +96,10 @@ export default class UsersIndex extends Component {
                             to={"/dashboard/users/" + user.id}
                             className="btn btn-dark"
                           >
-                            <i
-                              className="fa fa-pencil-alt"
+                            <FontAwesomeIcon
+                              icon={faPencilAlt}
                               aria-hidden="true"
-                            ></i>
+                            />
                           </Link>
                         </td>
                       </tr>

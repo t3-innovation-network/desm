@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCogs } from "@fortawesome/free-solid-svg-icons";
 
 const SideBar = () => {
   const navLinks = {
@@ -24,7 +26,7 @@ const SideBar = () => {
                       : ""
                   }nav-link cursor-pointer col-background pl-3`}
                 >
-                  <i className="fa fa-cogs" aria-hidden="true"></i>
+                  <FontAwesomeIcon icon={faCogs} aria-hidden="true" />
                   <span className="pl-2">Configuration Profiles</span>
                 </Link>
               </li>

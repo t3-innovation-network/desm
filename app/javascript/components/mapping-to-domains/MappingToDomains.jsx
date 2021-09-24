@@ -17,6 +17,8 @@ import Draggable from "../shared/Draggable";
 import { DraggableItemTypes } from "../shared/DraggableItemTypes";
 import deleteMappingSelectedTerm from "../../services/deleteMappingSelectedTerm";
 import Pluralize from "pluralize";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const MappingToDomains = (props) => {
   /**
@@ -509,7 +511,10 @@ const MappingToDomains = (props) => {
                     </div>
                     <div className="row">
                       <div className="col-12 form-group input-group-has-icon">
-                        <span className="fa fa-search form-control-feedback"></span>
+                        <FontAwesomeIcon
+                          icon={faSearch}
+                          className="form-control-feedback"
+                        />
                         <input
                           type="text"
                           className="form-control"

@@ -9,6 +9,8 @@ import queryString from "query-string";
 import Loader from "./../shared/Loader";
 import passwordStrength from "../../services/passwordStrength";
 import { encode } from "../../helpers/Encoder";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faKey, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 class ResetPass extends Component {
   /**
@@ -56,7 +58,7 @@ class ResetPass extends Component {
          * The miminum acceptable password length
          */
         if (password.length - 1 > minPasswordLength) {
-          let response = await passwordStrength(encode({password: password}));
+          let response = await passwordStrength(encode({ password: password }));
 
           /// Manage the errors
           if (response.error) {
@@ -88,7 +90,7 @@ class ResetPass extends Component {
 
     this.setState({ working: true });
 
-    resetPassword(encode({password: password}), token).then((response) => {
+    resetPassword(encode({ password: password }), token).then((response) => {
       /// Manage the errors
       if (response.error) {
         this.setState({
@@ -156,7 +158,7 @@ class ResetPass extends Component {
                 ) : (
                   <div className="card">
                     <div className="card-header">
-                      <i className="fa fa-key"></i>
+                      <FontAwesomeIcon icon={faKey} />
                       <span className="pl-2 subtitle">Reset your password</span>
                       <p>Please type a strong password below.</p>
                     </div>
@@ -169,7 +171,10 @@ class ResetPass extends Component {
                             <span className="text-danger">*</span>
                           </label>
                           {passwordIsValid ? (
-                            <span className="fa fa-check form-control-feedback right-aligned col-success"></span>
+                            <FontAwesomeIcon
+                              icon={faCheck}
+                              className="form-control-feedback right-aligned col-success"
+                            />
                           ) : (
                             ""
                           )}
