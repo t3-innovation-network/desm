@@ -10,11 +10,10 @@ module SchemeDefinitionFetchable
     "application/zip": ".zip",
     "application/xml": ".xml",
     "text/xml": ".xml",
-  }
+  }.freeze
 
   def fetch_definition uri
     file_content = URI.open(uri).read
-    ext = infer_extension(uri)
     file = Tempfile.new(["tmpschemfile", infer_extension(uri)])
     file.write(file_content)
     file.rewind
