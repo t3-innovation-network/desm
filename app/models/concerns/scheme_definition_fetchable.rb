@@ -9,7 +9,7 @@ module SchemeDefinitionFetchable
     "text/csv": ".csv",
     "application/zip": ".zip",
     "application/xml": ".xml",
-    "text/xml": ".xml",
+    "text/xml": ".xml"
   }.freeze
 
   def fetch_definition uri
