@@ -19,6 +19,7 @@ const DSOMetaData = (props) => {
     dsoData.standardsPage || ""
   );
   const configurationProfile = useSelector((state) => state.currentCP);
+  const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -46,9 +47,7 @@ const DSOMetaData = (props) => {
 
   const buildDsoData = () => {
     let localCP = configurationProfile;
-    let currentDso = localCP.structure.standardsOrganizations.find(
-      (dso) => dso.name === dsoName
-    );
+    let currentDso = localCP.structure.standardsOrganizations[currentDSOIndex];
     currentDso.name = dsoName;
     currentDso.email = dsoEmail;
     currentDso.homepageURL = homepageURL;
@@ -91,7 +90,7 @@ const DSOMetaData = (props) => {
             className="form-control input-lg"
             name="email"
             placeholder="The email of the organization"
-            value={dsoName || ""}
+            value={dsoEmail || ""}
             onChange={(event) => {
               setDsoEmail(event.target.value);
             }}
