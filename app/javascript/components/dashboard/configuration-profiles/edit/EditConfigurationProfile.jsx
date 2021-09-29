@@ -6,7 +6,7 @@ import Loader from "../../../shared/Loader";
 import DashboardContainer from "../../DashboardContainer";
 import { stateStyle } from "../utils";
 import StepsAside from "./StepsAside";
-import DSOMetaData from "./DSOMetaData";
+import CPMetaData from "./CPMetaData";
 import MappingPredicates from "./MappingPredicates";
 import AbstractClasses from "./AbstractClasses";
 import DSOsInfo from "./DSOsInfo";
@@ -150,7 +150,7 @@ const PageStepRenderer = () => {
 
   switch (currentStep) {
     case 1:
-      return <DSOMetaData />;
+      return <CPMetaData />;
       break;
     case 2:
       return <MappingPredicates />;
@@ -162,7 +162,7 @@ const PageStepRenderer = () => {
       return <DSOsInfo />;
       break;
     default:
-      return <DSOMetaData />;
+      return <CPMetaData />;
       break;
   }
 };

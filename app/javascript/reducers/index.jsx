@@ -15,6 +15,7 @@ import {
   currentConfigurationProfileReducer,
   savingConfigurationProfileReducer,
   EditCPErrorsReducer,
+  currentDSOIndexReducer,
 } from "./configurationProfilesReducer";
 
 /**
@@ -36,6 +37,7 @@ const allReducers = combineReducers({
   currentCP: currentConfigurationProfileReducer,
   savingCP: savingConfigurationProfileReducer,
   editCPErrors: EditCPErrorsReducer,
+  currentDSOIndex: currentDSOIndexReducer,
 });
 
 export default allReducers;

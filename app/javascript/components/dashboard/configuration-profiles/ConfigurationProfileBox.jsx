@@ -71,7 +71,7 @@ const CardBody = (props) => {
   const totalAgents = () => {
     return (
       configurationProfile.structure?.standardsOrganizations?.reduce(
-        (sum, org) => sum + org.dsoAgents.length,
+        (sum, org) => sum + (org.dsoAgents?.length || 0),
         0
       ) || 0
     );

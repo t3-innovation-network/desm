@@ -127,6 +127,10 @@ a:hover {
   background-color: $primary-color-highlight !important;
 }
 
+.bg-col-on-primary-light {
+  background-color: $on-primary-light !important;
+}
+
 .bg-dashboard-background-light {
   background-color: $dashboard-background-color-light !important;
 }
@@ -293,6 +297,15 @@ a:hover {
 
 .border-color-dashboard {
   border: 2px solid $dashboard-background-color-highlight;
+}
+
+.dashboard-active-tab {
+  border-top: 2px solid $dashboard-background-color-highlight;
+}
+
+.dashboard-inactive-tab {
+  background-color: $dashboard-background-color;
+  color: $background-color;
 }
 
 /* Mobile */

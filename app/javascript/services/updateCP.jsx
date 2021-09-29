@@ -1,4 +1,4 @@
-import { decamelizeKeys } from "humps";
+import { camelizeKeys, decamelizeKeys } from "humps";
 import apiRequest from "./api/apiRequest";
 
 const updateCP = async (id, data) => {
@@ -6,12 +6,14 @@ const updateCP = async (id, data) => {
     configurationProfile: data,
   };
 
-  return await apiRequest({
+  let response = await apiRequest({
     url: `/api/v1/configuration_profiles/${id}`,
     method: "put",
     successResponse: "configurationProfile",
     payload: decamelizeKeys(payload),
   });
+
+  return camelizeKeys(response);
 };
 
 export default updateCP;
