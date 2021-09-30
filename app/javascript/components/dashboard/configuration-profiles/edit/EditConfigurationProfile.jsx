@@ -63,11 +63,7 @@ const EditConfigurationProfile = (props) => {
         return;
       }
 
-      dispatch(
-        setCurrentConfigurationProfile(
-          camelizeKeys(response.configurationProfile)
-        )
-      );
+      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
       setLoading(false);
     });
   };

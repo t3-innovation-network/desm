@@ -4,11 +4,15 @@ import noDsoDataImg from "./../../../../../assets/images/no-data-found.png";
 import {
   setCurrentConfigurationProfile,
   setCurrentDSOIndex,
+  setEditCPErrors,
+  setSavingCP,
 } from "../../../../actions/configurationProfiles";
 import DSOInfoWrapper from "./DSOInfoWrapper";
+import { camelizeKeys } from "humps";
+import updateCP from "../../../../services/updateCP";
 
 const DSOTab = (props) => {
-  const { active, dso } = props;
+  const { active, dso, onClickHandler } = props;
 
   return (
     <span
@@ -19,6 +23,13 @@ const DSOTab = (props) => {
       } rounded cursor-pointer pl-5 pr-5 pt-3 pb-3 text-center`}
     >
       {dso.name}
+      <span
+        className="font-weight-bold"
+        onClick={onClickHandler}
+        style={{ position: "relative", top: "-10px", left: "30px" }}
+      >
+        x
+      </span>
     </span>
   );
 };
@@ -59,6 +70,21 @@ const DSOsInfo = () => {
     dispatch(setCurrentDSOIndex(getDsos().length - 1));
   };
 
+  const save = () => {
+    dispatch(setSavingCP(true));
+
+    updateCP(currentCP.id, currentCP).then((response) => {
+      if (response.error) {
+        dispatch(setEditCPErrors(response.error));
+        dispatch(setSavingCP(false));
+        return;
+      }
+
+      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
+      dispatch(setSavingCP(false));
+    });
+  };
+
   const newDso = () => {
     return (
       <span
@@ -81,10 +107,22 @@ const DSOsInfo = () => {
           key={index}
           onClick={() => dispatch(setCurrentDSOIndex(index))}
         >
-          <DSOTab active={index === currentDsoIndex} dso={dso} />
+          <DSOTab
+            active={index === currentDsoIndex}
+            dso={dso}
+            onClickHandler={() => removeDSO(index)}
+          />
         </span>
       );
     });
+  };
+
+  const removeDSO = (index) => {
+    let localCP = currentCP;
+    localCP.structure.standardsOrganizations.splice(index, 1);
+
+    dispatch(setCurrentConfigurationProfile(localCP));
+    save();
   };
 
   return (
