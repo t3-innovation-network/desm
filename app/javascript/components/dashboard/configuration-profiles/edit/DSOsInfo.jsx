@@ -1,11 +1,11 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import DSOMetaData from "./DSOMetadata";
 import noDsoDataImg from "./../../../../../assets/images/no-data-found.png";
 import {
   setCurrentConfigurationProfile,
   setCurrentDSOIndex,
 } from "../../../../actions/configurationProfiles";
+import DSOInfoWrapper from "./DSOInfoWrapper";
 
 const DSOTab = (props) => {
   const { active, dso } = props;
@@ -95,7 +95,7 @@ const DSOsInfo = () => {
       </div>
       {getDsos().length ? (
         <div className="mt5 w-100">
-          <DSOMetaData dsoData={getDsos()[currentDsoIndex]} />
+          <DSOInfoWrapper />
         </div>
       ) : (
         <div className="mt-5">{noDsoData()}</div>

@@ -16,6 +16,7 @@ class Api::V1::ConfigurationProfilesController < ApplicationController
       mapping_predicates: %i[name version description origin],
       abstract_classes: %i[name version description origin],
       standards_organizations: [
+        :email,
         :name,
         :description,
         :homepage_url,

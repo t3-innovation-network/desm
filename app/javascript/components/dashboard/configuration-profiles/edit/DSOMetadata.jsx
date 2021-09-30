@@ -5,6 +5,7 @@ import {
   setEditCPErrors,
   setSavingCP,
 } from "../../../../actions/configurationProfiles";
+import { validURL } from "../../../../helpers/URL";
 import updateCP from "../../../../services/updateCP";
 
 const DSOMetaData = (props) => {
@@ -14,7 +15,7 @@ const DSOMetaData = (props) => {
   const [dsoDescription, setDsoDescription] = useState(
     dsoData.description || ""
   );
-  const [homepageURL, setHomepageURL] = useState(dsoData.homepageURL || "");
+  const [homepageUrl, setHomepageURL] = useState(dsoData.homepageUrl || "");
   const [standardsPage, setStandardsPage] = useState(
     dsoData.standardsPage || ""
   );
@@ -26,9 +27,20 @@ const DSOMetaData = (props) => {
     setDsoName(dsoData.name);
     setDsoEmail(dsoData.email);
     setDsoDescription(dsoData.description);
-    setHomepageURL(dsoData.homepageURL);
+    setHomepageURL(dsoData.homepageUrl);
     setStandardsPage(dsoData.standardsPage);
   }, [dsoData]);
+
+  const handleUrlBlur = (url) => {
+    if (!validURL(url)) {
+      dispatch(
+        setEditCPErrors("Please check the standards page and the homepage URL.")
+      );
+      return;
+    }
+    dispatch(setEditCPErrors(null));
+    handleBlur();
+  };
 
   const handleBlur = () => {
     dispatch(setSavingCP(true));
@@ -50,7 +62,8 @@ const DSOMetaData = (props) => {
     let currentDso = localCP.structure.standardsOrganizations[currentDSOIndex];
     currentDso.name = dsoName;
     currentDso.email = dsoEmail;
-    currentDso.homepageURL = homepageURL;
+    currentDso.description = dsoDescription;
+    currentDso.homepageUrl = homepageUrl;
     currentDso.standardsPage = standardsPage;
 
     return localCP;
@@ -125,13 +138,13 @@ const DSOMetaData = (props) => {
           <input
             type="text"
             className="form-control input-lg"
-            name="homepageURL"
+            name="homepageUrl"
             placeholder="The homepage URL of the standards organization"
-            value={homepageURL || ""}
+            value={homepageUrl || ""}
             onChange={(event) => {
               setHomepageURL(event.target.value);
             }}
-            onBlur={handleBlur}
+            onBlur={() => handleUrlBlur(homepageUrl)}
           />
         </div>
       </div>
@@ -151,7 +164,7 @@ const DSOMetaData = (props) => {
             onChange={(event) => {
               setStandardsPage(event.target.value);
             }}
-            onBlur={handleBlur}
+            onBlur={() => handleUrlBlur(standardsPage)}
           />
         </div>
       </div>
