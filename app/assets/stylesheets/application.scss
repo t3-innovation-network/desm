@@ -111,6 +111,10 @@ a:hover {
   background-color: $dashboard-background-color-highlight !important;
 }
 
+.col-dashboard {
+  color: $dashboard-background-color !important;
+}
+
 .col-dashboard-highlight {
   color: $dashboard-background-color-highlight !important;
 }
@@ -297,6 +301,10 @@ a:hover {
 
 .border-color-dashboard {
   border: 2px solid $dashboard-background-color-highlight;
+}
+
+.border-color-dashboard-dark {
+  border: 2px solid $dashboard-background-color;
 }
 
 .dashboard-active-tab {
