@@ -3,15 +3,13 @@ import { useSelector } from "react-redux";
 import DSOMetaData from "./DSOMetadata";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfo, faUsers, faFile } from "@fortawesome/free-solid-svg-icons";
+import { activeTabClass, inactiveTabClass, line, tabStyle } from "../utils";
 
 const DSOInfoWrapper = () => {
   const currentCP = useSelector((state) => state.currentCP);
   const currentDsoIndex = useSelector((state) => state.currentDSOIndex);
   const getDsos = () => currentCP.structure.standardsOrganizations || [];
   const [currentTab, setCurrentTab] = useState(0);
-  const tabStyle = { height: "30px", maxWidth: "30px" };
-  const activeTabClass = "bg-dashboard-background col-background";
-  const inactiveTabClass = "border-color-dashboard-dark col-dashboard";
 
   const tabIcon = (index, icon, text) => {
     return (
@@ -29,12 +27,6 @@ const DSOInfoWrapper = () => {
           title={text}
         />
       </div>
-    );
-  };
-
-  const line = () => {
-    return (
-      <div className="col-4 border-bottom" style={{ bottom: "1rem" }}></div>
     );
   };
 

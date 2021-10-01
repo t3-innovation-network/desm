@@ -8,7 +8,6 @@ import {
   setSavingCP,
 } from "../../../../actions/configurationProfiles";
 import DSOInfoWrapper from "./DSOInfoWrapper";
-import { camelizeKeys } from "humps";
 import updateCP from "../../../../services/updateCP";
 
 const DSOTab = (props) => {
