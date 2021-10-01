@@ -66,36 +66,7 @@ const DSOsInfo = () => {
     ];
 
     dispatch(setCurrentConfigurationProfile(localCP));
-    dispatch(setCurrentDSOIndex(getDsos().length - 1));
-  };
-
-  const save = () => {
-    dispatch(setSavingCP(true));
-
-    updateCP(currentCP.id, currentCP).then((response) => {
-      if (response.error) {
-        dispatch(setEditCPErrors(response.error));
-        dispatch(setSavingCP(false));
-        return;
-      }
-
-      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
-      dispatch(setSavingCP(false));
-    });
-  };
-
-  const newDso = () => {
-    return (
-      <span
-        className="pl-5 pr-5 pt-3 pb-3 text-center border bg-col-on-primary-light col-background cursor-pointer"
-        data-toggle="tooltip"
-        data-placement="top"
-        title={"Create a new DSO for this Configuration Profile"}
-        onClick={() => addDso()}
-      >
-        +
-      </span>
-    );
+    dispatch(setCurrentDSOIndex(0));
   };
 
   const dsoTabs = () => {
@@ -116,12 +87,42 @@ const DSOsInfo = () => {
     });
   };
 
+  const newDso = () => {
+    return (
+      <span
+        className="pl-5 pr-5 pt-3 pb-3 text-center border bg-col-on-primary-light col-background cursor-pointer"
+        data-toggle="tooltip"
+        data-placement="top"
+        title={"Create a new DSO for this Configuration Profile"}
+        onClick={() => addDso()}
+      >
+        +
+      </span>
+    );
+  };
+
   const removeDSO = (index) => {
     let localCP = currentCP;
     localCP.structure.standardsOrganizations.splice(index, 1);
 
     dispatch(setCurrentConfigurationProfile(localCP));
     save();
+  };
+
+  const save = () => {
+    dispatch(setSavingCP(true));
+    dispatch(setCurrentDSOIndex(0));
+
+    updateCP(currentCP.id, currentCP).then((response) => {
+      if (response.error) {
+        dispatch(setEditCPErrors(response.error));
+        dispatch(setSavingCP(false));
+        return;
+      }
+
+      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
+      dispatch(setSavingCP(false));
+    });
   };
 
   return (
