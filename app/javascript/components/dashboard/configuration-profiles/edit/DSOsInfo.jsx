@@ -80,7 +80,7 @@ const DSOsInfo = () => {
           <DSOTab
             active={index === currentDsoIndex}
             dso={dso}
-            onClickHandler={() => removeDSO(index)}
+            onClickHandler={(event) => removeDSO(event, index)}
           />
         </span>
       );
@@ -101,7 +101,8 @@ const DSOsInfo = () => {
     );
   };
 
-  const removeDSO = (index) => {
+  const removeDSO = (event, index) => {
+    event.stopPropagation();
     let localCP = currentCP;
     localCP.structure.standardsOrganizations.splice(index, 1);
 
