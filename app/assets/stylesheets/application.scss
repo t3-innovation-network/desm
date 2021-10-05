@@ -111,6 +111,10 @@ a:hover {
   background-color: $dashboard-background-color-highlight !important;
 }
 
+.col-dashboard {
+  color: $dashboard-background-color !important;
+}
+
 .col-dashboard-highlight {
   color: $dashboard-background-color-highlight !important;
 }
@@ -125,6 +129,10 @@ a:hover {
 
 .bg-col-on-primary-highlight {
   background-color: $primary-color-highlight !important;
+}
+
+.bg-col-on-primary-light {
+  background-color: $on-primary-light !important;
 }
 
 .bg-dashboard-background-light {
@@ -293,6 +301,19 @@ a:hover {
 
 .border-color-dashboard {
   border: 2px solid $dashboard-background-color-highlight;
+}
+
+.border-color-dashboard-dark {
+  border: 2px solid $dashboard-background-color;
+}
+
+.dashboard-active-tab {
+  border-top: 2px solid $dashboard-background-color-highlight;
+}
+
+.dashboard-inactive-tab {
+  background-color: $dashboard-background-color;
+  color: $background-color;
 }
 
 /* Mobile */

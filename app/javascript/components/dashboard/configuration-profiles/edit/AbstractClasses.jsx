@@ -58,11 +58,7 @@ const AbstractClasses = () => {
         return;
       }
 
-      dispatch(
-        setCurrentConfigurationProfile(
-          camelizeKeys(response.configurationProfile)
-        )
-      );
+      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
       dispatch(setSavingCP(false));
     });
   };

@@ -179,7 +179,7 @@ describe ConfigurationProfile, type: :model do
   context "when its structure has to be validated" do
     it "rejects an invalid json structure for a configuration profile" do
       invalid_object = {
-        "standardsOrganizations": 123
+        "standards_organizations": 123
       }
       subject.structure = invalid_object
 
@@ -213,7 +213,7 @@ describe ConfigurationProfile, type: :model do
     end
 
     it "rejects a configuration profile structure with an invalid email for an agent" do
-      subject.structure = valid_structure_with_invalid_email
+      subject.structure = valid_structure_with_invalid_email.deep_transform_keys {|key| key.to_s.underscore }
 
       expect(subject.structure_complete?).to be_falsey
       expect(subject.structure_valid?).to be_falsey

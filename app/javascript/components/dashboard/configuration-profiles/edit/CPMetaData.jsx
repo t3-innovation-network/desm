@@ -9,7 +9,7 @@ import {
 import { formatDateForInput } from "../utils";
 import { camelizeKeys } from "humps";
 
-const DSOMetaData = () => {
+const CPMetaData = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
   const [name, setName] = useState(configurationProfile.name);
   const [description, setDescription] = useState(
@@ -45,11 +45,7 @@ const DSOMetaData = () => {
         return;
       }
 
-      dispatch(
-        setCurrentConfigurationProfile(
-          camelizeKeys(response.configurationProfile)
-        )
-      );
+      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
       dispatch(setSavingCP(false));
     });
   };
@@ -130,4 +126,4 @@ const DSOMetaData = () => {
   );
 };
 
-export default DSOMetaData;
+export default CPMetaData;

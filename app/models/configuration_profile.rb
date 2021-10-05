@@ -62,8 +62,17 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def setup_schema_validators
-    @complete_schema = JSON.parse(File.read(Rails.root.join("ns", "complete.configurationProfile.schema.json")))
-    @valid_schema = JSON.parse(File.read(Rails.root.join("ns", "valid.configurationProfile.schema.json")))
+    @complete_schema = JSON.parse(
+      File.read(
+        Rails.root.join("ns", "complete.configurationProfile.schema.json")
+      )
+    ).deep_transform_keys {|key| key.to_s.underscore }
+
+    @valid_schema = JSON.parse(
+      File.read(
+        Rails.root.join("ns", "valid.configurationProfile.schema.json")
+      )
+    ).deep_transform_keys {|key| key.to_s.underscore }
   end
 
   def state_handler

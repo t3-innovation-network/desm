@@ -12,6 +12,13 @@ export const setCurrentConfigurationProfile = (configurationProfile) => {
   };
 };
 
+export const setCurrentDSOIndex = (index) => {
+  return {
+    type: "SET_CURRENT_DSO_INDEX",
+    payload: index,
+  };
+};
+
 export const setSavingCP = (value) => {
   return { type: "SET_SAVING_CP", payload: value };
 };
