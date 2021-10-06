@@ -4,6 +4,7 @@ import DSOMetaData from "./DSOMetadata";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfo, faUsers, faFile } from "@fortawesome/free-solid-svg-icons";
 import { activeTabClass, inactiveTabClass, line, tabStyle } from "../utils";
+import Agents from "./Agents";
 
 const DSOInfoWrapper = () => {
   const currentCP = useSelector((state) => state.currentCP);
@@ -51,11 +52,7 @@ const DSOInfoWrapper = () => {
       case 0:
         return dsoMetaData;
       case 1:
-        return (
-          <div className="row mt-5 justify-content-center">
-            <h3>Agents</h3>
-          </div>
-        );
+        return <Agents agentsData={getDsos()[currentDsoIndex].dsoAgents} />;
       case 2:
         return (
           <div className="row mt-5 justify-content-center">

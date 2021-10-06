@@ -133,7 +133,7 @@ const DSOsInfo = () => {
         {newDso()}
       </div>
       {getDsos().length ? (
-        <div className="mt5 w-100">
+        <div className="mt-5 w-100">
           <DSOInfoWrapper />
         </div>
       ) : (
