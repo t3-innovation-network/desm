@@ -18,5 +18,9 @@ module Converters
       file_content = File.read(file)
       JSON.parse(file_content)
     end
+
+    def self.read(path)
+      JSON(File.read(path))
+    end
   end
 end

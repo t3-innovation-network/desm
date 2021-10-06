@@ -3,6 +3,8 @@
 require "csv"
 
 module Converters
+  class CsvParseError; end
+
   # Converts a CEDS specification to the JSON-LD format
   class Ceds < Base
     ##
@@ -17,6 +19,13 @@ module Converters
 
         build_property(row)
       end
+    end
+
+    def self.read(_path)
+      reader = CSV.read(file.path, header_converters: :symbol, headers: true)
+      raise CsvParseError unless reader.valid?
+
+      true
     end
 
     private

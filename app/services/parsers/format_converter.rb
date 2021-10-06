@@ -24,7 +24,7 @@ module Parsers
     # @param [ActionDispatch::Http::UploadedFile]: the file to be converted
     # @return [Hash]
     ###
-    def self.convert_to_jsonld(file)
+    def self.convert_to_jsonld file
       extension = File.extname(file).delete(".").downcase.strip
       converter = CONVERTERS[extension.to_sym]
       return File.read(file) unless converter
@@ -32,6 +32,16 @@ module Parsers
       converter.convert(file)
     rescue => e
       raise "Failed to convert #{File.basename(file.path)} to JSON-LD: #{e.message}"
+    end
+
+    def self.find_converter file
+      CONVERTERS.find {|_, reader|
+        begin
+          reader.read(file.path)
+        rescue
+          false
+        end
+      } &.last
     end
   end
   # rubocop:enable Style/RescueStandardError

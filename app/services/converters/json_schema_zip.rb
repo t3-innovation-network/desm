@@ -26,6 +26,10 @@ module Converters
       end
     end
 
+    def self.read(path)
+      Zip::File.open(path)
+    end
+
     private
 
     ##

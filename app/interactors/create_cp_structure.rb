@@ -96,7 +96,7 @@ class CreateCpStructure
 
   def create_dso_schemas dso, schemas_data
     schemas_data.each do |schema_data|
-      domain = Domain.find_by_uri schema_data[:associated_abstract_class]
+      domain = find_domain_by_uri(schema_data[:associated_abstract_class])
       result = CreateSchema.call({
                                    domain_id: domain.id,
                                    name: schema_data[:name],
@@ -120,5 +120,12 @@ class CreateCpStructure
 
       raise ConceptSchemeCreationError unless result.error.nil?
     end
+  end
+
+  def find_domain_by_uri uri
+    domain = Domain.find_by_uri uri
+    return domain unless domain.nil?
+
+    Domain.all.select {|domain| uri.end_with?(domain.uri.split(":").last) }&.first
   end
 end

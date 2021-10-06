@@ -18,7 +18,20 @@ module SchemeDefinitionFetchable
     file.write(file_content)
     file.rewind
 
-    Parsers::FormatConverter.convert_to_jsonld(file)
+    converter = Parsers::FormatConverter.find_converter(file)
+    converter.convert(file)
+  end
+
+  ###
+  # @description: If the context is a reference to an external service endpoint, go get it
+  # @return [Hash,String]
+  ###
+  def resolve_context
+    # Try resolving with an http request
+    response = http_get(@context)
+    # Avoid having the context nested twice
+    return response["@context"] if response && response["@context"]&.present?
+    {}
   end
 
   private
