@@ -115,7 +115,29 @@ const Agents = (props) => {
 
   const handleRemoveAgent = () => {
     setConfirmationVisible(false);
-    console.log("Removing agent...");
+    let localCP = configurationProfile;
+    localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents.splice(
+      currentAgentIndex,
+      1
+    );
+    setCurrentAgentIndex(0);
+    dispatch(setCurrentConfigurationProfile(localCP));
+    save();
+  };
+
+  const save = () => {
+    dispatch(setSavingCP(true));
+
+    updateCP(configurationProfile.id, configurationProfile).then((response) => {
+      if (response.error) {
+        dispatch(setEditCPErrors(response.error));
+        dispatch(setSavingCP(false));
+        return;
+      }
+
+      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
+      dispatch(setSavingCP(false));
+    });
   };
 
   const selectedAgentInfo = () => {
