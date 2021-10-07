@@ -25,7 +25,11 @@ const Agents = (props) => {
         <div className="col mr-3" key={idx}>
           <div className="row cursor-pointer">
             <div
-              className="col-10 bg-dashboard-background col-background p-2 rounded text-center"
+              className={`col-10 bg-dashboard-background ${
+                currentAgentIndex === idx
+                  ? "col-dashboard-highlight with-shadow"
+                  : "col-background"
+              } p-2 rounded text-center`}
               style={{
                 maxWidth: "150px",
                 opacity: "80%",
