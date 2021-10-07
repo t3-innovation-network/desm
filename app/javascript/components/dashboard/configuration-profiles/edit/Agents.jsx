@@ -9,7 +9,8 @@ import updateCP from "../../../../services/updateCP";
 import ConfirmDialog from "../../../shared/ConfirmDialog";
 
 const Agents = (props) => {
-  const { currentDSOIndex, agentsData } = props;
+  const { currentDSOIndex } = props;
+  const [agentsData, setAgentsData] = useState(props.agentsData);
   const [currentAgentIndex, setCurrentAgentIndex] = useState(0);
   const configurationProfile = useSelector((state) => state.currentCP);
   const [agentFullname, setAgentFullname] = useState(
@@ -27,6 +28,26 @@ const Agents = (props) => {
   const [confirmationVisible, setConfirmationVisible] = useState(false);
   const confirmationMsg = `Please confirm if you really want to remove agent ${agentFullname}`;
   const dispatch = useDispatch();
+
+  const addAgent = () => {
+    let localCP = configurationProfile;
+    setCurrentAgentIndex(0);
+    setAgentsData([
+      ...agentsData,
+      {
+        fullname: `Mapper N${agentsData.length + 1}`,
+        email: "",
+        phone: "",
+        githubHandle: "",
+      },
+    ]);
+
+    localCP.structure.standardsOrganizations[
+      currentDSOIndex
+    ].dsoAgents = agentsData;
+
+    dispatch(setCurrentConfigurationProfile(localCP));
+  };
 
   const agentButtons = () => {
     return agentsData.map((agent, idx) => {
@@ -92,7 +113,11 @@ const Agents = (props) => {
 
   const createAgent = () => {
     return (
-      <div className="col bg-dashboard-background-highlight col-background p-2 rounded text-center mr-4 font-weight-bold cursor-pointer">
+      <div
+        className="col bg-dashboard-background-highlight col-background p-2 rounded text-center mr-4 font-weight-bold cursor-pointer"
+        style={{ maxWidth: "50px" }}
+        onClick={addAgent}
+      >
         +
       </div>
     );
@@ -111,6 +136,8 @@ const Agents = (props) => {
       dispatch(setCurrentConfigurationProfile(response.configurationProfile));
       dispatch(setSavingCP(false));
     });
+
+    updateAgentsData();
   };
 
   const handleRemoveAgent = () => {
@@ -119,6 +146,9 @@ const Agents = (props) => {
     localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents.splice(
       currentAgentIndex,
       1
+    );
+    setAgentsData(
+      localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents
     );
     setCurrentAgentIndex(0);
     dispatch(setCurrentConfigurationProfile(localCP));
@@ -220,6 +250,18 @@ const Agents = (props) => {
         </div>
       </div>
     );
+  };
+
+  const updateAgentsData = () => {
+    let data = agentsData;
+    data[currentAgentIndex] = {
+      fullname: agentFullname,
+      email: agentEmail,
+      phone: agentPhone,
+      githubHandle: githubHandle,
+    };
+
+    setAgentsData(data);
   };
 
   useEffect(() => {
