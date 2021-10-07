@@ -1,7 +1,23 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
+import ConfirmDialog from "../../../shared/ConfirmDialog";
 
 const Agents = (props) => {
   const { agentsData } = props;
+  const [currentAgentIndex, setCurrentAgentIndex] = useState(0);
+  const [agentFullname, setAgentFullname] = useState(
+    agentsData[currentAgentIndex].fullname
+  );
+  const [agentEmail, setAgentEmail] = useState(
+    agentsData[currentAgentIndex].email
+  );
+  const [agentPhone, setAgentPhone] = useState(
+    agentsData[currentAgentIndex].phone
+  );
+  const [githubHandle, setGithubHandle] = useState(
+    agentsData[currentAgentIndex].githubHandle
+  );
+  const [confirmationVisible, setConfirmationVisible] = useState(false);
+  const confirmationMsg = `Please confirm if you really want to remove agent ${agentFullname}`;
 
   const agentButtons = () => {
     return agentsData.map((agent, idx) => {
@@ -17,6 +33,7 @@ const Agents = (props) => {
               data-toggle="tooltip"
               data-placement="bottom"
               title="Click to view/edit this user's information"
+              onClick={() => setCurrentAgentIndex(idx)}
             >
               {agent.fullname}
             </div>
@@ -30,6 +47,10 @@ const Agents = (props) => {
               data-toggle="tooltip"
               data-placement="bottom"
               title="Click to remove this user"
+              onClick={() => {
+                setCurrentAgentIndex(idx);
+                setConfirmationVisible(true);
+              }}
             >
               x
             </div>
@@ -47,13 +68,121 @@ const Agents = (props) => {
     );
   };
 
+  const handleBlur = () => {
+    console.log("saving...");
+  };
+
+  const handleRemoveAgent = () => {
+    setConfirmationVisible(false);
+    console.log("Removing agent...");
+  };
+
+  const selectedAgentInfo = () => {
+    return (
+      <div className="col">
+        <div className="mt-5">
+          <label>
+            Agent Full Name
+            <span className="text-danger">*</span>
+          </label>
+          <div className="input-group input-group">
+            <input
+              type="text"
+              className="form-control input-lg"
+              name="fullname"
+              placeholder="The name of this agent"
+              value={agentFullname || ""}
+              onChange={(event) => {
+                setAgentFullname(event.target.value);
+              }}
+              onBlur={handleBlur}
+              autoFocus
+            />
+          </div>
+        </div>
+
+        <div className="mt-5">
+          <label>
+            Agent Email
+            <span className="text-danger">*</span>
+          </label>
+          <div className="input-group input-group">
+            <input
+              type="text"
+              className="form-control input-lg"
+              name="agentEmail"
+              placeholder="The email of this agent"
+              value={agentEmail || ""}
+              onChange={(event) => {
+                setAgentEmail(event.target.value);
+              }}
+              onBlur={handleBlur}
+            />
+          </div>
+        </div>
+
+        <div className="mt-5">
+          <label>Agent Phone</label>
+          <div className="input-group input-group">
+            <input
+              type="tel"
+              pattern="(-()[0-9]+)+$"
+              className="form-control input-lg"
+              name="agentPhone"
+              placeholder="The phone of this agent"
+              value={agentPhone || ""}
+              onChange={(event) => {
+                setAgentPhone(event.target.value);
+              }}
+              onBlur={handleBlur}
+            />
+          </div>
+        </div>
+
+        <div className="mt-5">
+          <label>GitHub Handle</label>
+          <div className="input-group input-group">
+            <input
+              type="text"
+              className="form-control input-lg"
+              name="githubHandle"
+              placeholder="The github username of this agent"
+              value={githubHandle || ""}
+              onChange={(event) => {
+                setGithubHandle(event.target.value);
+              }}
+              onBlur={handleBlur}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    setAgentFullname(agentsData[currentAgentIndex].fullname);
+    setAgentEmail(agentsData[currentAgentIndex].email);
+    setAgentPhone(agentsData[currentAgentIndex].phone);
+    setGithubHandle(agentsData[currentAgentIndex].githubHandle);
+  }, [currentAgentIndex]);
+
   return (
     <Fragment>
+      {confirmationVisible && (
+        <ConfirmDialog
+          onRequestClose={() => setConfirmationVisible(false)}
+          onConfirm={handleRemoveAgent}
+          visible={confirmationVisible}
+        >
+          <h2 className="text-center">Attention!</h2>
+          <h5 className="mt-3 text-center"> {confirmationMsg}</h5>
+        </ConfirmDialog>
+      )}
       <div className="row mt-5 ml-3">
         {agentButtons()} {createAgent()}{" "}
       </div>
       <div className="row mt-5 justify-content-center">
-        <h3>Selected Agent Info</h3>
+        {selectedAgentInfo()}
       </div>
     </Fragment>
   );
