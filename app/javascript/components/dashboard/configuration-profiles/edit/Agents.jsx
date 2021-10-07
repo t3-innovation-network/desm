@@ -1,9 +1,17 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setCurrentConfigurationProfile,
+  setEditCPErrors,
+  setSavingCP,
+} from "../../../../actions/configurationProfiles";
+import updateCP from "../../../../services/updateCP";
 import ConfirmDialog from "../../../shared/ConfirmDialog";
 
 const Agents = (props) => {
-  const { agentsData } = props;
+  const { currentDSOIndex, agentsData } = props;
   const [currentAgentIndex, setCurrentAgentIndex] = useState(0);
+  const configurationProfile = useSelector((state) => state.currentCP);
   const [agentFullname, setAgentFullname] = useState(
     agentsData[currentAgentIndex].fullname
   );
@@ -18,6 +26,7 @@ const Agents = (props) => {
   );
   const [confirmationVisible, setConfirmationVisible] = useState(false);
   const confirmationMsg = `Please confirm if you really want to remove agent ${agentFullname}`;
+  const dispatch = useDispatch();
 
   const agentButtons = () => {
     return agentsData.map((agent, idx) => {
@@ -33,6 +42,9 @@ const Agents = (props) => {
               style={{
                 maxWidth: "150px",
                 opacity: "80%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                maxHeight: "32px",
               }}
               data-toggle="tooltip"
               data-placement="bottom"
@@ -64,6 +76,20 @@ const Agents = (props) => {
     });
   };
 
+  const buildCpData = () => {
+    let localCP = configurationProfile;
+    localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents[
+      currentAgentIndex
+    ] = {
+      fullname: agentFullname,
+      email: agentEmail,
+      phone: agentPhone,
+      githubHandle: githubHandle,
+    };
+
+    return localCP;
+  };
+
   const createAgent = () => {
     return (
       <div className="col bg-dashboard-background-highlight col-background p-2 rounded text-center mr-4 font-weight-bold cursor-pointer">
@@ -73,7 +99,18 @@ const Agents = (props) => {
   };
 
   const handleBlur = () => {
-    console.log("saving...");
+    dispatch(setSavingCP(true));
+
+    updateCP(configurationProfile.id, buildCpData()).then((response) => {
+      if (response.error) {
+        dispatch(setEditCPErrors(response.error));
+        dispatch(setSavingCP(false));
+        return;
+      }
+
+      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
+      dispatch(setSavingCP(false));
+    });
   };
 
   const handleRemoveAgent = () => {
