@@ -53,8 +53,8 @@ const Agents = (props) => {
   const agentButtons = () => {
     return agentsData.map((agent, idx) => {
       return (
-        <div className="col mr-3" key={idx}>
-          <div className="row cursor-pointer">
+        <div className="col mr-3 mt-3" key={idx}>
+          <div className="row cursor-pointer" style={{ minWidth: "100px" }}>
             <div
               className={`col-10 bg-dashboard-background ${
                 currentAgentIndex === idx
@@ -115,7 +115,7 @@ const Agents = (props) => {
   const createAgent = () => {
     return (
       <div
-        className="col bg-dashboard-background-highlight col-background p-2 rounded text-center mr-4 font-weight-bold cursor-pointer"
+        className="col bg-dashboard-background-highlight col-background p-2 rounded text-center mt-3 mr-4 font-weight-bold cursor-pointer"
         style={{ maxWidth: "50px" }}
         onClick={addAgent}
       >
@@ -304,7 +304,7 @@ const Agents = (props) => {
           <h5 className="mt-3 text-center"> {confirmationMsg}</h5>
         </ConfirmDialog>
       )}
-      <div className="row mt-5 ml-3">
+      <div className="row row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 mt-5 ml-3">
         {agentButtons()} {createAgent()}{" "}
       </div>
       <div className="row mt-5 justify-content-center">
