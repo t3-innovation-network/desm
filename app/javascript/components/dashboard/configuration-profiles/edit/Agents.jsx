@@ -7,6 +7,7 @@ import {
 } from "../../../../actions/configurationProfiles";
 import updateCP from "../../../../services/updateCP";
 import ConfirmDialog from "../../../shared/ConfirmDialog";
+import noDataImg from "./../../../../../assets/images/no-data-found.png";
 
 const Agents = (props) => {
   const { currentDSOIndex } = props;
@@ -14,16 +15,16 @@ const Agents = (props) => {
   const [currentAgentIndex, setCurrentAgentIndex] = useState(0);
   const configurationProfile = useSelector((state) => state.currentCP);
   const [agentFullname, setAgentFullname] = useState(
-    agentsData[currentAgentIndex].fullname
+    agentsData.length ? agentsData[currentAgentIndex].fullname : ""
   );
   const [agentEmail, setAgentEmail] = useState(
-    agentsData[currentAgentIndex].email
+    agentsData.length ? agentsData[currentAgentIndex].email : ""
   );
   const [agentPhone, setAgentPhone] = useState(
-    agentsData[currentAgentIndex].phone
+    agentsData.length ? agentsData[currentAgentIndex].phone : ""
   );
   const [githubHandle, setGithubHandle] = useState(
-    agentsData[currentAgentIndex].githubHandle
+    agentsData.length ? agentsData[currentAgentIndex].githubHandle : ""
   );
   const [confirmationVisible, setConfirmationVisible] = useState(false);
   const confirmationMsg = `Please confirm if you really want to remove agent ${agentFullname}`;
@@ -31,7 +32,6 @@ const Agents = (props) => {
 
   const addAgent = () => {
     let localCP = configurationProfile;
-    setCurrentAgentIndex(0);
     setAgentsData([
       ...agentsData,
       {
@@ -46,6 +46,7 @@ const Agents = (props) => {
       currentDSOIndex
     ].dsoAgents = agentsData;
 
+    setCurrentAgentIndex(0);
     dispatch(setCurrentConfigurationProfile(localCP));
   };
 
@@ -153,6 +154,22 @@ const Agents = (props) => {
     setCurrentAgentIndex(0);
     dispatch(setCurrentConfigurationProfile(localCP));
     save();
+  };
+
+  const noAgentsData = () => {
+    return (
+      <Fragment>
+        <div className="d-flex align-items-center justify-content-center h-100 w-100">
+          <img src={noDataImg} alt="No data found" />
+        </div>
+        <div className="d-flex align-items-center justify-content-center h-100 w-100">
+          <p>
+            This DSO does not have any agents yet. You can add an agent clicking
+            on the "+" button
+          </p>
+        </div>
+      </Fragment>
+    );
   };
 
   const save = () => {
@@ -265,10 +282,14 @@ const Agents = (props) => {
   };
 
   useEffect(() => {
-    setAgentFullname(agentsData[currentAgentIndex].fullname);
-    setAgentEmail(agentsData[currentAgentIndex].email);
-    setAgentPhone(agentsData[currentAgentIndex].phone);
-    setGithubHandle(agentsData[currentAgentIndex].githubHandle);
+    setAgentFullname(
+      agentsData.length ? agentsData[currentAgentIndex].fullname : ""
+    );
+    setAgentEmail(agentsData.length ? agentsData[currentAgentIndex].email : "");
+    setAgentPhone(agentsData.length ? agentsData[currentAgentIndex].phone : "");
+    setGithubHandle(
+      agentsData.length ? agentsData[currentAgentIndex].githubHandle : ""
+    );
   }, [currentAgentIndex]);
 
   return (
@@ -287,7 +308,7 @@ const Agents = (props) => {
         {agentButtons()} {createAgent()}{" "}
       </div>
       <div className="row mt-5 justify-content-center">
-        {selectedAgentInfo()}
+        {agentsData.length ? selectedAgentInfo() : noAgentsData()}
       </div>
     </Fragment>
   );
