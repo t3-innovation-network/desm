@@ -52,12 +52,7 @@ const DSOInfoWrapper = () => {
       case 0:
         return dsoMetaData;
       case 1:
-        return (
-          <Agents
-            agentsData={getDsos()[currentDsoIndex].dsoAgents}
-            currentDSOIndex={currentDsoIndex}
-          />
-        );
+        return <Agents />;
       case 2:
         return (
           <div className="row mt-5 justify-content-center">

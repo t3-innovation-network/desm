@@ -9,9 +9,13 @@ import updateCP from "../../../../services/updateCP";
 import ConfirmDialog from "../../../shared/ConfirmDialog";
 import noDataImg from "./../../../../../assets/images/no-data-found.png";
 
-const Agents = (props) => {
-  const { currentDSOIndex } = props;
-  const [agentsData, setAgentsData] = useState(props.agentsData);
+const Agents = () => {
+  const currentCP = useSelector((state) => state.currentCP);
+  const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
+  const getDsos = () => currentCP.structure.standardsOrganizations || [];
+  const [agentsData, setAgentsData] = useState(
+    getDsos()[currentDSOIndex].dsoAgents
+  );
   const [currentAgentIndex, setCurrentAgentIndex] = useState(0);
   const configurationProfile = useSelector((state) => state.currentCP);
   const [agentFullname, setAgentFullname] = useState(
@@ -291,6 +295,10 @@ const Agents = (props) => {
       agentsData.length ? agentsData[currentAgentIndex].githubHandle : ""
     );
   }, [currentAgentIndex]);
+
+  useEffect(() => {
+    setAgentsData(getDsos()[currentDSOIndex].dsoAgents);
+  }, [currentDSOIndex]);
 
   return (
     <Fragment>
