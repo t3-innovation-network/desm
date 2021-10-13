@@ -97,7 +97,7 @@ const EditConfigurationProfile = (props) => {
                   <div className="row justify-content-center">
                     <CPCardHeader />
                   </div>
-                  <div className="row justify-content-center">
+                  <div className="row justify-content-center mb-3">
                     <PageStepRenderer />
                   </div>
                   <div className="row mt-auto ml-auto">

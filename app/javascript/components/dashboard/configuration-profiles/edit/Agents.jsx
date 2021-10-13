@@ -301,7 +301,7 @@ const Agents = () => {
   }, [currentDSOIndex]);
 
   return (
-    <Fragment>
+    <div className="col">
       {confirmationVisible && (
         <ConfirmDialog
           onRequestClose={() => setConfirmationVisible(false)}
@@ -315,10 +315,10 @@ const Agents = () => {
       <div className="row row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 mt-5 ml-3">
         {agentButtons()} {createAgent()}{" "}
       </div>
-      <div className="row mt-5 justify-content-center">
+      <div className="row justify-content-center">
         {agentsData.length ? selectedAgentInfo() : noAgentsData()}
       </div>
-    </Fragment>
+    </div>
   );
 };
 

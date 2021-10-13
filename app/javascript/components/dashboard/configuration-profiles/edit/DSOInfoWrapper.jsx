@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfo, faUsers, faFile } from "@fortawesome/free-solid-svg-icons";
 import { activeTabClass, inactiveTabClass, line, tabStyle } from "../utils";
 import Agents from "./Agents";
+import SchemaFiles from "./SchemaFiles";
 
 const DSOInfoWrapper = () => {
   const currentCP = useSelector((state) => state.currentCP);
@@ -34,7 +35,7 @@ const DSOInfoWrapper = () => {
   const dsoInfoTabs = () => {
     return (
       <Fragment>
-        <div className="row mt-5 justify-content-center">
+        <div className="row justify-content-center">
           {tabIcon(0, faInfo, "DSO Basic Info")}
           {line()}
           {tabIcon(1, faUsers, "Agents")}
@@ -54,21 +55,17 @@ const DSOInfoWrapper = () => {
       case 1:
         return <Agents />;
       case 2:
-        return (
-          <div className="row mt-5 justify-content-center">
-            <h3>Schema Files</h3>
-          </div>
-        );
+        return <SchemaFiles />;
       default:
         dsoMetaData;
     }
   };
 
   return (
-    <div className="col">
+    <Fragment>
       {dsoInfoTabs()}
       {renderTab()}
-    </div>
+    </Fragment>
   );
 };
 

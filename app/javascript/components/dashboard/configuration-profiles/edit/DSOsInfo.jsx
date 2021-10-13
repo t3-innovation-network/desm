@@ -11,25 +11,27 @@ import DSOInfoWrapper from "./DSOInfoWrapper";
 import updateCP from "../../../../services/updateCP";
 
 const DSOTab = (props) => {
-  const { active, dso, onClickHandler } = props;
+  const { active, dso, onClickHandler, onRemoveHandler } = props;
 
   return (
-    <span
-      className={`${
+    <div
+      className={`col ${
         active
           ? "dashboard-active-tab border-left border-right"
           : "border bg-col-on-primary-light col-background"
-      } rounded cursor-pointer pl-5 pr-5 pt-3 pb-3 text-center`}
+      } rounded cursor-pointer pl-2 pr-2 pt-3 pb-3 text-center`}
+      onClick={onClickHandler}
+      style={{ height: "50px", overflow: "hidden", textOverflow: "ellipsis" }}
     >
       {dso.name}
       <span
         className="font-weight-bold"
-        onClick={onClickHandler}
-        style={{ position: "relative", top: "-10px", left: "30px" }}
+        onClick={onRemoveHandler}
+        style={{ position: "absolute", top: "0px", right: "10px" }}
       >
         x
       </span>
-    </span>
+    </div>
   );
 };
 
@@ -72,17 +74,13 @@ const DSOsInfo = () => {
   const dsoTabs = () => {
     return getDsos().map((dso, index) => {
       return (
-        <span
-          className="w-25"
+        <DSOTab
+          active={index === currentDsoIndex}
+          dso={dso}
           key={index}
-          onClick={() => dispatch(setCurrentDSOIndex(index))}
-        >
-          <DSOTab
-            active={index === currentDsoIndex}
-            dso={dso}
-            onClickHandler={(event) => removeDSO(event, index)}
-          />
-        </span>
+          onClickHandler={() => dispatch(setCurrentDSOIndex(index))}
+          onRemoveHandler={(event) => removeDSO(event, index)}
+        />
       );
     });
   };
@@ -90,11 +88,12 @@ const DSOsInfo = () => {
   const newDso = () => {
     return (
       <span
-        className="pl-5 pr-5 pt-3 pb-3 text-center border bg-col-on-primary-light col-background cursor-pointer"
+        className="col pl-3 pr-3 pt-3 pb-3 text-center border rounded bg-dashboard-background-highlight col-background font-weight-bold cursor-pointer"
         data-toggle="tooltip"
         data-placement="top"
         title={"Create a new DSO for this Configuration Profile"}
         onClick={() => addDso()}
+        style={{ maxWidth: "50px", fontSize: "large", height: "50px" }}
       >
         +
       </span>
@@ -129,8 +128,10 @@ const DSOsInfo = () => {
   return (
     <Fragment>
       <div className="mt-5 w-100">
-        {getDsos().length ? dsoTabs() : ""}
-        {newDso()}
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 ml-3 mr-3">
+          {getDsos().length ? dsoTabs() : ""}
+          {newDso()}
+        </div>
       </div>
       {getDsos().length ? (
         <div className="mt-5 w-100">
