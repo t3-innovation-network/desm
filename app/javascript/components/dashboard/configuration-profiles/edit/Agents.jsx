@@ -281,10 +281,12 @@ const Agents = () => {
     }
 
     const agent = agentsData[currentAgentIndex];
-    setAgentFullname(agent.fullname);
-    setAgentEmail(agent.email);
-    setAgentPhone(agent.phone);
-    setGithubHandle(agent.githubHandle);
+    if (agent) {
+      setAgentFullname(agent.fullname);
+      setAgentEmail(agent.email);
+      setAgentPhone(agent.phone);
+      setGithubHandle(agent.githubHandle);
+    }
   }, [currentAgentIndex, currentDSOIndex]);
 
   useEffect(() => {
