@@ -22,7 +22,7 @@ class Api::V1::ConfigurationProfilesController < ApplicationController
         :homepage_url,
         :standards_page,
         dso_administrator: %i[fullname email phone github_handle],
-        dso_agents: []
+        dso_agents: [%i[fullname email phone github_handle]]
       ]
     ]
   ].freeze

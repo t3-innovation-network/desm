@@ -6,7 +6,6 @@ import {
   setEditCPErrors,
   setSavingCP,
 } from "../../../../actions/configurationProfiles";
-import { camelizeKeys } from "humps";
 import { validURL } from "../../../../helpers/URL";
 
 const AbstractClasses = () => {
