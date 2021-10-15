@@ -13,23 +13,13 @@ const Agents = () => {
   const currentCP = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
   const getDsos = () => currentCP.structure.standardsOrganizations || [];
-  const [agentsData, setAgentsData] = useState(
-    getDsos()[currentDSOIndex].dsoAgents
-  );
-  const [currentAgentIndex, setCurrentAgentIndex] = useState(0);
+  const [agentsData, setAgentsData] = useState([]);
+  const [currentAgentIndex, setCurrentAgentIndex] = useState(-1);
   const configurationProfile = useSelector((state) => state.currentCP);
-  const [agentFullname, setAgentFullname] = useState(
-    agentsData.length ? agentsData[currentAgentIndex].fullname : ""
-  );
-  const [agentEmail, setAgentEmail] = useState(
-    agentsData.length ? agentsData[currentAgentIndex].email : ""
-  );
-  const [agentPhone, setAgentPhone] = useState(
-    agentsData.length ? agentsData[currentAgentIndex].phone : ""
-  );
-  const [githubHandle, setGithubHandle] = useState(
-    agentsData.length ? agentsData[currentAgentIndex].githubHandle : ""
-  );
+  const [agentFullname, setAgentFullname] = useState("");
+  const [agentEmail, setAgentEmail] = useState("");
+  const [agentPhone, setAgentPhone] = useState("");
+  const [githubHandle, setGithubHandle] = useState("");
   const [confirmationVisible, setConfirmationVisible] = useState(false);
   const confirmationMsg = `Please confirm if you really want to remove agent ${agentFullname}`;
   const dispatch = useDispatch();
@@ -50,7 +40,7 @@ const Agents = () => {
       currentDSOIndex
     ].dsoAgents = agentsData;
 
-    setCurrentAgentIndex(0);
+    setCurrentAgentIndex(agentsData.length);
     dispatch(setCurrentConfigurationProfile(localCP));
   };
 
@@ -286,18 +276,21 @@ const Agents = () => {
   };
 
   useEffect(() => {
-    setAgentFullname(
-      agentsData.length ? agentsData[currentAgentIndex].fullname : ""
-    );
-    setAgentEmail(agentsData.length ? agentsData[currentAgentIndex].email : "");
-    setAgentPhone(agentsData.length ? agentsData[currentAgentIndex].phone : "");
-    setGithubHandle(
-      agentsData.length ? agentsData[currentAgentIndex].githubHandle : ""
-    );
-  }, [currentAgentIndex]);
+    if (currentAgentIndex < 0) {
+      return;
+    }
+
+    const agent = agentsData[currentAgentIndex];
+    setAgentFullname(agent.fullname);
+    setAgentEmail(agent.email);
+    setAgentPhone(agent.phone);
+    setGithubHandle(agent.githubHandle);
+  }, [currentAgentIndex, currentDSOIndex]);
 
   useEffect(() => {
-    setAgentsData(getDsos()[currentDSOIndex].dsoAgents);
+    const { dsoAgents } = getDsos()[currentDSOIndex];
+    setAgentsData(dsoAgents);
+    setCurrentAgentIndex(dsoAgents.length ? 0 : -1);
   }, [currentDSOIndex]);
 
   return (
