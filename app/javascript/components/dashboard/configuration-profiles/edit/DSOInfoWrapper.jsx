@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfo, faUsers, faFile } from "@fortawesome/free-solid-svg-icons";
 import { activeTabClass, inactiveTabClass, line, tabStyle } from "../utils";
 import Agents from "./Agents";
-import SchemaFiles from "./SchemaFiles";
+import SchemaFilesWrapper from "./SchemaFilesWrapper";
 
 const DSOInfoWrapper = () => {
   const currentCP = useSelector((state) => state.currentCP);
@@ -55,7 +55,7 @@ const DSOInfoWrapper = () => {
       case 1:
         return <Agents />;
       case 2:
-        return <SchemaFiles />;
+        return <SchemaFilesWrapper />;
       default:
         dsoMetaData;
     }

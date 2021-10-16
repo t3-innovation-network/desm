@@ -123,7 +123,7 @@ const DSOMetaData = (props) => {
             onChange={(event) => {
               setDsoDescription(event.target.value);
             }}
-            style={{ height: "20rem" }}
+            style={{ height: "10rem" }}
             onBlur={handleBlur}
           />
         </div>

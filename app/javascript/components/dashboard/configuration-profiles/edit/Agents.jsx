@@ -7,7 +7,7 @@ import {
 } from "../../../../actions/configurationProfiles";
 import updateCP from "../../../../services/updateCP";
 import ConfirmDialog from "../../../shared/ConfirmDialog";
-import noDataImg from "./../../../../../assets/images/no-data-found.png";
+import { NoDataFound, TabGroup } from "../utils";
 
 const Agents = () => {
   const currentCP = useSelector((state) => state.currentCP);
@@ -15,7 +15,6 @@ const Agents = () => {
   const getDsos = () => currentCP.structure.standardsOrganizations || [];
   const [agentsData, setAgentsData] = useState([]);
   const [currentAgentIndex, setCurrentAgentIndex] = useState(-1);
-  const configurationProfile = useSelector((state) => state.currentCP);
   const [agentFullname, setAgentFullname] = useState("");
   const [agentEmail, setAgentEmail] = useState("");
   const [agentPhone, setAgentPhone] = useState("");
@@ -25,7 +24,7 @@ const Agents = () => {
   const dispatch = useDispatch();
 
   const addAgent = () => {
-    let localCP = configurationProfile;
+    let localCP = currentCP;
     setAgentsData([
       ...agentsData,
       {
@@ -93,7 +92,7 @@ const Agents = () => {
   };
 
   const buildCpData = () => {
-    let localCP = configurationProfile;
+    let localCP = currentCP;
     localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents[
       currentAgentIndex
     ] = {
@@ -121,7 +120,7 @@ const Agents = () => {
   const handleBlur = () => {
     dispatch(setSavingCP(true));
 
-    updateCP(configurationProfile.id, buildCpData()).then((response) => {
+    updateCP(currentCP.id, buildCpData()).then((response) => {
       if (response.error) {
         dispatch(setEditCPErrors(response.error));
         dispatch(setSavingCP(false));
@@ -137,7 +136,7 @@ const Agents = () => {
 
   const handleRemoveAgent = () => {
     setConfirmationVisible(false);
-    let localCP = configurationProfile;
+    let localCP = currentCP;
     localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents.splice(
       currentAgentIndex,
       1
@@ -150,26 +149,10 @@ const Agents = () => {
     save();
   };
 
-  const noAgentsData = () => {
-    return (
-      <Fragment>
-        <div className="d-flex align-items-center justify-content-center h-100 w-100">
-          <img src={noDataImg} alt="No data found" />
-        </div>
-        <div className="d-flex align-items-center justify-content-center h-100 w-100">
-          <p>
-            This DSO does not have any agents yet. You can add an agent clicking
-            on the "+" button
-          </p>
-        </div>
-      </Fragment>
-    );
-  };
-
   const save = () => {
     dispatch(setSavingCP(true));
 
-    updateCP(configurationProfile.id, configurationProfile).then((response) => {
+    updateCP(currentCP.id, currentCP).then((response) => {
       if (response.error) {
         dispatch(setEditCPErrors(response.error));
         dispatch(setSavingCP(false));
@@ -307,11 +290,19 @@ const Agents = () => {
           <h5 className="mt-3 text-center"> {confirmationMsg}</h5>
         </ConfirmDialog>
       )}
-      <div className="row row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 mt-5 ml-3">
-        {agentButtons()} {createAgent()}{" "}
+      <div className="mt-5 ml-3">
+        <TabGroup>
+          {agentButtons()} {createAgent()}{" "}
+        </TabGroup>
       </div>
       <div className="row justify-content-center">
-        {agentsData.length ? selectedAgentInfo() : noAgentsData()}
+        {agentsData.length ? (
+          selectedAgentInfo()
+        ) : (
+          <NoDataFound
+            text={`This DSO does not have any agents yet. You can add an agent clicking on the "+" button`}
+          />
+        )}
       </div>
     </div>
   );

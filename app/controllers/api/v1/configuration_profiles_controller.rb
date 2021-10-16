@@ -22,7 +22,18 @@ class Api::V1::ConfigurationProfilesController < ApplicationController
         :homepage_url,
         :standards_page,
         dso_administrator: %i[fullname email phone github_handle],
-        dso_agents: [%i[fullname email phone github_handle]]
+        dso_agents: [%i[fullname email phone github_handle]],
+        associated_schemas: [
+          [
+            :associated_abstract_class,
+            :description,
+            :encoding_schema,
+            :name,
+            :origin,
+            :version,
+            associated_concept_schemes: [%i[name version description origin]]
+          ]
+        ]
       ]
     ]
   ].freeze
