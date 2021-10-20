@@ -36,7 +36,7 @@ const DSOsInfo = () => {
       ...getDsos(),
       {
         email: "",
-        name: `DSO ${getDsos().length}`,
+        name: `DSO ${getDsos().length + 1}`,
         dsoAdministrator: null,
         dsoAgents: [],
         associatedSchemas: [],

@@ -28,7 +28,7 @@ const SchemaFilesWrapper = () => {
     let localFiles = [
       ...getFiles(),
       {
-        name: `Schema File N${getFiles().length}`,
+        name: `Schema File N${getFiles().length + 1}`,
         origin: "",
         description: "",
         associatedAbstractClass: "",
