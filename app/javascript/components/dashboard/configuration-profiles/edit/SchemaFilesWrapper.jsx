@@ -116,6 +116,7 @@ const SchemaFilesWrapper = () => {
           getFiles={getFiles}
           currentCP={currentCP}
           currentDSOIndex={currentDSOIndex}
+          save={save}
         />
       ) : (
         <NoDataFound

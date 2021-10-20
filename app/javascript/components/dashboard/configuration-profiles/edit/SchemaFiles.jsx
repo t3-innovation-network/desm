@@ -8,7 +8,7 @@ import { validURL } from "../../../../helpers/URL";
 import { RemovableTab, TabGroup } from "../utils";
 
 const SchemaFiles = (props) => {
-  const { currentCP, currentDSOIndex, file, getFiles, idx } = props;
+  const { currentCP, currentDSOIndex, file, getFiles, idx, save } = props;
   const [abstractClass, setAbstractClass] = useState(
     file.associatedAbstractClass
   );
@@ -26,6 +26,7 @@ const SchemaFiles = (props) => {
       associatedAbstractClass: abstractClass,
       description: description,
       origin: origin,
+      version: fileVersion,
     };
 
     let localCP = currentCP;
@@ -34,6 +35,7 @@ const SchemaFiles = (props) => {
     ].associatedSchemas = files;
 
     dispatch(setCurrentConfigurationProfile(localCP));
+    save();
   };
 
   const handleUrlBlur = (url, errorMessage = "Must be a valid URL") => {
