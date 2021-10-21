@@ -6,6 +6,7 @@ import {
 } from "../../../../actions/configurationProfiles";
 import { validURL } from "../../../../helpers/URL";
 import { RemovableTab, TabGroup } from "../utils";
+import ConceptSchemes from "./ConceptSchemes";
 
 const SchemaFiles = (props) => {
   const { currentCP, currentDSOIndex, file, getFiles, idx, save } = props;
@@ -45,14 +46,6 @@ const SchemaFiles = (props) => {
     }
     dispatch(setEditCPErrors(null));
     handleBlur();
-  };
-
-  const conceptSchemes = () => {
-    return (
-      <div className="mt-5">
-        <h3>Concept Schemes</h3>
-      </div>
-    );
   };
 
   const metadata = () => {
@@ -165,7 +158,6 @@ const SchemaFiles = (props) => {
 
   useEffect(() => {
     const { file } = props;
-    setActiveTab(0);
     setAbstractClass(file.associatedAbstractClass);
     setFileName(file.name);
     setFileVersion(file.version);
@@ -196,7 +188,11 @@ const SchemaFiles = (props) => {
         </TabGroup>
       </div>
       <div className="col">
-        {activeTab === 0 ? metadata() : conceptSchemes()}
+        {activeTab === 0 ? (
+          metadata()
+        ) : (
+          <ConceptSchemes files={file.associatedConceptSchemes || []} />
+        )}
       </div>
     </Fragment>
   );
