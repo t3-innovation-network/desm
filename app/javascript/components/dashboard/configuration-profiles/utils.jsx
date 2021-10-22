@@ -175,7 +175,8 @@ export const NoDataFound = (props) => {
       <div className="d-flex align-items-center justify-content-center h-100 w-100">
         <img src={noDataImg} alt="No data found" />
       </div>
-      <div className="d-flex align-items-center justify-content-center h-100 w-100">
+      <div className="pl-5 pr-5 text-center font-italic">
+        <h4>Couldn't find anything here!</h4>
         <p>{text}</p>
       </div>
     </Fragment>

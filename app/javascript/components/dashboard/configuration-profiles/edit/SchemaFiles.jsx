@@ -39,13 +39,23 @@ const SchemaFiles = (props) => {
     save();
   };
 
-  const handleUrlBlur = (url, errorMessage = "Must be a valid URL") => {
+  const handleUrlBlur = (
+    url,
+    errorMessage = "Must be a valid URL",
+    blurHandler
+  ) => {
+    if (url === "") {
+      dispatch(setEditCPErrors(null));
+      blurHandler();
+      return;
+    }
+
     if (!validURL(url)) {
       dispatch(setEditCPErrors(errorMessage));
       return;
     }
     dispatch(setEditCPErrors(null));
-    handleBlur();
+    blurHandler();
   };
 
   const metadata = () => {
@@ -118,7 +128,11 @@ const SchemaFiles = (props) => {
                 setOrigin(event.target.value);
               }}
               onBlur={() =>
-                handleUrlBlur(origin, "The origin must be a valid URL")
+                handleUrlBlur(
+                  origin,
+                  "The origin must be a valid URL",
+                  handleBlur
+                )
               }
               pattern="https://.*"
               size="30"
@@ -142,7 +156,8 @@ const SchemaFiles = (props) => {
               onBlur={() =>
                 handleUrlBlur(
                   abstractClass,
-                  "The associated abstract class must be a valid URL"
+                  "The associated abstract class must be a valid URL",
+                  handleBlur
                 )
               }
               pattern="https://.*"
@@ -191,7 +206,14 @@ const SchemaFiles = (props) => {
         {activeTab === 0 ? (
           metadata()
         ) : (
-          <ConceptSchemes files={file.associatedConceptSchemes || []} />
+          <ConceptSchemes
+            files={file.associatedConceptSchemes || []}
+            currentCP={currentCP}
+            currentDSOIndex={currentDSOIndex}
+            handleUrlBlur={handleUrlBlur}
+            save={save}
+            schemaFileIdx={activeTab}
+          />
         )}
       </div>
     </Fragment>

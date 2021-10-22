@@ -1,4 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setCurrentConfigurationProfile } from "../../../../actions/configurationProfiles";
 import {
   NoDataFound,
   SmallAddTabBtn,
@@ -7,7 +9,14 @@ import {
 } from "../utils";
 
 const ConceptSchemes = (props) => {
-  const [files, setFiles] = useState(props.files);
+  const {
+    currentDSOIndex,
+    currentCP,
+    handleUrlBlur,
+    save,
+    schemaFileIdx,
+  } = props;
+  const [files, setFiles] = useState(props.files || []);
   const [activeTab, setActiveTab] = useState(0);
   const [fileName, setFileName] = useState(files[activeTab]?.name || "");
   const [fileVersion, setFileVersion] = useState(
@@ -17,14 +26,16 @@ const ConceptSchemes = (props) => {
     files[activeTab]?.description || ""
   );
   const [origin, setOrigin] = useState(files[activeTab]?.origin || "");
+  const dispatch = useDispatch();
 
   const conceptSchemeBtns = () => {
     return files.map((file, idx) => {
       return (
         <SmallRemovableTab
           active={activeTab === idx}
-          tabClickHandler={() => setActiveTab(idx)}
+          key={idx}
           removeClickHandler={() => {}}
+          tabClickHandler={() => setActiveTab(idx)}
           text={file.name}
           tooltipMsg={"Click to view/edit this concept scheme file information"}
         />
@@ -32,7 +43,44 @@ const ConceptSchemes = (props) => {
     });
   };
 
-  const handleBlur = () => {};
+  const handleAddConceptScheme = () => {
+    console.log("adding concept scheme...");
+    let localCP = currentCP;
+    let currentFiles =
+      localCP.structure.standardsOrganizations[currentDSOIndex]
+        .associatedSchemas[schemaFileIdx].associatedConceptSchemes || [];
+
+    localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas[
+      schemaFileIdx
+    ].associatedConceptSchemes = [
+      ...currentFiles,
+      {
+        name: `Concept Scheme ${currentFiles.length + 1}`,
+        version: "",
+        description: "",
+        origin: "",
+      },
+    ];
+
+    dispatch(setCurrentConfigurationProfile(localCP));
+    save();
+    setActiveTab(currentFiles.length + 1);
+  };
+
+  const handleBlur = () => {
+    let localCP = currentCP;
+    localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas[
+      schemaFileIdx
+    ].associatedConceptSchemes[activeTab] = {
+      name: fileName,
+      version: fileVersion,
+      description: description,
+      origin: origin,
+    };
+
+    dispatch(setCurrentConfigurationProfile(localCP));
+    save();
+  };
 
   const currentFileInfo = () => {
     return (
@@ -47,7 +95,7 @@ const ConceptSchemes = (props) => {
               type="text"
               className="form-control input-lg"
               name="filename"
-              placeholder="The name of the schema file"
+              placeholder="The name of the concept scheme file"
               value={fileName || ""}
               onChange={(event) => {
                 setFileName(event.target.value);
@@ -65,7 +113,7 @@ const ConceptSchemes = (props) => {
               type="text"
               className="form-control input-lg"
               name="version"
-              placeholder="The version of the schema file"
+              placeholder="The version of the concept scheme file"
               value={fileVersion || ""}
               onChange={(event) => {
                 setFileVersion(event.target.value);
@@ -81,7 +129,7 @@ const ConceptSchemes = (props) => {
             <textarea
               className="form-control input-lg"
               name="description"
-              placeholder="A detailed description of the schema file. E.g. what it represents, which concepts should be expected it to contain."
+              placeholder="A detailed description of the concept scheme file. E.g. what it represents, which concepts should be expected it to contain."
               value={description || ""}
               onChange={(event) => {
                 setDescription(event.target.value);
@@ -104,12 +152,15 @@ const ConceptSchemes = (props) => {
                 setOrigin(event.target.value);
               }}
               onBlur={() =>
-                handleUrlBlur(origin, "The origin must be a valid URL")
+                handleUrlBlur(
+                  origin,
+                  "The origin must be a valid URL",
+                  handleBlur
+                )
               }
               pattern="https://.*"
               size="30"
               placeholder="https://example.com"
-              required
             />
           </div>
         </div>
@@ -133,7 +184,8 @@ const ConceptSchemes = (props) => {
     <Fragment>
       <div className="mt-5 ml-3">
         <TabGroup>
-          {conceptSchemeBtns()} {<SmallAddTabBtn onClickHandler={() => {}} />}{" "}
+          {conceptSchemeBtns()}{" "}
+          {<SmallAddTabBtn onClickHandler={handleAddConceptScheme} />}{" "}
         </TabGroup>
       </div>
       {files.length ? (
