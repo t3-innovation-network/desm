@@ -9,6 +9,7 @@ import updateCP from "../../../../services/updateCP";
 import ConfirmDialog from "../../../shared/ConfirmDialog";
 import { AddTabBtn, NoDataFound, RemovableTab, TabGroup } from "../utils";
 import SchemaFiles from "./SchemaFiles";
+import SingleSchemaFileWrapper from "./SingleSchemaFileWrapper";
 
 const SchemaFilesWrapper = () => {
   const currentCP = useSelector((state) => state.currentCP);
@@ -110,14 +111,7 @@ const SchemaFilesWrapper = () => {
         </TabGroup>
       </div>
       {getFiles().length ? (
-        <SchemaFiles
-          file={getFiles()[activeTab]}
-          idx={activeTab}
-          getFiles={getFiles}
-          currentCP={currentCP}
-          currentDSOIndex={currentDSOIndex}
-          save={save}
-        />
+        <SingleSchemaFileWrapper fileIdx={activeTab} />
       ) : (
         <NoDataFound
           text={`This DSO did not specify any schema files information yet. You can add a schema file by clicking on the "+" button`}

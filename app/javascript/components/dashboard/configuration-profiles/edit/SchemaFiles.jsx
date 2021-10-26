@@ -6,7 +6,7 @@ import {
 } from "../../../../actions/configurationProfiles";
 import { validURL } from "../../../../helpers/URL";
 import { RemovableTab, TabGroup } from "../utils";
-import ConceptSchemes from "./ConceptSchemes";
+// import ConceptSchemes from "./ConceptSchemes";
 
 const SchemaFiles = (props) => {
   const { currentCP, currentDSOIndex, file, getFiles, idx, save } = props;
@@ -203,18 +203,17 @@ const SchemaFiles = (props) => {
         </TabGroup>
       </div>
       <div className="col">
-        {activeTab === 0 ? (
-          metadata()
-        ) : (
-          <ConceptSchemes
-            files={file.associatedConceptSchemes || []}
-            currentCP={currentCP}
-            currentDSOIndex={currentDSOIndex}
-            handleUrlBlur={handleUrlBlur}
-            save={save}
-            schemaFileIdx={activeTab}
-          />
-        )}
+        {activeTab === 0
+          ? metadata()
+          : // <ConceptSchemes
+            //   files={file.associatedConceptSchemes || []}
+            //   currentCP={currentCP}
+            //   currentDSOIndex={currentDSOIndex}
+            //   handleUrlBlur={handleUrlBlur}
+            //   save={save}
+            //   schemaFileIdx={activeTab}
+            // />
+            ""}
       </div>
     </Fragment>
   );
