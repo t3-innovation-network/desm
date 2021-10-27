@@ -14,25 +14,24 @@ const SchemaFilesWrapper = () => {
   const currentCP = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
   const [idxToRemove, setIdxToRemove] = useState(null);
-  const getFiles = () =>
+  const schemaFiles =
     currentCP.structure.standardsOrganizations[currentDSOIndex]
       .associatedSchemas || [];
   const [activeTab, setActiveTab] = useState(0);
   const dispatch = useDispatch();
   const [confirmationVisible, setConfirmationVisible] = useState(false);
-  const confirmationMsg = `Please confirm if you really want to remove file ${
-    getFiles()[idxToRemove]?.name
-  }`;
+  const confirmationMsg = `Please confirm if you really want to remove file ${schemaFiles[idxToRemove]?.name}`;
 
   const handleAddFile = () => {
     let localCP = currentCP;
     let localFiles = [
-      ...getFiles(),
+      ...schemaFiles,
       {
-        name: `Schema File N${getFiles().length + 1}`,
+        name: `Schema File N${schemaFiles.length + 1}`,
         origin: "",
         description: "",
         associatedAbstractClass: "",
+        associatedConceptSchemes: [],
       },
     ];
     localCP.structure.standardsOrganizations[
@@ -40,7 +39,7 @@ const SchemaFilesWrapper = () => {
     ].associatedSchemas = localFiles;
 
     dispatch(setCurrentConfigurationProfile(localCP));
-    save();
+    save(localCP);
   };
 
   const handleRemoveFile = () => {
@@ -52,26 +51,24 @@ const SchemaFilesWrapper = () => {
 
     setActiveTab(0);
     dispatch(setCurrentConfigurationProfile(localCP));
-    save();
+    save(localCP);
   };
 
-  const save = () => {
+  const save = (cp) => {
     dispatch(setSavingCP(true));
 
-    updateCP(currentCP.id, currentCP).then((response) => {
+    updateCP(currentCP.id, cp).then((response) => {
       if (response.error) {
         dispatch(setEditCPErrors(response.error));
         dispatch(setSavingCP(false));
         return;
       }
-
-      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
       dispatch(setSavingCP(false));
     });
   };
 
   const schemaFileTabs = () => {
-    return getFiles().map((file, idx) => {
+    return schemaFiles.map((file, idx) => {
       return (
         <RemovableTab
           key={idx}
@@ -110,7 +107,7 @@ const SchemaFilesWrapper = () => {
           />
         </TabGroup>
       </div>
-      {getFiles().length ? (
+      {schemaFiles.length ? (
         <SingleSchemaFileWrapper fileIdx={activeTab} />
       ) : (
         <NoDataFound

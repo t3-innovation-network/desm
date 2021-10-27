@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setCurrentConfigurationProfile,
@@ -7,61 +7,38 @@ import {
 } from "../../../../actions/configurationProfiles";
 import updateCP from "../../../../services/updateCP";
 
-const SchemaFileMetadata = (props) => {
-  const { fileIdx } = props;
+const ConceptSchemeMetadata = (props) => {
+  const { schemaFileIdx, conceptSchemeIdx } = props;
   const currentCP = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
   const schemaFiles =
     currentCP.structure.standardsOrganizations[currentDSOIndex]
       .associatedSchemas || [];
-  const file = schemaFiles[fileIdx] || {};
+  const schemaFile = schemaFiles[schemaFileIdx] || {};
+  const conceptScheme =
+    schemaFile.associatedConceptSchemes[conceptSchemeIdx] || {};
 
-  const [abstractClass, setAbstractClass] = useState(
-    file.associatedAbstractClass
+  const [fileName, setFileName] = useState(conceptScheme?.name || "");
+  const [fileVersion, setFileVersion] = useState(conceptScheme?.version || "");
+  const [description, setDescription] = useState(
+    conceptScheme?.description || ""
   );
-  const [fileName, setFileName] = useState(file.name);
-  const [fileVersion, setFileVersion] = useState(file.version);
-  const [description, setDescription] = useState(file.description);
-  const [origin, setOrigin] = useState(file.origin);
+  const [origin, setOrigin] = useState(conceptScheme?.origin || "");
   const dispatch = useDispatch();
 
   const handleBlur = () => {
-    let files = schemaFiles;
-    files[fileIdx] = {
+    let localCP = currentCP;
+    localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas[
+      schemaFileIdx
+    ].associatedConceptSchemes[conceptSchemeIdx] = {
       name: fileName,
-      associatedAbstractClass: abstractClass,
+      version: fileVersion,
       description: description,
       origin: origin,
-      version: fileVersion,
-      associatedConceptSchemes: schemaFiles[fileIdx].associatedConceptSchemes,
     };
-
-    let localCP = currentCP;
-    localCP.structure.standardsOrganizations[
-      currentDSOIndex
-    ].associatedSchemas = files;
 
     dispatch(setCurrentConfigurationProfile(localCP));
     save(localCP);
-  };
-
-  const handleUrlBlur = (
-    url,
-    errorMessage = "Must be a valid URL",
-    blurHandler
-  ) => {
-    if (url === "") {
-      dispatch(setEditCPErrors(null));
-      blurHandler();
-      return;
-    }
-
-    if (!validURL(url)) {
-      dispatch(setEditCPErrors(errorMessage));
-      return;
-    }
-    dispatch(setEditCPErrors(null));
-    blurHandler();
   };
 
   const save = (cp) => {
@@ -77,15 +54,6 @@ const SchemaFileMetadata = (props) => {
     });
   };
 
-  useEffect(() => {
-    const { fileIdx } = props;
-    setAbstractClass(file.associatedAbstractClass);
-    setFileName(file.name);
-    setFileVersion(file.version);
-    setDescription(file.description);
-    setOrigin(file.origin);
-  }, [props.fileIdx]);
-
   return (
     <Fragment>
       <div className="mt-5">
@@ -98,7 +66,7 @@ const SchemaFileMetadata = (props) => {
             type="text"
             className="form-control input-lg"
             name="filename"
-            placeholder="The name of the schema file"
+            placeholder="The name of the concept scheme file"
             value={fileName || ""}
             onChange={(event) => {
               setFileName(event.target.value);
@@ -116,7 +84,7 @@ const SchemaFileMetadata = (props) => {
             type="text"
             className="form-control input-lg"
             name="version"
-            placeholder="The version of the schema file"
+            placeholder="The version of the concept scheme file"
             value={fileVersion || ""}
             onChange={(event) => {
               setFileVersion(event.target.value);
@@ -132,7 +100,7 @@ const SchemaFileMetadata = (props) => {
           <textarea
             className="form-control input-lg"
             name="description"
-            placeholder="A detailed description of the schema file. E.g. what it represents, which concepts should be expected it to contain."
+            placeholder="A detailed description of the concept scheme file. E.g. what it represents, which concepts should be expected it to contain."
             value={description || ""}
             onChange={(event) => {
               setDescription(event.target.value);
@@ -164,33 +132,6 @@ const SchemaFileMetadata = (props) => {
             pattern="https://.*"
             size="30"
             placeholder="https://example.com"
-            required
-          />
-        </div>
-      </div>
-
-      <div className="mt-5">
-        <label>Associated Abstract Class</label>
-        <div className="input-group input-group">
-          <input
-            type="url"
-            className="form-control input-lg"
-            name="origin"
-            value={abstractClass}
-            onChange={(event) => {
-              setAbstractClass(event.target.value);
-            }}
-            onBlur={() =>
-              handleUrlBlur(
-                abstractClass,
-                "The associated abstract class must be a valid URL",
-                handleBlur
-              )
-            }
-            pattern="https://.*"
-            size="30"
-            placeholder="https://example.com"
-            required
           />
         </div>
       </div>
@@ -198,4 +139,4 @@ const SchemaFileMetadata = (props) => {
   );
 };
 
-export default SchemaFileMetadata;
+export default ConceptSchemeMetadata;
