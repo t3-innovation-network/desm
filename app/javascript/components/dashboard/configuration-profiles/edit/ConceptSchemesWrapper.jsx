@@ -6,6 +6,7 @@ import {
   setSavingCP,
 } from "../../../../actions/configurationProfiles";
 import updateCP from "../../../../services/updateCP";
+import ConfirmDialog from "../../../shared/ConfirmDialog";
 import {
   NoDataFound,
   SmallAddTabBtn,
@@ -24,6 +25,9 @@ const ConceptSchemesWrapper = (props) => {
   const schemaFile = schemaFiles[fileIdx] || {};
   const conceptSchemes = schemaFile.associatedConceptSchemes || [];
   const [activeTab, setActiveTab] = useState(0);
+  const [idxToRemove, setIdxToRemove] = useState(null);
+  const [confirmationVisible, setConfirmationVisible] = useState(false);
+  const confirmationMsg = `Please confirm if you really want to remove the concept scheme file ${conceptSchemes[idxToRemove]?.name}`;
   const dispatch = useDispatch();
 
   const conceptSchemeBtns = () => {
@@ -32,7 +36,10 @@ const ConceptSchemesWrapper = (props) => {
         <SmallRemovableTab
           active={activeTab === idx}
           key={idx}
-          removeClickHandler={() => {}}
+          removeClickHandler={() => {
+            setIdxToRemove(idx);
+            setConfirmationVisible(true);
+          }}
           tabClickHandler={() => setActiveTab(idx)}
           text={file.name || ""}
           tooltipMsg={"Click to view/edit this concept scheme file information"}
@@ -61,6 +68,19 @@ const ConceptSchemesWrapper = (props) => {
     setActiveTab(conceptSchemes.length);
   };
 
+  const handleRemoveConceptScheme = () => {
+    setConfirmationVisible(false);
+    let localCP = currentCP;
+
+    localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas[
+      fileIdx
+    ].associatedConceptSchemes.splice(idxToRemove, 1);
+
+    setActiveTab(0);
+    dispatch(setCurrentConfigurationProfile(localCP));
+    save(localCP);
+  };
+
   const save = (cp) => {
     dispatch(setSavingCP(true));
 
@@ -76,6 +96,16 @@ const ConceptSchemesWrapper = (props) => {
 
   return (
     <Fragment>
+      {confirmationVisible && (
+        <ConfirmDialog
+          onRequestClose={() => setConfirmationVisible(false)}
+          onConfirm={() => handleRemoveConceptScheme()}
+          visible={confirmationVisible}
+        >
+          <h2 className="text-center">Attention!</h2>
+          <h5 className="mt-3 text-center">{confirmationMsg}</h5>
+        </ConfirmDialog>
+      )}
       <div className="mt-5 ml-3">
         <TabGroup>
           {conceptSchemeBtns()}{" "}
