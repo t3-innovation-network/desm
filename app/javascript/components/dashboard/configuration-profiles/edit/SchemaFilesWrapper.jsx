@@ -8,12 +8,12 @@ import {
 import updateCP from "../../../../services/updateCP";
 import ConfirmDialog from "../../../shared/ConfirmDialog";
 import { AddTabBtn, NoDataFound, RemovableTab, TabGroup } from "../utils";
-import SchemaFiles from "./SchemaFiles";
 import SingleSchemaFileWrapper from "./SingleSchemaFileWrapper";
 
 const SchemaFilesWrapper = () => {
   const currentCP = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
+  const [idxToRemove, setIdxToRemove] = useState(null);
   const getFiles = () =>
     currentCP.structure.standardsOrganizations[currentDSOIndex]
       .associatedSchemas || [];
@@ -21,7 +21,7 @@ const SchemaFilesWrapper = () => {
   const dispatch = useDispatch();
   const [confirmationVisible, setConfirmationVisible] = useState(false);
   const confirmationMsg = `Please confirm if you really want to remove file ${
-    getFiles()[activeTab]?.name
+    getFiles()[idxToRemove]?.name
   }`;
 
   const handleAddFile = () => {
@@ -43,12 +43,12 @@ const SchemaFilesWrapper = () => {
     save();
   };
 
-  const handleRemoveFile = (idx) => {
+  const handleRemoveFile = () => {
     setConfirmationVisible(false);
     let localCP = currentCP;
     localCP.structure.standardsOrganizations[
       currentDSOIndex
-    ].associatedSchemas.splice(idx, 1);
+    ].associatedSchemas.splice(idxToRemove, 1);
 
     setActiveTab(0);
     dispatch(setCurrentConfigurationProfile(localCP));
@@ -77,7 +77,7 @@ const SchemaFilesWrapper = () => {
           key={idx}
           active={idx === activeTab}
           removeClickHandler={() => {
-            setActiveTab(idx);
+            setIdxToRemove(idx);
             setConfirmationVisible(true);
           }}
           tabClickHandler={() => {
@@ -94,7 +94,7 @@ const SchemaFilesWrapper = () => {
       {confirmationVisible && (
         <ConfirmDialog
           onRequestClose={() => setConfirmationVisible(false)}
-          onConfirm={() => handleRemoveFile(activeTab)}
+          onConfirm={() => handleRemoveFile()}
           visible={confirmationVisible}
         >
           <h2 className="text-center">Attention!</h2>
