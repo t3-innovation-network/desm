@@ -5,6 +5,7 @@ import {
   setEditCPErrors,
   setSavingCP,
 } from "../../../../actions/configurationProfiles";
+import { validURL } from "../../../../helpers/URL";
 import updateCP from "../../../../services/updateCP";
 
 const ConceptSchemeMetadata = (props) => {
@@ -39,6 +40,25 @@ const ConceptSchemeMetadata = (props) => {
 
     dispatch(setCurrentConfigurationProfile(localCP));
     save(localCP);
+  };
+
+  const handleUrlBlur = (
+    url,
+    errorMessage = "Must be a valid URL",
+    blurHandler
+  ) => {
+    if (url === "") {
+      dispatch(setEditCPErrors(null));
+      blurHandler();
+      return;
+    }
+
+    if (!validURL(url)) {
+      dispatch(setEditCPErrors(errorMessage));
+      return;
+    }
+    dispatch(setEditCPErrors(null));
+    blurHandler();
   };
 
   const save = (cp) => {
