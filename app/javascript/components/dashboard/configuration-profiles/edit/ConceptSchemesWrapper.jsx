@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setCurrentConfigurationProfile,
@@ -16,13 +16,13 @@ import {
 import ConceptSchemeMetadata from "./ConceptSchemeMetadata";
 
 const ConceptSchemesWrapper = (props) => {
-  const { fileIdx } = props;
+  const { schemaFileIdx } = props;
   const currentCP = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
   const schemaFiles =
     currentCP.structure.standardsOrganizations[currentDSOIndex]
       .associatedSchemas || [];
-  const schemaFile = schemaFiles[fileIdx] || {};
+  const schemaFile = schemaFiles[schemaFileIdx] || {};
   const conceptSchemes = schemaFile.associatedConceptSchemes || [];
   const [activeTab, setActiveTab] = useState(0);
   const [idxToRemove, setIdxToRemove] = useState(null);
@@ -42,7 +42,7 @@ const ConceptSchemesWrapper = (props) => {
           }}
           tabClickHandler={() => setActiveTab(idx)}
           text={file.name || ""}
-          tooltipMsg={"Click to view/edit this concept scheme file information"}
+          tooltipMsg={`View/Edit ${file.name || ""}`}
         />
       );
     });
@@ -52,7 +52,7 @@ const ConceptSchemesWrapper = (props) => {
     let localCP = currentCP;
 
     localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas[
-      fileIdx
+      schemaFileIdx
     ].associatedConceptSchemes = [
       ...conceptSchemes,
       {
@@ -73,7 +73,7 @@ const ConceptSchemesWrapper = (props) => {
     let localCP = currentCP;
 
     localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas[
-      fileIdx
+      schemaFileIdx
     ].associatedConceptSchemes.splice(idxToRemove, 1);
 
     setActiveTab(0);
@@ -93,6 +93,10 @@ const ConceptSchemesWrapper = (props) => {
       dispatch(setSavingCP(false));
     });
   };
+
+  useEffect(() => {
+    setActiveTab(0);
+  }, [props]);
 
   return (
     <Fragment>
@@ -115,7 +119,7 @@ const ConceptSchemesWrapper = (props) => {
       {conceptSchemes.length ? (
         <div className="mt-5">
           <ConceptSchemeMetadata
-            schemaFileIdx={fileIdx}
+            schemaFileIdx={schemaFileIdx}
             conceptSchemeIdx={activeTab}
           />
         </div>

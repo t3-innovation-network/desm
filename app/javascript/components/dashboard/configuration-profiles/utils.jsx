@@ -105,7 +105,7 @@ export const SmallRemovableTab = (props) => {
             opacity: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            maxHeight: "32px",
+            maxHeight: "31px",
           }}
           data-toggle="tooltip"
           data-placement="bottom"
@@ -120,6 +120,7 @@ export const SmallRemovableTab = (props) => {
             maxWidth: "30px",
             position: "relative",
             right: "5px",
+            maxHeight: "31px",
           }}
           data-toggle="tooltip"
           data-placement="bottom"

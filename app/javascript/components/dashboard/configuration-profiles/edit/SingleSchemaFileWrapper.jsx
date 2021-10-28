@@ -31,7 +31,7 @@ const SingleSchemaFileWrapper = (props) => {
           </div>
         ) : (
           <div className="mt-5">
-            <ConceptSchemesWrapper fileIdx={fileIdx} />
+            <ConceptSchemesWrapper schemaFileIdx={fileIdx} />
           </div>
         )}
       </div>
