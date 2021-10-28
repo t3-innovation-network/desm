@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setCurrentConfigurationProfile,
@@ -53,6 +53,13 @@ const ConceptSchemeMetadata = (props) => {
       dispatch(setSavingCP(false));
     });
   };
+
+  useEffect(() => {
+    setFileName(conceptScheme.name);
+    setFileVersion(conceptScheme.version);
+    setDescription(conceptScheme.description);
+    setOrigin(conceptScheme.origin);
+  }, [props]);
 
   return (
     <Fragment>
