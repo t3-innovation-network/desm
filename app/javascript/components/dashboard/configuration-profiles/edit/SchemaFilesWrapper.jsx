@@ -40,6 +40,7 @@ const SchemaFilesWrapper = () => {
 
     dispatch(setCurrentConfigurationProfile(localCP));
     save(localCP);
+    setActiveTab(localFiles.length - 1);
   };
 
   const handleRemoveFile = () => {
@@ -108,7 +109,7 @@ const SchemaFilesWrapper = () => {
         </TabGroup>
       </div>
       {schemaFiles.length ? (
-        <SingleSchemaFileWrapper fileIdx={activeTab} />
+        <SingleSchemaFileWrapper schemaFileIdx={activeTab} />
       ) : (
         <NoDataFound
           text={`This DSO did not specify any schema files information yet. You can add a schema file by clicking on the "+" button`}

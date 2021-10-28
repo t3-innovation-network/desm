@@ -8,13 +8,13 @@ import {
 import updateCP from "../../../../services/updateCP";
 
 const SchemaFileMetadata = (props) => {
-  const { fileIdx } = props;
+  const { schemaFileIdx } = props;
   const currentCP = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
   const schemaFiles =
     currentCP.structure.standardsOrganizations[currentDSOIndex]
       .associatedSchemas || [];
-  const file = schemaFiles[fileIdx] || {};
+  const file = schemaFiles[schemaFileIdx] || {};
 
   const [abstractClass, setAbstractClass] = useState(
     file.associatedAbstractClass
@@ -27,13 +27,14 @@ const SchemaFileMetadata = (props) => {
 
   const handleBlur = () => {
     let files = schemaFiles;
-    files[fileIdx] = {
+    files[schemaFileIdx] = {
       name: fileName,
       associatedAbstractClass: abstractClass,
       description: description,
       origin: origin,
       version: fileVersion,
-      associatedConceptSchemes: schemaFiles[fileIdx].associatedConceptSchemes,
+      associatedConceptSchemes:
+        schemaFiles[schemaFileIdx].associatedConceptSchemes,
     };
 
     let localCP = currentCP;
@@ -78,13 +79,12 @@ const SchemaFileMetadata = (props) => {
   };
 
   useEffect(() => {
-    const { fileIdx } = props;
     setAbstractClass(file.associatedAbstractClass);
     setFileName(file.name);
     setFileVersion(file.version);
     setDescription(file.description);
     setOrigin(file.origin);
-  }, [props.fileIdx]);
+  }, [props.schemaFileIdx]);
 
   return (
     <Fragment>

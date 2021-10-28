@@ -4,12 +4,12 @@ import ConceptSchemesWrapper from "./ConceptSchemesWrapper";
 import SchemaFileMetadata from "./SchemaFileMetadata";
 
 const SingleSchemaFileWrapper = (props) => {
-  const [fileIdx, setFileIdx] = useState(props.fileIdx);
+  const [schemaFileIdx, setSchemaFileIdx] = useState(props.schemaFileIdx);
   const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
-    setFileIdx(props.fileIdx);
-  }, [props.fileIdx]);
+    setSchemaFileIdx(props.schemaFileIdx);
+  }, [props.schemaFileIdx]);
 
   return (
     <Fragment>
@@ -27,11 +27,11 @@ const SingleSchemaFileWrapper = (props) => {
       <div className="col">
         {activeTab === 0 ? (
           <div className="mt-5">
-            <SchemaFileMetadata fileIdx={fileIdx} />
+            <SchemaFileMetadata schemaFileIdx={schemaFileIdx} />
           </div>
         ) : (
           <div className="mt-5">
-            <ConceptSchemesWrapper schemaFileIdx={fileIdx} />
+            <ConceptSchemesWrapper schemaFileIdx={schemaFileIdx} />
           </div>
         )}
       </div>
