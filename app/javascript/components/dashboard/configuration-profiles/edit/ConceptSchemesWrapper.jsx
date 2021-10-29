@@ -50,10 +50,7 @@ const ConceptSchemesWrapper = (props) => {
 
   const handleAddConceptScheme = () => {
     let localCP = currentCP;
-
-    localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas[
-      schemaFileIdx
-    ].associatedConceptSchemes = [
+    let localFiles = [
       ...conceptSchemes,
       {
         name: `Concept Scheme ${conceptSchemes.length + 1}`,
@@ -63,9 +60,13 @@ const ConceptSchemesWrapper = (props) => {
       },
     ];
 
+    localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas[
+      schemaFileIdx
+    ].associatedConceptSchemes = localFiles;
+
     dispatch(setCurrentConfigurationProfile(localCP));
     save(localCP);
-    setActiveTab(conceptSchemes.length);
+    setActiveTab(localFiles.length - 1);
   };
 
   const handleRemoveConceptScheme = () => {

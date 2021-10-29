@@ -124,7 +124,7 @@ export const SmallRemovableTab = (props) => {
           }}
           data-toggle="tooltip"
           data-placement="bottom"
-          title="Click to remove this user"
+          title="Click to remove this item"
           onClick={(event) => {
             event.stopPropagation();
             removeClickHandler();
