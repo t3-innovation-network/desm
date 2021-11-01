@@ -24,7 +24,7 @@ const ConceptSchemesWrapper = (props) => {
       .associatedSchemas || [];
   const schemaFile = schemaFiles[schemaFileIdx] || {};
   const conceptSchemes = schemaFile.associatedConceptSchemes || [];
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(conceptSchemes.length ? 0 : -1);
   const [idxToRemove, setIdxToRemove] = useState(null);
   const [confirmationVisible, setConfirmationVisible] = useState(false);
   const confirmationMsg = `Please confirm if you really want to remove the concept scheme file ${conceptSchemes[idxToRemove]?.name}`;
@@ -77,7 +77,13 @@ const ConceptSchemesWrapper = (props) => {
       schemaFileIdx
     ].associatedConceptSchemes.splice(idxToRemove, 1);
 
-    setActiveTab(0);
+    const conceptSchemes = localCP
+      .structure
+      .standardsOrganizations[currentDSOIndex]
+      .associatedSchemas[schemaFileIdx]
+      .associatedConceptSchemes;
+
+    setActiveTab(conceptSchemes.length - 1);
     dispatch(setCurrentConfigurationProfile(localCP));
     save(localCP);
   };
@@ -94,10 +100,6 @@ const ConceptSchemesWrapper = (props) => {
       dispatch(setSavingCP(false));
     });
   };
-
-  useEffect(() => {
-    setActiveTab(0);
-  }, [props]);
 
   return (
     <Fragment>
