@@ -7,7 +7,12 @@ import {
 } from "../../../../actions/configurationProfiles";
 import updateCP from "../../../../services/updateCP";
 import ConfirmDialog from "../../../shared/ConfirmDialog";
-import { NoDataFound, TabGroup } from "../utils";
+import {
+  NoDataFound,
+  SmallAddTabBtn,
+  SmallRemovableTab,
+  TabGroup,
+} from "../utils";
 
 const Agents = () => {
   const currentCP = useSelector((state) => state.currentCP);
@@ -46,47 +51,17 @@ const Agents = () => {
   const agentButtons = () => {
     return agentsData.map((agent, idx) => {
       return (
-        <div className="col mr-3 mt-3" key={idx}>
-          <div className="row cursor-pointer" style={{ minWidth: "100px" }}>
-            <div
-              className={`col-10 bg-dashboard-background ${
-                currentAgentIndex === idx
-                  ? "col-dashboard-highlight with-shadow"
-                  : "col-background"
-              } p-2 rounded text-center`}
-              style={{
-                maxWidth: "150px",
-                opacity: "80%",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                maxHeight: "32px",
-              }}
-              data-toggle="tooltip"
-              data-placement="bottom"
-              title="Click to view/edit this user's information"
-              onClick={() => setCurrentAgentIndex(idx)}
-            >
-              {agent.fullname}
-            </div>
-            <div
-              className="col-2 bg-dashboard-background col-background p-2 rounded text-center font-weight-bold"
-              style={{
-                maxWidth: "30px",
-                position: "relative",
-                right: "5px",
-              }}
-              data-toggle="tooltip"
-              data-placement="bottom"
-              title="Click to remove this user"
-              onClick={() => {
-                setCurrentAgentIndex(idx);
-                setConfirmationVisible(true);
-              }}
-            >
-              x
-            </div>
-          </div>
-        </div>
+        <SmallRemovableTab
+          active={currentAgentIndex === idx}
+          key={idx}
+          tabClickHandler={() => setCurrentAgentIndex(idx)}
+          removeClickHandler={() => {
+            setCurrentAgentIndex(idx);
+            setConfirmationVisible(true);
+          }}
+          text={agent.fullname}
+          tooltipMsg={"Click to view/edit this user's information"}
+        />
       );
     });
   };
@@ -103,18 +78,6 @@ const Agents = () => {
     };
 
     return localCP;
-  };
-
-  const createAgent = () => {
-    return (
-      <div
-        className="col bg-dashboard-background-highlight col-background p-2 rounded text-center mt-3 mr-4 font-weight-bold cursor-pointer"
-        style={{ maxWidth: "50px" }}
-        onClick={addAgent}
-      >
-        +
-      </div>
-    );
   };
 
   const handleBlur = () => {
@@ -141,10 +104,11 @@ const Agents = () => {
       currentAgentIndex,
       1
     );
-    setAgentsData(
-      localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents
-    );
-    setCurrentAgentIndex(0);
+    let newAgentsData =
+      localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents;
+
+    setAgentsData(newAgentsData);
+    setCurrentAgentIndex(newAgentsData.length - 1);
     dispatch(setCurrentConfigurationProfile(localCP));
     save();
   };
@@ -292,7 +256,7 @@ const Agents = () => {
       )}
       <div className="mt-5 ml-3">
         <TabGroup>
-          {agentButtons()} {createAgent()}{" "}
+          {agentButtons()} {<SmallAddTabBtn onClickHandler={addAgent} />}{" "}
         </TabGroup>
       </div>
       <div className="row justify-content-center">

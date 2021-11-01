@@ -84,6 +84,73 @@ export const RemovableTab = (props) => {
   );
 };
 
+export const SmallRemovableTab = (props) => {
+  const {
+    active,
+    tabClickHandler,
+    removeClickHandler,
+    text,
+    tooltipMsg,
+  } = props;
+
+  return (
+    <div className="col mr-3 mt-3">
+      <div className="row cursor-pointer" style={{ minWidth: "130px" }}>
+        <div
+          className={`col-10 bg-dashboard-background ${
+            active ? "col-dashboard-highlight with-shadow" : "col-background"
+          } p-2 rounded text-center`}
+          style={{
+            maxWidth: "150px",
+            opacity: "80%",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxHeight: "31px",
+          }}
+          data-toggle="tooltip"
+          data-placement="bottom"
+          title={tooltipMsg}
+          onClick={tabClickHandler}
+        >
+          {text}
+        </div>
+        <div
+          className="col-2 bg-dashboard-background col-background p-2 rounded text-center font-weight-bold"
+          style={{
+            maxWidth: "30px",
+            position: "relative",
+            right: "5px",
+            maxHeight: "31px",
+          }}
+          data-toggle="tooltip"
+          data-placement="bottom"
+          title="Click to remove this item"
+          onClick={(event) => {
+            event.stopPropagation();
+            removeClickHandler();
+          }}
+        >
+          x
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const SmallAddTabBtn = (props) => {
+  const { onClickHandler } = props;
+
+  return (
+    <div
+      className="col bg-dashboard-background-highlight col-background p-2 rounded text-center mt-3 mr-4 font-weight-bold cursor-pointer"
+      style={{ maxWidth: "50px" }}
+      onClick={onClickHandler}
+    >
+      +
+    </div>
+  );
+};
+
 export const AddTabBtn = (props) => {
   const { onClickHandler, tooltipMsg } = props;
 
@@ -109,7 +176,8 @@ export const NoDataFound = (props) => {
       <div className="d-flex align-items-center justify-content-center h-100 w-100">
         <img src={noDataImg} alt="No data found" />
       </div>
-      <div className="d-flex align-items-center justify-content-center h-100 w-100">
+      <div className="pl-5 pr-5 text-center font-italic">
+        <h4>Couldn't find anything here!</h4>
         <p>{text}</p>
       </div>
     </Fragment>

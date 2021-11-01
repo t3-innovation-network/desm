@@ -8,30 +8,30 @@ import {
 import updateCP from "../../../../services/updateCP";
 import ConfirmDialog from "../../../shared/ConfirmDialog";
 import { AddTabBtn, NoDataFound, RemovableTab, TabGroup } from "../utils";
-import SchemaFiles from "./SchemaFiles";
+import SingleSchemaFileWrapper from "./SingleSchemaFileWrapper";
 
 const SchemaFilesWrapper = () => {
   const currentCP = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
-  const getFiles = () =>
+  const [idxToRemove, setIdxToRemove] = useState(null);
+  const schemaFiles =
     currentCP.structure.standardsOrganizations[currentDSOIndex]
       .associatedSchemas || [];
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(schemaFiles.length ? 0 : -1);
   const dispatch = useDispatch();
   const [confirmationVisible, setConfirmationVisible] = useState(false);
-  const confirmationMsg = `Please confirm if you really want to remove file ${
-    getFiles()[activeTab]?.name
-  }`;
+  const confirmationMsg = `Please confirm if you really want to remove file ${schemaFiles[idxToRemove]?.name}`;
 
   const handleAddFile = () => {
     let localCP = currentCP;
     let localFiles = [
-      ...getFiles(),
+      ...schemaFiles,
       {
-        name: `Schema File N${getFiles().length + 1}`,
+        name: `Schema File N${schemaFiles.length + 1}`,
         origin: "",
         description: "",
         associatedAbstractClass: "",
+        associatedConceptSchemes: [],
       },
     ];
     localCP.structure.standardsOrganizations[
@@ -39,44 +39,47 @@ const SchemaFilesWrapper = () => {
     ].associatedSchemas = localFiles;
 
     dispatch(setCurrentConfigurationProfile(localCP));
-    save();
+    save(localCP);
+    setActiveTab(localFiles.length - 1);
   };
 
-  const handleRemoveFile = (idx) => {
+  const handleRemoveFile = () => {
     setConfirmationVisible(false);
     let localCP = currentCP;
     localCP.structure.standardsOrganizations[
       currentDSOIndex
-    ].associatedSchemas.splice(idx, 1);
+    ].associatedSchemas.splice(idxToRemove, 1);
 
-    setActiveTab(0);
+    let newSchemas =
+      localCP.structure.standardsOrganizations[currentDSOIndex]
+        .associatedSchemas;
+
+    setActiveTab(newSchemas.length - 1);
     dispatch(setCurrentConfigurationProfile(localCP));
-    save();
+    save(localCP);
   };
 
-  const save = () => {
+  const save = (cp) => {
     dispatch(setSavingCP(true));
 
-    updateCP(currentCP.id, currentCP).then((response) => {
+    updateCP(currentCP.id, cp).then((response) => {
       if (response.error) {
         dispatch(setEditCPErrors(response.error));
         dispatch(setSavingCP(false));
         return;
       }
-
-      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
       dispatch(setSavingCP(false));
     });
   };
 
   const schemaFileTabs = () => {
-    return getFiles().map((file, idx) => {
+    return schemaFiles.map((file, idx) => {
       return (
         <RemovableTab
           key={idx}
           active={idx === activeTab}
           removeClickHandler={() => {
-            setActiveTab(idx);
+            setIdxToRemove(idx);
             setConfirmationVisible(true);
           }}
           tabClickHandler={() => {
@@ -93,7 +96,7 @@ const SchemaFilesWrapper = () => {
       {confirmationVisible && (
         <ConfirmDialog
           onRequestClose={() => setConfirmationVisible(false)}
-          onConfirm={() => handleRemoveFile(activeTab)}
+          onConfirm={() => handleRemoveFile()}
           visible={confirmationVisible}
         >
           <h2 className="text-center">Attention!</h2>
@@ -109,15 +112,8 @@ const SchemaFilesWrapper = () => {
           />
         </TabGroup>
       </div>
-      {getFiles().length ? (
-        <SchemaFiles
-          file={getFiles()[activeTab]}
-          idx={activeTab}
-          getFiles={getFiles}
-          currentCP={currentCP}
-          currentDSOIndex={currentDSOIndex}
-          save={save}
-        />
+      {schemaFiles.length ? (
+        <SingleSchemaFileWrapper schemaFileIdx={activeTab} />
       ) : (
         <NoDataFound
           text={`This DSO did not specify any schema files information yet. You can add a schema file by clicking on the "+" button`}
