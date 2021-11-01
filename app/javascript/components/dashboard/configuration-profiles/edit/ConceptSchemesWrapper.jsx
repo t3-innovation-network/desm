@@ -77,11 +77,9 @@ const ConceptSchemesWrapper = (props) => {
       schemaFileIdx
     ].associatedConceptSchemes.splice(idxToRemove, 1);
 
-    const conceptSchemes = localCP
-      .structure
-      .standardsOrganizations[currentDSOIndex]
-      .associatedSchemas[schemaFileIdx]
-      .associatedConceptSchemes;
+    const conceptSchemes =
+      localCP.structure.standardsOrganizations[currentDSOIndex]
+        .associatedSchemas[schemaFileIdx].associatedConceptSchemes;
 
     setActiveTab(conceptSchemes.length - 1);
     dispatch(setCurrentConfigurationProfile(localCP));

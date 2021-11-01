@@ -95,7 +95,7 @@ export const SmallRemovableTab = (props) => {
 
   return (
     <div className="col mr-3 mt-3">
-      <div className="row cursor-pointer" style={{ minWidth: "100px" }}>
+      <div className="row cursor-pointer" style={{ minWidth: "130px" }}>
         <div
           className={`col-10 bg-dashboard-background ${
             active ? "col-dashboard-highlight with-shadow" : "col-background"

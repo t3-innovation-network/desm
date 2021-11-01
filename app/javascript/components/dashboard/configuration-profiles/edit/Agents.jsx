@@ -104,10 +104,11 @@ const Agents = () => {
       currentAgentIndex,
       1
     );
-    setAgentsData(
-      localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents
-    );
-    setCurrentAgentIndex(0);
+    let newAgentsData =
+      localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents;
+
+    setAgentsData(newAgentsData);
+    setCurrentAgentIndex(newAgentsData.length - 1);
     dispatch(setCurrentConfigurationProfile(localCP));
     save();
   };

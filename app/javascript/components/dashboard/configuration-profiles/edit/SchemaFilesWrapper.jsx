@@ -17,7 +17,7 @@ const SchemaFilesWrapper = () => {
   const schemaFiles =
     currentCP.structure.standardsOrganizations[currentDSOIndex]
       .associatedSchemas || [];
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(schemaFiles.length ? 0 : -1);
   const dispatch = useDispatch();
   const [confirmationVisible, setConfirmationVisible] = useState(false);
   const confirmationMsg = `Please confirm if you really want to remove file ${schemaFiles[idxToRemove]?.name}`;
@@ -50,7 +50,11 @@ const SchemaFilesWrapper = () => {
       currentDSOIndex
     ].associatedSchemas.splice(idxToRemove, 1);
 
-    setActiveTab(0);
+    let newSchemas =
+      localCP.structure.standardsOrganizations[currentDSOIndex]
+        .associatedSchemas;
+
+    setActiveTab(newSchemas.length - 1);
     dispatch(setCurrentConfigurationProfile(localCP));
     save(localCP);
   };
