@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import DashboardContainer from "../DashboardContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
@@ -6,12 +6,48 @@ import { Link } from "react-router-dom";
 import AlertNotice from "../../shared/AlertNotice";
 import { downloadFile } from "../../../helpers/Export";
 import fetchValidSchema from "../../../services/fetchValidSchema";
-import { CenteredRoundedCard } from "./utils";
+import { CenteredRoundedCard, ToggleBtn } from "./utils";
+import UploadConfigurationProfileForm from "./UploadConfigurationProfileForm";
 
-const UploadZone = (props) => {
+const UploadByUrlForm = () => {
+  return (
+    <div className="col">
+      <h2>Upload a file from a URL</h2>
+    </div>
+  );
+};
+
+const UploadZone = () => {
+  const [mode, setMode] = useState("upload");
+
+  const uploadForm = () => {
+    return mode === "upload" ? (
+      <UploadConfigurationProfileForm />
+    ) : (
+      <UploadByUrlForm />
+    );
+  };
+
   return (
     <div className="mt-5">
-      <h2>Upload here!</h2>
+      <div className="col mr-3 mt-3">
+        <div
+          className="row align-items-center justify-content-center"
+          style={{ minWidth: "130px" }}
+        >
+          <ToggleBtn
+            active={mode === "upload"}
+            onClick={() => setMode("upload")}
+            text={"File Upload"}
+          />
+          <ToggleBtn
+            active={mode === "url"}
+            onClick={() => setMode("url")}
+            text={"Fetch By Url"}
+          />
+        </div>
+        <div className="row mt-5">{uploadForm()}</div>
+      </div>
     </div>
   );
 };
@@ -46,7 +82,7 @@ class UploadConfigurationProfile extends Component {
             Dashboard
           </Link>
         </span>{" "}
-        {`>`} <span>New Configuration Profile</span>
+        {`>`} <span>Configuration Profiles</span> {`>`} <span>New</span>
       </div>
     );
   };
@@ -65,7 +101,7 @@ class UploadConfigurationProfile extends Component {
         Please specify the origin of the configuration profile structure.
         Remember it must match{" "}
         <u
-          class="cursor-pointer col-dashboard-highlight text-underlne"
+          className="cursor-pointer col-dashboard-highlight text-underlne"
           onClick={this.handleDownloadSchema}
         >
           this JSON Schema

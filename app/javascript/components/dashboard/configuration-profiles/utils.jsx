@@ -215,3 +215,30 @@ export const CenteredRoundedCard = (props) => {
     </div>
   );
 };
+
+export const ToggleBtn = (props) => {
+  const { active, onClick, text } = props;
+
+  return (
+    <div
+      className={`cursor-pointer col-10 ${
+        active
+          ? "bg-dashboard-background-highlight col-background with-shadow"
+          : "bg-dashboard-background-highlight2 col-dashboard-highlight"
+      }  p-2 rounded text-center`}
+      style={{
+        maxWidth: "150px",
+        opacity: "80%",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        maxHeight: "31px",
+      }}
+      data-toggle="tooltip"
+      data-placement="bottom"
+      title="Upload a File"
+      onClick={onClick}
+    >
+      {text}
+    </div>
+  );
+};
