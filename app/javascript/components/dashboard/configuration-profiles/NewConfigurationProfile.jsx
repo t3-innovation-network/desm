@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import EllipsisOptions from "../../shared/EllipsisOptions";
 import { CPBoxContainer } from "./ConfigurationProfileBox";
+import { withRouter } from "react-router";
 
 class NewConfigurationProfile extends Component {
   state = {
@@ -23,12 +24,14 @@ class NewConfigurationProfile extends Component {
   };
 
   handleOptionSelected = (option) => {
+    const { history } = this.props;
+
     switch (option) {
       case this.state.options[0]:
         this.setState({ confirmationVisible: true });
         break;
       case this.state.options[1]:
-        console.log("Taking the user to the upload screen...");
+        history.push("/dashboard/configuration-profiles/new");
         break;
     }
   };
@@ -89,4 +92,4 @@ const BoxBody = (props) => {
   );
 };
 
-export default NewConfigurationProfile;
+export default withRouter(NewConfigurationProfile);
