@@ -6,6 +6,15 @@ import { Link } from "react-router-dom";
 import AlertNotice from "../../shared/AlertNotice";
 import { downloadFile } from "../../../helpers/Export";
 import fetchValidSchema from "../../../services/fetchValidSchema";
+import { CenteredRoundedCard } from "./utils";
+
+const UploadZone = (props) => {
+  return (
+    <div className="mt-5">
+      <h2>Upload here!</h2>
+    </div>
+  );
+};
 
 class UploadConfigurationProfile extends Component {
   state = {
@@ -50,6 +59,22 @@ class UploadConfigurationProfile extends Component {
     }
   };
 
+  cardSubtitle = () => {
+    return (
+      <p className="text-center mb-5" style={{ fontStyle: "italic" }}>
+        Please specify the origin of the configuration profile structure.
+        Remember it must match{" "}
+        <u
+          class="cursor-pointer col-dashboard-highlight text-underlne"
+          onClick={this.handleDownloadSchema}
+        >
+          this JSON Schema
+        </u>
+        .
+      </p>
+    );
+  };
+
   render() {
     const { errors } = this.state;
 
@@ -60,46 +85,12 @@ class UploadConfigurationProfile extends Component {
         <div className="col mt-5">
           {errors.length ? <AlertNotice message={errors} /> : ""}
           <div className="row h-50 ml-5">
-            <div
-              className="card"
-              style={{
-                transform: "translate(50%, 25%)",
-                maxWidth: "50%",
-                borderRadius: "10px",
-              }}
+            <CenteredRoundedCard
+              title="Upload your configuration profile"
+              subtitle={this.cardSubtitle()}
             >
-              <div className="card-header">
-                <div className="row">
-                  <div className="col">
-                    <h1 className="col-dashboard-highlight text-center">
-                      Upload your configuration profile
-                    </h1>
-                  </div>
-                </div>
-              </div>
-              <div className="card-body">
-                <div className="row">
-                  <div className="col">
-                    <p
-                      className="text-center mb-5"
-                      style={{ fontStyle: "italic" }}
-                    >
-                      Please specify the origin of the configuration profile
-                      structure. Remember it must match{" "}
-                      <span
-                        class="cursor-pointer col-dashboard-highlight text-underlne"
-                        onClick={this.handleDownloadSchema}
-                      >
-                        this JSON Schema
-                      </span>
-                      .
-                    </p>
-
-                    <div className="upload-zone"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+              <UploadZone />
+            </CenteredRoundedCard>
           </div>
         </div>
       </DashboardContainer>

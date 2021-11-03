@@ -183,3 +183,35 @@ export const NoDataFound = (props) => {
     </Fragment>
   );
 };
+
+export const CenteredRoundedCard = (props) => {
+  const { title, subtitle, children } = props;
+
+  return (
+    <div
+      className="card"
+      style={{
+        transform: "translate(50%, 25%)",
+        maxWidth: "50%",
+        borderRadius: "10px",
+      }}
+    >
+      <div className="card-header">
+        <div className="row">
+          <div className="col">
+            <h1 className="col-dashboard-highlight text-center">{title}</h1>
+          </div>
+        </div>
+      </div>
+      <div className="card-body">
+        <div className="row">
+          <div className="col">
+            {subtitle}
+
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
