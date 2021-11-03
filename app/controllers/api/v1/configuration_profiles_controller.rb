@@ -62,6 +62,12 @@ class Api::V1::ConfigurationProfilesController < ApplicationController
     render json: @instance, include: [standards_organizations: {include: :users}]
   end
 
+  def show_valid_schema
+    schema = ConfigurationProfile::valid_schema
+
+    render json: schema
+  end
+
   def update
     @instance.update(permitted_params)
 

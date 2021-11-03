@@ -44,6 +44,7 @@ Rails.application.routes.draw do
       get 'specifications/:id/terms' => 'terms#index'
       get 'vocabularies/:id/flat' => 'vocabularies#flat'
       post 'configuration_profiles/:id/action' => 'configuration_profile_actions#call_action'
+      get 'configuration_profile_schema' => 'configuration_profile_schemas#show'
     end
   end
 
