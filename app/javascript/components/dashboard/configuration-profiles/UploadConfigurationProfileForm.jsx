@@ -1,4 +1,7 @@
+import { decamelizeKeys } from "humps";
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
+import createCP from "../../../services/createCP";
 import AlertNotice from "../../shared/AlertNotice";
 import { readFileContent } from "./utils";
 
@@ -7,13 +10,31 @@ const UploadConfigurationProfileForm = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileContent, setFileContent] = useState(null);
   const [error, setError] = useState(null);
+  const history = useHistory();
 
   const onFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
 
-  const onFileUpload = () => {
-    console.log("uploading");
+  const onFileUpload = async () => {
+    if (!fileContent || !cpName) {
+      setError("Please be sure to type a name and select a file");
+      return;
+    }
+
+    setError(null);
+
+    let response = await createCP({
+      name: cpName,
+      structure: decamelizeKeys(JSON.parse(fileContent)),
+    });
+
+    if (response.errors) {
+      setError(response.errors);
+      return;
+    }
+
+    history.push("/dashboard/configuration-profiles");
   };
 
   useEffect(() => {

@@ -40,6 +40,7 @@ class Api::V1::ConfigurationProfilesController < ApplicationController
 
   def create
     cp = ConfigurationProfile.create!(creation_params)
+    cp.update_attribute(:name, permitted_params[:name]) if permitted_params[:name]
 
     render json: cp
   end
