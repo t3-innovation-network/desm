@@ -46,7 +46,7 @@ const UploadZone = () => {
             text={"Fetch By Url"}
           />
         </div>
-        <div className="row mt-5">{uploadForm()}</div>
+        <div className="row">{uploadForm()}</div>
       </div>
     </div>
   );
