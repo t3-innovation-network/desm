@@ -237,7 +237,7 @@ const Agents = () => {
   }, [currentAgentIndex, currentDSOIndex]);
 
   useEffect(() => {
-    const { dsoAgents } = getDsos()[currentDSOIndex];
+    const dsoAgents = getDsos()[currentDSOIndex]?.dsoAgents || [];
     setAgentsData(dsoAgents);
     setCurrentAgentIndex(dsoAgents.length ? 0 : -1);
   }, [currentDSOIndex]);
