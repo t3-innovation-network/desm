@@ -34,7 +34,8 @@
           "pattern": "/^[a-zd](?:[a-zd]|-(?=[a-zd])){0,38}$/i"
         }
       },
-      "required": ["fullname", "email"]
+      "required": ["fullname", "email"],
+      "additionalProperties": false
     },
     "DSOSchema": {
       "type": "object",
@@ -79,7 +80,8 @@
           "title": "The associated abstract classes for this schema file",
           "$ref": "#/definitions/PlausibleUrl"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "PlausibleUrl": {
       "anyOf": [{ "$ref": "#/definitions/SaneUrl" }, { "format": "hostname" }]
@@ -109,7 +111,8 @@
             "https://example.url.for.skos.predicates.file1,https://example.url.for.skos.predicates.file2"
           ]
         }
-      }
+      },
+      "additionalProperties": false
     },
     "StandardOrganization": {
       "type": "object",
@@ -168,7 +171,8 @@
             "$ref": "#/definitions/DSOSchema"
           }
         }
-      }
+      },
+      "additionalProperties": false
     }
   },
   "required": [
@@ -224,5 +228,6 @@
     "profileAdministrator": {
       "$ref": "#/definitions/Agent"
     }
-  }
+  },
+  "additionalProperties": false
 }
