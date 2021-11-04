@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::V1::ConfigurationProfilesController < ApplicationController
+class Api::V1::ConfigurationProfilesController < Api::V1::ConfigurationProfilesAbstractController
   before_action :with_instance, only: %i[destroy show update]
 
   def create

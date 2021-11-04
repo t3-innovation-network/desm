@@ -1,6 +1,7 @@
 import { decamelizeKeys } from "humps";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
+import checkCPStructureValidity from "../../../services/checkCPStructureValidity";
 import createCP from "../../../services/createCP";
 import AlertNotice from "../../shared/AlertNotice";
 import { readFileContent } from "./utils";
@@ -11,6 +12,19 @@ const UploadConfigurationProfileForm = () => {
   const [fileContent, setFileContent] = useState(null);
   const [error, setError] = useState(null);
   const history = useHistory();
+  const [fileIsValid, setFileIsValid] = useState(false);
+
+  const checkFileValidity = async () => {
+    let response = await checkCPStructureValidity(fileContent);
+
+    if (response.validity.length) {
+      setError(response.validity.join(", "));
+      setFileIsValid(false);
+      return;
+    }
+
+    setFileIsValid(true);
+  };
 
   const onFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -46,11 +60,22 @@ const UploadConfigurationProfileForm = () => {
       );
   }, [selectedFile]);
 
+  useEffect(() => {
+    if (fileContent) checkFileValidity();
+  }, [fileContent]);
+
   return (
     <div className="col">
       {error && <AlertNotice message={error} />}
 
       <div className="mt-5">
+        <div
+          className={`float-right ${
+            fileIsValid ? "text-success" : "text-danger"
+          }`}
+        >
+          {fileContent ? (fileIsValid ? "Valid" : "Invalid") : ""}
+        </div>
         <label>
           Configuration Profile Name
           <span className="text-danger">*</span>
