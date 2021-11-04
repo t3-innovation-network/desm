@@ -18,44 +18,44 @@ describe ConfigurationProfile, type: :model do
     Role.create!(name: "profile admin")
   end
 
-  xit "has a valid factory" do
+  it "has a valid factory" do
     expect(FactoryBot.build(:configuration_profile)).to be_valid
   end
 
   it { should have_many(:standards_organizations) }
 
   context "when it is incomplete" do
-    xit "has incomplete state at creation" do
+    it "has incomplete state at creation" do
       expect(subject.state_handler).to be_instance_of(CpState::Incomplete)
     end
 
-    xit "has not generated structure" do
+    it "has not generated structure" do
       expect(subject.standards_organizations).to be_empty
     end
 
-    xit "can be removed" do
+    it "can be removed" do
       subject.remove!
 
       expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
     end
 
-    xit "can be completed if validates" do
+    it "can be completed if validates" do
       subject.structure = complete_structure
       subject.save!
       expect(subject.state_handler).to be_instance_of(CpState::Complete)
     end
 
-    xit "can not be activated" do
+    it "can not be activated" do
       expect { subject.activate! }.to raise_error CpState::InvalidStateTransition
     end
 
-    xit "can be exported" do
+    it "can be exported" do
       exported_cp = subject.export!
 
       expect(exported_cp).to be_equal(subject.structure)
     end
 
-    xit "can not be deactivated" do
+    it "can not be deactivated" do
       expect { subject.activate! }.to raise_error CpState::InvalidStateTransition
     end
   end
@@ -65,34 +65,34 @@ describe ConfigurationProfile, type: :model do
       subject.update!(structure: complete_structure)
     end
 
-    xit "has not generated structure" do
+    it "has not generated structure" do
       expect(subject.standards_organizations).to be_empty
     end
 
-    xit "can be removed" do
+    it "can be removed" do
       subject.remove!
 
       expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
     end
 
-    xit "can not be completed again" do
+    it "can not be completed again" do
       expect(subject.state_handler).to be_instance_of(CpState::Complete)
       expect { subject.complete! }.to raise_error CpState::InvalidStateTransition
     end
 
-    xit "can be activated" do
+    it "can be activated" do
       subject.activate!
 
       expect(subject.state_handler).to be_instance_of(CpState::Active)
     end
 
-    xit "can be exported" do
+    it "can be exported" do
       exported_cp = subject.export!
 
       expect(exported_cp).to be_equal(subject.structure)
     end
 
-    xit "can not be deactivated" do
+    it "can not be deactivated" do
       expect { subject.deactivate! }.to raise_error CpState::InvalidStateTransition
     end
   end
@@ -103,34 +103,34 @@ describe ConfigurationProfile, type: :model do
       subject.activate!
     end
 
-    xit "has a generated structure" do
+    it "has a generated structure" do
       sdos = subject.standards_organizations
 
       expect(sdos.length).to be(1)
       expect(sdos.first.name).to eq(complete_structure["standardsOrganizations"][0]["name"])
     end
 
-    xit "can be removed" do
+    it "can be removed" do
       subject.remove!
 
       expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
     end
 
-    xit "can not be completed" do
+    it "can not be completed" do
       expect { subject.complete! }.to raise_error CpState::InvalidStateTransition
     end
 
-    xit "can not be activated again" do
+    it "can not be activated again" do
       expect { subject.activate! }.to raise_error CpState::InvalidStateTransition
     end
 
-    xit "can be exported" do
+    it "can be exported" do
       exported_cp = subject.export!
 
       expect(exported_cp).to be_equal(subject.structure)
     end
 
-    xit "can be deactivated" do
+    it "can be deactivated" do
       subject.deactivate!
 
       expect(subject.state_handler).to be_instance_of(CpState::Deactivated)
@@ -144,34 +144,34 @@ describe ConfigurationProfile, type: :model do
       subject.deactivate!
     end
 
-    xit "has a not generated structure" do
+    it "has a not generated structure" do
       expect(subject.standards_organizations.length).to eq(1)
     end
 
-    xit "can be removed" do
+    it "can be removed" do
       subject.remove!
 
       expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
     end
 
-    xit "can not be completed" do
+    it "can not be completed" do
       expect(subject.state_handler).to be_instance_of(CpState::Deactivated)
       expect { subject.complete! }.to raise_error CpState::InvalidStateTransition
     end
 
-    xit "can be activated" do
+    it "can be activated" do
       subject.activate!
 
       expect(subject.state_handler).to be_instance_of(CpState::Active)
     end
 
-    xit "can be exported" do
+    it "can be exported" do
       exported_cp = subject.export!
 
       expect(exported_cp).to be_equal(subject.structure)
     end
 
-    xit "can not be deactivated again" do
+    it "can not be deactivated again" do
       expect { subject.deactivate! }.to raise_error CpState::InvalidStateTransition
     end
   end
@@ -202,7 +202,7 @@ describe ConfigurationProfile, type: :model do
       expect(subject.structure_complete?).to be_falsey
     end
 
-    xit "accepts as complete a complete and valid json structure for a configuration profile" do
+    it "accepts as complete a complete and valid json structure for a configuration profile" do
       expect(subject.structure_complete?).to be_falsey
       expect(subject.state_handler).to be_instance_of(CpState::Incomplete)
 
@@ -212,7 +212,7 @@ describe ConfigurationProfile, type: :model do
       expect(subject.state_handler).to be_instance_of(CpState::Complete)
     end
 
-    xit "rejects a configuration profile structure with an invalid email for an agent" do
+    it "rejects a configuration profile structure with an invalid email for an agent" do
       subject.structure = valid_structure_with_invalid_email.deep_transform_keys {|key| key.to_s.underscore }
 
       expect(subject.structure_complete?).to be_falsey
@@ -232,13 +232,13 @@ describe ConfigurationProfile, type: :model do
       subject.activate!
     end
 
-    xit "can't be removed if there is at least one in progress mapping" do
+    it "can't be removed if there is at least one in progress mapping" do
       mapping.update!(status: :in_progress)
 
       expect { subject.remove! }.to raise_error ActiveRecord::RecordNotDestroyed
     end
 
-    xit "can be removed if there is none in progress mappings" do
+    it "can be removed if there is none in progress mappings" do
       subject.remove!
 
       expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
