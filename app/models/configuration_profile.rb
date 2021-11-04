@@ -30,11 +30,11 @@ class ConfigurationProfile < ApplicationRecord
   VALID_SCHEMA = Rails.root.join("ns", "valid.configurationProfile.schema.json")
 
   def self.complete_schema
-    self.read_schema(COMPLETE_SCHEMA)
+    read_schema(COMPLETE_SCHEMA)
   end
 
   def self.valid_schema
-    self.read_schema(VALID_SCHEMA)
+    read_schema(VALID_SCHEMA)
   end
 
   def self.read_schema schema
@@ -44,7 +44,7 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def self.validate_structure struct
-    JSON::Validator.fully_validate(self.valid_schema, struct)
+    JSON::Validator.fully_validate(valid_schema, struct)
   end
 
   def activate!

@@ -9,10 +9,10 @@ class Api::V1::ConfigurationProfileSchemasController < ApplicationController
 
   def determine_schema
     case permitted_params[:name]
-    when 'valid'
-      return ConfigurationProfile::valid_schema  
-    when 'complete'
-      return ConfigurationProfile::complete_schema
+    when "valid"
+      ConfigurationProfile.valid_schema
+    when "complete"
+      ConfigurationProfile.complete_schema
     else
       raise "Invalid schema name"
     end

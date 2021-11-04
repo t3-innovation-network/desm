@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::V1::ConfigurationProfilesAbstractController < ApplicationController
   DEFAULT_CP_NAME = "Desm CP - #{DateTime.now.rfc3339}"
   VALID_PARAMS_LIST = [

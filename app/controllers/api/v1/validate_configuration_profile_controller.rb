@@ -3,7 +3,7 @@
 class Api::V1::ValidateConfigurationProfileController < Api::V1::ConfigurationProfilesAbstractController
   def validate
     render json: {
-      validation: ConfigurationProfile::validate_structure(
+      validation: ConfigurationProfile.validate_structure(
         permitted_params[:structure].to_h
       )
     }
