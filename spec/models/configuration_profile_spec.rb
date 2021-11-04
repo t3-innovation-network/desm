@@ -206,7 +206,7 @@ describe ConfigurationProfile, type: :model do
       object_with_additional_properties = {
         "name": "Test CP",
         "description": "Example description for a configuration profile",
-        "additionalProperty": "additional property",
+        "additionalProperty": "additional property"
       }
 
       subject.structure = object_with_additional_properties
