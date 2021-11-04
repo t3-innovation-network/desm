@@ -40,13 +40,14 @@ class ConfigurationProfile < ApplicationRecord
   def self.read_schema schema
     JSON.parse(
       File.read(schema)
-    ).deep_transform_keys{|k| k.to_s.underscore }
+    )
   end
 
   def self.validate_structure struct
     JSON::Validator.fully_validate(
       valid_schema,
-      struct.deep_transform_keys{|k| k.to_s.underscore })
+      struct
+    )
   end
 
   def activate!
