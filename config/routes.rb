@@ -45,6 +45,7 @@ Rails.application.routes.draw do
       get 'vocabularies/:id/flat' => 'vocabularies#flat'
       post 'configuration_profiles/:id/action' => 'configuration_profile_actions#call_action'
       get 'configuration_profile_schema' => 'configuration_profile_schemas#show'
+      post 'validate_configuration_profile' => 'validate_configuration_profile#validate'
     end
   end
 

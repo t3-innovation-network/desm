@@ -8,7 +8,6 @@ class Api::V1::ConfigurationProfileSchemasController < ApplicationController
   private
 
   def determine_schema
-    debugger
     case permitted_params[:name]
     when 'valid'
       return ConfigurationProfile::valid_schema  

@@ -34,13 +34,17 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def self.valid_schema
-    self.read_schema(COMPLETE_SCHEMA)
+    self.read_schema(VALID_SCHEMA)
   end
 
   def self.read_schema schema
     JSON.parse(
       File.read(schema)
-    ).deep_transform_keys {|key| key.to_s.underscore }
+    )
+  end
+
+  def self.validate_structure struct
+    JSON::Validator.fully_validate(self.valid_schema, struct)
   end
 
   def activate!
@@ -88,11 +92,13 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def structure_valid?
-    JSON::Validator.validate(@valid_schema, structure)
+    validation = self.class.validate_structure(structure)
+    validation.empty?
   end
 
   def structure_complete?
-    JSON::Validator.validate(@complete_schema, structure)
+    validation = JSON::Validator.fully_validate(@complete_schema, structure)
+    validation.empty?
   end
 
   def transition_to! new_state
