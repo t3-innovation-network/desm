@@ -3,7 +3,7 @@
 class Api::V1::ValidateConfigurationProfileController < ApplicationController
   def validate
     structure_param = JSON.parse(permitted_params[:structure]).to_h
-    validation_result =  ConfigurationProfile.validate_structure(structure_param)
+    validation_result = ConfigurationProfile.validate_structure(structure_param)
 
     render json: {
       validation: validation_result
