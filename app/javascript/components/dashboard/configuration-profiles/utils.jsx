@@ -246,18 +246,11 @@ export const ToggleBtn = (props) => {
 export const readFileContent = (file, onLoad, onError) => {
   const reader = new FileReader();
 
-  /**
-   * When reading the file content
-   */
   reader.onload = () => {
-    /// Get the content of the file
     let content = reader.result;
     onLoad(content);
   };
 
-  /**
-   * Update callback for errors
-   */
   reader.onerror = function (e) {
     let tempErrors = errors;
     tempErrors.push("File could not be read! Code: " + e.target.error.code);

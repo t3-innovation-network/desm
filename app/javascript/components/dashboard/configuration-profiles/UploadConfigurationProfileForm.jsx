@@ -10,19 +10,21 @@ const UploadConfigurationProfileForm = () => {
   const [cpName, setCpName] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileContent, setFileContent] = useState(null);
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState([]);
   const history = useHistory();
   const [fileIsValid, setFileIsValid] = useState(false);
 
   const checkFileValidity = async () => {
     let response = await checkCPStructureValidity(fileContent);
+    let validationResult = response?.validity?.validation;
 
-    if (response.validity.length) {
-      setError(response.validity.join(", "));
+    if (validationResult.length) {
+      setErrors(validationResult);
       setFileIsValid(false);
       return;
     }
 
+    setErrors([]);
     setFileIsValid(true);
   };
 
@@ -32,7 +34,7 @@ const UploadConfigurationProfileForm = () => {
 
   const onFileUpload = async () => {
     if (!fileContent || !cpName) {
-      setError("Please be sure to type a name and select a file");
+      setErrors(["Please be sure to type a name and select a file"]);
       return;
     }
 
@@ -44,7 +46,7 @@ const UploadConfigurationProfileForm = () => {
     });
 
     if (response.errors) {
-      setError(response.errors);
+      setErrors([response.errors]);
       return;
     }
 
@@ -56,7 +58,7 @@ const UploadConfigurationProfileForm = () => {
       readFileContent(
         selectedFile,
         (content) => setFileContent(content),
-        (error) => setError(error)
+        (error) => setErrors([error])
       );
   }, [selectedFile]);
 
@@ -66,7 +68,13 @@ const UploadConfigurationProfileForm = () => {
 
   return (
     <div className="col">
-      {error && <AlertNotice message={error} />}
+      {errors.length > 0 ? (
+        <div className="mt-3">
+          <AlertNotice message={errors} />
+        </div>
+      ) : (
+        ""
+      )}
 
       <div className="mt-5">
         <div
@@ -124,7 +132,11 @@ const UploadConfigurationProfileForm = () => {
         </div>
       )}
       <div className="mt-5">
-        <button className="btn btn-dark" onClick={onFileUpload}>
+        <button
+          className="btn btn-dark"
+          onClick={onFileUpload}
+          disabled={!fileIsValid}
+        >
           Upload!
         </button>
       </div>

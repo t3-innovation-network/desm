@@ -23,8 +23,14 @@
         "phone": {
           "type": "string",
           "title": "The american format phone number of the agent",
-          "pattern": "^(-()[0-9]+)+$",
-          "examples": ["(123) 123-1234"]
+          "pattern": "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$",
+          "examples": [
+            "123-456-7890",
+            "(123) 456-7890",
+            "123 456 7890",
+            "123.456.7890",
+            "+91 (123) 456-7890"
+          ]
         },
         "githubHandle": {
           "type": "string",
