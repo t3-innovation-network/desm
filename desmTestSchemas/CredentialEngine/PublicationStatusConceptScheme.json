@@ -1,0 +1,58 @@
+{
+    "@context": "http://credreg.net/ctdlasn/schema/context/json",
+    "@graph": [
+        {
+            "@type": "skos:ConceptScheme",
+            "@id": "ceasn:PublicationStatus",
+            "rdfs:label": {"en-US": "Publication Status Concept Scheme"},
+            "rdfs:comment": {"en-US": "Describes the various publication statuses of competency frameworks and statements."},
+            "vs:term_status": "vs:stable",
+            "meta:changeHistory": "http://credreg.net/ctdlasn/termhistory/ceasn/PublicationStatus/json",
+            "owl:equivalentClass": ["asnscheme:ASNPublicationStatus"],
+            "meta:hasConcept": [
+                "publicationStatus:Deprecated",
+                "publicationStatus:Draft",
+                "publicationStatus:Published"
+            ],
+            "skos:hasTopConcept": [
+                "publicationStatus:Deprecated",
+                "publicationStatus:Draft",
+                "publicationStatus:Published"
+            ]
+        },
+        {
+            "@type": "skos:Concept",
+            "@id": "publicationStatus:Deprecated",
+            "skos:prefLabel": {"en-US": "Deprecated"},
+            "skos:definition": {"en-US": "Status assigned to a document/statement by the promulgating agency asserting that the document/statement has been superseded or its use otherwise disfavored."},
+            "vs:term_status": "vs:stable",
+            "meta:changeHistory": "http://credreg.net/ctdlasn/termhistory/publicationStatus/Deprecated/json",
+            "owl:equivalentClass": ["asnPublicationStatus:Deprecated"],
+            "skos:inScheme": ["ceasn:PublicationStatus"],
+            "skos:topConceptOf": ["ceasn:PublicationStatus"]
+        },
+        {
+            "@type": "skos:Concept",
+            "@id": "publicationStatus:Draft",
+            "skos:prefLabel": {"en-US": "Draft"},
+            "skos:definition": {"en-US": "A status assigned to all documents/statements during development."},
+            "vann:usageNote": {"en-US": "Draft documents and statements should not be displayed to anyone other than their owners and relevant administrators."},
+            "vs:term_status": "vs:stable",
+            "meta:changeHistory": "http://credreg.net/ctdlasn/termhistory/publicationStatus/Draft/json",
+            "owl:equivalentClass": ["asnPublicationStatus:Draft"],
+            "skos:inScheme": ["ceasn:PublicationStatus"],
+            "skos:topConceptOf": ["ceasn:PublicationStatus"]
+        },
+        {
+            "@type": "skos:Concept",
+            "@id": "publicationStatus:Published",
+            "skos:prefLabel": {"en-US": "Published"},
+            "skos:definition": {"en-US": "Status assigned to all documents that have been published."},
+            "vs:term_status": "vs:stable",
+            "meta:changeHistory": "http://credreg.net/ctdlasn/termhistory/publicationStatus/Published/json",
+            "owl:equivalentClass": ["asnPublicationStatus:Published"],
+            "skos:inScheme": ["ceasn:PublicationStatus"],
+            "skos:topConceptOf": ["ceasn:PublicationStatus"]
+        }
+    ]
+}
