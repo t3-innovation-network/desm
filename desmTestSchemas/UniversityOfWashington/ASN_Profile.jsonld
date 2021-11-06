@@ -1,5 +1,5 @@
 {
-	"@context": "https://github.com/stuartasutton/asn/blob/master/asnContext.json",
+	"@context": "https://github.com/t3-innovation-network/desm/blob/main/desmTestSchemas/UniversityOfWashington/ASN_Profile_Context.json",
 	"@graph": [
         {
             "@id": "https://github.com/stuartasutton/asn/blob/master/ASN_Profile.jsonld",
