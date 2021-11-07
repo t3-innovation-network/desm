@@ -3,934 +3,1014 @@
 	"@graph": [
         {
             "@id": "https://github.com/stuartasutton/asn/blob/master/ASN_Profile.jsonld",
-            "dc:creator": [
+            "creator": [
                 {"en-US": "Informnation School of the University of Washington (Seattle)"},
                 {"en-US": "JES & Co"}
             ],
-            "dcterms:rightsHolder": {"en-US": "University of Washington"},
-            "dcterms:rights": "https://creativecommons.org/licenses/by/4.0/",
-            "dc:contributor": {"en-US": "Desire2Learn (D2L)"},
-            "dc:publisher": {"en-US": "Informnation School of the University of Washington (Seattle)"},
-            "dc:description": {"en-US": "The Achievement Standards Network Application Profile (ASN-AP) provides URIs and definitions for all of the terms used in ASN metadata instances including properties from the ASN namespace as well as properties borrowed from other namespaces such as those of the Dublin Core Metadata Initiatve (DCMI)."},
-            "dc:language": {"en-US": "English"},
-            "dc:title": {"en-US": "The Achievement Standards Network Application Profile (ASN-AP)"},
-            "dcterms:issued": "2020-11-28",
-            "dcterms:modified": "2020-12-19"
+            "rightsHolder": {"en-US": "University of Washington"},
+            "rights": "https://creativecommons.org/licenses/by/4.0/",
+            "contributor": {"en-US": "Desire2Learn (D2L)"},
+            "publisher": {"en-US": "Informnation School of the University of Washington (Seattle)"},
+            "description": {"en-US": "The Achievement Standards Network Application Profile (ASN-AP) provides URIs and definitions for all of the terms used in ASN metadata instances including properties from the ASN namespace as well as properties borrowed from other namespaces such as those of the Dublin Core Metadata Initiatve (DCMI)."},
+            "language": {"en-US": "English"},
+            "title": {"en-US": "The Achievement Standards Network Application Profile (ASN-AP)"},
+            "issued": "2020-11-28",
+            "modified": "2020-12-19"
         },
         {
-            "@id": "asn:CorrelationResource",
-            "@type": "rdfs:Class",
-            "skos:scopeNote": "The CorrelationResource is an entity intended to provide a rich description of a mapping (correlation) between a LearningResource and a Statement when a binary assertion of a relationship is insufficient.",
-            "rdfs:comment": {"en-US": "A resource that describes the mapping between a learning resource and a node in a learning outcomes framework."},
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Correlation Resource"}
+            "@id": "CorrelationResource",
+            "@type": "Class",
+            "scopeNote": "The CorrelationResource is an entity intended to provide a rich description of a mapping (correlation) between a LearningResource and a Statement when a binary assertion of a relationship is insufficient.",
+            "comment": {"en-US": "A resource that describes the mapping between a learning resource and a node in a learning outcomes framework."},
+            "label": {"en-US": "Correlation Resource"},
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:CriterionCategory",
-            "@type": "rdfs:Class",
-            "rdfs:comment": {"en-US": "Resource identifying a category by which Rubric Criterion may be grouped."},
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Criterion Category"}
+            "@id": "CriterionCategory",
+            "@type": "Class",
+            "comment": {"en-US": "Resource identifying a category by which Rubric Criterion may be grouped."},
+            "label": {"en-US": "Criterion Category"},
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:CriterionLevel",
-            "@type": "rdfs:Class",
-            "rdfs:comment": {"en-US": "Resource identifying one or more benchmarks that must be met to achieve a performance task."},
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Criterion Level"}
+            "@id": "CriterionLevel",
+            "@type": "Class",
+            "comment": {"en-US": "Resource identifying one or more benchmarks that must be met to achieve a performance task."},
+            "label": {"en-US": "Criterion Level"},
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:DerivedStandardDocument",
-            "@type": "rdfs:Class",
-            "rdfs:comment": {"en-US": "A collection of statements representing an expectation of what students should know, value, and be able to do at a target age or age range that are substantially defined by a different jurisdiction."},
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Derived Standard Document"},
-            "rdfs:subClassOf": "asn:StandardDocument"
+            "@id": "DerivedStandardDocument",
+            "@type": "Class",
+            "comment": {"en-US": "A collection of statements representing an expectation of what students should know, value, and be able to do at a target age or age range that are substantially defined by a different jurisdiction."},
+            "label": {"en-US": "Derived Standard Document"},
+            "subClassOf": "StandardDocument",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:DerivedStatement",
-            "@type": "rdfs:Class",
-            "rdfs:comment": {"en-US": "An assertion representing an expectation of what students should know, value, and be able to do at a target age or age range that is derived from a statement defined by a different jurisdiction."},
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Derived Statement"},
-            "rdfs:subClassOf": "asn:Statement"
+            "@id": "DerivedStatement",
+            "@type": "Class",
+            "comment": {"en-US": "An assertion representing an expectation of what students should know, value, and be able to do at a target age or age range that is derived from a statement defined by a different jurisdiction."},
+            "label": {"en-US": "Derived Statement"},
+            "subClassOf": "Statement",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:EducationalFramework",
-            "@type": "rdfs:Class",
-            "skos:scopeNote": {"en-US": "Similar to the class skos:ConceptScheme with an intended focus on education and training. Examples of educational frameworks include, but are not limited to, frameworks enumerating competencies, text complexity, proficiency scales, assessment rubrics of various forms, and specialized subject vocabularies."},
-            "rdfs:comment": {"en-US": "The class of all structured sets of conceptual resources intentionally designed for use as value vocabulary terms in education and training contexts."},
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Educational Framework"}
+            "@id": "EducationalFramework",
+            "@type": "Class",
+            "scopeNote": {"en-US": "Similar to the class ConceptScheme with an intended focus on education and training. Examples of educational frameworks include, but are not limited to, frameworks enumerating competencies, text complexity, proficiency scales, assessment rubrics of various forms, and specialized subject vocabularies."},
+            "comment": {"en-US": "The class of all structured sets of conceptual resources intentionally designed for use as value vocabulary terms in education and training contexts."},
+            "label": {"en-US": "Educational Framework"},
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:LearningResource",
-            "@type": "rdfs:Class",
-            "rdfs:comment": {"en-US": "A resource that is used as part of an Educational Activity(e.g. a textbook) or that describes (e.g. a lesson plan) or records the Educational Activity (e.g. an audio- or video-recording of a lesson)."},
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Learning Resource"}
+            "@id": "LearningResource",
+            "@type": "Class",
+            "comment": {"en-US": "A resource that is used as part of an Educational Activity(e.g. a textbook) or that describes (e.g. a lesson plan) or records the Educational Activity (e.g. an audio- or video-recording of a lesson)."},
+            "label": {"en-US": "Learning Resource"},
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:ProficiencyScale",
-            "@type": "rdfs:Class",
-            "skos:scopeNote": {"en-US": "Proficiency scales define levels of performance (what a person does) as distinct from knowledge of specific information (what a person knows) and outline tasks a person can manage and the skills necessary to progressively accomplish explicit competencies at increasing levels of complexity. Proficiency scales: (1) assist in making judgments about the kinds of tasks related to a competency that a person is able to perform; and (2) to compare the abilities of different persons with regard to achievement of those competencies at different levels."},
-            "rdfs:comment": [
+            "@id": "ProficiencyScale",
+            "@type": "Class",
+            "scopeNote": {"en-US": "Proficiency scales define levels of performance (what a person does) as distinct from knowledge of specific information (what a person knows) and outline tasks a person can manage and the skills necessary to progressively accomplish explicit competencies at increasing levels of complexity. Proficiency scales: (1) assist in making judgments about the kinds of tasks related to a competency that a person is able to perform; and (2) to compare the abilities of different persons with regard to achievement of those competencies at different levels."},
+            "comment": [
                 {"en-US": "The class of all structured concept schemes identifying discrete levels of expertise and performance mastery required either by a competency or to be achieved by a learner."},
                 {"en-US": "Model of identifiable points along a developmental progression including increasing levels of competence, achievement or temporal position (e.g., \"Second Quarter\")."}
             ],
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Proficiency Scale"}
+            "label": {"en-US": "Proficiency Scale"},
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:Rubric",
-            "@type": "rdfs:Class",
-            "rdfs:comment": {"en-US": "Resource providing guidance in evaluating the quality and level of person's responses or actions based on an explicit set of criteria."},
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Rubric"}
+            "@id": "Rubric",
+            "@type": "Class",
+            "comment": {"en-US": "Resource providing guidance in evaluating the quality and level of person's responses or actions based on an explicit set of criteria."},
+            "label": {"en-US": "Rubric"},
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:StatusScheme",
-            "@type": "rdfs:Class",
-            "rdfs:comment": {"en-US": "Controlled vocabularies of terms denoting the publication status of the standards document."},
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Status Encoding Schemes"}
+            "@id": "StatusScheme",
+            "@type": "Class",
+            "comment": {"en-US": "Controlled vocabularies of terms denoting the publication status of the standards document."},
+            "label": {"en-US": "Status Encoding Schemes"},
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:JurisdictionScheme",
-            "@type": "rdfs:Class",
-            "rdfs:comment": {"en-US": "Controlled vocabularies of terms denoting the juristiction or domain of the standards document."},
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Jurisdiction Encoding Schemes"}
+            "@id": "JurisdictionScheme",
+            "@type": "Class",
+            "comment": {"en-US": "Controlled vocabularies of terms denoting the juristiction or domain of the standards document."},
+            "label": {"en-US": "Jurisdiction Encoding Schemes"},
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:RightsAndAttribution",
-            "@type": "rdfs:Class",
-            "rdfs:comment": {"en-US": "Resource providing information about the rights and attribution requirements of the entity making the metadata description available. These rights are distinct from any rights held in the content of the competency framework or competencies described. "},
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Rights and Attribution"}
+            "@id": "RightsAndAttribution",
+            "@type": "Class",
+            "comment": {"en-US": "Resource providing information about the rights and attribution requirements of the entity making the metadata description available. These rights are distinct from any rights held in the content of the competency framework or competencies described. "},
+            "label": {"en-US": "Rights and Attribution"},
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:RubricCriterion",
-            "@type": "rdfs:Class",
-            "rdfs:comment": {"en-US": "Resource identifying a criterion that must be met to demonstrate quality performance of a objective or task."},
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Rubric Criterion"}
+            "@id": "RubricCriterion",
+            "@type": "Class",
+            "comment": {"en-US": "Resource identifying a criterion that must be met to demonstrate quality performance of a objective or task."},
+            "label": {"en-US": "Rubric Criterion"},
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:StandardDocument",
-            "@type": "rdfs:Class",
-            "rdfs:comment": {"en-US": "A collection of statements representing an expectation of what students should know, value, and be able to do at a target age or age range."},
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Standard Document"}
+            "@id": "StandardDocument",
+            "@type": "Class",
+            "comment": {"en-US": "A collection of statements representing an expectation of what students should know, value, and be able to do at a target age or age range."},
+            "label": {"en-US": "Standard Document"},
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:Statement",
-            "@type": "rdfs:Class",
-            "rdfs:comment": {"en-US": "An assertion representing an expectation of what students should know, value, and be able to do at a target age or age range."},
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Statement"}
+            "@id": "Statement",
+            "@type": "Class",
+            "comment": {"en-US": "An assertion representing an expectation of what students should know, value, and be able to do at a target age or age range."},
+            "label": {"en-US": "Statement"},
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:alignFrom",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "An alignment is an assertion of some degree of eqiuvalency between the subject and the object of the assertion."},
-            "rdfs:comment": {"en-US":"A standards document or statement from which the statement or document being described is aligned."},
-            "rdfs:domain": [
-                "asn:Statement", 
-                "asn:StandardDocument"
+            "@id": "alignFrom",
+            "@type": "Property",
+            "scopeNote": {"en-US": "An alignment is an assertion of some degree of eqiuvalency between the subject and the object of the assertion."},
+            "comment": {"en-US":"A standards document or statement from which the statement or document being described is aligned."},
+            "domain": [
+                "Statement", 
+                "StandardDocument"
             ],
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Align From"},
-            "rdfs:range": [
-                "asn:StandardDocument",
-                "asn:Statement"
-            ]
+            "label": {"en-US": "Align From"},
+            "range": [
+                "StandardDocument",
+                "Statement"
+            ],
+            "isDefinedBy": "asn:"
         },   
         {
-            "@id": "asn:alignTo",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "An alignment is an assertion of some degree of eqiuvalency between the subject and the object of the assertion."},
-            "rdfs:comment": {"en-US": "A standards document or statement to which the statement or document being described is aligned."},
-            "rdfs:domain": [
-                "asn:Statement",
-                "asn:StandardDocument"
+            "@id": "alignTo",
+            "@type": "Property",
+            "scopeNote": {"en-US": "An alignment is an assertion of some degree of eqiuvalency between the subject and the object of the assertion."},
+            "comment": {"en-US": "A standards document or statement to which the statement or document being described is aligned."},
+            "domain": [
+                "Statement",
+                "StandardDocument"
             ],
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Align To"},
-            "rdfs:range": [
-                "asn:Statement",
-                "asn:StandardDocument"
-            ]
+            "label": {"en-US": "Align To"},
+            "range": [
+                "Statement",
+                "StandardDocument"
+            ],
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:altStatementNotation",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "An alphanumeric notation or ID code identifying the statement in common use among end-users."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Alternative Statement Notation"},
-            "rdfs:range": "rdfs:Literal",
-            "rdfs:subPropertyOf": "dcterms:identifer"
+            "@id": "altStatementNotation",
+            "@type": "Property",
+            "comment": {"en-US": "An alphanumeric notation or ID code identifying the statement in common use among end-users."},
+            "domain": "Statement",
+            "label": {"en-US": "Alternative Statement Notation"},
+            "range": "Literal",
+            "subPropertyOf": "identifer",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:assessesCompetency",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The competency that the learning resource being described assesses."},
-            "rdfs:domain": "asn:LearningResource",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Assesses Competency"},
-            "rdfs:range": "asn:Statement",
-            "rdfs:subPropertyOf": "dcterms:conformsTo"
+            "@id": "assessesCompetency",
+            "@type": "Property",
+            "comment": {"en-US": "The competency that the learning resource being described assesses."},
+            "domain": "LearningResource",
+            "label": {"en-US": "Assesses Competency"},
+            "range": "Statement",
+            "subPropertyOf": "conformsTo",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:assessmentRubric",
-            "@type": "rdfs:Property",
-            "rdfs:comment": {"en-US": "Explicit set of criteria used for assessing an articulated competency or set of competencies."},
-            "rdfs:domain": "asn:StandardDocument",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Assessment Rubric"},
-            "rdfs:range": [
-                "asn:Rubric",
-                "asn:RubricCriterion"
-            ]
+            "@id": "assessmentRubric",
+            "@type": "Property",
+            "comment": {"en-US": "Explicit set of criteria used for assessing an articulated competency or set of competencies."},
+            "domain": "StandardDocument",
+            "label": {"en-US": "Assessment Rubric"},
+            "range": [
+                "Rubric",
+                "RubricCriterion"
+            ],
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "cc:attributionName",
-            "@type": "rdfs:Property",
-            "rdfs:comment": {"en-US": "The name the creator of a Work would like used when attributing re-use. In this profile, the attribution name is of the name of the owner, publisher or egistry to which attribution is owed."},
-            "rdfs:domain": "asn:RightsAndAttribution",
-            "rdfs:isDefinedBy": "cc:",
-            "rdfs:label": {"en-US": "Attribution Name"},
-            "rdfs:range": "rdfs:Literal"
+            "@id": "attributionName",
+            "@type": "Property",
+            "comment": {"en-US": "The name the creator of a Work would like used when attributing re-use. In this profile, the attribution name is of the name of the owner, publisher or egistry to which attribution is owed."},
+            "domain": "RightsAndAttribution",
+            "label": {"en-US": "Attribution Name"},
+            "range": "Literal",
+            "isDefinedBy": "cc:"
         },
         {
-            "@id": "cc:attributionURL",
-            "@type": "rdfs:Property",
-            "rdfs:comment": {"en-US": "The URL the creator of a Work would like used when attributing re-use.In this profile, the attribution URL is of the URL the owner, publisher or egistry to which attribution is owed would like used."},
-            "rdfs:domain": "asn:RightsAndAttribution",
-            "rdfs:isDefinedBy": "cc:",
-            "rdfs:label": {"en-US": "Attribution URL"},
-            "rdfs:range": "rdfs:Literal"
+            "@id": "attributionURL",
+            "@type": "Property",
+            "comment": {"en-US": "The URL the creator of a Work would like used when attributing re-use.In this profile, the attribution URL is of the URL the owner, publisher or egistry to which attribution is owed would like used."},
+            "domain": "RightsAndAttribution",
+            "label": {"en-US": "Attribution URL"},
+            "range": "Literal",
+            "isDefinedBy": "cc:"
         },
         {
-            "@id": "loc:aut",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "A person, family, or organization responsible for creating a work"},
-            "rdfs:domain": "asn:StandardDocument",
-            "rdfs:isDefinedBy": "loc:",
-            "rdfs:label": {"en-US": "Author"},
-            "rdfs:range": "rdf:langString"
+            "@id": "aut",
+            "@type": "Property",
+            "comment": {"en-US": "A person, family, or organization responsible for creating a work"},
+            "domain": "StandardDocument",
+            "label": {"en-US": "Author"},
+            "range": "langString",
+            "isDefinedBy": "loc:"
         },
         {
-            "@id": "asn:authorityStatus",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The status of a standards statement denoting whether the statement owes its origin to the promulgating agency of the standards document of which the statement is a member (i.e., value \"Original\") or to some 3rd party (i.e., \"Derived\")."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Authority Status"},
-            "rdfs:range": "rdf:langString"
+            "@id": "authorityStatus",
+            "@type": "Property",
+            "comment": {"en-US": "The status of a standards statement denoting whether the statement owes its origin to the promulgating agency of the standards document of which the statement is a member (i.e., value \"Original\") or to some 3rd party (i.e., \"Derived\")."},
+            "domain": "Statement",
+            "label": {"en-US": "Authority Status"},
+            "range": "langString",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:benchmark",
-            "@type": "rdfs:Property",
+            "@id": "benchmark",
+            "@type": "Property",
             "vann:usageNote": {"en-US": "Can have one or more per CriterionLevel."},
-            "rdfs:comment": {"en-US": "Description of a level of achievement on a performance task defined by the RubricCriterion."},
-            "rdfs:domain": "asn:CriterionLevel",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Benchmark"},
-            "rdfs:range": "rdf:langString",
-            "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14443"
+            "comment": {"en-US": "Description of a level of achievement on a performance task defined by the RubricCriterion."},
+            "domain": "CriterionLevel",
+            "label": {"en-US": "Benchmark"},
+            "range": "langString",
+            "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14443",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:broadAlignment",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The target competency covers all of the relevant concepts in the competency being described as well as relevant concepts not found in the competency being described."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Broad Alignment"},
-            "rdfs:range": "asn:Statement"
+            "@id": "broader",
+            "@type": "Property",
+            "comment": {"en-US": "Relates a concept to a concept that is more general in meaning."},
+            "domain": "Concept",
+            "label": {"en-US": "Broader"},
+            "range": "Concept",
+            "isDefinedBy": "skos:"
+        },
+        {
+            "@id": "broadAlignment",
+            "@type": "Property",
+            "comment": {"en-US": "The target competency covers all of the relevant concepts in the competency being described as well as relevant concepts not found in the competency being described."},
+            "domain": "Statement",
+            "label": {"en-US": "Broad Alignment"},
+            "range": "Statement",
+            "isDefinedBy": "asn:"
         }, 
         {
-            "@id": "asn:broadCorrelation",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The competency covers all of the relevant concepts in the learning resource being described as well as relevant concepts not found in the learning resource."},
-            "rdfs:domain": "asn:LearningResource",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Broad Correlation"},
-            "rdfs:range": "asn:Statement",
-            "rdfs:subPropertyOf": "dcterms:conformsTo"
+            "@id": "broadCorrelation",
+            "@type": "Property",
+            "comment": {"en-US": "The competency covers all of the relevant concepts in the learning resource being described as well as relevant concepts not found in the learning resource."},
+            "domain": "LearningResource",
+            "label": {"en-US": "Broad Correlation"},
+            "range": "Statement",
+            "subPropertyOf": "conformsTo",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:comment",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "Use comment when the text provides useful context for the statement."},
-            "rdfs:comment": {"en-US": "Supplemental text provided by the promulgating body that clarifies the nature, scope or use of the statement being described."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Comment"},
-            "rdfs:range": "rdf:langString"
+            "@id": "comment",
+            "@type": "Property",
+            "scopeNote": {"en-US": "Use comment when the text provides useful context for the statement."},
+            "comment": {"en-US": "Supplemental text provided by the promulgating body that clarifies the nature, scope or use of the statement being described."},
+            "domain": "Statement",
+            "label": {"en-US": "Comment"},
+            "range": "langString";
+            "isDefinedBy": "rdfs:"
         },
         {
-            "@id": "asn:complexityLevel",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "The value of asn:complexityLevel should be a concept IRI of a member of the class asn:ProficiencyScale."},
-            "rdfs:comment": {"en-US": "The expected performance level of a learner or professional as defined by a competency."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Complexity Level"},
-            "rdfs:range": "asn:ProficiencyScale",
-            "rdfs:subPropertyOf": "asn:proficiencyLevel"
+            "@id": "complexityLevel",
+            "@type": "Property",
+            "scopeNote": {"en-US": "The value of complexityLevel should be a concept IRI of a member of the class ProficiencyScale."},
+            "comment": {"en-US": "The expected performance level of a learner or professional as defined by a competency."},
+            "domain": "Statement",
+            "label": {"en-US": "Complexity Level"},
+            "range": "ProficiencyScale",
+            "subPropertyOf": "proficiencyLevel",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:comprisedOf",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The resource being described includes, comprehends or encompass, in whole or in part, the meaning, nature or importance of the resource being referenced."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Comprised Of"},
-            "rdfs:range": "asn:Statement"
+            "@id": "comprisedOf",
+            "@type": "Property",
+            "comment": {"en-US": "The resource being described includes, comprehends or encompass, in whole or in part, the meaning, nature or importance of the resource being referenced."},
+            "domain": "Statement",
+            "label": {"en-US": "Comprised Of"},
+            "range": "Statement",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:conceptKeyword",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "A word or phrase used by the promulgating agency to refine and differentiate individual statements contextually."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Concept Keyword"},
-            "rdfs:range": "rdf:langString",
-            "rdfs:subPropertyOf": {"en-US": "dc:subject"}
+            "@id": "conceptKeyword",
+            "@type": "Property",
+            "comment": {"en-US": "A word or phrase used by the promulgating agency to refine and differentiate individual statements contextually."},
+            "domain": "Statement",
+            "label": {"en-US": "Concept Keyword"},
+            "range": "langString",
+            "subPropertyOf": {"en-US": "subject"},
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:conceptTerm",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "A term from a controlled vocabulary used by the promulgating agency to refine and differentiate individual statements contextually."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Concept Term"},
-            "rdfs:range": "skos:Concept",
-            "rdfs:subPropertyOf": "dc:subject"
+            "@id": "conceptTerm",
+            "@type": "Property",
+            "comment": {"en-US": "A term from a controlled vocabulary used by the promulgating agency to refine and differentiate individual statements contextually."},
+            "domain": "Statement",
+            "label": {"en-US": "Concept Term"},
+            "range": "Concept",
+            "subPropertyOf": "subject",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "dcterms:created",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "Date of creation of the resource."},
-            "rdfs:domain": "asn:StandardDocument",
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "Created"},
-            "rdfs:range": "xsd:dateTime"
+            "@id": "created",
+            "@type": "Property",
+            "comment": {"en-US": "Date of creation of the resource."},
+            "domain": "StandardDocument",
+            "label": {"en-US": "Created"},
+            "range": "xsd:dateTime",
+            "isDefinedBy": "dct:"
         },
         {
-            "@id": "asn:criterionCategoryOf",
-            "@type": "rdfs:Property",
-            "rdfs:comment": {"en-US": "Resource referenced is a Rubric to which this CriterionCategory belongs."},
-            "rdfs:domain": "asn:CriterionCategory",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Criterian Catrgory Of"},
-            "rdfs:range": "asn:Rubric"
+            "@id": "creator",
+            "@type": "Property",
+            "comment": {"en-US": "An entity responsible for making the resource."},
+            "domain": "StandardDocument",
+            "label": {"en-US": "Creator"},
+            "range": "langstring",
+            "isDefinedBy": "dc:"
         },
         {
-            "@id": "asn:criterionFor",
-            "@type": "rdfs:Property",
-            "rdfs:comment": {"en-US": "Reference to the asn:Rubric to which the asn:RubricCriteria being described belongs."},
-            "rdfs:domain": "asn:RubricCriterion",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Criterian For"},
-            "rdfs:range": "asn:Rubric"
+            "@id": "criterionCategoryOf",
+            "@type": "Property",
+            "comment": {"en-US": "Resource referenced is a Rubric to which this CriterionCategory belongs."},
+            "domain": "CriterionCategory",
+            "label": {"en-US": "Criterian Catrgory Of"},
+            "range": "Rubric",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:crossSubjectReference",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "An explicit reference by the promulgating agency establishing a relationship between the statement being described and statement in a separate subject standards document (interdisciplinary statement references)."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Cross-subject Reference"},
-            "rdfs:range": "asn:Statement",
-            "rdfs:subPropertyOf": "dc:references"
+            "@id": "criterionFor",
+            "@type": "Property",
+            "comment": {"en-US": "Reference to the Rubric to which the RubricCriteria being described belongs."},
+            "domain": "RubricCriterion",
+            "label": {"en-US": "Criterian For"},
+            "range": "Rubric",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "dcterms:dateCopyrighted",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "Typically a year. Recommended practice is to describe the date, date/time, or period of time as recommended for the property Date, of which this is a subproperty."},
-            "rdfs:domain": "asn:StandardDocument",
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "Date Copyrighted"},
-            "rdfs:range": "xsd:date"
+            "@id": "crossSubjectReference",
+            "@type": "Property",
+            "comment": {"en-US": "An explicit reference by the promulgating agency establishing a relationship between the statement being described and statement in a separate subject standards document (interdisciplinary statement references)."},
+            "domain": "Statement",
+            "label": {"en-US": "Cross-subject Reference"},
+            "range": "Statement",
+            "subPropertyOf": "references",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:derivedFrom",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "The derivedFrom property is used by 3rd parties only in derived statements and must appear in conjunction with a value of \"Derived\" in the statement's authorityStatus property."},
-            "rdfs:comment": {"en-US": "The URI of a statement from which the derived statement being described has been derived."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Derived From"},
-            "rdfs:range": "asn:Statement"
+            "@id": "dateCopyrighted",
+            "@type": "Property",
+            "comment": {"en-US": "Typically a year. Recommended practice is to describe the date, date/time, or period of time as recommended for the property Date, of which this is a subproperty."},
+            "domain": "StandardDocument",
+            "label": {"en-US": "Date Copyrighted"},
+            "range": "xsd:date",
+            "isDefinedBy": "dct:",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "dcterms:description",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "In this ASN profile, the description property is used to provide the actual text of the compatency."},
-            "rdfs:comment": {"en-US": "An account of the resource."},
-            "rdfs:domain": [
-                "asn:Statement",
-                "asn:StandardDocument"
+            "@id": "derivedFrom",
+            "@type": "Property",
+            "scopeNote": {"en-US": "The derivedFrom property is used by 3rd parties only in derived statements and must appear in conjunction with a value of \"Derived\" in the statement's authorityStatus property."},
+            "comment": {"en-US": "The URI of a statement from which the derived statement being described has been derived."},
+            "domain": "Statement",
+            "label": {"en-US": "Derived From"},
+            "range": "Statement",
+            "isDefinedBy": "asn:"
+        },
+        {
+            "@id": "description",
+            "@type": "Property",
+            "scopeNote": {"en-US": "In this ASN profile, the description property is used to provide the actual text of the compatency."},
+            "comment": {"en-US": "An account of the resource."},
+            "domain": [
+                "Statement",
+                "StandardDocument"
             ],
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "Description"},
-            "rdfs:range": "rdf:langString"
+            "label": {"en-US": "Description"},
+            "range": "langString",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "dcterms:educationLevel",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "A class of agents, defined in terms of progression through an educational or training context, for which the described resource is intended."},
-            "rdfs:domain": [
-                "asn:StandardDocument",
-                "asn:Statement"
+            "@id": "educationLevel",
+            "@type": "Property",
+            "comment": {"en-US": "A class of agents, defined in terms of progression through an educational or training context, for which the described resource is intended."},
+            "domain": [
+                "StandardDocument",
+                "Statement"
             ],
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "Education Level"},
-            "rdfs:range": "skos:Concept"
+            "label": {"en-US": "Education Level"},
+            "range": "Concept",
+            "isDefinedBy": "dct:"
         },
         {
-            "@id": "asn:exactAlignment",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The relevant concepts in both competencies are coextensive."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Exact Alignment"},
-            "rdfs:range": "asn:Statement"
+            "@id": "exactAlignment",
+            "@type": "Property",
+            "comment": {"en-US": "The relevant concepts in both competencies are coextensive."},
+            "domain": "Statement",
+            "label": {"en-US": "Exact Alignment"},
+            "range": "Statement"
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:exactCorrelation",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The relevant concepts in the educational resource and the standard statement are coextensive."},
-            "rdfs:domain": "asn:LearningResource",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Exact Correlation"},
-            "rdfs:range": "asn:Statement",
-            "rdfs:subPropertyOf": "dcterms:conformsTo"
+            "@id": "exactCorrelation",
+            "@type": "Property",
+            "comment": {"en-US": "The relevant concepts in the educational resource and the standard statement are coextensive."},
+            "domain": "LearningResource",
+            "label": {"en-US": "Exact Correlation"},
+            "range": "Statement",
+            "subPropertyOf": "conformsTo",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:exportVersion",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The URI of the export version of the standards file."},
-            "rdfs:domain": "asn:StandardDocument",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Export Version"},
-            "rdfs:range": "xsd:anyURI"
+            "@id": "exportVersion",
+            "@type": "Property",
+            "comment": {"en-US": "The URI of the export version of the standards file."},
+            "domain": "StandardDocument",
+            "label": {"en-US": "Export Version"},
+            "range": "xsd:anyURI",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:hasCriterion",
-            "@type": "rdfs:Property",
-            "skos:scopeNote": {"en-US": "Both asn:RubricCriterion and CriterionCategory have an asn:sequence property to identify node order; however, json-ld encodings should use @list on the asn:hasCriterion and asn:hasLevel properties to maintain sequencing of RubricCriterion."},
-            "rdfs:comment": {"en-US": "RubricCriterian referenced by the Rubric that defining criterion to be met to demonstrate quality in execution in performance of a task or obtaining an objectivetask."},
-            "rdfs:domain": "asn:Rubric",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Has Criterion"},
-            "rdfs:range": "asn:RubricCriterion"
+            "@id": "hasChild",
+            "@type": "Property",
+            "comment": {"en-US": "The resource being described is higher in some arbitrary hierarchy than the resource being pointed to by this Relation element."},
+            "domain": ["StandardsDocument","Statement"],
+            "label": {"en-US": "Has Child"},
+            "range": "Statement",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:hasCriterionCategory",
-            "@type": "rdfs:Property",
-            "skos:note": {"en-US": "Large rubrics are occasionally divided into logical sections or categories that need to be identified and described."},
-            "rdfs:comment": {"en-US": "Resource referenced by the Rubric that defines categories for clustering logical sets of RubricCriterion."},
-            "rdfs:domain": "asn:Rubric",
-            "rdfs:isDefinedBy":  "asn:",
-            "rdfs:label": {"en-US": "Has Criterion Category"},
-            "rdfs:range": "asn:CriterionCategory"
+            "@id": "hasCriterion",
+            "@type": "Property",
+            "scopeNote": {"en-US": "Both RubricCriterion and CriterionCategory have an sequence property to identify node order; however, json-ld encodings should use @list on the hasCriterion and hasLevel properties to maintain sequencing of RubricCriterion."},
+            "comment": {"en-US": "RubricCriterian referenced by the Rubric that defining criterion to be met to demonstrate quality in execution in performance of a task or obtaining an objectivetask."},
+            "domain": "Rubric",
+            "label": {"en-US": "Has Criterion"},
+            "range": "RubricCriterion",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:hasLevel",
-            "@type": "rdfs:Property",
-            "skos:scopeNote": {"en-US": "Both asn:RubricCriterion and CriterionCategory have an asn:sequence property to identify node order; however, json-ld encodings should use @list on the asn:hasCriterion and asn:hasLevel properties to maintain such sequencing."},
-            "rdfs:comment": {"en-US": "Resource description of a level of performance based on a RubricCriterion."},
-            "rdfs:domain": "asn:RubricCriterion",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Has Level"},
-            "rdfs:range": "asn:CriterionLevel",
-            "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14443"
+            "@id": "hasCriterionCategory",
+            "@type": "Property",
+            "note": {"en-US": "Large rubrics are occasionally divided into logical sections or categories that need to be identified and described."},
+            "comment": {"en-US": "Resource referenced by the Rubric that defines categories for clustering logical sets of RubricCriterion."},
+            "domain": "Rubric",
+            "label": {"en-US": "Has Criterion Category"},
+            "range": "CriterionCategory"
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "dcterms:hasPart",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "This property is intended to be used with non-literal values. This property is an inverse property of Is Part Of."},
-            "rdfs:comment": {"en-US": "A related resource that is included either physically or logically in the described resource."},
-            "rdfs:domain": "xsd:anyURI",
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "Has Part"},
-            "rdfs:range": "xsd:anyURI"
+            "@id": "hasLevel",
+            "@type": "Property",
+            "scopeNote": {"en-US": "Both RubricCriterion and CriterionCategory have an sequence property to identify node order; however, json-ld encodings should use @list on the hasCriterion and hasLevel properties to maintain such sequencing."},
+            "comment": {"en-US": "Resource description of a level of performance based on a RubricCriterion."},
+            "domain": "RubricCriterion",
+            "label": {"en-US": "Has Level"},
+            "range": "CriterionLevel",
+            "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14443",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:hasProgressionLevel",
-            "@type": "rdfs:Property",
-            "rdfs:comment": {"en-US": "Reference to a specific point in a progression model."},
-            "rdfs:domain": "asn:CriterionLevel",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Has Progression Level"},
-            "rdfs:range": "skos:Concept"
+            "@id": "hasPart",
+            "@type": "Property",
+            "scopeNote": {"en-US": "This property is intended to be used with non-literal values. This property is an inverse property of Is Part Of."},
+            "comment": {"en-US": "A related resource that is included either physically or logically in the described resource."},
+            "domain": "xsd:anyURI",
+            "label": {"en-US": "Has Part"},
+            "range": "xsd:anyURI",
+            "isDefinedBy": "dct:"
         },
         {
-            "@id": "asn:hasProgressionModel",
-            "@type": "rdfs:Property",
-            "rdfs:comment": {"en-US": "Reference to a progression model used."},
-            "rdfs:domain": "asn:Rubric",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Has Progression Model"},
-            "rdfs:range": "asn:ProgressionModel"
+            "@id": "hasProgressionLevel",
+            "@type": "Property",
+            "comment": {"en-US": "Reference to a specific point in a progression model."},
+            "domain": "CriterionLevel",
+            "label": {"en-US": "Has Progression Level"},
+            "range": "Concept",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:hasScope",
-            "@type": "rdfs:Property",
-            "rdfs:comment": {"en-US": "Description of what the rubric's creator intended to assess or evaluate."},
-            "rdfs:domain": "asn:Rubric",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Has Scope"},
-            "rdfs:range": "rdf:langString"
+            "@id": "hasProgressionModel",
+            "@type": "Property",
+            "comment": {"en-US": "Reference to a progression model used."},
+            "domain": "Rubric",
+            "label": {"en-US": "Has Progression Model"},
+            "range": "ProgressionModel",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "dcterms:hasVersion",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "Changes in version imply substantive changes in content rather than differences in format. This property is intended to be used with non-literal values. This property is an inverse property of Is Version Of."},
-            "rdfs:comment": {"en-US": "A related resource that is a version, edition, or adaptation of the described resource."},
-            "rdfs:domain": "xsd:anyURI",
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "Has Version"},
-            "rdfs:range": "xsd:anyURI"
+            "@id": "hasScope",
+            "@type": "Property",
+            "comment": {"en-US": "Description of what the rubric's creator intended to assess or evaluate."},
+            "domain": "Rubric",
+            "label": {"en-US": "Has Scope"},
+            "range": "langString",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:identifier",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "An alternative URI by which the resource is identified."},
-            "rdfs:domain": [ 
-                "asn:Statement",
-                "asn:StandardDocument"
+            "@id": "hasTopConcept",
+            "@type": "Property",
+            "comment": {"en-US": "Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies."},
+            "domain": "ConceptFramework",
+            "label": {"en-US": "Has Top Concept"},
+            "range": "Concept",
+            "isDefinedBy": "skos:"
+        },
+        {
+            "@id": "hasVersion",
+            "@type": "Property",
+            "scopeNote": {"en-US": "Changes in version imply substantive changes in content rather than differences in format. This property is intended to be used with non-literal values. This property is an inverse property of Is Version Of."},
+            "comment": {"en-US": "A related resource that is a version, edition, or adaptation of the described resource."},
+            "domain": "xsd:anyURI",
+            "label": {"en-US": "Has Version"},
+            "range": "xsd:anyURI",
+            "isDefinedBy": "dct:"
+        },
+        {
+            "@id": "identifier",
+            "@type": "Property",
+            "comment": {"en-US": "An alternative URI by which the resource is identified."},
+            "domain": [ 
+                "Statement",
+                "StandardDocument"
             ],
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Alternative Identifier"},
-            "rdfs:range": "xsd:anyURI",
-            "rdfs:subPropertyOf": "dcterms:identifier"
+            "label": {"en-US": "Alternative Identifier"},
+            "range": "xsd:anyURI",
+            "subPropertyOf": "identifier"
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:indexingStatus",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The status of the statement denoting whether correlators should or should not assign the statement during correlation--Values=\"Yes\"/\"No\"."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Indexing Status"},
-            "rdfs:range": "xsd:boolean"
+            "@id": "indexingStatus",
+            "@type": "Property",
+            "comment": {"en-US": "The status of the statement denoting whether correlators should or should not assign the statement during correlation--Values=\"Yes\"/\"No\"."},
+            "domain": "Statement",
+            "label": {"en-US": "Indexing Status"},
+            "range": "xsd:boolean",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "dcterms:isPartOf",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "This property is intended to be used with non-literal values. This property is an inverse property of Has Part."},
-            "rdfs:comment": {"en-US": "A related resource in which the described resource is physically or logically included."},
-            "rdfs:domain": "xsd:anyURI",
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "Is Part Of"},
-            "rdfs:range": "xsd:anyURI"
+            "@id": "isPartOf",
+            "@type": "Property",
+            "scopeNote": {"en-US": "This property is intended to be used with non-literal values. This property is an inverse property of Has Part."},
+            "comment": {"en-US": "A related resource in which the described resource is physically or logically included."},
+            "domain": "xsd:anyURI",
+            "label": {"en-US": "Is Part Of"},
+            "range": "xsd:anyURI",
+            "isDefinedBy": "dct:"
         },
         {
-            "@id": "dcterms:isVersionOf",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "Changes in version imply substantive changes in content rather than differences in format. This property is intended to be used with non-literal values. This property is an inverse property of Has Version."},
-            "rdfs:comment": {"en-US": "A related resource of which the described resource is a version, edition, or adaptation."},
-            "rdfs:domain": "xsd:anyURI",
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "Is Version Of"},
-            "rdfs:range": "xsd:anyURI"
+            "@id": "isChildOf",
+            "@type": "Property",
+            "comment": {"en-US": "The statement being described is lower in some arbitrary hierarchy than the statement identified in the asn:isChildOf property. The statement identified is a parent of the statement being described."},
+            "domain": "Statement",
+            "label": {"en-US": "Is Child Of"},
+            "range": ["StamdardDocument", "Statement"],
+            "equivalentProperty": "gemq:isChildOf",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:jurisdiction",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "The URI of the jurisdiction from the ASNJurisdiction controlled vocabulary."},
-            "rdfs:comment": {"en-US": "The jurisdiction or domain of the standard's application--e.g., California, Nebraska, etc."},
-            "rdfs:domain": "asn:StandardDocument",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Jurisdiction"},
-            "rdfs:range": "skos:Concept"
+            "@id": "inScheme",
+            "@type": "Property",
+            "comment": {"en-US": "Relates a resource (for example a concept) to a concept scheme in which it is included."},
+            "domain": "ConceptFramework",
+            "label": {"en-US": "In Scheme"},
+            "range": "Concept",
+            "isDefinedBy": "skos:"
         },
         {
-            "@id": "dc:language",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "Recommended practice is to use either a non-literal value representing a language from a controlled vocabulary such as ISO 639-2 or ISO 639-3, or a literal value consisting of an IETF Best Current Practice 47 [IETF-BCP47] language tag"},
-            "rdfs:comment": {"en-US": "A language of the resource."},
-            "rdfs:domain": [
-                "asn:StandardDocument",
-                "asn:Statement"
+            "@id": "isVersionOf",
+            "@type": "Property",
+            "scopeNote": {"en-US": "Changes in version imply substantive changes in content rather than differences in format. This property is intended to be used with non-literal values. This property is an inverse property of Has Version."},
+            "comment": {"en-US": "A related resource of which the described resource is a version, edition, or adaptation."},
+            "domain": "xsd:anyURI",
+            "label": {"en-US": "Is Version Of"},
+            "range": "xsd:anyURI",
+            "isDefinedBy": "dct:"
+        },
+        {
+            "@id": "jurisdiction",
+            "@type": "Property",
+            "scopeNote": {"en-US": "The URI of the jurisdiction from the ASNJurisdiction controlled vocabulary."},
+            "comment": {"en-US": "The jurisdiction or domain of the standard's application--e.g., California, Nebraska, etc."},
+            "domain": "StandardDocument",
+            "label": {"en-US": "Jurisdiction"},
+            "range": "Concept",
+            "isDefinedBy": "asn:"
+        },
+        {
+            "@id": "language",
+            "@type": "Property",
+            "scopeNote": {"en-US": "Recommended practice is to use either a non-literal value representing a language from a controlled vocabulary such as ISO 639-2 or ISO 639-3, or a literal value consisting of an IETF Best Current Practice 47 [IETF-BCP47] language tag"},
+            "comment": {"en-US": "A language of the resource."},
+            "domain": [
+                "StandardDocument",
+                "Statement"
             ],
-            "rdfs:isDefinedBy": "dc:",
-            "rdfs:label": {"en-US": "Language"},
-            "rdfs:range": "rdfs:Literal"
+            "label": {"en-US": "Language"},
+            "range": "Literal",
+            "isDefinedBy": "dc:"
         },
         {
-            "@id": "asn:levelFor",
-            "@type": "rdfs:Property",
-            "rdfs:comment": {"en-US": "Reference to the asn:RubricCriterian to which the asn:CriterionLevel being described belongs."},
-            "rdfs:domain": "asn:CriterionLevel",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Level For"},
-            "rdfs:range": "asn:RubricCriterion"
+            "@id": "levelFor",
+            "@type": "Property",
+            "comment": {"en-US": "Reference to the RubricCriterian to which the CriterionLevel being described belongs."},
+            "domain": "CriterionLevel",
+            "label": {"en-US": "Level For"},
+            "range": "RubricCriterion",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "dcterms:license",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "Recommended practice is to identify the license document with a URI. If this is not possible or feasible, a literal value that identifies the license may be provided."},
-            "rdfs:comment": {"en-US": "A legal document giving official permission to do something with the resource."},
-            "rdfs:domain": "asn:standardDocument",
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "License"},
-            "rdfs:range": "dcterms:LicenseDocument"
+            "@id": "license",
+            "@type": "Property",
+            "scopeNote": {"en-US": "Recommended practice is to identify the license document with a URI. If this is not possible or feasible, a literal value that identifies the license may be provided."},
+            "comment": {"en-US": "A legal document giving official permission to do something with the resource."},
+            "domain": "standardDocument",
+            "label": {"en-US": "License"},
+            "range": "LicenseDocument",
+            "isDefinedBy": "dct:"
         },
         {
-            "@id": "asn:listID",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "A set of one or more alphanumeric characters and/or symbols denoting the positioning of the statement being described in a sequential listing of statements."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "List ID"},
-            "rdfs:range": "rdfs:Literal",
-            "rdfs:subPropertyOf": "dcterms:identifer"
+            "@id": "listID",
+            "@type": "Property",
+            "comment": {"en-US": "A set of one or more alphanumeric characters and/or symbols denoting the positioning of the statement being described in a sequential listing of statements."},
+            "domain": "Statement",
+            "label": {"en-US": "List ID"},
+            "range": "Literal",
+            "subPropertyOf": "identifer",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:localSubject",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The text string denoting the subject of the statement as designated by the promulgating agency. This subject may be different from the asn:subject used for subject classification within the ASN."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Local Subject"},
-            "rdfs:range": "rdf:langString",
-            "rdfs:subPropertyOf": "dcterms:subject"
+            "@id": "localSubject",
+            "@type": "Property",
+            "comment": {"en-US": "The text string denoting the subject of the statement as designated by the promulgating agency. This subject may be different from the subject used for subject classification within the ASN."},
+            "domain": "Statement",
+            "label": {"en-US": "Local Subject"},
+            "range": "langString",
+            "subPropertyOf": "subject",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:majorAlignment",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "Major overlap of relevant concepts between the two competencies."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Major Alignment"},
-            "rdfs:range": "asn:Statement"
+            "@id": "majorAlignment",
+            "@type": "Property",
+            "comment": {"en-US": "Major overlap of relevant concepts between the two competencies."},
+            "domain": "Statement",
+            "label": {"en-US": "Major Alignment"},
+            "range": "Statement",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:majorCorrelation",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "Major overlap of relevant concepts between the learning resource being described and the competency statement."},
-            "rdfs:domain": "asn:LearningResource",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Major Correlation"},
-            "rdfs:range": "asn:Statement",
-            "rdfs:subPropertyOf": "dcterms:conformsTo"
+            "@id": "majorCorrelation",
+            "@type": "Property",
+            "comment": {"en-US": "Major overlap of relevant concepts between the learning resource being described and the competency statement."},
+            "domain": "LearningResource",
+            "label": {"en-US": "Major Correlation"},
+            "range": "Statement",
+            "subPropertyOf": "conformsTo",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:minorAlignment",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "Minor overlap of relevant concepts between the two competencies."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Minor Alignment"},
-            "rdfs:range": "asn:Statement"
+            "@id": "minorAlignment",
+            "@type": "Property",
+            "comment": {"en-US": "Minor overlap of relevant concepts between the two competencies."},
+            "domain": "Statement",
+            "label": {"en-US": "Minor Alignment"},
+            "range": "Statement",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:minorCorrelation",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "Minor overlap of relevant concepts between the learning resource being described and the competency statement."},
-            "rdfs:domain": "asn:LearningResource",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Minor Correlation"},
-            "rdfs:range": "asn:Statement",
-            "rdfs:subPropertyOf": "dcterms:conformsTo"
+            "@id": "minorCorrelation",
+            "@type": "Property",
+            "comment": {"en-US": "Minor overlap of relevant concepts between the learning resource being described and the competency statement."},
+            "domain": "LearningResource",
+            "label": {"en-US": "Minor Correlation"},
+            "range": "Statement",
+            "subPropertyOf": "conformsTo",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:modified",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "Date on which the resource was changed."},
-            "rdfs:domain": [
-                "asn:LearningResource",
-                "asn:RightsAndAttribution"
+            "@id": "modified",
+            "@type": "Property",
+            "comment": {"en-US": "Date on which the resource was changed."},
+            "domain": [
+                "LearningResource",
+                "RightsAndAttribution"
             ],
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Date Modified"},
-            "rdfs:range": "xsd:dateTime",
-            "rdfs:subPropertyOf": "dcterms:date"
+            "label": {"en-US": "Date Modified"},
+            "range": "xsd:dateTime",
+            "subPropertyOf": "date",
+            "isDefinedBy": "dct:"
         },
         {
-            "@id": "asn:narrowAlignment",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The competency being described covers all of the relevant concepts in the target competency as well as relevant concepts not found in the target competency."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Narrow Alignment"},
-            "rdfs:range": "asn:Statement"
+            "@id": "narrower",
+            "@type": "Property",
+            "comment": {"en-US": "Relates a concept to a concept that is more specific in meaning."},
+            "domain": "Concept",
+            "label": {"en-US": "Narrower"},
+            "range": "Concept",
+            "note": {"en-US": "By convention, skos:broader is only used to assert an immediate (i.e. direct) hierarchical link between two conceptual resources. Narrower concepts are typically rendered as children in a concept hierarchy (tree)."},
+            "isDefinedBy": "skos:"
         },
         {
-            "@id": "asn:narrowCorrelation",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The learning resource being described covers all of the relevant concepts in the competency statement as well as relevant concepts not found in the competency."},
-            "rdfs:domain": "asn:LearningResource",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Narrow Correlation"},
-            "rdfs:range": "asn:Statement",
-            "rdfs:subPropertyOf": "dcterms:conformsTo"
+            "@id": "narrowAlignment",
+            "@type": "Property",
+            "comment": {"en-US": "The competency being described covers all of the relevant concepts in the target competency as well as relevant concepts not found in the target competency."},
+            "domain": "Statement",
+            
+            "label": {"en-US": "Narrow Alignment"},
+            "range": "Statement",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "skos:note",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "A general note, for any purpose."},
-            "rdfs:domain": [
-                "asn:Statement",
-                "asn:StandardDocument"
+            "@id": "narrowCorrelation",
+            "@type": "Property",
+            "comment": {"en-US": "The learning resource being described covers all of the relevant concepts in the competency statement as well as relevant concepts not found in the competency."},
+            "domain": "LearningResource",
+            
+            "label": {"en-US": "Narrow Correlation"},
+            "range": "Statement",
+            "subPropertyOf": "conformsTo",
+            "isDefinedBy": "asn:"
+        },
+        {
+            "@id": "note",
+            "@type": "Property",
+            "comment": {"en-US": "A general note, for any purpose."},
+            "domain": [
+                "Statement",
+                "StandardDocument"
             ],
-            "rdfs:isDefinedBy": "skos:",
-            "rdfs:label": {"en-US": "Note"},
-            "rdfs:range": "rdfs:Literal"
+            "label": {"en-US": "Note"},
+            "range": "Literal",
+            "isDefinedBy": "skos:"
         },
         {
-            "@id": "asn:prerequisiteAlignment",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The competency being described is a prerequisite to the target competency."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Prerequisite Alignment"},
-            "rdfs:range": "asn:Statement"
+            "@id": "prefLabel",
+            "@type": "Property",
+            "comment": {"en-US": "The preferred lexical label for a resource, in a given language."},
+            "domain": "Concept",
+            "label": {"en-US": "Preferred Label"},
+            "range": "langString",
+            "isDefinedBy": "skos:"
         },
         {
-            "@id": "asn:prerequisiteCompetency",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "A prerequisite competency for the learning resource being described."},
-            "rdfs:domain": "asn:LearningResource",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Prerequisite Competency"},
-            "rdfs:range": "asn:Statement",
-            "rdfs:subPropertyOf": "dcterms:conformsTo"
+            "@id": "prerequisiteAlignment",
+            "@type": "Property",
+            "comment": {"en-US": "The competency being described is a prerequisite to the target competency."},
+            "domain": "Statement",
+            
+            "label": {"en-US": "Prerequisite Alignment"},
+            "range": "Statement",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "foaf:primaryTopic",
-            "@type": "rdf:Property",
+            "@id": "prerequisiteCompetency",
+            "@type": "Property",
+            "comment": {"en-US": "A prerequisite competency for the learning resource being described."},
+            "domain": "LearningResource",
+            
+            "label": {"en-US": "Prerequisite Competency"},
+            "range": "Statement",
+            "subPropertyOf": "conformsTo",
+            "isDefinedBy": "asn:"
+        },
+        {
+            "@id": "primaryTopic",
+            "@type": "Property",
             "schema:domainIncludes": "xsd:anyURI",
-            "rdfs:comment": {"en-US": "The primaryTopic property relates a document to the main thing that the document is about. In this profile, the domain of this property is an rdf description of the rights in the framework's metadata description and provides for the expected attribution."},
-            "rdfs:isDefinedBy": "foaf:",
-            "rdfs:label": {"en-US": "Primary Topic"},
-            "rdfs:range": "asn:StandardDocument"
+            "comment": {"en-US": "The primaryTopic property relates a document to the main thing that the document is about. In this profile, the domain of this property is an rdf description of the rights in the framework's metadata description and provides for the expected attribution."},
+            "label": {"en-US": "Primary Topic"},
+            "range": "StandardDocument",
+            "isDefinedBy": "foaf:"
         },
         {
-            "@id": "asn:proficiencyLevel",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "The value of asn:proficiencyLevel should be a concept IRI of a member of the class asn:ProficiencyScale."},
+            "@id": "proficiencyLevel",
+            "@type": "Property",
+            "scopeNote": {"en-US": "The value of proficiencyLevel should be a concept IRI of a member of the class ProficiencyScale."},
             "schema:domainIncludes": [
-                "asn:LearningResource",
-                "asn:Statement"
+                "LearningResource",
+                "Statement"
             ],
-            "rdfs:comment": {"en-US": "The expected performance level of a learner or professional in relationship to a competency."},
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Proficiency Level"},
-            "rdfs:range": "asn:ProficiencyScale"        
+            "comment": {"en-US": "The expected performance level of a learner or professional in relationship to a competency."},
+            "label": {"en-US": "Proficiency Level"},
+            "range": "ProficiencyScale",
+            "isDefinedBy": "asn:"        
         },
         {
-            "@id": "asn:publicationStatus",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The publication status of the of the standards document--e.g., Draft, Published, Deprecated."},
-            "rdfs:domain": "asn:StandardDocument",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Publication Status"},
-            "rdfs:range": "skos:Concept"
+            "@id": "publicationStatus",
+            "@type": "Property",
+            "comment": {"en-US": "The publication status of the of the standards document--e.g., Draft, Published, Deprecated."},
+            "domain": "StandardDocument",            
+            "label": {"en-US": "Publication Status"},
+            "range": "Concept",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "dc:publisher",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "Examples of a Publisher include a person, an organization, or a service. Typically, the name of a Publisher should be used to indicate the entity."},
-            "rdfs:comment": {"en-US": "An entity responsible for making the resource available."},
-            "rdfs:domain": "asn:StandardDocument",
-            "rdfs:isDefinedBy": "dc:",
-            "rdfs:label": {"en-US": "Publisher"},
-            "rdfs:range": "rdf:langString"
+            "@id": "publisher",
+            "@type": "Property",
+            "scopeNote": {"en-US": "Examples of a Publisher include a person, an organization, or a service. Typically, the name of a Publisher should be used to indicate the entity."},
+            "comment": {"en-US": "An entity responsible for making the resource available."},
+            "domain": "StandardDocument",
+            "label": {"en-US": "Publisher"},
+            "range": "langString",
+            "isDefinedBy": "dc:"
         },
         {
-            "@id": "asn:qualityLabel",
-            "@type": "rdfs:Property",
-            "rdfs:comment": {"en-US": "Qualitative description of this degree of achievement used for column headers in tabular rubrics."},
-            "rdfs:domain": "asn:CriterionLevel",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Quality Label"},
-            "rdfs:range":  "skos:Concept"
+            "@id": "qualityLabel",
+            "@type": "Property",
+            "comment": {"en-US": "Qualitative description of this degree of achievement used for column headers in tabular rubrics."},
+            "domain": "CriterionLevel",           
+            "label": {"en-US": "Quality Label"},
+            "range":  "Concept",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:repositoryDate",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The date the standards document was added to the repository."},
-            "rdfs:domain": "asn:StandardDocument",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Repository Date"},
-            "rdfs:range": "xsd:date",
-            "rdfs:subPropertyOf": "dcterms:date"
+            "@id": "repositoryDate",
+            "@type": "Property",
+            "comment": {"en-US": "The date the standards document was added to the repository."},
+            "domain": "StandardDocument",           
+            "label": {"en-US": "Repository Date"},
+            "range": "xsd:date",
+            "subPropertyOf": "date",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "dcterms:rights",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "Typically, rights information includes a statement about various property rights associated with the resource, including intellectual property rights. Recommended practice is to refer to a rights statement with a URI. If this is not possible or feasible, a literal value (name, label, or short text) may be provided."},
-            "rdfs:comment": {"en-US": "Information about rights held in and over the resource."},
-            "rdfs:domain": [
-                "asn:RightsAndAttribution",
-                "asn:StandardDocument"
+            "@id": "rights",
+            "@type": "Property",
+            "scopeNote": {"en-US": "Typically, rights information includes a statement about various property rights associated with the resource, including intellectual property rights. Recommended practice is to refer to a rights statement with a URI. If this is not possible or feasible, a literal value (name, label, or short text) may be provided."},
+            "comment": {"en-US": "Information about rights held in and over the resource."},
+            "domain": [
+                "RightsAndAttribution",
+                "StandardDocument"
             ],
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "Rights"},
-            "rdfs:range": "rdf:langString"
+            "label": {"en-US": "Rights"},
+            "range": "langString",
+            "isDefinedBy": "dct:"
         },
         {
-            "@id": "dcterms:rightsHolder",
-            "@type": "rdf:Property",
-            "skos:scopeNote": {"en-US": "Recommended practice is to refer to the rights holder with a URI. If this is not possible or feasible, a literal value that identifies the rights holder may be provided."},
-            "rdfs:comment": {"en-US": "A person or organization owning or managing rights over the resource."},
-            "rdfs:domain": [
-                "asn:StandardDocument",
-                "asn:RightsAndAttribution",
-                "asn:Statement"
+            "@id": "rightsHolder",
+            "@type": "Property",
+            "scopeNote": {"en-US": "Recommended practice is to refer to the rights holder with a URI. If this is not possible or feasible, a literal value that identifies the rights holder may be provided."},
+            "comment": {"en-US": "A person or organization owning or managing rights over the resource."},
+            "domain": [
+                "StandardDocument",
+                "RightsAndAttribution",
+                "Statement"
             ],
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "Rights Holder"},
-            "rdfs:range": "dcterms:Agent"
+            "label": {"en-US": "Rights Holder"},
+            "range": "Agent",
+            "isDefinedBy": "dct:"
         },
         {
-            "@id": "asn:score",
-            "@type": "rdfs:Property",
-            "rdfs:comment": {"en-US": "Points to be awarded for achieving this level for a RubricCriterion."},
-            "rdfs:domain": "asn:CriterionLevel",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Criterion Level Score"},
-            "rdfs:range": "xsd:float",
-            "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14447"
+            "@id": "score",
+            "@type": "Property",
+            "comment": {"en-US": "Points to be awarded for achieving this level for a RubricCriterion."},
+            "domain": "CriterionLevel",
+            "label": {"en-US": "Criterion Level Score"},
+            "range": "xsd:float",
+            "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14447",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:sequence",
-            "@type": "rdfs:Property",
-            "rdfs:comment": {"en-US": "Numeric value representing the resource's position in the list (array) of resources."},
-            "rdfs:domain": [
-                "asn:RubricCriterion",
-                "asn:CriterionLevel"
+            "@id": "sequence",
+            "@type": "Property",
+            "comment": {"en-US": "Numeric value representing the resource's position in the list (array) of resources."},
+            "domain": [
+                "RubricCriterion",
+                "CriterionLevel"
             ],
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Sequence"},
-            "rdfs:range": "xsd:positiveInteger",
-            "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14445"
+            "label": {"en-US": "Sequence"},
+            "range": "xsd:positiveInteger",
+            "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14445",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:source",
-            "@type": "rdfs:Property",
-            "rdfs:comment": {"en-US": "The original resource which this resource is based on or derived from."},
-            "rdfs:domain": [
-                "asn:StandardDocument",
-                "asn:Rubric"
+            "@id": "source",
+            "@type": "Property",
+            "comment": {"en-US": "The original resource which this resource is based on or derived from."},
+            "domain": [
+                "StandardDocument",
+                "Rubric"
             ],
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Source"},
-            "rdfs:range": "xsd:anyURI"
+            "label": {"en-US": "Source"},
+            "range": "xsd:anyURI",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "dcterms:spatial",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "Spatial characteristics of the resource."},
-            "rdfs:domain": [
-                "asn:Statement",
-                "asn:StandardDocument"
+            "@id": "spatial",
+            "@type": "Property",
+            "comment": {"en-US": "Spatial characteristics of the resource."},
+            "domain": [
+                "Statement",
+                "StandardDocument"
             ],
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "Spatial"},
-            "rdfs:range": "dcterms:Location"
+            "label": {"en-US": "Spatial"},
+            "range": "Location",
+            "isDefinedBy": "dct:"
         },
         {
-            "@id": "asn:skillEmbodied",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "Cognitive, affective, psychomotor or other skill directly or indirectly embodied in the statement."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Skill Embodied"},
-            "rdfs:range": "asn:Statement"
+            "@id": "skillEmbodied",
+            "@type": "Property",
+            "comment": {"en-US": "Cognitive, affective, psychomotor or other skill directly or indirectly embodied in the statement."},
+            "domain": "Statement",
+            "label": {"en-US": "Skill Embodied"},
+            "range": "Statement",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:statementLabel",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The textual label designating the class of statement in the structure of statements in the Standard Document--e.g., Standard, Benchmark, Strand, Topic, etc."},
-            "rdfs:domain": "asn:statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Statement Label"},
-            "rdfs:range": "rdf:langString"
+            "@id": "statementLabel",
+            "@type": "Property",
+            "comment": {"en-US": "The textual label designating the class of statement in the structure of statements in the Standard Document--e.g., Standard, Benchmark, Strand, Topic, etc."},
+            "domain": "statement",
+            "label": {"en-US": "Statement Label"},
+            "range": "langString",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "asn:statementNotation",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "An alphanumeric identifier of a Statement as defined by the promulgating agency. Statement notation must be unique within the defining organization's namespace."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Statement Notation"},
-            "rdfs:range": "rdfs:Literal",
-            "rdfs:subPropertyOf": "dcterms:identifer"
+            "@id": "statementNotation",
+            "@type": "Property",
+            "comment": {"en-US": "An alphanumeric identifier of a Statement as defined by the promulgating agency. Statement notation must be unique within the defining organization's namespace."},
+            "domain": "Statement",
+            
+            "label": {"en-US": "Statement Notation"},
+            "range": "Literal",
+            "subPropertyOf": "identifer",
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "dcterms:subject",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "A topic of the resource."},
-            "rdfs:domain": "asn:StandardDocument",
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "Subject"},
-            "rdfs:range": "skos:Concept",
-            "skos:scopeNote": {"en-US": "Used in ASN to denote a subject subject area of the framework; e.g., \"science\", \"mathematics\", \"English\"."}
+            "@id": "subject",
+            "@type": "Property",
+            "comment": {"en-US": "A topic of the resource."},
+            "domain": "StandardDocument",
+            "label": {"en-US": "Subject"},
+            "range": "Concept",
+            "scopeNote": {"en-US": "Used in ASN to denote a subject subject area of the framework; e.g., \"science\", \"mathematics\", \"English\"."},
+            "isDefinedBy": "dct:"
         },
         {
-            "@id": "dcterms:tableOfContents",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "A list of subunits of the resource."},
-            "rdfs:domain": "asn:StandardDocument",
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "Table of Contents"},
-            "rdfs:range": "xsd:anyURI"
+            "@id": "tableOfContents",
+            "@type": "Property",
+            "comment": {"en-US": "A list of subunits of the resource."},
+            "domain": "StandardDocument",
+            "label": {"en-US": "Table of Contents"},
+            "range": "xsd:anyURI",
+            "isDefinedBy": "dct:"
         },
         {
-            "@id": "asn:teachesCompetency",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "The competency that the learning resource being described teaches."},
-            "rdfs:domain": "asn:LearningResource",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Teaches Competency"},
-            "rdfs:range": "asn:Statement",
-            "rdfs:subPropertyOf": "dcterms:conformsTo"
+            "@id": "teachesCompetency",
+            "@type": "Property",
+            "comment": {"en-US": "The competency that the learning resource being described teaches."},
+            "domain": "LearningResource",
+            "label": {"en-US": "Teaches Competency"},
+            "range": "Statement",
+            "subPropertyOf": "conformsTo"
+            "isDefinedBy": "asn:"
         },
         {
-            "@id": "dcterms:temporal",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "Temporal characteristics of the resource."},
-            "rdfs:domain": [
-                "asn:Statement",
-                "asn:StandardDocument"
+            "@id": "temporal",
+            "@type": "Property",
+            "comment": {"en-US": "Temporal characteristics of the resource."},
+            "domain": [
+                "Statement",
+                "StandardDocument"
             ],
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "Temporal"},
-            "rdfs:range": "dcterms:PeriodOfTime"
+            "label": {"en-US": "Temporal"},
+            "range": "PeriodOfTime",
+            "isDefinedBy": "dct:"
         },
         {
-            "@id": "dc:title",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "A name given to the resource."},
-            "rdfs:domain": "asn:StandardDocument",
-            "rdfs:isDefinedBy": "dc:",
-            "rdfs:label": {"en-US": "Title"},
-            "rdfs:range": "rdf:langString"
+            "@id": "title",
+            "@type": "Property",
+            "comment": {"en-US": "A name given to the resource."},
+            "domain": "StandardDocument",
+            "label": {"en-US": "Title"},
+            "range": "langString",
+            "isDefinedBy": "dc:"
         },
         {
-            "@id": "dcterms:valid",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "Date (often a range) of validity of a resource."},
-            "rdfs:domain": "asn:StandardDocument",
-            "rdfs:isDefinedBy": "dcterms:",
-            "rdfs:label": {"en-US": "Date Valid"},
-            "rdfs:range": "rdfs:Literal"
+            "@id": "valid",
+            "@type": "Property",
+            "comment": {"en-US": "Date (often a range) of validity of a resource."},
+            "domain": "StandardDocument",
+            "label": {"en-US": "Date Valid"},
+            "range": "Literal",
+            "isDefinedBy": "dct:"
         },
         {
-            "@id": "asn:weight",
-            "@type": "rdf:Property",
-            "rdfs:comment": {"en-US": "A textually asserted measurement of the weight, degree, percent, or strength of a recommendation, requirement, or comparison; e.g., \"15%\", \".5\"."},
-            "rdfs:domain": "asn:Statement",
-            "rdfs:isDefinedBy": "asn:",
-            "rdfs:label": {"en-US": "Weight"},
-            "rdfs:range": "rdfs:Literal"
+            "@id": "weight",
+            "@type": "Property",
+            "comment": {"en-US": "A textually asserted measurement of the weight, degree, percent, or strength of a recommendation, requirement, or comparison; e.g., \"15%\", \".5\"."},
+            "domain": "Statement",
+            "label": {"en-US": "Weight"},
+            "range": "Literal",
+            "isDefinedBy": "asn:"
         }
     ]
 }
