@@ -1,6 +1,6 @@
 {
     "@context": {
-        "asn": "http://purl.org/ASN/schema/core/" ,
+        "asn": "http://purl.org/ASN/schema/core/",
         "ceasn": "http://purl.org/ctdlasn/terms/" ,
         "dc": "http://purl.org/dc/elements/1.1/" ,
         "dcterms": "http://purl.org/dc/terms/" ,
