@@ -183,3 +183,79 @@ export const NoDataFound = (props) => {
     </Fragment>
   );
 };
+
+export const CenteredRoundedCard = (props) => {
+  const { title, subtitle, children } = props;
+
+  return (
+    <div
+      className="card"
+      style={{
+        transform: "translate(50%, 10%)",
+        maxWidth: "50%",
+        borderRadius: "10px",
+      }}
+    >
+      <div className="card-header">
+        <div className="row">
+          <div className="col">
+            <h1 className="col-dashboard-highlight text-center">{title}</h1>
+          </div>
+        </div>
+      </div>
+      <div className="card-body">
+        <div className="row">
+          <div className="col">
+            {subtitle}
+
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const ToggleBtn = (props) => {
+  const { active, onClick, text } = props;
+
+  return (
+    <div
+      className={`cursor-pointer col-10 ${
+        active
+          ? "bg-dashboard-background-highlight col-background with-shadow"
+          : "bg-dashboard-background-highlight2 col-dashboard-highlight"
+      }  p-2 rounded text-center`}
+      style={{
+        maxWidth: "150px",
+        opacity: "80%",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        maxHeight: "31px",
+      }}
+      data-toggle="tooltip"
+      data-placement="bottom"
+      title="Upload a File"
+      onClick={onClick}
+    >
+      {text}
+    </div>
+  );
+};
+
+export const readFileContent = (file, onLoad, onError) => {
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    let content = reader.result;
+    onLoad(content);
+  };
+
+  reader.onerror = function (e) {
+    let tempErrors = errors;
+    tempErrors.push("File could not be read! Code: " + e.target.error.code);
+    onError(tempErrors);
+  };
+
+  reader.readAsText(file);
+};

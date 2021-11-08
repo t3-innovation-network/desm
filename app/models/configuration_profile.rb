@@ -26,6 +26,30 @@ class ConfigurationProfile < ApplicationRecord
   #   will not trigger the structure creation again.
   enum state: {incomplete: 0, complete: 1, active: 2, deactivated: 3}
 
+  COMPLETE_SCHEMA = Rails.root.join("ns", "complete.configurationProfile.schema.json")
+  VALID_SCHEMA = Rails.root.join("ns", "valid.configurationProfile.schema.json")
+
+  def self.complete_schema
+    read_schema(COMPLETE_SCHEMA)
+  end
+
+  def self.valid_schema
+    read_schema(VALID_SCHEMA)
+  end
+
+  def self.read_schema schema
+    JSON.parse(
+      File.read(schema)
+    )
+  end
+
+  def self.validate_structure struct
+    JSON::Validator.fully_validate(
+      valid_schema,
+      struct
+    )
+  end
+
   def activate!
     state_handler.activate!
   end
@@ -62,17 +86,8 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def setup_schema_validators
-    @complete_schema = JSON.parse(
-      File.read(
-        Rails.root.join("ns", "complete.configurationProfile.schema.json")
-      )
-    ).deep_transform_keys {|key| key.to_s.underscore }
-
-    @valid_schema = JSON.parse(
-      File.read(
-        Rails.root.join("ns", "valid.configurationProfile.schema.json")
-      )
-    ).deep_transform_keys {|key| key.to_s.underscore }
+    @complete_schema = self.class.complete_schema
+    @valid_schema = self.class.valid_schema
   end
 
   def state_handler
@@ -80,11 +95,13 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def structure_valid?
-    JSON::Validator.validate(@valid_schema, structure)
+    validation = self.class.validate_structure(structure)
+    validation.empty?
   end
 
   def structure_complete?
-    JSON::Validator.validate(@complete_schema, structure)
+    validation = JSON::Validator.fully_validate(@complete_schema, structure)
+    validation.empty?
   end
 
   def transition_to! new_state

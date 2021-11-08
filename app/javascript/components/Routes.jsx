@@ -20,6 +20,7 @@ import ForgotPass from "./auth/ForgotPass";
 import ResetPass from "./auth/ResetPass";
 import ConfigurationProfilesIndex from "./dashboard/configuration-profiles/ConfigurationProfilesIndex";
 import EditConfigurationProfile from "./dashboard/configuration-profiles/edit/EditConfigurationProfile";
+import UploadConfigurationProfile from "./dashboard/configuration-profiles/UploadConfigurationProfile";
 
 const Routes = (props) => {
   const { handleLogin } = props;
@@ -102,6 +103,12 @@ const Routes = (props) => {
           exact
           path="/dashboard/configuration-profiles"
           component={ConfigurationProfilesIndex}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/dashboard/configuration-profiles/new"
+          component={UploadConfigurationProfile}
         />
 
         <ProtectedRoute

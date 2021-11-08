@@ -179,18 +179,18 @@ describe ConfigurationProfile, type: :model do
   context "when its structure has to be validated" do
     it "rejects an invalid json structure for a configuration profile" do
       invalid_object = {
-        "standards_organizations": 123
+        "standardsOrganizations": 123
       }
       subject.structure = invalid_object
 
       expect(subject.structure_valid?).to be_falsey
     end
 
-    it "rejects a valid but not complete json structure for a configuration profile" do
+    it "accepts as valid but not as complete a json structure for a configuration profile" do
       valid_object = {
         "name": "Test CP",
         "description": "Example description for configuration profile",
-        "standardsOrganiations": [
+        "standardsOrganizations": [
           {
             "name": "Example SDO"
           }
@@ -200,6 +200,20 @@ describe ConfigurationProfile, type: :model do
 
       expect(subject.structure_valid?).to be_truthy
       expect(subject.structure_complete?).to be_falsey
+    end
+
+    it "Returns the description of the errors when there are any" do
+      object_with_additional_properties = {
+        "name": "Test CP",
+        "description": "Example description for a configuration profile",
+        "additionalProperty": "additional property"
+      }
+
+      subject.structure = object_with_additional_properties
+      validation_result = ConfigurationProfile.validate_structure(subject.structure)
+
+      expect(subject.structure_valid?).to be_falsey
+      expect(validation_result).to include(a_string_matching("contains additional properties"))
     end
 
     it "accepts as complete a complete and valid json structure for a configuration profile" do
@@ -213,10 +227,12 @@ describe ConfigurationProfile, type: :model do
     end
 
     it "rejects a configuration profile structure with an invalid email for an agent" do
-      subject.structure = valid_structure_with_invalid_email.deep_transform_keys {|key| key.to_s.underscore }
+      subject.structure = valid_structure_with_invalid_email
+      validation_result = ConfigurationProfile.validate_structure(subject.structure)
 
       expect(subject.structure_complete?).to be_falsey
       expect(subject.structure_valid?).to be_falsey
+      expect(validation_result).to include(a_string_matching("did not match the regex"))
       expect(subject.state_handler).to be_instance_of(CpState::Incomplete)
       expect { subject.complete! }.to raise_error CpState::NotYetReadyForTransition
     end

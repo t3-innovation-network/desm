@@ -41,8 +41,11 @@ class EllipsisOptions extends Component {
             <button className="btn float-right" disabled={disabled}>
               <FontAwesomeIcon icon={faEllipsisV} />
             </button>
-            <SlideInDown className="float-over">
-              <div className={"card"}>
+            <SlideInDown
+              className="float-over"
+              style={{ minWidth: "max-content" }}
+            >
+              <div className="card">
                 {options.map((option) => {
                   return (
                     <div

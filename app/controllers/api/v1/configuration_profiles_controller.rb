@@ -1,45 +1,11 @@
 # frozen_string_literal: true
 
-class Api::V1::ConfigurationProfilesController < ApplicationController
+class Api::V1::ConfigurationProfilesController < Api::V1::ConfigurationProfilesAbstractController
   before_action :with_instance, only: %i[destroy show update]
-  DEFAULT_CP_NAME = "Desm CP - #{DateTime.now.rfc3339}"
-  VALID_PARAMS_LIST = [
-    :created_at,
-    :description,
-    :name,
-    :updated_at,
-    structure: [
-      :created_at,
-      :description,
-      :name,
-      :updated_at,
-      mapping_predicates: %i[name version description origin],
-      abstract_classes: %i[name version description origin],
-      standards_organizations: [
-        :email,
-        :name,
-        :description,
-        :homepage_url,
-        :standards_page,
-        dso_administrator: %i[fullname email phone github_handle],
-        dso_agents: [%i[fullname email phone github_handle]],
-        associated_schemas: [
-          [
-            :associated_abstract_class,
-            :description,
-            :encoding_schema,
-            :name,
-            :origin,
-            :version,
-            associated_concept_schemes: [%i[name version description origin]]
-          ]
-        ]
-      ]
-    ]
-  ].freeze
 
   def create
     cp = ConfigurationProfile.create!(creation_params)
+    cp.update_attribute(:name, permitted_params[:name]) if permitted_params[:name]
 
     render json: cp
   end
