@@ -84,14 +84,16 @@ class Api::V1::MappingsController < ApplicationController
   # @return [ActiveRecord::Relation]
   ###
   def filter
-    # Always show only the mappings for the current user's organization
-    mappings = current_user.organization.mappings
-
-    # Filter by current user
-    mappings = mappings.where(user: current_user) if params[:filter] != "all"
-
-    # Return an ordered list
+    mappings = initial_mappings
+    mappings = mappings.where(user: current_user) if params[:filter] && params[:filter] != "all"
     mappings.order(:title)
+  end
+
+  ###
+  # @description: Instantiate the list of mappings depending on the user roles
+  ###
+  def initial_mappings
+    current_user.super_admin? || current_user.profile_admin? ? Mapping.all : current_user.organization.mappings
   end
 
   ###

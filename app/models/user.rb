@@ -34,6 +34,14 @@ class User < ApplicationRecord
     roles.any? {|r| r.name.underscore.to_sym == role }
   end
 
+  def super_admin?
+    role?(:"super admin")
+  end
+
+  def profile_admin?
+    role?(:"profile admin")
+  end
+
   def assign_role(role_id)
     return false if Role.find(role_id) && !Assignment.where(user_id: id, role_id: role_id)
     return true if Assignment.create!(user_id: id, role_id: role_id)
