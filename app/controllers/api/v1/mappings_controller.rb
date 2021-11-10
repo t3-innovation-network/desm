@@ -93,7 +93,7 @@ class Api::V1::MappingsController < ApplicationController
   # @description: Instantiate the list of mappings depending on the user roles
   ###
   def initial_mappings
-    current_user.super_admin? || current_user.profile_admin? ? Mapping.all : current_user.organization.mappings
+    current_user.super_admin? || current_user.profile_admin? ? Mapping.all : (current_user.organization&.mappings || [])
   end
 
   ###
