@@ -18,6 +18,7 @@ class User < ApplicationRecord
 
   validates :fullname, presence: true
   validates :email, presence: true, uniqueness: true
+  validates :organization, presence: true, unless: :super_admin?
   PASSWORD_VALIDATION_RULES = {
     # @description: Level of deductibility. 18 is the library's default, known as an acceptable level
     #   of entropy.

@@ -20,4 +20,8 @@ RSpec.describe User, type: :model do
 
     expect(user.role?(admin_role_name.downcase.to_sym)).to be(true)
   end
+
+  it "can not be created without an organization" do
+    expect { User.create!(fullname: "test", email: "test@test.com") }.to raise_error ActiveRecord::RecordInvalid
+  end
 end
