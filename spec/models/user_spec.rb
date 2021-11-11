@@ -22,6 +22,9 @@ RSpec.describe User, type: :model do
   end
 
   it "can not be created without an organization" do
+    admin = User.create!(fullname: "test", email: "test@test.com", skip_validating_organization: true)
+
+    expect(admin).not_to be_nil
     expect { User.create!(fullname: "test", email: "test@test.com") }.to raise_error ActiveRecord::RecordInvalid
   end
 end

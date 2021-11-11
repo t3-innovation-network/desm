@@ -26,14 +26,7 @@ class CreateAgent
 
   def user_params
     @agent_params = context.to_h
-                           .slice(:fullname, :email, :phone, :github_handle, :organization)
+                           .slice(:fullname, :email, :phone, :github_handle, :organization, :skip_validating_organization)
                            .merge({password: Desm::DEFAULT_PASS})
-
-    sanitized_params
-  end
-
-  def sanitized_params
-    @agent_params.except!(:organization) if context.dso_admin
-    @agent_params
   end
 end

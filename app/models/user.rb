@@ -4,7 +4,7 @@
 # @description: Represents a user of this application
 ###
 class User < ApplicationRecord
-  attr_accessor :skip_sending_welcome_email
+  attr_accessor :skip_sending_welcome_email, :skip_validating_organization
 
   has_secure_password
   include Tokenable
@@ -18,7 +18,7 @@ class User < ApplicationRecord
 
   validates :fullname, presence: true
   validates :email, presence: true, uniqueness: true
-  validates :organization, presence: true, unless: :super_admin?
+  validates :organization, presence: true, unless: :skip_validating_organization
   PASSWORD_VALIDATION_RULES = {
     # @description: Level of deductibility. 18 is the library's default, known as an acceptable level
     #   of entropy.
