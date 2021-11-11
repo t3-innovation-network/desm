@@ -42,9 +42,9 @@ class CreateCpStructure
 
   def assign_administrator
     result = CreateAgent.call(@structure[:profile_administrator].merge({
-      role: Role.find_by_name("profile admin"),
-      skip_validating_organization: true
-    }))
+                                                                         role: Role.find_by_name("profile admin"),
+                                                                         skip_validating_organization: true
+                                                                       }))
     raise AdminCreationError unless result.error.nil?
 
     @cp.update(administrator: result.agent)
@@ -83,9 +83,9 @@ class CreateCpStructure
 
   def create_dso_admin dso_admin_data
     result = CreateAgent.call(dso_admin_data.merge({
-      role: Role.find_by_name("dso admin"),
-      skip_validating_organization: true
-    }))
+                                                     role: Role.find_by_name("dso admin"),
+                                                     skip_validating_organization: true
+                                                   }))
     raise DSOAdminCreationError unless result.error.nil?
 
     result.agent
