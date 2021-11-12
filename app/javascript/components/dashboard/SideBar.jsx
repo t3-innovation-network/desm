@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCogs } from "@fortawesome/free-solid-svg-icons";
+import { faCog, faCogs } from "@fortawesome/free-solid-svg-icons";
 
 const SideBar = () => {
   const navLinks = {
@@ -17,6 +17,19 @@ const SideBar = () => {
         <nav className="navbar navbar-expand bg-dashboard-background flex-md-column flex-row mt-5 align-items-start no-sides-padding">
           <div className="collapse navbar-collapse w-100">
             <ul className="flex-md-column flex-row navbar-nav w-100 justify-content-between">
+              <li className="nav-item">
+                <Link
+                  to={navLinks.dashboard}
+                  className={`${
+                    window.location.pathname === navLinks.dashboard
+                      ? "selected-dashboard-option "
+                      : ""
+                  }nav-link cursor-pointer col-background pl-3`}
+                >
+                  <FontAwesomeIcon icon={faCog} aria-hidden="true" />
+                  <span className="pl-2">Dashboard</span>
+                </Link>
+              </li>
               <li className="nav-item">
                 <Link
                   to={navLinks.configuration_profiles}

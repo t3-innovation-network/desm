@@ -4,7 +4,7 @@
 # @description: Represents an organization in the application
 ###
 class Organization < ApplicationRecord
-  belongs_to :administrator, class_name: :User, foreign_key: "administrator_id"
+  belongs_to :administrator, class_name: :User, foreign_key: "administrator_id", optional: true
   belongs_to :configuration_profile
   has_many :agents, ->(o) { where.not(id: o.administrator_id) }, class_name: "User", dependent: :destroy
   has_many :terms, dependent: :destroy
