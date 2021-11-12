@@ -31,16 +31,8 @@ class User < ApplicationRecord
 
   after_create :send_welcome_email, unless: :skip_sending_welcome_email
 
-  def role?(role)
-    roles.any? {|r| r.name.underscore.to_sym == role }
-  end
-
-  def super_admin?
-    role?(:"super admin")
-  end
-
-  def profile_admin?
-    role?(:"profile admin")
+  def as_json(options={})
+    super options.merge(methods: %i[roles organization])
   end
 
   def assign_role(role_id)
@@ -48,10 +40,12 @@ class User < ApplicationRecord
     return true if Assignment.create!(user_id: id, role_id: role_id)
   end
 
-  def update_role(role_id)
-    assignment = Assignment.find_by_user_id(id)
-    assignment.role_id = role_id
-    assignment.save!
+  def available_domains
+    profile_admin? || super_admin? ? Domain.all : organization.configuration_profile.abstract_classes.domains
+  end
+
+  def available_predicates
+    profile_admin? || super_admin? ? Predicate.all : organization.configuration_profile.mapping_predicates.predicates
   end
 
   def generate_password_token!
@@ -61,16 +55,12 @@ class User < ApplicationRecord
     )
   end
 
-  def send_reset_password_instructions
-    UserMailer.with(user: self).forgot_pass.deliver_later
-  end
-
   def password_token_valid?
     (reset_password_sent_at + 4.hours) > Time.now.utc
   end
 
-  def send_welcome_email
-    UserMailer.with(user: self).welcome.deliver_later
+  def profile_admin?
+    role?(:"profile admin")
   end
 
   def reset_password!(password)
@@ -80,7 +70,25 @@ class User < ApplicationRecord
     save!
   end
 
-  def as_json(options={})
-    super options.merge(methods: %i[roles organization])
+  def role?(role)
+    roles.any? {|r| r.name.underscore.to_sym == role }
+  end
+
+  def send_reset_password_instructions
+    UserMailer.with(user: self).forgot_pass.deliver_later
+  end
+
+  def send_welcome_email
+    UserMailer.with(user: self).welcome.deliver_later
+  end
+
+  def super_admin?
+    role?(:"super admin")
+  end
+
+  def update_role(role_id)
+    assignment = Assignment.find_by_user_id(id)
+    assignment.role_id = role_id
+    assignment.save!
   end
 end

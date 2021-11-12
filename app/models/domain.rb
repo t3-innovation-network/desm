@@ -17,7 +17,7 @@
 ###
 class Domain < ApplicationRecord
   belongs_to :domain_set
-  has_one :spine, foreign_key: "domain_id", class_name: "Specification", dependent: :destroy
+  belongs_to :spine, class_name: "Specification", dependent: :destroy, optional: true
   validates :uri, presence: true, uniqueness: true
   validates :pref_label, presence: true
 

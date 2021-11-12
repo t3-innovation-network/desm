@@ -74,7 +74,7 @@ class Specification < ApplicationRecord
   # @return [TrueClass|FalseClass]
   ###
   def spine?
-    domain.spine? && domain.spine_id == id
+    domain.spine.present? && domain.spine.id == id
   end
 
   ###
