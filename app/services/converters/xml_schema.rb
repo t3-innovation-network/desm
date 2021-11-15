@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module Converters
-  class XmlParseError; end
-
   # Converts an XML Schema specification to the JSON-LD format
   class XmlSchema < Base
     Type = Struct.new(:kind, :value)
@@ -18,11 +16,12 @@ module Converters
       doc.xpath("/xs:schema/xs:complexType").each do |complex_type|
         build_complex_type_resources(complex_type)
       end
+    rescue Nokogiri::XML::XPath::SyntaxError
     end
 
     def self.read(path)
       doc = Nokogiri::XML(File.read(path))
-      raise XmlParseError if doc.errors.any?
+      raise Converters::ParseError if doc.errors.any?
 
       true
     end

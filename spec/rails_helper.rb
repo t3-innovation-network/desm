@@ -75,4 +75,13 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
+VCR.configure do |config|
+  config.around_http_request do |request|
+    VCR.use_cassette(request.uri, &request)
+  end
+
+  config.cassette_library_dir = Rails.root.join("spec", "fixtures", "vcr")
+  config.hook_into :webmock
+end
+
 class ActiveModel::SecurePassword::InstanceMethodsOnActivation; end

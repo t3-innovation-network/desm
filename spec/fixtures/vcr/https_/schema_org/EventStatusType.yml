@@ -1,0 +1,181 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://schema.org/EventStatusType
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Accept
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET
+      Date:
+      - Sun, 14 Nov 2021 15:44:00 GMT
+      Expires:
+      - Sun, 14 Nov 2021 15:54:00 GMT
+      Etag:
+      - '"8aHR5A"'
+      X-Cloud-Trace-Context:
+      - e73bf0d4b9465d2c78dcc746029c080a
+      Content-Type:
+      - text/html
+      Server:
+      - Google Frontend
+      Cache-Control:
+      - public, max-age=600
+      Content-Length:
+      - '10237'
+      Age:
+      - '0'
+      Alt-Svc:
+      - clear
+    body:
+      encoding: UTF-8
+      string: "\n<!DOCTYPE html>\n<html lang=\"en\">\n<!-- Generated from TermPageEx.j2
+        -->\n    \n    \n    <head>\n\n    <title>EventStatusType - Schema.org Enumeration
+        Type</title>\n    <meta charset=\"utf-8\" >\n    <meta name=\"viewport\" content=\"width=device-width,
+        initial-scale=1\">\n    <meta name=\"description\" content=\"Schema.org Enumeration
+        Type: EventStatusType - EventStatusType is an enumeration type whose instances
+        represent several states that an Event may be in.\" />\n    <link rel=\"shortcut
+        icon\" type=\"image/png\" href=\"/docs/favicon.ico\"/>\n    <link rel=\"stylesheet\"
+        type=\"text/css\" href=\"/docs/schemaorg.css\" />\n    <link rel=\"stylesheet\"
+        type=\"text/css\" href=\"/docs/devnote.css\" />\n    <link rel=\"stylesheet\"
+        type=\"text/css\" href=\"/docs/prettify.css\" />\n    <script src=\"/docs/prettify.js\"></script>\n
+        \   <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\"></script>\n
+        \   <script src=\"/docs/schemaorg.js\"></script>\n<!-- <script src=\"/docs/debugwindow/viewconsole.js\"></script>
+        -->\n    <script src=\"/docs/sdotermpage.js\"></script>\n    <link rel=\"stylesheet\"
+        type=\"text/css\" href=\"/docs/sdotermpage.css\" />\n    <script src=\"/docs/pretty-markup/schemarama-parsing.bundle.min.js\"></script>\n
+        \   <script src=\"/docs/pretty-markup/layout.js\"></script>\n    <link rel=\"stylesheet\"
+        type=\"text/css\" href=\"/docs/pretty-markup/style.css\" />\n    <script src=\"/docs/clipboard/clipboard.min.js\"></script>\n\n<link
+        rel=\"canonical\" href=\"https://schema.org/EventStatusType\" />\n   \n</head>\n<body>\n
+        \   <!-- Header start from PageHeader.j2 -->\n<!-- Static Doc Insert PageHead
+        -->\n\n<div id=\"container\">\n  <div id=\"headerwrap\">\n    <div id=\"pagehead1\"
+        class=\"mobnav\">\n      <div class=\"header-block\" id=\"pagehead-left\">\n
+        \       <div id=\"sitename2\">\n          <a href=\"/\">Schema.org</a>\n        </div>\n
+        \       <div id=\"navicon2\">\n          <a href=\"javascript:void(0);\" class=\"icon\"
+        onclick=\"navFunction()\"><img height=\"40\" alt=\"menu\" src=\"/docs/menu-bar-icon-white.png\"></a>\n
+        \       </div>\n      </div>\n      <div  class=\"header-block header-block-right
+        mobnav\" id=\"pagehead-mid\">\n        <div id=\"selectionbar2\">\n          <ul>\n
+        \           <li>\n              <a href=\"/docs/documents.html\">Documentation</a>\n
+        \           </li>\n            <li>\n              <a href=\"/docs/schemas.html\">Schemas</a>\n
+        \           </li>\n            <li>\n              <a href=\"/docs/about.html\">About</a>\n
+        \           </li>\n          <!--\n             <li>\n              <a href=\"/\">Home</a>\n
+        \           </li>\n          -->\n          </ul>\n        </div> <!-- selectionbar
+        -->\n      </div>\n      <div  class=\"header-block header-block-right mobnav\"
+        id=\"pagehead-right\">\n        <div id=\"cse-search-form2\">\n            <div
+        class=\"gcse-searchbox-only\" data-resultsUrl=\"/docs/search_results.html\"></div>\n
+        \       </div>\n      </div>\n    </div>\n  </div>\n  <div class=\"devnote\"><b>Note</b>:
+        you are viewing the development\n    version of <a href=\"https://schema.org\">Schema.org</a>.\n
+        \   See <a href=\"/docs/howwework.html\">How we work</a> for more details.\n
+        \ </div>\n</div>\n  \n \n<!-- Header end from PageHeader.j2 -->\n    <div
+        id=\"mainContent\">\n\t    \n<div id=\"infoblock\">\n\t<!-- Label /  termType
+        \ / canonical URI -->\n    <div id=\"infohead\">\n        <h1>EventStatusType</h1>\n
+        \       <em>A Schema.org Enumeration Type</em>\n        <br/>\n        <!--
+        Pending/retired/term in section -->\n        \n        \n    </div>\n\t<!--
+        Breadcrumb display of term inheritance -->\n    <div class=\"superPaths\">\n
+        \   \n         \n            \n                \n\t\t\t\t\n            \n\t\t\t\t\t\n
+        \   \n    \n    <a href=\"/Thing\"  \n        class=\"core\" title=\"Thing\">Thing</a>
+        \n            \n                \n                         > \n                    \n\t\t\t\t\n
+        \           \n\t\t\t\t\t\n    \n    \n    <a href=\"/Intangible\"  \n        class=\"core\"
+        title=\"Intangible\">Intangible</a> \n            \n                \n                         >
+        \n                    \n\t\t\t\t\n            \n\t\t\t\t\t\n    \n    \n    <a
+        href=\"/Enumeration\"  \n        class=\"core\" title=\"Enumeration\">Enumeration</a>
+        \n            \n                \n                         > \n                    \n\t\t\t\t\n
+        \           \n\t\t\t\t\t\n    \n    \n    <a href=\"/StatusEnumeration\"  \n
+        \       class=\"core\" title=\"StatusEnumeration\">StatusEnumeration</a> \n
+        \           \n                \n                        \n                    \n\t\t\t\t
+        > \n            \n\t\t\t\t\t\n    \n    \n    <a href=\"/EventStatusType\"
+        \ \n        class=\"core\" title=\"EventStatusType\">EventStatusType</a>\n
+        \       <br/>\n    \n    </div>\n    <!-- More Block -->\n    <div>\n            <div
+        id='infobox' style='text-align: right;' role=\"checkbox\" aria-checked=\"false\">\n
+        \               <label for=\"morecheck\"><b><span style=\"cursor: pointer;\">[more...]</span></b></label>\n
+        \           </div>\n            <input type='checkbox' checked=\"checked\"
+        style='display: none' id=morecheck><div id='infomsg' style='background-color:
+        #EEEEEE; text-align: left; padding: 0.5em;'>\n            <ul><li> <span class=\"canonicalUrl\">Canonical
+        URL: https://schema.org/EventStatusType</span> </li>\n            \n                <!--<li><a
+        href='https://docs.google.com/a/google.com/forms/d/1krxHlWJAO3JgvHRZV9Rugkr9VYnMdrI10xbGsWt733c/viewform?entry.1174568178&entry.41124795=https://schema.org/EventStatusType&entry.882602760=Enumeration'>Leave
+        public feedback on this term &#128172;</a></li>-->\n                <li><a
+        href='https://github.com/schemaorg/schemaorg/issues?q=is%3Aissue+is%3Aopen+EventStatusType'>Check
+        for open issues.</a></li>\n            </ul>\n    </div>\n    </div>\n\t\n\t<!--
+        Description of term -->\n    <div class=\"description\">EventStatusType is
+        an enumeration type whose instances represent several states that an Event
+        may be in.</div>\n        \n    \n        \n    \n\t\n</div> <!-- infoblock
+        -->\n\t\t\n\t\t\n            <!-- Show properties (if any) associated with
+        term and its supertypes -->\n    \t    <!-- Properties block for term: EventStatusType-->\n\n<!--
+        Identify if this term or one of its supertypes has any associated properties
+        -->\n\n\n\n\n\n \n\t\t\n    \t\t<!-- List properties that have this term as
+        an Expected type -->\n    \t    \n  \n\t<br/><div id=\"incoming\">Instances
+        of \n    \n    \n    <a href=\"/EventStatusType\"  \n        class=\"core\"
+        title=\"EventStatusType\">EventStatusType</a>  may appear as a value for the
+        following properties</div>\n\t<table class=\"definition-table\">\n    <thead><tr><th>Property</th><th>On
+        Types</th><th>Description</th></tr></thead>\n  \n  <tr><th class=\"prop-nam\">\n
+        \   \n    \n    <a href=\"/eventStatus\"  \n        class=\"core\" title=\"eventStatus\">eventStatus</a></th>\n
+        \     <td class=\"prop-ect\">\n    \n    \n    <a href=\"/Event\"  \n        class=\"core\"
+        title=\"Event\">Event</a></td>\n      <td class=\"prop-desc\">An eventStatus
+        of an event represents its status; particularly useful when an event is cancelled
+        or rescheduled.\n  </tr> \n  \n  \n\n  \n  <tr><th class=\"prop-nam\">\n    \n
+        \   \n    <a href=\"/status\"  \n        class=\"core\" title=\"status\">status</a></th>\n
+        \     <td class=\"prop-ect\">\n    \n    \n    <a href=\"/MedicalCondition\"
+        \ \n        class=\"core\" title=\"MedicalCondition\">MedicalCondition</a>&nbsp;
+        or <br/>\n    \n    \n    <a href=\"/MedicalProcedure\"  \n        class=\"core\"
+        title=\"MedicalProcedure\">MedicalProcedure</a>&nbsp; or <br/>\n    \n    \n
+        \   <a href=\"/MedicalStudy\"  \n        class=\"core\" title=\"MedicalStudy\">MedicalStudy</a></td>\n
+        \     <td class=\"prop-desc\">The status of the study (enumerated).\n  </tr>
+        \n  \n  \n\t </table>\n  \n\n        \n        \n        \n        \t\n\t\t\n
+        \           <!-- List enumeration members -->\n    \t    \n    \t    \n    \t\t
+        \   <!-- List subs (Subtypes/subproperties/enumeration members/etc.) for Term
+        -->\n\n\n    \n     <br/><b><a  id=\"subtypes\" title=\"Link: #subtypes\"
+        href=\"#subtypes\" class=\"clickableAnchor\" >Enumeration members</a></b><ul>\n
+        \   \n    \n        <li>\n    \n    \n    <a href=\"/EventCancelled\"  \n
+        \       class=\"core\" title=\"EventCancelled\">EventCancelled</a></li>\n
+        \   \n    \n\n    \n    \n        <li>\n    \n    \n    <a href=\"/EventMovedOnline\"
+        \ \n        class=\"core\" title=\"EventMovedOnline\">EventMovedOnline</a></li>\n
+        \   \n    \n\n    \n    \n        <li>\n    \n    \n    <a href=\"/EventPostponed\"
+        \ \n        class=\"core\" title=\"EventPostponed\">EventPostponed</a></li>\n
+        \   \n    \n\n    \n    \n        <li>\n    \n    \n    <a href=\"/EventRescheduled\"
+        \ \n        class=\"core\" title=\"EventRescheduled\">EventRescheduled</a></li>\n
+        \   \n    \n\n    \n    \n        <li>\n    \n    \n    <a href=\"/EventScheduled\"
+        \ \n        class=\"core\" title=\"EventScheduled\">EventScheduled</a></li>\n
+        \   \n    \n     </ul>\n    \n\n        \n\n\t\t\n        <!-- List subtypes/subproperties
+        -->\n        \n            \n            \n    \t    \n    \t    \t<!-- List
+        subs (Subtypes/subproperties/enumeration members/etc.) for Term -->\n\n\n
+        \       \n\t\t\t\n\t\t<!-- list supersedes and superseded references -->\n\t\t\n\n\n
+        \       <!-- list source references and acknowledgements -->\n\t\t\n\n\n\n\n\t\t<!--
+        list examples  -->\n\t\t<!-- Examples block for term: EventStatusType-->\n\n<div
+        id=\"examplespannel\" style=\"width:auto; overflow-x: auto;\">\n\n</div>\n\t\t\n
+        \   </div> <!-- mainContent -->\n\t<!-- Footer start from PageFooter.j2 -->\n
+        \   \n    <div id=\"footer\"><p>\n      <div id=\"versioninfo\">\n          V13.0<br/>\n
+        \         2021-07-07\n      </div>\n      <a href=\"/docs/terms.html\">Terms
+        and conditions</a>\n    </div>\n\n    <script>\n      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n
+        \     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n
+        \     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n
+        \     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');\n\n
+        \     ga('create', 'UA-52672119-1', 'auto');\n      ga('send', 'pageview');\n\n
+        \   </script>\n<!-- Footer end from PageFooter.j2 -->\n    \n<script type=\"application/ld+json\">\n{\n
+        \ \"@context\": {\n    \"rdf\": \"http://www.w3.org/1999/02/22-rdf-syntax-ns#\",\n
+        \   \"rdfs\": \"http://www.w3.org/2000/01/rdf-schema#\",\n    \"schema\":
+        \"https://schema.org/\",\n    \"xsd\": \"http://www.w3.org/2001/XMLSchema#\"\n
+        \ },\n  \"@id\": \"schema:EventStatusType\",\n  \"@type\": \"rdfs:Class\",\n
+        \ \"rdfs:comment\": \"EventStatusType is an enumeration type whose instances
+        represent several states that an Event may be in.\",\n  \"rdfs:label\": \"EventStatusType\",\n
+        \ \"rdfs:subClassOf\": {\n    \"@id\": \"schema:StatusEnumeration\"\n  }\n}\n</script>\n
+        \   \n\n</body>\n</html>"
+  recorded_at: Sun, 14 Nov 2021 15:44:00 GMT
+recorded_with: VCR 6.0.0

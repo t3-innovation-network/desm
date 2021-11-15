@@ -1,0 +1,120 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://credreg.net/ctdl/terms/OrganizationType/json?releaseID=20210528
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - public, max-age=60
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/json; charset=utf-8
+      Expires:
+      - Sun, 14 Nov 2021 15:11:14 GMT
+      Last-Modified:
+      - Sun, 14 Nov 2021 15:10:14 GMT
+      Vary:
+      - "*"
+      Server:
+      - Microsoft-IIS/10.0
+      X-Aspnetmvc-Version:
+      - '5.0'
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Sun, 14 Nov 2021 15:10:15 GMT
+    body:
+      encoding: UTF-8
+      string: '{"@context":"http://credreg.net/ctdl/schema/context/json","@graph":[{"@type":"skos:ConceptScheme","@id":"ceterms:OrganizationType","rdfs:label":{"en-US":"Organization
+        Type"},"rdfs:comment":{"en-US":"Types of organization."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/ceterms/OrganizationType/json","meta:hasConcept":["orgType:AssessmentBody","orgType:Business","orgType:BusinessAssociation","orgType:CertificationBody","orgType:Collaborative","orgType:CoordinatingBody","orgType:FourYear","orgType:Government","orgType:HighSchool","orgType:LaborUnion","orgType:Magnet","orgType:Military","orgType:NonTraditional","orgType:Postsecondary","orgType:PrimarilyOnline","orgType:ProfessionalAssociation","orgType:QualityAssurance","orgType:SecondarySchool","orgType:Technical","orgType:TrainingProvider","orgType:TwoYear","orgType:Vendor"],"skos:hasTopConcept":["orgType:AssessmentBody","orgType:Business","orgType:BusinessAssociation","orgType:CertificationBody","orgType:Collaborative","orgType:CoordinatingBody","orgType:Government","orgType:LaborUnion","orgType:Military","orgType:Postsecondary","orgType:PrimarilyOnline","orgType:ProfessionalAssociation","orgType:QualityAssurance","orgType:SecondarySchool","orgType:TrainingProvider","orgType:Vendor"]},{"@type":"skos:Concept","@id":"orgType:AssessmentBody","skos:prefLabel":{"en-US":"Assessment
+        Body"},"skos:definition":{"en-US":"Primarily offers assessments for credentials
+        as a service."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/AssessmentBody/json","skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:Business","skos:prefLabel":{"en-US":"Business"},"skos:definition":{"en-US":"Organization
+        that primarily sells products or services and employs one or more individuals."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/Business/json","skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:BusinessAssociation","skos:prefLabel":{"en-US":"Business
+        or Industry Association"},"skos:definition":{"en-US":"Membership organization
+        primarily engaged in promoting the interests of their business members and
+        providing them with services that may involve the provision of education and
+        credentialing services."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/BusinessAssociation/json","skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:CertificationBody","skos:prefLabel":{"en-US":"Certification
+        Body"},"skos:definition":{"en-US":"Independent, third-party organization that
+        operates a certification program. A certification body may or may not be governmental,
+        and may or may not have regulatory authority."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/CertificationBody/json","skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:Collaborative","skos:prefLabel":{"en-US":"Collaborative"},"skos:definition":{"en-US":"Organized
+        group of entities in the public, private, government sectors that collaborates
+        to achieve a common set of goals."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/Collaborative/json","skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:CoordinatingBody","skos:prefLabel":{"en-US":"Coordinating
+        Body"},"skos:definition":{"en-US":"An organization that organizes multiple
+        stakeholders around a common goal."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/CoordinatingBody/json","skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:FourYear","skos:prefLabel":{"en-US":"Four-Year
+        College"},"skos:definition":{"en-US":"Authorized postsecondary institution
+        that primarily offers bachelor or higher degrees, but may also award associate
+        degrees."},"dct:description":{"en-US":"Includes free-standing medical, law
+        or other first-professional schools, schools that offer postbaccalaureate
+        certificates only, those that offer graduate programs only, etc."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/FourYear/json","skos:broader":["orgType:Postsecondary"],"skos:inScheme":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:Government","skos:prefLabel":{"en-US":"Government
+        Agency"},"skos:definition":{"en-US":"Organization in the public sector at
+        the federal, state or local levels."},"dct:description":{"en-US":"Includes
+        quasi-governmental organizations, special districts (e.g., libraries), corrections
+        organizations, etc., except college and school districts. Is also responsible
+        for the oversight and administration of specific functions other than the
+        military services."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/Government/json","skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:HighSchool","skos:prefLabel":{"en-US":"High
+        School"},"skos:definition":{"en-US":"Secondary school providing instruction
+        and educational services that do not focus primarily on career and technical
+        education or alternative education."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/HighSchool/json","skos:broader":["orgType:SecondarySchool"],"skos:inScheme":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:LaborUnion","skos:prefLabel":{"en-US":"Labor
+        Union"},"skos:definition":{"en-US":"Membership organization of workers formed
+        for the purpose of advancing its members'' interests in respect to wages,
+        benefits, and working conditions."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/LaborUnion/json","skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:Magnet","skos:prefLabel":{"en-US":"Magnet/Competitive
+        Admissions School"},"skos:definition":{"en-US":"Public school offering special
+        instruction and programs not available elsewhere, designed to attract a more
+        diverse student body from throughout a school district."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/Magnet/json","skos:broader":["orgType:SecondarySchool"],"skos:inScheme":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:Military","skos:prefLabel":{"en-US":"Military"},"skos:definition":{"en-US":"Armed
+        services of a government entity."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/Military/json","skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:NonTraditional","skos:prefLabel":{"en-US":"Alternative/Non-Traditional
+        School"},"skos:definition":{"en-US":"Secondary (i.e., high school) that: 1)
+        addresses needs of students which cannot typically be met in a regular school;
+        2) provides nontraditional education; 3) falls outside of the categories of
+        regular, magnet/special program emphasis, or career and technical education."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/NonTraditional/json","skos:broader":["orgType:SecondarySchool"],"skos:inScheme":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:Postsecondary","skos:prefLabel":{"en-US":"Postsecondary
+        Educational Institution"},"skos:definition":{"en-US":"Organization such as
+        a college or university."},"dct:description":{"en-US":"Organization with the
+        authority to award degrees, and whose primary purpose is to provide postsecondary
+        (tertiary or non-tertiary) education including programs whose purpose is providing
+        academic, vocational, and continuing professional education."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/Postsecondary/json","skos:narrower":["orgType:FourYear","orgType:TwoYear"],"skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:PrimarilyOnline","skos:prefLabel":{"en-US":"Primarily
+        Online"},"skos:definition":{"en-US":"Organization that primarily operates
+        online."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/PrimarilyOnline/json","skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:ProfessionalAssociation","skos:prefLabel":{"en-US":"Professional
+        Association"},"skos:definition":{"en-US":"Membership organization primarily
+        engaged in promoting the interests of a particular profession, the interests
+        of individuals engaged in that profession, and providing them with services
+        that may involve the provision of education and credentialing services."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/ProfessionalAssociation/json","skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:QualityAssurance","skos:prefLabel":{"en-US":"Quality
+        Assurance Body"},"skos:definition":{"en-US":"External body that performs accreditation,
+        endorsement, approval, and/or recognition of a credential issuer."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/QualityAssurance/json","skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:SecondarySchool","skos:prefLabel":{"en-US":"Secondary
+        School"},"skos:definition":{"en-US":"Secondary school primarily providing
+        education to students at the ninth grade or higher."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/SecondarySchool/json","skos:narrower":["orgType:HighSchool","orgType:Magnet","orgType:NonTraditional","orgType:Technical"],"skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:Technical","skos:prefLabel":{"en-US":"Career
+        and Technical School"},"skos:definition":{"en-US":"Secondary school that focuses
+        primarily on providing formal preparation for skilled, technical or professional
+        occupations or careers."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/Technical/json","skos:broader":["orgType:SecondarySchool"],"skos:inScheme":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:TrainingProvider","skos:prefLabel":{"en-US":"Education
+        and Training Provider"},"skos:definition":{"en-US":"Organization whose major
+        purpose is to provide education and training services but is not a postsecondary
+        education institution with the authority to award degrees."},"dct:description":{"en-US":"Includes
+        community-based organizations, non-degree granting proprietary schools which
+        are education and training providers that are recognized by states as schools."},"vann:usageNote":{"en-US":"In
+        the U.S., use for Title IV eligible organizations that do not award degrees."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/TrainingProvider/json","skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:TwoYear","skos:prefLabel":{"en-US":"Two-Year
+        College"},"skos:definition":{"en-US":"Authorized postsecondary institution
+        that primarily offers associate degrees and certificates, and, if authorized,
+        may also award higher degrees."},"dct:description":{"en-US":"Includes occupational
+        and vocational schools with programs of at least 1800 hours, academic institutions
+        with programs of less than 4 years, etc."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/TwoYear/json","skos:broader":["orgType:Postsecondary"],"skos:inScheme":["ceterms:OrganizationType"]},{"@type":"skos:Concept","@id":"orgType:Vendor","skos:prefLabel":{"en-US":"Vendor"},"skos:definition":{"en-US":"Sells,
+        maintains, and issues credentials for its own products and services for public
+        access and use."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/orgType/Vendor/json","skos:inScheme":["ceterms:OrganizationType"],"skos:topConceptOf":["ceterms:OrganizationType"]}]}'
+  recorded_at: Sun, 14 Nov 2021 15:10:15 GMT
+recorded_with: VCR 6.0.0

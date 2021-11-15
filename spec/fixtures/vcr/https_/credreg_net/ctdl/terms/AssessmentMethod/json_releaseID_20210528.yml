@@ -1,0 +1,75 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://credreg.net/ctdl/terms/AssessmentMethod/json?releaseID=20210528
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - public, max-age=60
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/json; charset=utf-8
+      Expires:
+      - Sun, 14 Nov 2021 15:11:46 GMT
+      Last-Modified:
+      - Sun, 14 Nov 2021 15:10:46 GMT
+      Vary:
+      - "*"
+      Server:
+      - Microsoft-IIS/10.0
+      X-Aspnetmvc-Version:
+      - '5.0'
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Sun, 14 Nov 2021 15:10:47 GMT
+    body:
+      encoding: UTF-8
+      string: '{"@context":"http://credreg.net/ctdl/schema/context/json","@graph":[{"@type":"skos:ConceptScheme","@id":"ceterms:AssessmentMethod","rdfs:label":{"en-US":"Assessment
+        Method"},"rdfs:comment":{"en-US":"Types of assessment method."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/ceterms/AssessmentMethod/json","meta:hasConcept":["assessMethod:Artifact","assessMethod:Exam","assessMethod:Performance"],"skos:hasTopConcept":["assessMethod:Artifact","assessMethod:Exam","assessMethod:Performance"]},{"@type":"skos:Concept","@id":"assessMethod:Artifact","skos:prefLabel":{"en-US":"Artifact"},"skos:definition":{"en-US":"Work
+        or product created or produced by the person being assessed."},"dct:description":{"en-US":"Artifact
+        includes, but is not limited to, an academic paper, video documentary, computer
+        software, music composition, choreography, novel, short story, journal article,
+        news article, report, lesson plan, product design, portfolio, manufactured
+        product, etc. Methods of evaluation may include multiple evaluators either
+        individually or as an expert panel using general criteria or more structured
+        rubrics whose scores are combined, etc. Criteria and methods of evaluation
+        are often very similar to those for assessing a performance, without the facets
+        specific to a live performance"},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/assessMethod/Artifact/json","skos:inScheme":["ceterms:AssessmentMethod"],"skos:topConceptOf":["ceterms:AssessmentMethod"]},{"@type":"skos:Concept","@id":"assessMethod:Exam","skos:prefLabel":{"en-US":"Exam"},"skos:definition":{"en-US":"Mix
+        of scored items presented in fixed or open response formats including qualifying
+        and comprehensive exams."},"dct:description":{"en-US":"Exam includes, but
+        is not limited to, multiple choice, true-false, written essay, short-answer,
+        fill-in or oral response formats that could include measurements of reasoning,
+        problem-solving, critical thinking."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/assessMethod/Exam/json","skos:inScheme":["ceterms:AssessmentMethod"],"skos:topConceptOf":["ceterms:AssessmentMethod"]},{"@type":"skos:Concept","@id":"assessMethod:Performance","skos:prefLabel":{"en-US":"Performance"},"skos:definition":{"en-US":"Set
+        of behaviors or actions assessed as demonstration of competencies where the
+        assessment occurs either as the actions take place (i.e., live) or through
+        review of recordings of those actions in a persistent media (e.g., video,
+        audio, keystroke records, etc.)"},"dct:description":{"en-US":"Performance
+        includes, but is not limited to, dance, music, teaching, acting, medical procedures,
+        truck driving, manufacturing production, etc. Criteria include the categories
+        and benchmarks on which the performance is assessed. Methods of evaluation
+        can include multiple evaluators either individually or as an expert panel
+        using general criteria or more structured rubrics whose scores are combined
+        (e.g., assessing a dance performance, evaluating the performance of a medical
+        procedure, truck driving procedure, manufacturing process such as machining)."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/assessMethod/Performance/json","skos:inScheme":["ceterms:AssessmentMethod"],"skos:topConceptOf":["ceterms:AssessmentMethod"]}]}'
+  recorded_at: Sun, 14 Nov 2021 15:10:47 GMT
+recorded_with: VCR 6.0.0

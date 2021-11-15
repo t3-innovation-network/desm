@@ -35,13 +35,11 @@ module Parsers
     end
 
     def self.find_converter file
-      CONVERTERS.find {|_, reader|
-        begin
-          reader.read(file.path)
-        rescue
-          false
-        end
-      } &.last
+      CONVERTERS.values.find do |reader|
+        reader.read(file.path)
+      rescue Converters::ParseError
+        false
+      end
     end
   end
   # rubocop:enable Style/RescueStandardError

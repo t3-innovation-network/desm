@@ -13,12 +13,14 @@ module SchemeDefinitionFetchable
   }.freeze
 
   def fetch_definition uri
-    file_content = URI.open(uri).read
+    file_content = URI.open(uri, allow_redirections: :all).read
     file = Tempfile.new(["tmpschemfile", infer_extension(uri)])
-    file.write(file_content)
+    file.write(file_content.force_encoding("UTF-8"))
     file.rewind
 
     converter = Parsers::FormatConverter.find_converter(file)
+    raise "Converter not found for schema: `#{uri}`" unless converter
+
     converter.convert(file)
   end
 
@@ -28,10 +30,7 @@ module SchemeDefinitionFetchable
   ###
   def resolve_context
     # Try resolving with an http request
-    response = http_get(@context)
-    # Avoid having the context nested twice
-    return response["@context"] if response && response["@context"]&.present?
-    {}
+    JsonContext.fetch(@context)
   end
 
   private

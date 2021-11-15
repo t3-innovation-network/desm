@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://purl.org/ASN/schema/core/Statement
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 302
+      message: FOUND
+    headers:
+      Server:
+      - gunicorn
+      Date:
+      - Sun, 14 Nov 2021 15:44:02 GMT
+      Content-Type:
+      - text/html; charset=utf-8
+      Content-Length:
+      - '229'
+      Location:
+      - http://s3.amazonaws.com/jestaticd2l/purl/schema/standard#Statement
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: UTF-8
+      string: |-
+        <!DOCTYPE HTML>
+        <html>
+        <head>
+        <title>302 Found</title>
+        </head>
+        <body>
+        <h1>Found</h1>
+        <p>The resource requested is available <a href="http://s3.amazonaws.com/jestaticd2l/purl/schema/standard#Statement">here</a>.<p>
+        </body>
+        </html>
+  recorded_at: Sun, 14 Nov 2021 15:44:03 GMT
+recorded_with: VCR 6.0.0

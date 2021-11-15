@@ -21,6 +21,9 @@ module Converters
 
     def self.read(path)
       JSON(File.read(path))
+      true
+    rescue JSON::ParserError
+      raise Converters::ParseError
     end
   end
 end

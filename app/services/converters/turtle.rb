@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module Converters
-  class TurtleParseError; end
-
   # Converts a Turtle specification to the JSON-LD format
   class Turtle
     ##
@@ -18,9 +16,9 @@ module Converters
       JSON::LD::API.compact(expanded_resources, context).symbolize_keys
     end
 
-    def self.read(_path)
-      reader = RDF::Turtle::Reader.open(file.path)
-      raise TurtleParseError unless reader.valid?
+    def self.read(path)
+      reader = RDF::Turtle::Reader.open(path)
+      raise Converters::ParseError unless reader.valid?
 
       true
     end
