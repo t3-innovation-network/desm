@@ -1,6 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 const UserInfo = () => {
   const isLoggedIn = useSelector((state) => state.loggedIn);
@@ -11,7 +13,7 @@ const UserInfo = () => {
       {isLoggedIn ? (
         <React.Fragment>
           <Link to="#" className="nav-link col-on-primary">
-            <i className="fas fa-user mr-2"></i>
+            <FontAwesomeIcon icon={faUser} className="mr-2" />
             {user && (
               <span>
                 {_.capitalize(user.fullname) +

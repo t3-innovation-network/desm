@@ -9,6 +9,8 @@ import Loader from "../shared/Loader";
 import TopNav from "../shared/TopNav";
 import TopNavOptions from "../shared/TopNavOptions";
 import Pluralize from "pluralize";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const EditSpecification = (props) => {
   /**
@@ -192,7 +194,9 @@ const EditSpecification = (props) => {
                     <div className="col">
                       <h2>
                         Spine for{" "}
-                        <strong className="col-primary">{domain.pref_label}</strong>
+                        <strong className="col-primary">
+                          {domain.pref_label}
+                        </strong>
                       </h2>
                     </div>
                   </div>
@@ -203,7 +207,11 @@ const EditSpecification = (props) => {
                   </div>
                   <div className="row">
                     <div className="col-12 form-group input-group-has-icon">
-                      <span className="fa fa-search form-control-feedback"></span>
+                      <FontAwesomeIcon
+                        icon={faSearch}
+                        className="form-control-feedback"
+                      />
+
                       <input
                         type="text"
                         className="form-control"
@@ -218,7 +226,12 @@ const EditSpecification = (props) => {
                 <div className="pr-5 mt-5">
                   <AlertNotice
                     cssClass="bg-col-primary col-background"
-                    title={terms.length + " " + Pluralize("property", terms.length) + " recognized for this spine"}
+                    title={
+                      terms.length +
+                      " " +
+                      Pluralize("property", terms.length) +
+                      " recognized for this spine"
+                    }
                     message="You can edit each term of your specification until you are confident with names, vocabularies, uri's and more."
                   />
                   <div className="has-scrollbar scrollbar pr-5">

@@ -62,8 +62,7 @@ describe ConfigurationProfile, type: :model do
 
   context "when it is completed" do
     before(:each) do
-      subject.structure = complete_structure
-      subject.save!
+      subject.update!(structure: complete_structure)
     end
 
     it "has not generated structure" do
@@ -100,8 +99,7 @@ describe ConfigurationProfile, type: :model do
 
   context "when it is active" do
     before(:each) do
-      subject.structure = complete_structure
-      subject.save!
+      subject.update!(structure: complete_structure)
       subject.activate!
     end
 
@@ -188,11 +186,11 @@ describe ConfigurationProfile, type: :model do
       expect(subject.structure_valid?).to be_falsey
     end
 
-    it "rejects a valid but not complete json structure for a configuration profile" do
+    it "accepts as valid but not as complete a json structure for a configuration profile" do
       valid_object = {
         "name": "Test CP",
         "description": "Example description for configuration profile",
-        "standardsOrganiations": [
+        "standardsOrganizations": [
           {
             "name": "Example SDO"
           }
@@ -202,6 +200,20 @@ describe ConfigurationProfile, type: :model do
 
       expect(subject.structure_valid?).to be_truthy
       expect(subject.structure_complete?).to be_falsey
+    end
+
+    it "Returns the description of the errors when there are any" do
+      object_with_additional_properties = {
+        "name": "Test CP",
+        "description": "Example description for a configuration profile",
+        "additionalProperty": "additional property"
+      }
+
+      subject.structure = object_with_additional_properties
+      validation_result = ConfigurationProfile.validate_structure(subject.structure)
+
+      expect(subject.structure_valid?).to be_falsey
+      expect(validation_result).to include(a_string_matching("contains additional properties"))
     end
 
     it "accepts as complete a complete and valid json structure for a configuration profile" do
@@ -216,11 +228,36 @@ describe ConfigurationProfile, type: :model do
 
     it "rejects a configuration profile structure with an invalid email for an agent" do
       subject.structure = valid_structure_with_invalid_email
+      validation_result = ConfigurationProfile.validate_structure(subject.structure)
 
       expect(subject.structure_complete?).to be_falsey
       expect(subject.structure_valid?).to be_falsey
+      expect(validation_result).to include(a_string_matching("did not match the regex"))
       expect(subject.state_handler).to be_instance_of(CpState::Incomplete)
       expect { subject.complete! }.to raise_error CpState::NotYetReadyForTransition
+    end
+  end
+
+  context "when it has to be removed, it checks mappings" do
+    let(:specification) { subject.standards_organizations.first.schemes.first }
+    let(:user) { subject.standards_organizations.first.agents.first }
+    let(:mapping) { Processors::Mappings.new(specification, user).create }
+
+    before(:each) do
+      subject.update!(structure: complete_structure)
+      subject.activate!
+    end
+
+    it "can't be removed if there is at least one in progress mapping" do
+      mapping.update!(status: :in_progress)
+
+      expect { subject.remove! }.to raise_error ActiveRecord::RecordNotDestroyed
+    end
+
+    it "can be removed if there is none in progress mappings" do
+      subject.remove!
+
+      expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
     end
   end
 end

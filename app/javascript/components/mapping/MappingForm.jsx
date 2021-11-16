@@ -25,6 +25,8 @@ import filterSpecification from "../../services/filterSpecification";
 import mergeFiles from "../../services/mergeFiles";
 import { setVocabularies } from "../../actions/vocabularies";
 import { validURL } from "../../helpers/URL";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 const MappingForm = () => {
   /**
@@ -109,14 +111,14 @@ const MappingForm = () => {
    * @param {HttpResponse} response
    */
   const anyError = (response) => {
-    if(response.error){
+    if (response.error) {
       dispatch(setMappingFormErrors([response.error]));
-    }else{
+    } else {
       dispatch(unsetMappingFormErrors());
     }
 
     return !_.isUndefined(response.error);
-  }
+  };
 
   /**
    * Validates the use case to be a valid URL after the user focuses
@@ -170,9 +172,9 @@ const MappingForm = () => {
   const handleMergeFiles = async () => {
     let response = await mergeFiles(files);
 
-    if(!anyError(response)){
+    if (!anyError(response)) {
       dispatch(setMergedFileId(response.mergedFileId));
-      
+
       return response.mergedFileId;
     }
   };
@@ -185,12 +187,16 @@ const MappingForm = () => {
   const handleCheckDomainsInFile = async (mergedFileId) => {
     let response = await checkDomainsInFile(mergedFileId);
 
-    if(!anyError(response)) {
+    if (!anyError(response)) {
       if (!Boolean(response.domains.length)) {
-        dispatch(setMappingFormErrors(["We couldn't find any classes in the provided file"]));
+        dispatch(
+          setMappingFormErrors([
+            "We couldn't find any classes in the provided file",
+          ])
+        );
         return;
       }
-      
+
       if (response.domains.length > 1) {
         setMultipleDomainsInFile(true);
         setDomainsInFile(response.domains);
@@ -212,7 +218,7 @@ const MappingForm = () => {
     if (!anyError(response)) {
       let tempSpecs = [];
       tempSpecs.push(JSON.stringify(response.mergedFile, null, 2));
-      
+
       dispatch(setSpecToPreview(tempSpecs));
       dispatch(setFilteredFile(response.mergedFile));
     }
@@ -265,7 +271,7 @@ const MappingForm = () => {
     if (!anyError(response)) {
       dispatch(setVocabularies(response.filtered.vocabularies));
       dispatch(setFilteredFile(response.filtered.specification));
-      
+
       return response.filtered.specification;
     }
   };
@@ -382,7 +388,10 @@ const MappingForm = () => {
                     title="Import the specification"
                     disabled={submitted}
                   >
-                    <i className="fas fa-arrow-right col-background"/>
+                    <FontAwesomeIcon
+                      icon={faArrowRight}
+                      className="col-background"
+                    />
                   </button>
                 </section>
               )}

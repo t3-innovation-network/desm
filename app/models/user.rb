@@ -4,7 +4,7 @@
 # @description: Represents a user of this application
 ###
 class User < ApplicationRecord
-  attr_accessor :skip_sending_welcome_email
+  attr_accessor :skip_sending_welcome_email, :skip_validating_organization
 
   has_secure_password
   include Tokenable
@@ -14,9 +14,11 @@ class User < ApplicationRecord
   has_many :assignments, dependent: :delete_all
   has_many :roles, through: :assignments
   has_many :specifications, dependent: :destroy
+  has_many :mappings, dependent: :destroy
 
   validates :fullname, presence: true
   validates :email, presence: true, uniqueness: true
+  validates :organization, presence: true, unless: :skip_validating_organization
   PASSWORD_VALIDATION_RULES = {
     # @description: Level of deductibility. 18 is the library's default, known as an acceptable level
     #   of entropy.
@@ -31,6 +33,14 @@ class User < ApplicationRecord
 
   def role?(role)
     roles.any? {|r| r.name.underscore.to_sym == role }
+  end
+
+  def super_admin?
+    role?(:"super admin")
+  end
+
+  def profile_admin?
+    role?(:"profile admin")
   end
 
   def assign_role(role_id)

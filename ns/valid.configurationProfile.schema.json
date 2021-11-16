@@ -23,15 +23,22 @@
         "phone": {
           "type": "string",
           "title": "The american format phone number of the agent",
-          "pattern": "^(-()[0-9]+)+$",
-          "examples": ["(123) 123-1234"]
+          "pattern": "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$",
+          "examples": [
+            "123-456-7890",
+            "(123) 456-7890",
+            "123 456 7890",
+            "123.456.7890",
+            "+91 (123) 456-7890"
+          ]
         },
         "githubHandle": {
           "type": "string",
           "title": "The github username. Pattern is set according to the form validation messages on the 'Join Github' page",
           "pattern": "/^[a-zd](?:[a-zd]|-(?=[a-zd])){0,38}$/i"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "DSOSchema": {
       "type": "object",
@@ -75,7 +82,8 @@
           "title": "The associated abstract classes for this schema file",
           "$ref": "#/definitions/PlausibleUrl"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "PlausibleUrl": {
       "anyOf": [{ "$ref": "#/definitions/SaneUrl" }, { "format": "hostname" }]
@@ -104,7 +112,8 @@
             "https://example.url.for.skos.predicates.file1,https://example.url.for.skos.predicates.file2"
           ]
         }
-      }
+      },
+      "additionalProperties": false
     },
     "StandardOrganization": {
       "type": "object",
@@ -156,7 +165,8 @@
             "$ref": "#/definitions/DSOSchema"
           }
         }
-      }
+      },
+      "additionalProperties": false
     }
   },
   "properties": {
@@ -205,5 +215,6 @@
     "profileAdministrator": {
       "$ref": "#/definitions/Agent"
     }
-  }
+  },
+  "additionalProperties": false
 }

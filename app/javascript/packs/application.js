@@ -23,4 +23,3 @@ import "../../assets/stylesheets/stepper";
 import "../../assets/stylesheets/customradio";
 import "../../assets/stylesheets/forms";
 import "../../assets/stylesheets/drag-n-drop";
-import "@fortawesome/fontawesome-free/js/all";

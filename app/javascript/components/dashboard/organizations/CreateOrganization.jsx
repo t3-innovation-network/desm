@@ -4,6 +4,8 @@ import createOrganization from "../../../services/createOrganization";
 import { toastr as toast } from "react-redux-toastr";
 import AlertNotice from "../../shared/AlertNotice";
 import { Link } from "react-router-dom";
+import { faBuilding, faHome } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default class CreateOrganization extends Component {
   state = {
@@ -17,7 +19,7 @@ export default class CreateOrganization extends Component {
   dashboardPath = () => {
     return (
       <div className="float-right">
-        <i className="fas fa-home" />{" "}
+        <FontAwesomeIcon icon={faHome} />{" "}
         <span>
           <Link className="col-on-primary" to="/">
             Home
@@ -84,7 +86,7 @@ export default class CreateOrganization extends Component {
           {this.dashboardPath()}
           <div className="card mt-5">
             <div className="card-header">
-              <i className="fa fa-building"></i>
+              <FontAwesomeIcon icon={faBuilding} />
               <span className="pl-2 subtitle">Create Organization</span>
             </div>
             <div className="card-body">

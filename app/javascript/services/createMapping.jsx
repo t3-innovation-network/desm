@@ -6,8 +6,8 @@ const createMapping = async (specification_id) => {
     method: "post",
     successResponse: "mapping",
     payload: {
-      specification_id: specification_id
-    }
+      specification_id: specification_id,
+    },
   });
   return response;
 };

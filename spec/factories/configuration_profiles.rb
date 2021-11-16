@@ -6,6 +6,5 @@ FactoryBot.define do
   factory :configuration_profile do
     name { Faker::App.name }
     description { Faker::Lorem.sentence }
-    association :administrator, factory: :user
   end
 end

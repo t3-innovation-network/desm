@@ -1,18 +1,23 @@
 import React, { Component } from "react";
 import Collapsible from "../shared/Collapsible.jsx";
 import Loader from "../shared/Loader.jsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPencilAlt,
+  faTimes,
+  faCheck,
+} from "@fortawesome/free-solid-svg-icons";
 
 /**
- * Props:
- * @param {Function} onClick Actions when the user clicks on it
- * @param {Boolean} disableClick Whether we allow to click on this card. If true, it wil trigger onClick
- * @param {Object} term The term object
- * @param {String} origin The name of the organization that created the term specification
- * @param {Boolean} alwaysEnabled Whether after dragged it remains available to drag again
- * @param {Function} isMapped The logic to determine whether this term is or not mapped
- * @param {Boolean} editEnabled Show/Hide the edit option
- * @param {Function} onEditClick The logic to execute when the user click "edit"
- * @param {Function} onRevertMapping The logic to execute when click on the option to revert a term from being mapped
+ * @prop {Function} onClick Actions when the user clicks on it
+ * @prop {Boolean} disableClick Whether we allow to click on this card. If true, it wil trigger onClick
+ * @prop {Object} term The term object
+ * @prop {String} origin The name of the organization that created the term specification
+ * @prop {Boolean} alwaysEnabled Whether after dragged it remains available to drag again
+ * @prop {Function} isMapped The logic to determine whether this term is or not mapped
+ * @prop {Boolean} editEnabled Show/Hide the edit option
+ * @prop {Function} onEditClick The logic to execute when the user click "edit"
+ * @prop {Function} onRevertMapping The logic to execute when click on the option to revert a term from being mapped
  */
 export default class TermCard extends Component {
   state = {
@@ -79,12 +84,12 @@ export default class TermCard extends Component {
                 title="Revert selecting this term"
                 onClick={() => this.handleOnRevertMapping(term.id)}
               >
-                <i className="fas fa-times"></i>
+                <FontAwesomeIcon icon={faTimes} />
               </div>
               <div className="col-7 non-selectable">{term.name}</div>
               <div className="col-4">
                 <div className="float-right">
-                  <i className="fas fa-check"></i>
+                  <FontAwesomeIcon icon={faCheck} />
                 </div>
               </div>
             </div>
@@ -124,7 +129,7 @@ export default class TermCard extends Component {
                 }}
                 className="btn"
               >
-                <i className="fa fa-pencil-alt"></i>
+                <FontAwesomeIcon icon={faPencilAlt} />
               </button>
             )}
           </div>

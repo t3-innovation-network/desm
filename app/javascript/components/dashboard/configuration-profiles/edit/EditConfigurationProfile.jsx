@@ -6,7 +6,7 @@ import Loader from "../../../shared/Loader";
 import DashboardContainer from "../../DashboardContainer";
 import { stateStyle } from "../utils";
 import StepsAside from "./StepsAside";
-import DSOMetaData from "./DSOMetaData";
+import CPMetaData from "./CPMetaData";
 import MappingPredicates from "./MappingPredicates";
 import AbstractClasses from "./AbstractClasses";
 import DSOsInfo from "./DSOsInfo";
@@ -17,6 +17,8 @@ import {
   setStep,
 } from "../../../../actions/configurationProfiles";
 import { camelizeKeys } from "humps";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
 
 const EditConfigurationProfile = (props) => {
   const [loading, setLoading] = useState(true);
@@ -25,7 +27,7 @@ const EditConfigurationProfile = (props) => {
   const dashboardPath = () => {
     return (
       <div className="float-right">
-        <i className="fas fa-home" />{" "}
+        <FontAwesomeIcon icon={faHome} />{" "}
         <span>
           <Link className="col-on-primary" to="/">
             Home
@@ -61,11 +63,7 @@ const EditConfigurationProfile = (props) => {
         return;
       }
 
-      dispatch(
-        setCurrentConfigurationProfile(
-          camelizeKeys(response.configurationProfile)
-        )
-      );
+      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
       setLoading(false);
     });
   };
@@ -99,7 +97,7 @@ const EditConfigurationProfile = (props) => {
                   <div className="row justify-content-center">
                     <CPCardHeader />
                   </div>
-                  <div className="row justify-content-center">
+                  <div className="row justify-content-center mb-3">
                     <PageStepRenderer />
                   </div>
                   <div className="row mt-auto ml-auto">
@@ -148,7 +146,7 @@ const PageStepRenderer = () => {
 
   switch (currentStep) {
     case 1:
-      return <DSOMetaData />;
+      return <CPMetaData />;
       break;
     case 2:
       return <MappingPredicates />;
@@ -160,7 +158,7 @@ const PageStepRenderer = () => {
       return <DSOsInfo />;
       break;
     default:
-      return <DSOMetaData />;
+      return <CPMetaData />;
       break;
   }
 };

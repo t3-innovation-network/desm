@@ -9,6 +9,8 @@ import updateUser from "../../../services/updateUser";
 import { toastr as toast } from "react-redux-toastr";
 import { Link } from "react-router-dom";
 import Loader from "../../shared/Loader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faTrash, faHome } from "@fortawesome/free-solid-svg-icons";
 
 export default class EditUser extends Component {
   state = {
@@ -32,7 +34,7 @@ export default class EditUser extends Component {
   dashboardPath = () => {
     return (
       <div className="float-right">
-        <i className="fas fa-home" />{" "}
+        <FontAwesomeIcon icon={faHome} />{" "}
         <span>
           <Link className="col-on-primary" to="/">
             Home
@@ -174,7 +176,7 @@ export default class EditUser extends Component {
         ) : (
           <div className="card mt-5">
             <div className="card-header">
-              <i className="fa fa-user"></i>
+              <FontAwesomeIcon icon={faUser} />
               <span className="pl-2 subtitle">User {fullname}</span>
               <button
                 className="btn btn-dark float-right"
@@ -185,7 +187,7 @@ export default class EditUser extends Component {
                   this.deleteUserAPI();
                 }}
               >
-                <i className="fa fa-trash" aria-hidden="true"></i>
+                <FontAwesomeIcon icon={faTrash} />
               </button>
             </div>
             <div className="card-body">
