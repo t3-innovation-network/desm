@@ -13,11 +13,7 @@ module SchemeDefinitionFetchable
   }.freeze
 
   def fetch_definition uri
-    file_content = URI.open(uri, allow_redirections: :all).read
-    file = Tempfile.new(["tmpschemfile", infer_extension(uri)])
-    file.write(file_content.force_encoding("UTF-8"))
-    file.rewind
-
+    file = temp_file(uri)
     converter = Parsers::FormatConverter.find_converter(file)
     raise "Converter not found for schema: `#{uri}`" unless converter
 
@@ -34,6 +30,20 @@ module SchemeDefinitionFetchable
   end
 
   private
+
+  def temp_file uri
+    file = Tempfile.new(["tmpschemfile", infer_extension(uri)])
+    file.write(fetch_content(uri).force_encoding("UTF-8"))
+    file.rewind
+    file
+  end
+
+  def fetch_content uri
+    repository = RDF::Repository.load(uri)
+    repository.to_rdf_json.to_json
+  rescue StandardError
+    URI.open(uri, allow_redirections: :all).read
+  end
 
   def infer_extension uri
     ext = File.extname(uri)

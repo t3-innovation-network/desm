@@ -11,7 +11,7 @@ module Parsers
 
       SEPARATOR = ":"
 
-      def initialize(type, context = {})
+      def initialize(type, context={})
         @type = type
         @context = context
         @context = resolve_context if @context.is_a?(String) && uri?(@context)
