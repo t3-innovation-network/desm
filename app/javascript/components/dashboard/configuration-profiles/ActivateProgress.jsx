@@ -2,6 +2,7 @@ import Modal from "react-modal";
 import React from "react";
 import { SlideInDown } from "../../shared/Animations";
 import { CenteredRoundedCard } from "./utils";
+import Loader from "../../shared/Loader";
 
 /**
  * @prop {Boolean} visible
@@ -81,16 +82,20 @@ const ActivateProgress = (props) => {
       shouldCloseOnOverlayClick={false}
     >
       <SlideInDown>
-        <CenteredRoundedCard
-          title={data.title}
-          subtitle={
-            <h4 className="text-center mb-5" style={{ fontStyle: "italic" }}>
-              {data.message}
-            </h4>
-          }
-        >
-          {renderSteps()}
-        </CenteredRoundedCard>
+        <div className="row justify-content-center mt-5">
+          <CenteredRoundedCard
+            title={data.title}
+            subtitle={
+              <h4 className="text-center mb-5" style={{ fontStyle: "italic" }}>
+                {data.message}
+              </h4>
+            }
+            styles={{ transform: "translate(0, 10%)" }}
+          >
+            <Loader />
+            {renderSteps()}
+          </CenteredRoundedCard>
+        </div>
       </SlideInDown>
     </Modal>
   );

@@ -8,12 +8,13 @@ module Processors
     attr_accessor :context, :graph
 
     def initialize file_content
+      file_content = JSON.parse(file_content) if file_content.is_a?(String)
+      file_content = file_content.with_indifferent_access
+
       # The domains are listed under the '@graph' object, because at this
       # stage we are dealing with a json-ld file
-      file_content = file_content.with_indifferent_access
       raise InvalidSpecification unless file_content["@graph"].present?
 
-      file_content = JSON.parse(file_content) if file_content.is_a?(String)
       @spec = file_content
       @context = file_content["@context"] || {}
       @graph = file_content["@graph"]
@@ -221,7 +222,7 @@ module Processors
     # @param [String] class_uri The id (URI) of the class or property to find related ones
     ###
     def build_nodes_for_uri(class_uri)
-      nodes = Parsers::Skos.new(@graph).exclude_skos_types
+      nodes = Parsers::Skos.new(graph: @graph).exclude_skos_types
 
       # Get only the properties
       props = filter_properties([class_uri], nodes)

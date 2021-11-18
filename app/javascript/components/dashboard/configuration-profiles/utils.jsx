@@ -185,15 +185,17 @@ export const NoDataFound = (props) => {
 };
 
 export const CenteredRoundedCard = (props) => {
-  const { title, subtitle, children } = props;
+  const { title, subtitle, children, styles = {} } = props;
 
   return (
     <div
       className="card"
       style={{
-        transform: "translate(50%, 10%)",
-        maxWidth: "50%",
-        borderRadius: "10px",
+        ...styles,
+        ...{
+          borderRadius: "10px",
+          height: "fit-content",
+        },
       }}
     >
       <div className="card-header">
@@ -204,13 +206,9 @@ export const CenteredRoundedCard = (props) => {
         </div>
       </div>
       <div className="card-body">
-        <div className="row">
-          <div className="col">
-            {subtitle}
+        {subtitle}
 
-            {children}
-          </div>
-        </div>
+        {children}
       </div>
     </div>
   );

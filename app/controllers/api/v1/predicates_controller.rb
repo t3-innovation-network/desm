@@ -8,8 +8,6 @@ class Api::V1::PredicatesController < ApplicationController
   # @description: Lists all the predicates
   ###
   def index
-    predicates = Predicate.all.order(:pref_label)
-
-    render json: predicates
+    render json: current_user.available_predicates
   end
 end

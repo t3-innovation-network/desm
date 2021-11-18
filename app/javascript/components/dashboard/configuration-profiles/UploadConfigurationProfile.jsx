@@ -120,7 +120,7 @@ class UploadConfigurationProfile extends Component {
 
         <div className="col mt-5">
           {errors.length ? <AlertNotice message={errors} /> : ""}
-          <div className="row h-50 ml-5">
+          <div className="row h-50 justify-content-center mt-5">
             <CenteredRoundedCard
               title="Upload your configuration profile"
               subtitle={this.cardSubtitle()}
