@@ -117,13 +117,20 @@ const CPCardHeader = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
   const savingCP = useSelector((state) => state.savingCP);
   const [showChangesSaved, setShowChangesSaved] = useState(false);
+  const triggerLabelShow = () => {
+    setTimeout(() => {
+      setShowChangesSaved(false);
+    }, 3000);
+  };
 
   useEffect(() => {
     if (savingCP) {
       setShowChangesSaved(true);
-      setTimeout(() => {
-        setShowChangesSaved(false);
-      }, 3000);
+      triggerLabelShow();
+
+      return () => {
+        clearTimeout(triggerLabelShow);
+      };
     }
   }, [savingCP]);
 
