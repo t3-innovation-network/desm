@@ -116,6 +116,16 @@ const EditConfigurationProfile = (props) => {
 const CPCardHeader = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
   const savingCP = useSelector((state) => state.savingCP);
+  const [showChangesSaved, setShowChangesSaved] = useState(false);
+
+  useEffect(() => {
+    if (savingCP) {
+      setShowChangesSaved(true);
+      setTimeout(() => {
+        setShowChangesSaved(false);
+      }, 3000);
+    }
+  }, [savingCP]);
 
   return (
     <Fragment>
@@ -125,9 +135,11 @@ const CPCardHeader = () => {
         </h3>
       </div>
       <div className="col-4">
-        <p className="text-center col-on-primary-light">
-          {savingCP ? "Saving ..." : "All changes saved"}
-        </p>
+        {showChangesSaved && (
+          <p className="text-center col-on-primary-light">
+            {savingCP ? "Saving ..." : "All changes saved"}
+          </p>
+        )}
       </div>
       <div className="col-4">
         <p
