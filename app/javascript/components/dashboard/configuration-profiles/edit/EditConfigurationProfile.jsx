@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import fetchConfigurationProfile from "../../../../services/fetchConfigurationProfile";
 import AlertNotice from "../../../shared/AlertNotice";
@@ -116,6 +116,24 @@ const EditConfigurationProfile = (props) => {
 const CPCardHeader = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
   const savingCP = useSelector((state) => state.savingCP);
+  const [showChangesSaved, setShowChangesSaved] = useState(false);
+
+  const timeoutId = useRef();
+
+  useEffect(() => {
+    if (savingCP) {
+      setShowChangesSaved(true);
+
+      timeoutId.current = setTimeout(() => {
+        setShowChangesSaved(false);
+        timeoutId.current = undefined;
+      }, 3000);
+    }
+  }, [savingCP]);
+
+  useEffect(() => {
+    return () => timeoutId.current && clearTimeout(timeoutId.current);
+  }, [])
 
   return (
     <Fragment>
@@ -125,9 +143,11 @@ const CPCardHeader = () => {
         </h3>
       </div>
       <div className="col-4">
-        <p className="text-center col-on-primary-light">
-          {savingCP ? "Saving ..." : "All changes saved"}
-        </p>
+        {showChangesSaved && (
+          <p className="text-center col-on-primary-light">
+            {savingCP ? "Saving ..." : "All changes saved"}
+          </p>
+        )}
       </div>
       <div className="col-4">
         <p
