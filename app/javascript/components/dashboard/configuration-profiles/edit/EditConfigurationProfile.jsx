@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import fetchConfigurationProfile from "../../../../services/fetchConfigurationProfile";
 import AlertNotice from "../../../shared/AlertNotice";
@@ -117,22 +117,23 @@ const CPCardHeader = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
   const savingCP = useSelector((state) => state.savingCP);
   const [showChangesSaved, setShowChangesSaved] = useState(false);
-  const triggerLabelShow = () => {
-    setTimeout(() => {
-      setShowChangesSaved(false);
-    }, 3000);
-  };
+
+  const timeoutId = useRef();
 
   useEffect(() => {
     if (savingCP) {
       setShowChangesSaved(true);
-      triggerLabelShow();
 
-      return () => {
-        clearTimeout(triggerLabelShow);
-      };
+      timeoutId.current = setTimeout(() => {
+        setShowChangesSaved(false);
+        timeoutId.current = undefined;
+      }, 3000);
     }
   }, [savingCP]);
+
+  useEffect(() => {
+    return () => timeoutId.current && clearTimeout(timeoutId.current);
+  }, [])
 
   return (
     <Fragment>
