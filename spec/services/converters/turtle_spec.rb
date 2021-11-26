@@ -17,7 +17,7 @@ RSpec.describe Converters::Turtle do
       it "converts N-Triples to JSON-LD" do
         expect(result.keys).to eq(%i[@graph])
 
-        expect(graph.map {|r| r["@type"] }.uniq.compact).to match(
+        expect(graph.map {|r| r["@type"] }.uniq.compact).to match_array(
           [
             "http://purl.org/ASN/schema/core/Statement",
             "http://purl.org/ASN/schema/core/StandardDocument"
@@ -45,7 +45,7 @@ RSpec.describe Converters::Turtle do
           "rdf" => "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
         )
 
-        expect(graph.map {|r| r["@type"] }.uniq.compact).to match(
+        expect(graph.map {|r| r["@type"] }.uniq.compact).to match_array(
           %w[asn:Statement asn:StandardDocument]
         )
 

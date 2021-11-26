@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_21_011708) do
+ActiveRecord::Schema.define(version: 2021_11_14_101600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -128,6 +128,14 @@ ActiveRecord::Schema.define(version: 2021_08_21_011708) do
     t.integer "spine_id"
     t.index ["domain_set_id"], name: "index_domains_on_domain_set_id"
     t.index ["uri"], name: "index_domains_on_uri", unique: true
+  end
+
+  create_table "json_contexts", force: :cascade do |t|
+    t.string "uri", null: false
+    t.jsonb "payload", default: {}, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["uri"], name: "index_json_contexts_on_uri", unique: true
   end
 
   create_table "mapping_selected_terms", force: :cascade do |t|

@@ -5,17 +5,17 @@ module Parsers
     class Resolver
       include NodeTypes
       include Connectable
-      include SkosFeedable
+      include SchemeDefinitionFetchable
 
       attr_accessor :full_definition_uri
 
       SEPARATOR = ":"
 
-      def initialize(type, context)
-        raise "No context provided for node" unless context
-
+      def initialize(type, context={})
         @type = type
-        @context = context.with_indifferent_access
+        @context = context
+        @context = resolve_context if @context.is_a?(String) && uri?(@context)
+        @context = @context.with_indifferent_access
 
         build_type_name
         build_full_definition_uri

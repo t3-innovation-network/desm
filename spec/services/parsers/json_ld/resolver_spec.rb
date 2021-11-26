@@ -42,7 +42,7 @@ RSpec.describe Parsers::JsonLd::Resolver do
 
     # ASN server is down.
     # @todo: Use VCR to test it when server is up again
-    xit "uses the context to properly fetch the type from the internet" do
+    it "uses the context to properly fetch the type from the internet" do
       result_node = subject.infer_rdfs_class_node
 
       expect(subject.full_definition_uri).to eq("http://purl.org/ASN/schema/core/Statement")

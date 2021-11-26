@@ -8,6 +8,7 @@ module Parsers
   ###
   class Specification
     include Connectable
+    include SchemeDefinitionFetchable
 
     attr_accessor :graph, :context
 
@@ -15,7 +16,7 @@ module Parsers
       validate_spec_format(file_content)
 
       # Ensure we're dealing with a hash, otherwise the "merge!" method below will not work
-      resolve_context if @context.is_a?(String) && uri?(@context)
+      @context = resolve_context if @context.is_a?(String) && uri?(@context)
     end
 
     ###
@@ -26,18 +27,6 @@ module Parsers
       parser = new(file_content: specification)
 
       parser
-    end
-
-    ###
-    # @description: If the context is a reference to an external service endpoint, go get it
-    # @return [Hash,String]
-    ###
-    def resolve_context
-      # Try resolving with an http request
-      response = http_get(@context)
-
-      # Avoid having the context nested twice
-      @context = response["@context"] if response && response["@context"]&.present?
     end
 
     ###

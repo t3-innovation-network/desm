@@ -16,6 +16,14 @@ module Converters
       doc.xpath("/xs:schema/xs:complexType").each do |complex_type|
         build_complex_type_resources(complex_type)
       end
+    rescue Nokogiri::XML::XPath::SyntaxError
+    end
+
+    def self.read(path)
+      doc = Nokogiri::XML(File.read(path))
+      raise Converters::ParseError if doc.errors.any?
+
+      true
     end
 
     private
