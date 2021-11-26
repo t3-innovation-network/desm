@@ -1,0 +1,38 @@
+{
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "dcterms": "http://purl.org/dc/terms/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#" ,
+    "Concept": {"@id": "skos:Concept"},
+    "ConceptScheme": {"@id": "skos:ConceptScheme"},
+    "created": {"@id": "dcterms:created", "@type": "xsd:date"},
+    "creator": {"@id": "dcterms:creator", "@container": "@language"},
+    "description": {"@id": "dcterms:description", "@container": "@language"},
+    "hasTopConcept": {"@id": "skos:hasTopConcept", "@type": "@id"},
+    "inScheme": {"@id": "skos:inScheme", "@type": "@id"},
+    "prefLabel": {"@id": "skos:prefLabel", "@container": "@language"},
+    "title": {"@id": "dcterms:title", "@container": "@language"}
+  },
+  "@graph": [
+     {
+      "id": "http://desm.org/concepts/mappingClasses",
+      "type": "skos:ConceptScheme",
+      "title": {"en-us": "Test Abstract Mapping Class"},
+      "description": { "en-us": "This concept scheme identifies the abstract mapping class used in the late 2020 teasting of the DESM tools and includes a single abstract class, competencies."},
+      "creator": {"en-us": "OCF Collab Techinical Team"},
+      "created": "2021-11-26",
+      "hasTopConcept": "http://desm.org/concepts/competency"
+    },
+    {
+      "id": "http://desm.org/concepts/credential",
+      "type": "skos:Concept",
+      "prefLabel": {"en-us": "Credential"},
+      "definition": {"en-us": "A qualification, achievement, personal quality, or aspect of a person's background, typically when used to indicate that they are suitable for something."},
+      "inScheme": "http://desm.org/concepts/mappingClasses"
+    }
+  ]
+}
