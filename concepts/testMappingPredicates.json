@@ -1,0 +1,90 @@
+{
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "ceasn": "https://purl.org/ctdlasn/terms/",
+    "desm": "https://github.com/t3-innovation-network/desm/tree/main/concepts/testAbstractClass.json/",
+    "dct": "http://purl.org/dc/terms/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#" ,
+    "Concept": {"@id": "skos:Concept"},
+    "ConceptScheme": {"@id": "skos:ConceptScheme"},
+    "created": {"@id": "dcterms:created", "@type": "xsd:date"},
+    "creator": {"@id": "dcterms:creator", "@container": "@language"},
+    "description": {"@id": "dcterms:description", "@container": "@language"},
+    "skos:hasTopCOncept": {"@id": "skos:skos:hasTopCOncept", "@type": "@id"},
+    "skos:inScheme": {"@id": "skos:skos:inScheme", "@type": "@id"},
+    "skos:prefLabel": {"@id": "skos:skos:prefLabel", "@container": "@language"},
+    "title": {"@id": "dcterms:title", "@container": "@language"} ,
+    "ceasn:weight": {"@id": "ceasn:weight", "@type": "xsd:integer"}
+  },
+  
+  "@graph": [
+     {
+      "id": "desm:",
+      "type": "skos:ConceptScheme",
+      "dct:title": {"en-us": "DESM Schema mapping Predicates"},
+      "dct:description": { "en-us": "This concept scheme identifies the mapping predicates used in a T3 test project to cross-walk (map) SDO's specifications used in expressing data in the education-to-employment context."},
+      "dct:creator": {"en-us": "OCF Collab Technical Team"},
+      "dct:created": "2021-11-26",
+      "skos:hasTopCOncept": [
+        "desm:exactMatch",
+        "desm:closeMatch",
+        "dean:aggregate",
+        "desm:disaggregate",
+        "desm:noMatch",
+        "desm:issue"
+      ]
+    },
+    {
+      "id": "desm:concepts/exactMatch",
+      "type": "skos:Concept",
+      "skos:prefLabel": {"en-us": "Exact Match"},
+      "skos:definition": {"en-us": "The skos:definition is identical in wording and intent."},
+      "ceasn:weight": 5 ,
+      "skos:inScheme": "desm:desmMappingPredicates"
+    },
+    {
+      "id": "desm:closeMatch",
+      "type": "skos:Concept",
+      "skos:prefLabel": {"en-us": "Close Match"},
+      "skos:definition": {"en-us": "The skos:definition is identical in intent, with wording differences."},
+      "ceasn:weight": 5 ,
+      "skos:inScheme": "desm:desmMappingPredicates"
+    },
+    {
+      "id": "desm:aggregated",
+      "type": "skos:Concept",
+      "skos:prefLabel": {"en-us": "Aggregate"},
+      "skos:definition": {"en-us": "Single property in the maps to multiple properties in the specification being mapped."},
+      "ceasn:weight": 3 ,
+      "skos:inScheme": "desm:desmMappingPredicates"
+    },
+    {
+      "id": "desm:disaggregated",
+      "type": "skos:Concept",
+      "skos:prefLabel": {"en-us": "Disaggregated"},
+      "skos:definition": {"en-us": "Multiple properties in the spine, map to the property in the specification being mapped."},
+      "ceasn:weight": 3 ,
+      "skos:inScheme": "desm:desmMappingPredicates"
+    },
+    {
+      "id": "desm:noMatch",
+      "type": "skos:Concept",
+      "skos:prefLabel": {"en-us": "No Match"},
+      "skos:definition": {"en-us": "There's no property to match to the property of a class in the spine."},
+      "ceasn:weight": 0 ,
+      "skos:inScheme": "desm:desmMappingPredicates"
+    },
+    {
+      "id": "desm:concepts/issue",
+      "type": "skos:Concept",
+      "skos:prefLabel": {"en-us": "Issue"},
+      "ceasn:weight": 1 ,
+      "skos:definition": {"en-us": "Annotation to explain alignment where necessary to clarify or to interpret the mapping."},
+      "skos:inScheme": "desm:desmMappingPredicates"
+    }
+  ]
+}
