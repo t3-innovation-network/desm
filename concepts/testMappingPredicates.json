@@ -38,12 +38,12 @@
       ]
     },
     {
-      "id": "desm:concepts/exactMatch",
+      "id": "desm:exactMatch",
       "type": "skos:Concept",
       "skos:prefLabel": {"en-us": "Exact Match"},
       "skos:definition": {"en-us": "The skos:definition is identical in wording and intent."},
       "ceasn:weight": 5 ,
-      "skos:inScheme": "desm:desmMappingPredicates"
+      "skos:inScheme": "desm:"
     },
     {
       "id": "desm:closeMatch",
@@ -51,7 +51,7 @@
       "skos:prefLabel": {"en-us": "Close Match"},
       "skos:definition": {"en-us": "The skos:definition is identical in intent, with wording differences."},
       "ceasn:weight": 5 ,
-      "skos:inScheme": "desm:desmMappingPredicates"
+      "skos:inScheme": "desm:"
     },
     {
       "id": "desm:aggregated",
@@ -67,7 +67,7 @@
       "skos:prefLabel": {"en-us": "Disaggregated"},
       "skos:definition": {"en-us": "Multiple properties in the spine, map to the property in the specification being mapped."},
       "ceasn:weight": 3 ,
-      "skos:inScheme": "desm:desmMappingPredicates"
+      "skos:inScheme": "desm:"
     },
     {
       "id": "desm:noMatch",
@@ -75,7 +75,7 @@
       "skos:prefLabel": {"en-us": "No Match"},
       "skos:definition": {"en-us": "There's no property to match to the property of a class in the spine."},
       "ceasn:weight": 0 ,
-      "skos:inScheme": "desm:desmMappingPredicates"
+      "skos:inScheme": "desm:"
     },
     {
       "id": "desm:concepts/issue",
@@ -83,7 +83,7 @@
       "skos:prefLabel": {"en-us": "Issue"},
       "ceasn:weight": 1 ,
       "skos:definition": {"en-us": "Annotation to explain alignment where necessary to clarify or to interpret the mapping."},
-      "skos:inScheme": "desm:desmMappingPredicates"
+      "skos:inScheme": "desm:"
     }
   ]
 }
