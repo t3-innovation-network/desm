@@ -17,6 +17,7 @@
     "prefLabel": {"@id": "skos:prefLabel", "@container": "@language"},
     "title": {"@id": "dcterms:title", "@container": "@language"}
   },
+  
   "@graph": [
      {
       "id": "http://desm.org/concepts/mappingClasses",
