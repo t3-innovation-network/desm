@@ -138,6 +138,10 @@ const MappingPredicates = () => {
             required
           />
         </div>
+        <small className="col-on-primary-light font-italic">
+          Please be sure the content is in one of the following formats: CSV,
+          JSON, JSONLD, RDF or XML
+        </small>
       </div>
     </div>
   );
