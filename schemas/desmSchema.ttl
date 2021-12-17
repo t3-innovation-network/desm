@@ -8,6 +8,7 @@
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+[
 desm:AbstractClassMapping a rdfs:Class ;
     rdfs:label "Abstract Class Mapping"@en ;
     rdfs:comment "Resource describing mappings by one or more Data Standards Organizations (DSOs) to a single abstract class."@en ;
@@ -32,8 +33,8 @@ rdfs:Class a rdfs:Class ;
     .
 skos:Concept a rdfs:Class ;
     rdfs:label "Concept"@en ;
-    skos:scopeNote "An idea or notion; a unit of thought."@en ;
-    rdfs:isDefinedBy desm: 
+    rdfs:comment "An idea or notion; a unit of thought."@en ;
+    rdfs:isDefinedBy skos: 
     .
 skos:ConceptScheme a rdfs:Class ;
     rdfs:label "Concept Scheme"@en ;
@@ -53,8 +54,8 @@ rdf:Property a rdfs:Class ;
     rdfs:isDefinedBy rdf: 
     .
 desm:Schema a rdfs:Class ;
-    rdfs:label ""@en ;    
-    skos:scopeNote ""@en ;
+    rdfs:label "Schema"@en ;    
+    rdfs:comment "Resource describing controlled concepts or enumerations."@en ;
     rdfs:isDefinedBy desm: 
     .
 desm:administrator a rdf:Property ;
@@ -75,7 +76,6 @@ desm:asbtractClassModeled a rdf:Property ;
 desm:asbtractClassType a rdf:Property ;
     rdfs:label "Abstract Class Type Scheme"@en ;
     rdfs:comment "The abstract class concept scheme used in a mapping project"@en ;
-    skos:scopeNote ""@en ;
     rdfs:domain desm:AbstractClassSet;
     rdfs:range skos:COnceptScheme;
     rdfs:isDefinedBy desm: 
@@ -149,7 +149,6 @@ desm:hasScheme a rdf:Property ;
 desm:hasTermMapping a rdf:Property ;
     rdfs:label "Has Term Mapping"@en ;
     rdfs:comment "Relates a property to a term mapping in which it is included."@en ;
-    skos:scopeNote ""@en ;
     rdfs:domain rdf:Property ;
     rdfs:range desm:TermMapping ;
     rdfs:isDefinedBy desm: 
@@ -162,7 +161,7 @@ skos:hasTopConcept a rdf:Property ;
     rdfs:isDefinedBy skos: 
     .
 desm:inSchema a rdf:Property ;
-    rdfs:label "inSchema"@en ;
+    rdfs:label "In Schema"@en ;
     rdfs:comment "Relates a property to a scheme in which it is included."@en ;
     rdfs:domain rdf:Property ;
     rdfs:range desm:Schema ;
@@ -276,3 +275,4 @@ desm:spineTerm a rdf:Property ;
     rdfs:range rdf:Property ;
     rdfs:isDefinedBy desm: 
     .
+]
