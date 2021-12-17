@@ -52,7 +52,6 @@ rdf:Property a rdfs:Class ;
     skos:scopeNote "Crosswalks map a properties from the DSOs' schemas to properties in the synthetic spine."@en ;
     rdfs:isDefinedBy rdf: 
     .
-
 desm:Schema a rdfs:Class ;
     rdfs:label ""@en ;    
     skos:scopeNote ""@en ;
