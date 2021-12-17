@@ -125,14 +125,14 @@ dct:hasPart a rdf:Property ;
         desm:TermMapping ;
     rdfs:isDefinedBy dct: 
     .
-desms:hasProperty a rdf:Property ;
+desm:hasProperty a rdf:Property ;
     rdfs:label "Has Property"@en ;
     rdfs:comment "Property of a particular schema."@en ;
     rdfs:domain desm:Schema ;
     rdfs:range rdf:Property;
     rdfs:isDefinedBy desm: 
     .
-desms:hasSchema a rdf:Property ;
+desm:hasSchema a rdf:Property ;
     rdfs:label "Has Schema"@en ;
     rdfs:comment "Schema in which this property is defined."@en ;
     rdfs:domain rdf:Property ;
@@ -193,9 +193,9 @@ desm:issue a rdf:Property ;
     .
 rdfs:label a rdf:Property ;
     rdfs:label "Human-readable version of the name of a resource."@en ;
-    rdfs:domain rdf:Property 
+    rdfs:domain rdf:Property , 
         rdfs:Class ;
-    rdfs:range rdf:langstring ;
+    rdfs:range rdf:langString ;
     rdfs:isDefinedBy rdfs: 
     .
 desm:mappedTerm a rdf:Property ;
@@ -248,7 +248,7 @@ desm:range a rdf:Property ;
         desm:Class ;
     rdfs:isDefinedBy desm: 
     .
-desms:relatedSchema a rdf:Property ;
+desm:relatedSchema a rdf:Property ;
     rdfs:label "Related Schema"@en ;
     rdfs:comment "Schema to which a concept scheme provides property values."@en ;
     rdfs:domain skos:ConceptSCheme ;

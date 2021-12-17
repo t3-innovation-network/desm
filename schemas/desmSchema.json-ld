@@ -1,0 +1,1312 @@
+[
+
+    {
+        "@id": "http://purl.org/dc/terms/"
+    },
+    {
+        "@id": "http://purl.org/dc/terms/created",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Date Created",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Date of creation of the resource.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractClassMapping"
+            },
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractClassSet"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/2001/XMLSchema#date"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "http://purl.org/dc/terms/"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.org/dc/terms/creator",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Creator",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "An entity responsible for making the resource.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Schema"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Agent"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "http://purl.org/dc/terms/"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.org/dc/terms/hasPart",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Has Part",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Related resource that is included either physically or logically in the described resource.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractClassSet"
+            },
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractCLassMapping"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractClassMapping"
+            },
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/TermMapping"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "http://purl.org/dc/terms/"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.org/dc/terms/isPartOf",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Is Part Of",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "A related resource in which the described resource is physically or logically included.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/TermMapping"
+            },
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractClassMapping"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractMapping"
+            },
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractClassSet"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "http://purl.org/dc/terms/"
+            }
+        ]
+    },
+    {
+        "@id": "http://schema.org/"
+    },
+    {
+        "@id": "http://schema.org/email",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "email",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Email address.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Agent"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/2001/XMLSchema#string"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "http://schema.org/"
+            }
+        ]
+    },
+    {
+        "@id": "http://schema.org/name",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Name",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "The name of the item.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Agent"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "http://schema.org/"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    },
+    {
+        "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+        "@type": [
+            "http://www.w3.org/2000/01/rdf-schema#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Property",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Property in a cross walk crosswalked to a propery in the spine.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Crosswalks map a properties from the DSOs' schemas to properties in the synthetic spine.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+    },
+    {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#"
+    },
+    {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#Class",
+        "@type": [
+            "http://www.w3.org/2000/01/rdf-schema#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Class",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Type or class of resource to which properties are related.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Related to, but not the same as rdfs:Class.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "http://www.w3.org/2000/01/rdf-schema#"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#label",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Human-readable version of the name of a resource.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+            },
+            {
+                "@id": "http://www.w3.org/2000/01/rdf-schema#Class"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "http://www.w3.org/2000/01/rdf-schema#"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.w3.org/2001/XMLSchema#date"
+    },
+    {
+        "@id": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    {
+        "@id": "http://www.w3.org/2004/02/skos/core#"
+    },
+    {
+        "@id": "http://www.w3.org/2004/02/skos/core#COnceptScheme"
+    },
+    {
+        "@id": "http://www.w3.org/2004/02/skos/core#Concept",
+        "@type": [
+            "http://www.w3.org/2000/01/rdf-schema#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Concept",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "An idea or notion; a unit of thought.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.w3.org/2004/02/skos/core#ConceptSCheme"
+    },
+    {
+        "@id": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+        "@type": [
+            "http://www.w3.org/2000/01/rdf-schema#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Concept Scheme",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "A set of concepts, optionally including statements about semantic relationships between those concepts.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "A concept scheme may be defined to include concepts from different sources.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.w3.org/2004/02/skos/core#broader",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Has Broader",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Broader concepts are typically rendered as parents in a concept hierarchy (tree).",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#Concept"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#Concept"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "hasTopCOncept",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Relates, by convention, a concept scheme to a concept which is topmost in the broader\\/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#ConceptScheme"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#Concept"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.w3.org/2004/02/skos/core#inScheme",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "In Scheme",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Relates a resource (for example a concept) to a concept scheme in which it is included.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#Concept"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#ConceptScheme"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.w3.org/2004/02/skos/core#narrower",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Narrower",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Narrower concepts are typically rendered as children in a concept hierarchy (tree).",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#Concept"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#Concept"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractCLassMapping"
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractCLassSet"
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractClassMapping",
+        "@type": [
+            "http://www.w3.org/2000/01/rdf-schema#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Abstract Class Mapping",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Resource describing mappings by one or more Data Standards Organizations (DSOs) to a single abstract class.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractClassSet",
+        "@type": [
+            "http://www.w3.org/2000/01/rdf-schema#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Abstract Class Set",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Resource aggregating mappings of two or more Abstract Class created by one or more Data Standards Organizations (DSOs).",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "This class is used only where a project creates mappings to more than one absbtract class that are intended by their creators to be viewed as a set.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractMapping"
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Agent",
+        "@type": [
+            "http://www.w3.org/2000/01/rdf-schema#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Agent",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Personnel engaged in the process of crosswalking terms",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Class"
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/DSO",
+        "@type": [
+            "http://www.w3.org/2000/01/rdf-schema#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Data Standards Organization",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Organization or person responsible for creating or making available a de facto or de jure data standard being crosswalked in a project.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Schema",
+        "@type": [
+            "http://www.w3.org/2000/01/rdf-schema#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/TermMapping"
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/administrator",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Administrator",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Agent with administrative duties.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/DSO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Agent"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/asbtractClassModeled",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Abstract Class Modeled",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Instance of the abstract class used by a term mapping.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "References a specific abstract class instance in the SKOS concept scheme for abstract classes identified in the configuration profile being used.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractClassMapping"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#Concept"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/asbtractClassType",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Abstract Class Type Scheme",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "The abstract class concept scheme used in a mapping project",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractClassSet"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#COnceptScheme"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/githubHandle",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "GitHub handle",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "GitHub username.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Agent"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/2001/XMLSchema#string"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/hasProperty",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Has Property",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Property of a particular schema.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Schema"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/hasSchema",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Has Schema",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Schema in which this property is defined.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Schema"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/hasScheme",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Has Scheme",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Concept Scheme that belongs to this Data Standards Organization.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/DSO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#ConceptScheme"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/hasTermMapping",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Has Term Mapping",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Relates a property to a term mapping in which it is included.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/TermMapping"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/inSchema",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "inSchema",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Relates a property to a scheme in which it is included.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Schema"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/issue",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Issue",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Recording of an issue with mapping a property to another property.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/TermMapping"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/mappedTerm",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Mapped Term",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Property being mapped to a spine property.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/TermMapping"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/mapper",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Mapper",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "An agent adminitering or performing a mapping or crosswalk.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/DSO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Agent"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/mappingPredicate",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Mapping Predicate",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Concept identifying the relationship between two properties being mapped.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/TermMapping"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#Concept"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/mappingPredicateType",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Mapping Predicate Type",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Concept scheme defining mapping predicate types.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/AbstractCLassSet"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#ConceptScheme"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/range",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Range",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Property to used to state that the values of a property are instances of one or more classes.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#Concept"
+            },
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Class"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/relatedSchema",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Related Schema",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Schema to which a concept scheme provides property values.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://www.w3.org/2004/02/skos/core#ConceptSCheme"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Schema"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/role",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Role",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Functon or job of an agent.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/Agent"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/sourcePath",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Source Path",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Property or class path in a schema.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/2001/XMLSchema#string"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    },
+    {
+        "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/spineTerm",
+        "@type": [
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "Spine Term",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "Property of teh spine.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/TermMapping"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+            {
+                "@id": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/"
+            }
+        ]
+    }
+
+]
