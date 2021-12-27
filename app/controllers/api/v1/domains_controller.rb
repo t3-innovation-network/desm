@@ -10,7 +10,7 @@ class Api::V1::DomainsController < ApplicationController
   # @description: Lists all the domains
   ###
   def index
-    render json: current_user.available_domains
+    render json: current_user ? current_user.available_domains : DomainSet.first.domains
   end
 
   ###
