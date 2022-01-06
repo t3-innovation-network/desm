@@ -27,6 +27,7 @@
     "description": {"@id": "dct:description", "@container": "@language"} ,
     "email": {"@id": "sdo:email", "@type": "xsd:string"} ,
     "githubHandle": {"@id": "desm:githubHandle", "@type": "xsd:string"} ,
+    "hasDSO": {"@id": "desm:hasDSO", "@type": "@id"} , 
     "hasPart": {"@id": "dct:hasPart", "@type": "@id"} ,
     "hasProperty": {"@id": "desm:hasProperty", "@type": "@id"} ,
     "hasSchema": {"@id": "desm:hasSchema", "@type": "@id"} ,
