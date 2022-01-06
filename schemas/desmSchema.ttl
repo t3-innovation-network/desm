@@ -14,10 +14,9 @@ desm:AbstractClassMapping a rdfs:Class ;
     rdfs:comment "Resource describing mappings by one or more Data Standards Organizations (DSOs) to a single abstract class."@en ;
     rdfs:isDefinedBy desm: 
     .     
-desm:AbstractClassSet a rdfs:Class ;
-    rdfs:label "Abstract Class Set"@en ;
-    rdfs:comment "Resource aggregating mappings of two or more Abstract Class created by one or more Data Standards Organizations (DSOs)."@en ;
-    skos:scopeNote "This class is used only where a project creates mappings to more than one absbtract class that are intended by their creators to be viewed as a set."@en ;
+desm:MappingConfiguration a rdfs:Class ;
+    rdfs:label "Mapping Configuration Set"@en ;
+    rdfs:comment "Resource identifying the form and aggregation of one or more mappings of one or more Abstract Class created by one or more Data Standards Organizations (DSOs)."@en ;
     rdfs:isDefinedBy desm: 
     . 
 desm:Agent a rdfs:Class ;
@@ -114,6 +113,13 @@ desm:githubHandle a rdf:Property ;
     rdfs:comment "GitHub username."@en ;
     rdfs:domain desm:Agent;
     rdfs:range xsd:string ;
+    rdfs:isDefinedBy desm: 
+    .
+desm:hasDSO a rdf:Property ;
+    rdfs:label "Has DSO"@en ;
+    rdfs:comment "DSO participating in one or more asbtract class mappings in this project."@en ;
+    rdfs:domain desm:MappingCOnfiguration;
+    rdfs:range desm:DSO ;
     rdfs:isDefinedBy desm: 
     .
 dct:hasPart a rdf:Property ;
@@ -270,7 +276,7 @@ desm:sourcePath a rdf:Property ;
     .
 desm:spineTerm a rdf:Property ;
     rdfs:label "Spine Term"@en ;
-    rdfs:comment "Property of teh spine."@en ;
+    rdfs:comment "Property of the synthetic spine generated during the mapping process."@en ;
     rdfs:domain desm:TermMapping ;
     rdfs:range rdf:Property ;
     rdfs:isDefinedBy desm: 
