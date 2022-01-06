@@ -62,14 +62,6 @@
             "rdfs:isDefinedBy": "desm:"
         },
         {
-            "@id": "desm:AbstractClassSet",
-            "@type": "rdfs:Class",
-            "rdfs:label": {"en": "Abstract Class Set"},
-            "rdfs:comment": {"en": "Resource aggregating mappings of two or more Abstract Class created by one or more Data Standards Organizations (DSOs)."},
-            "skos:scopeNote": {"en": "This class is used only where a project creates mappings to more than one absbtract class that are intended by their creators to be viewed as a set."},
-            "rdfs:isDefinedBy": "desm:"
-        },
-        {
             "@id": "desm:Agent",
             "@type": "rdfs:Class",
             "rdfs:label": {"en": "Agent"},
@@ -104,6 +96,13 @@
             "@type": "rdfs:Class",
             "rdfs:label": {"en": "Data Standards Organization"},
             "rdfs:comment": {"en": "Organization or person responsible for creating or making available a de facto or de jure data standard being crosswalked in a project."},
+            "rdfs:isDefinedBy": "desm:"
+        },
+        {
+            "@id": "desm:MappingConfiguration",
+            "@type": "rdfs:Class",
+            "rdfs:label": {"en": "Mapping Configuration"},
+            "rdfs:comment": {"en": "Resource identifying the form and aggregation of one or more mappings of one or more Abstract Class created by one or more Data Standards Organizations (DSOs)."},
             "rdfs:isDefinedBy": "desm:"
         },
         {
@@ -194,6 +193,15 @@
             "rdfs:comment": {"en": "GitHub username."},
             "rdfs:domain": "desm:Agent",
             "rdfs:range": "xsd:string",
+            "rdfs:isDefinedBy": "desm:"
+        },
+        {
+            "@id": "desm:hasDSO",
+            "@type": "rdf:Property",
+            "rdfs:label": {"en": "Has DSO"},
+            "rdfs:comment": {"en": "DSO participating in one or more asbtract class mappings in this project."},
+            "rdfs:domain": "desm:MappingConfiguration",
+            "rdfs:range": "desm:DSO",
             "rdfs:isDefinedBy": "desm:"
         },
         {
@@ -406,7 +414,7 @@
             "@id": "desm:spineTerm",
             "@type": "rdf:Property",
             "rdfs:label": {"en": "Spine Term"},
-            "rdfs:comment": {"en": "Property of teh spine."},
+            "rdfs:comment": {"en": "Property of the synthetic spine generated during the mapping process."},
             "rdfs:domain": {"en": "desm:TermMapping"},
             "rdfs:range": "rdf:Property",
             "rdfs:isDefinedBy": "desm:"
