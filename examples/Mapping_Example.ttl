@@ -1,0 +1,52 @@
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix desms: <http://desmsolutions.org/ns/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+
+<http://desmsolutions.org/Config/336a544c-387e-4bfb-bf54-1ed8352d43af>
+  a <http://desmsolutions.org/ns/ConfigurationP{rofile> ;
+  dc:created "2020-08-09"^^xsd:string ;
+  dc:dateModified "2020-08-10"^^xsd:string ;
+  dc:description "Project Delphi is a schema cross-walking project spearheaded by CEDS and Credential Engine."^^xsd:string ;
+  dc:hasPart <http://desmsolutions.org/AbstractClassMapping/b41b73c8-2da7-46b0-8174-42c9cf928fa0> ;
+  dc:title "DESM Configurations for project Delphi"^^xsd:string .
+
+<http://desmsolutions.org/AbstractClassMapping/b41b73c8-2da7-46b0-8174-42c9cf928fa0>
+  a <http://desmsolutions.org/ns/AbstractClassMapping> ;
+  desms:abstractClassMapped <https://example.org/desm/concepts/organization> ;
+  dc:created "2020-08-09"^^xsd:string ;
+  dc:dateModified "2020-08-10"^^xsd:string ;
+  dc:description "T3 schema mapping for an Organization entity by the following standards development organizations (SDO): Credential Engine, IMS Global, PESC, HR Open Standards, Common Education Data Standards (CEDS), and Schema.org."^^xsd:string ;
+  dc:hasPart <http://desmsolutions.org/TermMapping/523e4e5f-42ed-49a6-9f74-36836d620ad1> ;
+  dc:title "T3 Schema Mapping for Organization"^^xsd:string .
+
+<http://desmsolutions.org/TermMapping/523e4e5f-42ed-49a6-9f74-36836d620ad1>
+  a desms:TermMapping ;
+  desms:comment "Some comment on the mapping."^^xsd:string ;
+  desms:mappedterm <http://desmsolutions.org/ns/credReg/name> ;
+  desms:mappingPredicate <https://example.org/desm/concepts/reworded> ;
+  desms:spineTerm <http://desmsolutions.org/ns/ceds/OrganizationName> ;
+  dc:dateModified "2020-08-15"^^xsd:string ;
+  dc:isPartOf <http://desmsolutions.org/AbstractClassMapping/b41b73c8-2da7-46b0-8174-42c9cf928fa0> .
+
+<http://desmsolutions.org/ns/credReg/name>
+  a rdf:Property ;
+  desms:sourceURI <https://purl.org/ctdl/terms/name> ;
+  desms:valueSpace <http://some_enumeration_URL.org> ;
+  rdfs:comment "Name or title of the resource."^^xsd:string ;
+  rdfs:domain <http://desmsolutions.org/ns/credReg/CredentialOrganization> ;
+  rdfs:label "name"^^xsd:string ;
+  rdfs:range schema:Text ;
+  rdfs:subPropertyOf <https://purl.org/ctdl/terms/name> .
+
+<http://desmsolutions.org/ns/ceds/OrganizationName>
+  a rdf:Property ;
+  desms:sourceURI <https://ceds.ed.gov/element/000204> ;
+  desms:valueSpace <http://another_enumeration_URL.org> ;
+  rdfs:comment "The name of a non-person entity such as an organization, institution, agency or business."^^xsd:string ;
+  rdfs:domain <http://desmsolutions.org/ns/ceds/Organization> ;
+  rdfs:label "Organization Name"^^xsd:string ;
+  rdfs:range schema:Text ;
+  rdfs:subPropertyOf <https://ceds.ed.gov/element/000204> .
