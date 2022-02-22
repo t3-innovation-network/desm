@@ -49,6 +49,23 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :resources do
+    get 'abstract-class-sets' => 'abstract_class_sets#index'
+    get 'abstract-class-sets/:slug' => 'abstract_class_sets#show'
+    get 'abstract-classes/:slug' => 'abstract_classes#show'
+    get 'configuration-profiles' => 'configuration_profiles#index'
+    get 'configuration-profiles/:slug' => 'configuration_profiles#show'
+    get 'abstract-classes/:slug' => 'domains#show'
+    get 'organizations' => 'organizations#index'
+    get 'organizations/:slug' => 'organizations#show'
+    get 'predicates/:slug' => 'predicates#show'
+    get 'predicate-sets/:slug' => 'predicate_sets#show'
+    get 'predicate-sets' => 'predicate_sets#index'
+    get 'terms/:slug' => 'terms#show'
+    get 'specifications/' => 'specifications#index'
+    get 'specifications/:slug' => 'specifications#show'
+  end
+
   resources :users, only: [:index, :show, :update, :destroy]
 
   # Redirect all missing routes to home

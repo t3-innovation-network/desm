@@ -18,6 +18,15 @@ module Tokenable
                           rescue TypeError
                             8
                           end
+    PASSWORD_VALIDATION_RULES = {
+      # @description: Level of deductibility. 18 is the library's default, known as an acceptable level
+      #   of entropy.
+      min_entropy: 15,
+      min_word_length: MIN_PASSWORD_LENGTH,
+      # @description: Use a dictionary to improve the validation of the password.
+      use_dictionary: true
+    }.freeze
+    validates :password, password_strength: PASSWORD_VALIDATION_RULES
   end
 
   protected

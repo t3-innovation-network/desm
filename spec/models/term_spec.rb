@@ -7,6 +7,7 @@ describe Term, type: :model do
     expect(FactoryBot.build(:term)).to be_valid
   end
 
-  it { should validate_presence_of(:uri) }
+  it { should validate_presence_of(:name) }
+  it { should validate_presence_of(:raw) }
   it { should have_and_belong_to_many(:specifications) }
 end

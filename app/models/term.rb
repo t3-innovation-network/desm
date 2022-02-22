@@ -4,6 +4,8 @@
 # @description: Represents a node of a specification
 ###
 class Term < ApplicationRecord
+  include Slugable
+
   ###
   # @description: At the time of creation, the organization would be the user's organization.
   #   When adding a synthetic term, the organization is received by param (would be the
@@ -27,10 +29,9 @@ class Term < ApplicationRecord
   ###
   has_and_belongs_to_many :vocabularies
 
-  ###
-  # @description: The uri for this term, it should be unique, even among different organizations
-  ###
-  validates :uri, presence: true, uniqueness: true
+  validates :name, presence: true
+  validates :raw, presence: true
+  validates :slug, presence: true
 
   ###
   # @description: Accept to update and/or create properties along with terms

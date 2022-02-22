@@ -16,10 +16,14 @@
 #   set.
 ###
 class Domain < ApplicationRecord
+  include Slugable
+
+  ALIAS_CLASSNAME = "AbstractClass"
   belongs_to :domain_set
   belongs_to :spine, class_name: "Specification", dependent: :destroy, optional: true
-  validates :uri, presence: true, uniqueness: true
+  validates :source_uri, presence: true, uniqueness: true
   validates :pref_label, presence: true
+  alias_attribute :name, :pref_label
 
   ###
   # @description: Return whether a domain has a spine specification uploaded
@@ -27,5 +31,17 @@ class Domain < ApplicationRecord
   ###
   def spine?
     !spine.nil?
+  end
+
+  def to_json_ld
+    json = {
+      uri: uri,
+      source_uri: source_uri,
+      pref_label: pref_label,
+      definition: definition
+    }
+    json[:spine] = spine.uri if spine?
+
+    json
   end
 end

@@ -19,7 +19,7 @@ module Processors
     # @description: Create the mapping instance from a specification
     ###
     def create
-      name = "#{@user.organization.name} - #{@specification.domain.pref_label}"
+      name = "#{@user.organization&.name || 'Default'} - #{@specification.domain.pref_label}"
       Mapping.create!(
         name: name,
         title: name,
