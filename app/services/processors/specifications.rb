@@ -136,7 +136,7 @@ module Processors
       # Get all the concept scheme nodes. With the pupose of separate all the vocabularies, we
       # need the concept schemes, which represents the vocabularies main nodes.
       parser.scheme_nodes.each {|scheme_node|
-        vocabs << parser.build_vocabulary(scheme_node)
+        vocabs << parser.build_skos(scheme_node)
       }
 
       vocabs

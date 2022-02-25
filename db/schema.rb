@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_23_235900) do
+ActiveRecord::Schema.define(version: 2022_03_07_203507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,6 +104,9 @@ ActiveRecord::Schema.define(version: 2022_02_23_235900) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "slug"
+    t.jsonb "json_mapping_predicates"
+    t.jsonb "json_abstract_classes"
+    t.string "predicate_strongest_match"
     t.index ["administrator_id"], name: "index_configuration_profiles_on_administrator_id"
     t.index ["domain_set_id"], name: "index_configuration_profiles_on_domain_set_id"
     t.index ["predicate_set_id"], name: "index_configuration_profiles_on_predicate_set_id"
@@ -193,7 +196,9 @@ ActiveRecord::Schema.define(version: 2022_02_23_235900) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "slug"
+    t.bigint "strongest_match_id"
     t.index ["source_uri"], name: "index_predicate_sets_on_source_uri", unique: true
+    t.index ["strongest_match_id"], name: "index_predicate_sets_on_strongest_match_id"
   end
 
   create_table "predicates", force: :cascade do |t|
@@ -339,6 +344,7 @@ ActiveRecord::Schema.define(version: 2022_02_23_235900) do
   add_foreign_key "mappings", "users"
   add_foreign_key "organizations", "configuration_profiles"
   add_foreign_key "organizations", "users", column: "administrator_id"
+  add_foreign_key "predicate_sets", "predicates", column: "strongest_match_id"
   add_foreign_key "predicates", "predicate_sets", on_delete: :cascade
   add_foreign_key "properties", "terms"
   add_foreign_key "specifications", "domains"

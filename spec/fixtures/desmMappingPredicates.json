@@ -19,6 +19,7 @@
     "title": { "@id": "dcterms:title", "@container": "@language" },
     "weight": { "@id": "desm:weight", "@type": "xsd:integer" }
   },
+
   "@graph": [
     {
       "id": "http://desmsolutions.org/concepts/desmMappingPredicates",
@@ -124,7 +125,7 @@
       "inScheme": "http://desmsolutions.org/concepts/desmMappingPredicates"
     },
     {
-      "id": "http://desmsolutions.org/concepts/concepts/issue",
+      "id": "http://desmsolutions.org/concepts/issue",
       "type": "skos:Concept",
       "prefLabel": { "en-us": "Issue" },
       "weight": 1,

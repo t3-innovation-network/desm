@@ -39,6 +39,7 @@ class SignIn extends Component {
         this.setState({
           errors: response.error + "\nWe were not able to sign you in.",
         });
+        return;
       }
       this.handleSuccessfullAuth(response.user);
     });

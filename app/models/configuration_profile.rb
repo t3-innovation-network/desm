@@ -16,6 +16,7 @@ class ConfigurationProfile < ApplicationRecord
   has_many :mappings, through: :standards_organizations
   after_initialize :setup_schema_validators
   before_save :check_structure, if: :incomplete?
+  before_save :check_predicate_strongest_match, if: :predicate_strongest_match_changed?
   before_destroy :check_ongoing_mappings, prepend: true
 
   # The possible states
@@ -30,6 +31,13 @@ class ConfigurationProfile < ApplicationRecord
 
   COMPLETE_SCHEMA = Rails.root.join("ns", "complete.configurationProfile.schema.json")
   VALID_SCHEMA = Rails.root.join("ns", "valid.configurationProfile.schema.json")
+
+  def check_predicate_strongest_match
+    throw :abort if json_mapping_predicates.nil?
+
+    concepts = Parsers::Skos.new(file_content: json_mapping_predicates).concept_names
+    throw :abort unless concepts.map {|c| c[:uri] }.include?(predicate_strongest_match)
+  end
 
   def self.complete_schema
     read_schema(COMPLETE_SCHEMA)

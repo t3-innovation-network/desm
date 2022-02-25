@@ -59,24 +59,6 @@ module Processors
     end
 
     ###
-    # @description: Get the concept nodes belonging to a concept scheme by reading the childs list
-    # @param [Hash] The concept scheme node
-    # @return [Array] A collection of uris to identify the child concept nodes
-    ###
-    def child_concepts_uris concept_scheme_node
-      parser = Parsers::JsonLd::Node.new(concept_scheme_node)
-      child_nodes = Array(parser.read!("hasConcept"))
-
-      # Some specification may not use "hasConcept", but "hasTopConcept"
-
-      child_nodes = Array(parser.read!("hasTopConcept")) if child_nodes.all?(&:empty?)
-
-      raise "No concept nodes were found for Vocabulary #{parser.read!('id')}" if child_nodes.all?(&:empty?)
-
-      process_node_uris(child_nodes)
-    end
-
-    ###
     # @description: Generate a list of uris defined in a context (e.g. "rdf", "rdfs", "xsd")
     # @param [Hash] context: The context to be evaluated
     # @return [Array]

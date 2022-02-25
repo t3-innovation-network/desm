@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateMappingPredicates
+class FetchSkosFile
   include Interactor
   include SchemeDefinitionFetchable
 
@@ -10,11 +10,10 @@ class CreateMappingPredicates
 
   def call
     skos_content = fetch_definition(context.uri)
-    processor = Processors::Predicates.new(skos_content, context.strongest_match)
+    @parser = Parsers::Skos.new(file_content: skos_content)
 
-    context.predicate_set = processor.create
-  rescue StandardError => e
-    Rails.logger.error(e.inspect)
-    context.fail!(error: e.inspect)
+    context.valid = @parser.valid_skos?
+    context.skos_file = skos_content
+    context.concept_names = @parser.concept_names
   end
 end

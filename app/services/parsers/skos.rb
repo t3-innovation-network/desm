@@ -1,14 +1,28 @@
 # frozen_string_literal: true
 
 module Parsers
+  class InvalidSkosFile < StandardError; end
   class Skos < Specification
-    attr_accessor :graph, :context
+    attr_accessor :graph, :context, :skos
 
     def initialize args={}
       @context = args.fetch(:context, {})
       @graph = args.fetch(:graph, {})
       file_content = args.fetch(:file_content, nil)
       super(file_content: file_content) if file_content
+    end
+
+    def valid_skos?
+      build_skos
+
+      @skos[:@graph].any? {|node|
+        Parsers::JsonLd::Node.new(node).types.concept_scheme?
+      } &&
+      @skos[:@graph].any? {|node|
+        Parsers::JsonLd::Node.new(node).types.concept?
+      }
+    rescue InvalidSkosFile
+      false
     end
 
     ###
@@ -19,20 +33,23 @@ module Parsers
     # @param [Object] scheme_node: The scheme node containing the uri of the related concepts
     # @return [Hash]
     ###
-    def build_vocabulary scheme_node
-      vocab = {
+    def build_skos scheme_node=nil
+      scheme_node = scheme_nodes.first if scheme_node.nil?
+      raise InvalidSkosFile, "The content is not a valid Skos file" if scheme_node.nil?
+
+      @skos = {
         "@context": nil,
         # Get all the concepts for this concept scheme
         "@graph": identify_concepts(scheme_node)
       }
 
       # Place the context at the beginning
-      vocab[:@context] = filter_context(vocab[:@graph])
+      @skos[:@context] = filter_context(@skos[:@graph])
 
       # Place the scheme node at the beginning
-      vocab[:@graph].unshift(scheme_node)
+      @skos[:@graph].unshift(scheme_node).compact
 
-      vocab
+      @skos
     end
 
     ###
@@ -50,6 +67,18 @@ module Parsers
           definition: parser.read!("description") || parser.read!("definition") || parser.read!("comment")
         }
       }
+    end
+
+    def concept_names
+      concepts = concept_nodes.map {|concept|
+        node = Parsers::JsonLd::Node.new(concept)
+        {
+          uri: node.read!("id"),
+          label: node.read!("label")
+        }
+      }
+
+      concepts.compact.sort_by {|c| c[:label] }
     end
 
     ###
@@ -72,6 +101,19 @@ module Parsers
       }
     end
 
+    ###
+    # @description: Filter a collection of nodes of any type to get a new collection of only those nodes of
+    #   type "skos:concept".
+    # @return [Array] A collection of only nodes of type "skos:concept".
+    ###
+    def concept_nodes
+      @graph.select {|node|
+        Array(Parsers::JsonLd::Node.new(node).read!("type")).any? {|type|
+          type.downcase.include?("concept") && !type.downcase.include?("conceptscheme")
+        }
+      }
+    end
+
     private
 
     ###
@@ -89,19 +131,6 @@ module Parsers
       raise "No concept nodes found for Vocabulary #{parser.read!('id')}" if child_nodes.all?(&:empty?)
 
       process_node_uris(child_nodes)
-    end
-
-    ###
-    # @description: Filter a collection of nodes of any type to get a new collection of only those nodes of
-    #   type "skos:concept".
-    # @return [Array] A collection of only nodes of type "skos:concept".
-    ###
-    def concept_nodes
-      @graph.select {|node|
-        Array(Parsers::JsonLd::Node.new(node).read!("type")).any? {|type|
-          type.downcase.include?("concept") && !type.downcase.include?("conceptscheme")
-        }
-      }
     end
 
     ###
@@ -126,7 +155,7 @@ module Parsers
 
       # We only have concepts at this point, so accessing the graph is fine.
       # Proceed to iterate through each concept in the graph
-      vocab_graph.each do |concept|
+      vocab_graph.compact.each do |concept|
         # Each concept will have different keys (here, the concepts are represented as hashes)
         # We iterate through each key of the concept, which represents each "attribute"
         concept.keys.each do |attr_key|
@@ -152,7 +181,7 @@ module Parsers
         concept_nodes.find {|c_node|
           Parsers::JsonLd::Node.new(c_node)&.read!("id")&.downcase&.eql?(concept_uri.downcase)
         }
-      }
+      }.compact
     end
 
     ###
@@ -168,7 +197,7 @@ module Parsers
         else
           node.is_a?(Hash) && (node["@id"] || node[:@id]) ? (node["@id"] || node[:@id]) : nil
         end
-      }
+      }.compact
     end
 
     ###

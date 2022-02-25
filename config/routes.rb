@@ -46,6 +46,9 @@ Rails.application.routes.draw do
       post 'configuration_profiles/:id/action' => 'configuration_profile_actions#call_action'
       get 'configuration_profile_schema' => 'configuration_profile_schemas#show'
       post 'validate_configuration_profile' => 'validate_configuration_profile#validate'
+
+      post 'skos/fetch' => 'skos#fetch'
+      get 'skos/labels' => 'skos#labels'
     end
   end
 

@@ -7,6 +7,10 @@ import {
   setSavingCP,
 } from "../../../../actions/configurationProfiles";
 import { validURL } from "../../../../helpers/URL";
+import fetchSkosFile from "../../../../services/fetchSkosFile";
+import Loader from "../../../shared/Loader";
+import { useEffect } from "react";
+import fetchCPSkosLabels from "../../../../services/fetchCpSkosLabels";
 
 const MappingPredicates = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
@@ -22,10 +26,23 @@ const MappingPredicates = () => {
   const [origin, setOrigin] = useState(
     configurationProfile.structure.mappingPredicates?.origin || ""
   );
+  const [jsonMappingPredicates, setJsonMappingPredicates] = useState(
+    configurationProfile.jsonMappingPredicates
+  );
+  const [predicateStrongestMatch, setPredicateStrongestMatch] = useState(
+    configurationProfile.predicateStrongestMatch
+  );
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+
+  const [urlEditable, setUrlEditable] = useState(!origin);
+
+  const [predicateLabels, setPredicateLabels] = useState([]);
 
   const buildCpData = () => {
     let localCP = configurationProfile;
+    localCP.jsonMappingPredicates = jsonMappingPredicates;
+    localCP.predicateStrongestMatch = predicateStrongestMatch;
     localCP.structure.mappingPredicates = {
       name: filename,
       version: version,
@@ -36,7 +53,7 @@ const MappingPredicates = () => {
     return localCP;
   };
 
-  const handleUrlBlur = () => {
+  const handleFetchUrl = () => {
     if (!validURL(origin)) {
       dispatch(
         setEditCPErrors("The mapping predicates origin must be a valid URL")
@@ -44,7 +61,38 @@ const MappingPredicates = () => {
       return;
     }
     dispatch(setEditCPErrors(null));
-    handleBlur();
+    handleFetchSkosFile();
+  };
+
+  const handleFetchSkosFile = () => {
+    setLoading(true);
+    fetchSkosFile(origin).then((response) => {
+      if (response.error || !response.valid) {
+        let message = response.error || "Invalid Skos File";
+        dispatch(setEditCPErrors(message));
+        setLoading(false);
+        setOrigin(null);
+        return;
+      }
+
+      setJsonMappingPredicates(response.skosFile);
+      setUrlEditable(false);
+      setLoading(false);
+    });
+  };
+
+  const handleFetchPredicateLabels = () => {
+    fetchCPSkosLabels(configurationProfile.id, "json_mapping_predicates").then(
+      (response) => {
+        if (response.error) {
+          let message = response.error;
+          dispatch(setEditCPErrors(message));
+          return;
+        }
+
+        setPredicateLabels(response.conceptNames);
+      }
+    );
   };
 
   const handleBlur = () => {
@@ -61,6 +109,20 @@ const MappingPredicates = () => {
       dispatch(setSavingCP(false));
     });
   };
+
+  useEffect(() => {
+    if (jsonMappingPredicates) handleBlur();
+  }, [jsonMappingPredicates]);
+
+  useEffect(() => {
+    if (predicateStrongestMatch) handleBlur();
+  }, [predicateStrongestMatch]);
+
+  useEffect(() => {
+    if (configurationProfile.jsonMappingPredicates) {
+      handleFetchPredicateLabels();
+    }
+  }, [configurationProfile.jsonMappingPredicates]);
 
   return (
     <div className="col">
@@ -114,7 +176,7 @@ const MappingPredicates = () => {
             onChange={(event) => {
               setDescription(event.target.value);
             }}
-            style={{ height: "20rem" }}
+            style={{ height: "10rem" }}
             onBlur={handleBlur}
           />
         </div>
@@ -122,27 +184,89 @@ const MappingPredicates = () => {
 
       <div className="mt-5">
         <label>Origin (URL)</label>
-        <div className="input-group input-group">
-          <input
-            type="url"
-            className="form-control input-lg"
-            name="origin"
-            value={origin}
-            onChange={(event) => {
-              setOrigin(event.target.value);
-            }}
-            onBlur={handleUrlBlur}
-            pattern="https://.*"
-            size="30"
-            placeholder="https://example.com"
-            required
-          />
-        </div>
-        <small className="col-on-primary-light font-italic">
-          Please be sure the content is in one of the following formats: CSV,
-          JSON, JSONLD, RDF or XML
-        </small>
+        {urlEditable ? (
+          <div className="input-group input-group">
+            <input
+              type="url"
+              className="form-control input-lg"
+              name="origin"
+              value={origin}
+              onChange={(event) => {
+                setOrigin(event.target.value);
+              }}
+              pattern="https://.*"
+              size="30"
+              placeholder="https://example.com"
+              required
+            />
+            <button
+              className="btn btn-dark ml-2"
+              onClick={handleFetchUrl}
+              disabled={!origin}
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title={"Fetch the concepts"}
+            >
+              {loading ? (
+                <Loader noPadding={true} smallSpinner={true} />
+              ) : (
+                "Fetch"
+              )}
+            </button>
+          </div>
+        ) : (
+          <div className="input-group input-group">
+            <label>{origin}</label>
+            <button
+              className="btn btn-dark ml-auto"
+              onClick={() => {
+                setUrlEditable(true);
+              }}
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title={"Edit the origin Url"}
+            >
+              Edit
+            </button>
+          </div>
+        )}
       </div>
+
+      {predicateLabels.length > 0 && (
+        <div>
+          <p className="mt-5 font-weight-bold">
+            👇 Please, select the strongest match
+          </p>
+          <div
+            className="form-group"
+            defaultValue={configurationProfile.predicateStrongestMatch}
+            onChange={(e) => {
+              setPredicateStrongestMatch(e.target.value);
+            }}
+          >
+            {predicateLabels.map((concept) => {
+              return (
+                <div key={concept["uri"]}>
+                  <input
+                    type="radio"
+                    value={concept["uri"]}
+                    name="predicate"
+                    id={`predicate-${concept["uri"]}`}
+                    required={true}
+                    defaultChecked={concept["uri"] === predicateStrongestMatch}
+                  />
+                  <label
+                    className="ml-2 cursor-pointer"
+                    htmlFor={`predicate-${concept["uri"]}`}
+                  >
+                    {concept["label"]}
+                  </label>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

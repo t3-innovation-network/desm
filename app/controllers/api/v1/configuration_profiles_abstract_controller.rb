@@ -7,6 +7,9 @@ class Api::V1::ConfigurationProfilesAbstractController < ApplicationController
     :description,
     :name,
     :updated_at,
+    :predicate_strongest_match,
+    json_mapping_predicates: {},
+    json_abstract_classes: {},
     structure: [
       :created_at,
       :description,

@@ -11,6 +11,9 @@ describe ConfigurationProfile, type: :model do
   let(:valid_structure_with_invalid_email) {
     JSON.parse(File.read(Rails.root.join("spec", "fixtures", "valid.configuration.profile.with.invalid.email.json")))
   }
+  let(:valid_json_mapping_predicates) {
+    JSON.parse(File.read(Rails.root.join("spec", "fixtures", "desmMappingPredicates.json")))
+  }
 
   before(:each) do
     Role.create!(name: "dso admin")
@@ -23,6 +26,22 @@ describe ConfigurationProfile, type: :model do
   end
 
   it { should have_many(:standards_organizations) }
+
+  context "predicates strongest match" do
+    it "fail to save an invalid predicate strongest match" do
+      subject.predicate_strongest_match = "should-fail-test.com/123456"
+
+      expect { subject.save! }.to raise_error ActiveRecord::RecordNotSaved
+    end
+
+    it "accepts a valid predicate strongest match" do
+      subject.json_mapping_predicates = valid_json_mapping_predicates
+      subject.predicate_strongest_match = "http://desmsolutions.org/concepts/identical"
+      subject.save!
+
+      expect(subject.predicate_strongest_match).to eql("http://desmsolutions.org/concepts/identical")
+    end
+  end
 
   context "when it is incomplete" do
     it "has incomplete state at creation" do
