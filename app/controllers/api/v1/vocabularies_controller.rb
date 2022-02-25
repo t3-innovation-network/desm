@@ -11,7 +11,13 @@ class Api::V1::VocabulariesController < ApplicationController
   #   user's organization
   ###
   def index
-    vocabularies = current_user.organization.vocabularies.order(:name)
+    vocabularies = begin
+      if current_user.super_admin?
+        Vocabulary.all
+      else
+        current_user.organization.vocabularies.order(:name)
+      end
+    end
 
     render json: vocabularies
   end

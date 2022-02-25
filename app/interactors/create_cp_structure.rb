@@ -129,9 +129,9 @@ class CreateCpStructure
   end
 
   def find_domain_by_uri uri
-    domain = Domain.find_by_uri uri
+    domain = Domain.find_by_source_uri uri
     return domain unless domain.nil?
 
-    Domain.all.select {|domain| uri.end_with?(domain.uri.split(":").last) }&.first
+    Domain.all.select {|domain| source_uri.end_with?(domain.source_uri.split(":").last) }&.first
   end
 end

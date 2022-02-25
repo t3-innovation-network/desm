@@ -32,11 +32,4 @@ Jobs in production are being scheduled with server configuration running command
 
 If you want to run these jobs using a local scheduler, check out `whenever` gem. See gem [docs](https://github.com/javan/whenever).
 
-## How to use
-
-- [Adding a user to the tool](https://github.com/t3-innovation-network/desm/tree/master/walkthrough/0-adding-a-user.md)
-- [Welcome to the tool](https://github.com/t3-innovation-network/desm/tree/master/walkthrough/1-welcome-to-the-tool.md)
-- [Uploading a file](https://github.com/t3-innovation-network/desm/tree/master/walkthrough/2-uploading-a-file.md)
-- [Selecting properties](https://github.com/t3-innovation-network/desm/tree/master/walkthrough/3-selecting-properties.md)
-- [Mapping to the spine](https://github.com/t3-innovation-network/desm/tree/master/walkthrough/4-mapping-to-the-spine.md)
-- [Viewing the mappings](https://github.com/t3-innovation-network/desm/tree/master/walkthrough/5-viewing-the-mappings.md)
+Please check the wiki in order to know how to use the tool

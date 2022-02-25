@@ -8,6 +8,8 @@
 #   already has a spine (a previous specification was uploaded for it).
 ###
 class Mapping < ApplicationRecord
+  include Slugable
+
   ###
   # @description: This will allow to keep track of every change in this model using the 'audits' method
   ###
@@ -143,7 +145,7 @@ class Mapping < ApplicationRecord
   # @return [String]
   ###
   def origin
-    user.organization.name
+    user.organization&.name
   end
 
   ###

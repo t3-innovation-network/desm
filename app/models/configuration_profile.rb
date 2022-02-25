@@ -7,6 +7,8 @@
 #   defined in a Schema Mapping Profile (Configuration Profile) used to configure the instance of the DESM tool.
 ###
 class ConfigurationProfile < ApplicationRecord
+  include Slugable
+
   belongs_to :abstract_classes, class_name: "DomainSet", foreign_key: :domain_set_id, optional: true
   belongs_to :mapping_predicates, class_name: "PredicateSet", foreign_key: :predicate_set_id, optional: true
   belongs_to :administrator, class_name: "User", foreign_key: :administrator_id, optional: true

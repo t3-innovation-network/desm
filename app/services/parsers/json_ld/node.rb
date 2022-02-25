@@ -87,6 +87,14 @@ module Parsers
         # Otherwise we don't return a value. nil will do.
       end
 
+      def id_to_name
+        name = read!("id").sub(%r{^https?\://(www.)?}, "")
+                          .gsub("/", "_")
+                          .gsub(".", "_")
+                          .gsub(":", "_")
+        name.underscore.camelcase
+      end
+
       private
 
       ###

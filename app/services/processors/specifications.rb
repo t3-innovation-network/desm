@@ -34,8 +34,7 @@ module Processors
         use_case: data[:use_case],
         user: @current_user,
         domain: Domain.find(data[:domain_id]),
-        selected_domains_from_file: data[:selected_domains],
-        uri: "uri" # the uri is generated in the model
+        selected_domains_from_file: data[:selected_domains]
       )
 
       ActiveRecord::Base.transaction do
@@ -52,7 +51,10 @@ module Processors
     ###
     def create_terms instance
       filter_properties(instance.selected_domains_from_file).each do |node|
-        instance.terms << create_one_term(instance, node)
+        term = create_one_term(instance, node)
+        next if term.nil?
+
+        instance.terms << term
       end
     end
 
@@ -266,19 +268,25 @@ module Processors
 
     ###
     # @description: Handles to find or create a term with its related property
+    #   Then retrieve the term, if not found, return nil
     # @param instance [Specification]
     # @param [Object] node: The node to be evaluated in order to create a term
     ###
     def create_one_term(instance, node)
       parser = Parsers::JsonLd::Node.new(node)
-      # Retrieve the term, if not found, create one with these properties
-      Term.find_or_initialize_by(uri: parser.read!("id")) do |t|
-        t.update!(
-          name: parser.read!("label") || parser.read!("id"),
-          organization: instance.user.organization
-        )
-        create_property_term(t, node)
-      end
+      name = parser.read!("label")
+      name = parser.id_to_name if Term.exists?(name: name)
+      return nil if Term.find_by(source_uri: parser.read!("id"))
+
+      t = Term.create!(
+        source_uri: parser.read!("id"),
+        name: name,
+        organization: instance.user.organization,
+        slug: name,
+        raw: node
+      )
+      create_property_term(t, node)
+      t
     end
 
     ###

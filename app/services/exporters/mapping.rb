@@ -99,7 +99,7 @@ module Exporters
     ###
     def property_node term
       {
-        "@id": term.uri,
+        "@id": term.source_uri,
         "@type": "rdf:Property",
         "desm:sourceURI": {"@id": term.property.source_uri},
         "rdfs:subPropertyOf": {"@id": term.property.subproperty_of},

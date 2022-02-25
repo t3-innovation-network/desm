@@ -32,12 +32,11 @@ module Processors
     ###
     def create_domain_set
       domain_set = first_concept_scheme_node
-
-      return if already_exists?(DomainSet, domain_set, print_message: true)
-
       parser = Parsers::JsonLd::Node.new(domain_set)
+      return if already_exists?(DomainSet, parser.read!("id"), print_message: true)
+
       DomainSet.first_or_create!({
-                                   uri: parser.read!("id"),
+                                   source_uri: parser.read!("id"),
                                    title: parser.read!("title") || parser.read!("label"),
                                    description: parser.read!("description"),
                                    creator: parser.read!("creator")
@@ -49,11 +48,10 @@ module Processors
     ###
     def create_domains
       @concept_nodes.each do |domain|
-        next if already_exists?(Domain, domain, print_message: true)
-
         parser = Parsers::JsonLd::Node.new(domain)
+        next if already_exists?(Domain, parser.read!("id"), print_message: true)
 
-        Domain.find_or_initialize_by(uri: parser.read!("id")) do |d|
+        Domain.find_or_initialize_by(source_uri: parser.read!("id")) do |d|
           d.update!(
             pref_label: parser.read!("prefLabel"),
             definition: parser.read!("definition"),

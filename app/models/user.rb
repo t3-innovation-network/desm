@@ -19,15 +19,6 @@ class User < ApplicationRecord
   validates :fullname, presence: true
   validates :email, presence: true, uniqueness: true
   validates :organization, presence: true, unless: :skip_validating_organization
-  PASSWORD_VALIDATION_RULES = {
-    # @description: Level of deductibility. 18 is the library's default, known as an acceptable level
-    #   of entropy.
-    min_entropy: 15,
-    min_word_length: MIN_PASSWORD_LENGTH,
-    # @description: Use a dictionary to improve the validation of the password.
-    use_dictionary: true
-  }.freeze
-  validates :password, password_strength: PASSWORD_VALIDATION_RULES
 
   after_create :send_welcome_email, unless: :skip_sending_welcome_email
 

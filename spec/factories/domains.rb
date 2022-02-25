@@ -6,7 +6,7 @@ FactoryBot.define do
   factory :domain do
     pref_label { Faker::App.name }
     definition { Faker::Lorem.sentence }
-    uri { Faker::Lorem.sentence }
+    source_uri { Faker::Lorem.sentence }
     domain_set
   end
 end

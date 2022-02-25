@@ -41,7 +41,7 @@ class Api::V1::SpineTermsController < ApplicationController
     params.require(:synthetic).permit(
       :specification_id,
       spine_term: [
-        :name, :uri, :organization_id,
+        :name, :source_uri, :organization_id,
         property_attributes: %i[
           uri label comment
         ]

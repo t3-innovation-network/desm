@@ -489,7 +489,7 @@ const MappingToDomains = (props) => {
                   <div className="border-bottom">
                     <div className="row">
                       <div className="col-6">
-                        <h6 className="subtitle">{user.organization.name}</h6>
+                        <h6 className="subtitle">{user.organization?.name || 'Unknown'}</h6>
                       </div>
                       <div className="col-6">
                         <div className="form-check float-right">
