@@ -16,6 +16,11 @@ module Processors
   class Predicates < Skos
     include Validatable
 
+    def initialize file, strongest_match=nil
+      @strongest_match = strongest_match
+      super(file)
+    end
+
     ###
     # @description: Process a given file which must contain json data, to
     #   create predicates into the db.
@@ -24,9 +29,12 @@ module Processors
     def create
       @predicate_set = create_predicate_set
       create_predicates
+      assign_strongest_match
 
       @predicate_set
     end
+
+    private
 
     ###
     # @description: Process a given concept scheme (predicate set) to create it
@@ -67,8 +75,6 @@ module Processors
       end
     end
 
-    private
-
     ###
     # @description: Determines if a predicate is valid to incorporate to our records. It should not be of
     #   type: "concept scheme" and it should not be already present.
@@ -81,6 +87,14 @@ module Processors
         } ||
         already_exists?(Predicate, predicate_parser.read!("id"), print_message: true)
       )
+    end
+
+    def assign_strongest_match
+      sm = @predicate_set.predicates.find_by_pref_label(@strongest_match) if @strongest_match.present?
+      sm = @predicate_set.predicates.first if sm.nil?
+
+      @predicate_set.strongest_match = sm
+      @predicate_set.save!
     end
   end
 end
