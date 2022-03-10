@@ -11,7 +11,7 @@ RSpec.describe MappingMailer, type: :mailer do
     it "renders the headers" do
       expect(mail.subject).to eq(I18n.t("mailers.mapping_updated.subject"))
       expect(mail.to).to eq([user.email])
-      expect(mail.from).to eq(Rails.configuration.action_mailer.default_options[:from])
+      expect(mail.from).to eq([Rails.configuration.action_mailer.default_options[:from]])
     end
 
     it "renders the body" do
