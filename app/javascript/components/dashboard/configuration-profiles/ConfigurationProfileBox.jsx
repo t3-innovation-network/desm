@@ -7,19 +7,12 @@ import { CPActionHandlerFactory } from "./CPActionHandler";
 import ActivateProgress from "./ActivateProgress";
 import { Link } from "react-router-dom";
 import { stateStyle } from "./utils";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCogs } from "@fortawesome/free-solid-svg-icons";
 
 export const CPBoxContainer = (props) => {
-  const { children, iconClass, linkTo, sideBoxClass } = props;
+  const { children, icon, linkTo, sideBoxClass } = props;
   const action = props.action || (() => {});
-
-  const renderIcon = () => {
-    return (
-      <i
-        className={`fas ${iconClass} fa-3x`}
-        style={{ transform: "translateY(20%) translateX(-5%)" }}
-      ></i>
-    );
-  };
 
   return (
     <div className="card mb-3 mr-3" style={{ width: "350px" }}>
@@ -31,10 +24,10 @@ export const CPBoxContainer = (props) => {
         >
           {linkTo ? (
             <Link to={linkTo} className="col-background">
-              {renderIcon()}
+              {icon}
             </Link>
           ) : (
-            renderIcon()
+            icon
           )}
         </div>
         <div className="col-md-8">{children}</div>
@@ -78,7 +71,7 @@ const CardBody = (props) => {
   const totalAgents = () => {
     return (
       configurationProfile.structure?.standardsOrganizations?.reduce(
-        (sum, org) => sum + org.dsoAgents.length,
+        (sum, org) => sum + (org.dsoAgents?.length || 0),
         0
       ) || 0
     );
@@ -192,6 +185,10 @@ export default class ConfigurationProfileBox extends Component {
     this.setState({ activating: false });
   }
 
+  stopProcessing() {
+    this.setState({ processing: false });
+  }
+
   render() {
     const {
       activating,
@@ -228,7 +225,13 @@ export default class ConfigurationProfileBox extends Component {
                 ? "disabled-container"
                 : ""
             }`}
-            iconClass="fa-cogs"
+            icon={
+              <FontAwesomeIcon
+                icon={faCogs}
+                className="fa-3x"
+                style={{ transform: "translateY(20%) translateX(-5%)" }}
+              />
+            }
             linkTo={`/dashboard/configuration-profiles/${configurationProfile.id}`}
           >
             <CardBody

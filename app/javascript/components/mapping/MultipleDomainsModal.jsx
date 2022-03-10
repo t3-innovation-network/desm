@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Modal from "react-modal";
 import HoverableText from "../shared/HoverableText";
 import ModalStyles from "../shared/ModalStyles";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Props:
@@ -106,7 +108,7 @@ export default class MultipleDomainsModal extends Component {
                   className="float-right cursor-pointer"
                   onClick={onRequestClose}
                 >
-                  <i className="fa fa-times" aria-hidden="true"></i>
+                  <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
                 </a>
               </div>
             </div>
@@ -135,7 +137,10 @@ export default class MultipleDomainsModal extends Component {
                   mapping
                 </strong>
                 <div className="form-group input-group-has-icon">
-                  <span className="fa fa-search form-control-feedback"></span>
+                  <FontAwesomeIcon
+                    icon={faSearch}
+                    className="form-control-feedback"
+                  />
                   <input
                     type="text"
                     className="form-control"

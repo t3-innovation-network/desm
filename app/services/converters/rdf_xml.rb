@@ -15,5 +15,12 @@ module Converters
       context = reader.root.namespaces
       JSON::LD::API.compact(expanded_resources, context).symbolize_keys
     end
+
+    def self.read(path)
+      reader = RDF::RDFXML::Reader.open(path)
+      raise Converters::ParseError unless reader.valid?
+
+      true
+    end
   end
 end

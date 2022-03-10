@@ -15,5 +15,12 @@ module Converters
       context = reader.prefixes.map {|key, term| [key.to_s, term.value] }.to_h
       JSON::LD::API.compact(expanded_resources, context).symbolize_keys
     end
+
+    def self.read(path)
+      reader = RDF::Turtle::Reader.open(path)
+      raise Converters::ParseError unless reader.valid?
+
+      true
+    end
   end
 end

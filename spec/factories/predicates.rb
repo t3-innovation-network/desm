@@ -6,6 +6,6 @@ FactoryBot.define do
   factory :predicate do
     pref_label { Faker::App.name }
     definition { "MyText" }
-    uri { Faker::Lorem.sentence }
+    source_uri { Faker::Lorem.sentence }
   end
 end

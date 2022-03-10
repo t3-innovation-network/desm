@@ -3,6 +3,8 @@ import { Fragment } from "react";
 import { Component } from "react";
 import { FadeIn, SlideInDown } from "./Animations.jsx";
 import OutsideAlerter from "./OutsideAlerter.jsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * @prop {Boolean} expanded
@@ -37,10 +39,13 @@ class EllipsisOptions extends Component {
         {expanded ? (
           <Fragment>
             <button className="btn float-right" disabled={disabled}>
-              <i className="fas fa-ellipsis-v" />
+              <FontAwesomeIcon icon={faEllipsisV} />
             </button>
-            <SlideInDown className="float-over">
-              <div className={"card"}>
+            <SlideInDown
+              className="float-over"
+              style={{ minWidth: "max-content" }}
+            >
+              <div className="card">
                 {options.map((option) => {
                   return (
                     <div
@@ -61,7 +66,7 @@ class EllipsisOptions extends Component {
               className="btn float-right"
               onClick={() => this.setState({ expanded: true })}
             >
-              <i className="fas fa-ellipsis-v" />
+              <FontAwesomeIcon icon={faEllipsisV} />
             </button>
           </FadeIn>
         )}

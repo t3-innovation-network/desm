@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_21_011708) do
+ActiveRecord::Schema.define(version: 2022_03_07_203507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,6 +103,10 @@ ActiveRecord::Schema.define(version: 2021_08_21_011708) do
     t.bigint "administrator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "slug"
+    t.jsonb "json_mapping_predicates"
+    t.jsonb "json_abstract_classes"
+    t.string "predicate_strongest_match"
     t.index ["administrator_id"], name: "index_configuration_profiles_on_administrator_id"
     t.index ["domain_set_id"], name: "index_configuration_profiles_on_domain_set_id"
     t.index ["predicate_set_id"], name: "index_configuration_profiles_on_predicate_set_id"
@@ -110,24 +114,34 @@ ActiveRecord::Schema.define(version: 2021_08_21_011708) do
 
   create_table "domain_sets", force: :cascade do |t|
     t.string "title", null: false
-    t.string "uri", null: false
+    t.string "source_uri", null: false
     t.text "description"
     t.string "creator"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["uri"], name: "index_domain_sets_on_uri", unique: true
+    t.string "slug"
+    t.index ["source_uri"], name: "index_domain_sets_on_source_uri", unique: true
   end
 
   create_table "domains", force: :cascade do |t|
     t.string "pref_label", null: false
-    t.string "uri", null: false
+    t.string "source_uri", null: false
     t.text "definition"
     t.bigint "domain_set_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "spine_id"
+    t.string "slug"
     t.index ["domain_set_id"], name: "index_domains_on_domain_set_id"
-    t.index ["uri"], name: "index_domains_on_uri", unique: true
+    t.index ["source_uri"], name: "index_domains_on_source_uri", unique: true
+  end
+
+  create_table "json_contexts", force: :cascade do |t|
+    t.string "uri", null: false
+    t.jsonb "payload", default: {}, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["uri"], name: "index_json_contexts_on_uri", unique: true
   end
 
   create_table "mapping_selected_terms", force: :cascade do |t|
@@ -148,6 +162,7 @@ ActiveRecord::Schema.define(version: 2021_08_21_011708) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0
+    t.string "slug"
     t.index ["specification_id"], name: "index_mappings_on_specification_id"
     t.index ["user_id"], name: "index_mappings_on_user_id"
   end
@@ -168,31 +183,36 @@ ActiveRecord::Schema.define(version: 2021_08_21_011708) do
     t.text "description"
     t.string "homepage_url"
     t.string "standards_page"
+    t.string "slug"
     t.index ["administrator_id"], name: "index_organizations_on_administrator_id"
     t.index ["configuration_profile_id"], name: "index_organizations_on_configuration_profile_id"
   end
 
   create_table "predicate_sets", force: :cascade do |t|
     t.string "title", null: false
-    t.string "uri", null: false
+    t.string "source_uri", null: false
     t.text "description"
     t.string "creator"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["uri"], name: "index_predicate_sets_on_uri", unique: true
+    t.string "slug"
+    t.bigint "strongest_match_id"
+    t.index ["source_uri"], name: "index_predicate_sets_on_source_uri", unique: true
+    t.index ["strongest_match_id"], name: "index_predicate_sets_on_strongest_match_id"
   end
 
   create_table "predicates", force: :cascade do |t|
     t.string "pref_label"
     t.text "definition"
-    t.string "uri"
+    t.string "source_uri"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.float "weight", default: 0.0, null: false
     t.string "color"
     t.bigint "predicate_set_id"
+    t.string "slug"
     t.index ["predicate_set_id"], name: "index_predicates_on_predicate_set_id"
-    t.index ["uri"], name: "index_predicates_on_uri", unique: true
+    t.index ["source_uri"], name: "index_predicates_on_source_uri", unique: true
   end
 
   create_table "properties", force: :cascade do |t|
@@ -242,7 +262,6 @@ ActiveRecord::Schema.define(version: 2021_08_21_011708) do
 
   create_table "specifications", force: :cascade do |t|
     t.string "name", null: false
-    t.string "uri", null: false
     t.string "version"
     t.string "use_case"
     t.bigint "user_id", null: false
@@ -250,8 +269,8 @@ ActiveRecord::Schema.define(version: 2021_08_21_011708) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "selected_domains_from_file"
+    t.string "slug"
     t.index ["domain_id"], name: "index_specifications_on_domain_id"
-    t.index ["uri"], name: "index_specifications_on_uri", unique: true
     t.index ["user_id"], name: "index_specifications_on_user_id"
   end
 
@@ -263,10 +282,13 @@ ActiveRecord::Schema.define(version: 2021_08_21_011708) do
 
   create_table "terms", force: :cascade do |t|
     t.string "name"
-    t.string "uri", null: false
+    t.string "source_uri", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "organization_id"
+    t.string "slug"
+    t.json "raw", null: false
+    t.string "identifier"
     t.index ["organization_id"], name: "index_terms_on_organization_id"
   end
 
@@ -322,6 +344,7 @@ ActiveRecord::Schema.define(version: 2021_08_21_011708) do
   add_foreign_key "mappings", "users"
   add_foreign_key "organizations", "configuration_profiles"
   add_foreign_key "organizations", "users", column: "administrator_id"
+  add_foreign_key "predicate_sets", "predicates", column: "strongest_match_id"
   add_foreign_key "predicates", "predicate_sets", on_delete: :cascade
   add_foreign_key "properties", "terms"
   add_foreign_key "specifications", "domains"

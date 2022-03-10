@@ -9,14 +9,11 @@ module Validatable
   # @description: Validate the existence of an object in the database
   #
   # @param [Class] object_class The class for the object to validated
-  # @param [Object] object The object to validated, it's a generic object so the
-  #   class couldn't be inferred from it
+  # @param [String] uri URI of the object to validated
   ###
-  def already_exists?(object_class, object, print_message: false)
-    exists = object_class.exists?(uri: object[:id])
-    if exists && print_message
-      puts "\n- #{object_class} with uri: '#{object[:id]}' already exists in our records, ignoring"
-    end
+  def already_exists?(object_class, uri, print_message: false)
+    exists = object_class.exists?(source_uri: uri)
+    puts "\n- #{object_class} with uri: '#{uri}' already exists in our records, ignoring" if exists && print_message
     exists
   end
 end

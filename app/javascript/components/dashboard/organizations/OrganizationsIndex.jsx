@@ -3,6 +3,13 @@ import DashboardContainer from "../DashboardContainer";
 import { Link } from "react-router-dom";
 import fetchOrganizations from "../../../services/fetchOrganizations";
 import AlertNotice from "../../shared/AlertNotice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBuilding,
+  faPlusCircle,
+  faPencilAlt,
+  faHome,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default class OrganizationsIndex extends Component {
   state = {
@@ -17,7 +24,7 @@ export default class OrganizationsIndex extends Component {
   dashboardPath = () => {
     return (
       <div className="float-right">
-        <i className="fas fa-home" />{" "}
+        <FontAwesomeIcon icon={faHome} />{" "}
         <span>
           <Link className="col-on-primary" to="/">
             Home
@@ -56,13 +63,13 @@ export default class OrganizationsIndex extends Component {
 
         <div className="card mt-5">
           <div className="card-header">
-            <i className="fa fa-building"></i>
+            <FontAwesomeIcon icon={faBuilding} />
             <span className="pl-2 subtitle">Organizations</span>
             <Link
               to="/dashboard/organizations/new"
               className="float-right btn btn-dark btn-sm"
             >
-              <i className="fa fa-fw fa-plus-circle"></i>
+              <FontAwesomeIcon icon={faPlusCircle} />
               <span className="pl-2">Add Organization</span>
             </Link>
           </div>
@@ -87,10 +94,10 @@ export default class OrganizationsIndex extends Component {
                             to={"/dashboard/organizations/" + organization.id}
                             className="btn btn-dark"
                           >
-                            <i
-                              className="fa fa-pencil-alt"
+                            <FontAwesomeIcon
+                              icon={faPencilAlt}
                               aria-hidden="true"
-                            ></i>
+                            />
                           </Link>
                         </td>
                       </tr>

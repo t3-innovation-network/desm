@@ -16,6 +16,11 @@ module Processors
   class Predicates < Skos
     include Validatable
 
+    def initialize file, strongest_match=nil
+      @strongest_match = strongest_match
+      super(file)
+    end
+
     ###
     # @description: Process a given file which must contain json data, to
     #   create predicates into the db.
@@ -24,9 +29,12 @@ module Processors
     def create
       @predicate_set = create_predicate_set
       create_predicates
+      assign_strongest_match
 
       @predicate_set
     end
+
+    private
 
     ###
     # @description: Process a given concept scheme (predicate set) to create it
@@ -35,12 +43,11 @@ module Processors
     ###
     def create_predicate_set
       predicate_set = first_concept_scheme_node
-
-      already_exists?(PredicateSet, predicate_set, print_message: true)
       parser = Parsers::JsonLd::Node.new(predicate_set)
+      already_exists?(PredicateSet, parser.read!("id"), print_message: true)
 
       PredicateSet.first_or_create!({
-                                      uri: parser.read!("id"),
+                                      source_uri: parser.read!("id"),
                                       title: parser.read!("title") || parser.read!("label"),
                                       description: parser.read!("description"),
                                       creator: parser.read!("creator")
@@ -55,9 +62,9 @@ module Processors
         parser = Parsers::JsonLd::Node.new(predicate)
 
         # The concept scheme is processed, let's start with the proper predicates
-        next unless valid_predicate(predicate, parser)
+        next unless valid_predicate(parser)
 
-        Predicate.find_or_initialize_by(uri: parser.read!("id")) do |p|
+        Predicate.find_or_initialize_by(source_uri: parser.read!("id")) do |p|
           p.update!({
                       definition: parser.read!("definition"),
                       pref_label: parser.read!("prefLabel"),
@@ -68,21 +75,26 @@ module Processors
       end
     end
 
-    private
-
     ###
     # @description: Determines if a predicate is valid to incorporate to our records. It should not be of
     #   type: "concept scheme" and it should not be already present.
-    # @param [Hash] predicate
     # @return [TrueClass|FalseClass]
     ###
-    def valid_predicate predicate, predicate_parser
+    def valid_predicate predicate_parser
       !(
         Array(predicate_parser.read!("type")).any? {|type|
           type.downcase.include?("conceptscheme")
         } ||
-        already_exists?(Predicate, predicate, print_message: true)
+        already_exists?(Predicate, predicate_parser.read!("id"), print_message: true)
       )
+    end
+
+    def assign_strongest_match
+      sm = @predicate_set.predicates.find_by_pref_label(@strongest_match) if @strongest_match.present?
+      sm = @predicate_set.predicates.first if sm.nil?
+
+      @predicate_set.strongest_match = sm
+      @predicate_set.save!
     end
   end
 end

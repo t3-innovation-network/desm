@@ -50,6 +50,9 @@ gem "linkeddata", "~> 3.1"
 # Use mailgun servers for sending mails
 gem "mailgun_rails"
 
+# Allow redirections in URI.open
+gem "open_uri_redirections", "~> 0.2"
+
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
 
@@ -97,6 +100,8 @@ group :development, :test do
   gem "rspec-rails", "~> 4.0.1"
   gem "ruby-debug-ide"
   gem "shoulda-matchers"
+  gem "vcr", "~> 6.0"
+  gem "webmock", "~> 3.13"
 end
 
 group :development do

@@ -20,5 +20,18 @@ RSpec.describe CreateMappingPredicates, type: :interactor do
       expect(result.predicate_set.predicates.length).to eq(9)
       expect(result.predicate_set.predicates.first).to be_instance_of(Predicate)
     end
+
+    it "Assigns the strongest match if it's specified" do
+      result = CreateMappingPredicates.call({uri: test_uri, strongest_match: "Identical"})
+
+      expect(result.predicate_set.strongest_match.nil?).to be_falsey
+      expect(result.predicate_set.strongest_match.name).to be_eql("Identical")
+    end
+
+    it "Assigns the strongest match even if not specified" do
+      result = CreateMappingPredicates.call({uri: test_uri})
+
+      expect(result.predicate_set.strongest_match.nil?).to be_falsey
+    end
   end
 end

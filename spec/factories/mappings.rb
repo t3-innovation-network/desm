@@ -8,11 +8,7 @@ FactoryBot.define do
     title { Faker::App.name }
     description { Faker::Lorem.sentence }
     user
-    with_spine_and_spec
-
-    trait :with_spine_and_spec do
-      spine { FactoryBot.build(:specification) }
-      specification { FactoryBot.build(:specification) }
-    end
+    association :spine, factory: :specification
+    association :specification, factory: :specification
   end
 end

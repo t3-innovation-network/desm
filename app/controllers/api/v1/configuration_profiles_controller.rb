@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-class Api::V1::ConfigurationProfilesController < ApplicationController
+class Api::V1::ConfigurationProfilesController < Api::V1::ConfigurationProfilesAbstractController
   before_action :with_instance, only: %i[destroy show update]
-  DEFAULT_CP_NAME = "Desm CP - #{DateTime.now.rfc3339}"
 
   def create
     cp = ConfigurationProfile.create!(creation_params)
+    cp.update_attribute(:name, permitted_params[:name]) if permitted_params[:name]
 
     render json: cp
   end
@@ -41,6 +41,6 @@ class Api::V1::ConfigurationProfilesController < ApplicationController
   end
 
   def permitted_params
-    params.require(:configuration_profile).permit(:created_at, :description, :name, :updated_at, structure: {})
+    params.require(:configuration_profile).permit(VALID_PARAMS_LIST)
   end
 end

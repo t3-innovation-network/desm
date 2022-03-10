@@ -7,6 +7,6 @@ RSpec.describe Predicate, type: :model do
     expect(FactoryBot.build(:domain_set)).to be_valid
   end
 
-  it { should validate_presence_of(:uri) }
+  it { should validate_presence_of(:source_uri) }
   it { should validate_presence_of(:pref_label) }
 end

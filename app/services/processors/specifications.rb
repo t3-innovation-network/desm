@@ -8,12 +8,13 @@ module Processors
     attr_accessor :context, :graph
 
     def initialize file_content
+      file_content = JSON.parse(file_content) if file_content.is_a?(String)
+      file_content = file_content.with_indifferent_access
+
       # The domains are listed under the '@graph' object, because at this
       # stage we are dealing with a json-ld file
-      file_content = file_content.with_indifferent_access
       raise InvalidSpecification unless file_content["@graph"].present?
 
-      file_content = JSON.parse(file_content) if file_content.is_a?(String)
       @spec = file_content
       @context = file_content["@context"] || {}
       @graph = file_content["@graph"]
@@ -33,8 +34,7 @@ module Processors
         use_case: data[:use_case],
         user: @current_user,
         domain: Domain.find(data[:domain_id]),
-        selected_domains_from_file: data[:selected_domains],
-        uri: "uri" # the uri is generated in the model
+        selected_domains_from_file: data[:selected_domains]
       )
 
       ActiveRecord::Base.transaction do
@@ -51,7 +51,10 @@ module Processors
     ###
     def create_terms instance
       filter_properties(instance.selected_domains_from_file).each do |node|
-        instance.terms << create_one_term(instance, node)
+        term = create_one_term(instance, node)
+        next if term.nil?
+
+        instance.terms << term
       end
     end
 
@@ -133,7 +136,7 @@ module Processors
       # Get all the concept scheme nodes. With the pupose of separate all the vocabularies, we
       # need the concept schemes, which represents the vocabularies main nodes.
       parser.scheme_nodes.each {|scheme_node|
-        vocabs << parser.build_vocabulary(scheme_node)
+        vocabs << parser.build_skos(scheme_node)
       }
 
       vocabs
@@ -221,7 +224,7 @@ module Processors
     # @param [String] class_uri The id (URI) of the class or property to find related ones
     ###
     def build_nodes_for_uri(class_uri)
-      nodes = Parsers::Skos.new(@graph).exclude_skos_types
+      nodes = Parsers::Skos.new(graph: @graph).exclude_skos_types
 
       # Get only the properties
       props = filter_properties([class_uri], nodes)
@@ -265,19 +268,25 @@ module Processors
 
     ###
     # @description: Handles to find or create a term with its related property
+    #   Then retrieve the term, if not found, return nil
     # @param instance [Specification]
     # @param [Object] node: The node to be evaluated in order to create a term
     ###
     def create_one_term(instance, node)
       parser = Parsers::JsonLd::Node.new(node)
-      # Retrieve the term, if not found, create one with these properties
-      Term.find_or_initialize_by(uri: parser.read!("id")) do |t|
-        t.update!(
-          name: parser.read!("label") || parser.read!("id"),
-          organization: instance.user.organization
-        )
-        create_property_term(t, node)
-      end
+      name = parser.read!("label")
+      name = parser.id_to_name if Term.exists?(name: name)
+      return nil if Term.find_by(source_uri: parser.read!("id"))
+
+      t = Term.create!(
+        source_uri: parser.read!("id"),
+        name: name,
+        organization: instance.user.organization,
+        slug: name,
+        raw: node
+      )
+      create_property_term(t, node)
+      t
     end
 
     ###

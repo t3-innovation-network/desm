@@ -1,0 +1,37 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://schema.org/EventStatusType
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 301
+      message: Moved Permanently
+    headers:
+      Location:
+      - https://schema.org/EventStatusType
+      X-Cloud-Trace-Context:
+      - 04b33acc6c6a8c33a1d99df11d737de6
+      Date:
+      - Sun, 14 Nov 2021 15:44:00 GMT
+      Content-Type:
+      - text/html
+      Server:
+      - Google Frontend
+      Content-Length:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Sun, 14 Nov 2021 15:44:00 GMT
+recorded_with: VCR 6.0.0

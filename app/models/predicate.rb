@@ -15,11 +15,14 @@
 #   - "Not Applicable",
 ###
 class Predicate < ApplicationRecord
+  include Slugable
+
   belongs_to :predicate_set
-  validates :uri, presence: true, uniqueness: true
+  validates :source_uri, presence: true, uniqueness: true
   validates :pref_label, presence: true
   before_create :assign_color, unless: :color?
   before_save :default_values
+  alias_attribute :name, :pref_label
 
   MAX_ALLOWED_WEIGHT = 5
   MIN_ALLOWED_WEIGHT = 0
@@ -90,6 +93,15 @@ class Predicate < ApplicationRecord
   ###
   def assign_color
     self.color = weight_to_color
+  end
+
+  def to_json_ld
+    {
+      uri: uri,
+      source_uri: source_uri,
+      pref_label: pref_label,
+      definition: definition
+    }
   end
 
   private

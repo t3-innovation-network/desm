@@ -1,0 +1,577 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://s3.amazonaws.com/jestaticd2l/purl/schema/standard
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Amz-Id-2:
+      - 2eKuam0I5ebc+Vg75Qd9q2t9v3VjOb/BAhkirDAPAFXL802XVC/d8Vh6Zwu1Q10lonFiJ4ThedU=
+      X-Amz-Request-Id:
+      - J171JNY0BKNEMEVZ
+      Date:
+      - Mon, 15 Nov 2021 13:57:50 GMT
+      Last-Modified:
+      - Sun, 17 Nov 2019 18:48:22 GMT
+      Etag:
+      - '"dfdf050c1e2bea1481ef126dc2e87398"'
+      Accept-Ranges:
+      - bytes
+      Content-Type:
+      - application/rdf+xml
+      Server:
+      - AmazonS3
+      Content-Length:
+      - '44529'
+    body:
+      encoding: UTF-8
+      string: "<rdf:RDF xmlns:asn=\"http://purl.org/ASN/schema/core/\" \n    xmlns:dc=\"http://purl.org/dc/elements/1.1/\"
+        \n    xmlns:dcterms=\"http://purl.org/dc/terms/\" \n    xmlns:loc=\"http://www.loc.gov/loc.terms/relators/\"
+        \n    xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\" \n    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"
+        \n    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" \n    xmlns:owl=\"http://www.w3.org/2002/07/owl#\"
+        \n    xmlns:schema=\"http://schema.org/\" \n    xmlns:vann=\"http://purl.org/vocab/vann/\">\n<!--\n
+        ====================================================== \n-->\n<!--    BEGIN
+        SCHEMA DESCRIPTION                    -->\n<!--\n ======================================================
+        \n-->\n<rdf:Description rdf:about=\"http://purl.org/ASN/schema/core/\">\n
+        \   <dc:title xml:lang=\"en-US\">The Achievement Standards Network Core Properties</dc:title>\n
+        \   <dc:publisher xml:lang=\"en-US\">University of Washington</dc:publisher>\n
+        \   <dc:contributor xml:lang=\"en-US\">D2L</dc:contributor>\n    <dc:description
+        xml:lang=\"en-US\">The Achievement Standards Network Core namespace provides
+        URIs for many of the terms used in ASN metadata instances. Custom ASN application
+        profiles can be achieved through use of properties and classes from other
+        RDF schemas and ontologies. Vocabulary terms are declared using RDF Schema
+        language to support RDF applications.</dc:description>\n    <dc:language xml:lang=\"en-US\">English</dc:language>\n
+        \   \n
+        \   \n</rdf:Description>\n<!--\n
+        ====================================================== \n-->\n<!--    END
+        SCHEMA DESCRIPTIONN                     -->\n<!--\n ======================================================
+        \n-->\n<!--\n ====================================================== \n-->\n<!--
+        \   BEGIN PROPERTY DEFINITIONS FOR DOCUMENTS    -->\n<!--    AND STATEMENTS
+        \                             -->\n<!--\n ======================================================
+        \n-->\n<!--    Definition of alignedFrom    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/alignFrom\">\n
+        \   <rdfs:label>align from</rdfs:label>\n    <rdfs:comment>A standards document
+        or statement from which the statement or document being described is aligned.</rdfs:comment>\n
+        \   <dc:description xml:lang=\"en-US\">An alignment is an assertion of some
+        degree of eqiuvalency between the subject and the object of the assertion.</dc:description>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n
+        \   </rdf:Property>\n    \n<!--    Definition of alignedTo    -->\n<rdf:Property
+        rdf:about=\"http://purl.org/ASN/schema/core/alignTo\">\n    <rdfs:label>align
+        to</rdfs:label>\n    <rdfs:comment>A standards document or statement to which
+        the statement or document being described is aligned.</rdfs:comment>\n    <dc:description
+        xml:lang=\"en-US\">An alignment is an assertion of some degree of eqiuvalency
+        between the subject and the object of the assertion.</dc:description>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n    \n<!--
+        \   Definition of altStatementNotation    -->\n<!--    Added December 3, 2012
+        \   -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/altStatementNotation\">\n
+        \   <rdfs:label>Alternative Statement Notation</rdfs:label>\n    <rdfs:comment>An
+        alphanumeric notation or ID code identifying the statement in common use among
+        end-users.</rdfs:comment>\n    <rdfs:subPropertyOf rdf:resource=\"http://purl.org/dc/terms/identifer\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of assessmentRubric    -->\n<!--    Added February
+        26, 2019    -->\n<rdfs:Property rdf:about=\"http://purl.org/ASN/schema/core/assessmentRubric\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Assessment Rubric</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Explicit set of criteria used for assessing an articulated
+        competency or set of competencies.</rdfs:comment>\n    <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/StandardDocument\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/Rubric\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/RubricCriterion\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Property>\n
+        \   \n<!--    Definition of authorityStatus    -->\n<!--    Modified November
+        14, 2007    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/authorityStatus\">\n
+        \   <rdfs:label>Authority Status</rdfs:label>\n    <rdfs:comment>The status
+        of a standards statement denoting whether the statement owes its origin to
+        the promulgating agency of the standards document of which the statement is
+        a member (i.e., value \"Original\") or to some 3rd party (i.e., \"Derived\").</rdfs:comment>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of comment    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/comment\">\n
+        \   <rdfs:label>comment</rdfs:label>\n    <rdfs:comment>Supplemental text
+        provided by the promulgating body that clarifies the nature, scope or use
+        of the statement being described.</rdfs:comment>\n    <dc:description xml:lang=\"en-US\">Use
+        comment when the text provides useful context for the statement.</dc:description>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of complexityLevel    -->\n<!--    Added June 12,
+        2017    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/complexityLevel\">\n
+        \   <rdfs:label>Complexity Level</rdfs:label>\n    <rdfs:comment>The expected
+        performance level of a learner or professional as defined by a competency.</rdfs:comment>\n
+        \   <dc:description xml:lang=\"en-US\">The value of asn:complexityLevel should
+        be a concept IRI of a member of the class asn:ProficiencyScale.</dc:description>\n
+        \   <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/ProficiencyScale\"/>\n
+        \   <rdfs:subPropertyOf rdf:resource=\"http://purl.org/ASN/schema/core/proficiencyLevel\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of conceptKeyword   -->\n<!--    Added 2009-09-01
+        \    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/conceptKeyword\">\n
+        \   <rdfs:label>Concept Keyword</rdfs:label>\n    <rdfs:comment>A word or
+        phrase used by the promulgating agency to refine and differentiate individual
+        statements contextually.</rdfs:comment>\n    <rdfs:subPropertyOf rdf:resource=\"http://purl.org/dc/elements/1.1/subject\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of conceptTerm   -->\n<!--    Modified November 11,
+        2006    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/conceptTerm\">\n
+        \   <rdfs:label>Concept Term</rdfs:label>\n    <rdfs:comment>A term from a
+        controlled vocabulary used by the promulgating agency to refine and differentiate
+        individual statements contextually.</rdfs:comment>\n    <rdfs:subPropertyOf
+        rdf:resource=\"http://purl.org/dc/elements/1.1/subject\"/>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n    \n<!--
+        \   Definition of crossSubjectReference    -->\n<!--    Added June 11, 2009
+        \   -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/crossSubjectReference\">\n
+        \   <rdfs:label>Cross-subject Reference</rdfs:label>\n    <rdfs:comment>An
+        explicit reference by the promulgating agency establishing a relationship
+        between the statement being described and statement in a separate subject
+        standards document (interdisciplinary statement references).</rdfs:comment>\n
+        \   <rdfs:subPropertyOf rdf:resource=\"http://purl.org/dc/elements/1.1/references\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of derivedFrom    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/derivedFrom\">\n
+        \   <rdfs:label>Derived From</rdfs:label>\n    <rdfs:comment>The URI of a
+        statement from which the derived statement being described has been derived.</rdfs:comment>\n
+        \   <dc:description xml:lang=\"en-US\">The derivedFrom property is used by
+        3rd parties only in derived statements and must appear in conjunction with
+        a value of \"Derived\" in the statement's authorityStatus property.</dc:description>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of exportVersion    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/exportVersion\">\n
+        \   <rdfs:label>Export Version</rdfs:label>\n    <rdfs:comment>The URI of
+        the export version of the standards file.</rdfs:comment>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n    \n<!--
+        \   Definition of indexingStatus    -->\n<!--    Modified November 14, 2007
+        \   -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/indexingStatus\">\n
+        \   <rdfs:label>Indexing Status</rdfs:label>\n    <rdfs:comment>The status
+        of the statement denoting whether correlators should or should not assign
+        the statement during correlation--Values=\"Yes\"/\"No\".</rdfs:comment>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of identifier    -->\n<!--    Added 2011-07-16    -->\n<rdf:Property
+        rdf:about=\"http://purl.org/ASN/schema/core/identifier\">\n    <rdfs:label>Alternative
+        Identifier</rdfs:label>\n    <rdfs:comment>An alternative URI by which the
+        resource is identified.</rdfs:comment>\n    <rdfs:subPropertyOf rdf:resource=\"http://purl.org/dc/terms/identifier\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of jurisdiction    -->\n<!--    Modified June 19,
+        2005   -->\n    <rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/jurisdiction\">\n
+        \   <rdfs:label>Jurisdiction</rdfs:label>\n    <rdfs:comment>The jurisdiction
+        or domain of the standard's application--e.g., California, Nebraska, etc.</rdfs:comment>\n
+        \   <dc:description xml:lang=\"en-US\">The URI of the jurisdiction from the
+        ASNJurisdiction controlled vocabulary.</dc:description>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n    \n<!--
+        \   Definition of listID   -->\n<!--    Added November 29, 2012    -->\n<rdf:Property
+        rdf:about=\"http://purl.org/ASN/schema/core/listID\">\n    <rdfs:label>List
+        ID</rdfs:label>\n    <rdfs:comment>A set of one or more alphanumeric characters
+        and/or symbols denoting the positioning of the statement being described in
+        a sequential listing of statements.</rdfs:comment>\n    <rdfs:subPropertyOf
+        rdf:resource=\"http://purl.org/dc/terms/identifer\"/>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n    \n<!--
+        \   Definition of localSubject    -->\n<!--    Added November 11, 2006    -->\n<!--
+        \   Modified November 14, 2007    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/localSubject\">\n
+        \   <rdfs:label>Local Subject</rdfs:label>\n    <rdfs:comment>The text string
+        denoting the subject of the statement as designated by the promulgating agency.
+        This subject may be different from the asn:subject used for subject classification
+        within the ASN.</rdfs:comment>\n    <rdfs:subPropertyOf rdf:resource=\"http://purl.org/dc/terms/subject\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of proficiencyLevel    -->\n<!--    Added January
+        05, 2014    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/proficiencyLevel\">\n
+        \   <rdfs:label>Proficiency Level</rdfs:label>\n    <rdfs:comment xml:lang=\"en\">The
+        expected performance level of a learner or professional in relationship to
+        a competency.</rdfs:comment>\n    <dc:description xml:lang=\"en\">The value
+        of asn:proficiencyLevel should be a concept IRI of a member of the class asn:ProficiencyScale.</dc:description>\n
+        \   <schema:domainIncludes rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <schema:domainIncludes rdf:resource=\"http://purl.org/ASN/schema/core/LearningResource\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/ProficiencyScale\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of publicationStatus    -->\n<!--    Added November
+        14, 2007    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/publicationStatus\">\n
+        \   <rdfs:label>Publication Status</rdfs:label>\n    <rdfs:comment>The publication
+        status of the of the standards document--e.g., Draft, Published, Deprecated.</rdfs:comment>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of repositoryDate    -->\n<!--    Revised June 19,
+        2005    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/repositoryDate\">\n
+        \   <rdfs:label>Repository Date</rdfs:label>\n    <rdfs:comment>The date the
+        standards document was added to the repository.</rdfs:comment>\n    <rdfs:subPropertyOf
+        rdf:resource=\"http://purl.org/dc/terms/date\"/>\n    <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of skillEmbodied    -->\n<!--    Added June 11, 2009
+        \   -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/skillEmbodied\">\n
+        \   <rdfs:label>Skill Embodied</rdfs:label>\n    <rdfs:comment>Cognitive,
+        affective, psychomotor or other skill directly or indirectly embodied in the
+        statement.</rdfs:comment>\n    <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of source    -->\n<!--    Added February 26, 2019
+        \   -->\n    <rdfs:Property rdf:about=\"http://purl.org/ASN/schema/core/source\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Source</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">The original resource which this resource is based on or
+        derived from.</rdfs:comment>\n    <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/Rubric\"/>\n
+        \   <rdfs:range rdf:resource=\"http://www.w3.org/2001/XMLSchema#anyURI\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Property>\n
+        \   \n<!--    Definition of statementLabel    -->\n<!--    Revised July 12,
+        2005    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/statementLabel\">\n
+        \   <rdfs:label>Statement Label</rdfs:label>\n    <rdfs:comment>The textual
+        label designating the class of statement in the structure of statements in
+        the Standard Document--e.g., Standard, Benchmark, Strand, Topic, etc.</rdfs:comment>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of statementNotation   -->\n<!--    Revised June
+        19, 2005    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/statementNotation\">\n
+        \   <rdfs:label>Statement Notation</rdfs:label>\n    <rdfs:comment>An alphanumeric
+        identifier of a Statement as defined by the promulgating agency. Statement
+        notation must be unique within the defining organization's namespace.</rdfs:comment>\n
+        \   <rdfs:subPropertyOf rdf:resource=\"http://purl.org/dc/terms/identifer\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of weight   -->\n<!--    Added June 12, 2017    -->\n<rdf:Property
+        rdf:about=\"http://purl.org/ASN/schema/core/weight\">\n    <rdfs:label>Weight</rdfs:label>\n
+        \   <rdfs:comment>A textually asserted measurement of the weight, degree,
+        percent, or strength of a recommendation, requirement, or comparison; e.g.,
+        \"15%\", \".5\".</rdfs:comment>\n    <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n<!--\n
+        ====================================================== \n-->\n<!--\n END PROPERTY
+        DEFINITIONS FOR DOCUMENTS AND STATEMENTS  \n-->\n<!--\n ======================================================
+        \n-->\n<!--\n ====================================================== \n-->\n<!--
+        \   BEGIN PROPERTY DEFINITIONS FOR MAPPING      -->\n<!--    PREDICATESFOR
+        LEARNING RESOURCES            -->\n<!--    NOTE:  The following mapping predicates
+        are -->\n<!--           all defined as subproperties of      --> \n<!--           dcterms:conformsTo
+        \                  -->\n<!--\n ======================================================
+        \   \n-->\n<!--    Definition of assessesCompetency    -->\n<!--    Added
+        April 13, 2012    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/assessesCompetency\">\n
+        \   <rdfs:label>Assesses Competency</rdfs:label>\n    <rdfs:comment>The competency
+        that the learning resource being described assesses.</rdfs:comment>\n    <rdfs:domain
+        rdf:resource=\"http://purl.org/ASN/schema/core/LearningResource\"/>\n    <rdfs:range
+        rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n    <rdfs:subPropertyOf
+        rdf:resource=\"http://purl.org/dc/terms/conformsTo\"/>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n    \n<!--
+        \   Definition of broadCorrelation   -->\n<!--    Added April 13, 2012    -->\n<rdf:Property
+        rdf:about=\"http://purl.org/ASN/schema/core/broadCorrelation\">\n    <rdfs:label>Broad
+        Correlation</rdfs:label>\n    <rdfs:comment>The competency covers all of the
+        relevant concepts in the learning resource being described as well as relevant
+        concepts not found in the learning resource.</rdfs:comment>\n    <rdfs:subPropertyOf
+        rdf:resource=\"http://purl.org/dc/terms/conformsTo\"/>\n    <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/LearningResource\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of exactCorrelation   -->\n<!--    Added April 13,
+        2012    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/exactCorrelation\">\n
+        \   <rdfs:label>Exact Correlation</rdfs:label>\n    <rdfs:comment>The relevant
+        concepts in the educational resource and the standard statement are coextensive.</rdfs:comment>\n
+        \   <rdfs:subPropertyOf rdf:resource=\"http://purl.org/dc/terms/conformsTo\"/>\n
+        \   <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/LearningResource\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of majorCorrelation   -->\n<!--    Added April 13,
+        2012    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/majorCorrelation\">\n
+        \   <rdfs:label>Major Correlation</rdfs:label>\n    <rdfs:comment>Major overlap
+        of relevant concepts between the learning resource being described and the
+        competency statement.</rdfs:comment>\n    <rdfs:subPropertyOf rdf:resource=\"http://purl.org/dc/terms/conformsTo\"/>\n
+        \   <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/LearningResource\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of minorCorrelation   -->\n<!--    Added April 13,
+        2012    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/minorCorrelation\">\n
+        \   <rdfs:label>Minor Correlation</rdfs:label>\n    <rdfs:comment>Minor overlap
+        of relevant concepts between the learning resource being described and the
+        competency statement.\n    </rdfs:comment>\n    <rdfs:subPropertyOf rdf:resource=\"http://purl.org/dc/terms/conformsTo\"/>\n
+        \   <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/LearningResource\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of narrowCorrelation   -->\n<!--    Added April 13,
+        2012    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/narrowCorrelation\">\n
+        \   <rdfs:label>Narrow Correlation</rdfs:label>\n    <rdfs:comment>The learning
+        resource being described covers all of the relevant concepts in the competency
+        statement as well as relevant concepts not found in the competency.</rdfs:comment>\n
+        \   <rdfs:subPropertyOf rdf:resource=\"http://purl.org/dc/terms/conformsTo\"/>\n
+        \   <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/LearningResource\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of prerequisiteCompetency   -->\n<!--    Added April
+        13, 2012    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/prerequisiteCompetency\">\n
+        \   <rdfs:label>Prerequisite Competency</rdfs:label>\n    <rdfs:comment>A
+        prerequisite competency for the learning resource being described.</rdfs:comment>\n
+        \   <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/LearningResource\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <rdfs:subPropertyOf rdf:resource=\"http://purl.org/dc/terms/conformsTo\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of teachesCompetency   -->\n<!--    Added April 13,
+        2012    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/teachesCompetency\">\n
+        \   <rdfs:label>Teaches Competency</rdfs:label>\n    <rdfs:comment>The competency
+        that the learning resource being described teaches.\n    </rdfs:comment>\n
+        \   <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/LearningResource\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <rdfs:subPropertyOf rdf:resource=\"http://purl.org/dc/terms/conformsTo\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--\n ============================================================
+        \  \n-->\n<!--    END PROPERTY DEFINITIONS FOR MAPPING PREDICATES   -->\n<!--
+        \   FOR LEARNING RESOURCES AND CORRELATION RESOURCES  -->\n<!--\n ============================================================
+        \  \n-->\n<!--\n ============================================================
+        \  \n-->\n<!--    BEGIN PROPERTY DEFINITIONS FOR MAPPING PREDICATES -->\n<!--
+        \   FOR STANDARDS TO STANDARD ALIGNMENTS              -->\n<!--\n ============================================================
+        \  \n-->\n<!--    Definition of broadAlignment   -->\n<!--    Added October
+        17, 2012         -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/broadAlignment\">\n
+        \   <rdfs:label>Broad Alignment</rdfs:label>\n    <rdfs:comment>The target
+        competency covers all of the relevant concepts in the competency being described
+        as well as relevant concepts not found in the competency being described.</rdfs:comment>\n
+        \   <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of comprisedOf   -->\n<!--    Added June 28, 2013
+        \   -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/comprisedOf\">\n
+        \   <rdfs:label>Comprised Of</rdfs:label>\n    <rdfs:comment xml:lang=\"en-US\">The
+        resource being described includes, comprehends or encompass, in whole or in
+        part, the meaning, nature or importance of the resource being referenced.</rdfs:comment>\n
+        \   <dc:description>Deliberately not defining domains and ranges for the property
+        at this time.</dc:description>\n    <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of exactAlignment   -->\n<!--    Added October 17,
+        2012    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/exactAlignment\">\n
+        \   <rdfs:label>Exact Alignment</rdfs:label>\n    <rdfs:comment>The relevant
+        concepts in both competencies are coextensive.</rdfs:comment>\n    <rdfs:domain
+        rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n    <rdfs:range
+        rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n    \n<!--
+        \   Definition of majorAlignment   -->\n<!--    Added October 17, 2012    -->\n<rdf:Property
+        rdf:about=\"http://purl.org/ASN/schema/core/majorAlignment\">\n    <rdfs:label>Major
+        Alignment</rdfs:label>\n    <rdfs:comment>Major overlap of relevant concepts
+        between the two competencies.</rdfs:comment>\n    <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n
+        \   \n<!--    Definition of minorAlignment   -->\n<!--    Added October 17,
+        2012    -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/minorAlignment\">\n
+        \   <rdfs:label>Minor Alignment</rdfs:label>\n    <rdfs:comment>Minor overlap
+        of relevant concepts between the two competencies.</rdfs:comment>\n    <rdfs:domain
+        rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n    <rdfs:range
+        rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n    \n<!--
+        \   Definition of narrowAlignment   -->\n<!--    Added October 17, 2012    -->\n<rdf:Property
+        rdf:about=\"http://purl.org/ASN/schema/core/narrowAlignment\">\n    <rdfs:label>Narrow
+        Alignment</rdfs:label>\n    <rdfs:comment>The competency being described covers
+        all of the relevant concepts in the target competency as well as relevant
+        concepts not found in the target competency.</rdfs:comment>\n    <rdfs:domain
+        rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n    <rdfs:range
+        rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n    \n<!--
+        \   Definition of prerequisiteAlignment   -->\n<!--    Added October 17, 2012
+        \   -->\n<rdf:Property rdf:about=\"http://purl.org/ASN/schema/core/prerequisiteAlignment\">\n
+        \   <rdfs:label>Prerequisite Alignment</rdfs:label>\n    <rdfs:comment>The
+        competency being described is a prerequisite to the target competency.</rdfs:comment>\n
+        \   <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdf:Property>\n<!--\n
+        ===========================================================   \n-->\n<!--
+        \   END PROPERTY DEFINITIONS FOR MAPPING PREDICATES  -->\n<!--    FOR STATEMENTS
+        AND CORRELATION RESOURCES         -->\n<!--\n ===========================================================
+        \  \n-->\n<!--\n ===========================================================
+        \  \n-->\n<!--    BEGIN PROPERTY DEFINITIONS FOR RUBRICS           -->\n<!--\n
+        ===========================================================   \n-->\n<!--
+        \   Definition of benchmark    -->\n<!--    Added February 26, 2019    -->\n<rdfs:Property
+        rdf:about=\"http://purl.org/ASN/schema/core/benchmark\">\n    <rdfs:label
+        xml:lang=\"en-US\">Benchmark</rdfs:label>\n    <rdfs:comment xml:lang=\"en-US\">Description
+        of a level of achievement on a performance task defined by the RubricCriterion.</rdfs:comment>\n
+        \   <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/CriterionLevel\"/>\n
+        \   <rdfs:range rdf:resource=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#langString\"/>\n
+        \   <owl:equivalentProperty rdf:resource=\"https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14443\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n
+        \   <vann:usageNote xml:lang=\"en-US\">Can have one or more per CriterionLevel.</vann:usageNote>\n</rdfs:Property>\n
+        \   \n<!--    Definition of criterionFor    -->\n<!--    Added February 26,
+        2019    -->\n<rdfs:Property rdf:about=\"http://purl.org/ASN/schema/core/criterionFor\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Criterian For</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Reference to the asn:Rubric to which the asn:RubricCriteria
+        being described belongs.</rdfs:comment>\n    <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/RubricCriterion\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/Rubric\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Property>\n
+        \   \n<!--    Definition of hasCriterion    -->\n<!--    Added February 26,
+        2019    -->\n<rdfs:Property rdf:about=\"http://purl.org/ASN/schema/core/hasCriterion\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Has Criterion</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">RubricCriterian referenced by the Rubric that defining
+        criterion to be met to demonstrate quality in execution in performance of
+        a task or obtaining an objectivetask.</rdfs:comment>\n    <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/RubricCriterion\"/>\n
+        \   <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/Rubric\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n
+        \   <vann:usageNote xml:lang=\"en-US\">Both asn:RubricCriterion and CriterionCategory
+        have an asn:sequence property to identify node order; however, json-ld encodings
+        should use @list on the asn:hasCriterion and asn:hasLevel properties to maintain
+        sequencing of RubricCriterion.</vann:usageNote>\n</rdfs:Property>\n    \n<!--
+        \   Definition of hasCriterionCategory    -->\n<!--    Added February 26,
+        2019    -->\n<rdfs:Property rdf:about=\"http://purl.org/ASN/schema/core/hasCriterionCategory\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Has Criterion Category</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Resource referenced by the Rubric that defines categories
+        for clustering logical sets of RubricCriterion.</rdfs:comment>\n    <rdfs:domain
+        rdf:resource=\"http://purl.org/ASN/schema/core/Rubric\"/>\n    <rdfs:range
+        rdf:resource=\"http://purl.org/ASN/schema/core/CriterionCategory\"/>\n    <rdfs:domain
+        rdf:resource=\"http://purl.org/ASN/schema/core/Rubric\"/>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n    <vann:usageNote xml:lang=\"en-US\">Large
+        rubrics are occasionally divided into logical sections or categories that
+        need to be identified and described.</vann:usageNote>\n</rdfs:Property>\n
+        \   \n<!--    Definition of hasLevel    -->\n<!--    Added February 26, 2019
+        \   -->\n<rdfs:Property rdf:about=\"http://purl.org/ASN/schema/core/hasLevel\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Has Level</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Resource description of a level of performance based on
+        a RubricCriterion.</rdfs:comment>\n    <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/RubricCriterion\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/CriterionLevel\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n
+        \   <owl:equivalentProperty rdf:resource=\"https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14443\"/>\n
+        \   <vann:usageNote xml:lang=\"en-US\">Both asn:RubricCriterion and CriterionCategory
+        have an asn:sequence property to identify node order; however, json-ld encodings
+        should use @list on the asn:hasCriterion and asn:hasLevel properties to maintain
+        such sequencing.</vann:usageNote>\n</rdfs:Property>\n    \n<!--    Definition
+        of hasProgressionLevel    -->\n<!--    Added November 17, 2019              -->
+        \n<rdfs:Property rdf:about=\"http://purl.org/ASN/schema/core/hasProgressionLevel\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Has Progression Level</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Reference to a specific point in a progression model.</rdfs:comment>\n
+        \   <rdfs:range rdf:resource=\"http://www.w3.org/2004/02/skos/core#Concept\"/>\n
+        \   <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/CriterionLevel\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>
+        \   \n</rdfs:Property>\n    \n<!--    Definition of hasProgressionLevel    -->\n<!--
+        \   Added November 17, 2019              --> \n<rdfs:Property rdf:about=\"http://purl.org/ASN/schema/core/hasProgressionModel\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Has Progression Model</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Reference to a progression model used.</rdfs:comment>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/ProgressionModel\"/>\n
+        \   <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/Rubric\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>
+        \   \n</rdfs:Property>\n    \n<!--    Definition of hasScope    -->\n<!--
+        \   Added February 26, 2019    -->\n<rdfs:Property rdf:about=\"http://purl.org/ASN/schema/core/hasScope\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Has Scope</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Description of what the rubric's creator intended to assess
+        or evaluate.</rdfs:comment>\n    <rdfs:range rdf:resource=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#langString\"/>\n
+        \   <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/Rubric\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Property>\n
+        \   \n<!--    Definition of levelFor    -->\n<!--    Added February 26, 2019
+        \   -->\n<rdfs:Property rdf:about=\"http://purl.org/ASN/schema/core/levelFor\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Level For</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Reference to the asn:RubricCriterian to which the asn:CriterionLevel
+        being described belongs.</rdfs:comment>\n    <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/CriterionLevel\"/>\n
+        \   <rdfs:range rdf:resource=\"http://purl.org/ASN/schema/core/RubricCriterion\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Property>\n
+        \   \n<!--    Definition of qualityLabel    -->\n<!--    Added February 26,
+        2019    -->\n<rdfs:Property rdf:about=\"http://purl.org/ASN/schema/core/qualityLabel\">\n
+        \   <rdfs:description xml:lang=\"en-US\">Qualitative description of this degree
+        of achievement used for column headers in tabular rubrics.</rdfs:description>\n
+        \   <rdfs:label xml:lang=\"en-US\">Quality Label</rdfs:label>\n    <rdfs:domain
+        rdf:resource=\"http://purl.org/ASN/schema/core/CriterionLevel\"/>\n    <rdfs:range
+        rdf:resource=\"http://www.w3.org/2001/XMLSchema#string\"/>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Property>\n    \n<!--
+        \   Definition of score    -->\n<!--    Added February 26, 2019    -->\n<rdfs:Property
+        rdf:about=\"http://purl.org/ASN/schema/core/score\">\n    <rdfs:label xml:lang=\"en-US\">Criterion
+        Level Score</rdfs:label>\n    <rdfs:comment xml:lang=\"en-US\">Points to be
+        awarded for achieving this level for a RubricCriterion.</rdfs:comment>\n    <rdfs:domain
+        rdf:resource=\"http://purl.org/ASN/schema/core/CriterionLevel\"/>\n    <rdfs:range
+        rdf:resource=\"http://www.w3.org/2001/XMLSchema#float\"/>\n    <owl:equivalentProperty
+        rdf:resource=\"https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14447\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Property>\n
+        \   \n<!--    Definition of sequence    -->\n<!--    Added February 26, 2019
+        \   -->\n    <rdfs:Property rdf:about=\"http://purl.org/ASN/schema/core/sequence\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Sequence</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Numeric value representing the resource's position in the
+        list (array) of resources.</rdfs:comment>\n    <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/CriterionLevel\"/>\n
+        \   <rdfs:domain rdf:resource=\"http://purl.org/ASN/schema/core/RubricCriterion\"/>\n
+        \   <rdfs:range rdf:resource=\"http://www.w3.org/2001/XMLSchema#integer\"/>\n
+        \   <owl:equivalentProperty rdf:resource=\"https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14445\"/>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Property>\n
+        \   \n<!--\n ======================================================   \n-->\n<!--
+        \   END PROPERTY DEFINITIONS FOR RUBRICS        -->\n<!--\n ======================================================
+        \  \n-->\n<!--\n ======================================================   \n-->\n<!--
+        \   BEGIN CLASS DEFINITIONS                     -->\n<!--\n ======================================================
+        \  \n-->\n<!--    Definition of CorrelationResource             -->\n<!--
+        \   Added April 13, 2012                        -->\n<rdfs:Class rdf:about=\"http://purl.org/ASN/schema/core/CorrelationResource\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Correlation Resource</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">A resource that describes the mapping between a learning
+        resource and a node in a learning outcomes framework.</rdfs:comment>\n    <dc:description>The
+        CorrelationResource is an entity intended to provide a rich description of
+        a mapping (correlation) between a LearningResource and a Statement when a
+        binary assertion of a relationship is insufficient.</dc:description>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Class>\n    \n<!--
+        \   Definition of CriterionCategory    -->\n<!--    Added February 26, 2019
+        \   -->\n<rdfs:Class rdf:about=\"http://purl.org/ASN/schema/core/CriterionCategory\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Criterion Category</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Resource identifying a category by which Rubric Criterion
+        may be grouped.</rdfs:comment>\n    <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Class>\n
+        \   \n<!--    Definition of CriterionLevel    -->\n<!--    Added February
+        26, 2019    -->\n<rdfs:Class rdf:about=\"http://purl.org/ASN/schema/core/CriterionLevel\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Criterion Level</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Resource identifying one or more benchmarks that must be
+        met to achieve a performance task.</rdfs:comment>\n    <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Class>\n
+        \   \n<rdfs:Class rdf:about=\"http://purl.org/ASN/schema/core/DerivedStandardDocument\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Derived Standard Document</rdfs:label>\n
+        \   <rdfs:comment xml:lang=\"en-US\">A collection of statements representing
+        an expectation of what students should know, value, and be able to do at a
+        target age or age range that are substantially defined by a different jurisdiction.</rdfs:comment>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n
+        \   <rdfs:subClassOf rdf:resource=\"http://purl.org/ASN/schema/core/StandardDocument\"/>\n</rdfs:Class>\n
+        \   \n<rdfs:Class rdf:about=\"http://purl.org/ASN/schema/core/DerivedStatement\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Derived Statement</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">An assertion representing an expectation of what students
+        should know, value, and be able to do at a target age or age range that is
+        derived from a statement defined by a different jurisdiction.</rdfs:comment>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n
+        \   <rdfs:subClassOf rdf:resource=\"http://purl.org/ASN/schema/core/Statement\"/>\n</rdfs:Class>\n
+        \   \n<!--    Definition of Educational Framework                         -->\n<!--
+        \   Added January 5, 2014                                      -->\n<rdfs:Class
+        rdf:about=\"http://purl.org/ASN/schema/core/EducationalFramework\">\n    <rdfs:label
+        xml:lang=\"en-US\">Educational Framework</rdfs:label>\n    <rdfs:comment xml:lang=\"en-US\">The
+        class of all structured sets of conceptual resources intentionally designed
+        for use as value vocabulary terms in education and training contexts.</rdfs:comment>\n
+        \   <dc:description xml:lang=\"en-US\">Similar to the class skos:ConceptScheme
+        with an intended focus on education and training. Examples of educational
+        frameworks include, but are not limited to, frameworks enumerating competencies,
+        text complexity, proficiency scales, assessment rubrics of various forms,
+        and specialized subject vocabularies.</dc:description>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Class>\n    \n<rdfs:Class
+        rdf:about=\"http://purl.org/ASN/schema/core/JurisdictionScheme\">\n    <rdfs:label
+        xml:lang=\"en-US\">Jurisdiction Encoding Schemes</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Controlled vocabularies of terms denoting the juristiction
+        or domain of the standards document.</rdfs:comment>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Class>\n    \n<rdfs:Class
+        rdf:about=\"http://purl.org/ASN/schema/core/LearningResource\">\n    <rdfs:label
+        xml:lang=\"en-US\">Learning Resource</rdfs:label>\n    <rdfs:comment xml:lang=\"en-US\">A
+        resource that is used as part of an Educational Activity(e.g. a textbook)
+        or that describes (e.g. a lesson plan) or records the Educational Activity
+        (e.g. an audio- or video-recording of a lesson).</rdfs:comment>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Class>\n    \n<!--
+        \   Definition of ProgressionModel    -->\n<!--    Added November 17, 2019
+        \   -->\n<rdfs:Class rdf:about=\"http://purl.org/ASN/schema/core/ProficiencyScale\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Proficiency Scale</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Model of identifiable points along a developmental progression
+        including increasing levels of competence, achievement or temporal position
+        (e.g., \"Second Quarter\").</rdfs:comment>\n    <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Class>\n
+        \   \n<!--    Definition of ProficiencyScale    -->\n<!--    Added January
+        5, 2014    -->\n<rdfs:Class rdf:about=\"http://purl.org/ASN/schema/core/ProficiencyScale\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Proficiency Scale</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">The class of all structured concept schemes identifying
+        discrete levels of expertise and performance mastery required either by a
+        competency or to be achieved by a learner.</rdfs:comment>\n    <dc:description
+        xml:lang=\"en-US\">Proficiency scales define levels of performance (what a
+        person does) as distinct from knowledge of specific information (what a person
+        knows) and outline tasks a person can manage and the skills necessary to progressively
+        accomplish explicit competencies at increasing levels of complexity. Proficiency
+        scales: (1) assist in making judgments about the kinds of tasks related to
+        a competency that a person is able to perform; and (2) to compare the abilities
+        of different persons with regard to achievement of those competencies at different
+        levels.</dc:description>\n    <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Class>\n
+        \   \n<!--    Definition of Rubric    -->\n<!--    Added February 26, 2019
+        \   -->\n<rdfs:Class rdf:about=\"http://purl.org/ASN/schema/core/Rubric\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Rubric</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Resource providing guidance in evaluating the quality and
+        level of person's responses or actions based on an explicit set of criteria.</rdfs:comment>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Class>\n
+        \   \n<!--    Definition of RubricCriterion    -->\n<!--    Added February
+        26, 2019    -->\n<rdfs:Class rdf:about=\"http://purl.org/ASN/schema/core/RubricCriterion\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Rubric Criterion</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Resource identifying a criterion that must be met to demonstrate
+        quality performance of a objective or task.</rdfs:comment>\n    <rdfs:isDefinedBy
+        rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Class>\n    \n<rdfs:Class
+        rdf:about=\"http://purl.org/ASN/schema/core/StatusScheme\">\n    <rdfs:label
+        xml:lang=\"en-US\">Status Encoding Schemes</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">Controlled vocabularies of terms denoting the publication
+        status of the standards document.</rdfs:comment>\n    <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Class>\n
+        \   \n<rdfs:Class rdf:about=\"http://purl.org/ASN/schema/core/StandardDocument\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Standard Document</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">A collection of statements representing an expectation
+        of what students should know, value, and be able to do at a target age or
+        age range.</rdfs:comment>\n    <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Class>\n
+        \   \n<rdfs:Class rdf:about=\"http://purl.org/ASN/schema/core/Statement\">\n
+        \   <rdfs:label xml:lang=\"en-US\">Statement</rdfs:label>\n    <rdfs:comment
+        xml:lang=\"en-US\">An assertion representing an expectation of what students
+        should know, value, and be able to do at a target age or age range.</rdfs:comment>\n
+        \   <rdfs:isDefinedBy rdf:resource=\"http://purl.org/ASN/schema/core/\"/>\n</rdfs:Class>\n<!--\n
+        ====================================================== \n-->\n<!--    END
+        CLASS DEFINITIONS                       -->\n<!--\n ======================================================
+        \n-->\n</rdf:RDF>"
+  recorded_at: Mon, 15 Nov 2021 13:57:50 GMT
+recorded_with: VCR 6.0.0

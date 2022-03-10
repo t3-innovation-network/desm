@@ -1,10 +1,10 @@
 import axios from "axios";
-import { API_URL } from "../../helpers/Constants";
+import { APP_DOMAIN } from "../../helpers/Constants";
 
 const apiService = axios.create({
   /// Tells the API that's ok to get the cookie in our client
   withCredentials: true,
-  baseURL: API_URL,
+  baseURL: APP_DOMAIN,
 });
 
 /**

@@ -17,4 +17,4 @@ export const MAX_MAPPING_WEIGHT_PER_ORGANIZATION = 5;
 /**
  * Base URL of the api to make calls to endpoints
  */
-export const API_URL = process.env.API_URL;
+export const APP_DOMAIN = process.env.APP_DOMAIN;

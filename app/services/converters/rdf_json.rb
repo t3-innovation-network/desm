@@ -18,5 +18,12 @@ module Converters
       file_content = File.read(file)
       JSON.parse(file_content)
     end
+
+    def self.read(path)
+      JSON(File.read(path))
+      true
+    rescue JSON::ParserError
+      raise Converters::ParseError
+    end
   end
 end

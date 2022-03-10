@@ -8,6 +8,9 @@ import {
 import AlertNotice from "../shared/AlertNotice";
 import fetchExternalVocabulary from "./../../services/fetchExternalVocabulary";
 import { validURL } from "../../helpers/URL";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { readFileContent } from "../dashboard/configuration-profiles/utils";
 
 var isJSON = require("is-valid-json");
 
@@ -70,7 +73,7 @@ const UploadVocabulary = (props) => {
    */
   useEffect(() => {
     if (file != null) {
-      readFileContent();
+      readFileContent(file, setFileContent(content), setErrors(tempErrors));
     }
   }, [file]);
 
@@ -86,44 +89,6 @@ const UploadVocabulary = (props) => {
     ) : (
       ""
     );
-  };
-
-  /**
-   * Transform the file content to be able to send it to the backend
-   */
-  const readFileContent = () => {
-    const reader = new FileReader();
-
-    /**
-     * When reading the file content
-     */
-    reader.onload = () => {
-      /// Get the content of the file
-      let content = reader.result;
-      setFileContent(content);
-    };
-
-    /**
-     * Update callback for errors
-     */
-    reader.onerror = function (e) {
-      let tempErrors = errors;
-      tempErrors.push("File could not be read! Code: " + e.target.error.code);
-      setErrors(tempErrors);
-    };
-
-    reader.readAsText(file);
-  };
-
-  /**
-   * Fetch the vocabulary from the provided URL
-   */
-  const handleVocabularyURLBlur = () => {
-    if (!validURL(vocabularyURL)) {
-      setErrors(["It must be a valid URL"]);
-      return;
-    }
-    setErrors([]);
   };
 
   /**
@@ -366,7 +331,7 @@ const UploadVocabulary = (props) => {
                 className="float-right cursor-pointer"
                 onClick={props.onRequestClose}
               >
-                <i className="fa fa-arrow-left" aria-hidden="true"></i>
+                <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
               </a>
             </div>
           </div>

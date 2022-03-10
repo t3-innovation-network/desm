@@ -26,6 +26,13 @@ module Converters
       end
     end
 
+    def self.read(path)
+      Zip::File.open(path)
+      true
+    rescue Zip::Error
+      raise Converters::ParseError
+    end
+
     private
 
     ##

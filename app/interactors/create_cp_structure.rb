@@ -41,7 +41,10 @@ class CreateCpStructure
   private
 
   def assign_administrator
-    result = CreateAgent.call(@structure[:profile_administrator].merge({role: Role.find_by_name("profile admin")}))
+    result = CreateAgent.call(@structure[:profile_administrator].merge({
+                                                                         role: Role.find_by_name("profile admin"),
+                                                                         skip_validating_organization: true
+                                                                       }))
     raise AdminCreationError unless result.error.nil?
 
     @cp.update(administrator: result.agent)
@@ -79,7 +82,10 @@ class CreateCpStructure
   end
 
   def create_dso_admin dso_admin_data
-    result = CreateAgent.call(dso_admin_data.merge({role: Role.find_by_name("dso admin"), dso_admin: true}))
+    result = CreateAgent.call(dso_admin_data.merge({
+                                                     role: Role.find_by_name("dso admin"),
+                                                     skip_validating_organization: true
+                                                   }))
     raise DSOAdminCreationError unless result.error.nil?
 
     result.agent
@@ -96,7 +102,7 @@ class CreateCpStructure
 
   def create_dso_schemas dso, schemas_data
     schemas_data.each do |schema_data|
-      domain = Domain.find_by_uri schema_data[:associated_abstract_class]
+      domain = find_domain_by_uri(schema_data[:associated_abstract_class])
       result = CreateSchema.call({
                                    domain_id: domain.id,
                                    name: schema_data[:name],
@@ -120,5 +126,12 @@ class CreateCpStructure
 
       raise ConceptSchemeCreationError unless result.error.nil?
     end
+  end
+
+  def find_domain_by_uri uri
+    domain = Domain.find_by_source_uri uri
+    return domain unless domain.nil?
+
+    Domain.all.select {|domain| source_uri.end_with?(domain.source_uri.split(":").last) }&.first
   end
 end

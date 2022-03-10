@@ -49,7 +49,7 @@ RSpec.describe CreateAgent, type: :interactor do
       expect(result.agent.organization).to be(org)
     end
 
-    it "does not include the organization if the role is DSO Admin" do
+    it "is part of the organization if the role is DSO Admin" do
       dso_admin_role = Role.find_by_name "dso admin"
       result = CreateAgent.call({
                                   github_handle: "richard0000",
@@ -62,7 +62,7 @@ RSpec.describe CreateAgent, type: :interactor do
 
       expect(result.error).to be_nil
       expect(result.agent).to be_instance_of(User)
-      expect(result.agent.organization).to be_nil
+      expect(result.agent.organization).not_to be_nil
     end
   end
 end

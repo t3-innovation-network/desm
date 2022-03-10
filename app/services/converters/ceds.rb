@@ -19,6 +19,13 @@ module Converters
       end
     end
 
+    def self.read(path)
+      CSV.read(path, header_converters: :symbol, headers: true)
+      true
+    rescue CSV::MalformedCSVError
+      raise Converters::ParseError
+    end
+
     private
 
     ##

@@ -1,55 +1,14 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import DashboardContainer from "../DashboardContainer";
 import { Link } from "react-router-dom";
 import AlertNotice from "../../shared/AlertNotice";
 import fetchConfigurationProfiles from "../../../services/fetchConfigurationProfiles";
-import ConfigurationProfileBox, {
-  CPBoxContainer,
-} from "./ConfigurationProfileBox";
+import ConfigurationProfileBox from "./ConfigurationProfileBox";
 import { camelizeKeys } from "humps";
-import ConfirmDialog from "../../shared/ConfirmDialog";
 import createCP from "../../../services/createCP";
-
-class NewConfigurationProfile extends Component {
-  state = {
-    confirmationVisible: false,
-    confirmationMsg:
-      "You are about to create a new empty Configuration Profile. You will be able to fill all the necessary information until\
-       it is complete and ready to be used. Please confirm.",
-  };
-
-  handleCreate = () => {
-    this.setState({ confirmationVisible: false });
-    this.props.handleCreate();
-  };
-
-  render() {
-    const { confirmationMsg, confirmationVisible } = this.state;
-    return (
-      <Fragment>
-        {confirmationVisible && (
-          <ConfirmDialog
-            onRequestClose={() => this.setState({ confirmationVisible: false })}
-            onConfirm={this.handleCreate}
-            visible={confirmationVisible}
-          >
-            <h2 className="text-center">Attention!</h2>
-            <h5 className="mt-3 text-center"> {confirmationMsg}</h5>
-          </ConfirmDialog>
-        )}
-        <CPBoxContainer
-          iconClass="fa-plus"
-          sideBoxClass="bg-dashboard-background-highlight col-background"
-          action={() => {
-            this.setState({ confirmationVisible: true });
-          }}
-        >
-          <h5 className="m-5">Add a Configuration Profile</h5>
-        </CPBoxContainer>
-      </Fragment>
-    );
-  }
-}
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
+import NewConfigurationProfile from "./NewConfigurationProfile";
 
 export default class ConfigurationProfilesIndex extends Component {
   state = {
@@ -64,7 +23,7 @@ export default class ConfigurationProfilesIndex extends Component {
   dashboardPath = () => {
     return (
       <div className="float-right">
-        <i className="fas fa-home" />{" "}
+        <FontAwesomeIcon icon={faHome} />{" "}
         <span>
           <Link className="col-on-primary" to="/">
             Home

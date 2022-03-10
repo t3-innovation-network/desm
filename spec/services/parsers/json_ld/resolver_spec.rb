@@ -40,6 +40,8 @@ RSpec.describe Parsers::JsonLd::Resolver do
     }
     subject { described_class.new(type, context) }
 
+    # ASN server is down.
+    # @todo: Use VCR to test it when server is up again
     it "uses the context to properly fetch the type from the internet" do
       result_node = subject.infer_rdfs_class_node
 

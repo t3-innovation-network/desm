@@ -1,0 +1,83 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://credreg.net/ctdl/terms/Audience/json?releaseID=20210528
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - public, max-age=60
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/json; charset=utf-8
+      Expires:
+      - Sun, 14 Nov 2021 15:11:11 GMT
+      Last-Modified:
+      - Sun, 14 Nov 2021 15:10:11 GMT
+      Vary:
+      - "*"
+      Server:
+      - Microsoft-IIS/10.0
+      X-Aspnetmvc-Version:
+      - '5.0'
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Sun, 14 Nov 2021 15:10:13 GMT
+    body:
+      encoding: UTF-8
+      string: '{"@context":"http://credreg.net/ctdl/schema/context/json","@graph":[{"@type":"skos:ConceptScheme","@id":"ceterms:Audience","rdfs:label":{"en-US":"Audience"},"rdfs:comment":{"en-US":"Types
+        of audiences for which the resource being described is applicable or available."},"dct:description":{"en-US":"If
+        the resource is applicable or available for any type of audience, do not select
+        anything."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/ceterms/Audience/json","meta:hasConcept":["audience:Citizen","audience:CurrentMilitary","audience:CurrentMilitaryDependent","audience:CurrentMilitarySpouse","audience:CurrentStudent","audience:FormerMilitary","audience:FormerMilitaryDependent","audience:FormerMilitarySpouse","audience:FormerStudent","audience:FullTime","audience:Member","audience:NonCitizen","audience:NonMember","audience:NonResident","audience:PartTime","audience:PrivateEmployee","audience:PublicEmployee","audience:Resident"],"skos:hasTopConcept":["audience:Citizen","audience:CurrentMilitary","audience:CurrentMilitaryDependent","audience:CurrentMilitarySpouse","audience:CurrentStudent","audience:FormerMilitary","audience:FormerMilitaryDependent","audience:FormerMilitarySpouse","audience:FormerStudent","audience:FullTime","audience:Member","audience:NonCitizen","audience:NonMember","audience:NonResident","audience:PartTime","audience:PrivateEmployee","audience:PublicEmployee","audience:Resident"]},{"@type":"skos:Concept","@id":"audience:Citizen","skos:prefLabel":{"en-US":"Citizen"},"skos:definition":{"en-US":"Person
+        who is a legally recognized subject of a particular nation, state, province,
+        or commonwealth."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/Citizen/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:CurrentMilitary","skos:prefLabel":{"en-US":"Current
+        Military"},"skos:definition":{"en-US":"Current member of a nation''s military."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/CurrentMilitary/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:CurrentMilitaryDependent","skos:prefLabel":{"en-US":"Current
+        Military Dependent"},"skos:definition":{"en-US":"Dependent (usually a child)
+        of a current member of a nation''s military."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/CurrentMilitaryDependent/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:CurrentMilitarySpouse","skos:prefLabel":{"en-US":"Current
+        Military Spouse"},"skos:definition":{"en-US":"Spouse of a current member of
+        a nation''s military."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/CurrentMilitarySpouse/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:CurrentStudent","skos:prefLabel":{"en-US":"Current
+        Student"},"skos:definition":{"en-US":"Student currently participating in a
+        learning opportunity."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/CurrentStudent/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:FormerMilitary","skos:prefLabel":{"en-US":"Former
+        Military / Veteran"},"skos:definition":{"en-US":"Veteran of military service."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/FormerMilitary/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:FormerMilitaryDependent","skos:prefLabel":{"en-US":"Former
+        Military Dependent"},"skos:definition":{"en-US":"Former dependent (usually
+        a child) of a veteran of a nation''s military."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/FormerMilitaryDependent/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:FormerMilitarySpouse","skos:prefLabel":{"en-US":"Former
+        Military Spouse"},"skos:definition":{"en-US":"Spouse of a veteran of a nation''s
+        military."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/FormerMilitarySpouse/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:FormerStudent","skos:prefLabel":{"en-US":"Former
+        Student / Alumni"},"skos:definition":{"en-US":"Student who previously participated
+        in a learning opportunity."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/FormerStudent/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:FullTime","skos:prefLabel":{"en-US":"Full-Time"},"skos:definition":{"en-US":"Participation
+        in a learning opportunity to an extent that meets the opportunity''s requirements
+        for full-time status."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/FullTime/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:Member","skos:prefLabel":{"en-US":"Member"},"skos:definition":{"en-US":"Member
+        of an organization, society, or recognized group."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/Member/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:NonCitizen","skos:prefLabel":{"en-US":"Non-Citizen"},"skos:definition":{"en-US":"Person
+        who is not a legally recognized subject of a particular nation, state, province,
+        or commonwealth."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/NonCitizen/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:NonMember","skos:prefLabel":{"en-US":"Non-Member"},"skos:definition":{"en-US":"Individual
+        without membership status or privileges conferred by an organization, society,
+        or recognized group."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/NonMember/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:NonResident","skos:prefLabel":{"en-US":"Non-Resident"},"skos:definition":{"en-US":"Person
+        whose primary residence is not in nation, state, province, or commonwealth
+        of concern."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/NonResident/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:PartTime","skos:prefLabel":{"en-US":"Part-Time"},"skos:definition":{"en-US":"Participation
+        in a learning opportunity to an extent that meets the opportunity''s requirements
+        for part-time status."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/PartTime/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:PrivateEmployee","skos:prefLabel":{"en-US":"Private
+        Employee"},"skos:definition":{"en-US":"Person employed in the private sector."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/PrivateEmployee/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:PublicEmployee","skos:prefLabel":{"en-US":"Public
+        Employee"},"skos:definition":{"en-US":"Person employed in the public sector."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/PublicEmployee/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]},{"@type":"skos:Concept","@id":"audience:Resident","skos:prefLabel":{"en-US":"Resident"},"skos:definition":{"en-US":"Person
+        whose permanent and principal home is in a particular nation, state, province,
+        or commonwealth."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/audience/Resident/json","skos:inScheme":["ceterms:Audience"],"skos:topConceptOf":["ceterms:Audience"]}]}'
+  recorded_at: Sun, 14 Nov 2021 15:10:13 GMT
+recorded_with: VCR 6.0.0

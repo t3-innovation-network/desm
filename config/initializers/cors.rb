@@ -1,6 +1,6 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins Desm::API_URL.split(',').map { |origin| origin.strip }
+    origins Desm::APP_DOMAIN.split(',').map { |origin| origin.strip }
     resource "*",
              credentials: true,
              headers: :any,

@@ -1,0 +1,84 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://credreg.net/ctdl/terms/LearningMethod/json?releaseID=20210528
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - public, max-age=60
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/json; charset=utf-8
+      Expires:
+      - Sun, 14 Nov 2021 15:11:43 GMT
+      Last-Modified:
+      - Sun, 14 Nov 2021 15:10:43 GMT
+      Vary:
+      - "*"
+      Server:
+      - Microsoft-IIS/10.0
+      X-Aspnetmvc-Version:
+      - '5.0'
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Sun, 14 Nov 2021 15:10:45 GMT
+    body:
+      encoding: UTF-8
+      string: '{"@context":"http://credreg.net/ctdl/schema/context/json","@graph":[{"@type":"skos:ConceptScheme","@id":"ceterms:LearningMethod","rdfs:label":{"en-US":"Learning
+        Method"},"rdfs:comment":{"en-US":"Types of methods used to conduct the learning
+        opportunity."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/ceterms/LearningMethod/json","meta:hasConcept":["learnMethod:Applied","learnMethod:Gaming","learnMethod:Laboratory","learnMethod:Lecture","learnMethod:Prerecorded","learnMethod:SelfPaced","learnMethod:Seminar","learnMethod:WorkBased"],"skos:hasTopConcept":["learnMethod:Applied","learnMethod:Gaming","learnMethod:Laboratory","learnMethod:Lecture","learnMethod:Prerecorded","learnMethod:SelfPaced","learnMethod:Seminar","learnMethod:WorkBased"]},{"@type":"skos:Concept","@id":"learnMethod:Applied","skos:prefLabel":{"en-US":"Applied
+        Instruction"},"skos:definition":{"en-US":"Provides learning opportunities
+        in the context of real world examples, cases, and applications."},"dct:description":{"en-US":"Applies
+        to methods such as contextual learning, applied academics, academic-technical
+        integration, problem-based learning, project-based learning, and case methods."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/learnMethod/Applied/json","skos:inScheme":["ceterms:LearningMethod"],"skos:topConceptOf":["ceterms:LearningMethod"]},{"@type":"skos:Concept","@id":"learnMethod:Gaming","skos:prefLabel":{"en-US":"Gaming"},"skos:definition":{"en-US":"Provides
+        interactive educational experiences which demonstrate concepts in a way that
+        promotes critical thinking, overcoming challenges within prescribed rule sets,
+        problem solving, and in some cases, teamwork and/or competition."},"dct:description":{"en-US":"Individual
+        or group games that have cognitive, social, behavioral, and/or emotional dimensions
+        which are related to educational objectives."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/learnMethod/Gaming/json","skos:inScheme":["ceterms:LearningMethod"],"skos:topConceptOf":["ceterms:LearningMethod"]},{"@type":"skos:Concept","@id":"learnMethod:Laboratory","skos:prefLabel":{"en-US":"Laboratory"},"skos:definition":{"en-US":"Hands-on
+        individual or group experiences for applied learning concepts and methods,
+        procedures and protocols with equipment and technologies."},"dct:description":{"en-US":"Applies
+        to clinical practice and methods such as physical and/or virtual simulation
+        or participation, whether direct or indirect."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/learnMethod/Laboratory/json","skos:inScheme":["ceterms:LearningMethod"],"skos:topConceptOf":["ceterms:LearningMethod"]},{"@type":"skos:Concept","@id":"learnMethod:Lecture","skos:prefLabel":{"en-US":"Lecture"},"skos:definition":{"en-US":"Primary
+        method is presentation by an instructor of learning material and may include
+        student discussion."},"dct:description":{"en-US":"Lecture courses may involve
+        student questions and answers, but the role of the instructor is clearly differentiated
+        from that of the students."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/learnMethod/Lecture/json","skos:inScheme":["ceterms:LearningMethod"],"skos:topConceptOf":["ceterms:LearningMethod"]},{"@type":"skos:Concept","@id":"learnMethod:Prerecorded","skos:prefLabel":{"en-US":"Prerecorded"},"skos:definition":{"en-US":"Learning
+        by using video, audio, or other prerecorded content."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/learnMethod/Prerecorded/json","skos:inScheme":["ceterms:LearningMethod"],"skos:topConceptOf":["ceterms:LearningMethod"]},{"@type":"skos:Concept","@id":"learnMethod:SelfPaced","skos:prefLabel":{"en-US":"Self
+        Paced"},"skos:definition":{"en-US":"Provides for personalization and flexibility
+        in the timing and progression of learning for individual learners based on
+        their preferences and needs, prior learning experiences, and ability to progress
+        through learning opportunities."},"dct:description":{"en-US":"Applies to methods
+        such as competency-based education, open-entry/open exit, independent study,
+        private study, and correspondence."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/learnMethod/SelfPaced/json","skos:inScheme":["ceterms:LearningMethod"],"skos:topConceptOf":["ceterms:LearningMethod"]},{"@type":"skos:Concept","@id":"learnMethod:Seminar","skos:prefLabel":{"en-US":"Seminar"},"skos:definition":{"en-US":"Primary
+        method is active student discussion leading to advancement of the topic and
+        facilitated by an instructor."},"dct:description":{"en-US":"Seminars typically
+        involve small groups to facilitate equal opportunity with the instructor and
+        colleagues to be engaged and occasionally may include students leading discussions."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/learnMethod/Seminar/json","skos:inScheme":["ceterms:LearningMethod"],"skos:topConceptOf":["ceterms:LearningMethod"]},{"@type":"skos:Concept","@id":"learnMethod:WorkBased","skos:prefLabel":{"en-US":"Work
+        Based"},"skos:definition":{"en-US":"Provides real-world work experiences that
+        may be paid or unpaid and provided in group or individual formats normally
+        outside the classroom."},"dct:description":{"en-US":"Applies to methods such
+        as apprenticeships, internships, externships, work study, clinical rotations,
+        residencies, practicums, field study, team projects, and cooperative education."},"vs:term_status":"vs:stable","meta:changeHistory":"http://credreg.net/ctdl/termhistory/learnMethod/WorkBased/json","skos:inScheme":["ceterms:LearningMethod"],"skos:topConceptOf":["ceterms:LearningMethod"]}]}'
+  recorded_at: Sun, 14 Nov 2021 15:10:45 GMT
+recorded_with: VCR 6.0.0

@@ -4,6 +4,8 @@ import updateAlignment from "../../services/updateAlignment";
 import AlertNotice from "../shared/AlertNotice";
 import ModalStyles from "../shared/ModalStyles";
 import PredicateOptions from "../shared/PredicateOptions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const EditAlignment = (props) => {
   Modal.setAppElement("body");
@@ -84,9 +86,9 @@ const EditAlignment = (props) => {
     >
       <div className="card">
         <div className="card-header">
-          <i className="fas fa-comment col-primary"></i>
+          <FontAwesomeIcon icon={faComment} className="col-primary" />
           <a className="float-right cursor-pointer" onClick={onRequestClose}>
-            <i className="fas fa-times"></i>
+            <FontAwesomeIcon icon={faTimes} />
           </a>
         </div>
         <div className="card-body">
