@@ -6,6 +6,7 @@ import {
   setSavingCP,
 } from "../../../../actions/configurationProfiles";
 import updateCP from "../../../../services/updateCP";
+import fetchCPSkosLabels from "../../../../services/fetchCpSkosLabels";
 
 const SchemaFileMetadata = (props) => {
   const { schemaFileIdx } = props;
@@ -23,6 +24,7 @@ const SchemaFileMetadata = (props) => {
   const [fileVersion, setFileVersion] = useState(file.version);
   const [description, setDescription] = useState(file.description);
   const [origin, setOrigin] = useState(file.origin);
+  const [abstractClassesLabels, setAbstractClassesLabels] = useState([]);
   const dispatch = useDispatch();
 
   const handleBlur = () => {
@@ -78,13 +80,32 @@ const SchemaFileMetadata = (props) => {
     });
   };
 
+  const handleFetchAbstractClassesLabels = () => {
+    fetchCPSkosLabels(currentCP.id, "json_abstract_classes").then(
+      (response) => {
+        if (response.error) {
+          let message = response.error;
+          dispatch(setEditCPErrors(message));
+          return;
+        }
+
+        setAbstractClassesLabels(response.conceptNames);
+      }
+    );
+  };
+
   useEffect(() => {
     setAbstractClass(file.associatedAbstractClass);
     setFileName(file.name);
     setFileVersion(file.version);
     setDescription(file.description);
     setOrigin(file.origin);
+    handleFetchAbstractClassesLabels();
   }, [props.schemaFileIdx]);
+
+  useEffect(() => {
+    if (abstractClass) handleBlur();
+  }, [abstractClass]);
 
   return (
     <Fragment>
@@ -173,31 +194,36 @@ const SchemaFileMetadata = (props) => {
         </small>
       </div>
 
-      <div className="mt-5">
-        <label>Associated Abstract Class</label>
-        <div className="input-group input-group">
-          <input
-            type="url"
-            className="form-control input-lg"
-            name="origin"
-            value={abstractClass}
-            onChange={(event) => {
-              setAbstractClass(event.target.value);
-            }}
-            onBlur={() =>
-              handleUrlBlur(
-                abstractClass,
-                "The associated abstract class must be a valid URL",
-                handleBlur
-              )
-            }
-            pattern="https://.*"
-            size="30"
-            placeholder="https://example.com"
-            required
-          />
+      {abstractClassesLabels.length > 0 ? (
+        <div className="mt-5">
+          <label>Associated Abstract Class</label>
+          <div className="input-group input-group">
+            <select
+              className="form-control cursor-pointer"
+              value={abstractClass}
+              onChange={(e) => setAbstractClass(e.target.value)}
+            >
+              {abstractClassesLabels.map(function (option) {
+                return (
+                  <option
+                    key={option["uri"]}
+                    value={option["uri"]}
+                    defaultChecked={option["uri"] === abstractClass}
+                  >
+                    {option["label"]}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
         </div>
-      </div>
+      ) : (
+        <p>
+          This configuration profile has no abstract classes yet selected.
+          Please go to Step 2 and select one so each schema file can be related
+          to an abstract class.
+        </p>
+      )}
     </Fragment>
   );
 };
