@@ -51,14 +51,14 @@ class CreateCpStructure
   end
 
   def generate_abstract_classes
-    result = CreateAbstractClasses.call({uri: @structure[:abstract_classes][:origin].first})
+    result = CreateAbstractClasses.call({json_body: @cp.json_abstract_classes})
     raise AbstractClassesCreationError unless result.error.nil?
 
     @cp.update(abstract_classes: result.domain_set)
   end
 
   def generate_mapping_predicates
-    result = CreateMappingPredicates.call({uri: @structure[:mapping_predicates][:origin].first})
+    result = CreateMappingPredicates.call({json_body: @cp.json_mapping_predicates})
     raise MappingPredicatesCreationError unless result.error.nil?
 
     @cp.update(mapping_predicates: result.predicate_set)
@@ -104,7 +104,7 @@ class CreateCpStructure
     schemas_data.each do |schema_data|
       domain = find_domain_by_uri(schema_data[:associated_abstract_class])
       result = CreateSchema.call({
-                                   domain_id: domain.id,
+                                   domain_id: domain&.id,
                                    name: schema_data[:name],
                                    user: dso.administrator,
                                    uri: schema_data[:origin]
@@ -132,6 +132,6 @@ class CreateCpStructure
     domain = Domain.find_by_source_uri uri
     return domain unless domain.nil?
 
-    Domain.all.select {|domain| source_uri.end_with?(domain.source_uri.split(":").last) }&.first
+    Domain.all.select {|domain| uri.end_with?(domain.source_uri.split(":").last) }&.first
   end
 end

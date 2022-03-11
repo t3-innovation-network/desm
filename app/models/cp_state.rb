@@ -26,6 +26,10 @@ module CpState
       @configuration_profile.structure
     end
 
+    def incomplete!
+      raise NotImplementedError
+    end
+
     def remove!
       @configuration_profile.destroy!
     end
@@ -34,6 +38,10 @@ module CpState
   class Active < Base
     def activate!
       raise CpState::InvalidStateTransition, "Already activated"
+    end
+
+    def incomplete!
+      @configuration_profile.transition_to! :incomplete
     end
 
     def complete!
@@ -59,6 +67,10 @@ module CpState
     def deactivate!
       raise CpState::InvalidStateTransition, "Can not deactivate while complete"
     end
+
+    def incomplete!
+      @configuration_profile.transition_to! :incomplete
+    end
   end
 
   class Deactivated < Base
@@ -72,6 +84,10 @@ module CpState
 
     def deactivate!
       raise CpState::InvalidStateTransition, "Already deactivated"
+    end
+
+    def incomplete!
+      @configuration_profile.transition_to! :incomplete
     end
   end
 
@@ -88,6 +104,10 @@ module CpState
 
     def deactivate!
       raise CpState::InvalidStateTransition, "Can not deactivate while incomplete"
+    end
+
+    def incomplete!
+      raise CpState::InvalidStateTransition, "Already incomplete"
     end
   end
 end

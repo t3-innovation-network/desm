@@ -5,12 +5,11 @@ class CreateAbstractClasses
   include SchemeDefinitionFetchable
 
   before do
-    context.fail!(error: "uri must be present") unless context.uri.present?
+    context.fail!(error: "json body must be present") unless context.json_body.present?
   end
 
   def call
-    skos_content = fetch_definition(context.uri)
-    processor = Processors::Domains.new(skos_content)
+    processor = Processors::Domains.new(context.json_body)
 
     context.domain_set = processor.create
   rescue StandardError => e
