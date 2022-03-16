@@ -9,6 +9,10 @@ RSpec.describe CreateSchema, type: :interactor do
     let(:user) { FactoryBot.create(:user, organization: org) }
     let(:domain) { FactoryBot.create(:domain) }
 
+    after(:all) do
+      DatabaseCleaner.clean_with(:truncation)
+    end
+
     it "rejects creation if not enough information is provided" do
       result = CreateSchema.call
       expect(result.error).to eq("domain_id must be present")

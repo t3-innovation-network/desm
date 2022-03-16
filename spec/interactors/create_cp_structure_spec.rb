@@ -34,6 +34,10 @@ RSpec.describe CreateCpStructure, type: :interactor do
         expect(result.error).to be_nil
       end
 
+      after(:all) do
+        DatabaseCleaner.clean_with(:truncation)
+      end
+
       it "generates a structure with a valid administrator" do
         expect(@cp.administrator.fullname).to eq("Sergio Ramos")
         expect(@cp.administrator.email).to eq("sergio@ramos.com")
