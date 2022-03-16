@@ -4,16 +4,16 @@ require "rails_helper"
 
 RSpec.describe CreateAbstractClasses, type: :interactor do
   describe ".call" do
-    let(:test_uri) { Rails.root.join("concepts", "desmAbstractClasses.json") }
+    let(:test_json_body) { JSON.parse(File.read(Rails.root.join("concepts", "desmAbstractClasses.json"))) }
 
-    it "rejects creation if uri is not passed" do
+    it "rejects creation if json body is not passed" do
       result = CreateAbstractClasses.call
 
-      expect(result.error).to eq("uri must be present")
+      expect(result.error).to eq("json body must be present")
     end
 
     it "Creates a domain set with its domains if uri is correct" do
-      result = CreateAbstractClasses.call({uri: test_uri})
+      result = CreateAbstractClasses.call({json_body: test_json_body})
 
       expect(result.error).to be_nil
       expect(result.domain_set).to be_instance_of(DomainSet)

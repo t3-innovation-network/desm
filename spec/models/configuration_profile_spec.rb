@@ -3,22 +3,17 @@
 require "rails_helper"
 
 describe ConfigurationProfile, type: :model do
-  subject { FactoryBot.create(:configuration_profile) }
-
-  let(:complete_structure) {
-    JSON.parse(File.read(Rails.root.join("spec", "fixtures", "complete.configuration.profile.json")))
-  }
-  let(:valid_structure_with_invalid_email) {
-    JSON.parse(File.read(Rails.root.join("spec", "fixtures", "valid.configuration.profile.with.invalid.email.json")))
-  }
-  let(:valid_json_mapping_predicates) {
-    JSON.parse(File.read(Rails.root.join("spec", "fixtures", "desmMappingPredicates.json")))
-  }
-
-  before(:each) do
-    Role.create!(name: "dso admin")
-    Role.create!(name: "mapper")
-    Role.create!(name: "profile admin")
+  before(:all) do
+    @complete_structure = JSON.parse(
+      File.read(
+        Rails.root.join("spec", "fixtures", "complete.configuration.profile.json")
+      )
+    )
+    @valid_structure_with_invalid_email = JSON.parse(
+      File.read(
+        Rails.root.join("spec", "fixtures", "valid.configuration.profile.with.invalid.email.json")
+      )
+    )
   end
 
   it "has a valid factory" do
@@ -28,181 +23,235 @@ describe ConfigurationProfile, type: :model do
   it { should have_many(:standards_organizations) }
 
   context "predicates strongest match" do
-    it "fail to save an invalid predicate strongest match" do
-      subject.predicate_strongest_match = "should-fail-test.com/123456"
+    before(:all) do
+      @cp = FactoryBot.create(:configuration_profile)
+    end
 
-      expect { subject.save! }.to raise_error ActiveRecord::RecordNotSaved
+    after(:all) do
+      DatabaseCleaner.clean_with(:truncation)
+    end
+
+    it "fail to save an invalid predicate strongest match" do
+      expect {
+        @cp.update!(predicate_strongest_match: "should-fail-test.com/123456")
+      }.to raise_error ActiveRecord::RecordNotSaved
     end
 
     it "accepts a valid predicate strongest match" do
-      subject.json_mapping_predicates = valid_json_mapping_predicates
-      subject.predicate_strongest_match = "http://desmsolutions.org/concepts/identical"
-      subject.save!
+      @cp.update!(predicate_strongest_match: "http://desmsolutions.org/concepts/identical")
+      @cp.save!
 
-      expect(subject.predicate_strongest_match).to eql("http://desmsolutions.org/concepts/identical")
+      expect(@cp.predicate_strongest_match).to eql("http://desmsolutions.org/concepts/identical")
     end
   end
 
   context "when it is incomplete" do
+    before(:all) do
+      @cp = FactoryBot.create(:configuration_profile)
+    end
+
+    before(:each) do
+      @cp.structure = {}
+    end
+
+    after(:all) do
+      DatabaseCleaner.clean_with(:truncation)
+    end
+
     it "has incomplete state at creation" do
-      expect(subject.state_handler).to be_instance_of(CpState::Incomplete)
+      expect(@cp.state_handler).to be_instance_of(CpState::Incomplete)
     end
 
     it "has not generated structure" do
-      expect(subject.standards_organizations).to be_empty
-    end
-
-    it "can be removed" do
-      subject.remove!
-
-      expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
-    end
-
-    it "can be completed if validates" do
-      subject.structure = complete_structure
-      subject.save!
-      expect(subject.state_handler).to be_instance_of(CpState::Complete)
+      expect(@cp.standards_organizations).to be_empty
     end
 
     it "can not be activated" do
-      expect { subject.activate! }.to raise_error CpState::InvalidStateTransition
+      expect { @cp.activate! }.to raise_error CpState::InvalidStateTransition
     end
 
     it "can be exported" do
-      exported_cp = subject.export!
+      exported_cp = @cp.export!
 
-      expect(exported_cp).to be_equal(subject.structure)
+      expect(exported_cp).to be_equal(@cp.structure)
     end
 
     it "can not be deactivated" do
-      expect { subject.activate! }.to raise_error CpState::InvalidStateTransition
+      expect { @cp.activate! }.to raise_error CpState::InvalidStateTransition
+    end
+
+    it "can be completed if validates" do
+      @cp.update!(structure: @complete_structure)
+
+      expect(@cp.state_handler).to be_instance_of(CpState::Complete)
+    end
+
+    it "can be removed" do
+      @cp.remove!
+
+      expect { @cp.reload }.to raise_error ActiveRecord::RecordNotFound
     end
   end
 
   context "when it is completed" do
-    before(:each) do
-      subject.update!(structure: complete_structure)
+    before(:all) do
+      Role.create!(name: "dso admin")
+      Role.create!(name: "mapper")
+      Role.create!(name: "profile admin")
+
+      @cp = FactoryBot.create(:configuration_profile)
+      @cp.update!(structure: @complete_structure)
+    end
+
+    after(:all) do
+      DatabaseCleaner.clean_with(:truncation)
     end
 
     it "has not generated structure" do
-      expect(subject.standards_organizations).to be_empty
-    end
-
-    it "can be removed" do
-      subject.remove!
-
-      expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
+      expect(@cp.standards_organizations).to be_empty
     end
 
     it "can not be completed again" do
-      expect(subject.state_handler).to be_instance_of(CpState::Complete)
-      expect { subject.complete! }.to raise_error CpState::InvalidStateTransition
-    end
-
-    it "can be activated" do
-      subject.activate!
-
-      expect(subject.state_handler).to be_instance_of(CpState::Active)
+      expect(@cp.state_handler).to be_instance_of(CpState::Complete)
+      expect { @cp.complete! }.to raise_error CpState::InvalidStateTransition
     end
 
     it "can be exported" do
-      exported_cp = subject.export!
+      exported_cp = @cp.export!
 
-      expect(exported_cp).to be_equal(subject.structure)
+      expect(exported_cp).to be_equal(@cp.structure)
     end
 
     it "can not be deactivated" do
-      expect { subject.deactivate! }.to raise_error CpState::InvalidStateTransition
+      expect { @cp.deactivate! }.to raise_error CpState::InvalidStateTransition
+    end
+
+    it "can be activated" do
+      @cp.activate!
+
+      expect(@cp.state_handler).to be_instance_of(CpState::Active)
+    end
+
+    it "can be removed" do
+      @cp.remove!
+
+      expect { @cp.reload }.to raise_error ActiveRecord::RecordNotFound
     end
   end
 
   context "when it is active" do
-    before(:each) do
-      subject.update!(structure: complete_structure)
-      subject.activate!
+    before(:all) do
+      Role.create!(name: "dso admin")
+      Role.create!(name: "mapper")
+      Role.create!(name: "profile admin")
+
+      @cp = FactoryBot.create(:configuration_profile)
+      @cp.update!(structure: @complete_structure)
+      @cp.activate!
+    end
+
+    after(:all) do
+      DatabaseCleaner.clean_with(:truncation)
     end
 
     it "has a generated structure" do
-      sdos = subject.standards_organizations
+      sdos = @cp.standards_organizations
 
       expect(sdos.length).to be(1)
-      expect(sdos.first.name).to eq(complete_structure["standardsOrganizations"][0]["name"])
-    end
-
-    it "can be removed" do
-      subject.remove!
-
-      expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
+      expect(sdos.first.name).to eq(@complete_structure["standardsOrganizations"][0]["name"])
     end
 
     it "can not be completed" do
-      expect { subject.complete! }.to raise_error CpState::InvalidStateTransition
+      expect { @cp.complete! }.to raise_error CpState::InvalidStateTransition
     end
 
     it "can not be activated again" do
-      expect { subject.activate! }.to raise_error CpState::InvalidStateTransition
+      expect { @cp.activate! }.to raise_error CpState::InvalidStateTransition
     end
 
     it "can be exported" do
-      exported_cp = subject.export!
+      exported_cp = @cp.export!
 
-      expect(exported_cp).to be_equal(subject.structure)
+      expect(exported_cp).to be_equal(@cp.structure)
     end
 
     it "can be deactivated" do
-      subject.deactivate!
+      @cp.deactivate!
 
-      expect(subject.state_handler).to be_instance_of(CpState::Deactivated)
+      expect(@cp.state_handler).to be_instance_of(CpState::Deactivated)
+    end
+
+    it "can be removed" do
+      @cp.remove!
+
+      expect { @cp.reload }.to raise_error ActiveRecord::RecordNotFound
     end
   end
 
   context "when it is deactivated" do
-    before(:each) do
-      subject.update!(structure: complete_structure)
-      subject.activate!
-      subject.deactivate!
+    before(:all) do
+      Role.create!(name: "dso admin")
+      Role.create!(name: "mapper")
+      Role.create!(name: "profile admin")
+
+      @cp = FactoryBot.create(:configuration_profile)
+      @cp.update!(structure: @complete_structure)
+      @cp.activate!
+      @cp.deactivate!
+    end
+
+    after(:all) do
+      DatabaseCleaner.clean_with(:truncation)
     end
 
     it "has a not generated structure" do
-      expect(subject.standards_organizations.length).to eq(1)
-    end
-
-    it "can be removed" do
-      subject.remove!
-
-      expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
+      expect(@cp.standards_organizations.length).to eq(1)
     end
 
     it "can not be completed" do
-      expect(subject.state_handler).to be_instance_of(CpState::Deactivated)
-      expect { subject.complete! }.to raise_error CpState::InvalidStateTransition
-    end
-
-    it "can be activated" do
-      subject.activate!
-
-      expect(subject.state_handler).to be_instance_of(CpState::Active)
+      expect(@cp.state_handler).to be_instance_of(CpState::Deactivated)
+      expect { @cp.complete! }.to raise_error CpState::InvalidStateTransition
     end
 
     it "can be exported" do
-      exported_cp = subject.export!
+      exported_cp = @cp.export!
 
-      expect(exported_cp).to be_equal(subject.structure)
+      expect(exported_cp).to be_equal(@cp.structure)
     end
 
     it "can not be deactivated again" do
-      expect { subject.deactivate! }.to raise_error CpState::InvalidStateTransition
+      expect { @cp.deactivate! }.to raise_error CpState::InvalidStateTransition
+    end
+
+    it "can be activated" do
+      @cp.activate!
+
+      expect(@cp.state_handler).to be_instance_of(CpState::Active)
+    end
+
+    it "can be removed" do
+      @cp.remove!
+
+      expect { @cp.reload }.to raise_error ActiveRecord::RecordNotFound
     end
   end
 
   context "when its structure has to be validated" do
+    before(:all) do
+      @cp = FactoryBot.create(:configuration_profile)
+    end
+
+    after(:all) do
+      DatabaseCleaner.clean_with(:truncation)
+    end
+
     it "rejects an invalid json structure for a configuration profile" do
       invalid_object = {
         "standardsOrganizations": 123
       }
-      subject.structure = invalid_object
+      @cp.update!(structure: invalid_object)
 
-      expect(subject.structure_valid?).to be_falsey
+      expect(@cp.structure_valid?).to be_falsey
     end
 
     it "accepts as valid but not as complete a json structure for a configuration profile" do
@@ -215,10 +264,10 @@ describe ConfigurationProfile, type: :model do
           }
         ]
       }
-      subject.structure = valid_object
+      @cp.update!(structure: valid_object)
 
-      expect(subject.structure_valid?).to be_truthy
-      expect(subject.structure_complete?).to be_falsey
+      expect(@cp.structure_valid?).to be_truthy
+      expect(@cp.structure_complete?).to be_falsey
     end
 
     it "Returns the description of the errors when there are any" do
@@ -228,55 +277,65 @@ describe ConfigurationProfile, type: :model do
         "additionalProperty": "additional property"
       }
 
-      subject.structure = object_with_additional_properties
-      validation_result = ConfigurationProfile.validate_structure(subject.structure)
+      @cp.update!(structure: object_with_additional_properties)
+      validation_result = ConfigurationProfile.validate_structure(@cp.structure)
 
-      expect(subject.structure_valid?).to be_falsey
+      expect(@cp.structure_valid?).to be_falsey
       expect(validation_result).to include(a_string_matching("contains additional properties"))
     end
 
     it "accepts as complete a complete and valid json structure for a configuration profile" do
-      expect(subject.structure_complete?).to be_falsey
-      expect(subject.state_handler).to be_instance_of(CpState::Incomplete)
+      expect(@cp.structure_complete?).to be_falsey
+      expect(@cp.state_handler).to be_instance_of(CpState::Incomplete)
 
-      subject.update!(structure: complete_structure)
+      @cp.update!(structure: @complete_structure)
 
-      expect(subject.structure_complete?).to be_truthy
-      expect(subject.state_handler).to be_instance_of(CpState::Complete)
+      expect(@cp.structure_complete?).to be_truthy
+      expect(@cp.state_handler).to be_instance_of(CpState::Complete)
     end
 
     it "rejects a configuration profile structure with an invalid email for an agent" do
-      subject.structure = valid_structure_with_invalid_email
-      validation_result = ConfigurationProfile.validate_structure(subject.structure)
+      @cp.update!(structure: @valid_structure_with_invalid_email)
+      validation_result = ConfigurationProfile.validate_structure(@cp.structure)
 
-      expect(subject.structure_complete?).to be_falsey
-      expect(subject.structure_valid?).to be_falsey
+      expect(@cp.structure_complete?).to be_falsey
+      expect(@cp.structure_valid?).to be_falsey
       expect(validation_result).to include(a_string_matching("did not match the regex"))
-      expect(subject.state_handler).to be_instance_of(CpState::Incomplete)
-      expect { subject.complete! }.to raise_error CpState::NotYetReadyForTransition
+      expect(@cp.state_handler).to be_instance_of(CpState::Incomplete)
+      expect { @cp.complete! }.to raise_error CpState::NotYetReadyForTransition
     end
   end
 
   context "when it has to be removed, it checks mappings" do
-    let(:specification) { subject.standards_organizations.first.schemes.first }
-    let(:user) { subject.standards_organizations.first.agents.first }
-    let(:mapping) { Processors::Mappings.new(specification, user).create }
+    before(:all) do
+      Role.create!(name: "dso admin")
+      Role.create!(name: "mapper")
+      Role.create!(name: "profile admin")
 
-    before(:each) do
-      subject.update!(structure: complete_structure)
-      subject.activate!
+      @cp = FactoryBot.create(:configuration_profile)
+      @cp.update!(structure: @complete_structure)
+      @cp.activate!
+
+      specification = @cp.standards_organizations.first.schemes.first
+      user = @cp.standards_organizations.first.agents.first
+      @mapping = Processors::Mappings.new(specification, user).create
+    end
+
+    after(:all) do
+      DatabaseCleaner.clean_with(:truncation)
     end
 
     it "can't be removed if there is at least one in progress mapping" do
-      mapping.update!(status: :in_progress)
+      @mapping.update!(status: :in_progress)
 
-      expect { subject.remove! }.to raise_error ActiveRecord::RecordNotDestroyed
+      expect { @cp.remove! }.to raise_error ActiveRecord::RecordNotDestroyed
     end
 
     it "can be removed if there is none in progress mappings" do
-      subject.remove!
+      @mapping.update!(status: :uploaded)
+      @cp.remove!
 
-      expect { subject.reload }.to raise_error ActiveRecord::RecordNotFound
+      expect { @cp.reload }.to raise_error ActiveRecord::RecordNotFound
     end
   end
 end

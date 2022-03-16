@@ -37,13 +37,13 @@
           "name": "SChema file 1",
           "description": "A detailed description of the schema file. E.g. what it represents, which concepts should be expected it to contain.",
           "origin": "https://credreg.net/ctdl/schema/encoding/json",
-          "associatedAbstractClass": "https://purl.org/ctdl/vocabs/audience/FormerStudent"
+          "associatedAbstractClass": "http://desm.org/concepts/organization"
         },
         {
           "name": "SChema file 2",
           "description": "A detailed description of the schema file. E.g. what it represents, which concepts should be expected it to contain.",
           "origin": "https://schema.org/version/latest/schemaorg-current-https.jsonld",
-          "associatedAbstractClass": "https://purl.org/ctdl/vocabs/audience/Citizen",
+          "associatedAbstractClass": "http://desm.org/concepts/credential",
           "associatedConceptSchemes": [
             {
               "name": "Learning Method",
