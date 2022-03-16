@@ -11,6 +11,10 @@ RSpec.describe CreateAgent, type: :interactor do
       Role.create!(name: "dso admin")
     end
 
+    after(:all) do
+      DatabaseCleaner.clean_with(:truncation)
+    end
+
     it "rejects creation if required info isn't provided" do
       result = CreateAgent.call({github_handle: "richard0000"})
       expect(result.error).to be("Email must be present")

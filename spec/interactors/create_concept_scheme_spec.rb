@@ -7,6 +7,10 @@ RSpec.describe CreateConceptScheme, type: :interactor do
     let(:test_uri) { Rails.root.join("spec", "fixtures", "DisabilityLevelCodeList.json") }
     let(:org) { FactoryBot.build(:organization) }
 
+    after(:all) do
+      DatabaseCleaner.clean_with(:truncation)
+    end
+
     it "rejects creation if uri is not passed" do
       result = CreateConceptScheme.call
 

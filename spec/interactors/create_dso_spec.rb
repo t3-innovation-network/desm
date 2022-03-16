@@ -7,6 +7,10 @@ RSpec.describe CreateDso, type: :interactor do
     let(:admin) { FactoryBot.build(:user) }
     let(:cp) { FactoryBot.build(:configuration_profile) }
 
+    after(:all) do
+      DatabaseCleaner.clean_with(:truncation)
+    end
+
     it "rejects creation if not enough information is provided" do
       result = CreateDso.call
       expect(result.error).to eq("administrator must be present")
