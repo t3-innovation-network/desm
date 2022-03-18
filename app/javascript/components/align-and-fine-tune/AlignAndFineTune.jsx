@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import fetchMapping from "../../services/fetchMapping";
 import fetchMappingSelectedTerms from "../../services/fetchMappingSelectedTerms";
 import fetchPredicates from "../../services/fetchPredicates";
-import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
+import fetchSpineTerms from "../../services/fetchSpineTerms";
 import TermCard from "../mapping-to-domains/TermCard";
 import AlertNotice from "../shared/AlertNotice";
 import Loader from "../shared/Loader";
@@ -511,6 +511,18 @@ const AlignAndFineTune = (props) => {
     setAddingSynthetic(false);
   };
 
+  const predicateForSynthetic = () => {
+    const noMatchPredicate = predicates.find((p) =>
+      p.uri.toLowerCase().includes("no+match")
+    );
+
+    if (!noMatchPredicate) {
+      [noMatchPredicate] = predicates;
+    }
+
+    return noMatchPredicate;
+  };
+
   /**
    * Save a synthetic property added to the spine to the service
    *
@@ -531,9 +543,6 @@ const AlignAndFineTune = (props) => {
     }
     let [mappedTerm] = alignment.mappedTerms;
     let tempUri = mappedTerm.uri + "-synthetic";
-    let spineTerm = spineTerms.find(
-      (sTerm) => sTerm.id === alignment.spineTermId
-    );
 
     let response = await createSpineTerm({
       synthetic: {
@@ -542,24 +551,13 @@ const AlignAndFineTune = (props) => {
             "Alignment for a synthetic property added to the spine. Synthetic uri: " +
             tempUri,
           uri: tempUri,
-          predicateId: predicates.find((p) =>
-            p.uri.toLowerCase().includes("nomatch")
-          ).id,
+          predicateId: predicateForSynthetic().id,
           mappingId: mapping.id,
           mappedTerms: alignment.mappedTerms.map((term) => term.id),
           synthetic: true,
         },
-        specificationId: mapping.spine_id,
-        spineTerm: {
-          name: spineTerm.name,
-          propertyAttributes: {
-            uri: tempUri,
-            label: tempUri,
-            comment: "Synthetic property added to the spine",
-          },
-          organizationId: user.organization.id,
-          uri: tempUri,
-        },
+        spineId: mapping.spine_id,
+        spineTermId: alignment.mappedTerms[0].id,
       },
     });
 
@@ -701,8 +699,8 @@ const AlignAndFineTune = (props) => {
   /**
    * Get the specification terms
    */
-  const handleFetchSpineTerms = async (specId) => {
-    let response = await fetchSpecificationTerms(specId);
+  const handleFetchSpineTerms = async (spineId) => {
+    let response = await fetchSpineTerms(spineId);
     if (!anyError(response)) {
       // Set the spine terms on state
       setSpineTerms(response.terms);

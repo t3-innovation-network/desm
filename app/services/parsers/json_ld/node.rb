@@ -174,7 +174,7 @@ module Parsers
 
         return node[:@value] if valid_node_key?(node, :@value)
 
-        lang_value = node["en-US"] || node["en-us"]
+        lang_value = node["en-US"] || node["en-us"] || node["en_us"]
 
         lang_value || node
       end

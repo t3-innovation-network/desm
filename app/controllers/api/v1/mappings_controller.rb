@@ -11,8 +11,7 @@ class Api::V1::MappingsController < ApplicationController
   # @description: Creates a mapping with its related specification
   ###
   def create
-    # Proceed to create the mapping if this is not the spine
-    @instance = Processors::Mappings.new(@specification, current_user).create unless @specification.spine?
+    @instance = Processors::Mappings.new(@specification, current_user).create
 
     render json: @instance, include: :specification
   end

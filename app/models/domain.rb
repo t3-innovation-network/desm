@@ -20,17 +20,22 @@ class Domain < ApplicationRecord
 
   ALIAS_CLASSNAME = "AbstractClass"
   belongs_to :domain_set
-  belongs_to :spine, class_name: "Specification", dependent: :destroy, optional: true
+  has_one :spine, dependent: :destroy
   validates :source_uri, presence: true, uniqueness: true
   validates :pref_label, presence: true
   alias_attribute :name, :pref_label
 
   ###
-  # @description: Return whether a domain has a spine specification uploaded
+  # @description: Return whether a domain has a designated spine. Automatically assigned when uploading a specification
+  #  or at configuration profile stage when configuring the related abstract class for a schema.
   # @return [TrueClass|FalseClass]
   ###
   def spine?
     !spine.nil?
+  end
+
+  def as_json(options={})
+    super options.merge(methods: %i[spine? spine])
   end
 
   def to_json_ld

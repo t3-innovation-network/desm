@@ -15,7 +15,7 @@ class ConfigurationProfile < ApplicationRecord
   has_many :standards_organizations, class_name: "Organization", dependent: :destroy
   has_many :mappings, through: :standards_organizations
   after_initialize :setup_schema_validators
-  before_save :check_structure
+  before_save :check_structure, if: :structure_changed?
   before_save :check_predicate_strongest_match, if: :predicate_strongest_match_changed?
   before_destroy :check_ongoing_mappings, prepend: true
 
@@ -123,6 +123,6 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def transition_to! new_state
-    update_column(:state, new_state)
+    update_attribute(:state, new_state)
   end
 end

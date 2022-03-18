@@ -7,6 +7,7 @@ import {
   faTimes,
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
+import HoverableText from "../shared/HoverableText.jsx";
 
 /**
  * @prop {Function} onClick Actions when the user clicks on it
@@ -71,7 +72,7 @@ export default class TermCard extends Component {
     const { reverting } = this.state;
 
     return (
-      <div className="card with-shadow mb-2 disabled-container not-draggable">
+      <div className="card term-card with-shadow mb-2 disabled-container not-draggable">
         <div className="card-header no-color-header">
           {reverting ? (
             <Loader noPadding={true} smallSpinner={true} />
@@ -114,10 +115,10 @@ export default class TermCard extends Component {
           }
         >
           <strong>
-            <span>{term.name}</span>{" "}
-            {term.property.selectedDomain
-              ? " [" + term.property.selectedDomain + "]"
-              : ""}
+            <HoverableText
+              primaryContent={term.name}
+              secondaryContent={term.uri}
+            />
           </strong>
         </div>
         <div className="col-4">
@@ -147,7 +148,8 @@ export default class TermCard extends Component {
     ) : (
       <Collapsible
         cardStyle={
-          "with-shadow mb-2" + (selected ? " draggable term-selected" : "")
+          "term-card with-shadow mb-2" +
+          (selected ? " draggable term-selected" : "")
         }
         cardHeaderStyle={"no-color-header pb-0"}
         cardHeaderColStyle={

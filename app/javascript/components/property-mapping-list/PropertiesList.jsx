@@ -143,7 +143,7 @@ export default class PropertiesList extends Component {
     let response = await fetchDomain(selectedDomain.id);
 
     if (!this.anyError(response)) {
-      if (!response.domain.spineId) {
+      if (!response.domain["spine?"]) {
         this.setState({ spineExists: false });
         return false;
       }
@@ -208,8 +208,8 @@ export default class PropertiesList extends Component {
   handleFetchDataFromAPI = async () => {
     let response = await this.handleFetchDomain();
 
-    if (response) {
-      await this.handleFetchProperties(response.domain.spineId);
+    if (!this.anyError(response)) {
+      await this.handleFetchProperties(response.domain.spine.id);
     }
   };
 
@@ -297,7 +297,7 @@ export default class PropertiesList extends Component {
             </div>
             <div className="col-8">
               <PropertyAlignments
-              selectedAlignmentOrderOption={selectedAlignmentOrderOption}
+                selectedAlignmentOrderOption={selectedAlignmentOrderOption}
                 selectedAlignmentOrganizations={selectedAlignmentOrganizations}
                 selectedPredicates={selectedPredicates}
                 selectedSpineOrganizations={selectedSpineOrganizations}

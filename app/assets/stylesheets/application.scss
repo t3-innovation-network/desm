@@ -320,6 +320,10 @@ a:hover {
   color: $background-color;
 }
 
+.term-card {
+  min-height: 5.5rem;
+}
+
 /* Mobile */
 
 @media (max-width: 768px) {

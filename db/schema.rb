@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_07_203507) do
+ActiveRecord::Schema.define(version: 2022_03_17_201901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -130,7 +130,6 @@ ActiveRecord::Schema.define(version: 2022_03_07_203507) do
     t.bigint "domain_set_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "spine_id"
     t.string "slug"
     t.index ["domain_set_id"], name: "index_domains_on_domain_set_id"
     t.index ["source_uri"], name: "index_domains_on_source_uri", unique: true
@@ -280,6 +279,21 @@ ActiveRecord::Schema.define(version: 2022_03_07_203507) do
     t.index ["specification_id", "term_id"], name: "index_specifications_terms_on_specification_id_and_term_id", unique: true
   end
 
+  create_table "spines", force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.bigint "domain_id"
+    t.bigint "organization_id"
+    t.index ["domain_id"], name: "index_spines_on_domain_id"
+    t.index ["organization_id"], name: "index_spines_on_organization_id"
+  end
+
+  create_table "spines_terms", id: false, force: :cascade do |t|
+    t.bigint "spine_id", null: false
+    t.bigint "term_id", null: false
+    t.index ["spine_id", "term_id"], name: "index_spines_terms_on_spine_id_and_term_id", unique: true
+  end
+
   create_table "terms", force: :cascade do |t|
     t.string "name"
     t.string "source_uri", null: false
@@ -349,6 +363,8 @@ ActiveRecord::Schema.define(version: 2022_03_07_203507) do
   add_foreign_key "properties", "terms"
   add_foreign_key "specifications", "domains"
   add_foreign_key "specifications", "users"
+  add_foreign_key "spines", "domains"
+  add_foreign_key "spines", "organizations"
   add_foreign_key "terms", "organizations"
   add_foreign_key "vocabularies", "organizations"
 end
