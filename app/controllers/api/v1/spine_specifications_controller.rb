@@ -13,7 +13,7 @@ class Api::V1::SpineSpecificationsController < ApplicationController
   def index
     filter
 
-    render json: @specs
+    render json: @spines
   end
 
   private
@@ -30,17 +30,7 @@ class Api::V1::SpineSpecificationsController < ApplicationController
   # @return [Array]:
   ###
   def instantiate_spines
-    @specs = begin
-      if current_user.super_admin?
-        Domain.all.filter_map(&:spine)
-      else
-        Domain.where.not(spine_id: nil)
-              .filter_map(&:spine)
-              .select {|spec|
-          current_user.organization.users.map(&:id).include?(spec.user_id)
-        }
-      end
-    end
+    @spines = Domain.all.filter_map {|d| d.spine if d.spine? }
   end
 
   ###
@@ -49,9 +39,12 @@ class Api::V1::SpineSpecificationsController < ApplicationController
   ###
   def filter
     # Filter by current user if requested
-    @specs = @specs.select {|spec| spec&.user.eql?(current_user) } if params[:filter] != "all"
+    unless params[:filter].eql?("all")
+      @spines = @spines.filter_map {|s|
+        s if s.mappings.any? {|m| m&.user.eql?(current_user) }
+      }
+    end
 
-    # Return an ordered list
-    @specs.sort_by(&:name)
+    @spines.sort_by(&:name)
   end
 end

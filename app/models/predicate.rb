@@ -104,6 +104,14 @@ class Predicate < ApplicationRecord
     }
   end
 
+  ###
+  # @description: Include additional information about the specification in
+  #   json responses. This overrides the ApplicationRecord as_json method.
+  ###
+  def as_json(options={})
+    super options.merge(methods: %i[uri])
+  end
+
   private
 
   def default_values

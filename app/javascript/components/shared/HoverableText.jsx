@@ -30,7 +30,10 @@ class HoverableText extends Component {
         onMouseLeave={() => this.setState({ hovering: false })}
         htmlFor={forComponent}
       >
-        {primaryContent + (hovering ? " - " + secondaryContent : "")}
+        <span>{primaryContent}</span>
+        {hovering ? (
+          <span style={{ color: "grey" }}>{" - " + secondaryContent}</span>
+        ) : null}
       </label>
     );
   }

@@ -31,19 +31,20 @@ class Term < ApplicationRecord
 
   validates :name, presence: true
   validates :raw, presence: true
-  validates :slug, presence: true
 
   ###
   # @description: Accept to update and/or create properties along with terms
   ###
   accepts_nested_attributes_for :property, allow_destroy: true
 
+  after_create :assign_property, unless: proc { property.present? }
+
   ###
   # @description: Include additional information about the specification in
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
   def as_json(options={})
-    super options.merge(methods: %i[organization])
+    super options.merge(methods: %i[uri organization])
   end
 
   ###
@@ -52,5 +53,23 @@ class Term < ApplicationRecord
   ###
   def desm_uri domain=nil
     "desm-#{organization.name.downcase.strip}-#{domain&.pref_label&.downcase&.strip}:#{uri.split(':').last}"
+  end
+
+  def assign_property
+    parser = Parsers::JsonLd::Node.new(raw)
+    domain = parser.read_as_array("domain")
+    range = parser.read_as_array("range")
+
+    Property.create!(
+      term: self,
+      uri: uri,
+      source_uri: parser.read!("id"),
+      comment: parser.read!("comment"),
+      label: parser.read!("label") || parser.read!("id"),
+      domain: domain,
+      selected_domain: domain&.first,
+      range: range&.first,
+      subproperty_of: parser.read!("subproperty")
+    )
   end
 end

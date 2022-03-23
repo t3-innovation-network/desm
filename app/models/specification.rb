@@ -23,6 +23,8 @@ class Specification < ApplicationRecord
   ###
   has_and_belongs_to_many :terms
 
+  has_one :organization, through: :user
+
   ###
   # @description: If there's no specification for the user's company and the selected domain
   #   to map to, then it's the spine.
@@ -35,11 +37,6 @@ class Specification < ApplicationRecord
   before_destroy :dependent_mapping_exists?
 
   ###
-  # @description: Set the domain available to set a spine again
-  ###
-  before_destroy :nullify_domain_spine
-
-  ###
   # @description: Validates the presence of a name before create
   ###
   validates :name, presence: true
@@ -50,15 +47,7 @@ class Specification < ApplicationRecord
   # @description: Mark this specification as spine for the related domain
   ###
   def spine!
-    domain.update_column(:spine_id, id)
-  end
-
-  ###
-  # @description: Returns the spine info about this specification serves as.
-  # @return [TrueClass|FalseClass]
-  ###
-  def spine?
-    domain.spine.present? && domain.spine.id == id
+    Spine.create!(domain: domain, name: domain.name, organization: organization)
   end
 
   ###
@@ -66,7 +55,7 @@ class Specification < ApplicationRecord
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
   def as_json(options={})
-    super options.merge(methods: %i[spine? domain])
+    super options.merge(methods: %i[domain])
   end
 
   ###
@@ -76,14 +65,6 @@ class Specification < ApplicationRecord
   ###
   def dependent_mapping_exists?
     throw :abort if Mapping.where(spine_id: id).count.positive?
-  end
-
-  ###
-  # @description: Ensure that if this specification is a spine for a domain,
-  #   the domain doesn't references it anymore.
-  ###
-  def nullify_domain_spine
-    Domain.where(spine: self).each {|d| d.update_column(:spine_id, nil) }
   end
 
   def to_json_ld

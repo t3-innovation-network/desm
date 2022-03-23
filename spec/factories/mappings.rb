@@ -8,7 +8,7 @@ FactoryBot.define do
     title { Faker::App.name }
     description { Faker::Lorem.sentence }
     user
-    association :spine, factory: :specification
+    association :spine
     association :specification, factory: :specification
   end
 end

@@ -221,15 +221,6 @@ const MappingPreview = (props) => {
     let specResponse = await handleCreateSpecification();
     await handleCreateVocabularies();
 
-    // if it's the spine, show a message to the user and return to home
-    if (specResponse["spine?"]) {
-      toast.success(
-        "You created a spine for this domain: " + specResponse.domain.uri
-      );
-      props.redirect("/specifications/" + specResponse.id);
-      return;
-    }
-
     // If it's not the spine, the user is uploading a specification to map,
     // so let's create the mapping and (with the id returned) load the
     // mapping page

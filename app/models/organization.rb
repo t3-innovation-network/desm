@@ -11,6 +11,7 @@ class Organization < ApplicationRecord
   has_many :agents, ->(o) { where.not(id: o.administrator_id) }, class_name: "User", dependent: :destroy
   has_many :terms, dependent: :destroy
   has_many :users
+  has_many :spines, dependent: :destroy
   has_many :mappings, through: :users
   has_many :schemes, through: :users, source: :specifications
   has_many :vocabularies, dependent: :destroy

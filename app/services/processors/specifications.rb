@@ -278,40 +278,12 @@ module Processors
       name = parser.id_to_name if Term.exists?(name: name)
       return nil if Term.find_by(source_uri: parser.read!("id"))
 
-      t = Term.create!(
+      Term.create!(
         source_uri: parser.read!("id"),
         name: name,
         organization: instance.user.organization,
         slug: name,
         raw: node
-      )
-      create_property_term(t, node)
-      t
-    end
-
-    ###
-    # @description: Creates a property if not found for the provided term
-    # @param [Term] term
-    # @param [Hash] node
-    ###
-    def create_property_term term, node
-      return if term.property.present?
-
-      parser = Parsers::JsonLd::Node.new(node)
-      domain = parser.read_as_array("domain")
-      range = parser.read_as_array("range")
-
-      Property.create!(
-        term: term,
-        uri: term.desm_uri,
-        source_uri: parser.read!("id"),
-        comment: parser.read!("comment"),
-        label: parser.read!("label") || parser.read!("id"),
-        domain: domain,
-        selected_domain: domain&.first,
-        range: range&.first,
-        subproperty_of: parser.read!("subproperty"),
-        scheme: @scheme
       )
     end
   end

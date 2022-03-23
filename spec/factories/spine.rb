@@ -3,9 +3,9 @@
 require "faker"
 
 FactoryBot.define do
-  factory :specification do
+  factory :spine do
     name { Faker::Name.unique.first_name }
-    user
+    organization
     domain
 
     after(:create) do |spec|

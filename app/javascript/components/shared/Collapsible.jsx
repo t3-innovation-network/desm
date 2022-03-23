@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { FadeIn } from "./Animations.jsx";
+import HoverableText from "./HoverableText.jsx";
 import OutsideAlerter from "./OutsideAlerter.jsx";
 
 /**
@@ -63,7 +64,9 @@ export default class Collapsible extends Component {
     } = this.props;
 
     return (
-      <OutsideAlerter onOutsideAlert={observeOutside ? () => this.hideBody() : () => {}}>
+      <OutsideAlerter
+        onOutsideAlert={observeOutside ? () => this.hideBody() : () => {}}
+      >
         <FadeIn>
           <div className={"card" + (cardStyle ? " " + cardStyle : "")}>
             <div

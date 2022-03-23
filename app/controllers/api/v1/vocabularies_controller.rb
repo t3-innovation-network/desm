@@ -57,7 +57,7 @@ class Api::V1::VocabulariesController < ApplicationController
   # @description: Creates a vocabulary
   ###
   def create
-    processor = Processors::Vocabularies.new(permitted_params[:content])
+    processor = Processors::Vocabularies.new(permitted_params[:content].to_h)
 
     @instance = processor.create(permitted_params[:name], current_user.organization)
 

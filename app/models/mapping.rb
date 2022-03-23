@@ -30,7 +30,7 @@ class Mapping < ApplicationRecord
   ###
   # @description: The specification chosen to map to
   ###
-  belongs_to :spine, foreign_key: "spine_id", class_name: :Specification
+  belongs_to :spine
   ###
   # @description: Each term that conforms the mapping. The terms of the mapping contains information
   #   about the type of alignment (predicate), which term from the spine was mapped to which of the
@@ -92,7 +92,7 @@ class Mapping < ApplicationRecord
   def generate_alignments
     spine.terms.each do |term|
       Alignment.create!(
-        uri: term.desm_uri(spine.domain),
+        uri: term.uri,
         mapping: self,
         spine_term_id: term.id
       )
@@ -164,7 +164,7 @@ class Mapping < ApplicationRecord
   # @return [String]
   ###
   def spine_origin
-    spine.user.organization.name
+    spine.organization.name
   end
 
   ###

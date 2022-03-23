@@ -49,6 +49,8 @@ Rails.application.routes.draw do
 
       post 'skos/fetch' => 'skos#fetch'
       get 'skos/labels' => 'skos#labels'
+
+      get 'spines/:id/terms' => 'spine_terms#index'
     end
   end
 

@@ -7,13 +7,19 @@ class Api::V1::SpineTermsController < ApplicationController
   before_action :validate_mapped_terms, only: [:create]
   after_action :set_mapped_terms, only: [:create]
 
+  def index
+    terms = Spine.find(params[:id]).terms
+
+    render json: terms, include: %i[property vocabularies]
+  end
+
   ###
   # @description: Creates a new (synthetic) term for the spine, along with its alignment
   ###
   def create
     ActiveRecord::Base.transaction do
-      spine_term = Term.create!(permitted_params[:spine_term])
-      assign_term_to_spine(spine_term, permitted_params[:specification_id])
+      spine_term = Term.find(permitted_params[:spine_term_id])
+      assign_term_to_spine(spine_term, permitted_params[:spine_id])
       @alignment = Alignment.create!(permitted_params[:alignment].merge(spine_term_id: spine_term.id))
     end
 
@@ -23,14 +29,14 @@ class Api::V1::SpineTermsController < ApplicationController
   private
 
   ###
-  # @description: Since a term can be part of many specifications and a specification
+  # @description: Since a term can be part of many spines and a spine
   #   can have many terms, we need to set that relation explicitly
   # @param [Object] term
-  # @param [Integer] specification_id
+  # @param [Integer] spine_id
   ###
-  def assign_term_to_spine term, specification_id
-    specification = Specification.find(specification_id)
-    specification.terms << term
+  def assign_term_to_spine term, spine_id
+    spine = Spine.find(spine_id)
+    spine.terms << term
   end
 
   ###
@@ -39,13 +45,8 @@ class Api::V1::SpineTermsController < ApplicationController
   ###
   def permitted_params
     params.require(:synthetic).permit(
-      :specification_id,
-      spine_term: [
-        :name, :source_uri, :organization_id,
-        property_attributes: %i[
-          uri label comment
-        ]
-      ],
+      :spine_id,
+      :spine_term_id,
       alignment: %i[
         comment predicate_id mapping_id uri synthetic
       ]
