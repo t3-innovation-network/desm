@@ -22,6 +22,11 @@ import ConfigurationProfilesIndex from "./dashboard/configuration-profiles/Confi
 import EditConfigurationProfile from "./dashboard/configuration-profiles/edit/EditConfigurationProfile";
 import UploadConfigurationProfile from "./dashboard/configuration-profiles/UploadConfigurationProfile";
 
+const adminRoleName = process.env.ADMIN_ROLE_NAME || "Super Admin";
+const allRoles = [adminRoleName, "Mapper", "DSO Admin", "Profile Admin"];
+const onlySuperAdmin = [adminRoleName];
+const onlyMappers = ["Mapper"];
+
 const Routes = (props) => {
   const { handleLogin } = props;
 
@@ -61,87 +66,105 @@ const Routes = (props) => {
         <ProtectedRoute
           exact
           path="/mappings"
-          allowNonAdmins={true}
+          allowedRoles={allRoles}
           component={SpecsList}
         />
 
         <ProtectedRoute
           exact
           path="/specifications/:id"
-          allowNonAdmins={true}
+          allowedRoles={allRoles}
           component={EditSpecification}
         />
 
         <ProtectedRoute
           exact
           path="/new-mapping"
-          allowNonAdmins={true}
+          allowedRoles={onlyMappers}
           component={Mapping}
         />
 
         <ProtectedRoute
           exact
           path="/mappings/:id"
-          allowNonAdmins={true}
+          allowedRoles={onlyMappers}
           component={MappingToDomains}
         />
 
         <ProtectedRoute
           exact
           path="/mappings/:id/align"
-          allowNonAdmins={true}
+          allowedRoles={onlyMappers}
           component={AlignAndFineTune}
         />
 
-        <ProtectedRoute exact path="/dashboard" component={MainDashboard} />
+        <ProtectedRoute
+          exact
+          path="/dashboard"
+          component={MainDashboard}
+          allowedRoles={onlySuperAdmin}
+        />
 
         <ProtectedRoute
           exact
           path="/dashboard/configuration-profiles"
+          allowedRoles={onlySuperAdmin}
           component={ConfigurationProfilesIndex}
         />
 
         <ProtectedRoute
           exact
           path="/dashboard/configuration-profiles/new"
+          allowedRoles={onlySuperAdmin}
           component={UploadConfigurationProfile}
         />
 
         <ProtectedRoute
           exact
           path="/dashboard/configuration-profiles/:id"
+          allowedRoles={onlySuperAdmin}
           component={EditConfigurationProfile}
         />
 
-        <ProtectedRoute exact path="/dashboard/users" component={UsersIndex} />
+        <ProtectedRoute
+          exact
+          path="/dashboard/users"
+          component={UsersIndex}
+          allowedRoles={onlySuperAdmin}
+        />
 
         <ProtectedRoute
           exact
           path="/dashboard/users/new"
+          allowedRoles={onlySuperAdmin}
           component={Registration}
         />
 
         <ProtectedRoute
           exact
           path="/dashboard/users/:id"
+          allowedRoles={onlySuperAdmin}
           component={EditUser}
         />
 
         <ProtectedRoute
           exact
           path="/dashboard/organizations"
+          allowedRoles={onlySuperAdmin}
           component={OrganizationsIndex}
         />
 
         <ProtectedRoute
           exact
           path="/dashboard/organizations/new"
+          allowedRoles={onlySuperAdmin}
           component={CreateOrganization}
         />
 
         <ProtectedRoute
           exact
           path="/dashboard/organizations/:id"
+          allowedRoles={onlySuperAdmin}
           component={EditOrganization}
         />
       </Switch>
