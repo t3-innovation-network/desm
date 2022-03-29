@@ -3,9 +3,9 @@ default: &default
     configuration:
       asset_pipeline_enabled: true
       asset_pipeline_precompile: true
+      node_version: 14
       operating_system: ubuntu1804
       ruby_version: 2.7.1
-      node_version: 16.14.1
 
 production:
   <<: *default
