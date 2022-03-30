@@ -56,6 +56,8 @@ class Alignment < ApplicationRecord
   # @description: When chenages are made against the mapping that's already finished, we notify the involved users.
   ###
   after_update :notify_mapping_updated, if: proc { mapping.mapped? }
+
+  before_destroy { mapped_terms.clear }
   ###
   # @description: If we're going to remove a mapping term (an alignment), we also remove the spine term in the spine
   #   specification if it's a synthetic property. If we don't do this, the alignment will not exist, but the spine

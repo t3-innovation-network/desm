@@ -13,7 +13,7 @@ const ProtectedRoute = ({
 
   return (
     /// If we have a valid session
-    isLoggedIn &&
+    isLoggedIn ? (
       /// The signed in user has valid roles
       user.roles !== undefined &&
       /// We allow this route if the allowed roles includes the user roles
@@ -22,24 +22,30 @@ const ProtectedRoute = ({
           .map((r) => r.toLowerCase())
           .includes(role.name.toLowerCase())
       ) ? (
-      /// Go render the route
-      <Route
-        {...rest}
-        render={(props) => (
-          <Component
-            /// Destructure all the props passed to join with all the rest
-            {...rest}
-            {...props}
-          />
-        )}
-      />
+        /// Go render the route
+        <Route
+          {...rest}
+          render={(props) => (
+            <Component
+              /// Destructure all the props passed to join with all the rest
+              {...rest}
+              {...props}
+            />
+          )}
+        />
+      ) : (
+        /// The role is not allowed, redirect to the home page with a toast message
+        <>
+          {toast.error(
+            `This action is only allowed for ${allowedRoles.join(",")}`
+          )}
+          <Redirect to="/" />
+        </>
+      )
     ) : (
-      /// We don't have a valid session, redirect to Home page with a toast message
+      /// We don't have a valid session, redirect to SignIn page
       <>
-        {toast.error(
-          `This action is only allowed for ${allowedRoles.join(",")}`
-        )}
-        <Redirect to="/" />
+        <Redirect to="/sign-in" />
       </>
     )
   );
