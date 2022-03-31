@@ -96,7 +96,7 @@ class Alignment < ApplicationRecord
   # @description: Removes the related spine term
   ###
   def remove_spine_term
-    spine_term.destroy!
+    mapping.spine.terms -= [spine_term]
   end
 
   ###

@@ -29,12 +29,6 @@ class Term < ApplicationRecord
   ###
   has_and_belongs_to_many :vocabularies
 
-  ###
-  # @description: The selected terms from the original uploaded specification. The user can select one
-  #   ore more terms from it.
-  ###
-  has_and_belongs_to_many :mapping_selections, join_table: :mapping_selected_terms, class_name: :Mapping, dependent: :destroy
-
   validates :name, presence: true
   validates :raw, presence: true
 
