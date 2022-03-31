@@ -341,6 +341,16 @@ const AlignAndFineTune = (props) => {
   };
 
   /**
+   * Get the alignment to its previous state
+   */
+  const handleCancelRemoveAlignment = () => {
+    alignmentToRemove.predicateId = alignmentToRemove.previousPredicateId;
+    alignmentToRemove.mappedTerms = alignmentToRemove.previousMappedTerms;
+
+    setConfirmingRemoveAlignment(false);
+  };
+
+  /**
    * Mark the term not mapped.
    *
    * @param {Object} alignment Also called "alignment", containing the information about the spine term,
@@ -349,15 +359,21 @@ const AlignAndFineTune = (props) => {
    */
   const handleRevertMapping = (alignment, mappedTerm) => {
     alignment.changed = true;
+    alignment.previousMappedTerms = alignment.mappedTerms;
     alignment.mappedTerms = alignment.mappedTerms.filter(
       (mTerm) => mTerm.id !== mappedTerm.id
     );
 
-    /// If there's no mapped terms after removing the selected one to remove (this was the last mapped
-    /// term, and we removed it)
-    if (!alignment.mappedTerms.length) {
+    /// If there's no mapped terms after removing the selected one (this was the last mapped
+    /// term, and we removed it) remove the predicate
+    if (_.isEmpty(alignment.mappedTerms)) {
+      alignment.previousPredicateId = alignment.predicateId;
       alignment.predicateId = null;
-      if (alignment.synthetic) {
+      /// If it's a synthetic alignment, and we added it, let's remove it
+      if (
+        alignment.synthetic &&
+        alignment.origin.toLowerCase() === user.organization.name.toLowerCase()
+      ) {
         setAlignmentToRemove(alignment);
         setConfirmingRemoveAlignment(true);
       }
@@ -790,7 +806,9 @@ const AlignAndFineTune = (props) => {
             ) : (
               <React.Fragment>
                 <ConfirmDialog
-                  onRequestClose={() => setConfirmingRemoveAlignment(false)}
+                  onRequestClose={() => {
+                    handleCancelRemoveAlignment();
+                  }}
                   onConfirm={() => handleRemoveAlignment()}
                   visible={confirmingRemoveAlignment}
                 >
