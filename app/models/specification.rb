@@ -30,6 +30,7 @@ class Specification < ApplicationRecord
   #   to map to, then it's the spine.
   ###
   after_create :spine!, unless: proc { domain.spine }
+  after_save :spine!, if: proc { saved_change_to_domain_id? && !domain.spine }
 
   ###
   # @description: A specification that's being mapped should not be removed

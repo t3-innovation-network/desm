@@ -15,4 +15,13 @@ class Spine < ApplicationRecord
       terms << t if t.present?
     end
   end
+
+  def to_json_ld
+    {
+      name: name,
+      uri: uri,
+      domain: domain.uri,
+      terms: terms.map(&:uri).sort
+    }
+  end
 end
