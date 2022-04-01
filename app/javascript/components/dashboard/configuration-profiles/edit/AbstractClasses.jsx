@@ -11,6 +11,12 @@ import fetchSkosFile from "../../../../services/fetchSkosFile";
 import Loader from "../../../shared/Loader";
 import { useEffect } from "react";
 import fetchCPSkosLabels from "../../../../services/fetchCpSkosLabels";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
+import { downloadFile } from "../../../../helpers/Export";
+import fetchMappingExportProfile from "../../../../services/fetchMappingExportProfile";
+import _ from "lodash";
+import { toastr as toast } from "react-redux-toastr";
 
 const AbstractClasses = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
@@ -228,15 +234,69 @@ const AbstractClasses = () => {
         </small>
       </div>
 
-      {abstractClassesLabels.length > 0 && (
-        <div>
-          <ul className="form-group">
-            {abstractClassesLabels.map((concept) => {
-              return <li key={concept["uri"]}>{concept["label"]}</li>;
-            })}
-          </ul>
-        </div>
-      )}
+      {configurationProfile.state === "active" &&
+      abstractClassesLabels.length > 0 ? (
+        <AbstractClassesTable abstractClassesLabels={abstractClassesLabels} />
+      ) : null}
+    </div>
+  );
+};
+
+const AbstractClassesTable = ({ abstractClassesLabels }) => {
+  const anyError = (response) => {
+    if (response.error) {
+      toast.error(response.error);
+    }
+
+    return !_.isUndefined(response.error);
+  };
+
+  /**
+   * Manages to request the mapping export profile in JSON-LD version to export as
+   * a JSON file
+   *
+   * @param {String} uri
+   */
+  const handleGetMappingExportProfile = async (uri) => {
+    let response = await fetchMappingExportProfile(uri);
+
+    if (!anyError(response)) {
+      downloadFile(response.mappingExportProfile);
+    }
+  };
+
+  return (
+    <div className="table-responsive text-nowrap">
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {abstractClassesLabels.map((concept) => {
+            return (
+              <tr key={concept["uri"]}>
+                <td>{concept["label"]}</td>
+                <td>
+                  <button
+                    className="btn btn-sm btn-dark ml-2"
+                    onClick={() =>
+                      handleGetMappingExportProfile(concept["label"])
+                    }
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Export corresponding mapping export profile for this abstract class"
+                  >
+                    <FontAwesomeIcon icon={faDownload} />
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };
