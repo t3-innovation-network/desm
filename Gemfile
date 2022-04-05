@@ -86,7 +86,7 @@ gem "strong_password", "~> 0.0.8"
 gem "turbolinks", "~> 5"
 
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem "webpacker", "~> 4.0"
+gem "webpacker", '~> 5.0', '>= 5.0.1'
 
 gem "mimemagic", github: "mimemagicrb/mimemagic", ref: "01f92d86d15d85cfd0f20dabd025dcbd36a8a60f"
 
