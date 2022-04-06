@@ -12,7 +12,10 @@
           "type": "string",
           "maxLength": 120,
           "title": "The name for this agent to display in the profile. Desirable format: <first name><space><last name>.",
-          "examples": ["Sergio Ramos", "Lionel Messi"]
+          "examples": [
+            "Sergio Ramos",
+            "Lionel Messi"
+          ]
         },
         "email": {
           "title": "Email address for the agent. It will serve as the username in sessions.",
@@ -40,14 +43,21 @@
           "pattern": "/^[a-zd](?:[a-zd]|-(?=[a-zd])){0,38}$/i"
         }
       },
-      "required": ["fullname", "email"],
+      "required": [
+        "fullname",
+        "email"
+      ],
       "additionalProperties": false
     },
     "DSOSchema": {
       "type": "object",
       "title": "A schema file that will be available to map inside the DESM tool instance for a specific standards organization.",
       "description": "An explanation about the purpose of this instance.",
-      "required": ["name", "origin", "associatedAbstractClass"],
+      "required": [
+        "name",
+        "origin",
+        "associatedAbstractClass"
+      ],
       "properties": {
         "name": {
           "type": "string",
@@ -90,13 +100,26 @@
       "additionalProperties": false
     },
     "PlausibleUrl": {
-      "anyOf": [{ "$ref": "#/definitions/SaneUrl" }, { "format": "hostname" }]
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SaneUrl"
+        },
+        {
+          "format": "hostname"
+        }
+      ]
     },
-    "SaneUrl": { "format": "uri", "pattern": "^https?://" },
+    "SaneUrl": {
+      "format": "uri",
+      "pattern": "^https?://"
+    },
     "SkosMetadata": {
       "type": "object",
       "title": "Metadata about the skos file to be incorporated.",
-      "required": ["name", "origin"],
+      "required": [
+        "name",
+        "origin"
+      ],
       "properties": {
         "name": {
           "type": "string",
@@ -111,8 +134,8 @@
           "title": "A description what the skos file represents."
         },
         "origin": {
-          "type": "array",
-          "title": "The URL/s where the file content is available",
+          "type": "string",
+          "title": "The URL where the file content is available",
           "examples": [
             "https://example.url.for.skos.predicates.file1,https://example.url.for.skos.predicates.file2"
           ]
@@ -142,7 +165,11 @@
         "name": {
           "type": "string",
           "title": "The name of the organization",
-          "examples": ["Schema.org", "CTDL", "Credential Registry"]
+          "examples": [
+            "Schema.org",
+            "CTDL",
+            "Credential Registry"
+          ]
         },
         "description": {
           "type": "string",
@@ -151,12 +178,16 @@
         "homepageURL": {
           "$ref": "#/definitions/PlausibleUrl",
           "title": "The homepage URL of the standards organization",
-          "examples": ["https://example.dso.url"]
+          "examples": [
+            "https://example.dso.url"
+          ]
         },
         "standardsPage": {
           "$ref": "#/definitions/PlausibleUrl",
           "title": "The homepage URL of the standards organization",
-          "examples": ["https://example.dso.standards-pageurl"]
+          "examples": [
+            "https://example.dso.standards-pageurl"
+          ]
         },
         "dsoAdministrator": {
           "$ref": "#/definitions/Agent"
@@ -185,15 +216,18 @@
     "name",
     "standardsOrganizations",
     "abstractClasses",
-    "mappingPredicates",
-    "profileAdministrator"
+    "mappingPredicates"
+    // "profileAdministrator"
   ],
   "properties": {
     "name": {
       "$id": "#/properties/name",
       "type": "string",
       "title": "A name that denotes the purpose of this configuration profile. Preferably a single word",
-      "examples": ["Medical", "Education"]
+      "examples": [
+        "Medical",
+        "Education"
+      ]
     },
     "description": {
       "$id": "#/properties/description",
@@ -210,14 +244,18 @@
       "type": "string",
       "title": "The date of creation for this specific configuration profile",
       "default": "",
-      "examples": ["12-18-2020"]
+      "examples": [
+        "12-18-2020"
+      ]
     },
     "updatedAt": {
       "$id": "#/properties/updated_at",
       "type": "string",
       "title": "The date of last modification of this specific configuration profile.",
       "default": "",
-      "examples": ["12-18-2020"]
+      "examples": [
+        "12-18-2020"
+      ]
     },
     "standardsOrganizations": {
       "type": "array",
@@ -235,5 +273,5 @@
       "$ref": "#/definitions/Agent"
     }
   },
-  "additionalProperties": false
+  "additionalProperties": true
 }

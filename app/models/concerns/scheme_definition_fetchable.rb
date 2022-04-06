@@ -13,6 +13,8 @@ module SchemeDefinitionFetchable
   }.freeze
 
   def fetch_definition uri
+    return {} unless HttpUrlValidator.valid?(uri)
+
     file = temp_file(uri)
     converter = Parsers::FormatConverter.find_converter(file)
     raise "Converter not found for schema: `#{uri}`" unless converter

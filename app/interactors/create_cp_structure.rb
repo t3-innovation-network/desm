@@ -119,7 +119,7 @@ class CreateCpStructure
   def create_concept_schemes dso, concept_scheme_data
     concept_scheme_data.each do |cs_data|
       result = CreateConceptScheme.call({
-                                          uri: cs_data[:origin].first,
+                                          uri: cs_data[:origin],
                                           name: cs_data[:name],
                                           organization: dso
                                         })

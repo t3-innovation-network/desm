@@ -54,8 +54,13 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def self.validate_structure struct
+    struct = struct.deep_transform_keys {|key| key.to_s.camelize(:lower) }
     JSON::Validator.fully_validate(
       valid_schema,
+      struct
+    ) +
+    JSON::Validator.fully_validate(
+      complete_schema,
       struct
     )
   end

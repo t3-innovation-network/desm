@@ -49,25 +49,19 @@
               "name": "Learning Method",
               "version": "1",
               "description": "A description what the skos file represents.",
-              "origin": [
-                "https://credreg.net/ctdl/terms/LearningMethod/json?releaseID=20210528"
-              ]
+              "origin": "https://credreg.net/ctdl/terms/LearningMethod/json?releaseID=20210528"
             },
             {
               "name": "Organization Type",
               "version": "1",
               "description": "A description what the skos file represents.",
-              "origin": [
-                "https://credreg.net/ctdl/terms/OrganizationType/json?releaseID=20210528"
-              ]
+              "origin": "https://credreg.net/ctdl/terms/OrganizationType/json?releaseID=20210528"
             },
             {
               "name": "Assessment Method",
               "version": "1",
               "description": "A description what the skos file represents.",
-              "origin": [
-                "https://credreg.net/ctdl/terms/AssessmentMethod/json?releaseID=20210528"
-              ]
+              "origin": "https://credreg.net/ctdl/terms/AssessmentMethod/json?releaseID=20210528"
             }
           ]
         }
@@ -78,17 +72,13 @@
     "name": "The name of the skos file.",
     "version": "1",
     "description": "A description what the skos file represents.",
-    "origin": [
-      "https://credreg.net/ctdl/terms/Audience/json?releaseID=20210528"
-    ]
+    "origin": "https://credreg.net/ctdl/terms/Audience/json?releaseID=20210528"
   },
   "mappingPredicates": {
     "name": "The name of the skos file.",
     "version": "1",
     "description": "A description what the skos file represents.",
-    "origin": [
-      "https://credreg.net/ctdl/terms/OrganizationType/json?releaseID=20210528"
-    ]
+    "origin": "https://credreg.net/ctdl/terms/OrganizationType/json?releaseID=20210528"
   },
   "profileAdministrator": {
     "fullname": "Sergio Ramos",
