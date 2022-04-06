@@ -14,7 +14,7 @@ namespace :files do
 
     if args[:interactive]
       puts "We're about to remove #{files.count} files. Please confirm. (y/n)"
-      opt = STDIN.gets.chomp
+      opt = $stdin.gets.chomp
     end
 
     if opt&.downcase == "y" || !args[:interactive]

@@ -16,7 +16,7 @@ RSpec.describe CreateAbstractClasses, type: :interactor do
       expect(result.error).to eq("json body must be present")
     end
 
-    it "Creates a domain set with its domains if uri is correct" do
+    it "Creates a domain set with its domains when uri is correct" do
       result = CreateAbstractClasses.call({json_body: test_json_body})
 
       expect(result.error).to be_nil

@@ -6,6 +6,7 @@
 ###
 class UserPolicy < ApplicationPolicy
   def initialize(user, record)
+    super(user, record)
     @user = user
     @record = record
     @admin_role_name = Desm::ADMIN_ROLE_NAME.downcase.to_sym

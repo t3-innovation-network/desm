@@ -19,7 +19,7 @@ class UserMailer < ApplicationMailer
   ###
   def forgot_pass
     @title = t("mailers.forgot_pass.title")
-    @url = "#{@config[:host]}/reset-password?token=#{(@user.reset_password_token || '')}"
+    @url = "#{@config[:host]}/reset-password?token=#{@user.reset_password_token || ''}"
 
     mail(to: @user.email, subject: t("mailers.forgot_pass.subject"))
   end

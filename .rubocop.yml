@@ -136,6 +136,9 @@ Naming/BinaryOperatorParameterName:
 Lint/Debugger:
   Enabled: false
 
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
+
 # Style preference
 Style/MethodDefParentheses:
   Enabled: false

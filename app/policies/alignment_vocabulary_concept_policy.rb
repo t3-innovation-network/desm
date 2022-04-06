@@ -6,6 +6,7 @@
 ###
 class AlignmentVocabularyConceptPolicy < ApplicationPolicy
   def initialize(user, record)
+    super(user, record)
     @user = user || @current_user
     @record = record
 
