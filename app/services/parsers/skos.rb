@@ -2,6 +2,7 @@
 
 module Parsers
   class InvalidSkosFile < StandardError; end
+
   class Skos < Specification
     attr_accessor :graph, :context, :skos
 
@@ -158,7 +159,7 @@ module Parsers
       vocab_graph.compact.each do |concept|
         # Each concept will have different keys (here, the concepts are represented as hashes)
         # We iterate through each key of the concept, which represents each "attribute"
-        concept.keys.each do |attr_key|
+        concept.each_key do |attr_key|
           # We are only interested in those keys that uses the uris from the main context
           # If so, we add the key and value to our new context
           if using_context_uri(attr_key)

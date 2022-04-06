@@ -22,7 +22,7 @@ namespace :seeders do
 
     if args[:interactive]
       puts "Existent domain sets and domains will be ignored. Do you want to proceed? (y/n)"
-      option = STDIN.gets.chomp
+      option = $stdin.gets.chomp
     end
 
     if (option == "y") || (!args[:interactive])
@@ -38,7 +38,7 @@ namespace :seeders do
 
         if args[:interactive]
           puts "Do you want to process #{filename}?"
-          option = STDIN.gets.chomp
+          option = $stdin.gets.chomp
         end
 
         if (option == "y") || (!args[:interactive])
@@ -71,7 +71,7 @@ namespace :seeders do
 
     if args[:interactive]
       puts "Existent predicates will be ignored. Do you want to proceed? (y/n)"
-      option = STDIN.gets.chomp
+      option = $stdin.gets.chomp
     end
 
     if (option == "y") || (!args[:interactive])
@@ -87,7 +87,7 @@ namespace :seeders do
 
         if args[:interactive]
           puts "Do you want to process #{filename}?"
-          option = STDIN.gets.chomp
+          option = $stdin.gets.chomp
         end
 
         if (option == "y") || (!args[:interactive])

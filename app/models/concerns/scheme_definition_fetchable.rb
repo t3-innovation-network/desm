@@ -42,7 +42,7 @@ module SchemeDefinitionFetchable
     repository = RDF::Repository.load(uri)
     repository.to_rdf_json.to_json
   rescue StandardError
-    URI.open(uri, allow_redirections: :all).read
+    URI.parse(uri).open(allow_redirections: :all).read
   end
 
   def infer_extension uri

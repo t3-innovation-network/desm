@@ -24,9 +24,7 @@ module Parsers
     # @param [Hash|File] specification: The file content uploaded
     ###
     def self.from_file specification
-      parser = new(file_content: specification)
-
-      parser
+      new(file_content: specification)
     end
 
     ###

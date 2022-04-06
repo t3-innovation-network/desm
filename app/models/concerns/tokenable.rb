@@ -14,10 +14,10 @@ module Tokenable
 
   included do
     MIN_PASSWORD_LENGTH = begin
-                            Integer(Desm::MIN_PASSWORD_LENGTH)
-                          rescue TypeError
-                            8
-                          end
+      Integer(Desm::MIN_PASSWORD_LENGTH)
+    rescue StandardError
+      8
+    end
     PASSWORD_VALIDATION_RULES = {
       # @description: Level of deductibility. 18 is the library's default, known as an acceptable level
       #   of entropy.

@@ -37,6 +37,6 @@ RSpec.describe User, type: :model do
         email: "test@test.com",
         password: password
       )
-    } .to raise_error ActiveRecord::RecordInvalid
+    }.to raise_error ActiveRecord::RecordInvalid
   end
 end

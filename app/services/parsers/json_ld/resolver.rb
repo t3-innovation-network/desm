@@ -76,7 +76,7 @@ module Parsers
       end
 
       def remove_protocol_from_uri uri
-        uri.sub(%r{^https?\://(www.)?}, "")
+        uri.sub(%r{^https?://(www.)?}, "")
       end
     end
   end
