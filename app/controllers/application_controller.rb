@@ -2,7 +2,7 @@
 
 class ApplicationController < ActionController::Base
   # Authorization handling
-  include Pundit
+  include Pundit::Authorization
 
   # Handle errors with a concern
   include Recoverable

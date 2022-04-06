@@ -53,14 +53,10 @@ class ConfigurationProfile < ApplicationRecord
     )
   end
 
-  def self.validate_structure struct
+  def self.validate_structure struct, type="valid"
     struct = struct.deep_transform_keys {|key| key.to_s.camelize(:lower) }
     JSON::Validator.fully_validate(
-      valid_schema,
-      struct
-    ) +
-    JSON::Validator.fully_validate(
-      complete_schema,
+      type.eql?("valid") ? valid_schema : complete_schema,
       struct
     )
   end
@@ -118,12 +114,12 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def structure_valid?
-    validation = self.class.validate_structure(structure)
+    validation = self.class.validate_structure(structure, "valid")
     validation.empty?
   end
 
   def structure_complete?
-    validation = JSON::Validator.fully_validate(@complete_schema, structure)
+    validation = self.class.validate_structure(structure, "complete")
     validation.empty?
   end
 

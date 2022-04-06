@@ -13,7 +13,7 @@ module SchemeDefinitionFetchable
   }.freeze
 
   def fetch_definition uri
-    return {} unless HttpUrlValidator.valid?(uri)
+    return {} unless valid_uri?(uri)
 
     file = temp_file(uri)
     converter = Parsers::FormatConverter.find_converter(file)
@@ -32,6 +32,10 @@ module SchemeDefinitionFetchable
   end
 
   private
+
+  def valid_uri?(uri)
+    HttpUrlValidator.valid?(uri) || File.exist?(uri)
+  end
 
   def temp_file uri
     file = Tempfile.new(["tmpschemfile", infer_extension(uri)])

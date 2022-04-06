@@ -2,7 +2,7 @@ version: "3"
 services:
   web:
     build: .
-    command: bundle exec rdebug-ide --debug --host 0.0.0.0 --port 1234 -- bin/rails server -p 3030 -b 0.0.0.0
+    command: bundle exec bin/rails server -p 3030 -b 0.0.0.0
     volumes:
       - .:/app
     ports:
