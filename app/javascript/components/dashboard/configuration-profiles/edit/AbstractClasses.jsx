@@ -235,9 +235,14 @@ const AbstractClasses = () => {
       </div>
 
       {configurationProfile.state === "active" &&
-      abstractClassesLabels.length > 0 ? (
+        abstractClassesLabels.length > 0 ? (
         <AbstractClassesTable abstractClassesLabels={abstractClassesLabels} />
-      ) : null}
+      ) : <ul>
+        {abstractClassesLabels.map((acl) => {
+          return <li key={acl["uri"]}>{acl["label"]}</li>
+        })
+        }
+      </ul>}
     </div>
   );
 };
