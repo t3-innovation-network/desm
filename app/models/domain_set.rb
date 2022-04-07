@@ -16,6 +16,7 @@ class DomainSet < ApplicationRecord
   include Slugable
   validates :source_uri, presence: true, uniqueness: true
   validates :title, presence: true
+  has_one :configuration_profile
   has_many :domains
   ALIAS_CLASSNAME = "AbstractClassSet"
   alias_attribute :name, :title

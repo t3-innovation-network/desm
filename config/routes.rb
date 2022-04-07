@@ -55,9 +55,10 @@ Rails.application.routes.draw do
   end
 
   namespace :resources do
+    get 'mapping_export_profile' => 'mapping_export_profile#show'
+    get 'abstract-classes/:slug' => 'abstract_classes#show'
     get 'abstract-class-sets' => 'abstract_class_sets#index'
     get 'abstract-class-sets/:slug' => 'abstract_class_sets#show'
-    get 'abstract-classes/:slug' => 'abstract_classes#show'
     get 'configuration-profiles' => 'configuration_profiles#index'
     get 'configuration-profiles/:slug' => 'configuration_profiles#show'
     get 'abstract-classes/:slug' => 'domains#show'
@@ -69,6 +70,8 @@ Rails.application.routes.draw do
     get 'terms/:slug' => 'terms#show'
     get 'specifications/' => 'specifications#index'
     get 'specifications/:slug' => 'specifications#show'
+    get 'spines/' => 'spines#index'
+    get 'spines/:slug' => 'spines#show'
   end
 
   resources :users, only: [:index, :show, :update, :destroy]

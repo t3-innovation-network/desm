@@ -273,15 +273,14 @@ describe ConfigurationProfile, type: :model do
     it "Returns the description of the errors when there are any" do
       object_with_additional_properties = {
         "name": "Test CP",
-        "description": "Example description for a configuration profile",
-        "additionalProperty": "additional property"
+        "description": "Example description for a configuration profile"
       }
 
       @cp.update!(structure: object_with_additional_properties)
-      validation_result = ConfigurationProfile.validate_structure(@cp.structure)
+      validation_result = ConfigurationProfile.validate_structure(@cp.structure, "complete")
 
-      expect(@cp.structure_valid?).to be_falsey
-      expect(validation_result).to include(a_string_matching("contains additional properties"))
+      expect(@cp.structure_valid?).to be_truthy
+      expect(validation_result).to include(a_string_matching("did not contain a required property"))
     end
 
     it "accepts as complete a complete and valid json structure for a configuration profile" do

@@ -25,10 +25,10 @@ description_raw = {
 Term.seed(:name, {
   name: "name",
   raw: name_raw,
-  source_uri: "#{Desm::APP_DOMAIN}/api/v1/resources/terms/name"
+  source_uri: "#{Desm::APP_DOMAIN}/resources/terms/name"
 },
 {
   name: "description",
   raw: description_raw,
-  source_uri: "#{Desm::APP_DOMAIN}/api/v1/resources/terms/description"
+  source_uri: "#{Desm::APP_DOMAIN}/resources/terms/description"
 })

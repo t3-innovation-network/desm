@@ -11,7 +11,9 @@ This application provides the means to map (crosswalk) data specifications (stan
 > - docker compose
 
 1. Clone this project locally
-2. Create an ".env" file by copying the ".env.example" file. (It can be modified before the docker images are created)
+2. Create an ".env" file by copying the ".env.example" file. (It can be modified before the docker images are created).
+    - **2.a** Make sure the APP_DOMAIN environment variable is `http://localhost:3030`
+    - **2.b.** Make sure the DB environment variables (starting with `POSTGRESQL_`) are the same as in the .env.example file.
 3. Execute `docker compose build`
 4. Execute `docker compose up`
 5. In a different command prompt, execute `docker compose run --rm web rake db:create db:migrate db:seed`
