@@ -88,10 +88,7 @@ module Parsers
       end
 
       def id_to_name
-        name = read!("id").sub(%r{^https?://(www.)?}, "")
-                          .gsub("/", "_")
-                          .gsub(".", "_")
-                          .gsub(":", "_")
+        name = read!("id").sub(%r{^https?://(www.)?}, "").gsub(/[.:\/]/, '_')
         name.underscore.camelcase
       end
 
