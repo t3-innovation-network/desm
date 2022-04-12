@@ -55,6 +55,7 @@ class User < ApplicationRecord
   end
 
   def reset_password!(password)
+    self.skip_validating_organization = true if role?(Desm::ADMIN_ROLE_NAME)
     self.reset_password_token = nil
     self.password = password
     self.password_confirmation = password
@@ -62,7 +63,7 @@ class User < ApplicationRecord
   end
 
   def role?(role)
-    roles.any? {|r| r.name.underscore.to_sym == role }
+    roles.any? {|r| r.name.underscore.to_sym.eql?(role.underscore.to_sym) }
   end
 
   def send_reset_password_instructions
