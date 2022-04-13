@@ -63,7 +63,7 @@ class User < ApplicationRecord
   end
 
   def role?(role)
-    roles.any? {|r| r.name.underscore.to_sym.eql?(role.underscore.to_sym) }
+    roles.any? {|r| r.name.underscore.to_sym.eql?(role.to_s.underscore.to_sym) }
   end
 
   def send_reset_password_instructions
