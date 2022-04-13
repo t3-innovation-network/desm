@@ -1,5 +1,5 @@
-import jwt from "jsonwebtoken";
-import { JWT_ALGORITHM, JWT_SECRET } from "./Constants";
+import jwt from 'jsonwebtoken'
+import { PRIVATE_KEY } from "./Constants";
 
 /**
  * Encodes sensitive information inside an object using JSON Web Token
@@ -7,7 +7,5 @@ import { JWT_ALGORITHM, JWT_SECRET } from "./Constants";
  * @param {Object} toEncode
  */
 export const encode = (toEncode) => {
-  return jwt.sign(toEncode, JWT_SECRET, {
-    algorithm: JWT_ALGORITHM,
-  });
+  return jwt.sign(toEncode, PRIVATE_KEY);
 };
