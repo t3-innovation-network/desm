@@ -7,13 +7,15 @@ module Encodeable
   extend ActiveSupport::Concern
 
   def decode token
-    JWT.decode(
+    decoded = JWT.decode(
       token,
-      Desm::JWT_SECRET,
+      Desm::PRIVATE_KEY,
       true,
       {
-        algorithm: Desm::JWT_ALGORITHM
+        algorithm: "HS256"
       }
-    ).first.with_indifferent_access
+    )
+
+    decoded.first.with_indifferent_access
   end
 end

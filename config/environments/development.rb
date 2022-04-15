@@ -32,29 +32,16 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.perform_caching = false
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.raise_delivery_errors = false
   config.action_mailer.perform_deliveries = true
+  config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_options = {
     from: ENV["MAIL_USERNAME"],
-    host: ENV['API_DOMAIN'],
-    protocol: 'http'
   }
   config.action_mailer.smtp_settings = {
-    address:              'smtp.gmail.com',
-    port:                 587,
-    user_name:            ENV["MAIL_USERNAME"],
-    password:             ENV["MAIL_PASSWORD"],
-    authentication:       'plain',
-    enable_starttls_auto: true
-  }
-
-  # USe mailgun servers to deliver emails
-  config.action_mailer.delivery_method = :mailgun
-  config.action_mailer.mailgun_settings = {
-      api_key: ENV["MAILGUN_API_KEY"],
-      domain: ENV["MAILGUN_DOMAIN"]
+    address:              '127.0.0.1',
+    port:                 1025,
+    domain:              '127.0.0.1'
   }
 
   # Print deprecation notices to the Rails logger.
