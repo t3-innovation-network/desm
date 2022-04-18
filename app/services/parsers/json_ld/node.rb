@@ -102,7 +102,7 @@ module Parsers
       ###
       def find_node_key(attribute_name)
         selected_node = @node.select {|key|
-          key.to_s.downcase.match(
+          key.to_s.camelize.downcase.match(
             Regexp.new(attribute_name.downcase)
           )
         }

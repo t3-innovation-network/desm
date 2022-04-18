@@ -41,7 +41,8 @@ class CreateCpStructure
   private
 
   def assign_administrator
-    result = CreateAgent.call(@structure[:profile_administrator].merge({
+    profile_admin
+    result = CreateAgent.call(profile_admin.merge({
                                                                          role: Role.find_by_name("profile admin"),
                                                                          skip_validating_organization: true
                                                                        }))
@@ -133,5 +134,9 @@ class CreateCpStructure
     return domain unless domain.nil?
 
     Domain.all.select {|domain| uri.end_with?(domain.source_uri.split(":").last) }&.first
+  end
+
+  def profile_admin
+    @structure[:profile_administrator] || @structure[:standards_organizations].first[:dso_agents].first
   end
 end
