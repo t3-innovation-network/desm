@@ -4,7 +4,6 @@ class CreateDso
   include Interactor
 
   before do
-    context.fail!(error: "administrator must be present") unless context.administrator.present?
     context.fail!(error: "configuration profile must be present") unless context.configuration_profile.present?
     context.fail!(error: "email must be present") unless context.email.present?
     context.fail!(error: "name must be present") unless context.name.present?

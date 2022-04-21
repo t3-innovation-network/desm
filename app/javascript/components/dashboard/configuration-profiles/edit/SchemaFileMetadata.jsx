@@ -7,6 +7,7 @@ import {
 } from "../../../../actions/configurationProfiles";
 import updateCP from "../../../../services/updateCP";
 import fetchCPSkosLabels from "../../../../services/fetchCpSkosLabels";
+import { validURL } from "../../../../helpers/URL";
 
 const SchemaFileMetadata = (props) => {
   const { schemaFileIdx } = props;

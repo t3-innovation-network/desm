@@ -37,11 +37,10 @@
         },
         "githubHandle": {
           "type": "string",
-          "title": "The github username. Pattern is set according to the form validation messages on the 'Join Github' page",
-          "pattern": "/^[a-zd](?:[a-zd]|-(?=[a-zd])){0,38}$/i"
+          "title": "The github username"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": true
     },
     "DSOSchema": {
       "type": "object",
@@ -86,7 +85,7 @@
           "$ref": "#/definitions/PlausibleUrl"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": true
     },
     "PlausibleUrl": {
       "anyOf": [
@@ -126,7 +125,7 @@
           ]
         }
       },
-      "additionalProperties": false
+      "additionalProperties": true
     },
     "StandardOrganization": {
       "type": "object",
@@ -187,7 +186,7 @@
           }
         }
       },
-      "additionalProperties": false
+      "additionalProperties": true
     }
   },
   "properties": {

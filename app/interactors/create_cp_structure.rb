@@ -67,9 +67,13 @@ class CreateCpStructure
 
   def generate_dsos_data
     @structure[:standards_organizations].each do |dso_data|
-      dso_admin = create_dso_admin(dso_data[:dso_administrator])
-      dso = create_dso(dso_data.merge({administrator: dso_admin}))
-      dso_admin.update_column(:organization_id, dso.id)
+      dso = create_dso(dso_data)
+
+      if dso_data[:dso_administrator]
+        dso_admin = create_dso_admin(dso_data[:dso_administrator])
+        dso_admin.update_column(:organization_id, dso.id)
+      end
+
       create_dso_agents(dso, dso_data[:dso_agents])
       create_dso_schemas(dso, dso_data[:associated_schemas])
     end

@@ -39,8 +39,7 @@
         },
         "githubHandle": {
           "type": "string",
-          "title": "The github username. Pattern is set according to the form validation messages on the 'Join Github' page",
-          "pattern": "/^[a-zd](?:[a-zd]|-(?=[a-zd])){0,38}$/i"
+          "title": "The github username"
         }
       },
       "required": [
@@ -149,7 +148,6 @@
       "required": [
         "email",
         "name",
-        "dsoAdministrator",
         "dsoAgents",
         "associatedSchemas"
       ],
@@ -209,7 +207,7 @@
           }
         }
       },
-      "additionalProperties": false
+      "additionalProperties": true
     }
   },
   "required": [
