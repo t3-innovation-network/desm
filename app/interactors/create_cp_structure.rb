@@ -107,18 +107,21 @@ class CreateCpStructure
 
   def create_dso_schemas dso, schemas_data
     schemas_data.each do |schema_data|
-      domain = find_domain_by_uri(schema_data[:associated_abstract_class])
-      result = CreateSchema.call({
-                                   domain_id: domain&.id,
-                                   name: schema_data[:name],
-                                   user: dso.administrator,
-                                   uri: schema_data[:origin]
-                                 })
-
-      raise DSOMapperCreationError.new("DSOMapperCreationError: #{result.error}") unless result.error.nil?
-
+      create_schema(dso, schema_data)
       create_concept_schemes(dso, schema_data[:associated_concept_schemes]) if schema_data[:associated_concept_schemes]
     end
+  end
+
+  def create_schema dso, schema_data
+    domain = find_domain_by_uri(schema_data[:associated_abstract_class])
+    result = CreateSchema.call({
+                                 domain_id: domain&.id,
+                                 name: schema_data[:name],
+                                 user: dso.administrator || dso.agents.first,
+                                 uri: schema_data[:origin]
+                               })
+
+    raise DSOMapperCreationError.new("DSOMapperCreationError: #{result.error}") unless result.error.nil?
   end
 
   def create_concept_schemes dso, concept_scheme_data
