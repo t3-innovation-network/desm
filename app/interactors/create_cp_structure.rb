@@ -43,24 +43,24 @@ class CreateCpStructure
   def assign_administrator
     profile_admin
     result = CreateAgent.call(profile_admin.merge({
-                                                                         role: Role.find_by_name("profile admin"),
-                                                                         skip_validating_organization: true
-                                                                       }))
-    raise AdminCreationError unless result.error.nil?
+                                                    role: Role.find_by_name("profile admin"),
+                                                    skip_validating_organization: true
+                                                  }))
+    raise AdminCreationError.new(result.error) unless result.error.nil?
 
     @cp.update(administrator: result.agent)
   end
 
   def generate_abstract_classes
     result = CreateAbstractClasses.call({json_body: @cp.json_abstract_classes})
-    raise AbstractClassesCreationError unless result.error.nil?
+    raise AbstractClassesCreationError.new(result.error) unless result.error.nil?
 
     @cp.update(abstract_classes: result.domain_set)
   end
 
   def generate_mapping_predicates
     result = CreateMappingPredicates.call({json_body: @cp.json_mapping_predicates})
-    raise MappingPredicatesCreationError unless result.error.nil?
+    raise MappingPredicatesCreationError.new(result.error) unless result.error.nil?
 
     @cp.update(mapping_predicates: result.predicate_set)
   end
@@ -81,7 +81,7 @@ class CreateCpStructure
 
   def create_dso dso_data
     result = CreateDso.call(dso_data.merge({configuration_profile: @cp}))
-    raise DSOCreationError unless result.error.nil?
+    raise DSOCreationError.new(result.error) unless result.error.nil?
 
     result.dso
   end
@@ -91,7 +91,7 @@ class CreateCpStructure
                                                      role: Role.find_by_name("dso admin"),
                                                      skip_validating_organization: true
                                                    }))
-    raise DSOAdminCreationError unless result.error.nil?
+    raise DSOAdminCreationError.new(result.error) unless result.error.nil?
 
     result.agent
   end
@@ -99,7 +99,7 @@ class CreateCpStructure
   def create_dso_agents dso, agents_data
     agents_data.each do |agent_data|
       result = CreateAgent.call(agent_data.merge({role: Role.find_by_name("mapper"), organization: dso}))
-      raise DSOMapperCreationError unless result.error.nil?
+      raise DSOMapperCreationError.new(result.error) unless result.error.nil?
 
       dso.users << result.agent
     end
@@ -115,7 +115,7 @@ class CreateCpStructure
                                    uri: schema_data[:origin]
                                  })
 
-      raise DSOMapperCreationError unless result.error.nil?
+      raise DSOMapperCreationError.new(result.error) unless result.error.nil?
 
       create_concept_schemes(dso, schema_data[:associated_concept_schemes]) if schema_data[:associated_concept_schemes]
     end
@@ -129,7 +129,7 @@ class CreateCpStructure
                                           organization: dso
                                         })
 
-      raise ConceptSchemeCreationError unless result.error.nil?
+      raise ConceptSchemeCreationError.new(result.error) unless result.error.nil?
     end
   end
 
