@@ -71,7 +71,6 @@ RSpec.describe CreateCpStructure, type: :interactor do
         expect(@cp.standards_organizations.length).to eq(1)
         expect(first_org.name).to eq("Credential Registry")
         expect(first_org.configuration_profile).to be(@cp)
-        expect(first_org.administrator.fullname).to eq("CredReg Admin")
         expect(first_org.users.find_by_email("mapper1@credreg.com")).to be_present
         expect(first_org.users.find_by_email("mapper1@credreg.com")).to be_present
         expect(Specification.for_dso(first_org).length).to eq(2)
@@ -83,6 +82,13 @@ RSpec.describe CreateCpStructure, type: :interactor do
         expect(org_type_vocab.concepts.count).to eq(22)
         expect(assessment_method_vocab).to be_present
         expect(assessment_method_vocab.concepts.count).to eq(3)
+      end
+
+      it "generates agents with correct organization relations" do
+        first_org = @cp.standards_organizations.first
+        first_org_first_agent = first_org.agents.first
+
+        expect(first_org_first_agent.organization).to eql(first_org)
       end
     end
   end

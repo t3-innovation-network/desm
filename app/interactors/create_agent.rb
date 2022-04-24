@@ -12,7 +12,7 @@ class CreateAgent
 
   def call
     agent = User.find_or_initialize_by(email: user_params[:email]) do |agt|
-      agt.update!(user_params.merge({skip_sending_welcome_email: true}))
+      agt.update!(user_params)
     end
 
     Assignment.create!(role: context.role, user: agent)

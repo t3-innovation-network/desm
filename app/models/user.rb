@@ -7,9 +7,6 @@ class User < ApplicationRecord
   attr_accessor :skip_sending_welcome_email, :skip_validating_organization
 
   has_secure_password
-  include Tokenable
-  alias_attribute :token, :reset_password_token
-
   belongs_to :organization, optional: true
   has_many :assignments, dependent: :delete_all
   has_many :roles, through: :assignments
