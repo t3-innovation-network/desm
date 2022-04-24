@@ -2,7 +2,7 @@ import { filter } from "lodash";
 import React, { Component } from "react";
 import fetchAlignmentsForSpineTerm from "../../services/fetchAlignmentsForSpineTerm";
 import fetchDomain from "../../services/fetchDomain";
-import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
+import fetchSpineTerms from "../../services/fetchSpineTerms";
 import Loader from "../shared/Loader";
 import NoSpineAlert from "./NoSpineAlert";
 import PropertyAlignments from "./PropertyAlignments";
@@ -188,8 +188,8 @@ export default class PropertiesList extends Component {
   /**
    * Use the service to get all the available properties of a spine specification
    */
-  handleFetchProperties = async (specId) => {
-    let response = await fetchSpecificationTerms(specId);
+  handleFetchProperties = async (spineId) => {
+    let response = await fetchSpineTerms(spineId);
 
     if (!this.anyError(response)) {
       let properties = await this.decoratePropertiesWithAlignments(
@@ -208,7 +208,7 @@ export default class PropertiesList extends Component {
   handleFetchDataFromAPI = async () => {
     let response = await this.handleFetchDomain();
 
-    if (!this.anyError(response)) {
+    if (!this.anyError(response) && this.state.spineExists) {
       await this.handleFetchProperties(response.domain.spine.id);
     }
   };

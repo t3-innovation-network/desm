@@ -158,7 +158,7 @@ export default class PropertyCard extends Component {
             <p>{term.property.comment}</p>
 
             <small className="mt-3 col-on-primary-light">Organization</small>
-            <p>{term.organization.name}</p>
+            <p>{term.organization?.name}</p>
 
             <small className="mt-3 col-on-primary-light">Schema</small>
             <p>{term.property.scheme}</p>
