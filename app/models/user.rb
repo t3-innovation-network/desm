@@ -10,8 +10,8 @@ class User < ApplicationRecord
   belongs_to :organization, optional: true
   has_many :assignments, dependent: :delete_all
   has_many :roles, through: :assignments
-  has_many :specifications, dependent: :destroy
   has_many :mappings, dependent: :destroy
+  has_many :specifications, dependent: :destroy
 
   validates :fullname, presence: true
   validates :email, presence: true, uniqueness: true

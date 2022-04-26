@@ -305,7 +305,7 @@ describe ConfigurationProfile, type: :model do
     end
   end
 
-  context "when it has to be removed, it checks mappings" do
+  context "when it has to be removed" do
     before(:all) do
       Role.create!(name: "dso admin")
       Role.create!(name: "mapper")
