@@ -96,7 +96,7 @@ class Alignment < ApplicationRecord
   # @description: Removes the related spine term
   ###
   def remove_spine_term
-    mapping.spine.terms -= [spine_term]
+    mapping.spine.terms -= [spine_term] if mapping.spine.present?
   end
 
   ###
