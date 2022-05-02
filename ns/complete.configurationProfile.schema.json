@@ -215,7 +215,6 @@
     "standardsOrganizations",
     "abstractClasses",
     "mappingPredicates"
-    // "profileAdministrator"
   ],
   "properties": {
     "name": {

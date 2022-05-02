@@ -99,7 +99,7 @@ module CpState
     def complete!
       unless @configuration_profile.structure_complete?
         raise CpState::NotYetReadyForTransition,
-              ConfigurationProfile.validate_structure(@configuration_profile.structure)
+              ConfigurationProfile.validate_structure(@configuration_profile.structure, "complete")
       end
 
       @configuration_profile.transition_to! :complete

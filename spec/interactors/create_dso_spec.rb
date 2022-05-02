@@ -12,9 +12,6 @@ RSpec.describe CreateDso, type: :interactor do
     end
 
     it "rejects creation if not enough information is provided" do
-      result = CreateDso.call
-      expect(result.error).to eq("administrator must be present")
-
       result = CreateDso.call({administrator: admin})
       expect(result.error).to eq("configuration profile must be present")
 
