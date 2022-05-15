@@ -14,7 +14,7 @@ const AlertNotice = (props) => {
   /**
    * Elements from props
    */
-  const { cssClass, title, message } = props;
+  const { cssClass, title, message, onClose } = props;
 
   return (
     <div
@@ -39,8 +39,9 @@ const AlertNotice = (props) => {
       <button
         type="button"
         className="close"
-        data-dismiss="alert"
+        data-dismiss={!onClose && "alert"}
         aria-label="Close"
+        onClick={onClose}
       >
         <span aria-hidden="true">&times;</span>
       </button>

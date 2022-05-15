@@ -69,6 +69,8 @@ export default class ConfigurationProfilesIndex extends Component {
     });
   };
 
+  handleErrors = (errors) => this.setState({ errors });
+
   render() {
     const { configurationProfiles, errors } = this.state;
 
@@ -77,13 +79,14 @@ export default class ConfigurationProfilesIndex extends Component {
         {this.dashboardPath()}
 
         <div className="col mt-5">
-          {errors && <AlertNotice message={errors} />}
+          {errors && <AlertNotice message={errors} onClose={() => this.setState({ errors: null })} />}
           <div className="row h-50 ml-5">
             {configurationProfiles.map((cp) => {
               return (
                 <ConfigurationProfileBox
                   configurationProfile={camelizeKeys(cp)}
                   key={cp.id}
+                  onErrors={this.handleErrors}
                 />
               );
             })}
