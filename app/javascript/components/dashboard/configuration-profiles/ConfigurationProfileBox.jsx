@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import Loader from "./../../shared/Loader";
-import AlertNotice from "../../shared/AlertNotice";
 import EllipsisOptions from "../../shared/EllipsisOptions";
 import ConfirmDialog from "../../shared/ConfirmDialog";
 import { CPActionHandlerFactory } from "./CPActionHandler";
@@ -103,7 +102,6 @@ const CardBody = (props) => {
               {new Date(configurationProfile.createdAt).toLocaleString("en-US")}
             </small>
           </p>
-          {errors && <AlertNotice message={errors} />}
         </div>
         <div className="col-md-2">
           <EllipsisOptions
@@ -123,7 +121,6 @@ export default class ConfigurationProfileBox extends Component {
     activating: false,
     configurationProfile: this.props.configurationProfile,
     confirmationVisible: false,
-    errors: null,
     processing: false,
     removed: false,
   };
@@ -154,11 +151,8 @@ export default class ConfigurationProfileBox extends Component {
 
     response = await actionHandler.execute(configurationProfile.id);
     if (response.error) {
-      this.setState({
-        errors: response.error,
-        processing: false,
-        activating: false,
-      });
+      this.setState({ activating: false, processing: false });
+      this.props.onErrors(response.error);
       return;
     }
 
@@ -168,9 +162,10 @@ export default class ConfigurationProfileBox extends Component {
   reloadCP(newCP) {
     this.setState({
       configurationProfile: newCP,
-      errors: null,
       processing: false,
     });
+
+    this.props.onErrors(null);
   }
 
   handleRemoveResponse(success) {
