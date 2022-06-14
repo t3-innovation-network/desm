@@ -15,16 +15,12 @@ import {
 } from "../utils";
 import ConceptSchemeMetadata from "./ConceptSchemeMetadata";
 
-const ConceptSchemesWrapper = (props) => {
-  const { schemaFileIdx } = props;
+const ConceptSchemesWrapper = ({ schemaFileIdx }) => {
   const currentCP = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
-  const schemaFiles =
-    currentCP.structure.standardsOrganizations[currentDSOIndex]
-      .associatedSchemas || [];
-  const schemaFile = schemaFiles[schemaFileIdx] || {};
-  const conceptSchemes = schemaFile.associatedConceptSchemes || [];
-  const [activeTab, setActiveTab] = useState(conceptSchemes.length ? 0 : -1);
+  const [schemaFile, setSchemaFile] = useState({});
+  const [conceptSchemes, setConceptSchemes] = useState([]);
+  const [activeTab, setActiveTab] = useState(-1);
   const [idxToRemove, setIdxToRemove] = useState(null);
   const [confirmationVisible, setConfirmationVisible] = useState(false);
   const confirmationMsg = `Please confirm if you really want to remove the concept scheme file ${conceptSchemes[idxToRemove]?.name}`;
@@ -53,10 +49,7 @@ const ConceptSchemesWrapper = (props) => {
     let localFiles = [
       ...conceptSchemes,
       {
-        name: `Concept Scheme ${conceptSchemes.length + 1}`,
-        version: "",
-        description: "",
-        origin: "",
+        name: `Concept Scheme ${conceptSchemes.length + 1}`
       },
     ];
 
@@ -66,6 +59,7 @@ const ConceptSchemesWrapper = (props) => {
 
     dispatch(setCurrentConfigurationProfile(localCP));
     save(localCP);
+    setConceptSchemes(localFiles);
     setActiveTab(localFiles.length - 1);
   };
 
@@ -81,7 +75,7 @@ const ConceptSchemesWrapper = (props) => {
       localCP.structure.standardsOrganizations[currentDSOIndex]
         .associatedSchemas[schemaFileIdx].associatedConceptSchemes;
 
-    setActiveTab(conceptSchemes.length - 1);
+    setActiveTab(conceptSchemes.length ? 0 : -1);
     dispatch(setCurrentConfigurationProfile(localCP));
     save(localCP);
   };
@@ -98,6 +92,20 @@ const ConceptSchemesWrapper = (props) => {
       dispatch(setSavingCP(false));
     });
   };
+
+  useEffect(() => {
+    const schemaFiles = currentCP
+      .structure
+      .standardsOrganizations[currentDSOIndex]
+      .associatedSchemas || [];
+
+    const schemaFile = schemaFiles[schemaFileIdx] || {};
+    setSchemaFile(schemaFile);
+
+    const conceptSchemes = schemaFile.associatedConceptSchemes || [];
+    setConceptSchemes(conceptSchemes);
+    setActiveTab(conceptSchemes.length ? 0 : -1);
+  }, [currentCP, currentDSOIndex, schemaFileIdx]);
 
   return (
     <Fragment>

@@ -16,7 +16,6 @@ import {
   setEditCPErrors,
   setStep,
 } from "../../../../actions/configurationProfiles";
-import { camelizeKeys } from "humps";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import _ from "lodash";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import updateCP from "../../../../services/updateCP";
 import {
@@ -9,49 +10,36 @@ import {
 import { validURL } from "../../../../helpers/URL";
 import fetchSkosFile from "../../../../services/fetchSkosFile";
 import Loader from "../../../shared/Loader";
-import { useEffect } from "react";
 import fetchCPSkosLabels from "../../../../services/fetchCpSkosLabels";
 
 const MappingPredicates = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
-  const [filename, setFilename] = useState(
-    configurationProfile.structure.mappingPredicates?.name || ""
-  );
-  const [version, setVersion] = useState(
-    configurationProfile.structure.mappingPredicates?.version || ""
-  );
-  const [description, setDescription] = useState(
-    configurationProfile.structure.mappingPredicates?.description || ""
-  );
-  const [origin, setOrigin] = useState(
-    configurationProfile.structure.mappingPredicates?.origin || ""
-  );
-  const [jsonMappingPredicates, setJsonMappingPredicates] = useState(
-    configurationProfile.jsonMappingPredicates
-  );
-  const [predicateStrongestMatch, setPredicateStrongestMatch] = useState(
-    configurationProfile.predicateStrongestMatch
-  );
-  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const [urlEditable, setUrlEditable] = useState(!origin);
-
+  const [name, setName] = useState("");
+  const [version, setVersion] = useState("");
+  const [description, setDescription] = useState("");
+  const [origin, setOrigin] = useState("");
+  const [jsonMappingPredicates, setJsonMappingPredicates] = useState([]);
+  const [predicateStrongestMatch, setPredicateStrongestMatch] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [urlEditable, setUrlEditable] = useState(true);
   const [predicateLabels, setPredicateLabels] = useState([]);
 
-  const buildCpData = () => {
-    let localCP = configurationProfile;
-    localCP.jsonMappingPredicates = jsonMappingPredicates;
-    localCP.predicateStrongestMatch = predicateStrongestMatch;
-    localCP.structure.mappingPredicates = {
-      name: filename,
-      version: version,
-      description: description,
-      origin: origin,
-    };
-
-    return localCP;
-  };
+  const buildCpData = () => ({
+    ...configurationProfile,
+    jsonMappingPredicates,
+    predicateStrongestMatch,
+    structure: {
+      ...configurationProfile.structure,
+      mappingPredicates: _.pickBy({
+        description,
+        name,
+        origin,
+        version,
+      })
+    }
+  });
 
   const handleFetchUrl = () => {
     if (!validURL(origin)) {
@@ -64,21 +52,22 @@ const MappingPredicates = () => {
     handleFetchSkosFile();
   };
 
-  const handleFetchSkosFile = () => {
+  const handleFetchSkosFile = async () => {
     setLoading(true);
-    fetchSkosFile(origin).then((response) => {
-      if (response.error || !response.valid) {
-        let message = response.error || "Invalid Skos File";
-        dispatch(setEditCPErrors(message));
-        setLoading(false);
-        setOrigin(null);
-        return;
-      }
 
-      setJsonMappingPredicates(response.skosFile);
-      setUrlEditable(false);
+    const { error, skosFile, valid } = await fetchSkosFile(origin);
+
+    if (error || !valid) {
+      dispatch(setEditCPErrors(error || "Invalid Skos File"));
       setLoading(false);
-    });
+      setOrigin("");
+      return;
+    }
+
+    setJsonMappingPredicates(skosFile);
+    setUrlEditable(false);
+    setLoading(false);
+    saveChanges({ ...buildCpData(), jsonMappingPredicates: skosFile });
   };
 
   const handleFetchPredicateLabels = () => {
@@ -95,105 +84,118 @@ const MappingPredicates = () => {
     );
   };
 
-  const handleBlur = () => {
+  const handlePredicateChange = (e) => {
+    const { value } = e.target;
+    setPredicateStrongestMatch(value);
+    saveChanges({ ...buildCpData(), predicateStrongestMatch: value });
+  };
+
+  const saveChanges = async (data = null) => {
     dispatch(setSavingCP(true));
 
-    updateCP(configurationProfile.id, buildCpData()).then((response) => {
-      if (response.error) {
-        dispatch(setEditCPErrors(response.error));
-        dispatch(setSavingCP(false));
-        return;
-      }
+    const response = await updateCP(configurationProfile.id, data || buildCpData());
 
-      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
+    if (response.error) {
+      dispatch(setEditCPErrors(response.error));
       dispatch(setSavingCP(false));
-    });
+      return;
+    }
+
+    dispatch(setCurrentConfigurationProfile(response.configurationProfile));
+    dispatch(setSavingCP(false));
   };
 
   useEffect(() => {
-    if (jsonMappingPredicates) handleBlur();
-  }, [jsonMappingPredicates]);
+    const { mappingPredicates } = configurationProfile.structure;
+
+    if (!mappingPredicates) return;
+
+    const { description, name, origin, version } = mappingPredicates
+    setDescription(description || "");
+    setName(name || "");
+    setOrigin(origin || "");
+    setUrlEditable(!origin);
+    setVersion(version || "");
+  }, [configurationProfile.structure.mappingPredicates]);
 
   useEffect(() => {
-    if (predicateStrongestMatch) handleBlur();
-  }, [predicateStrongestMatch]);
+    setJsonMappingPredicates(configurationProfile.jsonMappingPredicates);
 
-  useEffect(() => {
     if (configurationProfile.jsonMappingPredicates) {
       handleFetchPredicateLabels();
     }
   }, [configurationProfile.jsonMappingPredicates]);
 
+  useEffect(() => {
+    setPredicateStrongestMatch(configurationProfile.predicateStrongestMatch);
+  }, [configurationProfile.predicateStrongestMatch]);
+
   return (
     <div className="col">
       <div className="mt-5">
-        <label>
+        <label htmlFor="name">
           File Name
-          <span className="text-danger">*</span>
+          <span className="ml-1 text-danger">*</span>
         </label>
         <div className="input-group input-group">
           <input
+            id="name"
             type="text"
             className="form-control input-lg"
-            name="name"
             placeholder="The name of the skos file."
-            value={filename || ""}
-            onChange={(event) => {
-              setFilename(event.target.value);
-            }}
-            onBlur={handleBlur}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onBlur={() => saveChanges()}
             autoFocus
           />
         </div>
       </div>
 
       <div className="mt-5">
-        <label>Version</label>
+        <label htmlFor="version">Version</label>
         <div className="input-group input-group">
           <input
+            id="version"
             type="text"
             className="form-control input-lg"
-            name="version"
             placeholder="The version of the skos file"
             maxLength={5}
-            value={version || ""}
-            onChange={(event) => {
-              setVersion(event.target.value);
-            }}
-            onBlur={handleBlur}
+            value={version}
+            onChange={(e) => setVersion(e.target.value)}
+            onBlur={() => saveChanges()}
           />
         </div>
       </div>
 
       <div className="mt-5">
-        <label>Description</label>
+        <label htmlFor="description">Description</label>
         <div className="input-group input-group">
           <textarea
+            id="description"
             className="form-control input-lg"
-            name="description"
             placeholder="A description what the skos file represents."
-            value={description || ""}
-            onChange={(event) => {
-              setDescription(event.target.value);
-            }}
-            style={{ height: "10rem" }}
-            onBlur={handleBlur}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={5}
+            onBlur={() => saveChanges()}
           />
         </div>
       </div>
 
       <div className="mt-5">
-        <label>Origin (URL)</label>
+        <label htmlFor="origin">
+          Origin (URL)
+          <span className="ml-1 text-danger">*</span>
+        </label>
         {urlEditable ? (
           <div className="input-group input-group">
             <input
+              id="origin"
               type="url"
               className="form-control input-lg"
-              name="origin"
               value={origin}
-              onChange={(event) => {
-                setOrigin(event.target.value);
-              }}
+              onBlur={() => saveChanges()}
+              onChange={(e) => setOrigin(e.target.value)}
               pattern="https://.*"
               size="30"
               placeholder="https://example.com"
@@ -205,10 +207,10 @@ const MappingPredicates = () => {
               disabled={!origin}
               data-toggle="tooltip"
               data-placement="bottom"
-              title={"Fetch the concepts"}
+              title="Fetch the concepts"
             >
               {loading ? (
-                <Loader noPadding={true} smallSpinner={true} />
+                <Loader noPadding smallSpinner />
               ) : (
                 "Fetch"
               )}
@@ -219,12 +221,10 @@ const MappingPredicates = () => {
             <label>{origin}</label>
             <button
               className="btn btn-dark ml-auto"
-              onClick={() => {
-                setUrlEditable(true);
-              }}
+              onClick={() => setUrlEditable(true)}
               data-toggle="tooltip"
               data-placement="bottom"
-              title={"Edit the origin Url"}
+              title="Edit the origin Url"
             >
               Edit
             </button>
@@ -237,29 +237,26 @@ const MappingPredicates = () => {
           <p className="mt-5 font-weight-bold">
             👇 Please, select the strongest match
           </p>
-          <div
-            className="form-group"
-            defaultValue={configurationProfile.predicateStrongestMatch}
-            onChange={(e) => {
-              setPredicateStrongestMatch(e.target.value);
-            }}
-          >
-            {predicateLabels.map((concept) => {
+          <div className="form-group">
+            {predicateLabels.map((concept, index) => {
+              const { label, uri } = concept;
+              const id = `predicate-${index}`;
+
               return (
-                <div key={concept["uri"]}>
+                <div className="form-check" key={index}>
                   <input
+                    className="form-check-input"
+                    checked={uri === predicateStrongestMatch}
+                    id={id}
+                    onChange={handlePredicateChange}
                     type="radio"
-                    value={concept["uri"]}
-                    name="predicate"
-                    id={`predicate-${concept["uri"]}`}
-                    required={true}
-                    defaultChecked={concept["uri"] === predicateStrongestMatch}
+                    value={uri}
                   />
                   <label
-                    className="ml-2 cursor-pointer"
-                    htmlFor={`predicate-${concept["uri"]}`}
+                    className="cursor-pointer form-check-label"
+                    htmlFor={id}
                   >
-                    {concept["label"]}
+                    {label}
                   </label>
                 </div>
               );

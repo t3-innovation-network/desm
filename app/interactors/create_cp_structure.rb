@@ -41,7 +41,8 @@ class CreateCpStructure
   private
 
   def assign_administrator
-    profile_admin
+    return unless profile_admin
+
     result = CreateAgent.call(profile_admin.merge({
                                                     role: Role.find_by_name("profile admin"),
                                                     skip_validating_organization: true

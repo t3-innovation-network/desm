@@ -20,39 +20,30 @@ import { toastr as toast } from "react-redux-toastr";
 
 const AbstractClasses = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
-  const [filename, setFilename] = useState(
-    configurationProfile.structure.abstractClasses?.name || ""
-  );
-  const [version, setVersion] = useState(
-    configurationProfile.structure.abstractClasses?.version || ""
-  );
-  const [description, setDescription] = useState(
-    configurationProfile.structure.abstractClasses?.description || ""
-  );
-  const [origin, setOrigin] = useState(
-    configurationProfile.structure.abstractClasses?.origin || ""
-  );
-  const [jsonAbstractClasses, setJsonAbstractClasses] = useState(
-    configurationProfile.jsonAbstractClasses
-  );
+  const dispatch = useDispatch();
+
+  const [name, setName] = useState("");
+  const [version, setVersion] = useState("");
+  const [description, setDescription] = useState("");
+  const [origin, setOrigin] = useState("");
+  const [jsonAbstractClasses, setJsonAbstractClasses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [urlEditable, setUrlEditable] = useState(!origin);
   const [abstractClassesLabels, setAbstractClassesLabels] = useState([]);
 
-  const dispatch = useDispatch();
-
-  const buildCpData = () => {
-    let localCP = configurationProfile;
-    localCP.jsonAbstractClasses = jsonAbstractClasses;
-    localCP.structure.abstractClasses = {
-      name: filename,
-      version: version,
-      description: description,
-      origin: origin,
-    };
-
-    return localCP;
-  };
+  const buildCpData = () => ({
+    ...configurationProfile,
+    jsonAbstractClasses,
+    structure: {
+      ...configurationProfile.structure,
+      abstractClasses: _.pickBy({
+        description,
+        name,
+        origin,
+        version,
+      })
+    }
+  });
 
   const handleFetchUrl = () => {
     if (!validURL(origin)) {
@@ -62,25 +53,24 @@ const AbstractClasses = () => {
       return;
     }
     dispatch(setEditCPErrors(null));
-    handleBlur();
     handleFetchSkosFile();
   };
 
-  const handleFetchSkosFile = () => {
+  const handleFetchSkosFile = async () => {
     setLoading(true);
-    fetchSkosFile(origin).then((response) => {
-      if (response.error || !response.valid) {
-        let message = response.error || "Invalid Skos File";
-        dispatch(setEditCPErrors(message));
-        setLoading(false);
-        setOrigin(null);
-        return;
-      }
 
-      setJsonAbstractClasses(response.skosFile);
-      setUrlEditable(false);
+    const { error, skosFile, valid } = await fetchSkosFile(origin);
+
+    if (error || !valid) {
+      dispatch(setEditCPErrors(error || "Invalid Skos File"));
       setLoading(false);
-    });
+      return;
+    }
+
+    setJsonAbstractClasses(skosFile);
+    setUrlEditable(false);
+    setLoading(false);
+    saveChanges({ ...buildCpData(), jsonAbstractClasses: skosFile });
   };
 
   const handleFetchAbstractClassesLabels = () => {
@@ -97,101 +87,106 @@ const AbstractClasses = () => {
     );
   };
 
-  const handleBlur = () => {
+  const saveChanges = async (data = null) => {
     dispatch(setSavingCP(true));
 
-    updateCP(configurationProfile.id, buildCpData()).then((response) => {
-      if (response.error) {
-        dispatch(setEditCPErrors(response.error));
-        dispatch(setSavingCP(false));
-        return;
-      }
+    const response = await updateCP(configurationProfile.id, data || buildCpData());
 
-      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
+    if (response.error) {
+      dispatch(setEditCPErrors(response.error));
       dispatch(setSavingCP(false));
-    });
+      return;
+    }
+
+    dispatch(setCurrentConfigurationProfile(response.configurationProfile));
+    dispatch(setSavingCP(false));
   };
 
   useEffect(() => {
-    if (jsonAbstractClasses) handleBlur();
-  }, [jsonAbstractClasses]);
+    const { abstractClasses } = configurationProfile.structure;
+
+    if (!abstractClasses) return;
+
+    const { description, name, origin, version } = abstractClasses
+    setDescription(description || "");
+    setName(name || "");
+    setOrigin(origin || "");
+    setUrlEditable(!origin);
+    setVersion(version || "");
+  }, [configurationProfile.structure.abstractClasses]);
 
   useEffect(() => {
-    if (configurationProfile.jsonAbstractClasses) {
-      handleFetchAbstractClassesLabels();
-    }
+    const { jsonAbstractClasses } = configurationProfile;
+    setJsonAbstractClasses(jsonAbstractClasses);
+    jsonAbstractClasses?.length && handleFetchAbstractClassesLabels();
   }, [configurationProfile.jsonAbstractClasses]);
 
   return (
     <div className="col">
       <div className="mt-5">
-        <label>
+        <label htmlFor="name">
           File Name
-          <span className="text-danger">*</span>
+          <span className="ml-1 text-danger">*</span>
         </label>
         <div className="input-group input-group">
           <input
+            id="name"
             type="text"
             className="form-control input-lg"
-            name="name"
             placeholder="The name of the skos file."
-            value={filename || ""}
-            onChange={(event) => {
-              setFilename(event.target.value);
-            }}
-            onBlur={handleBlur}
+            value={name}
+            onChange={(e) => setName(event.target.value)}
+            onBlur={() => saveChanges()}
             autoFocus
           />
         </div>
       </div>
 
       <div className="mt-5">
-        <label>Version</label>
+        <label htmlFor="version">Version</label>
         <div className="input-group input-group">
           <input
+            id="version"
             type="text"
             className="form-control input-lg"
-            name="version"
             placeholder="The version of the skos file"
             maxLength={5}
-            value={version || ""}
-            onChange={(event) => {
-              setVersion(event.target.value);
-            }}
-            onBlur={handleBlur}
+            value={version}
+            onChange={(e) => setVersion(event.target.value)}
+            onBlur={() => saveChanges()}
           />
         </div>
       </div>
 
       <div className="mt-5">
-        <label>Description</label>
+        <label htmlFor="description">Description</label>
         <div className="input-group input-group">
           <textarea
+            id="description"
             className="form-control input-lg"
-            name="description"
             placeholder="A description what the skos file represents."
-            value={description || ""}
-            onChange={(event) => {
-              setDescription(event.target.value);
-            }}
-            style={{ height: "10rem" }}
-            onBlur={handleBlur}
+            value={description}
+            onChange={(e) => setDescription(event.target.value)}
+            rows={5}
+            onBlur={() => saveChanges()}
           />
         </div>
       </div>
 
       <div className="mt-5">
-        <label>Origin (URL)</label>
+        <label htmlFor="origin">
+          Origin (URL)
+          <span className="ml-1 text-danger">*</span>
+        </label>
         {urlEditable ? (
           <div className="input-group input-group">
             <input
+              id="origin"
               type="url"
               className="form-control input-lg"
-              name="origin"
               value={origin}
-              onChange={(event) => {
-                setOrigin(event.target.value);
-              }}
+              onBlur={() => saveChanges()}
+              onChange={(e) => setOrigin(e.target.value)}
               pattern="https://.*"
               size="30"
               placeholder="https://example.com"
@@ -203,10 +198,10 @@ const AbstractClasses = () => {
               disabled={!origin}
               data-toggle="tooltip"
               data-placement="bottom"
-              title={"Fetch the concepts"}
+              title="Fetch the concepts"
             >
               {loading ? (
-                <Loader noPadding={true} smallSpinner={true} />
+                <Loader noPadding smallSpinner />
               ) : (
                 "Fetch"
               )}
@@ -217,12 +212,10 @@ const AbstractClasses = () => {
             <label>{origin}</label>
             <button
               className="btn btn-dark ml-auto"
-              onClick={() => {
-                setUrlEditable(true);
-              }}
+              onClick={() => setUrlEditable(true)}
               data-toggle="tooltip"
               data-placement="bottom"
-              title={"Edit the origin Url"}
+              title="Edit the origin Url"
             >
               Edit
             </button>

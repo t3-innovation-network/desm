@@ -8,27 +8,23 @@ import {
 import { validURL } from "../../../../helpers/URL";
 import updateCP from "../../../../services/updateCP";
 
-const DSOMetaData = (props) => {
-  const { dsoData } = props;
-  const [dsoName, setDsoName] = useState(dsoData.name || "");
-  const [dsoEmail, setDsoEmail] = useState(dsoData.email || "");
-  const [dsoDescription, setDsoDescription] = useState(
-    dsoData.description || ""
-  );
-  const [homepageUrl, setHomepageURL] = useState(dsoData.homepageUrl || "");
-  const [standardsPage, setStandardsPage] = useState(
-    dsoData.standardsPage || ""
-  );
+const DSOMetaData = ({ dsoData }) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [description, setDescription] = useState("");
+  const [homepageUrl, setHomepageURL] = useState("");
+  const [standardsPage, setStandardsPage] = useState("");
   const configurationProfile = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setDsoName(dsoData.name);
-    setDsoEmail(dsoData.email);
-    setDsoDescription(dsoData.description);
-    setHomepageURL(dsoData.homepageUrl);
-    setStandardsPage(dsoData.standardsPage);
+    const { description, email, homepageUrl, name, standardsPage } = dsoData;
+    setName(name);
+    setEmail(email);
+    setDescription(description);
+    setHomepageURL(homepageUrl);
+    setStandardsPage(standardsPage);
   }, [dsoData]);
 
   const handleUrlBlur = (url) => {
@@ -59,12 +55,18 @@ const DSOMetaData = (props) => {
 
   const buildDsoData = () => {
     let localCP = configurationProfile;
-    let currentDso = localCP.structure.standardsOrganizations[currentDSOIndex];
-    currentDso.name = dsoName;
-    currentDso.email = dsoEmail;
-    currentDso.description = dsoDescription;
-    currentDso.homepageUrl = homepageUrl;
-    currentDso.standardsPage = standardsPage;
+    const organization = localCP.structure.standardsOrganizations[currentDSOIndex];
+
+    localCP.structure.standardsOrganizations[currentDSOIndex] = {
+      ...organization,
+      ..._.pickBy({
+        description,
+        email,
+        homepageUrl,
+        name,
+        standardsPage
+      })
+    };
 
     return localCP;
   };
@@ -72,7 +74,7 @@ const DSOMetaData = (props) => {
   return (
     <div className="col">
       <div className="mt-5">
-        <label>
+        <label htmlFor="name">
           DSO Name
           <span className="text-danger">*</span>
         </label>
@@ -80,11 +82,11 @@ const DSOMetaData = (props) => {
           <input
             type="text"
             className="form-control input-lg"
-            name="name"
+            id="name"
             placeholder="The name of the organization"
-            value={dsoName || ""}
+            value={name || ""}
             onChange={(event) => {
-              setDsoName(event.target.value);
+              setName(event.target.value);
             }}
             onBlur={handleBlur}
             autoFocus
@@ -93,19 +95,19 @@ const DSOMetaData = (props) => {
       </div>
 
       <div className="mt-5">
-        <label>
+        <label htmlFor="email">
           DSO Email
-          <span className="text-danger">*</span>
+          <span className="ml-1 text-danger">*</span>
         </label>
         <div className="input-group input-group">
           <input
             type="email"
             className="form-control input-lg"
-            name="email"
+            id="email"
             placeholder="The email of the organization"
-            value={dsoEmail || ""}
+            value={email || ""}
             onChange={(event) => {
-              setDsoEmail(event.target.value);
+              setEmail(event.target.value);
             }}
             onBlur={handleBlur}
           />
@@ -113,15 +115,15 @@ const DSOMetaData = (props) => {
       </div>
 
       <div className="mt-5">
-        <label>DSO Description</label>
+        <label htmlFor="description">DSO Description</label>
         <div className="input-group input-group">
           <textarea
             className="form-control input-lg"
-            name="description"
+            id="description"
             placeholder="A description that provides consistent information about the standards organization"
-            value={dsoDescription || ""}
+            value={description || ""}
             onChange={(event) => {
-              setDsoDescription(event.target.value);
+              setDescription(event.target.value);
             }}
             style={{ height: "10rem" }}
             onBlur={handleBlur}
@@ -130,15 +132,15 @@ const DSOMetaData = (props) => {
       </div>
 
       <div className="mt-5">
-        <label>
+        <label htmlFor="homepageUrl">
           Homepage URL
-          <span className="text-danger">*</span>
+          <span className="ml-1 text-danger">*</span>
         </label>
         <div className="input-group input-group">
           <input
             type="text"
             className="form-control input-lg"
-            name="homepageUrl"
+            id="homepageUrl"
             placeholder="The homepage URL of the standards organization"
             value={homepageUrl || ""}
             onChange={(event) => {
@@ -150,15 +152,15 @@ const DSOMetaData = (props) => {
       </div>
 
       <div className="mt-5">
-        <label>
+        <label htmlFor="standardsPage">
           Standards Page
-          <span className="text-danger">*</span>
+          <span className="ml-1 text-danger">*</span>
         </label>
         <div className="input-group input-group">
           <input
             type="text"
             className="form-control input-lg"
-            name="standardsPage"
+            id="standardsPage"
             placeholder="The homepage URL of the standards organization"
             value={standardsPage || ""}
             onChange={(event) => {

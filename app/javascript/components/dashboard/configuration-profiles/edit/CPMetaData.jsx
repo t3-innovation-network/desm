@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import updateCP from "../../../../services/updateCP";
@@ -7,7 +8,6 @@ import {
   setSavingCP,
 } from "../../../../actions/configurationProfiles";
 import { formatDateForInput } from "../utils";
-import { camelizeKeys } from "humps";
 
 const CPMetaData = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
@@ -23,17 +23,18 @@ const CPMetaData = () => {
   );
   const dispatch = useDispatch();
 
-  const buildCpData = () => {
-    let localCP = configurationProfile;
-    localCP.name = name;
-    localCP.description = description;
-    localCP.structure.name = name;
-    localCP.structure.description = description;
-    localCP.createdAt = createdAt;
-    localCP.updatedAt = updatedAt;
-
-    return localCP;
-  };
+  const buildCpData = () => _.pickBy({
+    ...configurationProfile,
+    createdAt,
+    description,
+    name,
+    structure: _.pickBy({
+      ...configurationProfile.structure,
+      description,
+      name
+    }),
+    updatedAt
+  });
 
   const handleBlur = () => {
     dispatch(setSavingCP(true));
@@ -53,12 +54,13 @@ const CPMetaData = () => {
   return (
     <div className="col">
       <div className="mt-5">
-        <label>
+        <label htmlFor="name">
           Profile Name
-          <span className="text-danger">*</span>
+          <span className="ml-1 text-danger">*</span>
         </label>
         <div className="input-group input-group">
           <input
+            id="name"
             type="text"
             className="form-control input-lg"
             name="name"
@@ -75,9 +77,10 @@ const CPMetaData = () => {
       </div>
 
       <div className="mt-5">
-        <label>Profile Description</label>
+        <label htmlFor="description">Profile Description</label>
         <div className="input-group input-group">
           <textarea
+            id="description"
             className="form-control input-lg"
             name="description"
             placeholder="A description that provides consistent information about the standards organization"
@@ -92,9 +95,10 @@ const CPMetaData = () => {
       </div>
 
       <div className="mt-5">
-        <label>Date Created</label>
+        <label htmlFor="createdAt">Date Created</label>
         <div className="input-group input-group">
           <input
+            id="createdAt"
             type="date"
             className="form-control input-lg"
             name="createdAt"
@@ -108,9 +112,10 @@ const CPMetaData = () => {
       </div>
 
       <div className="mt-5">
-        <label>Date Last Modified</label>
+        <label htmlFor="updatedAt">Date Last Modified</label>
         <div className="input-group input-group">
           <input
+            id="updatedAt"
             type="date"
             className="form-control input-lg"
             name="updatedAt"
