@@ -188,7 +188,7 @@ const PrevNextButtons = () => {
 
   return (
     <Fragment>
-      {currentStep !== 1 && (
+      {currentStep !== 1  && currentStep !== 4 && (
         <button
           className="btn btn-dark mr-3"
           style={{ width: "10rem" }}

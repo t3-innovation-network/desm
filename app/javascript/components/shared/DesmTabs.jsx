@@ -15,30 +15,16 @@ export default class DesmTabs extends Component {
 
     return (
       <div className="row mt-5">
-        {values.map((value) => {
-          return (
-            <div className="col" key={value.id}>
-              <div
-                className={
-                  "card borderless desm-tab-item cursor-pointer" +
-                  (selectedId == value.id
-                    ? " selected-item bg-col-secondary"
-                    : "")
-                }
-              >
-                <div
-                  className={
-                    "card-header text-center" +
-                    (selectedId == value.id ? "" : " bottom-borderless")
-                  }
-                  onClick={() => onTabClick(value.id)}
-                >
-                  <strong className="non-selectable">{value.name}</strong>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+        {values.map((value) => (
+          <span
+            className={`badge badge-${selectedId === value.id ? "primary" : "secondary"} m-2`}
+            key={value.id}
+            onClick={() => onTabClick(value.id)}
+            style={{ cursor: "pointer" }}
+          >
+            {value.name}
+          </span>
+        ))}
       </div>
     );
   }

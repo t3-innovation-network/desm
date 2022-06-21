@@ -132,10 +132,7 @@ const DSOMetaData = ({ dsoData }) => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="homepageUrl">
-          Homepage URL
-          <span className="ml-1 text-danger">*</span>
-        </label>
+        <label htmlFor="homepageUrl">Homepage URL</label>
         <div className="input-group input-group">
           <input
             type="text"
@@ -152,10 +149,7 @@ const DSOMetaData = ({ dsoData }) => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="standardsPage">
-          Standards Page
-          <span className="ml-1 text-danger">*</span>
-        </label>
+        <label htmlFor="standardsPage">Standards Page</label>
         <div className="input-group input-group">
           <input
             type="text"

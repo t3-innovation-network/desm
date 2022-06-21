@@ -11,12 +11,6 @@ import updateCP from "../../../../services/updateCP";
 const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
   const currentCP = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
-  const schemaFiles =
-    currentCP.structure.standardsOrganizations[currentDSOIndex]
-      .associatedSchemas || [];
-  const schemaFile = schemaFiles[schemaFileIdx] || {};
-  const conceptScheme =
-    schemaFile.associatedConceptSchemes[conceptSchemeIdx] || {};
 
   const [name, setName] = useState("");
   const [version, setVersion] = useState("");
@@ -24,8 +18,11 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
   const [origin, setOrigin] = useState("");
   const dispatch = useDispatch();
 
-  const handleBlur = () => {
-    let localCP = currentCP;
+  const saveChanges = async () => {
+    dispatch(setSavingCP(true));
+
+    const localCP = currentCP;
+
     localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas[
       schemaFileIdx
     ].associatedConceptSchemes[conceptSchemeIdx] = _.pickBy({
@@ -35,8 +32,16 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
       version
     });
 
-    dispatch(setCurrentConfigurationProfile(localCP));
-    save(localCP);
+    const { configurationProfile, error } = await updateCP(currentCP.id, localCP);
+
+    if (error) {
+      dispatch(setEditCPErrors(error));
+      dispatch(setSavingCP(false));
+      return;
+    }
+
+    dispatch(setCurrentConfigurationProfile(configurationProfile));
+    dispatch(setSavingCP(false));
   };
 
   const handleUrlBlur = (
@@ -58,27 +63,22 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
     blurHandler();
   };
 
-  const save = (cp) => {
-    dispatch(setSavingCP(true));
-
-    updateCP(currentCP.id, cp).then((response) => {
-      if (response.error) {
-        dispatch(setEditCPErrors(response.error));
-        dispatch(setSavingCP(false));
-        return;
-      }
-      dispatch(setSavingCP(false));
-    });
-  };
-
   useEffect(() => {
-    const { description, name, origin, version } = conceptScheme;
+    const schemaFiles = currentCP
+      .structure
+      .standardsOrganizations[currentDSOIndex]
+      .associatedSchemas || [];
+
+    const schemaFile = schemaFiles[schemaFileIdx] || {};
+    const conceptScheme = (schemaFile.associatedConceptSchemes || [])[conceptSchemeIdx];
+
+    const { description, name, origin, version } = conceptScheme || {};
 
     setDescription(description || "");
     setName(name || "");
     setOrigin(origin || "");
     setVersion(version || "");
-  }, [conceptSchemeIdx, schemaFileIdx]);
+  }, [conceptSchemeIdx, currentDSOIndex, schemaFileIdx]);
 
   return (
     <Fragment>
@@ -97,7 +97,7 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
             onChange={(event) => {
               setName(event.target.value);
             }}
-            onBlur={handleBlur}
+            onBlur={saveChanges}
             autoFocus
           />
         </div>
@@ -115,7 +115,7 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
             onChange={(event) => {
               setVersion(event.target.value);
             }}
-            onBlur={handleBlur}
+            onBlur={saveChanges}
           />
         </div>
       </div>
@@ -132,7 +132,7 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
               setDescription(event.target.value);
             }}
             style={{ height: "10rem" }}
-            onBlur={handleBlur}
+            onBlur={saveChanges}
           />
         </div>
       </div>
@@ -152,7 +152,7 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
               handleUrlBlur(
                 origin,
                 "The origin must be a valid URL",
-                handleBlur
+                saveChanges
               )
             }
             pattern="https://.*"

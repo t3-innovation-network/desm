@@ -6,6 +6,7 @@ import { faInfo, faUsers, faFile } from "@fortawesome/free-solid-svg-icons";
 import { activeTabClass, inactiveTabClass, line, tabStyle } from "../utils";
 import Agents from "./Agents";
 import SchemaFilesWrapper from "./SchemaFilesWrapper";
+import { useEffect } from "react";
 
 const DSOInfoWrapper = () => {
   const currentCP = useSelector((state) => state.currentCP);
@@ -60,6 +61,8 @@ const DSOInfoWrapper = () => {
         dsoMetaData;
     }
   };
+
+  useEffect(() => setCurrentTab(0), [currentDsoIndex]);
 
   return (
     <Fragment>

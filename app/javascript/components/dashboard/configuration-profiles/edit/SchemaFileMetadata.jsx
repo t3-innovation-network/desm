@@ -27,8 +27,11 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
   const [abstractClassesLabels, setAbstractClassesLabels] = useState([]);
   const dispatch = useDispatch();
 
-  const handleBlur = () => {
-    let files = schemaFiles;
+  const saveChanges = async () => {
+    dispatch(setSavingCP(true));
+
+    const files = schemaFiles;
+
     files[schemaFileIdx] = _.pickBy({
       name: fileName,
       associatedAbstractClass: abstractClass,
@@ -39,13 +42,22 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
         schemaFiles[schemaFileIdx].associatedConceptSchemes,
     });
 
-    let localCP = currentCP;
+    const localCP = currentCP;
+
     localCP.structure.standardsOrganizations[
       currentDSOIndex
     ].associatedSchemas = files;
 
-    dispatch(setCurrentConfigurationProfile(localCP));
-    save(localCP);
+    const  {configurationProfile, error } = await updateCP(currentCP.id, localCP);
+
+    if (error) {
+      dispatch(setEditCPErrors(error));
+      dispatch(setSavingCP(false));
+      return;
+    }
+
+    dispatch(setCurrentConfigurationProfile(configurationProfile));
+    dispatch(setSavingCP(false));
   };
 
   const handleUrlBlur = (
@@ -65,19 +77,6 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
     }
     dispatch(setEditCPErrors(null));
     blurHandler();
-  };
-
-  const save = (cp) => {
-    dispatch(setSavingCP(true));
-
-    updateCP(currentCP.id, cp).then((response) => {
-      if (response.error) {
-        dispatch(setEditCPErrors(response.error));
-        dispatch(setSavingCP(false));
-        return;
-      }
-      dispatch(setSavingCP(false));
-    });
   };
 
   const handleFetchAbstractClassesLabels = () => {
@@ -104,7 +103,7 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
   }, [schemaFileIdx]);
 
   useEffect(() => {
-    if (abstractClass) handleBlur();
+    if (abstractClass) saveChanges();
   }, [abstractClass]);
 
   return (
@@ -124,7 +123,7 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
             onChange={(event) => {
               setFileName(event.target.value);
             }}
-            onBlur={handleBlur}
+            onBlur={saveChanges}
             autoFocus
           />
         </div>
@@ -142,7 +141,7 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
             onChange={(event) => {
               setFileVersion(event.target.value);
             }}
-            onBlur={handleBlur}
+            onBlur={saveChanges}
           />
         </div>
       </div>
@@ -159,7 +158,7 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
               setDescription(event.target.value);
             }}
             style={{ height: "10rem" }}
-            onBlur={handleBlur}
+            onBlur={saveChanges}
           />
         </div>
       </div>
@@ -179,7 +178,7 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
               handleUrlBlur(
                 origin,
                 "The origin must be a valid URL",
-                handleBlur
+                saveChanges
               )
             }
             pattern="https://.*"

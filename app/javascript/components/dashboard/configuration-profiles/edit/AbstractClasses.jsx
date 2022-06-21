@@ -118,7 +118,10 @@ const AbstractClasses = () => {
   useEffect(() => {
     const { jsonAbstractClasses } = configurationProfile;
     setJsonAbstractClasses(jsonAbstractClasses);
-    jsonAbstractClasses?.length && handleFetchAbstractClassesLabels();
+
+    if (Object.keys(jsonAbstractClasses || {}).length) {
+      handleFetchAbstractClassesLabels();
+    }
   }, [configurationProfile.jsonAbstractClasses]);
 
   return (
@@ -185,7 +188,6 @@ const AbstractClasses = () => {
               type="url"
               className="form-control input-lg"
               value={origin}
-              onBlur={() => saveChanges()}
               onChange={(e) => setOrigin(e.target.value)}
               pattern="https://.*"
               size="30"

@@ -194,7 +194,6 @@ const MappingPredicates = () => {
               type="url"
               className="form-control input-lg"
               value={origin}
-              onBlur={() => saveChanges()}
               onChange={(e) => setOrigin(e.target.value)}
               pattern="https://.*"
               size="30"

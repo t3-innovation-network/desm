@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setCurrentConfigurationProfile,
@@ -14,10 +14,8 @@ const SchemaFilesWrapper = () => {
   const currentCP = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
   const [idxToRemove, setIdxToRemove] = useState(null);
-  const schemaFiles =
-    currentCP.structure.standardsOrganizations[currentDSOIndex]
-      .associatedSchemas || [];
-  const [activeTab, setActiveTab] = useState(schemaFiles.length ? 0 : -1);
+  const [schemaFiles, setSchemaFiles] = useState([]);
+  const [activeTab, setActiveTab] = useState(-1);
   const dispatch = useDispatch();
   const [confirmationVisible, setConfirmationVisible] = useState(false);
   const confirmationMsg = `Please confirm if you really want to remove file ${schemaFiles[idxToRemove]?.name}`;
@@ -90,6 +88,16 @@ const SchemaFilesWrapper = () => {
       );
     });
   };
+
+  useEffect(() => {
+    const schemaFiles = currentCP
+      .structure
+      .standardsOrganizations[currentDSOIndex]
+      .associatedSchemas;
+
+    setSchemaFiles(schemaFiles || []);
+    setActiveTab(schemaFiles.length ? 0 : -1);
+  }, [currentCP, currentDSOIndex])
 
   return (
     <Fragment>
