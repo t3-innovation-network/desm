@@ -1,1017 +1,1493 @@
 {
-	"@context": "https://github.com/t3-innovation-network/desm/blob/main/desmTestSchemas/UniversityOfWashington/ASN_Profile_Context.json",
-	"@graph": [
+  "@context": "https://github.com/t3-innovation-network/desm/blob/main/desmTestSchemas/UniversityOfWashington/ASN_Profile_Context.json",
+  "@graph": [
+    {
+      "@id": "https://github.com/stuartasutton/asn/blob/master/ASN_Profile.jsonld",
+      "creator": [
         {
-            "@id": "https://github.com/stuartasutton/asn/blob/master/ASN_Profile.jsonld",
-            "creator": [
-                {"en-US": "Informnation School of the University of Washington (Seattle)"},
-                {"en-US": "JES & Co"}
-            ],
-            "rightsHolder": {"en-US": "University of Washington"},
-            "rights": "https://creativecommons.org/licenses/by/4.0/",
-            "contributor": {"en-US": "Desire2Learn (D2L)"},
-            "publisher": {"en-US": "Informnation School of the University of Washington (Seattle)"},
-            "description": {"en-US": "The Achievement Standards Network Application Profile (ASN-AP) provides URIs and definitions for all of the terms used in ASN metadata instances including properties from the ASN namespace as well as properties borrowed from other namespaces such as those of the Dublin Core Metadata Initiatve (DCMI)."},
-            "language": {"en-US": "English"},
-            "title": {"en-US": "The Achievement Standards Network Application Profile (ASN-AP)"},
-            "issued": "2020-11-28",
-            "modified": "2021-11-07"
+          "en-US": "Informnation School of the University of Washington (Seattle)"
         },
         {
-            "@id": "CorrelationResource",
-            "@type": "Class",
-            "scopeNote": "The CorrelationResource is an entity intended to provide a rich description of a mapping (correlation) between a LearningResource and a Statement when a binary assertion of a relationship is insufficient.",
-            "comment": {"en-US": "A resource that describes the mapping between a learning resource and a node in a learning outcomes framework."},
-            "label": {"en-US": "Correlation Resource"},
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "CriterionCategory",
-            "@type": "Class",
-            "comment": {"en-US": "Resource identifying a category by which Rubric Criterion may be grouped."},
-            "label": {"en-US": "Criterion Category"},
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "CriterionLevel",
-            "@type": "Class",
-            "comment": {"en-US": "Resource identifying one or more benchmarks that must be met to achieve a performance task."},
-            "label": {"en-US": "Criterion Level"},
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "DerivedStandardDocument",
-            "@type": "Class",
-            "comment": {"en-US": "A collection of statements representing an expectation of what students should know, value, and be able to do at a target age or age range that are substantially defined by a different jurisdiction."},
-            "label": {"en-US": "Derived Standard Document"},
-            "subClassOf": "StandardDocument",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "DerivedStatement",
-            "@type": "Class",
-            "comment": {"en-US": "An assertion representing an expectation of what students should know, value, and be able to do at a target age or age range that is derived from a statement defined by a different jurisdiction."},
-            "label": {"en-US": "Derived Statement"},
-            "subClassOf": "Statement",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "EducationalFramework",
-            "@type": "Class",
-            "scopeNote": {"en-US": "Similar to the class ConceptScheme with an intended focus on education and training. Examples of educational frameworks include, but are not limited to, frameworks enumerating competencies, text complexity, proficiency scales, assessment rubrics of various forms, and specialized subject vocabularies."},
-            "comment": {"en-US": "The class of all structured sets of conceptual resources intentionally designed for use as value vocabulary terms in education and training contexts."},
-            "label": {"en-US": "Educational Framework"},
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "LearningResource",
-            "@type": "Class",
-            "comment": {"en-US": "A resource that is used as part of an Educational Activity(e.g. a textbook) or that describes (e.g. a lesson plan) or records the Educational Activity (e.g. an audio- or video-recording of a lesson)."},
-            "label": {"en-US": "Learning Resource"},
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "ProficiencyScale",
-            "@type": "Class",
-            "scopeNote": {"en-US": "Proficiency scales define levels of performance (what a person does) as distinct from knowledge of specific information (what a person knows) and outline tasks a person can manage and the skills necessary to progressively accomplish explicit competencies at increasing levels of complexity. Proficiency scales: (1) assist in making judgments about the kinds of tasks related to a competency that a person is able to perform; and (2) to compare the abilities of different persons with regard to achievement of those competencies at different levels."},
-            "comment": [
-                {"en-US": "The class of all structured concept schemes identifying discrete levels of expertise and performance mastery required either by a competency or to be achieved by a learner."},
-                {"en-US": "Model of identifiable points along a developmental progression including increasing levels of competence, achievement or temporal position (e.g., \"Second Quarter\")."}
-            ],
-            "label": {"en-US": "Proficiency Scale"},
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "Rubric",
-            "@type": "Class",
-            "comment": {"en-US": "Resource providing guidance in evaluating the quality and level of person's responses or actions based on an explicit set of criteria."},
-            "label": {"en-US": "Rubric"},
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "StatusScheme",
-            "@type": "Class",
-            "comment": {"en-US": "Controlled vocabularies of terms denoting the publication status of the standards document."},
-            "label": {"en-US": "Status Encoding Schemes"},
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "JurisdictionScheme",
-            "@type": "Class",
-            "comment": {"en-US": "Controlled vocabularies of terms denoting the juristiction or domain of the standards document."},
-            "label": {"en-US": "Jurisdiction Encoding Schemes"},
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "RightsAndAttribution",
-            "@type": "Class",
-            "comment": {"en-US": "Resource providing information about the rights and attribution requirements of the entity making the metadata description available. These rights are distinct from any rights held in the content of the competency framework or competencies described. "},
-            "label": {"en-US": "Rights and Attribution"},
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "RubricCriterion",
-            "@type": "Class",
-            "comment": {"en-US": "Resource identifying a criterion that must be met to demonstrate quality performance of a objective or task."},
-            "label": {"en-US": "Rubric Criterion"},
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "StandardDocument",
-            "@type": "Class",
-            "comment": {"en-US": "A collection of statements representing an expectation of what students should know, value, and be able to do at a target age or age range."},
-            "label": {"en-US": "Standard Document"},
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "Statement",
-            "@type": "Class",
-            "comment": {"en-US": "An assertion representing an expectation of what students should know, value, and be able to do at a target age or age range."},
-            "label": {"en-US": "Statement"},
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "alignFrom",
-            "@type": "Property",
-            "scopeNote": {"en-US": "An alignment is an assertion of some degree of eqiuvalency between the subject and the object of the assertion."},
-            "comment": {"en-US":"A standards document or statement from which the statement or document being described is aligned."},
-            "domain": [
-                "Statement", 
-                "StandardDocument"
-            ],
-            "label": {"en-US": "Align From"},
-            "range": [
-                "StandardDocument",
-                "Statement"
-            ],
-            "isDefinedBy": "asn:"
-        },   
-        {
-            "@id": "alignTo",
-            "@type": "Property",
-            "scopeNote": {"en-US": "An alignment is an assertion of some degree of eqiuvalency between the subject and the object of the assertion."},
-            "comment": {"en-US": "A standards document or statement to which the statement or document being described is aligned."},
-            "domain": [
-                "Statement",
-                "StandardDocument"
-            ],
-            "label": {"en-US": "Align To"},
-            "range": [
-                "Statement",
-                "StandardDocument"
-            ],
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "altStatementNotation",
-            "@type": "Property",
-            "comment": {"en-US": "An alphanumeric notation or ID code identifying the statement in common use among end-users."},
-            "domain": "Statement",
-            "label": {"en-US": "Alternative Statement Notation"},
-            "range": "Literal",
-            "subPropertyOf": "identifer",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "assessesCompetency",
-            "@type": "Property",
-            "comment": {"en-US": "The competency that the learning resource being described assesses."},
-            "domain": "LearningResource",
-            "label": {"en-US": "Assesses Competency"},
-            "range": "Statement",
-            "subPropertyOf": "conformsTo",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "assessmentRubric",
-            "@type": "Property",
-            "comment": {"en-US": "Explicit set of criteria used for assessing an articulated competency or set of competencies."},
-            "domain": "StandardDocument",
-            "label": {"en-US": "Assessment Rubric"},
-            "range": [
-                "Rubric",
-                "RubricCriterion"
-            ],
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "attributionName",
-            "@type": "Property",
-            "comment": {"en-US": "The name the creator of a Work would like used when attributing re-use. In this profile, the attribution name is of the name of the owner, publisher or egistry to which attribution is owed."},
-            "domain": "RightsAndAttribution",
-            "label": {"en-US": "Attribution Name"},
-            "range": "Literal",
-            "isDefinedBy": "cc:"
-        },
-        {
-            "@id": "attributionURL",
-            "@type": "Property",
-            "comment": {"en-US": "The URL the creator of a Work would like used when attributing re-use.In this profile, the attribution URL is of the URL the owner, publisher or egistry to which attribution is owed would like used."},
-            "domain": "RightsAndAttribution",
-            "label": {"en-US": "Attribution URL"},
-            "range": "Literal",
-            "isDefinedBy": "cc:"
-        },
-        {
-            "@id": "aut",
-            "@type": "Property",
-            "comment": {"en-US": "A person, family, or organization responsible for creating a work"},
-            "domain": "StandardDocument",
-            "label": {"en-US": "Author"},
-            "range": "langString",
-            "isDefinedBy": "loc:"
-        },
-        {
-            "@id": "authorityStatus",
-            "@type": "Property",
-            "comment": {"en-US": "The status of a standards statement denoting whether the statement owes its origin to the promulgating agency of the standards document of which the statement is a member (i.e., value \"Original\") or to some 3rd party (i.e., \"Derived\")."},
-            "domain": "Statement",
-            "label": {"en-US": "Authority Status"},
-            "range": "langString",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "benchmark",
-            "@type": "Property",
-            "vann:usageNote": {"en-US": "Can have one or more per CriterionLevel."},
-            "comment": {"en-US": "Description of a level of achievement on a performance task defined by the RubricCriterion."},
-            "domain": "CriterionLevel",
-            "label": {"en-US": "Benchmark"},
-            "range": "langString",
-            "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14443",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "broader",
-            "@type": "Property",
-            "comment": {"en-US": "Relates a concept to a concept that is more general in meaning."},
-            "domain": "Concept",
-            "label": {"en-US": "Broader"},
-            "range": "Concept",
-            "isDefinedBy": "skos:"
-        },
-        {
-            "@id": "broadAlignment",
-            "@type": "Property",
-            "comment": {"en-US": "The target competency covers all of the relevant concepts in the competency being described as well as relevant concepts not found in the competency being described."},
-            "domain": "Statement",
-            "label": {"en-US": "Broad Alignment"},
-            "range": "Statement",
-            "isDefinedBy": "asn:"
-        }, 
-        {
-            "@id": "broadCorrelation",
-            "@type": "Property",
-            "comment": {"en-US": "The competency covers all of the relevant concepts in the learning resource being described as well as relevant concepts not found in the learning resource."},
-            "domain": "LearningResource",
-            "label": {"en-US": "Broad Correlation"},
-            "range": "Statement",
-            "subPropertyOf": "conformsTo",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "comment",
-            "@type": "Property",
-            "scopeNote": {"en-US": "Use comment when the text provides useful context for the statement."},
-            "comment": {"en-US": "Supplemental text provided by the promulgating body that clarifies the nature, scope or use of the statement being described."},
-            "domain": "Statement",
-            "label": {"en-US": "Comment"},
-            "range": "langString";
-            "isDefinedBy": "rdfs:"
-        },
-        {
-            "@id": "complexityLevel",
-            "@type": "Property",
-            "scopeNote": {"en-US": "The value of complexityLevel should be a concept IRI of a member of the class ProficiencyScale."},
-            "comment": {"en-US": "The expected performance level of a learner or professional as defined by a competency."},
-            "domain": "Statement",
-            "label": {"en-US": "Complexity Level"},
-            "range": "ProficiencyScale",
-            "subPropertyOf": "proficiencyLevel",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "comprisedOf",
-            "@type": "Property",
-            "comment": {"en-US": "The resource being described includes, comprehends or encompass, in whole or in part, the meaning, nature or importance of the resource being referenced."},
-            "domain": "Statement",
-            "label": {"en-US": "Comprised Of"},
-            "range": "Statement",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "conceptKeyword",
-            "@type": "Property",
-            "comment": {"en-US": "A word or phrase used by the promulgating agency to refine and differentiate individual statements contextually."},
-            "domain": "Statement",
-            "label": {"en-US": "Concept Keyword"},
-            "range": "langString",
-            "subPropertyOf": {"en-US": "subject"},
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "conceptTerm",
-            "@type": "Property",
-            "comment": {"en-US": "A term from a controlled vocabulary used by the promulgating agency to refine and differentiate individual statements contextually."},
-            "domain": "Statement",
-            "label": {"en-US": "Concept Term"},
-            "range": "Concept",
-            "subPropertyOf": "subject",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "created",
-            "@type": "Property",
-            "comment": {"en-US": "Date of creation of the resource."},
-            "domain": "StandardDocument",
-            "label": {"en-US": "Created"},
-            "range": "xsd:dateTime",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "@id": "creator",
-            "@type": "Property",
-            "comment": {"en-US": "An entity responsible for making the resource."},
-            "domain": "StandardDocument",
-            "label": {"en-US": "Creator"},
-            "range": "langstring",
-            "isDefinedBy": "dc:"
-        },
-        {
-            "@id": "criterionCategoryOf",
-            "@type": "Property",
-            "comment": {"en-US": "Resource referenced is a Rubric to which this CriterionCategory belongs."},
-            "domain": "CriterionCategory",
-            "label": {"en-US": "Criterian Catrgory Of"},
-            "range": "Rubric",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "criterionFor",
-            "@type": "Property",
-            "comment": {"en-US": "Reference to the Rubric to which the RubricCriteria being described belongs."},
-            "domain": "RubricCriterion",
-            "label": {"en-US": "Criterian For"},
-            "range": "Rubric",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "crossSubjectReference",
-            "@type": "Property",
-            "comment": {"en-US": "An explicit reference by the promulgating agency establishing a relationship between the statement being described and statement in a separate subject standards document (interdisciplinary statement references)."},
-            "domain": "Statement",
-            "label": {"en-US": "Cross-subject Reference"},
-            "range": "Statement",
-            "subPropertyOf": "references",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "dateCopyrighted",
-            "@type": "Property",
-            "comment": {"en-US": "Typically a year. Recommended practice is to describe the date, date/time, or period of time as recommended for the property Date, of which this is a subproperty."},
-            "domain": "StandardDocument",
-            "label": {"en-US": "Date Copyrighted"},
-            "range": "xsd:date",
-            "isDefinedBy": "dct:",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "derivedFrom",
-            "@type": "Property",
-            "scopeNote": {"en-US": "The derivedFrom property is used by 3rd parties only in derived statements and must appear in conjunction with a value of \"Derived\" in the statement's authorityStatus property."},
-            "comment": {"en-US": "The URI of a statement from which the derived statement being described has been derived."},
-            "domain": "Statement",
-            "label": {"en-US": "Derived From"},
-            "range": "Statement",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "description",
-            "@type": "Property",
-            "scopeNote": {"en-US": "In this ASN profile, the description property is used to provide the actual text of the compatency."},
-            "comment": {"en-US": "An account of the resource."},
-            "domain": [
-                "Statement",
-                "StandardDocument"
-            ],
-            "label": {"en-US": "Description"},
-            "range": "langString",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "educationLevel",
-            "@type": "Property",
-            "comment": {"en-US": "A class of agents, defined in terms of progression through an educational or training context, for which the described resource is intended."},
-            "domain": [
-                "StandardDocument",
-                "Statement"
-            ],
-            "label": {"en-US": "Education Level"},
-            "range": "Concept",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "@id": "exactAlignment",
-            "@type": "Property",
-            "comment": {"en-US": "The relevant concepts in both competencies are coextensive."},
-            "domain": "Statement",
-            "label": {"en-US": "Exact Alignment"},
-            "range": "Statement"
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "exactCorrelation",
-            "@type": "Property",
-            "comment": {"en-US": "The relevant concepts in the educational resource and the standard statement are coextensive."},
-            "domain": "LearningResource",
-            "label": {"en-US": "Exact Correlation"},
-            "range": "Statement",
-            "subPropertyOf": "conformsTo",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "exportVersion",
-            "@type": "Property",
-            "comment": {"en-US": "The URI of the export version of the standards file."},
-            "domain": "StandardDocument",
-            "label": {"en-US": "Export Version"},
-            "range": "xsd:anyURI",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "hasChild",
-            "@type": "Property",
-            "comment": {"en-US": "The resource being described is higher in some arbitrary hierarchy than the resource being pointed to by this Relation element."},
-            "domain": ["StandardsDocument","Statement"],
-            "label": {"en-US": "Has Child"},
-            "range": "Statement",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "hasCriterion",
-            "@type": "Property",
-            "scopeNote": {"en-US": "Both RubricCriterion and CriterionCategory have an sequence property to identify node order; however, json-ld encodings should use @list on the hasCriterion and hasLevel properties to maintain sequencing of RubricCriterion."},
-            "comment": {"en-US": "RubricCriterian referenced by the Rubric that defining criterion to be met to demonstrate quality in execution in performance of a task or obtaining an objectivetask."},
-            "domain": "Rubric",
-            "label": {"en-US": "Has Criterion"},
-            "range": "RubricCriterion",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "hasCriterionCategory",
-            "@type": "Property",
-            "note": {"en-US": "Large rubrics are occasionally divided into logical sections or categories that need to be identified and described."},
-            "comment": {"en-US": "Resource referenced by the Rubric that defines categories for clustering logical sets of RubricCriterion."},
-            "domain": "Rubric",
-            "label": {"en-US": "Has Criterion Category"},
-            "range": "CriterionCategory"
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "hasLevel",
-            "@type": "Property",
-            "scopeNote": {"en-US": "Both RubricCriterion and CriterionCategory have an sequence property to identify node order; however, json-ld encodings should use @list on the hasCriterion and hasLevel properties to maintain such sequencing."},
-            "comment": {"en-US": "Resource description of a level of performance based on a RubricCriterion."},
-            "domain": "RubricCriterion",
-            "label": {"en-US": "Has Level"},
-            "range": "CriterionLevel",
-            "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14443",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "hasPart",
-            "@type": "Property",
-            "scopeNote": {"en-US": "This property is intended to be used with non-literal values. This property is an inverse property of Is Part Of."},
-            "comment": {"en-US": "A related resource that is included either physically or logically in the described resource."},
-            "domain": "xsd:anyURI",
-            "label": {"en-US": "Has Part"},
-            "range": "xsd:anyURI",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "@id": "hasProgressionLevel",
-            "@type": "Property",
-            "comment": {"en-US": "Reference to a specific point in a progression model."},
-            "domain": "CriterionLevel",
-            "label": {"en-US": "Has Progression Level"},
-            "range": "Concept",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "hasProgressionModel",
-            "@type": "Property",
-            "comment": {"en-US": "Reference to a progression model used."},
-            "domain": "Rubric",
-            "label": {"en-US": "Has Progression Model"},
-            "range": "ProgressionModel",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "hasScope",
-            "@type": "Property",
-            "comment": {"en-US": "Description of what the rubric's creator intended to assess or evaluate."},
-            "domain": "Rubric",
-            "label": {"en-US": "Has Scope"},
-            "range": "langString",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "hasTopConcept",
-            "@type": "Property",
-            "comment": {"en-US": "Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies."},
-            "domain": "ConceptFramework",
-            "label": {"en-US": "Has Top Concept"},
-            "range": "Concept",
-            "isDefinedBy": "skos:"
-        },
-        {
-            "@id": "hasVersion",
-            "@type": "Property",
-            "scopeNote": {"en-US": "Changes in version imply substantive changes in content rather than differences in format. This property is intended to be used with non-literal values. This property is an inverse property of Is Version Of."},
-            "comment": {"en-US": "A related resource that is a version, edition, or adaptation of the described resource."},
-            "domain": "xsd:anyURI",
-            "label": {"en-US": "Has Version"},
-            "range": "xsd:anyURI",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "@id": "identifier",
-            "@type": "Property",
-            "comment": {"en-US": "An alternative URI by which the resource is identified."},
-            "domain": [ 
-                "Statement",
-                "StandardDocument"
-            ],
-            "label": {"en-US": "Alternative Identifier"},
-            "range": "xsd:anyURI",
-            "subPropertyOf": "identifier"
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "indexingStatus",
-            "@type": "Property",
-            "comment": {"en-US": "The status of the statement denoting whether correlators should or should not assign the statement during correlation--Values=\"Yes\"/\"No\"."},
-            "domain": "Statement",
-            "label": {"en-US": "Indexing Status"},
-            "range": "xsd:boolean",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "isPartOf",
-            "@type": "Property",
-            "scopeNote": {"en-US": "This property is intended to be used with non-literal values. This property is an inverse property of Has Part."},
-            "comment": {"en-US": "A related resource in which the described resource is physically or logically included."},
-            "domain": "xsd:anyURI",
-            "label": {"en-US": "Is Part Of"},
-            "range": "xsd:anyURI",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "@id": "isChildOf",
-            "@type": "Property",
-            "comment": {"en-US": "The statement being described is lower in some arbitrary hierarchy than the statement identified in the asn:isChildOf property. The statement identified is a parent of the statement being described."},
-            "domain": "Statement",
-            "label": {"en-US": "Is Child Of"},
-            "range": ["StamdardDocument", "Statement"],
-            "equivalentProperty": "gemq:isChildOf",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "inScheme",
-            "@type": "Property",
-            "comment": {"en-US": "Relates a resource (for example a concept) to a concept scheme in which it is included."},
-            "domain": "ConceptFramework",
-            "label": {"en-US": "In Scheme"},
-            "range": "Concept",
-            "isDefinedBy": "skos:"
-        },
-        {
-            "@id": "isVersionOf",
-            "@type": "Property",
-            "scopeNote": {"en-US": "Changes in version imply substantive changes in content rather than differences in format. This property is intended to be used with non-literal values. This property is an inverse property of Has Version."},
-            "comment": {"en-US": "A related resource of which the described resource is a version, edition, or adaptation."},
-            "domain": "xsd:anyURI",
-            "label": {"en-US": "Is Version Of"},
-            "range": "xsd:anyURI",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "@id": "jurisdiction",
-            "@type": "Property",
-            "scopeNote": {"en-US": "The URI of the jurisdiction from the ASNJurisdiction controlled vocabulary."},
-            "comment": {"en-US": "The jurisdiction or domain of the standard's application--e.g., California, Nebraska, etc."},
-            "domain": "StandardDocument",
-            "label": {"en-US": "Jurisdiction"},
-            "range": "Concept",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "language",
-            "@type": "Property",
-            "scopeNote": {"en-US": "Recommended practice is to use either a non-literal value representing a language from a controlled vocabulary such as ISO 639-2 or ISO 639-3, or a literal value consisting of an IETF Best Current Practice 47 [IETF-BCP47] language tag"},
-            "comment": {"en-US": "A language of the resource."},
-            "domain": [
-                "StandardDocument",
-                "Statement"
-            ],
-            "label": {"en-US": "Language"},
-            "range": "Literal",
-            "isDefinedBy": "dc:"
-        },
-        {
-            "@id": "levelFor",
-            "@type": "Property",
-            "comment": {"en-US": "Reference to the RubricCriterian to which the CriterionLevel being described belongs."},
-            "domain": "CriterionLevel",
-            "label": {"en-US": "Level For"},
-            "range": "RubricCriterion",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "license",
-            "@type": "Property",
-            "scopeNote": {"en-US": "Recommended practice is to identify the license document with a URI. If this is not possible or feasible, a literal value that identifies the license may be provided."},
-            "comment": {"en-US": "A legal document giving official permission to do something with the resource."},
-            "domain": "standardDocument",
-            "label": {"en-US": "License"},
-            "range": "LicenseDocument",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "@id": "listID",
-            "@type": "Property",
-            "comment": {"en-US": "A set of one or more alphanumeric characters and/or symbols denoting the positioning of the statement being described in a sequential listing of statements."},
-            "domain": "Statement",
-            "label": {"en-US": "List ID"},
-            "range": "Literal",
-            "subPropertyOf": "identifer",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "localSubject",
-            "@type": "Property",
-            "comment": {"en-US": "The text string denoting the subject of the statement as designated by the promulgating agency. This subject may be different from the subject used for subject classification within the ASN."},
-            "domain": "Statement",
-            "label": {"en-US": "Local Subject"},
-            "range": "langString",
-            "subPropertyOf": "subject",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "majorAlignment",
-            "@type": "Property",
-            "comment": {"en-US": "Major overlap of relevant concepts between the two competencies."},
-            "domain": "Statement",
-            "label": {"en-US": "Major Alignment"},
-            "range": "Statement",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "majorCorrelation",
-            "@type": "Property",
-            "comment": {"en-US": "Major overlap of relevant concepts between the learning resource being described and the competency statement."},
-            "domain": "LearningResource",
-            "label": {"en-US": "Major Correlation"},
-            "range": "Statement",
-            "subPropertyOf": "conformsTo",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "minorAlignment",
-            "@type": "Property",
-            "comment": {"en-US": "Minor overlap of relevant concepts between the two competencies."},
-            "domain": "Statement",
-            "label": {"en-US": "Minor Alignment"},
-            "range": "Statement",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "minorCorrelation",
-            "@type": "Property",
-            "comment": {"en-US": "Minor overlap of relevant concepts between the learning resource being described and the competency statement."},
-            "domain": "LearningResource",
-            "label": {"en-US": "Minor Correlation"},
-            "range": "Statement",
-            "subPropertyOf": "conformsTo",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "modified",
-            "@type": "Property",
-            "comment": {"en-US": "Date on which the resource was changed."},
-            "domain": [
-                "LearningResource",
-                "RightsAndAttribution"
-            ],
-            "label": {"en-US": "Date Modified"},
-            "range": "xsd:dateTime",
-            "subPropertyOf": "date",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "@id": "narrower",
-            "@type": "Property",
-            "comment": {"en-US": "Relates a concept to a concept that is more specific in meaning."},
-            "domain": "Concept",
-            "label": {"en-US": "Narrower"},
-            "range": "Concept",
-            "note": {"en-US": "By convention, skos:broader is only used to assert an immediate (i.e. direct) hierarchical link between two conceptual resources. Narrower concepts are typically rendered as children in a concept hierarchy (tree)."},
-            "isDefinedBy": "skos:"
-        },
-        {
-            "@id": "narrowAlignment",
-            "@type": "Property",
-            "comment": {"en-US": "The competency being described covers all of the relevant concepts in the target competency as well as relevant concepts not found in the target competency."},
-            "domain": "Statement",
-            
-            "label": {"en-US": "Narrow Alignment"},
-            "range": "Statement",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "narrowCorrelation",
-            "@type": "Property",
-            "comment": {"en-US": "The learning resource being described covers all of the relevant concepts in the competency statement as well as relevant concepts not found in the competency."},
-            "domain": "LearningResource",
-            
-            "label": {"en-US": "Narrow Correlation"},
-            "range": "Statement",
-            "subPropertyOf": "conformsTo",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "note",
-            "@type": "Property",
-            "comment": {"en-US": "A general note, for any purpose."},
-            "domain": [
-                "Statement",
-                "StandardDocument"
-            ],
-            "label": {"en-US": "Note"},
-            "range": "Literal",
-            "isDefinedBy": "skos:"
-        },
-        {
-            "@id": "prefLabel",
-            "@type": "Property",
-            "comment": {"en-US": "The preferred lexical label for a resource, in a given language."},
-            "domain": "Concept",
-            "label": {"en-US": "Preferred Label"},
-            "range": "langString",
-            "isDefinedBy": "skos:"
-        },
-        {
-            "@id": "prerequisiteAlignment",
-            "@type": "Property",
-            "comment": {"en-US": "The competency being described is a prerequisite to the target competency."},
-            "domain": "Statement",
-            
-            "label": {"en-US": "Prerequisite Alignment"},
-            "range": "Statement",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "prerequisiteCompetency",
-            "@type": "Property",
-            "comment": {"en-US": "A prerequisite competency for the learning resource being described."},
-            "domain": "LearningResource",
-            
-            "label": {"en-US": "Prerequisite Competency"},
-            "range": "Statement",
-            "subPropertyOf": "conformsTo",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "primaryTopic",
-            "@type": "Property",
-            "schema:domainIncludes": "xsd:anyURI",
-            "comment": {"en-US": "The primaryTopic property relates a document to the main thing that the document is about. In this profile, the domain of this property is an rdf description of the rights in the framework's metadata description and provides for the expected attribution."},
-            "label": {"en-US": "Primary Topic"},
-            "range": "StandardDocument",
-            "isDefinedBy": "foaf:"
-        },
-        {
-            "@id": "proficiencyLevel",
-            "@type": "Property",
-            "scopeNote": {"en-US": "The value of proficiencyLevel should be a concept IRI of a member of the class ProficiencyScale."},
-            "schema:domainIncludes": [
-                "LearningResource",
-                "Statement"
-            ],
-            "comment": {"en-US": "The expected performance level of a learner or professional in relationship to a competency."},
-            "label": {"en-US": "Proficiency Level"},
-            "range": "ProficiencyScale",
-            "isDefinedBy": "asn:"        
-        },
-        {
-            "@id": "publicationStatus",
-            "@type": "Property",
-            "comment": {"en-US": "The publication status of the of the standards document--e.g., Draft, Published, Deprecated."},
-            "domain": "StandardDocument",            
-            "label": {"en-US": "Publication Status"},
-            "range": "Concept",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "publisher",
-            "@type": "Property",
-            "scopeNote": {"en-US": "Examples of a Publisher include a person, an organization, or a service. Typically, the name of a Publisher should be used to indicate the entity."},
-            "comment": {"en-US": "An entity responsible for making the resource available."},
-            "domain": "StandardDocument",
-            "label": {"en-US": "Publisher"},
-            "range": "langString",
-            "isDefinedBy": "dc:"
-        },
-        {
-            "@id": "qualityLabel",
-            "@type": "Property",
-            "comment": {"en-US": "Qualitative description of this degree of achievement used for column headers in tabular rubrics."},
-            "domain": "CriterionLevel",           
-            "label": {"en-US": "Quality Label"},
-            "range":  "Concept",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "repositoryDate",
-            "@type": "Property",
-            "comment": {"en-US": "The date the standards document was added to the repository."},
-            "domain": "StandardDocument",           
-            "label": {"en-US": "Repository Date"},
-            "range": "xsd:date",
-            "subPropertyOf": "date",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "rights",
-            "@type": "Property",
-            "scopeNote": {"en-US": "Typically, rights information includes a statement about various property rights associated with the resource, including intellectual property rights. Recommended practice is to refer to a rights statement with a URI. If this is not possible or feasible, a literal value (name, label, or short text) may be provided."},
-            "comment": {"en-US": "Information about rights held in and over the resource."},
-            "domain": [
-                "RightsAndAttribution",
-                "StandardDocument"
-            ],
-            "label": {"en-US": "Rights"},
-            "range": "langString",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "@id": "rightsHolder",
-            "@type": "Property",
-            "scopeNote": {"en-US": "Recommended practice is to refer to the rights holder with a URI. If this is not possible or feasible, a literal value that identifies the rights holder may be provided."},
-            "comment": {"en-US": "A person or organization owning or managing rights over the resource."},
-            "domain": [
-                "StandardDocument",
-                "RightsAndAttribution",
-                "Statement"
-            ],
-            "label": {"en-US": "Rights Holder"},
-            "range": "Agent",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "@id": "score",
-            "@type": "Property",
-            "comment": {"en-US": "Points to be awarded for achieving this level for a RubricCriterion."},
-            "domain": "CriterionLevel",
-            "label": {"en-US": "Criterion Level Score"},
-            "range": "xsd:float",
-            "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14447",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "sequence",
-            "@type": "Property",
-            "comment": {"en-US": "Numeric value representing the resource's position in the list (array) of resources."},
-            "domain": [
-                "RubricCriterion",
-                "CriterionLevel"
-            ],
-            "label": {"en-US": "Sequence"},
-            "range": "xsd:positiveInteger",
-            "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14445",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "source",
-            "@type": "Property",
-            "comment": {"en-US": "The original resource which this resource is based on or derived from."},
-            "domain": [
-                "StandardDocument",
-                "Rubric"
-            ],
-            "label": {"en-US": "Source"},
-            "range": "xsd:anyURI",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "spatial",
-            "@type": "Property",
-            "comment": {"en-US": "Spatial characteristics of the resource."},
-            "domain": [
-                "Statement",
-                "StandardDocument"
-            ],
-            "label": {"en-US": "Spatial"},
-            "range": "Location",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "@id": "skillEmbodied",
-            "@type": "Property",
-            "comment": {"en-US": "Cognitive, affective, psychomotor or other skill directly or indirectly embodied in the statement."},
-            "domain": "Statement",
-            "label": {"en-US": "Skill Embodied"},
-            "range": "Statement",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "statementLabel",
-            "@type": "Property",
-            "comment": {"en-US": "The textual label designating the class of statement in the structure of statements in the Standard Document--e.g., Standard, Benchmark, Strand, Topic, etc."},
-            "domain": "statement",
-            "label": {"en-US": "Statement Label"},
-            "range": "langString",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "statementNotation",
-            "@type": "Property",
-            "comment": {"en-US": "An alphanumeric identifier of a Statement as defined by the promulgating agency. Statement notation must be unique within the defining organization's namespace."},
-            "domain": "Statement",
-            
-            "label": {"en-US": "Statement Notation"},
-            "range": "Literal",
-            "subPropertyOf": "identifer",
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "subject",
-            "@type": "Property",
-            "comment": {"en-US": "A topic of the resource."},
-            "domain": "StandardDocument",
-            "label": {"en-US": "Subject"},
-            "range": "Concept",
-            "scopeNote": {"en-US": "Used in ASN to denote a subject subject area of the framework; e.g., \"science\", \"mathematics\", \"English\"."},
-            "isDefinedBy": "dct:"
-        },
-        {
-            "@id": "tableOfContents",
-            "@type": "Property",
-            "comment": {"en-US": "A list of subunits of the resource."},
-            "domain": "StandardDocument",
-            "label": {"en-US": "Table of Contents"},
-            "range": "xsd:anyURI",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "@id": "teachesCompetency",
-            "@type": "Property",
-            "comment": {"en-US": "The competency that the learning resource being described teaches."},
-            "domain": "LearningResource",
-            "label": {"en-US": "Teaches Competency"},
-            "range": "Statement",
-            "subPropertyOf": "conformsTo"
-            "isDefinedBy": "asn:"
-        },
-        {
-            "@id": "temporal",
-            "@type": "Property",
-            "comment": {"en-US": "Temporal characteristics of the resource."},
-            "domain": [
-                "Statement",
-                "StandardDocument"
-            ],
-            "label": {"en-US": "Temporal"},
-            "range": "PeriodOfTime",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "@id": "title",
-            "@type": "Property",
-            "comment": {"en-US": "A name given to the resource."},
-            "domain": "StandardDocument",
-            "label": {"en-US": "Title"},
-            "range": "langString",
-            "isDefinedBy": "dc:"
-        },
-        {
-            "@id": "valid",
-            "@type": "Property",
-            "comment": {"en-US": "Date (often a range) of validity of a resource."},
-            "domain": "StandardDocument",
-            "label": {"en-US": "Date Valid"},
-            "range": "Literal",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "@id": "weight",
-            "@type": "Property",
-            "comment": {"en-US": "A textually asserted measurement of the weight, degree, percent, or strength of a recommendation, requirement, or comparison; e.g., \"15%\", \".5\"."},
-            "domain": "Statement",
-            "label": {"en-US": "Weight"},
-            "range": "Literal",
-            "isDefinedBy": "asn:"
+          "en-US": "JES & Co"
         }
-    ]
+      ],
+      "rightsHolder": {
+        "en-US": "University of Washington"
+      },
+      "rights": "https://creativecommons.org/licenses/by/4.0/",
+      "contributor": {
+        "en-US": "Desire2Learn (D2L)"
+      },
+      "publisher": {
+        "en-US": "Informnation School of the University of Washington (Seattle)"
+      },
+      "description": {
+        "en-US": "The Achievement Standards Network Application Profile (ASN-AP) provides URIs and definitions for all of the terms used in ASN metadata instances including properties from the ASN namespace as well as properties borrowed from other namespaces such as those of the Dublin Core Metadata Initiatve (DCMI)."
+      },
+      "language": {
+        "en-US": "English"
+      },
+      "title": {
+        "en-US": "The Achievement Standards Network Application Profile (ASN-AP)"
+      },
+      "issued": "2020-11-28",
+      "modified": "2021-11-07"
+    },
+    {
+      "@id": "CorrelationResource",
+      "@type": "Class",
+      "scopeNote": "The CorrelationResource is an entity intended to provide a rich description of a mapping (correlation) between a LearningResource and a Statement when a binary assertion of a relationship is insufficient.",
+      "comment": {
+        "en-US": "A resource that describes the mapping between a learning resource and a node in a learning outcomes framework."
+      },
+      "label": {
+        "en-US": "Correlation Resource"
+      },
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "CriterionCategory",
+      "@type": "Class",
+      "comment": {
+        "en-US": "Resource identifying a category by which Rubric Criterion may be grouped."
+      },
+      "label": {
+        "en-US": "Criterion Category"
+      },
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "CriterionLevel",
+      "@type": "Class",
+      "comment": {
+        "en-US": "Resource identifying one or more benchmarks that must be met to achieve a performance task."
+      },
+      "label": {
+        "en-US": "Criterion Level"
+      },
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "DerivedStandardDocument",
+      "@type": "Class",
+      "comment": {
+        "en-US": "A collection of statements representing an expectation of what students should know, value, and be able to do at a target age or age range that are substantially defined by a different jurisdiction."
+      },
+      "label": {
+        "en-US": "Derived Standard Document"
+      },
+      "subClassOf": "StandardDocument",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "DerivedStatement",
+      "@type": "Class",
+      "comment": {
+        "en-US": "An assertion representing an expectation of what students should know, value, and be able to do at a target age or age range that is derived from a statement defined by a different jurisdiction."
+      },
+      "label": {
+        "en-US": "Derived Statement"
+      },
+      "subClassOf": "Statement",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "EducationalFramework",
+      "@type": "Class",
+      "scopeNote": {
+        "en-US": "Similar to the class ConceptScheme with an intended focus on education and training. Examples of educational frameworks include, but are not limited to, frameworks enumerating competencies, text complexity, proficiency scales, assessment rubrics of various forms, and specialized subject vocabularies."
+      },
+      "comment": {
+        "en-US": "The class of all structured sets of conceptual resources intentionally designed for use as value vocabulary terms in education and training contexts."
+      },
+      "label": {
+        "en-US": "Educational Framework"
+      },
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "LearningResource",
+      "@type": "Class",
+      "comment": {
+        "en-US": "A resource that is used as part of an Educational Activity(e.g. a textbook) or that describes (e.g. a lesson plan) or records the Educational Activity (e.g. an audio- or video-recording of a lesson)."
+      },
+      "label": {
+        "en-US": "Learning Resource"
+      },
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "ProficiencyScale",
+      "@type": "Class",
+      "scopeNote": {
+        "en-US": "Proficiency scales define levels of performance (what a person does) as distinct from knowledge of specific information (what a person knows) and outline tasks a person can manage and the skills necessary to progressively accomplish explicit competencies at increasing levels of complexity. Proficiency scales: (1) assist in making judgments about the kinds of tasks related to a competency that a person is able to perform; and (2) to compare the abilities of different persons with regard to achievement of those competencies at different levels."
+      },
+      "comment": [
+        {
+          "en-US": "The class of all structured concept schemes identifying discrete levels of expertise and performance mastery required either by a competency or to be achieved by a learner."
+        },
+        {
+          "en-US": "Model of identifiable points along a developmental progression including increasing levels of competence, achievement or temporal position (e.g., \"Second Quarter\")."
+        }
+      ],
+      "label": {
+        "en-US": "Proficiency Scale"
+      },
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "Rubric",
+      "@type": "Class",
+      "comment": {
+        "en-US": "Resource providing guidance in evaluating the quality and level of person's responses or actions based on an explicit set of criteria."
+      },
+      "label": {
+        "en-US": "Rubric"
+      },
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "StatusScheme",
+      "@type": "Class",
+      "comment": {
+        "en-US": "Controlled vocabularies of terms denoting the publication status of the standards document."
+      },
+      "label": {
+        "en-US": "Status Encoding Schemes"
+      },
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "JurisdictionScheme",
+      "@type": "Class",
+      "comment": {
+        "en-US": "Controlled vocabularies of terms denoting the juristiction or domain of the standards document."
+      },
+      "label": {
+        "en-US": "Jurisdiction Encoding Schemes"
+      },
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "RightsAndAttribution",
+      "@type": "Class",
+      "comment": {
+        "en-US": "Resource providing information about the rights and attribution requirements of the entity making the metadata description available. These rights are distinct from any rights held in the content of the competency framework or competencies described. "
+      },
+      "label": {
+        "en-US": "Rights and Attribution"
+      },
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "RubricCriterion",
+      "@type": "Class",
+      "comment": {
+        "en-US": "Resource identifying a criterion that must be met to demonstrate quality performance of a objective or task."
+      },
+      "label": {
+        "en-US": "Rubric Criterion"
+      },
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "StandardDocument",
+      "@type": "Class",
+      "comment": {
+        "en-US": "A collection of statements representing an expectation of what students should know, value, and be able to do at a target age or age range."
+      },
+      "label": {
+        "en-US": "Standard Document"
+      },
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "Statement",
+      "@type": "Class",
+      "comment": {
+        "en-US": "An assertion representing an expectation of what students should know, value, and be able to do at a target age or age range."
+      },
+      "label": {
+        "en-US": "Statement"
+      },
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "alignFrom",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "An alignment is an assertion of some degree of eqiuvalency between the subject and the object of the assertion."
+      },
+      "comment": {
+        "en-US": "A standards document or statement from which the statement or document being described is aligned."
+      },
+      "domain": [
+        "Statement",
+        "StandardDocument"
+      ],
+      "label": {
+        "en-US": "Align From"
+      },
+      "range": [
+        "StandardDocument",
+        "Statement"
+      ],
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "alignTo",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "An alignment is an assertion of some degree of eqiuvalency between the subject and the object of the assertion."
+      },
+      "comment": {
+        "en-US": "A standards document or statement to which the statement or document being described is aligned."
+      },
+      "domain": [
+        "Statement",
+        "StandardDocument"
+      ],
+      "label": {
+        "en-US": "Align To"
+      },
+      "range": [
+        "Statement",
+        "StandardDocument"
+      ],
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "altStatementNotation",
+      "@type": "Property",
+      "comment": {
+        "en-US": "An alphanumeric notation or ID code identifying the statement in common use among end-users."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Alternative Statement Notation"
+      },
+      "range": "Literal",
+      "subPropertyOf": "identifer",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "assessesCompetency",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The competency that the learning resource being described assesses."
+      },
+      "domain": "LearningResource",
+      "label": {
+        "en-US": "Assesses Competency"
+      },
+      "range": "Statement",
+      "subPropertyOf": "conformsTo",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "assessmentRubric",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Explicit set of criteria used for assessing an articulated competency or set of competencies."
+      },
+      "domain": "StandardDocument",
+      "label": {
+        "en-US": "Assessment Rubric"
+      },
+      "range": [
+        "Rubric",
+        "RubricCriterion"
+      ],
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "attributionName",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The name the creator of a Work would like used when attributing re-use. In this profile, the attribution name is of the name of the owner, publisher or egistry to which attribution is owed."
+      },
+      "domain": "RightsAndAttribution",
+      "label": {
+        "en-US": "Attribution Name"
+      },
+      "range": "Literal",
+      "isDefinedBy": "cc:"
+    },
+    {
+      "@id": "attributionURL",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The URL the creator of a Work would like used when attributing re-use.In this profile, the attribution URL is of the URL the owner, publisher or egistry to which attribution is owed would like used."
+      },
+      "domain": "RightsAndAttribution",
+      "label": {
+        "en-US": "Attribution URL"
+      },
+      "range": "Literal",
+      "isDefinedBy": "cc:"
+    },
+    {
+      "@id": "aut",
+      "@type": "Property",
+      "comment": {
+        "en-US": "A person, family, or organization responsible for creating a work"
+      },
+      "domain": "StandardDocument",
+      "label": {
+        "en-US": "Author"
+      },
+      "range": "langString",
+      "isDefinedBy": "loc:"
+    },
+    {
+      "@id": "authorityStatus",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The status of a standards statement denoting whether the statement owes its origin to the promulgating agency of the standards document of which the statement is a member (i.e., value \"Original\") or to some 3rd party (i.e., \"Derived\")."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Authority Status"
+      },
+      "range": "langString",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "benchmark",
+      "@type": "Property",
+      "vann:usageNote": {
+        "en-US": "Can have one or more per CriterionLevel."
+      },
+      "comment": {
+        "en-US": "Description of a level of achievement on a performance task defined by the RubricCriterion."
+      },
+      "domain": "CriterionLevel",
+      "label": {
+        "en-US": "Benchmark"
+      },
+      "range": "langString",
+      "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14443",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "broader",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Relates a concept to a concept that is more general in meaning."
+      },
+      "domain": "Concept",
+      "label": {
+        "en-US": "Broader"
+      },
+      "range": "Concept",
+      "isDefinedBy": "skos:"
+    },
+    {
+      "@id": "broadAlignment",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The target competency covers all of the relevant concepts in the competency being described as well as relevant concepts not found in the competency being described."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Broad Alignment"
+      },
+      "range": "Statement",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "broadCorrelation",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The competency covers all of the relevant concepts in the learning resource being described as well as relevant concepts not found in the learning resource."
+      },
+      "domain": "LearningResource",
+      "label": {
+        "en-US": "Broad Correlation"
+      },
+      "range": "Statement",
+      "subPropertyOf": "conformsTo",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "comment",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "Use comment when the text provides useful context for the statement."
+      },
+      "comment": {
+        "en-US": "Supplemental text provided by the promulgating body that clarifies the nature, scope or use of the statement being described."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Comment"
+      },
+      "range": "langString",
+      "isDefinedBy": "rdfs:"
+    },
+    {
+      "@id": "complexityLevel",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "The value of complexityLevel should be a concept IRI of a member of the class ProficiencyScale."
+      },
+      "comment": {
+        "en-US": "The expected performance level of a learner or professional as defined by a competency."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Complexity Level"
+      },
+      "range": "ProficiencyScale",
+      "subPropertyOf": "proficiencyLevel",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "comprisedOf",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The resource being described includes, comprehends or encompass, in whole or in part, the meaning, nature or importance of the resource being referenced."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Comprised Of"
+      },
+      "range": "Statement",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "conceptKeyword",
+      "@type": "Property",
+      "comment": {
+        "en-US": "A word or phrase used by the promulgating agency to refine and differentiate individual statements contextually."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Concept Keyword"
+      },
+      "range": "langString",
+      "subPropertyOf": {
+        "en-US": "subject"
+      },
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "conceptTerm",
+      "@type": "Property",
+      "comment": {
+        "en-US": "A term from a controlled vocabulary used by the promulgating agency to refine and differentiate individual statements contextually."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Concept Term"
+      },
+      "range": "Concept",
+      "subPropertyOf": "subject",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "created",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Date of creation of the resource."
+      },
+      "domain": "StandardDocument",
+      "label": {
+        "en-US": "Created"
+      },
+      "range": "xsd:dateTime",
+      "isDefinedBy": "dct:"
+    },
+    {
+      "@id": "creator",
+      "@type": "Property",
+      "comment": {
+        "en-US": "An entity responsible for making the resource."
+      },
+      "domain": "StandardDocument",
+      "label": {
+        "en-US": "Creator"
+      },
+      "range": "langstring",
+      "isDefinedBy": "dc:"
+    },
+    {
+      "@id": "criterionCategoryOf",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Resource referenced is a Rubric to which this CriterionCategory belongs."
+      },
+      "domain": "CriterionCategory",
+      "label": {
+        "en-US": "Criterian Catrgory Of"
+      },
+      "range": "Rubric",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "criterionFor",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Reference to the Rubric to which the RubricCriteria being described belongs."
+      },
+      "domain": "RubricCriterion",
+      "label": {
+        "en-US": "Criterian For"
+      },
+      "range": "Rubric",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "crossSubjectReference",
+      "@type": "Property",
+      "comment": {
+        "en-US": "An explicit reference by the promulgating agency establishing a relationship between the statement being described and statement in a separate subject standards document (interdisciplinary statement references)."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Cross-subject Reference"
+      },
+      "range": "Statement",
+      "subPropertyOf": "references",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "dateCopyrighted",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Typically a year. Recommended practice is to describe the date, date/time, or period of time as recommended for the property Date, of which this is a subproperty."
+      },
+      "domain": "StandardDocument",
+      "label": {
+        "en-US": "Date Copyrighted"
+      },
+      "range": "xsd:date",
+      "isDefinedBy": [
+        "dct:",
+        "asn:"
+      ]
+    },
+    {
+      "@id": "derivedFrom",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "The derivedFrom property is used by 3rd parties only in derived statements and must appear in conjunction with a value of \"Derived\" in the statement's authorityStatus property."
+      },
+      "comment": {
+        "en-US": "The URI of a statement from which the derived statement being described has been derived."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Derived From"
+      },
+      "range": "Statement",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "description",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "In this ASN profile, the description property is used to provide the actual text of the compatency."
+      },
+      "comment": {
+        "en-US": "An account of the resource."
+      },
+      "domain": [
+        "Statement",
+        "StandardDocument"
+      ],
+      "label": {
+        "en-US": "Description"
+      },
+      "range": "langString",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "educationLevel",
+      "@type": "Property",
+      "comment": {
+        "en-US": "A class of agents, defined in terms of progression through an educational or training context, for which the described resource is intended."
+      },
+      "domain": [
+        "StandardDocument",
+        "Statement"
+      ],
+      "label": {
+        "en-US": "Education Level"
+      },
+      "range": "Concept",
+      "isDefinedBy": "dct:"
+    },
+    {
+      "@id": "exactAlignment",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The relevant concepts in both competencies are coextensive."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Exact Alignment"
+      },
+      "range": "Statement",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "exactCorrelation",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The relevant concepts in the educational resource and the standard statement are coextensive."
+      },
+      "domain": "LearningResource",
+      "label": {
+        "en-US": "Exact Correlation"
+      },
+      "range": "Statement",
+      "subPropertyOf": "conformsTo",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "exportVersion",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The URI of the export version of the standards file."
+      },
+      "domain": "StandardDocument",
+      "label": {
+        "en-US": "Export Version"
+      },
+      "range": "xsd:anyURI",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "hasChild",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The resource being described is higher in some arbitrary hierarchy than the resource being pointed to by this Relation element."
+      },
+      "domain": [
+        "StandardsDocument",
+        "Statement"
+      ],
+      "label": {
+        "en-US": "Has Child"
+      },
+      "range": "Statement",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "hasCriterion",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "Both RubricCriterion and CriterionCategory have an sequence property to identify node order; however, json-ld encodings should use @list on the hasCriterion and hasLevel properties to maintain sequencing of RubricCriterion."
+      },
+      "comment": {
+        "en-US": "RubricCriterian referenced by the Rubric that defining criterion to be met to demonstrate quality in execution in performance of a task or obtaining an objectivetask."
+      },
+      "domain": "Rubric",
+      "label": {
+        "en-US": "Has Criterion"
+      },
+      "range": "RubricCriterion",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "hasCriterionCategory",
+      "@type": "Property",
+      "note": {
+        "en-US": "Large rubrics are occasionally divided into logical sections or categories that need to be identified and described."
+      },
+      "comment": {
+        "en-US": "Resource referenced by the Rubric that defines categories for clustering logical sets of RubricCriterion."
+      },
+      "domain": "Rubric",
+      "label": {
+        "en-US": "Has Criterion Category"
+      },
+      "range": "CriterionCategory",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "hasLevel",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "Both RubricCriterion and CriterionCategory have an sequence property to identify node order; however, json-ld encodings should use @list on the hasCriterion and hasLevel properties to maintain such sequencing."
+      },
+      "comment": {
+        "en-US": "Resource description of a level of performance based on a RubricCriterion."
+      },
+      "domain": "RubricCriterion",
+      "label": {
+        "en-US": "Has Level"
+      },
+      "range": "CriterionLevel",
+      "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14443",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "hasPart",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "This property is intended to be used with non-literal values. This property is an inverse property of Is Part Of."
+      },
+      "comment": {
+        "en-US": "A related resource that is included either physically or logically in the described resource."
+      },
+      "domain": "xsd:anyURI",
+      "label": {
+        "en-US": "Has Part"
+      },
+      "range": "xsd:anyURI",
+      "isDefinedBy": "dct:"
+    },
+    {
+      "@id": "hasProgressionLevel",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Reference to a specific point in a progression model."
+      },
+      "domain": "CriterionLevel",
+      "label": {
+        "en-US": "Has Progression Level"
+      },
+      "range": "Concept",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "hasProgressionModel",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Reference to a progression model used."
+      },
+      "domain": "Rubric",
+      "label": {
+        "en-US": "Has Progression Model"
+      },
+      "range": "ProgressionModel",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "hasScope",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Description of what the rubric's creator intended to assess or evaluate."
+      },
+      "domain": "Rubric",
+      "label": {
+        "en-US": "Has Scope"
+      },
+      "range": "langString",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "hasTopConcept",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies."
+      },
+      "domain": "ConceptFramework",
+      "label": {
+        "en-US": "Has Top Concept"
+      },
+      "range": "Concept",
+      "isDefinedBy": "skos:"
+    },
+    {
+      "@id": "hasVersion",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "Changes in version imply substantive changes in content rather than differences in format. This property is intended to be used with non-literal values. This property is an inverse property of Is Version Of."
+      },
+      "comment": {
+        "en-US": "A related resource that is a version, edition, or adaptation of the described resource."
+      },
+      "domain": "xsd:anyURI",
+      "label": {
+        "en-US": "Has Version"
+      },
+      "range": "xsd:anyURI",
+      "isDefinedBy": "dct:"
+    },
+    {
+      "@id": "identifier",
+      "@type": "Property",
+      "comment": {
+        "en-US": "An alternative URI by which the resource is identified."
+      },
+      "domain": [
+        "Statement",
+        "StandardDocument"
+      ],
+      "label": {
+        "en-US": "Alternative Identifier"
+      },
+      "range": "xsd:anyURI",
+      "subPropertyOf": "identifier",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "indexingStatus",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The status of the statement denoting whether correlators should or should not assign the statement during correlation--Values=\"Yes\"/\"No\"."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Indexing Status"
+      },
+      "range": "xsd:boolean",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "isPartOf",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "This property is intended to be used with non-literal values. This property is an inverse property of Has Part."
+      },
+      "comment": {
+        "en-US": "A related resource in which the described resource is physically or logically included."
+      },
+      "domain": "xsd:anyURI",
+      "label": {
+        "en-US": "Is Part Of"
+      },
+      "range": "xsd:anyURI",
+      "isDefinedBy": "dct:"
+    },
+    {
+      "@id": "isChildOf",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The statement being described is lower in some arbitrary hierarchy than the statement identified in the asn:isChildOf property. The statement identified is a parent of the statement being described."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Is Child Of"
+      },
+      "range": [
+        "StamdardDocument",
+        "Statement"
+      ],
+      "equivalentProperty": "gemq:isChildOf",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "inScheme",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Relates a resource (for example a concept) to a concept scheme in which it is included."
+      },
+      "domain": "ConceptFramework",
+      "label": {
+        "en-US": "In Scheme"
+      },
+      "range": "Concept",
+      "isDefinedBy": "skos:"
+    },
+    {
+      "@id": "isVersionOf",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "Changes in version imply substantive changes in content rather than differences in format. This property is intended to be used with non-literal values. This property is an inverse property of Has Version."
+      },
+      "comment": {
+        "en-US": "A related resource of which the described resource is a version, edition, or adaptation."
+      },
+      "domain": "xsd:anyURI",
+      "label": {
+        "en-US": "Is Version Of"
+      },
+      "range": "xsd:anyURI",
+      "isDefinedBy": "dct:"
+    },
+    {
+      "@id": "jurisdiction",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "The URI of the jurisdiction from the ASNJurisdiction controlled vocabulary."
+      },
+      "comment": {
+        "en-US": "The jurisdiction or domain of the standard's application--e.g., California, Nebraska, etc."
+      },
+      "domain": "StandardDocument",
+      "label": {
+        "en-US": "Jurisdiction"
+      },
+      "range": "Concept",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "language",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "Recommended practice is to use either a non-literal value representing a language from a controlled vocabulary such as ISO 639-2 or ISO 639-3, or a literal value consisting of an IETF Best Current Practice 47 [IETF-BCP47] language tag"
+      },
+      "comment": {
+        "en-US": "A language of the resource."
+      },
+      "domain": [
+        "StandardDocument",
+        "Statement"
+      ],
+      "label": {
+        "en-US": "Language"
+      },
+      "range": "Literal",
+      "isDefinedBy": "dc:"
+    },
+    {
+      "@id": "levelFor",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Reference to the RubricCriterian to which the CriterionLevel being described belongs."
+      },
+      "domain": "CriterionLevel",
+      "label": {
+        "en-US": "Level For"
+      },
+      "range": "RubricCriterion",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "license",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "Recommended practice is to identify the license document with a URI. If this is not possible or feasible, a literal value that identifies the license may be provided."
+      },
+      "comment": {
+        "en-US": "A legal document giving official permission to do something with the resource."
+      },
+      "domain": "standardDocument",
+      "label": {
+        "en-US": "License"
+      },
+      "range": "LicenseDocument",
+      "isDefinedBy": "dct:"
+    },
+    {
+      "@id": "listID",
+      "@type": "Property",
+      "comment": {
+        "en-US": "A set of one or more alphanumeric characters and/or symbols denoting the positioning of the statement being described in a sequential listing of statements."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "List ID"
+      },
+      "range": "Literal",
+      "subPropertyOf": "identifer",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "localSubject",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The text string denoting the subject of the statement as designated by the promulgating agency. This subject may be different from the subject used for subject classification within the ASN."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Local Subject"
+      },
+      "range": "langString",
+      "subPropertyOf": "subject",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "majorAlignment",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Major overlap of relevant concepts between the two competencies."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Major Alignment"
+      },
+      "range": "Statement",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "majorCorrelation",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Major overlap of relevant concepts between the learning resource being described and the competency statement."
+      },
+      "domain": "LearningResource",
+      "label": {
+        "en-US": "Major Correlation"
+      },
+      "range": "Statement",
+      "subPropertyOf": "conformsTo",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "minorAlignment",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Minor overlap of relevant concepts between the two competencies."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Minor Alignment"
+      },
+      "range": "Statement",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "minorCorrelation",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Minor overlap of relevant concepts between the learning resource being described and the competency statement."
+      },
+      "domain": "LearningResource",
+      "label": {
+        "en-US": "Minor Correlation"
+      },
+      "range": "Statement",
+      "subPropertyOf": "conformsTo",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "modified",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Date on which the resource was changed."
+      },
+      "domain": [
+        "LearningResource",
+        "RightsAndAttribution"
+      ],
+      "label": {
+        "en-US": "Date Modified"
+      },
+      "range": "xsd:dateTime",
+      "subPropertyOf": "date",
+      "isDefinedBy": "dct:"
+    },
+    {
+      "@id": "narrower",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Relates a concept to a concept that is more specific in meaning."
+      },
+      "domain": "Concept",
+      "label": {
+        "en-US": "Narrower"
+      },
+      "range": "Concept",
+      "note": {
+        "en-US": "By convention, skos:broader is only used to assert an immediate (i.e. direct) hierarchical link between two conceptual resources. Narrower concepts are typically rendered as children in a concept hierarchy (tree)."
+      },
+      "isDefinedBy": "skos:"
+    },
+    {
+      "@id": "narrowAlignment",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The competency being described covers all of the relevant concepts in the target competency as well as relevant concepts not found in the target competency."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Narrow Alignment"
+      },
+      "range": "Statement",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "narrowCorrelation",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The learning resource being described covers all of the relevant concepts in the competency statement as well as relevant concepts not found in the competency."
+      },
+      "domain": "LearningResource",
+      "label": {
+        "en-US": "Narrow Correlation"
+      },
+      "range": "Statement",
+      "subPropertyOf": "conformsTo",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "note",
+      "@type": "Property",
+      "comment": {
+        "en-US": "A general note, for any purpose."
+      },
+      "domain": [
+        "Statement",
+        "StandardDocument"
+      ],
+      "label": {
+        "en-US": "Note"
+      },
+      "range": "Literal",
+      "isDefinedBy": "skos:"
+    },
+    {
+      "@id": "prefLabel",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The preferred lexical label for a resource, in a given language."
+      },
+      "domain": "Concept",
+      "label": {
+        "en-US": "Preferred Label"
+      },
+      "range": "langString",
+      "isDefinedBy": "skos:"
+    },
+    {
+      "@id": "prerequisiteAlignment",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The competency being described is a prerequisite to the target competency."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Prerequisite Alignment"
+      },
+      "range": "Statement",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "prerequisiteCompetency",
+      "@type": "Property",
+      "comment": {
+        "en-US": "A prerequisite competency for the learning resource being described."
+      },
+      "domain": "LearningResource",
+      "label": {
+        "en-US": "Prerequisite Competency"
+      },
+      "range": "Statement",
+      "subPropertyOf": "conformsTo",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "primaryTopic",
+      "@type": "Property",
+      "schema:domainIncludes": "xsd:anyURI",
+      "comment": {
+        "en-US": "The primaryTopic property relates a document to the main thing that the document is about. In this profile, the domain of this property is an rdf description of the rights in the framework's metadata description and provides for the expected attribution."
+      },
+      "label": {
+        "en-US": "Primary Topic"
+      },
+      "range": "StandardDocument",
+      "isDefinedBy": "foaf:"
+    },
+    {
+      "@id": "proficiencyLevel",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "The value of proficiencyLevel should be a concept IRI of a member of the class ProficiencyScale."
+      },
+      "schema:domainIncludes": [
+        "LearningResource",
+        "Statement"
+      ],
+      "comment": {
+        "en-US": "The expected performance level of a learner or professional in relationship to a competency."
+      },
+      "label": {
+        "en-US": "Proficiency Level"
+      },
+      "range": "ProficiencyScale",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "publicationStatus",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The publication status of the of the standards document--e.g., Draft, Published, Deprecated."
+      },
+      "domain": "StandardDocument",
+      "label": {
+        "en-US": "Publication Status"
+      },
+      "range": "Concept",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "publisher",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "Examples of a Publisher include a person, an organization, or a service. Typically, the name of a Publisher should be used to indicate the entity."
+      },
+      "comment": {
+        "en-US": "An entity responsible for making the resource available."
+      },
+      "domain": "StandardDocument",
+      "label": {
+        "en-US": "Publisher"
+      },
+      "range": "langString",
+      "isDefinedBy": "dc:"
+    },
+    {
+      "@id": "qualityLabel",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Qualitative description of this degree of achievement used for column headers in tabular rubrics."
+      },
+      "domain": "CriterionLevel",
+      "label": {
+        "en-US": "Quality Label"
+      },
+      "range": "Concept",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "repositoryDate",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The date the standards document was added to the repository."
+      },
+      "domain": "StandardDocument",
+      "label": {
+        "en-US": "Repository Date"
+      },
+      "range": "xsd:date",
+      "subPropertyOf": "date",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "rights",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "Typically, rights information includes a statement about various property rights associated with the resource, including intellectual property rights. Recommended practice is to refer to a rights statement with a URI. If this is not possible or feasible, a literal value (name, label, or short text) may be provided."
+      },
+      "comment": {
+        "en-US": "Information about rights held in and over the resource."
+      },
+      "domain": [
+        "RightsAndAttribution",
+        "StandardDocument"
+      ],
+      "label": {
+        "en-US": "Rights"
+      },
+      "range": "langString",
+      "isDefinedBy": "dct:"
+    },
+    {
+      "@id": "rightsHolder",
+      "@type": "Property",
+      "scopeNote": {
+        "en-US": "Recommended practice is to refer to the rights holder with a URI. If this is not possible or feasible, a literal value that identifies the rights holder may be provided."
+      },
+      "comment": {
+        "en-US": "A person or organization owning or managing rights over the resource."
+      },
+      "domain": [
+        "StandardDocument",
+        "RightsAndAttribution",
+        "Statement"
+      ],
+      "label": {
+        "en-US": "Rights Holder"
+      },
+      "range": "Agent",
+      "isDefinedBy": "dct:"
+    },
+    {
+      "@id": "score",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Points to be awarded for achieving this level for a RubricCriterion."
+      },
+      "domain": "CriterionLevel",
+      "label": {
+        "en-US": "Criterion Level Score"
+      },
+      "range": "xsd:float",
+      "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14447",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "sequence",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Numeric value representing the resource's position in the list (array) of resources."
+      },
+      "domain": [
+        "RubricCriterion",
+        "CriterionLevel"
+      ],
+      "label": {
+        "en-US": "Sequence"
+      },
+      "range": "xsd:positiveInteger",
+      "owl:sameAs": "https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=14445",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "source",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The original resource which this resource is based on or derived from."
+      },
+      "domain": [
+        "StandardDocument",
+        "Rubric"
+      ],
+      "label": {
+        "en-US": "Source"
+      },
+      "range": "xsd:anyURI",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "spatial",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Spatial characteristics of the resource."
+      },
+      "domain": [
+        "Statement",
+        "StandardDocument"
+      ],
+      "label": {
+        "en-US": "Spatial"
+      },
+      "range": "Location",
+      "isDefinedBy": "dct:"
+    },
+    {
+      "@id": "skillEmbodied",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Cognitive, affective, psychomotor or other skill directly or indirectly embodied in the statement."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Skill Embodied"
+      },
+      "range": "Statement",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "statementLabel",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The textual label designating the class of statement in the structure of statements in the Standard Document--e.g., Standard, Benchmark, Strand, Topic, etc."
+      },
+      "domain": "statement",
+      "label": {
+        "en-US": "Statement Label"
+      },
+      "range": "langString",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "statementNotation",
+      "@type": "Property",
+      "comment": {
+        "en-US": "An alphanumeric identifier of a Statement as defined by the promulgating agency. Statement notation must be unique within the defining organization's namespace."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Statement Notation"
+      },
+      "range": "Literal",
+      "subPropertyOf": "identifer",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "subject",
+      "@type": "Property",
+      "comment": {
+        "en-US": "A topic of the resource."
+      },
+      "domain": "StandardDocument",
+      "label": {
+        "en-US": "Subject"
+      },
+      "range": "Concept",
+      "scopeNote": {
+        "en-US": "Used in ASN to denote a subject subject area of the framework; e.g., \"science\", \"mathematics\", \"English\"."
+      },
+      "isDefinedBy": "dct:"
+    },
+    {
+      "@id": "tableOfContents",
+      "@type": "Property",
+      "comment": {
+        "en-US": "A list of subunits of the resource."
+      },
+      "domain": "StandardDocument",
+      "label": {
+        "en-US": "Table of Contents"
+      },
+      "range": "xsd:anyURI",
+      "isDefinedBy": "dct:"
+    },
+    {
+      "@id": "teachesCompetency",
+      "@type": "Property",
+      "comment": {
+        "en-US": "The competency that the learning resource being described teaches."
+      },
+      "domain": "LearningResource",
+      "label": {
+        "en-US": "Teaches Competency"
+      },
+      "range": "Statement",
+      "subPropertyOf": "conformsTo",
+      "isDefinedBy": "asn:"
+    },
+    {
+      "@id": "temporal",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Temporal characteristics of the resource."
+      },
+      "domain": [
+        "Statement",
+        "StandardDocument"
+      ],
+      "label": {
+        "en-US": "Temporal"
+      },
+      "range": "PeriodOfTime",
+      "isDefinedBy": "dct:"
+    },
+    {
+      "@id": "title",
+      "@type": "Property",
+      "comment": {
+        "en-US": "A name given to the resource."
+      },
+      "domain": "StandardDocument",
+      "label": {
+        "en-US": "Title"
+      },
+      "range": "langString",
+      "isDefinedBy": "dc:"
+    },
+    {
+      "@id": "valid",
+      "@type": "Property",
+      "comment": {
+        "en-US": "Date (often a range) of validity of a resource."
+      },
+      "domain": "StandardDocument",
+      "label": {
+        "en-US": "Date Valid"
+      },
+      "range": "Literal",
+      "isDefinedBy": "dct:"
+    },
+    {
+      "@id": "weight",
+      "@type": "Property",
+      "comment": {
+        "en-US": "A textually asserted measurement of the weight, degree, percent, or strength of a recommendation, requirement, or comparison; e.g., \"15%\", \".5\"."
+      },
+      "domain": "Statement",
+      "label": {
+        "en-US": "Weight"
+      },
+      "range": "Literal",
+      "isDefinedBy": "asn:"
+    }
+  ]
 }
-
