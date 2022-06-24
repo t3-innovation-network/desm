@@ -138,7 +138,10 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="origin">Origin (URL)</label>
+         <label htmlFor="origin">
+          Origin (URL)
+          <span className="ml-1 text-danger">*</span>
+        </label>
         <div className="input-group input-group">
           <input
             type="url"

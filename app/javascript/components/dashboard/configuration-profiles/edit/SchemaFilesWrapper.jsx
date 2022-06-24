@@ -53,21 +53,22 @@ const SchemaFilesWrapper = () => {
         .associatedSchemas;
 
     setActiveTab(newSchemas.length - 1);
-    dispatch(setCurrentConfigurationProfile(localCP));
     save(localCP);
   };
 
-  const save = (cp) => {
+  const save = async (cp) => {
     dispatch(setSavingCP(true));
 
-    updateCP(currentCP.id, cp).then((response) => {
-      if (response.error) {
-        dispatch(setEditCPErrors(response.error));
-        dispatch(setSavingCP(false));
-        return;
-      }
+    const { configurationProfile, error } = await updateCP(currentCP.id, cp);
+
+    if (error) {
+      dispatch(setEditCPErrors(error));
       dispatch(setSavingCP(false));
-    });
+      return;
+    }
+
+    dispatch(setCurrentConfigurationProfile(configurationProfile));
+    dispatch(setSavingCP(false));
   };
 
   const schemaFileTabs = () => {
