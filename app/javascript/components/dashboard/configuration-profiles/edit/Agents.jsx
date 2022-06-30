@@ -20,12 +20,12 @@ const Agents = () => {
   const getDsos = () => currentCP.structure.standardsOrganizations || [];
   const [agentsData, setAgentsData] = useState([]);
   const [currentAgentIndex, setCurrentAgentIndex] = useState(-1);
-  const [agentFullname, setAgentFullname] = useState("");
-  const [agentEmail, setAgentEmail] = useState("");
-  const [agentPhone, setAgentPhone] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [githubHandle, setGithubHandle] = useState("");
   const [confirmationVisible, setConfirmationVisible] = useState(false);
-  const confirmationMsg = `Please confirm if you really want to remove agent ${agentFullname}`;
+  const confirmationMsg = `Please confirm if you really want to remove agent ${fullname}`;
   const dispatch = useDispatch();
 
   const addAgent = () => {
@@ -33,10 +33,7 @@ const Agents = () => {
     setAgentsData([
       ...agentsData,
       {
-        fullname: `Mapper N${agentsData.length + 1}`,
-        email: "",
-        phone: "",
-        githubHandle: "",
+        fullname: `Mapper N${agentsData.length + 1}`
       },
     ]);
 
@@ -45,7 +42,7 @@ const Agents = () => {
     ].dsoAgents = agentsData;
 
     setCurrentAgentIndex(agentsData.length);
-    dispatch(setCurrentConfigurationProfile(localCP));
+    // dispatch(setCurrentConfigurationProfile(localCP));
   };
 
   const agentButtons = () => {
@@ -70,17 +67,12 @@ const Agents = () => {
     let localCP = currentCP;
     localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents[
       currentAgentIndex
-    ] = {
-      fullname: agentFullname,
-      email: agentEmail,
-      phone: agentPhone,
-      githubHandle: githubHandle,
-    };
+    ] = _.pickBy({ email, fullname, githubHandle, phone });
 
     return localCP;
   };
 
-  const handleBlur = () => {
+  const saveChanges = () => {
     dispatch(setSavingCP(true));
 
     updateCP(currentCP.id, buildCpData()).then((response) => {
@@ -132,68 +124,72 @@ const Agents = () => {
     return (
       <div className="col">
         <div className="mt-5">
-          <label>
+          <label htmlFor="name">
             Agent Full Name
-            <span className="text-danger">*</span>
+            <span className="ml-1 text-danger">*</span>
           </label>
           <div className="input-group input-group">
             <input
+              id="name"
               type="text"
               className="form-control input-lg"
               name="fullname"
               placeholder="The name of this agent"
-              value={agentFullname || ""}
+              value={fullname || ""}
               onChange={(event) => {
-                setAgentFullname(event.target.value);
+                setFullname(event.target.value);
               }}
-              onBlur={handleBlur}
+              onBlur={saveChanges}
               autoFocus
             />
           </div>
         </div>
 
         <div className="mt-5">
-          <label>
+          <label htmlFor="email">
             Agent Email
-            <span className="text-danger">*</span>
+            <span className="ml-1 text-danger">*</span>
           </label>
           <div className="input-group input-group">
             <input
+              id="email"
               type="text"
               className="form-control input-lg"
               name="agentEmail"
               placeholder="The email of this agent"
-              value={agentEmail || ""}
+              value={email || ""}
               onChange={(event) => {
-                setAgentEmail(event.target.value);
+                setEmail(event.target.value);
               }}
-              onBlur={handleBlur}
+              onBlur={saveChanges}
             />
           </div>
         </div>
 
         <div className="mt-5">
-          <label>Agent Phone</label>
+          <label htmlFor="phone">Agent Phone</label>
           <div className="input-group input-group">
             <input
+              id="phone"
               type="tel"
               pattern="(-()[0-9]+)+$"
               className="form-control input-lg"
               name="agentPhone"
               placeholder="The phone of this agent"
-              value={agentPhone || ""}
+              value={phone || ""}
               onChange={(event) => {
-                setAgentPhone(event.target.value);
+                setPhone(event.target.value);
               }}
-              onBlur={handleBlur}
+              onBlur={saveChanges}
             />
           </div>
         </div>
 
         <div className="mt-5">
-          <label>GitHub Handle</label>
+          <label htmlFor="gitbuh">GitHub Handle</label>
           <div className="input-group input-group">
             <input
+              id="github"
               type="text"
               className="form-control input-lg"
               name="githubHandle"
@@ -202,7 +198,7 @@ const Agents = () => {
               onChange={(event) => {
                 setGithubHandle(event.target.value);
               }}
-              onBlur={handleBlur}
+              onBlur={saveChanges}
             />
           </div>
         </div>
@@ -212,11 +208,12 @@ const Agents = () => {
 
   const updateAgentsData = () => {
     let data = agentsData;
+
     data[currentAgentIndex] = {
-      fullname: agentFullname,
-      email: agentEmail,
-      phone: agentPhone,
-      githubHandle: githubHandle,
+      email,
+      fullname,
+      githubHandle,
+      phone
     };
 
     setAgentsData(data);
@@ -229,9 +226,9 @@ const Agents = () => {
 
     const agent = agentsData[currentAgentIndex];
     if (agent) {
-      setAgentFullname(agent.fullname);
-      setAgentEmail(agent.email);
-      setAgentPhone(agent.phone);
+      setFullname(agent.fullname);
+      setEmail(agent.email);
+      setPhone(agent.phone);
       setGithubHandle(agent.githubHandle);
     }
   }, [currentAgentIndex, currentDSOIndex]);

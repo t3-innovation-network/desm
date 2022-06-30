@@ -75,7 +75,7 @@ class ConfigurationProfile < ApplicationRecord
   def check_structure
     if complete? && !structure_complete?
       incomplete!
-    elsif !complete? && structure_complete?
+    elsif incomplete? && structure_complete?
       complete!
     end
   end

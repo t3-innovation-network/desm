@@ -9,8 +9,7 @@ import updateCP from "../../../../services/updateCP";
 import fetchCPSkosLabels from "../../../../services/fetchCpSkosLabels";
 import { validURL } from "../../../../helpers/URL";
 
-const SchemaFileMetadata = (props) => {
-  const { schemaFileIdx } = props;
+const SchemaFileMetadata = ({ schemaFileIdx }) => {
   const currentCP = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
   const schemaFiles =
@@ -28,9 +27,12 @@ const SchemaFileMetadata = (props) => {
   const [abstractClassesLabels, setAbstractClassesLabels] = useState([]);
   const dispatch = useDispatch();
 
-  const handleBlur = () => {
-    let files = schemaFiles;
-    files[schemaFileIdx] = {
+  const saveChanges = async () => {
+    dispatch(setSavingCP(true));
+
+    const files = schemaFiles;
+
+    files[schemaFileIdx] = _.pickBy({
       name: fileName,
       associatedAbstractClass: abstractClass,
       description: description,
@@ -38,15 +40,24 @@ const SchemaFileMetadata = (props) => {
       version: fileVersion,
       associatedConceptSchemes:
         schemaFiles[schemaFileIdx].associatedConceptSchemes,
-    };
+    });
 
-    let localCP = currentCP;
+    const localCP = currentCP;
+
     localCP.structure.standardsOrganizations[
       currentDSOIndex
     ].associatedSchemas = files;
 
-    dispatch(setCurrentConfigurationProfile(localCP));
-    save(localCP);
+    const  {configurationProfile, error } = await updateCP(currentCP.id, localCP);
+
+    if (error) {
+      dispatch(setEditCPErrors(error));
+      dispatch(setSavingCP(false));
+      return;
+    }
+
+    dispatch(setCurrentConfigurationProfile(configurationProfile));
+    dispatch(setSavingCP(false));
   };
 
   const handleUrlBlur = (
@@ -66,19 +77,6 @@ const SchemaFileMetadata = (props) => {
     }
     dispatch(setEditCPErrors(null));
     blurHandler();
-  };
-
-  const save = (cp) => {
-    dispatch(setSavingCP(true));
-
-    updateCP(currentCP.id, cp).then((response) => {
-      if (response.error) {
-        dispatch(setEditCPErrors(response.error));
-        dispatch(setSavingCP(false));
-        return;
-      }
-      dispatch(setSavingCP(false));
-    });
   };
 
   const handleFetchAbstractClassesLabels = () => {
@@ -102,16 +100,16 @@ const SchemaFileMetadata = (props) => {
     setDescription(file.description);
     setOrigin(file.origin);
     handleFetchAbstractClassesLabels();
-  }, [props.schemaFileIdx]);
+  }, [schemaFileIdx]);
 
   useEffect(() => {
-    if (abstractClass) handleBlur();
+    if (abstractClass) saveChanges();
   }, [abstractClass]);
 
   return (
     <Fragment>
       <div className="mt-5">
-        <label>
+        <label htmlFor="filename">
           File Name
           <span className="text-danger">*</span>
         </label>
@@ -119,60 +117,63 @@ const SchemaFileMetadata = (props) => {
           <input
             type="text"
             className="form-control input-lg"
-            name="filename"
+            id="filename"
             placeholder="The name of the schema file"
             value={fileName || ""}
             onChange={(event) => {
               setFileName(event.target.value);
             }}
-            onBlur={handleBlur}
+            onBlur={saveChanges}
             autoFocus
           />
         </div>
       </div>
 
       <div className="mt-5">
-        <label>Version</label>
+        <label htmlFor="version">Version</label>
         <div className="input-group input-group">
           <input
             type="text"
             className="form-control input-lg"
-            name="version"
+            id="version"
             placeholder="The version of the schema file"
             value={fileVersion || ""}
             onChange={(event) => {
               setFileVersion(event.target.value);
             }}
-            onBlur={handleBlur}
+            onBlur={saveChanges}
           />
         </div>
       </div>
 
       <div className="mt-5">
-        <label>Description</label>
+        <label htmlFor="description">Description</label>
         <div className="input-group input-group">
           <textarea
             className="form-control input-lg"
-            name="description"
+            id="description"
             placeholder="A detailed description of the schema file. E.g. what it represents, which concepts should be expected it to contain."
             value={description || ""}
             onChange={(event) => {
               setDescription(event.target.value);
             }}
             style={{ height: "10rem" }}
-            onBlur={handleBlur}
+            onBlur={saveChanges}
           />
         </div>
       </div>
 
       <div className="mt-5">
-        <label>Origin (URL)</label>
+        <label htmlFor="origin">
+          Origin (URL)
+          <span className="ml-1 text-danger">*</span>
+        </label>
         <div className="input-group input-group">
           <input
             type="url"
             className="form-control input-lg"
-            name="origin"
-            value={origin}
+            id="origin"
+            value={origin || ""}
             onChange={(event) => {
               setOrigin(event.target.value);
             }}
@@ -180,7 +181,7 @@ const SchemaFileMetadata = (props) => {
               handleUrlBlur(
                 origin,
                 "The origin must be a valid URL",
-                handleBlur
+                saveChanges
               )
             }
             pattern="https://.*"
@@ -197,13 +198,15 @@ const SchemaFileMetadata = (props) => {
 
       {abstractClassesLabels.length > 0 ? (
         <div className="mt-5">
-          <label>Associated Abstract Class</label>
+          <label htmlFor="abstractClass">Associated Abstract Class</label>
           <div className="input-group input-group">
             <select
               className="form-control cursor-pointer"
+              id="abstractClass"
               value={abstractClass}
               onChange={(e) => setAbstractClass(e.target.value)}
             >
+              <option value="" />
               {abstractClassesLabels.map(function (option) {
                 return (
                   <option

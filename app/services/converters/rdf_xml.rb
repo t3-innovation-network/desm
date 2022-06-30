@@ -18,7 +18,7 @@ module Converters
 
     def self.read(path)
       reader = RDF::RDFXML::Reader.open(path)
-      raise Converters::ParseError unless reader.valid?
+      raise Converters::ParseError unless reader.valid? && reader.root.present?
 
       true
     end

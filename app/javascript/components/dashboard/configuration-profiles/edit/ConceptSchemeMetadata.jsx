@@ -8,38 +8,40 @@ import {
 import { validURL } from "../../../../helpers/URL";
 import updateCP from "../../../../services/updateCP";
 
-const ConceptSchemeMetadata = (props) => {
-  const { schemaFileIdx, conceptSchemeIdx } = props;
+const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
   const currentCP = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
-  const schemaFiles =
-    currentCP.structure.standardsOrganizations[currentDSOIndex]
-      .associatedSchemas || [];
-  const schemaFile = schemaFiles[schemaFileIdx] || {};
-  const conceptScheme =
-    schemaFile.associatedConceptSchemes[conceptSchemeIdx] || {};
 
-  const [fileName, setFileName] = useState(conceptScheme?.name || "");
-  const [fileVersion, setFileVersion] = useState(conceptScheme?.version || "");
-  const [description, setDescription] = useState(
-    conceptScheme?.description || ""
-  );
-  const [origin, setOrigin] = useState(conceptScheme?.origin || "");
+  const [name, setName] = useState("");
+  const [version, setVersion] = useState("");
+  const [description, setDescription] = useState("");
+  const [origin, setOrigin] = useState("");
   const dispatch = useDispatch();
 
-  const handleBlur = () => {
-    let localCP = currentCP;
+  const saveChanges = async () => {
+    dispatch(setSavingCP(true));
+
+    const localCP = currentCP;
+
     localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas[
       schemaFileIdx
-    ].associatedConceptSchemes[conceptSchemeIdx] = {
-      name: fileName,
-      version: fileVersion,
-      description: description,
-      origin: origin,
-    };
+    ].associatedConceptSchemes[conceptSchemeIdx] = _.pickBy({
+      description,
+      name,
+      origin,
+      version
+    });
 
-    dispatch(setCurrentConfigurationProfile(localCP));
-    save(localCP);
+    const { configurationProfile, error } = await updateCP(currentCP.id, localCP);
+
+    if (error) {
+      dispatch(setEditCPErrors(error));
+      dispatch(setSavingCP(false));
+      return;
+    }
+
+    dispatch(setCurrentConfigurationProfile(configurationProfile));
+    dispatch(setSavingCP(false));
   };
 
   const handleUrlBlur = (
@@ -61,30 +63,27 @@ const ConceptSchemeMetadata = (props) => {
     blurHandler();
   };
 
-  const save = (cp) => {
-    dispatch(setSavingCP(true));
-
-    updateCP(currentCP.id, cp).then((response) => {
-      if (response.error) {
-        dispatch(setEditCPErrors(response.error));
-        dispatch(setSavingCP(false));
-        return;
-      }
-      dispatch(setSavingCP(false));
-    });
-  };
-
   useEffect(() => {
-    setFileName(conceptScheme.name);
-    setFileVersion(conceptScheme.version);
-    setDescription(conceptScheme.description);
-    setOrigin(conceptScheme.origin);
-  }, [props]);
+    const schemaFiles = currentCP
+      .structure
+      .standardsOrganizations[currentDSOIndex]
+      .associatedSchemas || [];
+
+    const schemaFile = schemaFiles[schemaFileIdx] || {};
+    const conceptScheme = (schemaFile.associatedConceptSchemes || [])[conceptSchemeIdx];
+
+    const { description, name, origin, version } = conceptScheme || {};
+
+    setDescription(description || "");
+    setName(name || "");
+    setOrigin(origin || "");
+    setVersion(version || "");
+  }, [conceptSchemeIdx, currentDSOIndex, schemaFileIdx]);
 
   return (
     <Fragment>
       <div className="mt-5">
-        <label>
+        <label htmlFor="filename">
           File Name
           <span className="text-danger">*</span>
         </label>
@@ -92,60 +91,63 @@ const ConceptSchemeMetadata = (props) => {
           <input
             type="text"
             className="form-control input-lg"
-            name="filename"
+            id="filename"
             placeholder="The name of the concept scheme file"
-            value={fileName || ""}
+            value={name || ""}
             onChange={(event) => {
-              setFileName(event.target.value);
+              setName(event.target.value);
             }}
-            onBlur={handleBlur}
+            onBlur={saveChanges}
             autoFocus
           />
         </div>
       </div>
 
       <div className="mt-5">
-        <label>Version</label>
+        <label htmlFor="version">Version</label>
         <div className="input-group input-group">
           <input
             type="text"
             className="form-control input-lg"
-            name="version"
+            id="version"
             placeholder="The version of the concept scheme file"
-            value={fileVersion || ""}
+            value={version || ""}
             onChange={(event) => {
-              setFileVersion(event.target.value);
+              setVersion(event.target.value);
             }}
-            onBlur={handleBlur}
+            onBlur={saveChanges}
           />
         </div>
       </div>
 
       <div className="mt-5">
-        <label>Description</label>
+        <label htmlFor="description">Description</label>
         <div className="input-group input-group">
           <textarea
             className="form-control input-lg"
-            name="description"
+            id="description"
             placeholder="A detailed description of the concept scheme file. E.g. what it represents, which concepts should be expected it to contain."
             value={description || ""}
             onChange={(event) => {
               setDescription(event.target.value);
             }}
             style={{ height: "10rem" }}
-            onBlur={handleBlur}
+            onBlur={saveChanges}
           />
         </div>
       </div>
 
       <div className="mt-5">
-        <label>Origin (URL)</label>
+         <label htmlFor="origin">
+          Origin (URL)
+          <span className="ml-1 text-danger">*</span>
+        </label>
         <div className="input-group input-group">
           <input
             type="url"
             className="form-control input-lg"
-            name="origin"
-            value={origin}
+            id="origin"
+            value={origin || ""}
             onChange={(event) => {
               setOrigin(event.target.value);
             }}
@@ -153,7 +155,7 @@ const ConceptSchemeMetadata = (props) => {
               handleUrlBlur(
                 origin,
                 "The origin must be a valid URL",
-                handleBlur
+                saveChanges
               )
             }
             pattern="https://.*"

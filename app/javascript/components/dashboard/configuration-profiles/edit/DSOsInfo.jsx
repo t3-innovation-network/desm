@@ -39,9 +39,7 @@ const DSOsInfo = () => {
     localCP.structure.standardsOrganizations = [
       ...dsos,
       {
-        email: "",
         name: `DSO ${dsos.length + 1}`,
-        dsoAdministrator: null,
         dsoAgents: [],
         associatedSchemas: [],
       },
