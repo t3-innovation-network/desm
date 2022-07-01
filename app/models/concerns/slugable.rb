@@ -5,7 +5,7 @@ module Slugable
 
   included do
     before_save :generate_slug
-    validates :name, presence: true, uniqueness: true
+    validates :name, presence: true
   end
 
   def generate_slug
