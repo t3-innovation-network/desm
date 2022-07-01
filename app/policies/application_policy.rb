@@ -21,7 +21,7 @@ class ApplicationPolicy
   # @return [TrueClass]
   ###
   def index?
-    false
+    true
   end
 
   ###
@@ -29,7 +29,7 @@ class ApplicationPolicy
   # @return [TrueClass]
   ###
   def show?
-    false
+    true
   end
 
   ###
@@ -37,7 +37,7 @@ class ApplicationPolicy
   # @return [TrueClass]
   ###
   def create?
-    false
+    true
   end
 
   ###
@@ -45,7 +45,7 @@ class ApplicationPolicy
   # @return [TrueClass]
   ###
   def update?
-    false
+    true
   end
 
   ###
@@ -53,7 +53,7 @@ class ApplicationPolicy
   # @return [TrueClass]
   ###
   def destroy?
-    false
+    true
   end
 
   class Scope
