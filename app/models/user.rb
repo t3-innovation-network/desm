@@ -64,11 +64,11 @@ class User < ApplicationRecord
   end
 
   def send_reset_password_instructions
-    UserMailer.with(user: self).forgot_pass.deliver_later
+    UserMailer.with(user: self).forgot_pass.deliver_now
   end
 
   def send_welcome_email
-    UserMailer.with(user: self).welcome.deliver_later
+    UserMailer.with(user: self).welcome.deliver_now
   end
 
   def super_admin?
