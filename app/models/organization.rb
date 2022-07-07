@@ -15,7 +15,6 @@ class Organization < ApplicationRecord
   has_many :mappings, through: :users, dependent: :destroy
   has_many :schemes, through: :users, source: :specifications
   has_many :vocabularies, dependent: :destroy
-  validates :name, presence: true, uniqueness: true
 
   def to_json_ld
     {

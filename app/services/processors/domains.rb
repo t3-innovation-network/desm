@@ -33,14 +33,14 @@ module Processors
     def create_domain_set
       domain_set = first_concept_scheme_node
       parser = Parsers::JsonLd::Node.new(domain_set)
-      return if already_exists?(DomainSet, parser.read!("id"), print_message: true)
 
-      DomainSet.first_or_create!({
-                                   source_uri: parser.read!("id"),
-                                   title: parser.read!("title") || parser.read!("label"),
-                                   description: parser.read!("description"),
-                                   creator: parser.read!("creator")
-                                 })
+      DomainSet
+        .create_with(
+          title: parser.read!("title") || parser.read!("label"),
+          description: parser.read!("description"),
+          creator: parser.read!("creator")
+        )
+        .find_or_create_by!(source_uri: parser.read!("id"))
     end
 
     ###
