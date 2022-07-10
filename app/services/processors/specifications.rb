@@ -275,16 +275,15 @@ module Processors
     def create_one_term(instance, node)
       parser = Parsers::JsonLd::Node.new(node)
       name = parser.read!("label")
-      name = parser.id_to_name if Term.exists?(name: name)
-      return nil if Term.find_by(source_uri: parser.read!("id"))
 
-      Term.create!(
-        source_uri: parser.read!("id"),
-        name: name,
-        organization: instance.user.organization,
-        slug: name,
-        raw: node
-      )
+      Term
+        .create_with(
+          name: name,
+          organization: instance.user.organization,
+          slug: name,
+          raw: node
+        )
+        .find_or_create_by!(source_uri: parser.read!("id"))   
     end
   end
 end
