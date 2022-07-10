@@ -18,7 +18,7 @@ class Predicate < ApplicationRecord
   include Slugable
 
   belongs_to :predicate_set
-  validates :source_uri, presence: true, uniqueness: true
+  validates :source_uri, presence: true, uniqueness: {scope: :predicate_set_id}
   validates :pref_label, presence: true
   before_create :assign_color, unless: :color?
   before_save :default_values

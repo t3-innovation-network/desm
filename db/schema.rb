@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_17_201901) do
+ActiveRecord::Schema.define(version: 2022_07_10_164358) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "alignment_mapped_terms", force: :cascade do |t|
@@ -120,7 +121,7 @@ ActiveRecord::Schema.define(version: 2022_03_17_201901) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "slug"
-    t.index ["source_uri"], name: "index_domain_sets_on_source_uri", unique: true
+    t.index ["source_uri"], name: "index_domain_sets_on_source_uri"
   end
 
   create_table "domains", force: :cascade do |t|
@@ -131,8 +132,8 @@ ActiveRecord::Schema.define(version: 2022_03_17_201901) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "slug"
+    t.index ["domain_set_id", "source_uri"], name: "index_domains_on_domain_set_id_and_source_uri", unique: true
     t.index ["domain_set_id"], name: "index_domains_on_domain_set_id"
-    t.index ["source_uri"], name: "index_domains_on_source_uri", unique: true
   end
 
   create_table "json_contexts", force: :cascade do |t|
@@ -196,7 +197,6 @@ ActiveRecord::Schema.define(version: 2022_03_17_201901) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "slug"
     t.bigint "strongest_match_id"
-    t.index ["source_uri"], name: "index_predicate_sets_on_source_uri", unique: true
     t.index ["strongest_match_id"], name: "index_predicate_sets_on_strongest_match_id"
   end
 
@@ -210,8 +210,8 @@ ActiveRecord::Schema.define(version: 2022_03_17_201901) do
     t.string "color"
     t.bigint "predicate_set_id"
     t.string "slug"
+    t.index ["predicate_set_id", "source_uri"], name: "index_predicates_on_predicate_set_id_and_source_uri", unique: true
     t.index ["predicate_set_id"], name: "index_predicates_on_predicate_set_id"
-    t.index ["source_uri"], name: "index_predicates_on_source_uri", unique: true
   end
 
   create_table "properties", force: :cascade do |t|

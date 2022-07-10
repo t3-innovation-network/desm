@@ -8,6 +8,7 @@ class User < ApplicationRecord
 
   has_secure_password
   belongs_to :organization, optional: true
+  has_one :configuration_profile, through: :organization
   has_many :assignments, dependent: :delete_all
   has_many :roles, through: :assignments
   has_many :mappings, dependent: :destroy
@@ -29,11 +30,11 @@ class User < ApplicationRecord
   end
 
   def available_domains
-    profile_admin? || super_admin? ? Domain.all : organization.configuration_profile.abstract_classes.domains
+    configuration_profile&.abstract_classes&.domains
   end
 
   def available_predicates
-    profile_admin? || super_admin? ? Predicate.all : organization.configuration_profile.mapping_predicates.predicates
+    configuration_profile&.mapping_predicates&.predicates
   end
 
   def generate_password_token!

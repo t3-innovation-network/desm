@@ -283,7 +283,7 @@ module Processors
           slug: name,
           raw: node
         )
-        .find_or_create_by!(source_uri: parser.read!("id"))   
+        .find_or_create_by!(source_uri: parser.read!("id"))
     end
   end
 end

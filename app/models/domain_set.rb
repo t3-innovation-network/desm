@@ -14,7 +14,7 @@
 ###
 class DomainSet < ApplicationRecord
   include Slugable
-  validates :source_uri, presence: true, uniqueness: true
+  validates :source_uri, presence: true
   validates :title, presence: true
   has_one :configuration_profile
   has_many :domains
