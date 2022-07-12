@@ -44,14 +44,13 @@ module Processors
     def create_predicate_set
       predicate_set = first_concept_scheme_node
       parser = Parsers::JsonLd::Node.new(predicate_set)
-      already_exists?(PredicateSet, parser.read!("id"), print_message: true)
 
-      PredicateSet.first_or_create!({
-                                      source_uri: parser.read!("id"),
-                                      title: parser.read!("title") || parser.read!("label"),
-                                      description: parser.read!("description"),
-                                      creator: parser.read!("creator")
-                                    })
+      PredicateSet.create!(
+        creator: parser.read!("creator"),
+        description: parser.read!("description"),
+        source_uri: parser.read!("id"),
+        title: parser.read!("title") || parser.read!("label")
+      )
     end
 
     ###
@@ -64,29 +63,26 @@ module Processors
         # The concept scheme is processed, let's start with the proper predicates
         next unless valid_predicate(parser)
 
-        Predicate.find_or_initialize_by(source_uri: parser.read!("id")) do |p|
-          p.update!({
-                      definition: parser.read!("definition"),
-                      pref_label: parser.read!("prefLabel"),
-                      weight: parser.read!("weight"),
-                      predicate_set: @predicate_set
-                    })
-        end
+        @predicate_set
+          .predicates
+          .create_with(
+            definition: parser.read!("definition"),
+            pref_label: parser.read!("prefLabel"),
+            weight: parser.read!("weight")
+          )
+          .find_or_create_by!(source_uri: parser.read!("id"))
       end
     end
 
     ###
     # @description: Determines if a predicate is valid to incorporate to our records. It should not be of
-    #   type: "concept scheme" and it should not be already present.
+    #   type: "concept scheme"
     # @return [TrueClass|FalseClass]
     ###
     def valid_predicate predicate_parser
-      !(
-        Array(predicate_parser.read!("type")).any? {|type|
-          type.downcase.include?("conceptscheme")
-        } ||
-        already_exists?(Predicate, predicate_parser.read!("id"), print_message: true)
-      )
+      Array.wrap(predicate_parser.read!("type")).none? do |type|
+        type.downcase.include?("conceptscheme")
+      end
     end
 
     def assign_strongest_match

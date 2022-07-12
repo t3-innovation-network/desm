@@ -9,7 +9,7 @@
 ###
 class PredicateSet < ApplicationRecord
   include Slugable
-  validates :source_uri, presence: true, uniqueness: true
+  validates :source_uri, presence: true
   validates :title, presence: true
   has_many :predicates
   belongs_to :strongest_match, foreign_key: "strongest_match_id", class_name: "Predicate", optional: true

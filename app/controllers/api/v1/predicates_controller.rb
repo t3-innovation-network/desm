@@ -8,6 +8,6 @@ class Api::V1::PredicatesController < ApplicationController
   # @description: Lists all the predicates
   ###
   def index
-    render json: current_user ? current_user.available_predicates : PredicateSet.first.predicates
+    render json: current_user&.available_predicates || PredicateSet.first.predicates
   end
 end
