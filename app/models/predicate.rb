@@ -109,7 +109,11 @@ class Predicate < ApplicationRecord
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
   def as_json(options={})
-    super options.merge(methods: %i[uri])
+    super(
+      options.merge(methods: %i[uri])
+    ).merge(
+      strongest_match: predicate_set.strongest_match_id == id
+    )
   end
 
   private
