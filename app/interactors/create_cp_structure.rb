@@ -60,7 +60,11 @@ class CreateCpStructure
   end
 
   def generate_mapping_predicates
-    result = CreateMappingPredicates.call({json_body: @cp.json_mapping_predicates})
+    result = CreateMappingPredicates.call(
+      json_body: @cp.json_mapping_predicates,
+      strongest_match: @cp.predicate_strongest_match
+    )
+
     raise MappingPredicatesCreationError.new("MappingPredicatesCreationError: #{result.error}") unless result.error.nil?
 
     @cp.update(mapping_predicates: result.predicate_set)

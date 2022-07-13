@@ -46,9 +46,15 @@ const SpineTermRow = (props) => {
   const [editMode, setEditMode] = useState("comment");
 
   /**
-   * The predicate option selected
+   * The predicate option selected (the strongest match predicate by default)
    */
-  const [predicate, setPredicate] = useState(findPredicate());
+  const [predicate, setPredicate] = useState(() =>
+    (
+      alignment.predicateId
+        ? predicates.find((predicate) => predicate.id === alignment.predicateId)
+        : predicates.find((predicate) => predicate.strongest_match)
+    ).pref_label
+  );
 
   /**
    * Whether we are editing the alignment or not. Set to true when
@@ -70,14 +76,10 @@ const SpineTermRow = (props) => {
   );
 
   /**
-   * If the mapping term (alignment) has a predicate selected, lets find it
+   * If the mapping term (alignment) has a predicate selected, lets find it.
+   * Otherwise use the strongest match predicate
    */
-  function findPredicate() {
-    return alignment.predicateId
-      ? predicates.find((predicate) => predicate.id === alignment.predicateId)
-          .pref_label
-      : null;
-  }
+  // const findPredicate = ;
 
   /**
    * Return the options for an alignment that is a alignment that has

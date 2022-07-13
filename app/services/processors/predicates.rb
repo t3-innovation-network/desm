@@ -86,11 +86,9 @@ module Processors
     end
 
     def assign_strongest_match
-      sm = @predicate_set.predicates.find_by_pref_label(@strongest_match) if @strongest_match.present?
-      sm = @predicate_set.predicates.first if sm.nil?
-
-      @predicate_set.strongest_match = sm
-      @predicate_set.save!
+      predicate = @predicate_set.predicates.find_by(source_uri: @strongest_match)
+      predicate ||= @predicate_set.predicates.first
+      @predicate_set.update!(strongest_match: predicate)
     end
   end
 end
