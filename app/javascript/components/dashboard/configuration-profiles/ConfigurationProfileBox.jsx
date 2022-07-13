@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { stateStyle } from "./utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCogs } from "@fortawesome/free-solid-svg-icons";
+import { camelizeKeys } from "humps";
 
 export const CPBoxContainer = (props) => {
   const { children, icon, linkTo, sideBoxClass } = props;
@@ -161,7 +162,7 @@ export default class ConfigurationProfileBox extends Component {
 
   reloadCP(newCP) {
     this.setState({
-      configurationProfile: newCP,
+      configurationProfile: camelizeKeys(newCP),
       processing: false,
     });
 
