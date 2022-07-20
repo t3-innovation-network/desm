@@ -95,7 +95,7 @@ class Mapping < ApplicationRecord
     spine.terms.each do |term|
       Alignment.create!(
         mapping: self,
-        predicate: mapping_predicates.strongest_match_id,
+        predicate_id: mapping_predicates.strongest_match_id,
         spine_term_id: term.id,
         uri: term.uri
       )
