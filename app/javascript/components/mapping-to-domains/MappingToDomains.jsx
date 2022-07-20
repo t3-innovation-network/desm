@@ -295,7 +295,7 @@ const MappingToDomains = (props) => {
     if (!anyError(response)) {
       // Save changes if necessary
       if (changesPerformed) {
-        handleSaveChanges();
+        await handleSaveChanges();
       }
       // Redirect to 3rd step mapping ("Align and Fine Tune")
       props.history.push("/mappings/" + mapping.id + "/align");
@@ -305,29 +305,29 @@ const MappingToDomains = (props) => {
   /**
    * Create the mapping terms
    */
-  const handleSaveChanges = () => {
+  const handleSaveChanges = async () => {
     setSavingChanges(true);
 
-    updateMappingSelectedTerms({
+    const response = await updateMappingSelectedTerms({
       mappingId: mapping.id,
       termIds: mappedTerms.map((t) => t.id),
-    }).then((response) => {
-      if (!anyError(response)) {
-        // Mark the terms marked as mapped in memory not mapped, since we already know it's part of the selected terms now
-        terms
-          .filter((t) => t.mapped)
-          .forEach((term) => {
-            term.mapped = false;
-            let tempMapping = mapping;
-            tempMapping.selected_terms.push(term);
-            setMapping(tempMapping);
-          });
-
-        toast.success("Changes saved");
-        setChangesPerformed(0);
-        setSavingChanges(false);
-      }
     });
+
+    if (!anyError(response)) {
+      // Mark the terms marked as mapped in memory not mapped, since we already know it's part of the selected terms now
+      terms
+        .filter((t) => t.mapped)
+        .forEach((term) => {
+          term.mapped = false;
+          let tempMapping = mapping;
+          tempMapping.selected_terms.push(term);
+          setMapping(tempMapping);
+        });
+
+      toast.success("Changes saved");
+      setChangesPerformed(0);
+      setSavingChanges(false);
+    }
   };
 
   /**
