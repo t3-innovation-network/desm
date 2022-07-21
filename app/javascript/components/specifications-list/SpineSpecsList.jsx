@@ -118,7 +118,10 @@ const SpineSpecsList = (props) => {
       {errors.length ? <AlertNotice message={errors} /> : null}
 
       <ConfirmDialog
-        onRequestClose={() => setConfirmingRemove(false)}
+        onRequestClose={() => {
+          setConfirmingRemove(false);
+          setErrorsWhileRemoving([]);
+        }}
         onConfirm={() => handleRemoveSpine()}
         visible={confirmingRemove}
       >
