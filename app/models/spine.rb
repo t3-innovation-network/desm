@@ -5,6 +5,7 @@ class Spine < ApplicationRecord
 
   belongs_to :domain
   belongs_to :organization
+  has_one :configuration_profile, through: :organization
   has_and_belongs_to_many :terms
   has_many :mappings
 

@@ -10,7 +10,7 @@ class Api::V1::SpineSpecificationsController < ApplicationController
   # @description: Returns a filtered list of specifications for an organization
   ###
   def index
-    render json: current_user.organization.spines
+    render json: current_configuration_profile.spines
   end
 
   private

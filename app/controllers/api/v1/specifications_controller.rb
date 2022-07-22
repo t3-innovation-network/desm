@@ -27,8 +27,7 @@ class Api::V1::SpecificationsController < ApplicationController
   # @description: Delete the given specification from the database
   ###
   def destroy
-    spine = current_user.organization.spines.find(params[:id])
-    spine.destroy
+    current_configuration_profile.spines.find(params[:id]).destroy
 
     render json: {
       success: true

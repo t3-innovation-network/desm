@@ -41,7 +41,7 @@ class Api::V1::MappingsController < ApplicationController
   def index
     mappings =
       if params[:filter] == "all"
-        current_user.organization&.mappings || Mapping.none
+        current_configuration_profile.mappings || Mapping.none
       else
         current_user.mappings
       end
