@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
@@ -48,6 +48,11 @@ const SpecsPreviewTabs = (props) => {
     dispatch(setVocabularies(tempVocabularies));
   };
 
+  const graphFromFilteredFile = useMemo(
+    () => ({ "@graph": filteredFile['@graph'] }),
+    [filteredFile]
+  );
+
   return (
     <React.Fragment>
       <Tabs
@@ -73,7 +78,7 @@ const SpecsPreviewTabs = (props) => {
           <div className="card mt-2 mb-2 has-scrollbar scrollbar">
             <div className="card-body">
               <pre>
-                <code>{JSON.stringify(filteredFile, null, 2)}</code>
+                <code>{JSON.stringify(graphFromFilteredFile, null, 2)}</code>
               </pre>
             </div>
           </div>

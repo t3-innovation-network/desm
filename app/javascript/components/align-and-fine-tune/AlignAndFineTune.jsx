@@ -400,7 +400,7 @@ const AlignAndFineTune = (props) => {
             (changesPerformed ? "" : ". Try making a change!")
           }
         >
-          Save and Exit
+          Save
         </button>
         {mapping.status !== "mapped" && (
           <button

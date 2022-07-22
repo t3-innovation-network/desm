@@ -4,8 +4,6 @@
 # @description: Place all the actions related to specifications
 ###
 class Api::V1::SpecificationsController < ApplicationController
-  before_action :with_instance
-
   ###
   # @description: Create a specification with its terms. Store it from an already
   #   filtered JSON object
@@ -29,7 +27,8 @@ class Api::V1::SpecificationsController < ApplicationController
   # @description: Delete the given specification from the database
   ###
   def destroy
-    @instance.destroy!
+    spine = current_user.organization.spines.find(params[:id])
+    spine.destroy
 
     render json: {
       success: true

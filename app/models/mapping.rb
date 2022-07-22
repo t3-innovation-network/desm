@@ -31,6 +31,8 @@ class Mapping < ApplicationRecord
   # @description: The specification chosen to map to
   ###
   belongs_to :spine
+
+  has_one :mapping_predicates, through: :user
   ###
   # @description: Each term that conforms the mapping. The terms of the mapping contains information
   #   about the type of alignment (predicate), which term from the spine was mapped to which of the
@@ -92,9 +94,11 @@ class Mapping < ApplicationRecord
   def generate_alignments
     spine.terms.each do |term|
       Alignment.create!(
-        uri: term.uri,
+        mapped_terms: [term],
         mapping: self,
-        spine_term_id: term.id
+        predicate_id: mapping_predicates.strongest_match_id,
+        spine_term_id: term.id,
+        uri: term.uri
       )
     end
   end
@@ -177,5 +181,9 @@ class Mapping < ApplicationRecord
   ###
   def update_selected_terms ids
     self.selected_term_ids = ids
+    return if spine.terms.any?
+
+    spine.term_ids = ids
+    generate_alignments
   end
 end

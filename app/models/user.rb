@@ -9,9 +9,10 @@ class User < ApplicationRecord
   has_secure_password
   belongs_to :organization, optional: true
   has_one :configuration_profile, through: :organization
+  has_one :mapping_predicates, through: :configuration_profile
   has_many :assignments, dependent: :delete_all
-  has_many :roles, through: :assignments
   has_many :mappings, dependent: :destroy
+  has_many :roles, through: :assignments
   has_many :specifications, dependent: :destroy
 
   validates :fullname, presence: true

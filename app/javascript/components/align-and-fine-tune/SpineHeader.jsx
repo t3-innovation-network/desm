@@ -96,7 +96,6 @@ const SpineHeader = (props) => {
           <button
             className="btn btn-block btn-dark"
             onClick={handleAddSynthetic}
-            disabled={props.addingSynthetic}
             data-toggle="tooltip"
             data-placement="top"
             title="Add a synthetic property to the spine. This new property will be available to map for this and further mappings"

@@ -7,14 +7,8 @@ class Spine < ApplicationRecord
   belongs_to :organization
   has_and_belongs_to_many :terms
   has_many :mappings
-  after_create :add_basic_terms, if: proc { terms.count.zero? }
 
-  def add_basic_terms
-    %w[name description].each do |label|
-      t = Term.find_by_name(label)
-      terms << t if t.present?
-    end
-  end
+  before_destroy :check_if_mappings_exist
 
   def to_json_ld
     {
@@ -23,5 +17,14 @@ class Spine < ApplicationRecord
       domain: domain.uri,
       terms: terms.map(&:uri).sort
     }
+  end
+
+  private
+
+  def check_if_mappings_exist
+    return if mappings.none?
+
+    raise "Cannot remove a spine with existing mappings. " \
+          "Please remove all mappings before removing the spine."
   end
 end
