@@ -36,10 +36,14 @@ module Tokenable
   #   that includes this concern.
   # @return [String]
   ###
-  def generate_token
+  def generate_token(token_column=nil)
+    token_column ||= :token
+
     loop do
       random_token = SecureRandom.urlsafe_base64(nil, false)
-      break random_token unless self.class.default_scoped.exists?(token: random_token)
+      next if self.class.default_scoped.exists?(token_column => random_token)
+
+      return random_token
     end
   end
 end
