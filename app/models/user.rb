@@ -4,6 +4,8 @@
 # @description: Represents a user of this application
 ###
 class User < ApplicationRecord
+  include Tokenable
+
   attr_accessor :skip_sending_welcome_email, :skip_validating_organization
 
   has_secure_password
@@ -40,7 +42,7 @@ class User < ApplicationRecord
 
   def generate_password_token!
     update_columns(
-      reset_password_token: generate_token,
+      reset_password_token: generate_token(:reset_password_token),
       reset_password_sent_at: Time.now.utc
     )
   end
