@@ -138,7 +138,7 @@ const CPCardHeader = () => {
     <Fragment>
       <div className="col-4">
         <h3 className="float-left">
-          {_.capitalize(configurationProfile.name)}
+          {configurationProfile.name}
         </h3>
       </div>
       <div className="col-4">

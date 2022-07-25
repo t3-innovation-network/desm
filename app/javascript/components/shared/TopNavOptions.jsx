@@ -28,7 +28,7 @@ const TopNavOptions = (props) => {
               data-placement="top"
               title="Create a mapping between 2 specifications"
             >
-              Map a Specification
+              New Mapping
             </Link>
           </li>
         )}

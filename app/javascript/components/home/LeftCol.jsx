@@ -37,7 +37,7 @@ class LeftSideHome extends React.Component {
               data-placement="top"
               title="Create a mapping between 2 specifications"
           >
-            Start Mapping
+            New Mapping
           </Link>
         </section>
       </div>
