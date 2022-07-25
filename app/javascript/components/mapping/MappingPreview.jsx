@@ -225,15 +225,17 @@ const MappingPreview = (props) => {
     // so let's create the mapping and (with the id returned) load the
     // mapping page
     dispatch(startProcessingFile());
-    createMapping(specResponse.id).then((response) => {
-      if (response.error) {
-        toast.error(response.error);
-        return;
-      }
 
-      unsetFormValues();
-      props.redirect("/mappings/" + response.mapping.id);
-    });
+    const response = await createMapping(specResponse.id);
+    dispatch(stopProcessingFile());
+
+    if (response.error) {
+      toast.error(response.error);
+      return;
+    }
+
+    unsetFormValues();
+    props.redirect("/mappings/" + response.mapping.id);
   };
 
   return (
