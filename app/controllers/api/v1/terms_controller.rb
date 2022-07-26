@@ -10,7 +10,7 @@ class Api::V1::TermsController < ApplicationController
   # @description: All the terms from a specification
   ###
   def index
-    terms = Spine.find(params[:id]).terms
+    terms = Specification.find(params[:id]).terms
 
     render json: terms, include: %i[property vocabularies]
   end

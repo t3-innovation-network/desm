@@ -4,8 +4,6 @@
 # @description: Place all the actions related to spine specifications
 ###
 class Api::V1::SpineSpecificationsController < ApplicationController
-  before_action :authorize_with_policy
-
   ###
   # @description: Returns a filtered list of specifications for an organization
   ###
@@ -13,12 +11,8 @@ class Api::V1::SpineSpecificationsController < ApplicationController
     render json: current_configuration_profile.spines
   end
 
-  private
-
-  ###
-  # @description: Execute the authorization policy
-  ###
-  def authorize_with_policy
-    authorize(with_instance(Specification))
+  def show
+    spine = Spine.find(params[:id])
+    render json: spine, include: %i[domain]
   end
 end

@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import fetchSpecification from "../../services/fetchSpecification";
-import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
+import fetchSpine from "../../services/fetchSpine";
+import fetchSpineTerms from "../../services/fetchSpineTerms";
 import EditTerm from "../mapping-to-domains/EditTerm";
 import TermCard from "../mapping-to-domains/TermCard";
 import AlertNotice from "../shared/AlertNotice";
@@ -124,19 +124,19 @@ const EditSpecification = (props) => {
   /**
    * Get the specification
    */
-  const handleFetchSpecification = async (spec_id) => {
-    let response = await fetchSpecification(spec_id);
+  const handleFetchSpine = async (spineId) => {
+    let response = await fetchSpine(spineId);
     if (!anyError(response)) {
       // Set the domain on state
-      setDomain(response.specification.domain);
+      setDomain(response.spine.domain);
     }
   };
 
   /**
    * Get the specification terms
    */
-  const handleFetchSpecificationTerms = async (spec_id) => {
-    let response = await fetchSpecificationTerms(spec_id);
+  const handleFetchSpineTerms = async (spineId) => {
+    let response = await fetchSpineTerms(spineId);
     if (!anyError(response)) {
       // Set the spine terms on state
       setTerms(response.terms);
@@ -148,9 +148,9 @@ const EditSpecification = (props) => {
    */
   const fetchDataFromAPI = async () => {
     // Get the specification
-    await handleFetchSpecification(props.match.params.id);
+    await handleFetchSpine(props.match.params.id);
     // Get the terms
-    await handleFetchSpecificationTerms(props.match.params.id);
+    await handleFetchSpineTerms(props.match.params.id);
   };
 
   /**
