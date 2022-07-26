@@ -32,6 +32,13 @@ class ApplicationController < ActionController::Base
   private
 
   ###
+  # @description: Returns the current configuration profile
+  ###
+  def current_configuration_profile
+    current_user&.configuration_profile
+  end
+
+  ###
   # @description: Returns the current user from the session
   ###
   def current_user

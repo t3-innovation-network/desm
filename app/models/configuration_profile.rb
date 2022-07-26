@@ -14,6 +14,7 @@ class ConfigurationProfile < ApplicationRecord
   belongs_to :administrator, class_name: "User", foreign_key: :administrator_id, optional: true
   has_many :standards_organizations, class_name: "Organization", dependent: :destroy
   has_many :mappings, through: :standards_organizations
+  has_many :spines, through: :standards_organizations
   after_initialize :setup_schema_validators
   before_save :check_structure, if: :structure_changed?
   before_save :check_predicate_strongest_match, if: :predicate_strongest_match_changed?

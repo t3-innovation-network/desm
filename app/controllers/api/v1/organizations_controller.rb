@@ -10,9 +10,14 @@ class Api::V1::OrganizationsController < ApplicationController
   # @description: Lists all the organizations
   ###
   def index
-    organizations = Organization.all.order(name: :asc)
+    organizations =
+      if current_configuration_profile
+        current_configuration_profile&.standards_organizations
+      else
+        Organization.all
+      end
 
-    render json: organizations, include: :users
+    render json: organizations.order(name: :asc), include: :users
   end
 
   ###

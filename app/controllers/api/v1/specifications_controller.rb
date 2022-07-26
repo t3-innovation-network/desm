@@ -18,17 +18,16 @@ class Api::V1::SpecificationsController < ApplicationController
   # @description: Returns the specification with id equal to the one passed in params
   ###
   def show
-    @specification = Specification.find(params[:id])
+    @specification = Spine.find(params[:id])
 
-    render json: @specification, include: %i[user domain]
+    render json: @specification, include: %i[domain]
   end
 
   ###
   # @description: Delete the given specification from the database
   ###
   def destroy
-    spine = current_user.organization.spines.find(params[:id])
-    spine.destroy
+    current_configuration_profile.spines.find(params[:id]).destroy
 
     render json: {
       success: true

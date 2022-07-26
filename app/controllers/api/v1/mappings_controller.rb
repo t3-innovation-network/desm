@@ -39,9 +39,15 @@ class Api::V1::MappingsController < ApplicationController
   # @description: Lists all the mappings for the current user's organization
   ###
   def index
-    mappings = filter
+    mappings =
+      if params[:filter] == "all"
+        current_configuration_profile.mappings || Mapping.none
+      else
+        current_user.mappings
+      end
 
-    render json: mappings, include: [:terms, :selected_terms, {specification: {include: %i[user terms]}}]
+    render json: mappings.order(:title),
+           include: [:terms, :selected_terms, {specification: {include: %i[user terms]}}]
   end
 
   ###
@@ -76,24 +82,6 @@ class Api::V1::MappingsController < ApplicationController
   ###
   def authorize_with_policy
     authorize(with_instance)
-  end
-
-  ###
-  # @description: Applies the filter/s from the params
-  # @return [ActiveRecord::Relation]
-  ###
-  def filter
-    mappings = initial_mappings
-    mappings = mappings.where(user: current_user) if params[:filter] && params[:filter] != "all"
-    mappings.order(:title)
-  end
-
-  ###
-  # @description: Instantiate the list of mappings depending on the user roles
-  ###
-  def initial_mappings
-    is_admin = current_user.super_admin? || current_user.profile_admin?
-    is_admin ? Mapping.all : (current_user.organization&.mappings || Mapping.none)
   end
 
   ###
