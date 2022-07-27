@@ -117,6 +117,8 @@ const AlignAndFineTune = (props) => {
     return term.selected;
   });
 
+  const strongestMatchPredicate = predicates.find(p => p.strongest_match);
+
   /**
    * Manage to change values from mapping term inputs in the state
    *
@@ -499,7 +501,7 @@ const AlignAndFineTune = (props) => {
       synthetic: true,
       mappedTerms: [],
       spineTermId: syntheticTermId,
-      predicateId: null,
+      predicateId: strongestMatchPredicate?.id,
       comment: null,
     });
 
@@ -525,18 +527,6 @@ const AlignAndFineTune = (props) => {
     setSpineTerms(spineTerms.filter((st) => !st.synthetic));
     setChangesPerformed(changesPerformed - 1);
     setAddingSynthetic(false);
-  };
-
-  const predicateForSynthetic = () => {
-    const noMatchPredicate = predicates.find((p) =>
-      p.uri.toLowerCase().includes("no+match")
-    );
-
-    if (!noMatchPredicate) {
-      [noMatchPredicate] = predicates;
-    }
-
-    return noMatchPredicate;
   };
 
   /**
@@ -567,7 +557,7 @@ const AlignAndFineTune = (props) => {
             "Alignment for a synthetic property added to the spine. Synthetic uri: " +
             tempUri,
           uri: tempUri,
-          predicateId: predicateForSynthetic().id,
+          predicateId: strongestMatchPredicate?.id,
           mappingId: mapping.id,
           mappedTerms: alignment.mappedTerms.map((term) => term.id),
           synthetic: true,
