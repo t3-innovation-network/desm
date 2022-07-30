@@ -18,9 +18,9 @@ class Api::V1::SpecificationsController < ApplicationController
   # @description: Returns the specification with id equal to the one passed in params
   ###
   def show
-    @specification = Spine.find(params[:id])
+    @specification = Specification.find(params[:id])
 
-    render json: @specification, include: %i[domain]
+    render json: @specification, include: %i[user domain]
   end
 
   ###

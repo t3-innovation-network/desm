@@ -49,11 +49,7 @@ const SpineTermRow = (props) => {
    * The predicate option selected (the strongest match predicate by default)
    */
   const [predicate, setPredicate] = useState(() =>
-    (
-      alignment.predicateId
-        ? predicates.find((predicate) => predicate.id === alignment.predicateId)
-        : predicates.find((predicate) => predicate.strongest_match)
-    ).pref_label
+    predicates.find((predicate) => predicate.id === alignment.predicateId)?.pref_label
   );
 
   /**

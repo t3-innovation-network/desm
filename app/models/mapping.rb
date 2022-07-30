@@ -187,6 +187,6 @@ class Mapping < ApplicationRecord
     return if spine.terms.any?
 
     spine.term_ids = ids
-    generate_alignments(true)
+    generate_alignments(first_upload: true)
   end
 end

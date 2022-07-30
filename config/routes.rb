@@ -29,7 +29,7 @@ Rails.application.routes.draw do
       resources :spine_terms, only: [:create]
       resources :terms, only: [:show, :update, :destroy]
       resources :vocabularies, only: [:index, :create, :show]
-      resources :spine_specifications, only: :index
+      resources :spine_specifications, only: %i[index show]
 
       # Mapping selected terms
       post 'mappings/:id/selected_terms' => 'mapping_selected_terms#create'
