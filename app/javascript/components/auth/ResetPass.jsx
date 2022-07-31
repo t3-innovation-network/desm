@@ -172,12 +172,6 @@ const ResetPass = (props) => {
                       <button
                         type="submit"
                         className="btn btn-dark"
-                        disabled={
-                          !_.isEmpty(errors) ||
-                          !passwordIsValid ||
-                          _.isEmpty(password) ||
-                          _.isEmpty(passwordConfirmation)
-                        }
                       >
                         {working ? (
                           <Loader noPadding={true} smallSpinner={true} />
