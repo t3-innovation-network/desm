@@ -97,9 +97,23 @@ module Parsers
     # @return [Array]
     ###
     def scheme_nodes
-      @graph.select {|node|
+      @scheme_nodes ||= @graph.select {|node|
         Parsers::JsonLd::Node.new(node).types.concept_scheme?
       }
+    end
+
+    def concept_node_hash
+      @concept_node_hash ||= begin
+        concept_nodes = @graph.select {|node|
+          Array(Parsers::JsonLd::Node.new(node).read!("type")).any? {|type|
+            type.downcase.include?("concept") && !type.downcase.include?("conceptscheme")
+          }
+        }
+
+        concept_nodes.map {|node|
+          [Parsers::JsonLd::Node.new(node).read!("id").downcase, node]
+        }.to_h
+      end
     end
 
     ###
@@ -108,11 +122,7 @@ module Parsers
     # @return [Array] A collection of only nodes of type "skos:concept".
     ###
     def concept_nodes
-      @graph.select {|node|
-        Array(Parsers::JsonLd::Node.new(node).read!("type")).any? {|type|
-          type.downcase.include?("concept") && !type.downcase.include?("conceptscheme")
-        }
-      }
+      concept_node_hash.values
     end
 
     private
@@ -179,9 +189,7 @@ module Parsers
     ###
     def identify_concepts scheme_node
       child_concepts_uris(scheme_node).map {|concept_uri|
-        concept_nodes.find {|c_node|
-          Parsers::JsonLd::Node.new(c_node)&.read!("id")&.downcase&.eql?(concept_uri.downcase)
-        }
+        concept_node_hash[concept_uri.downcase]
       }.compact
     end
 
