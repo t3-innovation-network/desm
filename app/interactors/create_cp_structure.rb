@@ -3,9 +3,7 @@
 class AbstractClassesCreationError < StandardError; end
 class AdminCreationError < StandardError; end
 class ConceptSchemeCreationError < StandardError; end
-class DSOAdminCreationError < StandardError; end
 class DSOCreationError < StandardError; end
-class DSOMapperCreationError < StandardError; end
 class MappingPredicatesCreationError < StandardError; end
 
 class CreateCpStructure
@@ -72,41 +70,10 @@ class CreateCpStructure
 
   def generate_dsos_data
     @structure[:standards_organizations].each do |dso_data|
-      dso = create_dso(dso_data)
+      result = CreateDso.call(dso_data.merge(configuration_profile: @cp))
+      raise DSOCreationError.new("DSOCreationError: #{result.error}") if result.error?
 
-      if dso_data[:dso_administrator]
-        dso_admin = create_dso_admin(dso_data[:dso_administrator])
-        dso_admin.update_column(:organization_id, dso.id)
-      end
-
-      create_dso_agents(dso, dso_data[:dso_agents])
-      create_dso_schemas(dso, dso_data[:associated_schemas])
-    end
-  end
-
-  def create_dso dso_data
-    result = CreateDso.call(dso_data.merge({configuration_profile: @cp}))
-    raise DSOCreationError.new("DSOCreationError: #{result.error}") unless result.error.nil?
-
-    result.dso
-  end
-
-  def create_dso_admin dso_admin_data
-    result = CreateAgent.call(dso_admin_data.merge({
-                                                     role: Role.find_by_name("dso admin"),
-                                                     skip_validating_organization: true
-                                                   }))
-    raise DSOAdminCreationError.new("DSOAdminCreationError: #{result.error}") unless result.error.nil?
-
-    result.agent
-  end
-
-  def create_dso_agents dso, agents_data
-    agents_data.each do |agent_data|
-      result = CreateAgent.call(agent_data.merge({role: Role.find_by_name("mapper"), organization: dso}))
-      raise DSOMapperCreationError.new("DSOMapperCreationError: #{result.error}") unless result.error.nil?
-
-      dso.users << result.agent
+      create_dso_schemas(result.dso, dso_data[:associated_schemas])
     end
   end
 
