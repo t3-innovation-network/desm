@@ -274,7 +274,7 @@ module Processors
     ###
     def create_one_term(instance, node)
       parser = Parsers::JsonLd::Node.new(node)
-      name = parser.read!("label")
+      name = parser.read!("label").presence || parser.read!("title")
 
       Term
         .create_with(
