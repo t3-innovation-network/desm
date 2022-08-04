@@ -19,6 +19,7 @@ class ConfigurationProfile < ApplicationRecord
   before_save :check_structure, if: :structure_changed?
   before_save :check_predicate_strongest_match, if: :predicate_strongest_match_changed?
   before_destroy :check_ongoing_mappings, prepend: true
+  after_save :create_new_entities, if: :active?
 
   # The possible states
   # 0. "incomplete" It does not have a complete structure attribute.
@@ -126,5 +127,13 @@ class ConfigurationProfile < ApplicationRecord
 
   def transition_to! new_state
     update_attribute(:state, new_state)
+  end
+
+  private
+
+  def create_new_entities
+    structure.fetch("standards_organizations", []).each do |dso_data|
+      CreateDso.call(dso_data.merge(configuration_profile: self))
+    end
   end
 end
