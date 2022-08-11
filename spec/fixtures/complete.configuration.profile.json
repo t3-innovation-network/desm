@@ -79,10 +79,5 @@
     "version": "1",
     "description": "A description what the skos file represents.",
     "origin": "https://credreg.net/ctdl/terms/OrganizationType/json?releaseID=20210528"
-  },
-  "profileAdministrator": {
-    "fullname": "Sergio Ramos",
-    "email": "sergio@ramos.com",
-    "phone": "(123) 123-1234"
   }
 }

@@ -30,25 +30,12 @@ class CreateCpStructure
   end
 
   def call
-    assign_administrator
     generate_abstract_classes
     generate_mapping_predicates
     generate_dsos_data
   end
 
   private
-
-  def assign_administrator
-    return unless profile_admin
-
-    result = CreateAgent.call(profile_admin.merge({
-                                                    role: Role.find_by_name("profile admin"),
-                                                    skip_validating_organization: true
-                                                  }))
-    raise AdminCreationError.new("AdminCreationError: #{result.error}") unless result.error.nil?
-
-    @cp.update(administrator: result.agent)
-  end
 
   def generate_abstract_classes
     result = CreateAbstractClasses.call({json_body: @cp.json_abstract_classes})
@@ -113,9 +100,5 @@ class CreateCpStructure
     return domain unless domain.nil?
 
     Domain.all.select {|domain| uri.end_with?(domain.source_uri.split(":").last) }&.first
-  end
-
-  def profile_admin
-    @structure[:profile_administrator] || @structure[:standards_organizations].first[:dso_agents].first
   end
 end
