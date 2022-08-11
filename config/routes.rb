@@ -10,7 +10,6 @@ Rails.application.routes.draw do
   get :session_status, to: 'sessions#session_status'
   post 'password/forgot', to: 'passwords#forgot'
   post 'password/reset', to: 'passwords#reset'
-  post 'password/strength', to: 'passwords#strength'
   
   namespace :api do
     namespace :v1 do

@@ -35,20 +35,6 @@ class PasswordsController < ApplicationController
     }
   end
 
-  ###
-  # @description: Calculates the entropy of a password, and returns if it's acceptable or not, based
-  #   on the password validation rules in the user model.
-  # @see User::PASSWORD_VALIDATION_RULES
-  ###
-  def strength
-    checker = StrongPassword::StrengthChecker.new(User::PASSWORD_VALIDATION_RULES)
-
-    render json: {
-      valid: checker.is_strong?(@password),
-      entropy: checker.calculate_entropy(@password)
-    }
-  end
-
   private
 
   ###

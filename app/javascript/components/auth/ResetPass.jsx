@@ -70,23 +70,6 @@ const ResetPass = (props) => {
     });
   };
 
-  const validatePassword = async () => {
-    if (password.length - 1 > minPasswordLength) {
-      let response = await passwordStrength(encode({ password: password }));
-
-      /// Manage the errors
-      if (response.error) {
-        setErrors(response.error + "\n. We were not able to reset your password.")
-        setWorking(false);
-        return;
-      }
-
-      setErrors("");
-      setWorking(false);
-      setPasswordIsValid(response.valid)
-    }
-  }
-
   /**
    * Configure the options to see at the center of the top navigation bar
    */
@@ -100,10 +83,6 @@ const ResetPass = (props) => {
 
     setToken(token);
   }, []);
-
-  useEffect(() => {
-    validatePassword()
-  }, [password, passwordConfirmation]);
 
   return (
     <React.Fragment>
@@ -172,12 +151,6 @@ const ResetPass = (props) => {
                       <button
                         type="submit"
                         className="btn btn-dark"
-                        disabled={
-                          !_.isEmpty(errors) ||
-                          !passwordIsValid ||
-                          _.isEmpty(password) ||
-                          _.isEmpty(passwordConfirmation)
-                        }
                       >
                         {working ? (
                           <Loader noPadding={true} smallSpinner={true} />
