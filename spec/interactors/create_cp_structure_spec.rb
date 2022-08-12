@@ -39,9 +39,9 @@ RSpec.describe CreateCpStructure, type: :interactor do
       end
 
       it "generates a structure with a valid administrator" do
-        expect(@cp.administrator.fullname).to eq("Sergio Ramos")
-        expect(@cp.administrator.email).to eq("sergio@ramos.com")
-        expect(@cp.administrator.phone).to eq("(123) 123-1234")
+        expect(@cp.administrator.fullname).to eq("Mapper N1")
+        expect(@cp.administrator.email).to eq("mapper1@credreg.com")
+        expect(@cp.administrator.phone).to eq("(123) 321-1235")
       end
 
       it "generates a structure with a valid abstract class set and its domains" do
