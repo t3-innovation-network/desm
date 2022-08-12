@@ -32,6 +32,8 @@ class Mapping < ApplicationRecord
   ###
   belongs_to :spine
 
+  has_one :configuration_profile, through: :user
+
   has_one :mapping_predicates, through: :user
 
   has_many :alignments
