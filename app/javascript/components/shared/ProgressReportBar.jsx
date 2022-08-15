@@ -38,7 +38,7 @@ const ProgressReportBar = (props) => {
       </div>
       {percentageMode ? (
         <h5 className="mt-2">
-          <strong>{(currentValue * 100) / maxValue + "%"}</strong>
+          <strong>{Math.round((currentValue * 100) / maxValue )}%</strong>
         </h5>
       ) : (
         <h5>

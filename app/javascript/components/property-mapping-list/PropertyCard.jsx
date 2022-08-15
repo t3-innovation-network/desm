@@ -50,8 +50,7 @@ export default class PropertyCard extends Component {
     if (!this.anyError(response) && !_.isEmpty(response.alignments)) {
       this.setState({
         currentMappingWeight: this.calculateCurrentWeight(response.alignments),
-        maxMappingWeight:
-          response.alignments.length * MAX_MAPPING_WEIGHT_PER_ORGANIZATION,
+        maxMappingWeight: term.maxMappingWeight
       });
     }
   };

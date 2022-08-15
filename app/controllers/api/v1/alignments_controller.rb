@@ -53,9 +53,14 @@ class Api::V1::AlignmentsController < ApplicationController
   # @return [ActiveRecord::Relation]
   ###
   def filter
-    terms = Alignment.joins(:mapping).where(mappings: {status: :mapped})
+    terms = Alignment
+            .joins(mapping: :configuration_profile)
+            .where(
+              configuration_profiles: {id: current_configuration_profile},
+              mappings: {status: :mapped}
+            )
 
-    terms = terms.where(spine_term_id: params[:spine_term_id]) if params[:spine_term_id].present?
+    terms.where!(spine_term_id: params[:spine_term_id]) if params[:spine_term_id].present?
 
     terms.order(:uri)
   end

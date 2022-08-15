@@ -18,6 +18,10 @@ class Term < ApplicationRecord
   ###
   has_and_belongs_to_many :specifications
 
+  has_one :configuration_profile, through: :organization
+
+  has_one :mapping_predicates, through: :configuration_profile
+
   ###
   # @description: The property for this term, an entity that contains all the rdf property information
   ###
@@ -44,7 +48,11 @@ class Term < ApplicationRecord
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
   def as_json(options={})
-    super options.merge(methods: %i[uri organization])
+    super options.merge(methods: %i[max_mapping_weight uri organization])
+  end
+
+  def max_mapping_weight
+    mapping_predicates.max_weight * configuration_profile.standards_organizations.count
   end
 
   ###

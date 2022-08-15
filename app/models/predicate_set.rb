@@ -17,6 +17,10 @@ class PredicateSet < ApplicationRecord
 
   alias_attribute :name, :title
 
+  def max_weight
+    predicates.maximum(:weight)
+  end
+
   def to_json_ld
     {
       name: title,

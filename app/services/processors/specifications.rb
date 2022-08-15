@@ -235,6 +235,7 @@ module Processors
         (
           parser.related_to_node_by?("domain", class_uri) ||
           parser.related_to_node_by?("range", class_uri) ||
+          parser.related_to_node_by?("dwcattributes:organizedInClass", class_uri) ||
           parser.types.eql_to?(class_uri)
         )
       end
@@ -275,15 +276,23 @@ module Processors
     def create_one_term(instance, node)
       parser = Parsers::JsonLd::Node.new(node)
       name = parser.read!("label")
+      user = instance.user
 
-      Term
-        .create_with(
-          name: name,
-          organization: instance.user.organization,
-          slug: name,
-          raw: node
-        )
-        .find_or_create_by!(source_uri: parser.read!("id"))
+      term = user
+             .configuration_profile
+             .terms
+             .find_or_initialize_by(source_uri: parser.read!("id"))
+
+      return term if term.persisted?
+
+      term.update!(
+        name: name,
+        organization: user.organization,
+        slug: name,
+        raw: node
+      )
+
+      term
     end
   end
 end
