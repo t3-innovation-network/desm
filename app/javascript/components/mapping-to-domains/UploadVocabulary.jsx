@@ -73,7 +73,7 @@ const UploadVocabulary = (props) => {
    */
   useEffect(() => {
     if (file != null) {
-      readFileContent(file, setFileContent(content), setErrors(tempErrors));
+      readFileContent(file, setFileContent, setErrors);
     }
   }, [file]);
 
