@@ -6,8 +6,9 @@ class JsonContext < ApplicationRecord
     context = find_or_initialize_by(uri: uri)
     return context.payload if context.persisted?
 
-    payload = HTTParty.get(uri).parsed_response.fetch("@context", {})
-    context.update!(payload: payload)
+    parsed_response = HTTParty.get(uri).parsed_response
+    payload = JSON(parsed_response) if parsed_response.is_a?(String)
+    context.update!(payload: payload.fetch("@context", {}))
     payload
   end
 end
