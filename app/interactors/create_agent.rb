@@ -15,7 +15,7 @@ class CreateAgent
       agt.update!(user_params)
     end
 
-    Assignment.create!(role: context.role, user: agent)
+    Assignment.find_or_create_by!(role: context.role, user: agent)
 
     context.agent = agent
   rescue StandardError => e
