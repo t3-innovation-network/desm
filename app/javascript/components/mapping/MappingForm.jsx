@@ -348,6 +348,9 @@ const MappingForm = () => {
    */
   useEffect(() => {
     fillWithDomains();
+    dispatch(setFiles([]));
+    dispatch(unsetMappingFormErrors());
+    unsetMultipleDomains();
   }, []);
 
   return (
