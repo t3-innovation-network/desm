@@ -136,6 +136,8 @@ class ConfigurationProfile < ApplicationRecord
   def create_new_entities
     structure.fetch("standards_organizations", []).each do |dso_data|
       CreateDso.call(dso_data.merge(configuration_profile: self))
+    rescue StandardError
+      nil
     end
   end
 end
