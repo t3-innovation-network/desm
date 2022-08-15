@@ -284,7 +284,7 @@ export default class PropertiesList extends Component {
       this.filteredProperties().map((term) => {
         return (
           <div className="row mt-3" key={term.id}>
-            <div className="col-4">
+            <div className="col-4 pb-3">
               <PropertyCard
                 organizations={organizations}
                 predicates={predicates}
