@@ -16,7 +16,9 @@ module Parsers
         ],
         RDF_PROPERTY: [
           "rdf:property",
-          "http://www.w3.org/1999/02/22-rdf-syntax-ns#property"
+          "rdfs:property",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#property",
+          "http://www.w3.org/2000/01/rdf-schema#property"
         ],
         SKOS_CONCEPT_SCHEME: [
           "skos:conceptscheme",
