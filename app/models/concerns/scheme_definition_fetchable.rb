@@ -29,6 +29,8 @@ module SchemeDefinitionFetchable
   def resolve_context
     # Try resolving with an http request
     JsonContext.fetch(@context)
+  rescue JSON::ParserErro
+    raise "Failed to resolve context. Make sure `#{@context}` responds with JSON"
   end
 
   private

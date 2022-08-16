@@ -143,7 +143,7 @@ export default class PropertyCard extends Component {
         {/* ERRORS */}
         {errors.length ? <AlertNotice message={errors} /> : null}
 
-        <div className="card borderless bg-col-secondary">
+        <div className="card borderless bg-col-secondary h-100">
           <div className="card-header desm-rounded bottom-borderless bg-col-secondary">
             <small className="mt-3 col-on-primary-light">
               Element/Property
