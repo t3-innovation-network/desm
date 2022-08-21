@@ -77,7 +77,7 @@ module Converters
       {
         "@id": build_desm_uri(name),
         "@type": "skos:ConceptScheme",
-        "dct:title": name.decamelize,
+        "dct:title": "#{name.decamelize.capitalize} concept scheme",
         "dct:description": extract_annotation(simple_type),
         "skos:hasTopConcept": concept_ids
       }
