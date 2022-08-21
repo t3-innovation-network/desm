@@ -325,7 +325,7 @@ export default class EditTerm extends Component {
                             <input
                               type="text"
                               className="form-control"
-                              name="source_uri"
+                              name="sourceUri"
                               placeholder="Source URI"
                               value={term.property.sourceUri || ""}
                               onChange={this.handlePropertyChange}
@@ -345,7 +345,7 @@ export default class EditTerm extends Component {
                               type="text"
                               className="form-control"
                               name="label"
-                              placeholder="Porperty Label"
+                              placeholder="Property Label"
                               value={term.property.label}
                               onChange={this.handlePropertyChange}
                               disabled={uploadingVocabulary}
@@ -364,7 +364,7 @@ export default class EditTerm extends Component {
                               type="text"
                               className="form-control"
                               name="scheme"
-                              placeholder="Porperty Scheme"
+                              placeholder="Property Scheme"
                               value={term.property.scheme || ""}
                               onChange={this.handlePropertyChange}
                               disabled={uploadingVocabulary}
@@ -386,7 +386,7 @@ export default class EditTerm extends Component {
                     </div>
 
                     <div className="form-group">
-                      <label>Domain</label>
+                      <label>Selected Domain</label>
 
                       <ExpandableOptions
                         options={this.domainsAsOptions(term.property.domain)}
@@ -399,7 +399,7 @@ export default class EditTerm extends Component {
                     </div>
 
                     <div className="form-group">
-                      <label>Range</label>
+                      <label>Selected Range</label>
 
                       <ExpandableOptions
                         options={this.rangeAsOptions(term.property.range)}

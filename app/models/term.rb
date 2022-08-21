@@ -76,7 +76,8 @@ class Term < ApplicationRecord
       label: parser.read!("label") || parser.read!("id"),
       domain: domain,
       selected_domain: domain&.first,
-      range: range&.first,
+      range: range,
+      selected_range: range&.first,
       subproperty_of: parser.read!("subproperty")
     )
   end
