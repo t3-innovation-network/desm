@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
@@ -6,9 +6,10 @@ import { setVocabularies } from "../../actions/vocabularies";
 import { vocabName } from "../../helpers/Vocabularies";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { render } from "react-dom";
 
 /**
- * Reads the file content
+ * Displays a specification and its vocabularies in the tabbed form
  *
  * Props:
  *
@@ -33,6 +34,8 @@ const SpecsPreviewTabs = (props) => {
    */
   const dispatch = useDispatch();
 
+  const [selectedTab, setSelectedTab] = useState(0);
+
   /**
    * Remove a specific vocabulary from the collection of recognized vocabularies
    *
@@ -48,9 +51,12 @@ const SpecsPreviewTabs = (props) => {
     dispatch(setVocabularies(tempVocabularies));
   };
 
-  const graphFromFilteredFile = useMemo(
-    () => ({ "@graph": filteredFile['@graph'] }),
-    [filteredFile]
+  const renderSpec = (spec) => (
+    JSON.stringify(
+      { "@graph": spec["@graph"] },
+      null,
+      2
+    )
   );
 
   return (
@@ -58,10 +64,12 @@ const SpecsPreviewTabs = (props) => {
       <Tabs
         className={"mt-3" + (disabled ? " disabled-container" : "")}
         defaultFocus={true}
-        defaultIndex={0}
+        defaultIndex={selectedTab}
+        onSelect={index => setSelectedTab(index)}
       >
         <TabList>
           <Tab>
+            <input checked={selectedTab === 0} className="mr-2" type="radio" />
             Spec {" - "}
             <strong className={propertiesCount < 1 ? "col-primary" : ""}>
               {propertiesCount + " "}
@@ -69,16 +77,23 @@ const SpecsPreviewTabs = (props) => {
             properties
           </Tab>
 
-          {vocabularies.map((content, i) => {
-            return <Tab key={i}>{vocabName(content["@graph"])}</Tab>;
-          })}
+          {vocabularies.map((content, i) => (
+            <Tab key={i}>
+              <input
+                checked={selectedTab === i + 1}
+                className="mr-2"
+                type="radio"
+              />
+              {vocabName(content["@graph"])}
+            </Tab>
+          ))}
         </TabList>
 
         <TabPanel>
           <div className="card mt-2 mb-2 has-scrollbar scrollbar">
             <div className="card-body">
               <pre>
-                <code>{JSON.stringify(graphFromFilteredFile, null, 2)}</code>
+                <code>{renderSpec(filteredFile)}</code>
               </pre>
             </div>
           </div>
@@ -108,7 +123,7 @@ const SpecsPreviewTabs = (props) => {
                 </div>
                 <div className="card-body  has-scrollbar scrollbar">
                   <pre>
-                    <code>{JSON.stringify(vocabulary, null, 2)}</code>
+                    <code>{renderSpec(vocabulary)}</code>
                   </pre>
                 </div>
               </div>
