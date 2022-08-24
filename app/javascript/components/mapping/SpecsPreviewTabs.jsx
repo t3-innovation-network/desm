@@ -69,7 +69,12 @@ const SpecsPreviewTabs = (props) => {
       >
         <TabList>
           <Tab>
-            <input checked={selectedTab === 0} className="mr-2" type="radio" />
+            <input
+              checked={selectedTab === 0}
+              className="mr-2"
+              readOnly
+              type="radio"
+            />
             Spec {" - "}
             <strong className={propertiesCount < 1 ? "col-primary" : ""}>
               {propertiesCount + " "}
@@ -82,6 +87,7 @@ const SpecsPreviewTabs = (props) => {
               <input
                 checked={selectedTab === i + 1}
                 className="mr-2"
+                readOnly
                 type="radio"
               />
               {vocabName(content["@graph"])}

@@ -64,6 +64,7 @@ const UploadVocabulary = (props) => {
    * the input changes (after the user selects file/s)
    */
   const handleFileChange = (event) => {
+    setErrors([]);
     setFile(event.target.files[0]);
   };
 
@@ -137,6 +138,11 @@ const UploadVocabulary = (props) => {
       setErrors([e]);
     }
   };
+
+  const handleVocabularyURLChange = (e) => {
+    setErrors([]);
+    setVocabularyURL(e.target.value);
+  }
 
   /**
    * Returns the number of conepts recognized inside the fetched vocabulary
@@ -262,8 +268,7 @@ const UploadVocabulary = (props) => {
               id="vocabulary-url-input"
               name="vocabulary-url-input"
               value={vocabularyURL}
-              onChange={(e) => setVocabularyURL(e.target.value)}
-              onBlur={handleVocabularyURLBlur}
+              onChange={handleVocabularyURLChange}
               required={true}
             />
           </div>
@@ -358,7 +363,7 @@ const UploadVocabulary = (props) => {
             {uploadMode == uploadModes.FILE_UPLOAD ? (
               <FileUploadForm />
             ) : (
-              <URLUploadForm />
+              URLUploadForm()
             )}
 
             {uploadMode == uploadModes.FILE_UPLOAD && <FileData />}
