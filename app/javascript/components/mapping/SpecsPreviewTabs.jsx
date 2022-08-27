@@ -42,12 +42,9 @@ const SpecsPreviewTabs = (props) => {
    * @param {Integer} i: The Vocabulary index to find in the vocabularies collection
    */
   const handleRemoveVocabulary = (i) => {
-    /// Remove the vocabulary using its index in the collection
-    let tempVocabularies = vocabularies;
-    delete tempVocabularies[i];
-
-    /// Refresh the UI
-    dispatch(setVocabularies([]));
+    const tempVocabularies = [...vocabularies];
+    tempVocabularies.splice(i, 1);
+    setSelectedTab(0);
     dispatch(setVocabularies(tempVocabularies));
   };
 
@@ -69,7 +66,12 @@ const SpecsPreviewTabs = (props) => {
       >
         <TabList>
           <Tab>
-            <input checked={selectedTab === 0} className="mr-2" type="radio" />
+            <input
+              checked={selectedTab === 0}
+              className="mr-2"
+              readOnly
+              type="radio"
+            />
             Spec {" - "}
             <strong className={propertiesCount < 1 ? "col-primary" : ""}>
               {propertiesCount + " "}
@@ -82,6 +84,7 @@ const SpecsPreviewTabs = (props) => {
               <input
                 checked={selectedTab === i + 1}
                 className="mr-2"
+                readOnly
                 type="radio"
               />
               {vocabName(content["@graph"])}

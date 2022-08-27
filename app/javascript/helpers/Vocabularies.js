@@ -33,7 +33,7 @@ export const vocabName = (graph) => {
 export const graphMainNode = (graph) => {
   return graph.find((node) => {
     return nodeTypes(node).find((type) =>
-      type.toLowerCase().includes("conceptscheme")
+      type?.toLowerCase()?.includes("conceptscheme")
     );
   });
 };
@@ -61,9 +61,14 @@ export const validVocabulary = (vocab) => {
     hasGraph &&
     vocab["@graph"].some((node) =>
       nodeTypes(node).some(
-        (type) =>
-          type.toLowerCase().includes("concept") &&
+        (type) => {
+          if (!type) {
+            return false;
+          }
+
+          return type.toLowerCase().includes("concept") &&
           !type.toLowerCase().includes("conceptscheme")
+        }
       )
     );
 
