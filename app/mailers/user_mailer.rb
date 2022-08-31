@@ -8,7 +8,8 @@ class UserMailer < ApplicationMailer
   ###
   def welcome
     @title = t("mailers.welcome.title")
-    @url = "#{@config[:host]}/sign-in"
+    @reset_password_url = "#{@config[:host]}/forgot-password"
+    @sign_in_url = "#{@config[:host]}/sign-in"
 
     mail(to: @user.email, subject: t("mailers.welcome.subject"))
   end

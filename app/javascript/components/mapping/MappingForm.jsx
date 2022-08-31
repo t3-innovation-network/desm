@@ -482,7 +482,7 @@ const MappingForm = () => {
 
               <small className="mt-3 mb-3 float-right">
                 Domains in <span className="badge badge-success">green</span>{" "}
-                has a spine already uploaded
+                have a spine already uploaded
               </small>
             </div>
             <div className="form-group">
@@ -513,8 +513,8 @@ const MappingForm = () => {
                 </div>
               </div>
               <label className="mt-3">
-                You can upload your specification as RDF, JSON, XML or JSONLD
-                format
+                You can upload your specification as CSV, JSON-LD, JSON Schema,
+                RDF, or XML format
               </label>
             </div>
 

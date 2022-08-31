@@ -91,7 +91,7 @@ class ForgotPass extends Component {
                 <div className="card">
                   <div className="card-header">
                     <FontAwesomeIcon icon={faKey} />
-                    <span className="pl-2 subtitle">Forgot your password?</span>
+                    <span className="pl-2 subtitle">Reset Password</span>
                     <p>
                       Please type your email, and we will send you an email with
                       instructions on how to reset your password.
