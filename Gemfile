@@ -5,8 +5,6 @@ git_source(:github) {|repo| "https://github.com/#{repo}.git" }
 
 ###
 # RUBY & RAILS
-# Ruby version
-ruby "2.7.1"
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 6.0.3", ">= 6.0.3.2"
 ###
@@ -94,11 +92,9 @@ group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "capybara"
   gem "database_cleaner"
-  gem "debase"
   gem "factory_bot_rails"
   gem "faker"
   gem "rspec-rails", "~> 4.0.1"
-  gem "ruby-debug-ide"
   gem "shoulda-matchers"
   gem "vcr", "~> 6.0"
   gem "webmock", "~> 3.13"
