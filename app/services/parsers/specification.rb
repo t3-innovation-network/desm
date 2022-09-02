@@ -27,6 +27,10 @@ module Parsers
       new(file_content: specification)
     end
 
+    def to_jsonld
+      {'@context': context, '@graph': graph}
+    end
+
     ###
     # @description: We will work only with a json-ld file that contains both a '@context' and a '@graph'.
     #   - CASE A: It can be the case of a file only containing a graph (without a context), so we set the context
