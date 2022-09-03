@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get :session_status, to: 'sessions#session_status'
   post 'password/forgot', to: 'passwords#forgot'
   post 'password/reset', to: 'passwords#reset'
-  
+
   namespace :api do
     namespace :v1 do
       resources :alignments, only: [:destroy, :index, :update]
@@ -27,8 +27,11 @@ Rails.application.routes.draw do
       resources :specifications, only: [:create, :destroy, :show]
       resources :spine_terms, only: [:create]
       resources :terms, only: [:show, :update, :destroy]
-      resources :vocabularies, only: [:index, :create, :show]
       resources :spine_specifications, only: %i[index show]
+
+      resources :vocabularies, only: [:index, :create, :show] do
+        post :extract, on: :collection
+      end
 
       # Mapping selected terms
       post 'mappings/:id/selected_terms' => 'mapping_selected_terms#create'

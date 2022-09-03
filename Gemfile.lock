@@ -101,9 +101,6 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
-    debase (0.2.4.1)
-      debase-ruby_core_source (>= 0.10.2)
-    debase-ruby_core_source (0.10.15)
     diff-lcs (1.5.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -391,8 +388,6 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.16.0)
       parser (>= 3.1.1.0)
-    ruby-debug-ide (0.7.3)
-      rake (>= 0.8.1)
     ruby-progressbar (1.11.0)
     rubyzip (2.3.2)
     scanf (1.0.0)
@@ -489,7 +484,6 @@ DEPENDENCIES
   byebug
   capybara
   database_cleaner
-  debase
   dotenv-rails (~> 2.7)
   factory_bot_rails
   faker
@@ -515,7 +509,6 @@ DEPENDENCIES
   rerun
   rspec-rails (~> 4.0.1)
   rubocop
-  ruby-debug-ide
   rubyzip (~> 2.3)
   seed-fu
   shoulda-matchers
@@ -528,8 +521,5 @@ DEPENDENCIES
   webmock (~> 3.13)
   webpacker (~> 5.0, >= 5.0.1)
 
-RUBY VERSION
-   ruby 2.7.1p83
-
 BUNDLED WITH
-   2.1.4
+   2.3.14

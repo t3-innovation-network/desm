@@ -46,4 +46,8 @@ class VocabularyPolicy < ApplicationPolicy
   def flat?
     @user.present?
   end
+
+  def extract?
+    @user.present?
+  end
 end

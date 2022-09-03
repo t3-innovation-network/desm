@@ -23,6 +23,7 @@ import createVocabulary from "../../services/createVocabulary";
 import { vocabName } from "../../helpers/Vocabularies";
 import UploadVocabulary from "../mapping-to-domains/UploadVocabulary";
 import Pluralize from "pluralize";
+import extractVocabularies from "../../services/extractVocabularies";
 
 const MappingPreview = (props) => {
   /**
@@ -154,16 +155,10 @@ const MappingPreview = (props) => {
    *
    * @param {Object} data
    */
-  const handleVocabularyAdded = (data) => {
-    /// Manage the vocabularies in the store
-    let tempVocabs = vocabularies;
-
-    /// Add the new vocabulary
-    tempVocabs.push(data.vocabulary.content);
-
-    /// Refresh the UI
-    dispatch(setVocabularies([]));
-    dispatch(setVocabularies(tempVocabs));
+  const handleVocabularyAdded = async (data) => {
+    const response = await extractVocabularies(data.vocabulary.content);
+    console.log("vocabs", response.vocabularies);
+    dispatch(setVocabularies([...vocabularies, ...response.vocabularies]));
   };
 
   /**

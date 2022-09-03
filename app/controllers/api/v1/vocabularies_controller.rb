@@ -62,6 +62,16 @@ class Api::V1::VocabulariesController < ApplicationController
     render json: @instance, include: :concepts
   end
 
+  ###
+  # @description: Extracts vocubularies from an uploaded file
+  ###
+  def extract
+    content = params[:content].to_unsafe_h
+    parser = Parsers::Specification.new(file_content: content)
+    processor = Processors::Specifications.new(parser.to_jsonld)
+    render json: processor.filter_vocabularies
+  end
+
   private
 
   ###
