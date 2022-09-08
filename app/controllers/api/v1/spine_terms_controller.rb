@@ -17,27 +17,12 @@ class Api::V1::SpineTermsController < ApplicationController
   # @description: Creates a new (synthetic) term for the spine, along with its alignment
   ###
   def create
-    ActiveRecord::Base.transaction do
-      spine_term = Term.find(permitted_params[:spine_term_id])
-      assign_term_to_spine(spine_term, permitted_params[:spine_id])
-      @alignment = Alignment.create!(permitted_params[:alignment].merge(spine_term_id: spine_term.id))
-    end
-
+    result = CreateSyntheticTerm.call(params: permitted_params)
+    @alignment = result.alignment
     render json: @alignment
   end
 
   private
-
-  ###
-  # @description: Since a term can be part of many spines and a spine
-  #   can have many terms, we need to set that relation explicitly
-  # @param [Object] term
-  # @param [Integer] spine_id
-  ###
-  def assign_term_to_spine term, spine_id
-    spine = Spine.find(spine_id)
-    spine.terms << term
-  end
 
   ###
   # @description: Clean params
