@@ -17,7 +17,6 @@ Rails.application.routes.draw do
       resources :alignment_vocabulary_concepts, only: [:update]
       resources :alignment_synthetic_concepts, only: [:create]
       resources :audits, only: [:index]
-      resources :configuration_profiles, only: [:create, :index, :destroy, :show, :update]
       resources :domains, only: [:index, :show]
       resources :mappings, only: [:create, :destroy, :show, :index, :update]
       resources :merged_files, only: [:create, :show]
@@ -28,6 +27,10 @@ Rails.application.routes.draw do
       resources :spine_terms, only: [:create]
       resources :terms, only: [:show, :update, :destroy]
       resources :spine_specifications, only: %i[index show]
+
+      resources :configuration_profiles, except: %i[new edit] do
+        get :set_current, on: :member
+      end
 
       resources :vocabularies, only: [:index, :create, :show] do
         post :extract, on: :collection

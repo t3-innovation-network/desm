@@ -12,10 +12,12 @@ class ConfigurationProfile < ApplicationRecord
   belongs_to :abstract_classes, class_name: "DomainSet", foreign_key: :domain_set_id, optional: true
   belongs_to :mapping_predicates, class_name: "PredicateSet", foreign_key: :predicate_set_id, optional: true
   belongs_to :administrator, class_name: "User", foreign_key: :administrator_id, optional: true
+  has_many :domains, through: :abstract_classes
   has_many :standards_organizations, class_name: "Organization", dependent: :destroy
   has_many :mappings, through: :standards_organizations
   has_many :spines, through: :standards_organizations
   has_many :terms, through: :standards_organizations
+  has_many :predicates, through: :mapping_predicates
 
   after_initialize :setup_schema_validators
   before_save :check_structure, if: :structure_changed?
