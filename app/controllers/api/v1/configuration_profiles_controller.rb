@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::ConfigurationProfilesController < Api::V1::ConfigurationProfilesAbstractController
-  before_action :with_instance, only: %i[destroy show update]
+  before_action :with_instance, only: %i[destroy show update set_current]
 
   def create
     cp = ConfigurationProfile.create!(creation_params)
@@ -11,7 +11,9 @@ class Api::V1::ConfigurationProfilesController < Api::V1::ConfigurationProfilesA
   end
 
   def index
-    cps = ConfigurationProfile.order(name: :asc)
+    cps = ConfigurationProfile
+          .includes(standards_organizations: :users)
+          .order(name: :asc)
 
     render json: cps, include: [standards_organizations: {include: :users}]
   end
@@ -32,6 +34,11 @@ class Api::V1::ConfigurationProfilesController < Api::V1::ConfigurationProfilesA
     @instance.update(permitted_params)
 
     render json: @instance, include: [standards_organizations: {include: :users}]
+  end
+
+  def set_current
+    session[:current_configuration_profile_id] = @instance.id
+    head :ok
   end
 
   private

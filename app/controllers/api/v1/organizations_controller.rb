@@ -12,12 +12,13 @@ class Api::V1::OrganizationsController < ApplicationController
   def index
     organizations =
       if current_configuration_profile
-        current_configuration_profile&.standards_organizations
+        current_configuration_profile.standards_organizations
       else
         Organization.all
       end
 
-    render json: organizations.order(name: :asc), include: :users
+    render json: organizations.order(name: :asc).includes(:users),
+           include: :users
   end
 
   ###

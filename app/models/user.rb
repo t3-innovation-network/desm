@@ -33,7 +33,7 @@ class User < ApplicationRecord
   end
 
   def available_domains
-    configuration_profile&.abstract_classes&.domains
+    configuration_profile&.domains
   end
 
   def available_predicates

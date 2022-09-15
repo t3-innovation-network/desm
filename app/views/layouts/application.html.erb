@@ -14,7 +14,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
   </head>
 
-  <body>
+  <body
+    data-configuration-profile-id="<%= current_configuration_profile&.id %>"
+    data-logged-in="<%= current_user.present? %>"
+  >
     <%= yield %>
   </body>
 </html>

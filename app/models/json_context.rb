@@ -7,8 +7,15 @@ class JsonContext < ApplicationRecord
     return context.payload if context.persisted?
 
     parsed_response = HTTParty.get(uri).parsed_response
-    payload = JSON(parsed_response) if parsed_response.is_a?(String)
+
+    payload =
+      if parsed_response.is_a?(String)
+        JSON(parsed_response)
+      else
+        parsed_response
+      end
+
     context.update!(payload: payload.fetch("@context", {}))
-    payload
+    context.payload
   end
 end

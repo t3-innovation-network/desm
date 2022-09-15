@@ -12,8 +12,9 @@ import App from "../components/App";
 import allReducers from "../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { AppContextProvider } from "../contexts/AppContext";
 
 const store = createStore(
   allReducers,
@@ -24,7 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
   render(
     <Provider store={store}>
       <DndProvider backend={HTML5Backend}>
-        <App />
+        <AppContextProvider>
+          <App />
+        </AppContextProvider>
       </DndProvider>
     </Provider>,
     document.body.appendChild(document.createElement("div"))

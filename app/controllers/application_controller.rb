@@ -7,6 +7,9 @@ class ApplicationController < ActionController::Base
   # Handle errors with a concern
   include Recoverable
 
+  helper_method :current_configuration_profile
+  helper_method :current_user
+
   # We manage our own security for sessions
   skip_before_action :verify_authenticity_token
 
@@ -35,7 +38,9 @@ class ApplicationController < ActionController::Base
   # @description: Returns the current configuration profile
   ###
   def current_configuration_profile
-    current_user&.configuration_profile
+    return current_user.configuration_profile if current_user&.configuration_profile
+
+    ConfigurationProfile.find_by(id: session[:current_configuration_profile_id])
   end
 
   ###
