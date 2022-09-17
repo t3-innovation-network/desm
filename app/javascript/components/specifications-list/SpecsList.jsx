@@ -328,7 +328,9 @@ export default class SpecsList extends Component {
                           mappings.map((mapping) => {
                             return (
                               <tr key={mapping.id}>
-                                <td>{mapping.title}</td>
+                                <td>
+                                  {mapping.title} ({mapping.specification.name})
+                                </td>
                                 <td>{mapping.specification.version}</td>
                                 <td>
                                   {mapping.mapped_terms +
