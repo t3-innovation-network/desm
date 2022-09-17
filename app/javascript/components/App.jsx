@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AlertNotice from "../components/shared/AlertNotice";
 import checkLoginStatus from "./../services/checkLoginStatus";
 import { useSelector } from "react-redux";
@@ -8,8 +8,10 @@ import Routes from "./Routes";
 import Loader from "./shared/Loader";
 import ReduxToastr from "react-redux-toastr";
 import { toastr as toast } from "react-redux-toastr";
+import { AppContext } from "../contexts/AppContext";
 
 const App = () => {
+  const { setLoggedIn } = useContext(AppContext);
   const isLoggedIn = useSelector((state) => state.loggedIn);
   const dispatch = useDispatch();
 
@@ -19,6 +21,7 @@ const App = () => {
   const handleLogin = (data) => {
     dispatch(doLogin());
     dispatch(setUser(data));
+    setLoggedIn(true);
     toast.info("Signed In");
   };
 

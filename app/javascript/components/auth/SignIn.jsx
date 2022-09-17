@@ -24,7 +24,7 @@ class SignIn extends Component {
    */
   handleSuccessfullAuth(user) {
     this.props.handleLogin(user);
-    this.props.history.push("/");
+    this.props.history.push("/select-configuration-profile");
   }
 
   /**

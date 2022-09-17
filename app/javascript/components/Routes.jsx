@@ -21,6 +21,7 @@ import ResetPass from "./auth/ResetPass";
 import ConfigurationProfilesIndex from "./dashboard/configuration-profiles/ConfigurationProfilesIndex";
 import EditConfigurationProfile from "./dashboard/configuration-profiles/edit/EditConfigurationProfile";
 import UploadConfigurationProfile from "./dashboard/configuration-profiles/UploadConfigurationProfile";
+import SelectConfigurationProfile from "./auth/SelectConfigurationProfile";
 
 const adminRoleName = process.env.ADMIN_ROLE_NAME || "Super Admin";
 const allRoles = [adminRoleName, "Mapper", "DSO Admin", "Profile Admin"];
@@ -166,6 +167,13 @@ const Routes = (props) => {
           path="/dashboard/organizations/:id"
           allowedRoles={onlySuperAdmin}
           component={EditOrganization}
+        />
+
+        <ProtectedRoute
+          allowedRoles={allRoles}
+          component={SelectConfigurationProfile}
+          exact
+          path="/select-configuration-profile"
         />
       </Switch>
     </Router>

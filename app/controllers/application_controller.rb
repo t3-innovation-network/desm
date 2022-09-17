@@ -38,9 +38,11 @@ class ApplicationController < ActionController::Base
   # @description: Returns the current configuration profile
   ###
   def current_configuration_profile
-    return current_user.configuration_profile if current_user&.configuration_profile
+    id = session[:current_configuration_profile_id]
+    configuration_profile = ConfigurationProfile.find_by(id: id) if id
+    return configuration_profile if configuration_profile
 
-    ConfigurationProfile.find_by(id: session[:current_configuration_profile_id])
+    current_user.configuration_profile if current_user&.configuration_profile
   end
 
   ###

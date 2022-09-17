@@ -203,7 +203,11 @@ export default class PropertyMappingList extends Component {
   /**
    * Tasks before mount
    */
-  async componentDidMount() {
+  componentDidMount() {
+   this.loadData();
+  }
+
+  async loadData() {
     if (!this.context.currentConfigurationProfileId) {
       return;
     }
@@ -249,7 +253,9 @@ export default class PropertyMappingList extends Component {
         <div className="container-fluid container-wrapper">
           <div className="row">
             <div className="col p-lg-5 pt-5">
-              {!this.context.loggedIn && <ConfigurationProfileSelect />}
+              {!this.context.loggedIn && (
+                <ConfigurationProfileSelect onChange={this.loadData.bind(this)} />
+              )}
 
               {this.context.currentConfigurationProfileId && (
                 loading ? (
