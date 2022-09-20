@@ -35,8 +35,8 @@ const ConfigurationProfileSelect = ({ onChange }) => {
 
   const submitDisabled = (
     !configurationProfiles.length ||
-      !selectedConfigurationProfileId || submitting ||
-      currentConfigurationProfileId === selectedConfigurationProfileId
+      !selectedConfigurationProfileId ||
+      submitting
   );
 
   useEffect(() => {
