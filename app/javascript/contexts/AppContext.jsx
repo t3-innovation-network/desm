@@ -13,7 +13,12 @@ export const AppContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ currentConfigurationProfileId, loggedIn }}>
+    <AppContext.Provider value={{
+      currentConfigurationProfileId,
+      loggedIn,
+      setCurrentConfigurationProfileId,
+      setLoggedIn
+    }}>
       {children}
     </AppContext.Provider>
   );

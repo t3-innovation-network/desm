@@ -6,6 +6,7 @@ import TopNavOptions from "../shared/TopNavOptions";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
+import { isAdmin } from "../../helpers/Auth";
 
 class SignIn extends Component {
   /**
@@ -24,7 +25,7 @@ class SignIn extends Component {
    */
   handleSuccessfullAuth(user) {
     this.props.handleLogin(user);
-    this.props.history.push("/");
+    this.props.history.push(isAdmin(user) ? "/" : "/select-configuration-profile");
   }
 
   /**

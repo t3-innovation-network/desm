@@ -4,8 +4,11 @@ import fetchConfigurationProfiles from "../../services/fetchConfigurationProfile
 import setCurrentConfigurationProfile from "../../services/setCurrentConfigurationProfile";
 import Loader from "../shared/Loader";
 
-const ConfigurationProfileSelect = () => {
-  const { currentConfigurationProfileId } = useContext(AppContext);
+const ConfigurationProfileSelect = ({ onChange }) => {
+  const {
+    currentConfigurationProfileId,
+    setCurrentConfigurationProfileId
+  } = useContext(AppContext);
 
   const [configurationProfiles, setConfigurationProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +24,9 @@ const ConfigurationProfileSelect = () => {
     setSubmitting(true);
 
     await setCurrentConfigurationProfile(selectedConfigurationProfileId);
-    window.location.reload();
+    setCurrentConfigurationProfileId(selectedConfigurationProfileId);
+    setSubmitting(false);
+    onChange?.();
   };
 
   const placeholderOptionText = (
@@ -30,8 +35,8 @@ const ConfigurationProfileSelect = () => {
 
   const submitDisabled = (
     !configurationProfiles.length ||
-      !selectedConfigurationProfileId || submitting ||
-      currentConfigurationProfileId === selectedConfigurationProfileId
+      !selectedConfigurationProfileId ||
+      submitting
   );
 
   useEffect(() => {

@@ -1,24 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { doLogout, unsetUser } from "../../actions/sessions";
 import signOut from "../../services/signOut";
 import { toastr as toast } from "react-redux-toastr";
+import { AppContext } from "../../contexts/AppContext";
 
 const AuthButton = () => {
+  const { setLoggedIn } = useContext(AppContext);
   const isLoggedIn = useSelector((state) => state.loggedIn);
   const dispatch = useDispatch();
 
-  const handleLogoutClick = () => {
-    signOut().then((response) => {
-      if (response.error) {
-        toast.error(response.error);
-        return;
-      }
-      dispatch(doLogout());
-      dispatch(unsetUser());
-      toast.info("Signed Out");
-    });
+  const handleLogoutClick = async () => {
+    const { error } = await signOut();
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    dispatch(doLogout());
+    dispatch(unsetUser());
+    setLoggedIn(false);
+    toast.info("Signed Out");
   };
 
   /// Show "Sign Out" if the user is already signed in
