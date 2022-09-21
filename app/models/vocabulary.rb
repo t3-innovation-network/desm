@@ -10,9 +10,9 @@
 ###
 class Vocabulary < ApplicationRecord
   ###
-  # @description: The organization this vocabulary belongs to
+  # @description: The configuration profile and user this vocabulary belongs to
   ###
-  belongs_to :organization
+  belongs_to :configuration_profile
 
   ###
   # @description: The specification terms that are related to this vocabulary
@@ -25,6 +25,4 @@ class Vocabulary < ApplicationRecord
   #   concepts can be found in many vocabularies either.
   ###
   has_and_belongs_to_many :concepts, class_name: "SkosConcept"
-
-  validates :name, presence: true, uniqueness: {scope: :organization_id}
 end

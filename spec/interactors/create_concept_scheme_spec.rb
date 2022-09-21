@@ -5,7 +5,6 @@ require "rails_helper"
 RSpec.describe CreateConceptScheme, type: :interactor do
   describe ".call" do
     let(:test_uri) { Rails.root.join("spec", "fixtures", "DisabilityLevelCodeList.json") }
-    let(:org) { FactoryBot.build(:organization) }
 
     after(:all) do
       DatabaseCleaner.clean_with(:truncation)
@@ -18,7 +17,11 @@ RSpec.describe CreateConceptScheme, type: :interactor do
     end
 
     it "Creates a vocabulary with its concepts if uri is correct" do
-      result = CreateConceptScheme.call({uri: test_uri, name: "test", organization: org})
+      result = CreateConceptScheme.call({
+                                          uri: test_uri,
+                                          name: "test",
+                                          configuration_profile: create(:configuration_profile)
+                                        })
 
       expect(result.error).to be_nil
       expect(result.vocabulary).to be_instance_of(Vocabulary)

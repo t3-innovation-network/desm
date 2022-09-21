@@ -3,9 +3,10 @@
 class Spine < ApplicationRecord
   include Slugable
 
+  belongs_to :configuration_profile_user
   belongs_to :domain
-  belongs_to :organization
-  has_one :configuration_profile, through: :organization
+  has_one :configuration_profile, through: :configuration_profile_user
+  has_one :organization, through: :configuration_profile_user
   has_and_belongs_to_many :terms
   has_many :mappings
 

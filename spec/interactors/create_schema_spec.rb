@@ -6,7 +6,7 @@ RSpec.describe CreateSchema, type: :interactor do
   describe ".call" do
     let(:spec) { Rails.root.join("spec", "fixtures", "credreg.json") }
     let(:org) { FactoryBot.create(:organization) }
-    let(:user) { FactoryBot.create(:user, organization: org) }
+    let(:user) { FactoryBot.create(:configuration_profile_user) }
     let(:domain) { FactoryBot.create(:domain) }
 
     after(:all) do
@@ -21,9 +21,9 @@ RSpec.describe CreateSchema, type: :interactor do
       expect(result.error).to eq("name must be present")
 
       result = CreateSchema.call({domain_id: domain.id, name: "test"})
-      expect(result.error).to eq("user must be present")
+      expect(result.error).to eq("configuration profile user must be present")
 
-      result = CreateSchema.call({domain_id: domain.id, name: "test", user: user})
+      result = CreateSchema.call({domain_id: domain.id, name: "test", configuration_profile_user: user})
       expect(result.error).to eq("uri must be present")
     end
 
@@ -31,7 +31,7 @@ RSpec.describe CreateSchema, type: :interactor do
       result = CreateSchema.call({
                                    name: "test",
                                    uri: spec,
-                                   user: user,
+                                   configuration_profile_user: user,
                                    domain_id: domain.id
                                  })
 

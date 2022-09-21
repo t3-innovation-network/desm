@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe CreateDso, type: :interactor do
   describe ".call" do
     let(:admin) { FactoryBot.build(:user) }
-    let(:cp) { FactoryBot.build(:configuration_profile) }
+    let(:cp) { FactoryBot.create(:configuration_profile) }
 
     after(:all) do
       DatabaseCleaner.clean_with(:truncation)
@@ -30,9 +30,9 @@ RSpec.describe CreateDso, type: :interactor do
                                 name: "Test Name"
                               })
 
+      expect(cp.standards_organizations).to eq([result.dso])
       expect(result.error).to be_nil
       expect(result.dso).to be_instance_of(Organization)
-      expect(result.dso.configuration_profile).to be(cp)
       expect(result.dso.administrator).to be(admin)
       expect(result.dso.email).to eq("test@email.com")
     end

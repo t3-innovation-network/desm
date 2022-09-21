@@ -42,7 +42,14 @@ class ApplicationController < ActionController::Base
     configuration_profile = ConfigurationProfile.find_by(id: id) if id
     return configuration_profile if configuration_profile
 
-    current_user.configuration_profile if current_user&.configuration_profile
+    current_user&.configuration_profiles&.first
+  end
+
+  ###
+  # @description: Returns the current configuration profile/user connection
+  ###
+  def current_configuration_profile_user
+    current_configuration_profile.configuration_profile_users.find_by(user: current_user)
   end
 
   ###

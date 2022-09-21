@@ -4,6 +4,7 @@ require "faker"
 
 FactoryBot.define do
   factory :term do
+    configuration_profile_user
     source_uri { Faker::Internet.url }
     name { Faker::Name.unique.first_name }
     raw {
@@ -16,6 +17,5 @@ FactoryBot.define do
         "\"isDefinedBy\":\"rdfs:\"}"
       ].join(","))
     }
-    organization
   end
 end

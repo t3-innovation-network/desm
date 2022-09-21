@@ -7,8 +7,6 @@ describe Specification, type: :model do
     expect(FactoryBot.build(:specification)).to be_valid
   end
 
-  it { should belong_to(:user) }
-
   describe "attributes" do
     let(:spec) { FactoryBot.build(:specification) }
 

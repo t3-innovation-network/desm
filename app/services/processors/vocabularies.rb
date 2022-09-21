@@ -6,18 +6,18 @@ module Processors
   #   skos concepts as a graph
   ###
   class Vocabularies < Skos
-    def create name, organization
-      @vocabulary = create_vocabulary(name, organization)
+    def create name, configuration_profile
+      @vocabulary = create_vocabulary(name, configuration_profile)
 
       @vocabulary.concepts = create_concepts
 
       @vocabulary
     end
 
-    def create_vocabulary name, organization
+    def create_vocabulary name, configuration_profile
       @vocabulary = Vocabulary.find_or_initialize_by(name: name) do |vocab|
         vocab.update(
-          organization: organization,
+          configuration_profile: configuration_profile,
           context: @context || {},
           content: first_concept_scheme_node
         )

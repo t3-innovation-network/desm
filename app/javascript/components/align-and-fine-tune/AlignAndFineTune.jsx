@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import fetchMapping from "../../services/fetchMapping";
 import fetchMappingSelectedTerms from "../../services/fetchMappingSelectedTerms";
@@ -24,8 +24,11 @@ import updateMapping from "../../services/updateMapping";
 import MappingChangeLog from "./mapping-changelog/MappingChangeLog";
 import fetchAudits from "../../services/fetchAudits";
 import ConfirmDialog from "../shared/ConfirmDialog";
+import { AppContext } from "../../contexts/AppContext";
 
 const AlignAndFineTune = (props) => {
+  const { organization } = useContext(AppContext);
+
   /**
    * Flag to control when the user is adding a synthetic property
    */
@@ -374,7 +377,7 @@ const AlignAndFineTune = (props) => {
       /// If it's a synthetic alignment, and we added it, let's remove it
       if (
         alignment.synthetic &&
-        alignment.origin.toLowerCase() === user.organization.name.toLowerCase()
+        alignment.origin.toLowerCase() === organization.toLowerCase()
       ) {
         setAlignmentToRemove(alignment);
         setConfirmingRemoveAlignment(true);
@@ -888,7 +891,7 @@ const AlignAndFineTune = (props) => {
 
                 <div className="col-lg-4 p-lg-5 pt-5 bg-col-secondary">
                   <AlignmentsHeader
-                    organizationName={user.organization.name}
+                    organizationName={organization}
                     domain={mapping.domain}
                     selectedAlignments={selectedAlignments}
                     hideMappedSelectedTerms={hideMappedSelectedTerms}

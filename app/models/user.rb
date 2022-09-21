@@ -9,22 +9,22 @@ class User < ApplicationRecord
   attr_accessor :skip_sending_welcome_email, :skip_validating_organization
 
   has_secure_password
-  belongs_to :organization, optional: true
-  has_one :configuration_profile, through: :organization
-  has_one :mapping_predicates, through: :configuration_profile
+  has_many :configuration_profile_users
+  has_many :configuration_profiles, through: :configuration_profile_users
+  has_many :organizations, through: :configuration_profile_users
   has_many :assignments, dependent: :delete_all
-  has_many :mappings, dependent: :destroy
+  has_many :mappings, through: :configuration_profile_users
   has_many :roles, through: :assignments
   has_many :specifications, dependent: :destroy
+  has_many :vocabularies, through: :configuration_profile_users
 
   validates :fullname, presence: true
   validates :email, presence: true, uniqueness: true
-  validates :organization, presence: true, unless: :skip_validating_organization
 
   after_create :send_welcome_email, unless: :skip_sending_welcome_email
 
   def as_json(options={})
-    super options.merge(methods: %i[roles organization])
+    super options.merge(methods: %i[roles])
   end
 
   def assign_role(role_id)

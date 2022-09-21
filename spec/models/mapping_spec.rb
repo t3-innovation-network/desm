@@ -8,7 +8,6 @@ describe Mapping, type: :model do
   end
 
   it { should validate_presence_of(:name) }
-  it { should belong_to(:user) }
 
   describe ".remove_alignments_mapped_terms" do
     it "'in-progress' mapping has empty alignments after it is marked back as 'uploaded'" do

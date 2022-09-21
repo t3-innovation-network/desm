@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_15_185516) do
+ActiveRecord::Schema.define(version: 2022_09_21_130324) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -94,6 +94,13 @@ ActiveRecord::Schema.define(version: 2022_07_15_185516) do
     t.index ["user_id", "user_type"], name: "user_index"
   end
 
+  create_table "configuration_profile_users", force: :cascade do |t|
+    t.bigint "configuration_profile_id", null: false
+    t.bigint "organization_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["configuration_profile_id", "user_id"], name: "index_configuration_profile_user", unique: true
+  end
+
   create_table "configuration_profiles", force: :cascade do |t|
     t.text "description"
     t.string "name"
@@ -111,6 +118,12 @@ ActiveRecord::Schema.define(version: 2022_07_15_185516) do
     t.index ["administrator_id"], name: "index_configuration_profiles_on_administrator_id"
     t.index ["domain_set_id"], name: "index_configuration_profiles_on_domain_set_id"
     t.index ["predicate_set_id"], name: "index_configuration_profiles_on_predicate_set_id"
+  end
+
+  create_table "configuration_profiles_organizations", force: :cascade do |t|
+    t.bigint "configuration_profile_id", null: false
+    t.bigint "organization_id", null: false
+    t.index ["configuration_profile_id", "organization_id"], name: "index_configuration_profiles_organizations", unique: true
   end
 
   create_table "domain_sets", force: :cascade do |t|
@@ -156,15 +169,15 @@ ActiveRecord::Schema.define(version: 2022_07_15_185516) do
     t.string "name"
     t.string "title"
     t.text "description"
-    t.bigint "user_id", null: false
     t.bigint "specification_id", null: false
     t.integer "spine_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0
     t.string "slug"
+    t.bigint "configuration_profile_user_id", null: false
+    t.index ["configuration_profile_user_id"], name: "index_mappings_on_configuration_profile_user_id"
     t.index ["specification_id"], name: "index_mappings_on_specification_id"
-    t.index ["user_id"], name: "index_mappings_on_user_id"
   end
 
   create_table "merged_files", force: :cascade do |t|
@@ -178,14 +191,12 @@ ActiveRecord::Schema.define(version: 2022_07_15_185516) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "email", null: false
-    t.bigint "configuration_profile_id", null: false
     t.bigint "administrator_id"
     t.text "description"
     t.string "homepage_url"
     t.string "standards_page"
     t.string "slug"
     t.index ["administrator_id"], name: "index_organizations_on_administrator_id"
-    t.index ["configuration_profile_id"], name: "index_organizations_on_configuration_profile_id"
   end
 
   create_table "predicate_sets", force: :cascade do |t|
@@ -222,7 +233,6 @@ ActiveRecord::Schema.define(version: 2022_07_15_185516) do
     t.text "comment"
     t.jsonb "domain"
     t.jsonb "range"
-    t.bigint "term_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "uri"
@@ -230,6 +240,7 @@ ActiveRecord::Schema.define(version: 2022_07_15_185516) do
     t.string "selected_domain"
     t.string "selected_range"
     t.string "scheme"
+    t.bigint "term_id", default: 1, null: false
     t.index ["term_id"], name: "index_properties_on_term_id"
   end
 
@@ -263,14 +274,14 @@ ActiveRecord::Schema.define(version: 2022_07_15_185516) do
     t.string "name", null: false
     t.string "version"
     t.string "use_case"
-    t.bigint "user_id", null: false
     t.bigint "domain_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "selected_domains_from_file"
     t.string "slug"
+    t.bigint "configuration_profile_user_id", null: false
+    t.index ["configuration_profile_user_id"], name: "index_specifications_on_configuration_profile_user_id"
     t.index ["domain_id"], name: "index_specifications_on_domain_id"
-    t.index ["user_id"], name: "index_specifications_on_user_id"
   end
 
   create_table "specifications_terms", id: false, force: :cascade do |t|
@@ -283,9 +294,9 @@ ActiveRecord::Schema.define(version: 2022_07_15_185516) do
     t.string "name"
     t.string "slug"
     t.bigint "domain_id"
-    t.bigint "organization_id"
+    t.bigint "configuration_profile_user_id", null: false
+    t.index ["configuration_profile_user_id"], name: "index_spines_on_configuration_profile_user_id"
     t.index ["domain_id"], name: "index_spines_on_domain_id"
-    t.index ["organization_id"], name: "index_spines_on_organization_id"
   end
 
   create_table "spines_terms", id: false, force: :cascade do |t|
@@ -299,11 +310,11 @@ ActiveRecord::Schema.define(version: 2022_07_15_185516) do
     t.string "source_uri", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "organization_id"
     t.string "slug"
     t.json "raw", null: false
     t.string "identifier"
-    t.index ["organization_id"], name: "index_terms_on_organization_id"
+    t.bigint "configuration_profile_user_id", null: false
+    t.index ["configuration_profile_user_id"], name: "index_terms_on_configuration_profile_user_id"
   end
 
   create_table "terms_vocabularies", id: false, force: :cascade do |t|
@@ -328,12 +339,12 @@ ActiveRecord::Schema.define(version: 2022_07_15_185516) do
 
   create_table "vocabularies", force: :cascade do |t|
     t.string "name", null: false
-    t.bigint "organization_id", null: false
     t.jsonb "content", default: "{}", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "context", default: {}, null: false
-    t.index ["organization_id"], name: "index_vocabularies_on_organization_id"
+    t.bigint "configuration_profile_id", null: false
+    t.index ["configuration_profile_id"], name: "index_vocabularies_on_configuration_profile_id"
   end
 
   add_foreign_key "alignment_mapped_terms", "alignments"
@@ -348,23 +359,27 @@ ActiveRecord::Schema.define(version: 2022_07_15_185516) do
   add_foreign_key "alignments", "vocabularies"
   add_foreign_key "assignments", "roles"
   add_foreign_key "assignments", "users"
+  add_foreign_key "configuration_profile_users", "configuration_profiles", on_delete: :cascade
+  add_foreign_key "configuration_profile_users", "organizations", on_delete: :cascade
+  add_foreign_key "configuration_profile_users", "users", on_delete: :cascade
   add_foreign_key "configuration_profiles", "domain_sets"
   add_foreign_key "configuration_profiles", "predicate_sets"
   add_foreign_key "configuration_profiles", "users", column: "administrator_id", on_delete: :nullify
+  add_foreign_key "configuration_profiles_organizations", "configuration_profiles", on_delete: :cascade
+  add_foreign_key "configuration_profiles_organizations", "organizations", on_delete: :cascade
   add_foreign_key "domains", "domain_sets", on_delete: :cascade
   add_foreign_key "mapping_selected_terms", "mappings"
   add_foreign_key "mapping_selected_terms", "terms"
+  add_foreign_key "mappings", "configuration_profile_users", on_delete: :cascade
   add_foreign_key "mappings", "specifications"
-  add_foreign_key "mappings", "users"
-  add_foreign_key "organizations", "configuration_profiles"
   add_foreign_key "organizations", "users", column: "administrator_id"
   add_foreign_key "predicate_sets", "predicates", column: "strongest_match_id"
   add_foreign_key "predicates", "predicate_sets", on_delete: :cascade
-  add_foreign_key "properties", "terms"
+  add_foreign_key "properties", "terms", on_delete: :cascade
+  add_foreign_key "specifications", "configuration_profile_users", on_delete: :cascade
   add_foreign_key "specifications", "domains"
-  add_foreign_key "specifications", "users"
+  add_foreign_key "spines", "configuration_profile_users", on_delete: :cascade
   add_foreign_key "spines", "domains"
-  add_foreign_key "spines", "organizations"
-  add_foreign_key "terms", "organizations"
-  add_foreign_key "vocabularies", "organizations"
+  add_foreign_key "terms", "configuration_profile_users", on_delete: :cascade
+  add_foreign_key "vocabularies", "configuration_profiles", on_delete: :cascade
 end

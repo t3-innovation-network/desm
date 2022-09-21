@@ -12,12 +12,16 @@ class ConfigurationProfile < ApplicationRecord
   belongs_to :abstract_classes, class_name: "DomainSet", foreign_key: :domain_set_id, optional: true
   belongs_to :mapping_predicates, class_name: "PredicateSet", foreign_key: :predicate_set_id, optional: true
   belongs_to :administrator, class_name: "User", foreign_key: :administrator_id, optional: true
+  has_many :configuration_profile_users
+  has_and_belongs_to_many :standards_organizations, class_name: "Organization"
   has_many :domains, through: :abstract_classes
-  has_many :standards_organizations, class_name: "Organization", dependent: :destroy
-  has_many :mappings, through: :standards_organizations
-  has_many :spines, through: :standards_organizations
-  has_many :terms, through: :standards_organizations
+  has_many :mappings, through: :configuration_profile_users
+  has_many :specifications, through: :configuration_profile_users
+  has_many :spines, through: :configuration_profile_users
+  has_many :terms, through: :configuration_profile_users
+  has_many :users, through: :configuration_profile_users
   has_many :predicates, through: :mapping_predicates
+  has_many :vocabularies, through: :configuration_profile_users
 
   after_initialize :setup_schema_validators
   before_save :check_structure, if: :structure_changed?
@@ -130,7 +134,7 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def transition_to! new_state
-    update_attribute(:state, new_state)
+    public_send(persisted? ? :update_column : :update_attribute, :state, new_state)
   end
 
   private

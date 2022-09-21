@@ -11,7 +11,7 @@ class Api::V1::MappingsController < ApplicationController
   # @description: Creates a mapping with its related specification
   ###
   def create
-    @instance = Processors::Mappings.new(@specification, current_user).create
+    @instance = Processors::Mappings.new(@specification, current_configuration_profile_user).create
 
     render json: @instance, include: :specification
   end
@@ -39,14 +39,14 @@ class Api::V1::MappingsController < ApplicationController
   # @description: Lists all the mappings for the current user's organization
   ###
   def index
-    mappings =
+    source =
       if params[:filter] == "all"
-        current_configuration_profile.mappings || Mapping.none
+        current_configuration_profile
       else
-        current_user.mappings
+        current_configuration_profile_user
       end
 
-    render json: mappings.order(:title),
+    render json: source.mappings.order(:title),
            include: [:terms, :selected_terms, {specification: {include: %i[user terms]}}]
   end
 

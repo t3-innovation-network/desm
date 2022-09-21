@@ -25,21 +25,18 @@ module Processors
     # @param [Hash] data The collection of data to create the specification
     ###
     def self.create(data)
-      @current_user = data[:user]
-      @scheme = data[:scheme]
-
       @instance = Specification.new(
+        configuration_profile_user: data[:configuration_profile_user],
         name: data[:name],
         version: data[:version],
         use_case: data[:use_case],
-        user: @current_user,
         domain: Domain.find(data[:domain_id]),
         selected_domains_from_file: data[:selected_domains]
       )
 
       ActiveRecord::Base.transaction do
         @instance.save!
-        new(data[:spec]).create_terms(@instance)
+        new(data[:spec]).create_terms(@instance, data[:configuration_profile_user])
       end
 
       @instance
@@ -49,9 +46,9 @@ module Processors
     # @description: Create each of the terms related to the specification
     # @param instance [Specification]
     ###
-    def create_terms instance
+    def create_terms instance, configuration_profile_user
       filter_properties(instance.selected_domains_from_file).each do |node|
-        term = create_one_term(instance, node)
+        term = create_one_term(node, configuration_profile_user)
         next if term.nil?
 
         instance.terms << term
@@ -273,25 +270,17 @@ module Processors
     # @param instance [Specification]
     # @param [Object] node: The node to be evaluated in order to create a term
     ###
-    def create_one_term(instance, node)
+    def create_one_term(node, configuration_profile_user)
       parser = Parsers::JsonLd::Node.new(node)
       name = parser.read!("label")
-      user = instance.user
 
-      term = user
-             .configuration_profile
+      term = configuration_profile_user
              .terms
              .find_or_initialize_by(source_uri: parser.read!("id"))
 
       return term if term.persisted?
 
-      term.update!(
-        name: name,
-        organization: user.organization,
-        slug: name,
-        raw: node
-      )
-
+      term.update!(name: name, slug: name, raw: node)
       term
     end
   end

@@ -20,8 +20,6 @@ describe ConfigurationProfile, type: :model do
     expect(FactoryBot.build(:configuration_profile)).to be_valid
   end
 
-  it { should have_many(:standards_organizations) }
-
   context "predicates strongest match" do
     before(:all) do
       @cp = FactoryBot.create(:configuration_profile)
@@ -315,8 +313,8 @@ describe ConfigurationProfile, type: :model do
       @cp.update!(structure: @complete_structure)
       @cp.activate!
 
-      specification = @cp.standards_organizations.first.schemes.first
-      user = @cp.standards_organizations.first.agents.first
+      specification = @cp.specifications.first
+      user = @cp.configuration_profile_users.first
       @mapping = Processors::Mappings.new(specification, user).create
     end
 

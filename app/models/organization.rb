@@ -7,14 +7,14 @@ class Organization < ApplicationRecord
   include Slugable
 
   belongs_to :administrator, class_name: :User, foreign_key: "administrator_id", optional: true
-  belongs_to :configuration_profile
   has_many :agents, ->(o) { where.not(id: o.administrator_id) }, class_name: "User", dependent: :destroy
+  has_many :configuration_profile_users
   has_many :terms, dependent: :destroy
-  has_many :users, dependent: :destroy
   has_many :spines, dependent: :destroy
   has_many :mappings, through: :users, dependent: :destroy
-  has_many :schemes, through: :users, source: :specifications
   has_many :vocabularies, dependent: :destroy
+  has_many :configuration_profiles, -> { distinct }, through: :configuration_profile_users
+  has_many :users, -> { distinct }, through: :configuration_profile_users
 
   def to_json_ld
     {

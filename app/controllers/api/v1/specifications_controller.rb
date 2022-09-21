@@ -42,8 +42,8 @@ class Api::V1::SpecificationsController < ApplicationController
   ###
   def valid_params
     permitted_params.merge(
+      configuration_profile_user: current_configuration_profile_user,
       domain_id: params[:specification][:domain_id],
-      user: current_user,
       # We assume we received one only file with all the data
       spec: params[:specification][:content],
       selected_domains: params[:specification][:selected_domains]

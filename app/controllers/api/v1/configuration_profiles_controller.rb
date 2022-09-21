@@ -11,11 +11,19 @@ class Api::V1::ConfigurationProfilesController < Api::V1::ConfigurationProfilesA
   end
 
   def index
-    cps = ConfigurationProfile
-          .includes(standards_organizations: :users)
-          .order(name: :asc)
+    fields = ["configuration_profiles.*"]
 
-    render json: cps, include: [standards_organizations: {include: :users}]
+    configuration_profiles =
+      if current_user && !current_user.super_admin?
+        current_user
+          .configuration_profile_users
+          .joins(:configuration_profile, :organization)
+          .select(*fields, "organizations.id organization_id, organizations.id AS organization")
+      else
+        ConfigurationProfile.select(*fields)
+      end
+
+    render json: configuration_profiles.order(:name)
   end
 
   def destroy
