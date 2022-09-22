@@ -11,10 +11,10 @@ class Organization < ApplicationRecord
   has_many :configuration_profile_users
   has_many :terms, dependent: :destroy
   has_many :spines, dependent: :destroy
-  has_many :mappings, through: :users, dependent: :destroy
   has_many :vocabularies, dependent: :destroy
-  has_many :configuration_profiles, -> { distinct }, through: :configuration_profile_users
-  has_many :users, -> { distinct }, through: :configuration_profile_users
+  has_many :configuration_profiles, through: :configuration_profile_users
+  has_many :users, through: :configuration_profile_users
+  has_many :mappings, through: :users, dependent: :destroy
 
   def to_json_ld
     {

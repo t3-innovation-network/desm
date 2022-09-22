@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   include Recoverable
 
   helper_method :current_configuration_profile
+  helper_method :current_organization
   helper_method :current_user
 
   # We manage our own security for sessions
@@ -49,7 +50,14 @@ class ApplicationController < ActionController::Base
   # @description: Returns the current configuration profile/user connection
   ###
   def current_configuration_profile_user
-    current_configuration_profile.configuration_profile_users.find_by(user: current_user)
+    current_configuration_profile&.configuration_profile_users&.find_by(user: current_user)
+  end
+
+  ###
+  # @description: Returns the current organization
+  ###
+  def current_organization
+    current_configuration_profile_user&.organization
   end
 
   ###

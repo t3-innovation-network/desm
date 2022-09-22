@@ -17,6 +17,7 @@
   <body
     data-configuration-profile-id="<%= current_configuration_profile&.id %>"
     data-logged-in="<%= current_user.present? %>"
+    data-organization="<%= current_organization&.to_json %>"
   >
     <%= yield %>
   </body>
