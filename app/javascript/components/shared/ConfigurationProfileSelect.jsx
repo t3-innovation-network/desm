@@ -30,7 +30,7 @@ const ConfigurationProfileSelect = ({ onChange }) => {
 
     await setCurrentConfigurationProfile(selectedConfigurationProfileId);
     setCurrentConfigurationProfileId(selectedConfigurationProfileId);
-    setOrganization(configurationProfile.organization?.name);
+    setOrganization(configurationProfile.organization);
     setSubmitting(false);
     onChange?.();
   };
@@ -48,7 +48,6 @@ const ConfigurationProfileSelect = ({ onChange }) => {
   useEffect(() => {
     (async () => {
       const { configurationProfiles } = await fetchConfigurationProfiles();
-      console.log("configurationProfiles", configurationProfiles);
       setConfigurationProfiles(configurationProfiles);
       setLoading(false);
     })();

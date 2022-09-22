@@ -377,7 +377,7 @@ const AlignAndFineTune = (props) => {
       /// If it's a synthetic alignment, and we added it, let's remove it
       if (
         alignment.synthetic &&
-        alignment.origin.toLowerCase() === organization.toLowerCase()
+        alignment.origin.toLowerCase() === organization.name.toLowerCase()
       ) {
         setAlignmentToRemove(alignment);
         setConfirmingRemoveAlignment(true);

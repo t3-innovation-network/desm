@@ -22,8 +22,11 @@ import {
   faLayerGroup,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import { AppContext } from "../../contexts/AppContext";
 
 export default class SpecsList extends Component {
+  static contextType = AppContext;
+
   state = {
     /**
      * Controls displaying the removal confirmation dialog
@@ -259,6 +262,141 @@ export default class SpecsList extends Component {
     return <TopNavOptions viewMappings={true} mapSpecification={true} />;
   };
 
+  renderMapping = (mapping) => {
+    const fromSameOrg = mapping.organization.id === this.context.organization.id;
+
+    return (
+      <tr key={mapping.id}>
+        <td>
+          {mapping.title} ({mapping.specification.name})
+        </td>
+        <td>{mapping.specification.version}</td>
+        <td>
+          {mapping.mapped_terms +
+            "/" +
+            mapping.selected_terms.length}
+        </td>
+        <td>
+          {_.startCase(_.toLower(mapping.status))}
+        </td>
+        <td>{mapping.specification.user.fullname}</td>
+        <td>
+          {mapping["mapped?"] ? (
+            <>
+              {fromSameOrg && (
+                <>
+                  <button
+                    className="btn btn-sm btn-dark ml-2"
+                    onClick={() =>
+                      this.handleMarkToInProgress(
+                        mapping.id
+                      )
+                    }
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Mark this mapping back to 'in progress'"
+                  >
+                    <FontAwesomeIcon icon={faUndo} />
+                  </button>
+
+                  <Link
+                    to={
+                      "/mappings/" + mapping.id + "/align"
+                    }
+                    className="btn btn-sm btn-dark ml-2"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Edit this mapping"
+                  >
+                    <FontAwesomeIcon icon={faPencilAlt} />
+                  </Link>
+                </>
+              )}
+
+              <Link
+                to={`/mappings-list?abstractClass=${mapping.domain}`}
+                className="btn btn-sm btn-dark ml-2"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="View this mapping"
+              >
+                <FontAwesomeIcon icon={faEye} />
+              </Link>
+
+              <button
+                className="btn btn-sm btn-dark ml-2"
+                onClick={() =>
+                  this.handleExportMapping(mapping.id)
+                }
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Export this mapping"
+              >
+                <FontAwesomeIcon icon={faDownload} />
+              </button>
+            </>
+          ) : (
+            <>
+              {mapping["in_progress?"] ? (
+                fromSameOrg && (
+                  <button
+                    className="btn btn-sm btn-dark ml-2"
+                    onClick={() =>
+                      this.handleMarkToUploaded(
+                        mapping.id
+                      )
+                    }
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Mark this mapping back to 'uploaded'"
+                  >
+                    <FontAwesomeIcon icon={faUndo} />
+                  </button>
+                )
+              ) : (
+                ""
+              )}
+              {fromSameOrg && (
+                <Link
+                  to={
+                    mapping["uploaded?"]
+                      ? /// This mapping has mapped terms, but it has not finished selecting the terms from the specification
+                        "/mappings/" + mapping.id
+                      : /// It's on the 3d step (align and fine tune), already selected the terms from the specification, and
+                        /// now it's mapping terms into the spine terms
+                        "/mappings/" +
+                        mapping.id +
+                        "/align"
+                  }
+                  className="btn btn-sm ml-2 bg-col-primary col-background"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Resume, continue mapping"
+                >
+                  <FontAwesomeIcon icon={faLayerGroup} />
+                </Link>
+              )}
+            </>
+          )}
+
+          {fromSameOrg && (
+            <button
+              onClick={() =>
+                this.handleConfirmRemove(mapping.id)
+              }
+              className="btn btn-sm btn-dark ml-2"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Remove this mapping"
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </button>
+          )}
+        </td>
+      </tr>
+    );
+  };
+
   render() {
     const {
       confirmingRemove,
@@ -325,131 +463,7 @@ export default class SpecsList extends Component {
                       <tbody>
                         <SpineSpecsList filter={filter} />
                         {mappings.length > 0 ? (
-                          mappings.map((mapping) => {
-                            return (
-                              <tr key={mapping.id}>
-                                <td>
-                                  {mapping.title} ({mapping.specification.name})
-                                </td>
-                                <td>{mapping.specification.version}</td>
-                                <td>
-                                  {mapping.mapped_terms +
-                                    "/" +
-                                    mapping.selected_terms.length}
-                                </td>
-                                <td>
-                                  {_.startCase(_.toLower(mapping.status))}
-                                </td>
-                                <td>{mapping.specification.user.fullname}</td>
-                                <td>
-                                  {mapping["mapped?"] ? (
-                                    <Fragment>
-                                      <button
-                                        className="btn btn-sm btn-dark ml-2"
-                                        onClick={() =>
-                                          this.handleMarkToInProgress(
-                                            mapping.id
-                                          )
-                                        }
-                                        data-toggle="tooltip"
-                                        data-placement="top"
-                                        title="Mark this mapping back to 'in progress'"
-                                      >
-                                        <FontAwesomeIcon icon={faUndo} />
-                                      </button>
-
-                                      <Link
-                                        to={
-                                          "/mappings/" + mapping.id + "/align"
-                                        }
-                                        className="btn btn-sm btn-dark ml-2"
-                                        data-toggle="tooltip"
-                                        data-placement="top"
-                                        title="Edit this mapping"
-                                      >
-                                        <FontAwesomeIcon icon={faPencilAlt} />
-                                      </Link>
-
-                                      <Link
-                                        to={
-                                          "/mappings-list?abstractClass=" +
-                                          mapping.domain
-                                        }
-                                        className="btn btn-sm btn-dark ml-2"
-                                        data-toggle="tooltip"
-                                        data-placement="top"
-                                        title="View this mapping"
-                                      >
-                                        <FontAwesomeIcon icon={faEye} />
-                                      </Link>
-
-                                      <button
-                                        className="btn btn-sm btn-dark ml-2"
-                                        onClick={() =>
-                                          this.handleExportMapping(mapping.id)
-                                        }
-                                        data-toggle="tooltip"
-                                        data-placement="top"
-                                        title="Export this mapping"
-                                      >
-                                        <FontAwesomeIcon icon={faDownload} />
-                                      </button>
-                                    </Fragment>
-                                  ) : (
-                                    <Fragment>
-                                      {mapping["in_progress?"] ? (
-                                        <button
-                                          className="btn btn-sm btn-dark ml-2"
-                                          onClick={() =>
-                                            this.handleMarkToUploaded(
-                                              mapping.id
-                                            )
-                                          }
-                                          data-toggle="tooltip"
-                                          data-placement="top"
-                                          title="Mark this mapping back to 'uploaded'"
-                                        >
-                                          <FontAwesomeIcon icon={faUndo} />
-                                        </button>
-                                      ) : (
-                                        ""
-                                      )}
-                                      <Link
-                                        to={
-                                          mapping["uploaded?"]
-                                            ? /// This mapping has mapped terms, but it has not finished selecting the terms from the specification
-                                              "/mappings/" + mapping.id
-                                            : /// It's on the 3d step (align and fine tune), already selected the terms from the specification, and
-                                              /// now it's mapping terms into the spine terms
-                                              "/mappings/" +
-                                              mapping.id +
-                                              "/align"
-                                        }
-                                        className="btn btn-sm ml-2 bg-col-primary col-background"
-                                        data-toggle="tooltip"
-                                        data-placement="top"
-                                        title="Resume, continue mapping"
-                                      >
-                                        <FontAwesomeIcon icon={faLayerGroup} />
-                                      </Link>
-                                    </Fragment>
-                                  )}
-
-                                  <button
-                                    onClick={() =>
-                                      this.handleConfirmRemove(mapping.id)
-                                    }
-                                    className="btn btn-sm btn-dark ml-2"
-                                    data-toggle="tooltip"
-                                    data-placement="top"
-                                    title="Remove this mapping"
-                                  >
-                                    <FontAwesomeIcon icon={faTrash} />
-                                  </button>
-                                </td>
-                              </tr>
-                            );
-                          })
+                          mappings.map(this.renderMapping)
                         ) : (
                           <tr />
                         )}

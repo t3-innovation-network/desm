@@ -49,7 +49,12 @@ class Api::V1::MappingsController < ApplicationController
       end
 
     render json: mappings.order(:title),
-           include: [:terms, :selected_terms, {specification: {include: %i[user terms]}}]
+           include: [
+             :organization,
+             :selected_terms,
+             :terms,
+             {specification: {include: %i[user terms]}}
+           ]
   end
 
   ###
@@ -101,5 +106,13 @@ class Api::V1::MappingsController < ApplicationController
   ###
   def permitted_params
     params.require(:mapping).permit(:status)
+  end
+
+  def with_instance
+    return Mapping.new if params[:id].blank?
+
+    @instance ||= current_organization.mappings.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    raise "Couldn't find mapping"
   end
 end

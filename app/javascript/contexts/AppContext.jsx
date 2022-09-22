@@ -8,9 +8,10 @@ export const AppContextProvider = ({ children }) => {
   const [organization, setOrganization] = useState();
 
   React.useEffect(() => {
-    const { configurationProfileId, loggedIn } = document.body.dataset;
+    const { configurationProfileId, loggedIn, organization } = document.body.dataset;
     setCurrentConfigurationProfileId(configurationProfileId);
     setLoggedIn(loggedIn === "true");
+    organization && setOrganization(JSON.parse(organization));
   }, []);
 
   return (
