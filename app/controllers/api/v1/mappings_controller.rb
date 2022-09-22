@@ -39,14 +39,16 @@ class Api::V1::MappingsController < ApplicationController
   # @description: Lists all the mappings for the current user's organization
   ###
   def index
-    source =
-      if params[:filter] == "all"
-        current_configuration_profile
+    mappings =
+      if current_user.super_admin?
+        Mapping.all
+      elsif params[:filter] == "all"
+        current_configuration_profile.mappings
       else
-        current_configuration_profile_user
+        current_configuration_profile_user.mappings
       end
 
-    render json: source.mappings.order(:title),
+    render json: mappings.order(:title),
            include: [:terms, :selected_terms, {specification: {include: %i[user terms]}}]
   end
 

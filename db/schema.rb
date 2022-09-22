@@ -240,7 +240,7 @@ ActiveRecord::Schema.define(version: 2022_09_21_130324) do
     t.string "selected_domain"
     t.string "selected_range"
     t.string "scheme"
-    t.bigint "term_id", default: 1, null: false
+    t.bigint "term_id", null: false
     t.index ["term_id"], name: "index_properties_on_term_id"
   end
 
