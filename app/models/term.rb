@@ -6,21 +6,18 @@
 class Term < ApplicationRecord
   include Slugable
 
-  ###
-  # @description: At the time of creation, the organization would be the user's organization.
-  #   When adding a synthetic term, the organization is received by param (would be the
-  #   organization of the user that's adding the synthetic).
-  ###
-  belongs_to :organization
+  belongs_to :configuration_profile_user
 
   ###
   # @description: The specifications in which this term appears. Can be many
   ###
   has_and_belongs_to_many :specifications
 
-  has_one :configuration_profile, through: :organization
+  has_one :configuration_profile, through: :configuration_profile_user
 
   has_one :mapping_predicates, through: :configuration_profile
+
+  has_one :organization, through: :configuration_profile_user
 
   ###
   # @description: The property for this term, an entity that contains all the rdf property information

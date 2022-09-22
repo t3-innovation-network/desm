@@ -14,7 +14,7 @@ class Api::V1::VocabulariesController < ApplicationController
     vocabularies = if current_user.super_admin?
                      Vocabulary.all
                    else
-                     current_user.organization.vocabularies.order(:name)
+                     current_configuration_profile.vocabularies.order(:name)
                    end
 
     render json: vocabularies
@@ -57,7 +57,7 @@ class Api::V1::VocabulariesController < ApplicationController
   def create
     processor = Processors::Vocabularies.new(permitted_params[:content].to_h)
 
-    @instance = processor.create(permitted_params[:name], current_user.organization)
+    @instance = processor.create(permitted_params[:name], current_configuration_profile)
 
     render json: @instance, include: :concepts
   end

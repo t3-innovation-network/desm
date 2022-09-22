@@ -76,19 +76,19 @@ class CreateCpStructure
     result = CreateSchema.call({
                                  domain_id: domain&.id,
                                  name: schema_data[:name],
-                                 user: dso.administrator || dso.agents.first,
+                                 configuration_profile_user: dso.configuration_profile_users.first,
                                  uri: schema_data[:origin]
                                })
 
     raise DSOMapperCreationError.new("DSOMapperCreationError: #{result.error}") unless result.error.nil?
   end
 
-  def create_concept_schemes dso, concept_scheme_data
+  def create_concept_schemes _dso, concept_scheme_data
     concept_scheme_data.each do |cs_data|
       result = CreateConceptScheme.call({
                                           uri: cs_data[:origin],
                                           name: cs_data[:name],
-                                          organization: dso
+                                          configuration_profile: @cp
                                         })
 
       raise ConceptSchemeCreationError.new("ConceptSchemeCreationError: #{result.error}") unless result.error.nil?

@@ -7,6 +7,5 @@ FactoryBot.define do
   factory :organization do
     name { Faker::Name.unique.first_name }
     email { Faker::Internet.email }
-    configuration_profile
   end
 end

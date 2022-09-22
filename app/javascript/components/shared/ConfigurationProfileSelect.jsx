@@ -7,7 +7,8 @@ import Loader from "../shared/Loader";
 const ConfigurationProfileSelect = ({ onChange }) => {
   const {
     currentConfigurationProfileId,
-    setCurrentConfigurationProfileId
+    setCurrentConfigurationProfileId,
+    setOrganization
   } = useContext(AppContext);
 
   const [configurationProfiles, setConfigurationProfiles] = useState([]);
@@ -23,8 +24,13 @@ const ConfigurationProfileSelect = ({ onChange }) => {
     e.preventDefault();
     setSubmitting(true);
 
+    const configurationProfile = configurationProfiles.find(p =>
+      p.id.toString() === selectedConfigurationProfileId
+    );
+
     await setCurrentConfigurationProfile(selectedConfigurationProfileId);
     setCurrentConfigurationProfileId(selectedConfigurationProfileId);
+    setOrganization(configurationProfile.organization?.name);
     setSubmitting(false);
     onChange?.();
   };
@@ -42,6 +48,7 @@ const ConfigurationProfileSelect = ({ onChange }) => {
   useEffect(() => {
     (async () => {
       const { configurationProfiles } = await fetchConfigurationProfiles();
+      console.log("configurationProfiles", configurationProfiles);
       setConfigurationProfiles(configurationProfiles);
       setLoading(false);
     })();

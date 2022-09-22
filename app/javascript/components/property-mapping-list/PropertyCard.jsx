@@ -73,6 +73,10 @@ export default class PropertyCard extends Component {
    * @param {Integer} predicateId
    */
   predicateWeight = (predicateId) => {
+    if (!predicateId) {
+      return 0;
+    }
+
     const { predicates } = this.props;
     let pred = predicates.find((predicate) => predicate.id == predicateId);
 

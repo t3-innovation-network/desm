@@ -20,9 +20,9 @@ class Mapping < ApplicationRecord
   ###
 
   ###
-  # @description: The user that this mapping belongs to
+  # @description: The configuration_profile/user combo that this mapping belongs to
   ###
-  belongs_to :user
+  belongs_to :configuration_profile_user
   ###
   # @description: The specification that was uploaded to create this mapping
   ###
@@ -32,9 +32,13 @@ class Mapping < ApplicationRecord
   ###
   belongs_to :spine
 
-  has_one :configuration_profile, through: :user
+  has_one :organization, through: :configuration_profile_user
 
-  has_one :mapping_predicates, through: :user
+  has_one :user, through: :configuration_profile_user
+
+  has_one :configuration_profile, through: :configuration_profile_user
+
+  has_one :mapping_predicates, through: :configuration_profile
 
   has_many :alignments
   ###
@@ -154,7 +158,7 @@ class Mapping < ApplicationRecord
   # @return [String]
   ###
   def origin
-    user.organization&.name
+    organization.name
   end
 
   ###

@@ -68,14 +68,15 @@ const CardBody = (props) => {
     ],
   };
 
-  const totalAgents = () => {
-    return (
-      configurationProfile.structure?.standardsOrganizations?.reduce(
-        (sum, org) => sum + (org.dsoAgents?.length || 0),
-        0
-      ) || 0
-    );
-  };
+  const totalAgents = () => (
+    new Set(
+      configurationProfile
+        .structure
+        ?.standardsOrganizations
+        ?.map(o => (o?.dsoAgents || []).map(a => a.email))
+        ?.flat() || []
+    ).size
+  );
 
   return (
     <div className="card-body">
@@ -97,7 +98,7 @@ const CardBody = (props) => {
           >
             {_.capitalize(configurationProfile.state)}
           </p>
-          <p className="card-text mb-0">{totalAgents() + " agents"}</p>
+          <p className="card-text mb-0">{totalAgents() + " agent(s)"}</p>
           <p className="card-text">
             <small className="text-muted">
               {new Date(configurationProfile.createdAt).toLocaleString("en-US")}

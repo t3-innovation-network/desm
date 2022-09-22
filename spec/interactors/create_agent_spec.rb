@@ -50,7 +50,6 @@ RSpec.describe CreateAgent, type: :interactor do
 
       expect(result.error).to be_nil
       expect(result.agent).to be_instance_of(User)
-      expect(result.agent.organization).to be(org)
     end
 
     it "is part of the organization if the role is DSO Admin" do
@@ -66,7 +65,6 @@ RSpec.describe CreateAgent, type: :interactor do
 
       expect(result.error).to be_nil
       expect(result.agent).to be_instance_of(User)
-      expect(result.agent.organization).not_to be_nil
     end
   end
 end

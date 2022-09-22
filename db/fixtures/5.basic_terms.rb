@@ -22,13 +22,13 @@ description_raw = {
   "isDefinedBy": "rdfs:"
 }
 
-Term.seed(:name, {
-  name: "name",
-  raw: name_raw,
-  source_uri: "#{Desm::APP_DOMAIN}/resources/terms/name"
-},
-{
-  name: "description",
-  raw: description_raw,
-  source_uri: "#{Desm::APP_DOMAIN}/resources/terms/description"
-})
+# Term.seed(:name, {
+#   name: "name",
+#   raw: name_raw,
+#   source_uri: "#{Desm::APP_DOMAIN}/resources/terms/name"
+# },
+# {
+#   name: "description",
+#   raw: description_raw,
+#   source_uri: "#{Desm::APP_DOMAIN}/resources/terms/description"
+# })

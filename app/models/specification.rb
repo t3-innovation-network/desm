@@ -11,7 +11,7 @@ class Specification < ApplicationRecord
   ###
   # @description: The user that created this specification
   ###
-  belongs_to :user
+  belongs_to :configuration_profile_user
 
   ###
   # @description: The class (domain) that this specification is representing
@@ -23,7 +23,9 @@ class Specification < ApplicationRecord
   ###
   has_and_belongs_to_many :terms
 
-  has_one :organization, through: :user
+  has_one :configuration_profile, through: :configuration_profile_user
+  has_one :organization, through: :configuration_profile_user
+  has_one :user, through: :configuration_profile_user
 
   ###
   # @description: If there's no specification for the user's company and the selected domain
@@ -48,7 +50,11 @@ class Specification < ApplicationRecord
   # @description: Mark this specification as spine for the related domain
   ###
   def spine!
-    Spine.create!(domain: domain, name: domain.name, organization: organization)
+    Spine.create!(
+      configuration_profile_user: configuration_profile_user,
+      domain: domain,
+      name: domain.name
+    )
   end
 
   ###
