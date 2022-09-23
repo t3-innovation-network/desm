@@ -8,6 +8,7 @@ const ConfigurationProfileSelect = ({ onChange }) => {
   const {
     currentConfigurationProfileId,
     setCurrentConfigurationProfileId,
+    setLeadMapper,
     setOrganization
   } = useContext(AppContext);
 
@@ -30,6 +31,7 @@ const ConfigurationProfileSelect = ({ onChange }) => {
 
     await setCurrentConfigurationProfile(selectedConfigurationProfileId);
     setCurrentConfigurationProfileId(selectedConfigurationProfileId);
+    setLeadMapper(configurationProfile.leadMapper);
     setOrganization(configurationProfile.organization);
     setSubmitting(false);
     onChange?.();

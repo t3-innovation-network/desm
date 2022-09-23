@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setCurrentConfigurationProfile,
@@ -15,6 +15,7 @@ import {
 } from "../utils";
 
 const Agents = () => {
+  const leadMapperRef = useRef(false);
   const currentCP = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
   const getDsos = () => currentCP.structure.standardsOrganizations || [];
@@ -24,6 +25,7 @@ const Agents = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [githubHandle, setGithubHandle] = useState("");
+  const [leadMapper, setLeadMapper] = useState(false);
   const [confirmationVisible, setConfirmationVisible] = useState(false);
   const confirmationMsg = `Please confirm if you really want to remove agent ${fullname}`;
   const dispatch = useDispatch();
@@ -42,7 +44,6 @@ const Agents = () => {
     ].dsoAgents = agentsData;
 
     setCurrentAgentIndex(agentsData.length);
-    // dispatch(setCurrentConfigurationProfile(localCP));
   };
 
   const agentButtons = () => {
@@ -64,10 +65,12 @@ const Agents = () => {
   };
 
   const buildCpData = () => {
-    let localCP = currentCP;
+    const leadMapper = leadMapperRef.current;
+    const localCP = currentCP;
+
     localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents[
       currentAgentIndex
-    ] = _.pickBy({ email, fullname, githubHandle, phone });
+    ] = _.pickBy({ email, fullname, githubHandle, phone, leadMapper });
 
     return localCP;
   };
@@ -123,6 +126,22 @@ const Agents = () => {
   const selectedAgentInfo = () => {
     return (
       <div className="col">
+         <div className="form-check mt-5">
+          <input
+            checked={leadMapper}
+            className="form-check-input"
+            id="leadMapper"
+            onChange={(event) => {
+              setLeadMapper(leadMapperRef.current = event.target.checked);
+              saveChanges();
+            }}
+            type="checkbox"
+          />
+          <label className="form-check-label" htmlFor="leadMapper">
+            Lead Mapper?
+          </label>
+        </div>
+
         <div className="mt-5">
           <label htmlFor="name">
             Agent Full Name
@@ -208,16 +227,24 @@ const Agents = () => {
 
   const updateAgentsData = () => {
     let data = agentsData;
+    const leadMapper = leadMapperRef.current;
 
-    data[currentAgentIndex] = {
+    data[currentAgentIndex] = _.pickBy({
       email,
       fullname,
       githubHandle,
-      phone
-    };
+      phone,
+      leadMapper
+    });
 
     setAgentsData(data);
   };
+
+  useEffect(() => {
+    const dsoAgents = getDsos()[currentDSOIndex]?.dsoAgents || [];
+    setAgentsData(dsoAgents);
+    setCurrentAgentIndex(dsoAgents.length ? 0 : -1);
+  }, [currentDSOIndex]);
 
   useEffect(() => {
     if (currentAgentIndex < 0) {
@@ -225,19 +252,15 @@ const Agents = () => {
     }
 
     const agent = agentsData[currentAgentIndex];
+
     if (agent) {
       setFullname(agent.fullname);
       setEmail(agent.email);
+      setLeadMapper(leadMapperRef.current = Boolean(agent.leadMapper));
       setPhone(agent.phone);
       setGithubHandle(agent.githubHandle);
     }
   }, [currentAgentIndex, currentDSOIndex]);
-
-  useEffect(() => {
-    const dsoAgents = getDsos()[currentDSOIndex]?.dsoAgents || [];
-    setAgentsData(dsoAgents);
-    setCurrentAgentIndex(dsoAgents.length ? 0 : -1);
-  }, [currentDSOIndex]);
 
   return (
     <div className="col">
