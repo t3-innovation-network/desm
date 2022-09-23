@@ -26,8 +26,8 @@ class UsersController < ApplicationController
   # @description: Udates the attributes of a user
   ###
   def update
-    @user.update(permitted_params)
-    @user.update_role(params[:role_id])
+    @user.update!(permitted_params)
+    @user.update_role(params[:role_id]) if params[:role_id].present?
 
     render json: @user
   end
@@ -65,6 +65,6 @@ class UsersController < ApplicationController
   # @return [ActionController::Parameters]
   ###
   def permitted_params
-    params.require(:user).permit(:email, :fullname, :organization_id)
+    params.require(:user).permit(:email, :fullname, :github_handle, :phone)
   end
 end

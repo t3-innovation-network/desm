@@ -11,17 +11,15 @@ const UserInfo = () => {
   return (
     <React.Fragment>
       {isLoggedIn ? (
-        <React.Fragment>
-          <Link to="#" className="nav-link col-on-primary">
-            <FontAwesomeIcon icon={faUser} className="mr-2" />
-            {user && (
-              <span>
-                {_.capitalize(user.fullname) +
-                  (user.organization ? " - " + user.organization?.name : "")}
-              </span>
-            )}
-          </Link>
-        </React.Fragment>
+        <Link className="nav-link col-on-primary" to="/edit-profile">
+          <FontAwesomeIcon icon={faUser} className="mr-2" />
+          {user && (
+            <span>
+              {_.capitalize(user.fullname) +
+                (user.organization ? " - " + user.organization?.name : "")}
+            </span>
+          )}
+        </Link>
       ) : (
         ""
       )}

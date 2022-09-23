@@ -11,7 +11,7 @@ class UserPolicy < ApplicationPolicy
     @record = record
     @admin_role_name = Desm::ADMIN_ROLE_NAME.downcase.to_sym
 
-    raise Pundit::NotAuthorizedError unless user&.role?(@admin_role_name)
+    raise Pundit::NotAuthorizedError unless user&.role?(@admin_role_name) || user == record
   end
 
   ###
@@ -43,7 +43,7 @@ class UserPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def update?
-    @user.role?(@admin_role_name)
+    @user.role?(@admin_role_name) || @user == @record
   end
 
   ###
