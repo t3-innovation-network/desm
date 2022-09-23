@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCog, faCogs } from "@fortawesome/free-solid-svg-icons";
+import { faCog, faCogs, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const SideBar = () => {
   const navLinks = {
@@ -9,6 +9,7 @@ const SideBar = () => {
     users: "/dashboard/users",
     organizations: "/dashboard/organizations",
     configuration_profiles: "/dashboard/configuration-profiles",
+    admins: "/dashboard/admins"
   };
 
   return (
@@ -30,6 +31,21 @@ const SideBar = () => {
                   <span className="pl-2">Dashboard</span>
                 </Link>
               </li>
+
+              <li className="nav-item">
+                <Link
+                  to={navLinks.admins}
+                  className={`${
+                    window.location.pathname === navLinks.admins
+                      ? "selected-dashboard-option "
+                      : ""
+                  }nav-link cursor-pointer col-background pl-3`}
+                >
+                  <FontAwesomeIcon icon={faUser} aria-hidden="true" />
+                  <span className="pl-2">Admins</span>
+                </Link>
+              </li>
+
               <li className="nav-item">
                 <Link
                   to={navLinks.configuration_profiles}
