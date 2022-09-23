@@ -1,23 +1,12 @@
 import apiRequest from "./api/apiRequest";
+import { decamelizeKeys } from "humps";
 
-const updateUser = async (
-  user_id,
-  email,
-  fullname,
-  organization_id,
-  role_id
-) => {
+const updateUser = async (id, data) => {
   return await apiRequest({
-    url: "/users/" + user_id,
-    method: "put",
-    payload: {
-      user: {
-        fullname: fullname,
-        email: email,
-        organization_id: organization_id,
-      },
-      role_id: role_id,
-    },
+    url: `/users/${id}`,
+    method: "patch",
+    payload: { user: decamelizeKeys(data) },
+    successResponse: "user"
   });
 };
 

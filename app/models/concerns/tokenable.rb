@@ -19,7 +19,7 @@ module Tokenable
       8
     end
 
-    validates :password, length: {minimum: MIN_PASSWORD_LENGTH}
+    validates :password, length: {minimum: MIN_PASSWORD_LENGTH}, unless: -> { password.nil? }
   end
 
   protected

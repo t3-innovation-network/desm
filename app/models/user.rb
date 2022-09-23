@@ -22,6 +22,7 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
 
   after_create :send_welcome_email, unless: :skip_sending_welcome_email
+  after_save :update_configuration_profiles
 
   def as_json(options={})
     super options.merge(methods: %i[roles])
@@ -83,5 +84,24 @@ class User < ApplicationRecord
     assignment = Assignment.find_by_user_id(id)
     assignment.role_id = role_id
     assignment.save!
+  end
+
+  def update_configuration_profiles
+    previous_email, current_email = previous_changes["email"]
+    return if previous_email == current_email
+
+    configuration_profiles.each do |cp|
+      structure = cp.structure
+
+      structure.fetch("standards_organizations", []).each do |o|
+        o.fetch("dso_agents", []).each do |u|
+          next unless u["email"] == previous_email
+
+          u["email"] = current_email
+        end
+      end
+
+      cp.update_column(:structure, structure)
+    end
   end
 end
