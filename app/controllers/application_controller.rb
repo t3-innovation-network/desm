@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   include Recoverable
 
   helper_method :current_configuration_profile
+  helper_method :current_configuration_profile_user
   helper_method :current_organization
   helper_method :current_user
 

@@ -18,7 +18,7 @@ class Api::V1::ConfigurationProfilesController < Api::V1::ConfigurationProfilesA
         current_user
           .configuration_profile_users
           .joins(:configuration_profile, :organization)
-          .select(*fields, "organizations.id organization_id, organizations.id AS organization")
+          .select(*fields, :lead_mapper, "organizations.id organization_id, organizations.id AS organization")
       else
         ConfigurationProfile.select(*fields)
       end

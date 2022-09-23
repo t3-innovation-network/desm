@@ -24,7 +24,7 @@ class Api::V1::ConfigurationProfilesAbstractController < ApplicationController
           :homepage_url,
           :standards_page,
           {dso_administrator: %i[fullname email phone github_handle],
-           dso_agents: [%i[fullname email phone github_handle]],
+           dso_agents: [%i[fullname email phone github_handle lead_mapper]],
            associated_schemas: [
              [
                :associated_abstract_class,

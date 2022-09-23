@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_21_130324) do
+ActiveRecord::Schema.define(version: 2022_09_22_131456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 2022_09_21_130324) do
     t.bigint "configuration_profile_id", null: false
     t.bigint "organization_id", null: false
     t.bigint "user_id", null: false
+    t.boolean "lead_mapper", default: false, null: false
     t.index ["configuration_profile_id", "user_id"], name: "index_configuration_profile_user", unique: true
   end
 
