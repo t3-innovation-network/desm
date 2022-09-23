@@ -46,14 +46,14 @@ class CreateDso
 
   def assign_organization(agent, lead_mapper:)
     configuration_profile_user = configuration_profile
-      .configuration_profile_users
-      .find_or_initialize_by(user: agent)
+                                 .configuration_profile_users
+                                 .find_or_initialize_by(user: agent)
 
     if configuration_profile_user.organization && configuration_profile_user.organization != dso
       raise "Multiple users with #{agent.email} email address found"
     end
 
-    configuration_profile_user.lead_mapper = !!lead_mapper
+    configuration_profile_user.lead_mapper = !lead_mapper.nil?
     configuration_profile_user.organization = dso
     configuration_profile_user.save!
   end
@@ -62,7 +62,7 @@ class CreateDso
     result = CreateAgent.call(data.merge(role: Role.find_by_name("mapper")))
     raise DSOMapperCreationError.new("DSOMapperCreationError: #{result.error}") if result.error?
 
-    assign_organization(result.agent, lead_mapper: data['lead_mapper'])
+    assign_organization(result.agent, lead_mapper: data["lead_mapper"])
     result.agent
   end
 
