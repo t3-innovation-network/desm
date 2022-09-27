@@ -27,7 +27,7 @@ Rails.application.routes.draw do
       resources :spine_terms, only: [:create]
       resources :terms, only: [:show, :update, :destroy]
       resources :spine_specifications, only: %i[index show]
-      resources :admins, only: %i(index create)
+      resources :admins, except: %i(new show edit)
 
       resources :configuration_profiles, except: %i[new edit] do
         get :set_current, on: :member

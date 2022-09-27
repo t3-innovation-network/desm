@@ -27,7 +27,7 @@ const SideBar = () => {
                       : ""
                   }nav-link cursor-pointer col-background pl-3`}
                 >
-                  <FontAwesomeIcon icon={faCog} aria-hidden="true" />
+                  <FontAwesomeIcon fixedWidth icon={faCog} aria-hidden="true" />
                   <span className="pl-2">Dashboard</span>
                 </Link>
               </li>
@@ -41,8 +41,8 @@ const SideBar = () => {
                       : ""
                   }nav-link cursor-pointer col-background pl-3`}
                 >
-                  <FontAwesomeIcon icon={faUser} aria-hidden="true" />
-                  <span className="pl-2">Admins</span>
+                  <FontAwesomeIcon fixedWidth icon={faUser} aria-hidden="true" />
+                  <span className="pl-2">Admin Users</span>
                 </Link>
               </li>
 
@@ -55,7 +55,7 @@ const SideBar = () => {
                       : ""
                   }nav-link cursor-pointer col-background pl-3`}
                 >
-                  <FontAwesomeIcon icon={faCogs} aria-hidden="true" />
+                  <FontAwesomeIcon fixedWidth icon={faCogs} aria-hidden="true" />
                   <span className="pl-2">Configuration Profiles</span>
                 </Link>
               </li>
