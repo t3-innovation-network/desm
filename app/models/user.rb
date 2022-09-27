@@ -15,7 +15,7 @@ class User < ApplicationRecord
   has_many :assignments, dependent: :delete_all
   has_many :mappings, through: :configuration_profile_users
   has_many :roles, through: :assignments
-  has_many :specifications, dependent: :destroy
+  has_many :specifications, through: :configuration_profile_users
   has_many :vocabularies, through: :configuration_profile_users
 
   validates :fullname, presence: true

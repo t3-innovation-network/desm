@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCog, faCogs } from "@fortawesome/free-solid-svg-icons";
+import { faCog, faCogs, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const SideBar = () => {
   const navLinks = {
@@ -9,6 +9,7 @@ const SideBar = () => {
     users: "/dashboard/users",
     organizations: "/dashboard/organizations",
     configuration_profiles: "/dashboard/configuration-profiles",
+    admins: "/dashboard/admins"
   };
 
   return (
@@ -26,10 +27,25 @@ const SideBar = () => {
                       : ""
                   }nav-link cursor-pointer col-background pl-3`}
                 >
-                  <FontAwesomeIcon icon={faCog} aria-hidden="true" />
+                  <FontAwesomeIcon fixedWidth icon={faCog} aria-hidden="true" />
                   <span className="pl-2">Dashboard</span>
                 </Link>
               </li>
+
+              <li className="nav-item">
+                <Link
+                  to={navLinks.admins}
+                  className={`${
+                    window.location.pathname === navLinks.admins
+                      ? "selected-dashboard-option "
+                      : ""
+                  }nav-link cursor-pointer col-background pl-3`}
+                >
+                  <FontAwesomeIcon fixedWidth icon={faUser} aria-hidden="true" />
+                  <span className="pl-2">Admin Users</span>
+                </Link>
+              </li>
+
               <li className="nav-item">
                 <Link
                   to={navLinks.configuration_profiles}
@@ -39,7 +55,7 @@ const SideBar = () => {
                       : ""
                   }nav-link cursor-pointer col-background pl-3`}
                 >
-                  <FontAwesomeIcon icon={faCogs} aria-hidden="true" />
+                  <FontAwesomeIcon fixedWidth icon={faCogs} aria-hidden="true" />
                   <span className="pl-2">Configuration Profiles</span>
                 </Link>
               </li>

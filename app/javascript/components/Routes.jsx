@@ -23,6 +23,7 @@ import EditConfigurationProfile from "./dashboard/configuration-profiles/edit/Ed
 import UploadConfigurationProfile from "./dashboard/configuration-profiles/UploadConfigurationProfile";
 import SelectConfigurationProfile from "./auth/SelectConfigurationProfile";
 import EditProfile from "./auth/EditProfile";
+import Admins from "../components/dashboard/admins/Admins";
 
 const adminRoleName = process.env.ADMIN_ROLE_NAME || "Super Admin";
 const allRoles = [adminRoleName, "Mapper", "DSO Admin", "Profile Admin"];
@@ -105,6 +106,13 @@ const Routes = (props) => {
           path="/dashboard"
           component={MainDashboard}
           allowedRoles={onlySuperAdmin}
+        />
+
+        <ProtectedRoute
+          allowedRoles={onlySuperAdmin}
+          component={Admins}
+          exact
+          path="/dashboard/admins"
         />
 
         <ProtectedRoute
