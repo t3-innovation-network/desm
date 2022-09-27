@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { FadeIn } from "./Animations.jsx";
-import HoverableText from "./HoverableText.jsx";
 import OutsideAlerter from "./OutsideAlerter.jsx";
 
 /**
@@ -13,13 +12,14 @@ import OutsideAlerter from "./OutsideAlerter.jsx";
  * @prop {React.Component} bodyContent,
  * @prop {React.Component} headerContent,
  * @prop {Boolean} observeOutside Whether this component should react or not on an outside event
+ * @prop {Boolean} expanded
  */
 export default class Collapsible extends Component {
   state = {
     /**
      * Whether the term body is visible or not
      */
-    showBody: false,
+    showBody: Boolean(this.props.expanded),
   };
 
   /**

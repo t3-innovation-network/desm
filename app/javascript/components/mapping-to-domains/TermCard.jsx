@@ -147,6 +147,7 @@ export default class TermCard extends Component {
       this.disabledTermCard()
     ) : (
       <Collapsible
+        expanded
         cardStyle={
           "term-card with-shadow mb-2" +
           (selected ? " draggable term-selected" : "")
@@ -157,7 +158,6 @@ export default class TermCard extends Component {
         }
         handleOnClick={disableClick ? null : this.handleTermClick}
         headerContent={this.termHeaderContent()}
-        observeOutside={true}
         bodyContent={
           <div className="card-body pt-0 pb-0">
             <p>{term.property.comment}</p>

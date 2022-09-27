@@ -270,6 +270,7 @@ const SpineTermRow = (props) => {
       <div className="row mb-2" key={term.id}>
         <div className="col-5">
           <Collapsible
+            expanded
             headerContent={<strong>{term.name}</strong>}
             cardStyle={"with-shadow mb-2"}
             observeOutside={false}
@@ -322,6 +323,7 @@ const SpineTermRow = (props) => {
           {mappedTermsToSpineTerm(term).map((mTerm) => {
             return (
               <Collapsible
+                expanded
                 headerContent={
                   <div className="row">
                     <div
