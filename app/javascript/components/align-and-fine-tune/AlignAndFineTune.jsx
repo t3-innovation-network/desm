@@ -814,7 +814,10 @@ const AlignAndFineTune = (props) => {
                 </ConfirmDialog>
 
                 {/* LEFT SIDE */}
-                <div className="col-lg-8 p-lg-5 pt-5">
+                <div
+                  className="col-lg-8 p-lg-5 pt-5 d-flex flex-column"
+                  style={{ maxHeight: "95%" }}
+                >
                   <SpineHeader
                     domain={mapping.domain}
                     hideMappedSpineTerms={hideMappedSpineTerms}
@@ -827,7 +830,7 @@ const AlignAndFineTune = (props) => {
                     handleAddSynthetic={handleAddSynthetic}
                     alignments={alignments}
                   />
-                  <div className="mt-5">
+                  <div className="mt-5" style={{ overflow: "hidden scroll" }}>
                     {/* CHANGELOG */}
                     {dateMapped && (
                       <MappingChangeLog
