@@ -830,7 +830,7 @@ const AlignAndFineTune = (props) => {
                     handleAddSynthetic={handleAddSynthetic}
                     alignments={alignments}
                   />
-                  <div className="mt-5" style={{ overflow: "hidden scroll" }}>
+                  <div className="mt-5">
                     {/* CHANGELOG */}
                     {dateMapped && (
                       <MappingChangeLog
@@ -855,6 +855,13 @@ const AlignAndFineTune = (props) => {
                         </div>
                       </div>
                     )}
+                  </div>
+                  <div className="row mb-2">
+                    <h4 className="col-5">Spine Term</h4>
+                    <h4 className="col-3">Mapping Predicate</h4>
+                    <h4 className="col-4">Mapped Term</h4>
+                  </div>
+                  <div style={{ overflow: "hidden scroll" }}>
                     {!loading &&
                       filteredSpineTerms.map((term) => {
                         return props.hideMappedSpineTerms &&
@@ -883,7 +890,8 @@ const AlignAndFineTune = (props) => {
                             }
                           />
                         );
-                      })}
+                      })
+                    }
                   </div>
                   <div className="mt-3">
                     <AlignmentOptions />
