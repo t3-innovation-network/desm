@@ -125,9 +125,7 @@ const MappingToDomains = (props) => {
   /**
    * The selected terms.
    */
-  const selectedTerms = terms.filter((term) => {
-    return term.selected;
-  });
+  const selectedTerms = terms.filter((t => t.selected));
 
   /**
    * Action to perform after a term is dropped
@@ -396,6 +394,11 @@ const MappingToDomains = (props) => {
     await handleFetchSpecificationTerms(response.mapping.specification_id);
   };
 
+  const toggleSelectAll = () => {
+    const selected = !selectedTerms.length;
+    setTerms(terms => terms.map(t => Object.assign(t, { selected })));
+  };
+
   /**
    * Use effect with an emtpy array as second parameter, will trigger the 'fetchDataFromAPI'
    * action at the 'mounted' event of this functional component (It's not actually mounted,
@@ -530,6 +533,9 @@ const MappingToDomains = (props) => {
                       {" " +
                         Pluralize("property", selectedTerms.length) +
                         " selected"}
+                      <button className="btn btn-link" onClick={toggleSelectAll}>
+                        {selectedTerms.length ? "Deselect" : "Select"} All
+                      </button>
                     </p>
                   </div>
 
