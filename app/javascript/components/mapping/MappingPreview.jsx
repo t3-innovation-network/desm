@@ -157,7 +157,6 @@ const MappingPreview = (props) => {
    */
   const handleVocabularyAdded = async (data) => {
     const response = await extractVocabularies(data.vocabulary.content);
-    console.log("vocabs", response.vocabularies);
     dispatch(setVocabularies([...vocabularies, ...response.vocabularies]));
   };
 

@@ -17,6 +17,10 @@ body > div {
   font-size: 13px;
 }
 
+body.waiting {
+  cursor: wait;
+}
+
 .subtitle {
   font-weight: bold;
   font-size: 18px;
