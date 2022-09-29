@@ -814,7 +814,10 @@ const AlignAndFineTune = (props) => {
                 </ConfirmDialog>
 
                 {/* LEFT SIDE */}
-                <div className="col-lg-8 p-lg-5 pt-5">
+                <div
+                  className="col-lg-8 p-lg-5 pt-5 d-flex flex-column"
+                  style={{ maxHeight: "95%" }}
+                >
                   <SpineHeader
                     domain={mapping.domain}
                     hideMappedSpineTerms={hideMappedSpineTerms}
@@ -852,6 +855,13 @@ const AlignAndFineTune = (props) => {
                         </div>
                       </div>
                     )}
+                  </div>
+                  <div className="row mb-2">
+                    <h4 className="col-5">Spine Term</h4>
+                    <h4 className="col-3">Mapping Predicate</h4>
+                    <h4 className="col-4">Mapped Term</h4>
+                  </div>
+                  <div style={{ overflow: "hidden scroll" }}>
                     {!loading &&
                       filteredSpineTerms.map((term) => {
                         return props.hideMappedSpineTerms &&
@@ -880,7 +890,8 @@ const AlignAndFineTune = (props) => {
                             }
                           />
                         );
-                      })}
+                      })
+                    }
                   </div>
                   <div className="mt-3">
                     <AlignmentOptions />

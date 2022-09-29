@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 /**
  * Generate a name for the vocabulary
  *
@@ -84,17 +86,38 @@ export const validVocabulary = (vocab) => {
 };
 
 /**
- * The number of concepts inside
+ * The number of concepts inside each scheme
  * @param {Object} vocab
  */
-export const cantConcepts = (vocab) => {
-  return vocab["@graph"].map((node) =>
-    nodeTypes(node).some(
-      (type) =>
-        type.toLowerCase().includes("concept") &&
-        !type.toLowerCase().includes("conceptscheme")
-    )
-  ).length;
+export const countConcepts = (vocab) => {
+  if (_.isEmpty(vocab)) {
+    return [];
+  }
+
+  const conceptSchemes = {};
+
+  vocab["@graph"].forEach(node => {
+    const types = nodeTypes(node);
+    let ids = [];
+
+    if (types.some(t => t.toLowerCase().includes("conceptscheme"))) {
+      ids = [node["@id"]];
+    } else if (types.some(t => t.toLowerCase().includes("concept"))) {
+      ids = node["skos:inScheme"];
+    }
+
+    ids.forEach(id => {
+      if (conceptSchemes[id]) {
+        conceptSchemes[id].push(node);
+      } else {
+        conceptSchemes[id] = [node];
+      }
+    });
+  });
+
+  return Object.values(conceptSchemes).map(graph => (
+    { name: vocabName(graph), conceptsCount: graph.length - 1 }
+  ));
 };
 
 /**

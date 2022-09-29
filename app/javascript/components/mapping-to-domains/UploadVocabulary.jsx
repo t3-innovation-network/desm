@@ -3,7 +3,7 @@ import FileInfo from "../mapping/FileInfo";
 import {
   validVocabulary,
   vocabName,
-  cantConcepts,
+  countConcepts,
 } from "../../helpers/Vocabularies";
 import AlertNotice from "../shared/AlertNotice";
 import fetchExternalVocabulary from "./../../services/fetchExternalVocabulary";
@@ -59,6 +59,8 @@ const UploadVocabulary = (props) => {
    */
   const [fetchedVocabularyName, setFetchedVocabularyName] = useState("");
 
+  const [fetching, setFetching] = useState(false);
+
   /**
    * Update the files in the redux store (main application state) when
    * the input changes (after the user selects file/s)
@@ -113,17 +115,20 @@ const UploadVocabulary = (props) => {
    * Fetch the vocabulary from the provided URL
    */
   const handleFetchVocabulary = async () => {
-    let response = await fetchExternalVocabulary(vocabularyURL);
+    document.body.classList.add("waiting");
+    setFetching(true);
 
-    if (response.error) {
-      setErrors([response.error]);
-      return;
+    const { error, vocabulary } = await fetchExternalVocabulary(vocabularyURL);
+
+    if (error) {
+      setErrors([error]);
+    } else if (isValidJson(vocabulary)) {
+      setFetchedVocabulary(vocabulary);
+      handleSetFetchedVocabularyName(vocabulary);
     }
 
-    if (isValidJson(response.vocabulary)) {
-      setFetchedVocabulary(response.vocabulary);
-      handleSetFetchedVocabularyName(response.vocabulary);
-    }
+    document.body.classList.remove("waiting");
+    setFetching(false);
   };
 
   /**
@@ -143,19 +148,6 @@ const UploadVocabulary = (props) => {
     setErrors([]);
     setVocabularyURL(e.target.value);
   }
-
-  /**
-   * Returns the number of conepts recognized inside the fetched vocabulary
-   *
-   * @returns {Integer}
-   */
-  const handleFetchedVocabularyCantConcepts = () => {
-    if (!_.isEmpty(fetchedVocabulary)) {
-      return cantConcepts(fetchedVocabulary);
-    }
-
-    return 0;
-  };
 
   /**
    * Determines the vocabulary validity
@@ -276,7 +268,7 @@ const UploadVocabulary = (props) => {
             <a
               className="btn btn-outline-secondary"
               onClick={handleFetchVocabulary}
-              disabled={!vocabularyURL}
+              disabled={fetching || !vocabularyURL}
             >
               Fetch
             </a>
@@ -300,24 +292,24 @@ const UploadVocabulary = (props) => {
   /**
    * Returns a card with basic information about the recognized vocabulary
    */
-  const FetchedVocabularyPreview = () => {
-    return (
-      <div className="row">
-        <div className="col">
-          <div className="card">
-            <div className="card-header">
-              <div className="row">
-                <div className="col-6">{fetchedVocabularyName}</div>
-                <div className="col-6">
-                  {handleFetchedVocabularyCantConcepts() + " concepts found"}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
+  const FetchedVocabularyPreview = () => (
+    <table className="table table-striped">
+      <thead>
+        <tr>
+          <th>Concept Scheme</th>
+          <th>Number of Concepts</th>
+        </tr>
+      </thead>
+      <tbody>
+        {countConcepts(fetchedVocabulary).map((scheme, i) => (
+          <tr key={i}>
+            <td>{scheme.name}</td>
+            <td>{scheme.conceptsCount.toLocaleString()}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
 
   /**
    * Render
