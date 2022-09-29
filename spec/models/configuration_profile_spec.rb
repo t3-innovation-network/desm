@@ -335,4 +335,49 @@ describe ConfigurationProfile, type: :model do
       expect { @cp.reload }.to raise_error ActiveRecord::RecordNotFound
     end
   end
+
+  describe "#destroy" do
+    let(:configuration_profile1) { create(:configuration_profile) }
+    let(:configuration_profile2) { create(:configuration_profile) }
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
+
+    let!(:configuration_profile_user1) {
+      create(:configuration_profile_user, configuration_profile: configuration_profile1, user: user1)
+    }
+    let!(:configuration_profile_user2) {
+      create(:configuration_profile_user, configuration_profile: configuration_profile2, user: user2)
+    }
+    let!(:specification) { create(:specification, configuration_profile_user: configuration_profile_user1) }
+    let!(:mapping) {
+      create(:mapping, configuration_profile_user: configuration_profile_user1, specification: specification)
+    }
+
+    before do
+      Alignment.last.mapped_terms << Term.last
+      mapping.selected_terms << Term.last
+
+      organization = create(:organization)
+      configuration_profile1.standards_organizations << organization
+      configuration_profile2.standards_organizations << organization
+    end
+
+    it "doesn't leave orphan organizations" do
+      expect {
+        configuration_profile1.destroy
+      }.to(change { Alignment.count }.by(-10)
+      .and(change { Organization.count }.by(0))
+      .and(change { ConfigurationProfileUser.count }.by(-1))
+      .and(change { Mapping.count }.by(-1))
+      .and(change { Specification.count }.by(-1))
+      .and(change { Spine.count }.by(-1))
+      .and(change { User.count }.by(0)))
+
+      expect { configuration_profile1.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { mapping.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { specification.reload }.to raise_error(ActiveRecord::RecordNotFound)
+
+      expect { configuration_profile2.destroy }.to(change { Organization.count }.by(-1))
+    end
+  end
 end
