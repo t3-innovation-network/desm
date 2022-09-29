@@ -40,6 +40,10 @@
         "githubHandle": {
           "type": "string",
           "title": "The github username"
+        },
+        "leadMapper": {
+          "type": "boolean",
+          "title": "Whether the agent is a lead mapper"
         }
       },
       "required": [
