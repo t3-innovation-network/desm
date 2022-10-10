@@ -27,7 +27,7 @@ import ConfirmDialog from "../shared/ConfirmDialog";
 import { AppContext } from "../../contexts/AppContext";
 
 const AlignAndFineTune = (props) => {
-  const { organization } = useContext(AppContext);
+  const { leadMapper, organization } = useContext(AppContext);
 
   /**
    * Flag to control when the user is adding a synthetic property
@@ -407,7 +407,7 @@ const AlignAndFineTune = (props) => {
         >
           Save
         </button>
-        {mapping.status !== "mapped" && (
+        {leadMapper && mapping.status !== "mapped" && (
           <button
             className="btn bg-col-primary col-background"
             onClick={handleDoneAlignment}
