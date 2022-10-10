@@ -67,10 +67,10 @@ export default class PropertyAlignments extends Component {
         this.selectedPredicateIds().includes(alignment.predicateId) &&
         /// It matches the selected alignment organizations
         alignment.mappedTerms.some((mTerm) =>
-          this.selectedAlignmentOrganizationIds().includes(mTerm.organizationId)
+          this.selectedAlignmentOrganizationIds().includes(mTerm.organization.id)
         ) &&
         /// It matches the selected alignment organizations
-        this.selectedSpineOrganizationIds().includes(spineTerm.organizationId)
+        this.selectedSpineOrganizationIds().includes(spineTerm.organization.id)
     );
 
     return implementAlignmentSort(filteredAl, selectedAlignmentOrderOption);

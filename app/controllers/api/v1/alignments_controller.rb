@@ -13,7 +13,7 @@ class Api::V1::AlignmentsController < ApplicationController
   def index
     terms = filter
 
-    render json: terms, include: [:spine_term, :predicate, {mapped_terms: {include: :property}}]
+    render json: terms, include: [:spine_term, :predicate, {mapped_terms: {include: %i[organization property]}}]
   end
 
   ###
