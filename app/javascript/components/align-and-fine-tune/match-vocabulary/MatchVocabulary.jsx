@@ -186,7 +186,7 @@ export default class MatchVocabulary extends Component {
     alignmentConcepts.push({
       id: nextAlignmentId,
       predicateId: predicates.find((predicate) =>
-        predicate.uri.toLowerCase().includes("nomatch")
+        predicate.source_uri.toLowerCase().includes("nomatch")
       ).id,
       spineConceptId: nextSpineConceptId,
       synthetic: true,
@@ -351,16 +351,13 @@ export default class MatchVocabulary extends Component {
   /**
    * Use the API to get the information and update the internal status
    */
-  handleFetchDataFromAPI = () => {
+  handleFetchDataFromAPI = async () => {
     const { errors } = this.state;
     this.setState({ loading: true });
 
-    this.fetchDataFromAPI().then(() => {
-      if (_.isEmpty(errors)) {
-        this.addSyntheticConceptRow();
-      }
-      this.setState({ loading: false });
-    });
+    await this.fetchDataFromAPI();
+    _.isEmpty(errors) && this.addSyntheticConceptRow();
+    this.setState({ loading: false });
   }
 
   /**
@@ -456,8 +453,8 @@ export default class MatchVocabulary extends Component {
                 <Fragment>
                   <Title />
 
-                  <div className="row has-scrollbar scrollbar">
-                    <div className="col-8 pt-3">
+                  <div className="row">
+                    <div className="col-8 pt-3 has-scrollbar scrollbar">
                       {spineConcepts.map((concept) => {
                         /**
                          * Instantiate the alignment to pass to the spine concept row through props

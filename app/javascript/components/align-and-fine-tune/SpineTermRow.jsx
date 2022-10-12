@@ -352,9 +352,8 @@ const SpineTermRow = (props) => {
                     </p>
                     {alignmentHasVocabulary() ? (
                       <VocabularyLabel
-                        term={mTerm}
                         onVocabularyClick={handleMatchVocabularyClick}
-                        clickable={true}
+                        term={mTerm}
                       />
                     ) : (
                       ""
