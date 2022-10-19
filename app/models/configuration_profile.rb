@@ -28,6 +28,7 @@ class ConfigurationProfile < ApplicationRecord
   before_save :check_predicate_strongest_match, if: :predicate_strongest_match_changed?
   before_destroy :check_ongoing_mappings, prepend: true
   after_save :create_new_entities, if: :active?
+  before_destroy :remove_orphan_organizations
 
   # The possible states
   # 0. "incomplete" It does not have a complete structure attribute.
@@ -144,6 +145,14 @@ class ConfigurationProfile < ApplicationRecord
       CreateDso.call(dso_data.merge(configuration_profile: self))
     rescue StandardError
       nil
+    end
+  end
+
+  def remove_orphan_organizations
+    standards_organizations.each do |organization|
+      next if organization.configuration_profiles.count > 1
+
+      organization.destroy
     end
   end
 end

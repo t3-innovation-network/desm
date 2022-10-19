@@ -18,12 +18,12 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
   const file = schemaFiles[schemaFileIdx] || {};
 
   const [abstractClass, setAbstractClass] = useState(
-    file.associatedAbstractClass
+    file.associatedAbstractClass || ""
   );
-  const [fileName, setFileName] = useState(file.name);
-  const [fileVersion, setFileVersion] = useState(file.version);
-  const [description, setDescription] = useState(file.description);
-  const [origin, setOrigin] = useState(file.origin);
+  const [fileName, setFileName] = useState(file.name || "");
+  const [fileVersion, setFileVersion] = useState(file.version || "");
+  const [description, setDescription] = useState(file.description || "");
+  const [origin, setOrigin] = useState(file.origin || "");
   const [abstractClassesLabels, setAbstractClassesLabels] = useState([]);
   const dispatch = useDispatch();
 
@@ -94,11 +94,11 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
   };
 
   useEffect(() => {
-    setAbstractClass(file.associatedAbstractClass);
-    setFileName(file.name);
-    setFileVersion(file.version);
-    setDescription(file.description);
-    setOrigin(file.origin);
+    setAbstractClass(file.associatedAbstractClass || "");
+    setFileName(file.name || "");
+    setFileVersion(file.version || "");
+    setDescription(file.description || "");
+    setOrigin(file.origin || "");
     handleFetchAbstractClassesLabels();
   }, [schemaFileIdx]);
 

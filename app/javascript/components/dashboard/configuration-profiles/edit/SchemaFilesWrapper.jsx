@@ -97,7 +97,10 @@ const SchemaFilesWrapper = () => {
       .associatedSchemas;
 
     setSchemaFiles(schemaFiles || []);
-    setActiveTab(schemaFiles.length ? 0 : -1);
+
+    if (activeTab === -1 && schemaFiles.length) {
+      setActiveTab(0);
+    }
   }, [currentCP, currentDSOIndex])
 
   return (

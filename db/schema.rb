@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_22_131456) do
+ActiveRecord::Schema.define(version: 2022_10_03_163239) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "alignment_mapped_terms", force: :cascade do |t|
@@ -348,14 +347,14 @@ ActiveRecord::Schema.define(version: 2022_09_22_131456) do
     t.index ["configuration_profile_id"], name: "index_vocabularies_on_configuration_profile_id"
   end
 
-  add_foreign_key "alignment_mapped_terms", "alignments"
-  add_foreign_key "alignment_mapped_terms", "terms"
+  add_foreign_key "alignment_mapped_terms", "alignments", on_delete: :cascade
+  add_foreign_key "alignment_mapped_terms", "terms", on_delete: :cascade
   add_foreign_key "alignment_vocabularies", "alignments"
   add_foreign_key "alignment_vocabulary_concept_mapped_concepts", "alignment_vocabulary_concepts"
   add_foreign_key "alignment_vocabulary_concept_mapped_concepts", "skos_concepts"
   add_foreign_key "alignment_vocabulary_concepts", "alignment_vocabularies"
   add_foreign_key "alignment_vocabulary_concepts", "predicates"
-  add_foreign_key "alignments", "mappings"
+  add_foreign_key "alignments", "mappings", on_delete: :cascade
   add_foreign_key "alignments", "predicates"
   add_foreign_key "alignments", "vocabularies"
   add_foreign_key "assignments", "roles"
@@ -369,8 +368,8 @@ ActiveRecord::Schema.define(version: 2022_09_22_131456) do
   add_foreign_key "configuration_profiles_organizations", "configuration_profiles", on_delete: :cascade
   add_foreign_key "configuration_profiles_organizations", "organizations", on_delete: :cascade
   add_foreign_key "domains", "domain_sets", on_delete: :cascade
-  add_foreign_key "mapping_selected_terms", "mappings"
-  add_foreign_key "mapping_selected_terms", "terms"
+  add_foreign_key "mapping_selected_terms", "mappings", on_delete: :cascade
+  add_foreign_key "mapping_selected_terms", "terms", on_delete: :cascade
   add_foreign_key "mappings", "configuration_profile_users", on_delete: :cascade
   add_foreign_key "mappings", "specifications"
   add_foreign_key "organizations", "users", column: "administrator_id"
