@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import TopNav from "../shared/TopNav";
 import Loader from "../shared/Loader";
 import fetchMapping from "../../services/fetchMapping";
@@ -19,11 +19,8 @@ import deleteMappingSelectedTerm from "../../services/deleteMappingSelectedTerm"
 import Pluralize from "pluralize";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { AppContext } from "../../contexts/AppContext";
 
 const MappingToDomains = (props) => {
-  const { leadMapper } = useContext(AppContext);
-
   /**
    * Representation of an error on this page process
    */
@@ -249,15 +246,17 @@ const MappingToDomains = (props) => {
   /**
    * Button to accept the mapping, create the mapping terms and go to the next screen
    */
-  const DoneDomainMapping = () => leadMapper ? (
-    <button
-      className="btn bg-col-primary col-background"
-      onClick={handleDoneDomainMapping}
-      disabled={!mappedTerms.length}
-    >
-      Done Domain Mapping
-    </button>
-  ) : null;
+  const DoneDomainMapping = () => {
+    return (
+      <button
+        className="btn bg-col-primary col-background"
+        onClick={handleDoneDomainMapping}
+        disabled={!mappedTerms.length}
+      >
+        Done Domain Mapping
+      </button>
+    );
+  };
 
   /**
    * Options to show on the topbar

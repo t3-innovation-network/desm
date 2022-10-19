@@ -10,7 +10,7 @@ class Api::V1::SpineTermsController < ApplicationController
   def index
     terms = Spine.find(params[:id]).terms
 
-    render json: terms, include: %i[property vocabularies]
+    render json: terms, include: %i[organization property vocabularies]
   end
 
   ###

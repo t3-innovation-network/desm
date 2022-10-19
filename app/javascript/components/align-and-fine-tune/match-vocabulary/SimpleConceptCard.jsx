@@ -13,6 +13,7 @@ const SimpleConceptCard = (props) => {
 
   return (
     <Collapsible
+      expanded
       headerContent={<strong>{concept.name}</strong>}
       cardStyle={"with-shadow mb-2"}
       observeOutside={false}

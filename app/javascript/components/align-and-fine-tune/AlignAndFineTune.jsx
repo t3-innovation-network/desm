@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import fetchMapping from "../../services/fetchMapping";
 import fetchMappingSelectedTerms from "../../services/fetchMappingSelectedTerms";
@@ -27,7 +27,9 @@ import ConfirmDialog from "../shared/ConfirmDialog";
 import { AppContext } from "../../contexts/AppContext";
 
 const AlignAndFineTune = (props) => {
-  const { organization } = useContext(AppContext);
+  const { leadMapper, organization } = useContext(AppContext);
+
+  const alignmentsTableRef = useRef(null);
 
   /**
    * Flag to control when the user is adding a synthetic property
@@ -103,6 +105,8 @@ const AlignAndFineTune = (props) => {
    * to filter the list of spine terms
    */
   const [spineTermsInputValue, setSpineTermsInputValue] = useState("");
+
+  const [scrollTop, setScrollTop] = useState(0);
   /**
    * The logged in user
    */
@@ -314,6 +318,8 @@ const AlignAndFineTune = (props) => {
     /// Warn to save changes
     setChangesPerformed(changesPerformed + 1);
     setLoading(false);
+
+    alignmentsTableRef.current?.scroll(0, scrollTop);
   };
 
   /**
@@ -407,7 +413,7 @@ const AlignAndFineTune = (props) => {
         >
           Save
         </button>
-        {mapping.status !== "mapped" && (
+        {leadMapper && mapping.status !== "mapped" && (
           <button
             className="btn bg-col-primary col-background"
             onClick={handleDoneAlignment}
@@ -861,7 +867,11 @@ const AlignAndFineTune = (props) => {
                     <h4 className="col-3">Mapping Predicate</h4>
                     <h4 className="col-4">Mapped Term</h4>
                   </div>
-                  <div style={{ overflow: "hidden scroll" }}>
+                  <div
+                    onScroll={e => setScrollTop(e.target.scrollTop)}
+                    ref={alignmentsTableRef}
+                    style={{ overflow: "hidden scroll" }}
+                  >
                     {!loading &&
                       filteredSpineTerms.map((term) => {
                         return props.hideMappedSpineTerms &&

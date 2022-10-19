@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import fetchSpine from "../../services/fetchSpine";
 import fetchSpineTerms from "../../services/fetchSpineTerms";
@@ -11,8 +11,11 @@ import TopNavOptions from "../shared/TopNavOptions";
 import Pluralize from "pluralize";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { AppContext } from "../../contexts/AppContext";
 
 const EditSpecification = (props) => {
+  const { organization } = useContext(AppContext);
+
   /**
    * Error message to present on the UI
    */
@@ -202,7 +205,7 @@ const EditSpecification = (props) => {
                   </div>
                   <div className="row">
                     <div className="col">
-                      <h6 className="subtitle">{user.organization.name}</h6>
+                      <h6 className="subtitle">{organization.name}</h6>
                     </div>
                   </div>
                   <div className="row">
@@ -244,7 +247,7 @@ const EditSpecification = (props) => {
                           isMapped={() => false}
                           editEnabled={true}
                           onEditClick={onEditTermClick}
-                          origin={user.organization.name}
+                          origin={organization.name}
                           disableClick={true}
                         />
                       );

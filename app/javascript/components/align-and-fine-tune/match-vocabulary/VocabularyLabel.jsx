@@ -9,22 +9,15 @@ import React from "react";
  * @prop {Function} onVocabularyClick
  * @prop {Boolean} clickable
  */
-const VocabularyLabel = (props) => {
-  /**
-   * Elements from props
-   */
-  const { term, onVocabularyClick, clickable } = props;
-
-  return (
-    <p
-      className={
-        "col-primary underlined" + (clickable ? " cursor-pointer" : "")
-      }
-      onClick={() => onVocabularyClick?.(term)}
-    >
-      {term.vocabularies[0].name}
-    </p>
-  );
-};
+const VocabularyLabel = ({ onVocabularyClick, term }) => (
+  <p
+    className={
+      "col-primary underlined" + (Boolean(onVocabularyClick) ? " cursor-pointer" : "")
+    }
+    onClick={() => onVocabularyClick?.(term)}
+  >
+    {term.vocabularies[0].name}
+  </p>
+);
 
 export default VocabularyLabel;
