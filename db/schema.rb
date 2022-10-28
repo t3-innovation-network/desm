@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_03_163239) do
+ActiveRecord::Schema.define(version: 2022_10_28_183001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -349,10 +349,10 @@ ActiveRecord::Schema.define(version: 2022_10_03_163239) do
 
   add_foreign_key "alignment_mapped_terms", "alignments", on_delete: :cascade
   add_foreign_key "alignment_mapped_terms", "terms", on_delete: :cascade
-  add_foreign_key "alignment_vocabularies", "alignments"
+  add_foreign_key "alignment_vocabularies", "alignments", on_delete: :cascade
   add_foreign_key "alignment_vocabulary_concept_mapped_concepts", "alignment_vocabulary_concepts"
   add_foreign_key "alignment_vocabulary_concept_mapped_concepts", "skos_concepts"
-  add_foreign_key "alignment_vocabulary_concepts", "alignment_vocabularies"
+  add_foreign_key "alignment_vocabulary_concepts", "alignment_vocabularies", on_delete: :cascade
   add_foreign_key "alignment_vocabulary_concepts", "predicates"
   add_foreign_key "alignments", "mappings", on_delete: :cascade
   add_foreign_key "alignments", "predicates"

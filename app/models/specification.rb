@@ -35,11 +35,6 @@ class Specification < ApplicationRecord
   after_save :spine!, if: proc { saved_change_to_domain_id? && !domain.spine }
 
   ###
-  # @description: A specification that's being mapped should not be removed
-  ###
-  before_destroy :dependent_mapping_exists?
-
-  ###
   # @description: Validates the presence of a name before create
   ###
   validates :name, presence: true
@@ -63,15 +58,6 @@ class Specification < ApplicationRecord
   ###
   def as_json(options={})
     super options.merge(methods: %i[domain])
-  end
-
-  ###
-  # @description: Verifies if there's a specification that's being mapped against this one. A
-  #   specification that's being mapped should not be removed.
-  # @return [TrueClass|FalseClass]
-  ###
-  def dependent_mapping_exists?
-    throw :abort if Mapping.where(spine_id: id).count.positive?
   end
 
   def to_json_ld

@@ -52,7 +52,6 @@ class Api::V1::MappingsController < ApplicationController
            include: [
              :organization,
              :selected_terms,
-             :terms,
              {specification: {include: %i[user terms]}}
            ]
   end
@@ -62,7 +61,7 @@ class Api::V1::MappingsController < ApplicationController
   #   in params
   ###
   def show
-    render json: @instance, include: %i[terms selected_terms]
+    render json: @instance, include: :selected_terms
   end
 
   ###
@@ -70,7 +69,8 @@ class Api::V1::MappingsController < ApplicationController
   #   to the one passed in params
   ###
   def show_terms
-    render json: @instance.terms.order(:uri), include: {mapped_terms: {include: %i[property vocabularies]}}
+    render json: @instance.alignments.order(:uri),
+           include: {mapped_terms: {include: %i[property vocabularies]}}
   end
 
   ###

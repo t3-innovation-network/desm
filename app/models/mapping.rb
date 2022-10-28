@@ -42,12 +42,6 @@ class Mapping < ApplicationRecord
 
   has_many :alignments
   ###
-  # @description: Each term that conforms the mapping. The terms of the mapping contains information
-  #   about the type of alignment (predicate), which term from the spine was mapped to which of the
-  #   original specification, and more.
-  ###
-  has_many :terms, class_name: :Alignment, dependent: :destroy
-  ###
   # @description: The selected terms from the original uploaded specification. The user can select one
   #   ore more terms from it.
   ###
@@ -133,7 +127,7 @@ class Mapping < ApplicationRecord
   # @description: Get the users who worked in this mapping
   ###
   def involved_users
-    User.where(id: terms.joins(:audits).select("audits.user_id"))
+    User.where(id: alignments.joins(:audits).distinct.select("audits.user_id"))
   end
 
   ###
@@ -141,7 +135,7 @@ class Mapping < ApplicationRecord
   # @return [Integer]
   ###
   def mapped_terms
-    terms.select {|term| term.mapped_terms.count.positive? }.count
+    alignments.joins(:mapped_terms).distinct.count(:id)
   end
 
   ###
@@ -165,11 +159,11 @@ class Mapping < ApplicationRecord
   # @description: Remove all alignments from a mapping
   ###
   def remove_alignments_mapped_terms
-    terms.each {|term|
-      term.mapped_term_ids = []
-      term.predicate_id = nil
-      term.save!
-    }
+    alignments.each do |alignment|
+      alignment.mapped_term_ids = []
+      alignment.predicate_id = nil
+      alignment.save!
+    end
   end
 
   ###
