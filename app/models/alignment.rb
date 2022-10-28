@@ -86,7 +86,7 @@ class Alignment < ApplicationRecord
   # @description: Notify the user about changes on the mapping
   ###
   def notify_mapping_updated
-    mapping.notify_updated
+    # mapping.notify_updated
   end
 
   ###

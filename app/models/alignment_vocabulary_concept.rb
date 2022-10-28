@@ -14,6 +14,10 @@ class AlignmentVocabularyConcept < ApplicationRecord
   ###
   belongs_to :alignment_vocabulary
 
+  belongs_to :predicate, optional: true
+
+  belongs_to :spine_concept, class_name: "SkosConcept"
+
   ###
   # @description: The mapping property concepts this new concept is aligning
   ###

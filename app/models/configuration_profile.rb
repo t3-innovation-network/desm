@@ -22,6 +22,8 @@ class ConfigurationProfile < ApplicationRecord
   has_many :users, through: :configuration_profile_users
   has_many :predicates, through: :mapping_predicates
   has_many :vocabularies
+  has_many :concepts, through: :vocabularies
+  has_many :alignments, through: :mappings
 
   after_initialize :setup_schema_validators
   before_save :check_structure, if: :structure_changed?

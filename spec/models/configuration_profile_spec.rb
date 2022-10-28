@@ -354,8 +354,8 @@ describe ConfigurationProfile, type: :model do
     }
 
     before do
-      Alignment.last.mapped_terms << Term.last
-      mapping.selected_terms << Term.last
+      mapping.spine.terms = create_list(:term, 10)
+      10.times {|i| create(:alignment, mapping: mapping, spine_term: mapping.spine.terms[i]) }
 
       organization = create(:organization)
       configuration_profile1.standards_organizations << organization

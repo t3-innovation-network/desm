@@ -49,6 +49,16 @@ class API::V1::ConfigurationProfilesController < API::V1::ConfigurationProfilesA
     head :ok
   end
 
+  def import
+    Importers::ConfigurationProfile
+      .new(params[:data].permit!, name: params[:name])
+      .import
+
+    head :ok
+  rescue StandardError => e
+    render json: {error: e.message}
+  end
+
   private
 
   def creation_params

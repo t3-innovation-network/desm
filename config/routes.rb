@@ -31,6 +31,7 @@ Rails.application.routes.draw do
 
       resources :configuration_profiles, except: %i[new edit] do
         get :set_current, on: :member
+        post :import, on: :collection
       end
 
       resources :vocabularies, only: [:index, :create, :show] do

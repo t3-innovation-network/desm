@@ -21,6 +21,8 @@ class AlignmentVocabulary < ApplicationRecord
   # @return [Vocabulary]
   ###
   def spine_vocabulary
+    return unless spine_term
+
     spine_term.vocabularies.first
   end
 

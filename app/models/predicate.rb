@@ -97,10 +97,13 @@ class Predicate < ApplicationRecord
 
   def to_json_ld
     {
-      uri: uri,
-      source_uri: source_uri,
+      color: color,
+      definition: definition,
       pref_label: pref_label,
-      definition: definition
+      slug: slug,
+      source_uri: source_uri,
+      uri: uri,
+      weight: weight
     }
   end
 

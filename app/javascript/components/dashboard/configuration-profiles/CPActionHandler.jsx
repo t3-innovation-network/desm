@@ -1,4 +1,3 @@
-import { camelizeKeys } from "humps";
 import { downloadFile } from "../../../helpers/Export";
 import execCPAction from "../../../services/execCPAction";
 import removeCP from "../../../services/removeCP";
@@ -76,7 +75,7 @@ export class Export extends CPActionHandler {
 
   handleResponse(response, context) {
     downloadFile(
-      camelizeKeys(response.structure),
+      response,
       `configuration-profile-${new Date().toISOString()}.json`
     );
     context.stopProcessing();

@@ -7,8 +7,13 @@ class API::V1::ConfigurationProfileActionsController < ApplicationController
 
   def call_action
     action = permitted_actions
-    @instance.send(action)
 
+    if action == :export!
+      render json: Exporters::ConfigurationProfile.new(@instance).export
+      return
+    end
+
+    @instance.send(action)
     render json: @instance.reload, include: [standards_organizations: {include: :users}]
   end
 
