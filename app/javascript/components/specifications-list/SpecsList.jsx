@@ -142,10 +142,8 @@ export default class SpecsList extends Component {
       toast.success("Mapping removed");
 
       this.setState({
-        mappings: mappings.filter(
-          (mapping) => mapping.id !== mappingIdToRemove
-        ),
         confirmingRemove: false,
+        mappings: mappings.filter(m => m.id != mappingIdToRemove)
       });
     }
   };

@@ -1,8 +1,9 @@
 import Modal from "react-modal";
-import React from "react";
+import React, { useState } from "react";
 import { SlideInDown } from "./Animations.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import Loader from "./Loader.jsx";
 
 /**
  * @prop {Function} onConfirm
@@ -16,6 +17,13 @@ const ConfirmDialog = (props) => {
    * Elements from props
    */
   const { visible, onRequestClose, onConfirm, children } = props;
+
+  const [waiting, setWaiting] = useState(false);
+
+  const handleConfirm = () => {
+    setWaiting(true);
+    onConfirm();
+  };
 
   return (
     <Modal
@@ -37,7 +45,7 @@ const ConfirmDialog = (props) => {
               <div className="col-2">
                 <a
                   className="float-right cursor-pointer"
-                  onClick={onRequestClose}
+                  onClick={() => !waiting && onRequestClose()}
                 >
                   <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
                 </a>
@@ -52,12 +60,14 @@ const ConfirmDialog = (props) => {
               <div className="col">
                 <button
                   className="btn btn-dark float-right ml-3"
-                  onClick={onConfirm}
+                  disabled={waiting}
+                  onClick={handleConfirm}
                 >
-                  Confirm
+                  {waiting ? <Loader noPadding smallSpinner /> : "Confirm"}
                 </button>
                 <button
                   className="btn btn-dark float-right ml-3"
+                  disabled={waiting}
                   onClick={onRequestClose}
                 >
                   Cancel

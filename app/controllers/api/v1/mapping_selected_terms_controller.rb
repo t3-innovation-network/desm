@@ -15,7 +15,7 @@ class Api::V1::MappingSelectedTermsController < ApplicationController
     # Proceed to create the mapping terms
     @instance.update_selected_terms(params[:term_ids])
 
-    render json: @instance, include: %i[terms selected_terms]
+    render json: @instance, include: :selected_terms
   end
 
   ###
