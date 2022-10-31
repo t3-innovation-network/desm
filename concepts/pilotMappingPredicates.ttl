@@ -1,0 +1,73 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix desm: <https://desmsolutions.org/ns/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://desmsolutions.org/concepts/identical> a skos:Concept ;
+    skos:inScheme <http://desmsolutions.org/concepts/desmMappingPredicates> ;
+    skos:prefLabel "Identical"@en-us ;
+	skos:definition "The definition is identical in wording and intent."@en-US ;
+    desm:weight 5 .
+
+<http://desmsolutions.org/concepts/reworded> a skos:Concept ;
+    skos:inScheme <http://desmsolutions.org/concepts/desmMappingPredicates> ;
+    skos:prefLabel "Reworded"@en-us ;
+	skos:definition "The definition is identical in intent but reworded; the properties are equivalent."@en-US ;
+    desm:weight 5 .
+
+<http://desmsolutions.org/concepts/inverse> a skos:Concept ;
+    skos:inScheme <http://desmsolutions.org/concepts/desmMappingPredicates> ;
+    skos:prefLabel "Inverse"@en-us ;
+	skos:definition "The spine term and the term being mapped are exact inverses of each other."@en-US ;
+    desm:weight 5 .
+
+<http://desmsolutions.org/concepts/similar> a skos:Concept ;
+    skos:inScheme <http://desmsolutions.org/concepts/desmMappingPredicates> ;
+    skos:prefLabel "Similar"@en-us ;
+	skos:definition "The definition is similar in intent, but with significant wording differences."@en-US ;
+    desm:weight 4 .
+
+<http://desmsolutions.org/concepts/transformed> a skos:Concept ;
+    skos:inScheme <http://desmsolutions.org/concepts/desmMappingPredicates> ;
+    skos:prefLabel "Transformed"@en-us ;
+	skos:definition "A simple data transform will yield a value for the spine term; for example, concatenating values from several properties being mapped. Describe the transform in a comment on the alignment."@en-US ;
+    desm:weight 4 .
+
+<http://desmsolutions.org/concepts/hasSubProperty> a skos:Concept ;
+    skos:inScheme <http://desmsolutions.org/concepts/desmMappingPredicates> ;
+    skos:prefLabel "Has sub-property"@en-us ;
+	skos:definition "The term in the spine has a broader definition, covering all of the cases where the term being mapped would be used and more."@en-US ;
+    desm:weight 3 .
+
+<http://desmsolutions.org/concepts/subPropertyOf> a skos:Concept ;
+    skos:inScheme <http://desmsolutions.org/concepts/desmMappingPredicates> ;
+    skos:prefLabel "Sub-property Of"@en-us ;
+	skos:definition "The term in the spine has a narrower definition, covering a subset of the cases where the term being mapped would be used."@en-US ;
+    desm:weight 3 .
+
+<http://desmsolutions.org/concepts/concept> a skos:Concept ;
+    skos:inScheme <http://desmsolutions.org/concepts/desmMappingPredicates> ;
+    skos:prefLabel "Concept"@en-us ;
+	skos:definition "The definition is related only at a conceptual level, no simple transformation can render the data from one to the other."@en-US ;
+    desm:weight 2 .
+
+<http://desmsolutions.org/concepts/noMatch> a skos:Concept ;
+    skos:inScheme <http://desmsolutions.org/concepts/desmMappingPredicates> ;
+    skos:prefLabel "No Match"@en-us ;
+	skos:definition "There is no match for the spine term in the schema being mapped."@en-US ;
+    desm:weight 0 .
+
+<http://desmsolutions.org/concepts/desmMappingPredicates> a skos:ConceptScheme ;
+    dcterms:created "2022-10-31"^^xsd:date ;
+    dcterms:creator <http://people.pjjk.net/phil> ;
+    dcterms:description "This concept scheme identifies the mapping predicates used by the DESM Pilot Project."@en-us ;
+    dcterms:title "DESM Pilot Project Mapping Predicates"@en-us ;
+    skos:hasTopConcept <http://desmsolutions.org/concepts/identical> ,
+		<http://desmsolutions.org/concepts/reworded> ,
+		<http://desmsolutions.org/concepts/inverse> ,
+		<http://desmsolutions.org/concepts/similar> ,
+		<http://desmsolutions.org/concepts/transformed> ,
+		<http://desmsolutions.org/concepts/hasSubProperty> ,
+		<http://desmsolutions.org/concepts/subPropertyOf> ,
+		<http://desmsolutions.org/concepts/concept> ,
+		<http://desmsolutions.org/concepts/noMatch> .
