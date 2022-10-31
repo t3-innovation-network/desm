@@ -4,7 +4,7 @@
 
 <http://desm.org/concepts/competence> a skos:Concept ;
     skos:inScheme <http://desm.org/concepts/mappingClasses> ;
-    skos:prefLabel "Document"@en-us .
+    skos:prefLabel "Competence"@en-us .
 
 <http://desm.org/concepts/person> a skos:Concept ;
     skos:inScheme <http://desm.org/concepts/mappingClasses> ;
