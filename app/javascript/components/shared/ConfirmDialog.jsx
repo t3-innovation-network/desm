@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SlideInDown } from "./Animations.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -24,6 +24,8 @@ const ConfirmDialog = (props) => {
     setWaiting(true);
     onConfirm();
   };
+
+  useEffect(() => setWaiting(false), [visible]);
 
   return (
     <Modal
