@@ -47,13 +47,13 @@ const SchemaFileTabs = (props) => {
       <RemovableTab
         active={0 === activeTab}
         tabClickHandler={tabClickHandlerMD}
-        title={"MetaData"}
+        title="Term Definitions"
         showCloseBtn={false}
       />
       <RemovableTab
         active={1 === activeTab}
         tabClickHandler={tabClickHandlerCS}
-        title={"Concept Schemes"}
+        title="Controlled Vocabularies"
         showCloseBtn={false}
       />
     </TabGroup>
