@@ -279,7 +279,7 @@ const SpineTermRow = (props) => {
                 <p>{term.property.comment}</p>
                 <p>
                   Origin:
-                  <span className="col-primary">{" " + spineOrigin}</span>
+                  <span className="col-primary">{" " + term.organization.name}</span>
                 </p>
 
                 {alignmentHasVocabulary() ? (
