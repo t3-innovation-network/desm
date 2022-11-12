@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import { toastr as toast } from "react-redux-toastr";
 import queryString from "query-string";
 import Loader from "./../shared/Loader";
-import passwordStrength from "../../services/passwordStrength";
 import { encode } from "../../helpers/Encoder";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faKey, faCheck } from "@fortawesome/free-solid-svg-icons";
@@ -18,7 +17,7 @@ const ResetPass = (props) => {
    */
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [passwordIsValid, setPasswordIsValid] = useState(false);
+  const [passwordIsValid] = useState(false);
   const [token, setToken] = useState("");
   const [errors, setErrors] = useState("");
   const [working, setWorking] = useState(false);
@@ -99,7 +98,9 @@ const ResetPass = (props) => {
                 <div className="card">
                   <div className="card-header">
                     <FontAwesomeIcon icon={faKey} />
-                    <span className="pl-2 subtitle">Reset your password</span>
+                    <span className="pl-2 subtitle">
+                      Set up your password
+                    </span>
                     <p>Please type a strong password below.</p>
                   </div>
                   <div className="card-body">
@@ -155,7 +156,7 @@ const ResetPass = (props) => {
                         {working ? (
                           <Loader noPadding={true} smallSpinner={true} />
                         ) : (
-                          "Reset Password"
+                          "Set Password"
                         )}
                       </button>
                     </form>

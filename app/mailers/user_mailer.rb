@@ -7,10 +7,13 @@ class UserMailer < ApplicationMailer
   # @description: Sends an email to the user with a welcome message
   ###
   def welcome
-    @title = t("mailers.welcome.title")
-    @reset_password_url = "#{@config[:host]}/forgot-password"
-    @sign_in_url = "#{@config[:host]}/sign-in"
+    @user.generate_password_token!
 
+    @reset_password_url = URI(@config[:host])
+    @reset_password_url.path = "/reset-password"
+    @reset_password_url.query = {token: @user.reset_password_token}.to_query
+
+    @title = t("mailers.welcome.title")
     mail(to: @user.email, subject: t("mailers.welcome.subject"))
   end
 
