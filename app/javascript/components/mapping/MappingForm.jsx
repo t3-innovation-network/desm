@@ -448,27 +448,25 @@ const MappingForm = () => {
               <label>Which domain are you uploading?</label>
 
               <div className="desm-radio">
-                {domains.map(function (dom) {
-                  return (
-                    <div
-                      className={
-                        "desm-radio-primary" + (dom.spine ? " has-spine" : "")
-                      }
-                      key={dom.id}
+                {domains.map(domain => (
+                  <div className="desm-radio-primary" key={domain.id}>
+                    <input
+                      disabled={submitted}
+                      id={domain.id}
+                      name="domain-options-form"
+                      onChange={(e) => setSelectedDomainId(e.target.value)}
+                      required
+                      type="radio"
+                      value={domain.id}
+                    />
+                    <label
+                      className={domain.spine ? "text-success" : undefined}
+                      htmlFor={domain.id}
                     >
-                      <input
-                        type="radio"
-                        value={dom.id}
-                        id={dom.id}
-                        name="domain-options-form"
-                        onChange={(e) => setSelectedDomainId(e.target.value)}
-                        disabled={submitted}
-                        required={true}
-                      />
-                      <label htmlFor={dom.id}>{dom.name}</label>
-                    </div>
-                  );
-                })}
+                      <strong>{domain.name}</strong>
+                    </label>
+                  </div>
+                ))}
               </div>
 
               {_.isNull(selectedDomainId) &&
@@ -480,7 +478,7 @@ const MappingForm = () => {
                   </span>
                 )}
 
-              <small className="mt-3 mb-3 float-right">
+              <small className="mb-3">
                 Domains in <span className="badge badge-success">green</span>{" "}
                 have a spine already uploaded
               </small>
