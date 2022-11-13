@@ -10,18 +10,14 @@ import Pluralize from "pluralize";
  * @param {ItemType} acceptedItemType The type of item that this box accepts
  * @param {String} placeholder The text that is going to appear by default
  */
-const DropZone = (props) => {
-  /**
-   * Elements from props
-   */
-  const {
-    acceptedItemType,
-    droppedItem,
-    placeholder,
-    selectedCount,
-    textStyle,
-  } = props;
-
+const DropZone = ({
+  acceptedItemType,
+  droppedItem,
+  placeholder,
+  selectedCount,
+  textStyle,
+  style
+}) => {
   /**
    * Draggable configuration
    */
@@ -42,10 +38,11 @@ const DropZone = (props) => {
   return (
     <div
       className={
-        "card mapping-term-drag-box pt-2 pb-2" +
+        "card mapping-term-drag-box pt-2 pb-2 ratio ratio-1x1" +
         (isActive ? " dnd-active" : " border-dotted")
       }
       ref={drop}
+      style={style}
     >
       <p className="mb-0 fully-centered" style={textStyle}>
         {isActive
