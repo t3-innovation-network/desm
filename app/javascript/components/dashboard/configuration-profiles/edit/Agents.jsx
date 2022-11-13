@@ -140,6 +140,9 @@ const Agents = () => {
           <label className="form-check-label" htmlFor="leadMapper">
             Lead Mapper?
           </label>
+          <div className="form-text">
+            Only lead mappers can publish completed mappings.
+          </div>
         </div>
 
         <div className="mt-5">
