@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../contexts/AppContext";
 import fetchConfigurationProfiles from "../../services/fetchConfigurationProfiles";
-import setCurrentConfigurationProfile from "../../services/setCurrentConfigurationProfile";
+import setConfigurationProfile from "../../services/setConfigurationProfile";
 import Loader from "../shared/Loader";
 
 const ConfigurationProfileSelect = ({ onChange }) => {
   const {
-    currentConfigurationProfileId,
-    setCurrentConfigurationProfileId,
+    currentConfigurationProfile,
+    setCurrentConfigurationProfile,
     setLeadMapper,
     setOrganization
   } = useContext(AppContext);
@@ -17,20 +17,28 @@ const ConfigurationProfileSelect = ({ onChange }) => {
   const [submitting, setSubmitting] = useState(false);
 
   const [
-    selectedConfigurationProfileId,
-    setSelectedConfigurationProfileId
-  ] = useState(currentConfigurationProfileId);
+    selectedConfigurationProfile,
+    setSelectedConfigurationProfile
+  ] = useState(currentConfigurationProfile);
+
+  const handleChange = (e) => {
+    const configurationProfile = configurationProfiles.find(p =>
+      p.id.toString() === e.target.value
+    );
+
+    setSelectedConfigurationProfile(configurationProfile);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
 
     const configurationProfile = configurationProfiles.find(p =>
-      p.id.toString() === selectedConfigurationProfileId
+      p.id === selectedConfigurationProfile.id
     );
 
-    await setCurrentConfigurationProfile(selectedConfigurationProfileId);
-    setCurrentConfigurationProfileId(selectedConfigurationProfileId);
+    await setConfigurationProfile(selectedConfigurationProfile.id);
+    setCurrentConfigurationProfile(selectedConfigurationProfile);
     setLeadMapper(configurationProfile.leadMapper);
     setOrganization(configurationProfile.organization);
     setSubmitting(false);
@@ -43,7 +51,7 @@ const ConfigurationProfileSelect = ({ onChange }) => {
 
   const submitDisabled = (
     !configurationProfiles.length ||
-      !selectedConfigurationProfileId ||
+      !selectedConfigurationProfile ||
       submitting
   );
 
@@ -69,8 +77,8 @@ const ConfigurationProfileSelect = ({ onChange }) => {
             className="form-control mr-2"
             disabled={loading || submitting}
             id="currentConfigurationProfile"
-            onChange={e => setSelectedConfigurationProfileId(e.target.value)}
-            value={selectedConfigurationProfileId}
+            onChange={handleChange}
+            value={selectedConfigurationProfile?.id}
           >
             <option value="">{placeholderOptionText}</option>
             {configurationProfiles.map(p => (

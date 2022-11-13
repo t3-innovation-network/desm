@@ -208,7 +208,7 @@ export default class PropertyMappingList extends Component {
   }
 
   async loadData() {
-    if (!this.context.currentConfigurationProfileId) {
+    if (!this.context.currentConfigurationProfile) {
       return;
     }
 
@@ -257,7 +257,7 @@ export default class PropertyMappingList extends Component {
                 <ConfigurationProfileSelect onChange={this.loadData.bind(this)} />
               )}
 
-              {this.context.currentConfigurationProfileId && (
+              {this.context.currentConfigurationProfile && (
                 loading ? (
                   <Loader />
                 ) : (

@@ -410,7 +410,16 @@ export default class SpecsList extends Component {
         <div className="container-fluid container-wrapper">
           <div className="row">
             <div className="col p-lg-5 pt-5">
-              <h4>My Specifications</h4>
+              <h1>
+                My Specifications
+              </h1>
+              <p>
+                Current configuration profile:
+                {" "}
+                <mark>
+                  {this.context.currentConfigurationProfile.name}
+                </mark>
+              </p>
               {loading ? (
                 <Loader />
               ) : (
