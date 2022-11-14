@@ -1,87 +1,99 @@
 import React from "react";
 import mappingProcess from "../../../assets/images/mapping-process.png";
 
-class RightSideHome extends React.Component {
-  render() {
-    return (
-      <div className="col-lg-6 p-lg-5 pt-5 bg-col-secondary">
-        <section>
-          <h6 className="subtitle">About the DESM tool</h6>
-          <p>
-            The DESM is a specialized tool for creating, editing and viewing
-            semantic crosswalks of data standards from two or more Data Standard
-            Organizations (DSOs) to support data interoperability
-            and potentially data harmonization. An instance of the DESM can be
-            pre-configured, or re-configured, to use one or more Mapping
-            Profiles (Profile). A Profile is instantiated in an instance of DESM
-            by ingesting and associating two pre existing JSON-LD files modeled
-            using the W3C’s Simple Knowledge Organization System (SKOS):
-          </p>
+const RightSideHome = () => (
+  <div className="col-lg-8 p-lg-5 pt-5 bg-col-secondary">
+    <h6 className="subtitle">About the DESM tool</h6>
+    <p>
+      The Data Ecosystem Mapping Tool (DESM) is a specialized tool for
+      creating, editing, maintaining and viewing crosswalks between data
+      standards from two or more Data Standard Organizations (DSOs).
+      These crosswalks are based on the degree of semantic alignment
+      between terms in the different standards or schemas,
+      and may be useful for:
+    </p>
 
-          <ol>
-            <li>
-              an Abstract Classes file defining one or more abstract classes
-              describing the types of entities to be crosswalked (e.g.,
-              “Person”, “Organization”, “Earnings”, “Course”); and
-            </li>
-            <li>
-              a Mapping Predicates file defining the degrees or levels of
-              equivalence when mapping a property in one DSO’s specification to
-              a property in another DSO’s specification.
-            </li>
-          </ol>
+    <ul>
+      <li>supporting translation of data from one standard to another,</li>
+      <li>supporting the development of data models that align to several standards</li>
+      <li>showing which standards cover what terms,</li>
+    </ul>
 
-          <img
-            src={mappingProcess}
-            alt="mapping process"
-            style={{ width: "100%", padding: "2rem" }}
-          />
+    <p>
+      among other uses. These uses recognize the reality that any data
+      ecosystem will encompass actors who use different data standards,
+      different models and different schemas, because they have different
+      interests, systems and requirements for the data. Data translation
+      allows a degree of interoperability despite the use of data standards;
+      however our ultimate hope is that semantic mapping will show that data
+      harmonization is possible, that is that different data standards can
+      share semantics and models for common elements.
+    </p>
 
-          <p>
-            Once an administrator has configured the DESM to use the desired
-            Mapping Profile, crosswalking begins with an DSO ingesting one or
-            more of its data specifications describing one of the profile’s
-            Abstract Classes that validate against XML Schema, JSON Schema, RDF
-            Schema or CSV. The DSO also ingests any similarly encoded
-            specifications for the value spaces associated with the DSO’s
-            uploaded schema(s)–e.g., embedded or separately expressed
-            enumerations, vocabularies, tag lists, concept schemes. This first
-            set of schemas and value space specifications from a single DSO form
-            what the DESM calls the Base to which other DSOs will semantically
-            map or crosswalk their specifications and value spaces.
-          </p>
+    <img
+      src={mappingProcess}
+      alt="mapping process"
+      style={{ width: "100%", padding: "2rem" }}
+    />
 
-          <p>
-            Once the DESM has been seeded with a Base, other DSOs similarly
-            upload their specifications and value spaces describing the same
-            Abstract Class. These DSOs then semantically map or crosswalk each
-            of their schema properties and concepts in their value spaces to
-            properties and concepts in the Base. The DSO fine-tunes the
-            semantics of each property mapping by selecting from the array of
-            preloaded Mapping Predicates defined in the Profile–e.g.,
-            “identical”, “identical but reworded”, “similar” etc.. Should an DSO
-            have a property for which there is no equivalent property in the
-            Base, it adds that property to what DESM calls the Synthetic Spine
-            for that particular Abstract Class composed of all properties in the
-            Base plus properties of all the other DSOs not found in the Base.
-            Each subsequent DSO follows this same mapping process. The result is
-            a Synthetic Spine that reflects both explicit and inferred
-            crosswalks of all properties for the Abstract Class in all of the
-            mapped DSO specifications.
-          </p>
+    <p>
+      The crosswalks are based on pairwise mapping of terms from
+      the different standards to a "synthetic spine",
+      a schema-neutral synthesis of terms that is created during the mapping.
+      Mappings from terms in one standard to terms in another can then be
+      inferred where their respective mappings to the spine are transitive.
+    </p>
 
-          <p>
-            The resulting crosswalks can be viewed in the DESM tool. DESM also
-            outputs a JSON-LD file of both individual mappings and Mapping Sets
-            that can be loaded into 3rd party viewers and applications.
-          </p>
+    <p>
+      The
+      {" "}
+      <a
+        href="https://github.com/t3-innovation-network/desm"
+        target="_blank"
+      >
+        DESM tool
+      </a>
+      {" "}
+      is available as Open Source Software under an Apache 2.0 license.
+    </p>
 
-          <h6 className="subtitle">About the DESM community</h6>
-          <p>Data Standard Organizations (DSO)</p>
-        </section>
-      </div>
-    );
-  }
-}
+    <p>
+      <a
+        href="https://github.com/t3-innovation-network/desm/blob/main/README.md"
+        target="_blank"
+      >
+        Instructions for setting up an instance
+      </a>
+      {" "}
+      of the DESM tool are available from the repository.
+    </p>
+
+    <p>
+      <a
+        href="https://github.com/t3-innovation-network/desm/wiki"
+        target="_blank"
+      >
+        Instructions for carrying out a mapping
+      </a>
+      {" "}
+      are available on the DESM repository wiki.
+    </p>
+
+    <p>
+      DESM is sponsored by the U.S. Chamber of Commerce Foundations' T3
+      Innovation Network program. The T3 Open Competency Network,
+      in partnership with the T3 Data and Technology Standards Network
+      is responsible for the requirements and project plans that are used
+      for development and enhancement of the DESM too.
+    </p>
+
+    <p>
+      If you are interested in participating with a T3 mapping project,
+      please contact Taylor Hanson
+      {" "}
+      <a href="mailto:thansen@uschamber.com">thansen@uschamber.com</a>.
+    </p>
+  </div>
+);
 
 export default RightSideHome;
