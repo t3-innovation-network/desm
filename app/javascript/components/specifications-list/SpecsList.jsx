@@ -405,102 +405,100 @@ export default class SpecsList extends Component {
     } = this.state;
 
     return (
-      <div className="wrapper">
+      <div className="container-fluid">
         <TopNav centerContent={this.navCenterOptions} />
-        <div className="container-fluid container-wrapper">
-          <div className="row">
-            <div className="col p-lg-5 pt-5">
-              <h1>
-                My Specifications
-              </h1>
-              <p>
-                Current configuration profile:
-                {" "}
-                <mark>
-                  {this.context.currentConfigurationProfile.name}
-                </mark>
-              </p>
-              {loading ? (
-                <Loader />
-              ) : (
-                <Fragment>
-                  <ConfirmDialog
-                    onRequestClose={() =>
-                      this.setState({ confirmingRemove: false })
-                    }
-                    onConfirm={() => this.handleRemoveMapping()}
-                    visible={confirmingRemove}
-                  >
-                    <h2 className="text-center">
-                      You are removing a specification
-                    </h2>
-                    <h5 className="mt-3 text-center">
-                      Please confirm this action.
-                    </h5>
-                  </ConfirmDialog>
+        <div className="row">
+          <div className="col p-lg-5 pt-5">
+            <h1>
+              My Specifications
+            </h1>
+            <p>
+              Current configuration profile:
+              {" "}
+              <mark>
+                {this.context.currentConfigurationProfile.name}
+              </mark>
+            </p>
+            {loading ? (
+              <Loader />
+            ) : (
+              <Fragment>
+                <ConfirmDialog
+                  onRequestClose={() =>
+                    this.setState({ confirmingRemove: false })
+                  }
+                  onConfirm={() => this.handleRemoveMapping()}
+                  visible={confirmingRemove}
+                >
+                  <h2 className="text-center">
+                    You are removing a specification
+                  </h2>
+                  <h5 className="mt-3 text-center">
+                    Please confirm this action.
+                  </h5>
+                </ConfirmDialog>
 
-                  <div className="table-responsive">
-                    <table className="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Specification Name</th>
-                          <th scope="col">Version</th>
-                          <th scope="col">Mapped</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Author</th>
-                          <th scope="col">
-                            <select
-                              className="form-control"
-                              value={filter}
-                              onChange={(e) =>
-                                this.handleFilterChange(e.target.value)
-                              }
-                            >
-                              {filterOptions.map(function (option) {
-                                return (
-                                  <option key={option.key} value={option.key}>
-                                    {option.value}
-                                  </option>
-                                );
-                              })}
-                            </select>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <SpineSpecsList filter={filter} />
-                        {mappings.length > 0 ? (
-                          mappings.map(this.renderMapping)
-                        ) : (
-                          <tr />
-                        )}
-                      </tbody>
-                    </table>
-
-                    <hr className="rounded-divider" />
-
-                    {mappings.length === 0 && (
-                      <div className="card text-center">
-                        <div className="card-header bg-col-on-primary-highlight">
-                          <p>
-                            All the specifications you and your team map will be
-                            visible here
-                          </p>
-                        </div>
-                        <div className="card-body bg-col-on-primary-highlight">
-                          <Link
-                            to="/new-mapping"
-                            className="btn bg-col-primary col-background"
+                <div className="table-responsive">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Specification Name</th>
+                        <th scope="col">Version</th>
+                        <th scope="col">Mapped</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">
+                          <select
+                            className="form-control"
+                            value={filter}
+                            onChange={(e) =>
+                              this.handleFilterChange(e.target.value)
+                            }
                           >
-                            Map a specification
-                          </Link>
-                        </div>
+                            {filterOptions.map(function (option) {
+                              return (
+                                <option key={option.key} value={option.key}>
+                                  {option.value}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <SpineSpecsList filter={filter} />
+                      {mappings.length > 0 ? (
+                        mappings.map(this.renderMapping)
+                      ) : (
+                        <tr />
+                      )}
+                    </tbody>
+                  </table>
+
+                  <hr className="rounded-divider" />
+
+                  {mappings.length === 0 && (
+                    <div className="card text-center">
+                      <div className="card-header bg-col-on-primary-highlight">
+                        <p>
+                          All the specifications you and your team map will be
+                          visible here
+                        </p>
                       </div>
-                    )}
-                  </div>
-                </Fragment>
-              )}
-            </div>
+                      <div className="card-body bg-col-on-primary-highlight">
+                        <Link
+                          to="/new-mapping"
+                          className="btn bg-col-primary col-background"
+                        >
+                          Map a specification
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Fragment>
+            )}
           </div>
         </div>
       </div>

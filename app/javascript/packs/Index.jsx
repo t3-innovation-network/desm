@@ -22,6 +22,9 @@ const store = createStore(
 );
 
 document.addEventListener("DOMContentLoaded", () => {
+  const container = document.createElement("div");
+  container.classList.add("vh-100");
+
   render(
     <Provider store={store}>
       <DndProvider backend={HTML5Backend}>
@@ -30,6 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
         </AppContextProvider>
       </DndProvider>
     </Provider>,
-    document.body.appendChild(document.createElement("div"))
+    document.body.appendChild(container)
   );
 });

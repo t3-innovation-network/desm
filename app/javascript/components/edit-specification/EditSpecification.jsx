@@ -181,82 +181,80 @@ const EditSpecification = (props) => {
         onRemoveTerm={termRemoved}
         termId={termToEdit.id}
       />
-      <div className="wrapper">
+      <div className="container-fluid">
         <TopNav centerContent={navCenterOptions} />
 
         {errors.length ? <AlertNotice message={errors} /> : ""}
 
-        <div className="container-fluid container-wrapper">
-          <div className="row">
-            {loading ? (
-              <Loader />
-            ) : (
-              <div className="col p-lg-5 pt-5 bg-col-secondary">
-                <div className="border-bottom">
-                  <div className="row">
-                    <div className="col">
-                      <h2>
-                        Spine for{" "}
-                        <strong className="col-primary">
-                          {domain.pref_label}
-                        </strong>
-                      </h2>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col">
-                      <h6 className="subtitle">{organization.name}</h6>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-12 form-group input-group-has-icon">
-                      <FontAwesomeIcon
-                        icon={faSearch}
-                        className="form-control-feedback"
-                      />
-
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Find Element / Property"
-                        value={termsInputValue}
-                        onChange={filterTermsOnChange}
-                      />
-                    </div>
+        <div className="row">
+          {loading ? (
+            <Loader />
+          ) : (
+            <div className="col p-lg-5 pt-5 bg-col-secondary">
+              <div className="border-bottom">
+                <div className="row">
+                  <div className="col">
+                    <h2>
+                      Spine for{" "}
+                      <strong className="col-primary">
+                        {domain.pref_label}
+                      </strong>
+                    </h2>
                   </div>
                 </div>
+                <div className="row">
+                  <div className="col">
+                    <h6 className="subtitle">{organization.name}</h6>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12 form-group input-group-has-icon">
+                    <FontAwesomeIcon
+                      icon={faSearch}
+                      className="form-control-feedback"
+                    />
 
-                <div className="pr-5 mt-5">
-                  <AlertNotice
-                    cssClass="bg-col-primary col-background"
-                    title={
-                      terms.length +
-                      " " +
-                      Pluralize("property", terms.length) +
-                      " recognized for this spine"
-                    }
-                    message="You can edit each term of your specification until you are confident with names, vocabularies, uri's and more."
-                  />
-                  <div className="has-scrollbar scrollbar pr-5">
-                    {filteredTerms().map((term) => {
-                      return (
-                        <TermCard
-                          key={term.id}
-                          term={term}
-                          onClick={() => {}}
-                          isMapped={() => false}
-                          editEnabled={true}
-                          onEditClick={onEditTermClick}
-                          origin={organization.name}
-                          disableClick={true}
-                        />
-                      );
-                    })}
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Find Element / Property"
+                      value={termsInputValue}
+                      onChange={filterTermsOnChange}
+                    />
                   </div>
                 </div>
               </div>
-            )}
-          </div>
+
+              <div className="pr-5 mt-5">
+                <AlertNotice
+                  cssClass="bg-col-primary col-background"
+                  title={
+                    terms.length +
+                    " " +
+                    Pluralize("property", terms.length) +
+                    " recognized for this spine"
+                  }
+                  message="You can edit each term of your specification until you are confident with names, vocabularies, uri's and more."
+                />
+                <div className="has-scrollbar scrollbar pr-5">
+                  {filteredTerms().map((term) => {
+                    return (
+                      <TermCard
+                        key={term.id}
+                        term={term}
+                        onClick={() => {}}
+                        isMapped={() => false}
+                        editEnabled={true}
+                        onEditClick={onEditTermClick}
+                        origin={organization.name}
+                        disableClick={true}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </Fragment>

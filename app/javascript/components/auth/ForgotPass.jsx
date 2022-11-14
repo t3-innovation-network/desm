@@ -80,60 +80,56 @@ class ForgotPass extends Component {
     const { email, errors, sending } = this.state;
 
     return (
-      <React.Fragment>
-        <div className="wrapper">
-          <TopNav centerContent={this.navCenterOptions} />
-          <div className="container-fluid container-wrapper">
-            <div className="row mt-5">
-              <div className="col-lg-6 mx-auto">
-                {errors && <AlertNotice message={errors} />}
+      <div className="container-fluid">
+        <TopNav centerContent={this.navCenterOptions} />
+        <div className="row mt-5">
+          <div className="col-lg-6 mx-auto">
+            {errors && <AlertNotice message={errors} />}
 
-                <div className="card">
-                  <div className="card-header">
-                    <FontAwesomeIcon icon={faKey} />
-                    <span className="pl-2 subtitle">Reset Password</span>
-                    <p>
-                      Please type your email, and we will send you an email with
-                      instructions on how to reset your password.
-                    </p>
+            <div className="card">
+              <div className="card-header">
+                <FontAwesomeIcon icon={faKey} />
+                <span className="pl-2 subtitle">Reset Password</span>
+                <p>
+                  Please type your email, and we will send you an email with
+                  instructions on how to reset your password.
+                </p>
+              </div>
+              <div className="card-body">
+                <form className="mb-3" onSubmit={this.handleSubmit}>
+                  <div className="form-group">
+                    <label>
+                      Email
+                      <span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      name="email"
+                      placeholder="Enter your email"
+                      value={email}
+                      onChange={this.handleOnChange}
+                      required
+                      autoFocus
+                    />
                   </div>
-                  <div className="card-body">
-                    <form className="mb-3" onSubmit={this.handleSubmit}>
-                      <div className="form-group">
-                        <label>
-                          Email
-                          <span className="text-danger">*</span>
-                        </label>
-                        <input
-                          type="email"
-                          className="form-control"
-                          name="email"
-                          placeholder="Enter your email"
-                          value={email}
-                          onChange={this.handleOnChange}
-                          required
-                          autoFocus
-                        />
-                      </div>
 
-                      <button type="submit" className="btn btn-dark">
-                        {sending ? (
-                          <Loader noPadding={true} smallSpinner={true} />
-                        ) : (
-                          "Send"
-                        )}
-                      </button>
-                    </form>
-                    <Link className="col-primary" to={"/sign-in"}>
-                      Login
-                    </Link>
-                  </div>
-                </div>
+                  <button type="submit" className="btn btn-dark">
+                    {sending ? (
+                      <Loader noPadding={true} smallSpinner={true} />
+                    ) : (
+                      "Send"
+                    )}
+                  </button>
+                </form>
+                <Link className="col-primary" to={"/sign-in"}>
+                  Login
+                </Link>
               </div>
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

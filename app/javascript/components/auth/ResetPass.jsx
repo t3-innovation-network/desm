@@ -84,93 +84,89 @@ const ResetPass = (props) => {
   }, []);
 
   return (
-    <React.Fragment>
-      <div className="wrapper">
-        <TopNav centerContent={navCenterOptions} />
-        <div className="container-fluid container-wrapper">
-          <div className="row mt-5">
-            <div className="col-lg-6 mx-auto">
-              {errors && <AlertNotice message={errors} />}
+    <div className="container-fluid">
+      <TopNav centerContent={navCenterOptions} />
+      <div className="row mt-5">
+        <div className="col-lg-6 mx-auto">
+          {errors && <AlertNotice message={errors} />}
 
-              {_.isEmpty(token) ? (
-                <AlertNotice message={"No token provided"} />
-              ) : (
-                <div className="card">
-                  <div className="card-header">
-                    <FontAwesomeIcon icon={faKey} />
-                    <span className="pl-2 subtitle">
-                      Set up your password
-                    </span>
-                    <p>Please type a strong password below.</p>
+          {_.isEmpty(token) ? (
+            <AlertNotice message={"No token provided"} />
+          ) : (
+            <div className="card">
+              <div className="card-header">
+                <FontAwesomeIcon icon={faKey} />
+                <span className="pl-2 subtitle">
+                  Set up your password
+                </span>
+                <p>Please type a strong password below.</p>
+              </div>
+              <div className="card-body">
+                <PasswordStrengthInfo />
+                <form className="mb-3" onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    <label>
+                      New Password
+                      <span className="text-danger">*</span>
+                    </label>
+                    {passwordIsValid ? (
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        className="form-control-feedback right-aligned col-success"
+                      />
+                    ) : (
+                      ""
+                    )}
+                    <input
+                      autoFocus
+                      className="form-control"
+                      name="password"
+                      onBlur={handlePasswordBlur}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Please enter your password"
+                      required
+                      type="password"
+                      value={password}
+                    />
                   </div>
-                  <div className="card-body">
-                    <PasswordStrengthInfo />
-                    <form className="mb-3" onSubmit={handleSubmit}>
-                      <div className="form-group">
-                        <label>
-                          New Password
-                          <span className="text-danger">*</span>
-                        </label>
-                        {passwordIsValid ? (
-                          <FontAwesomeIcon
-                            icon={faCheck}
-                            className="form-control-feedback right-aligned col-success"
-                          />
-                        ) : (
-                          ""
-                        )}
-                        <input
-                          autoFocus
-                          className="form-control"
-                          name="password"
-                          onBlur={handlePasswordBlur}
-                          onChange={(e) => setPassword(e.target.value)}
-                          placeholder="Please enter your password"
-                          required
-                          type="password"
-                          value={password}
-                        />
-                      </div>
 
-                      <div className="form-group">
-                        <label>
-                          Password Confirmation
-                          <span className="text-danger">*</span>
-                        </label>
-                        <input
-                          className="form-control"
-                          name="passwordConfirmation"
-                          onBlur={handlePasswordBlur}
-                          onChange={(e) => setPasswordConfirmation(e.target.value)}
-                          placeholder="Please confirm your password"
-                          required
-                          type="password"
-                          value={passwordConfirmation}
-                        />
-                      </div>
-
-                      <button
-                        type="submit"
-                        className="btn btn-dark"
-                      >
-                        {working ? (
-                          <Loader noPadding={true} smallSpinner={true} />
-                        ) : (
-                          "Set Password"
-                        )}
-                      </button>
-                    </form>
-                    <Link className="col-primary" to={"/sign-in"}>
-                      Login
-                    </Link>
+                  <div className="form-group">
+                    <label>
+                      Password Confirmation
+                      <span className="text-danger">*</span>
+                    </label>
+                    <input
+                      className="form-control"
+                      name="passwordConfirmation"
+                      onBlur={handlePasswordBlur}
+                      onChange={(e) => setPasswordConfirmation(e.target.value)}
+                      placeholder="Please confirm your password"
+                      required
+                      type="password"
+                      value={passwordConfirmation}
+                    />
                   </div>
-                </div>
-              )}
+
+                  <button
+                    type="submit"
+                    className="btn btn-dark"
+                  >
+                    {working ? (
+                      <Loader noPadding={true} smallSpinner={true} />
+                    ) : (
+                      "Set Password"
+                    )}
+                  </button>
+                </form>
+                <Link className="col-primary" to={"/sign-in"}>
+                  Login
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
-    </React.Fragment>
+    </div>
   );
 }
 

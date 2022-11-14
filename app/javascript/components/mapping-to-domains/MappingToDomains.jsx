@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import TopNav from "../shared/TopNav";
 import Loader from "../shared/Loader";
 import fetchMapping from "../../services/fetchMapping";
@@ -19,8 +19,11 @@ import deleteMappingSelectedTerm from "../../services/deleteMappingSelectedTerm"
 import Pluralize from "pluralize";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { AppContext  } from "../../contexts/AppContext";
 
 const MappingToDomains = (props) => {
+  const { organization } = useContext(AppContext);
+
   /**
    * Representation of an error on this page process
    */
@@ -426,156 +429,144 @@ const MappingToDomains = (props) => {
         onRemoveTerm={termRemoved}
         termId={termToEdit.id}
       />
-      <div className="wrapper">
+      <div className="container-fluid d-flex flex-column h-100">
         <TopNav centerContent={navCenterOptions} />
         {errors.length ? <AlertNotice message={errors} /> : ""}
-        <div className="container-fluid container-wrapper">
-          <div className="row">
-            {loading ? (
-              <Loader />
-            ) : (
-              <React.Fragment>
-                {/* LEFT SIDE */}
+        <div className="row overflow-auto">
+          {loading ? (
+            <Loader />
+          ) : (
+            <React.Fragment>
+              {/* LEFT SIDE */}
 
-                <div className="col-lg-6 p-lg-5 pt-5">
-                  <div className="border-bottom">
-                    <h6 className="subtitle">
-                      2. Add the properties to the proper domain
-                    </h6>
-                    <h1>Mapping {mapping.name}</h1>
-                    <div className="row">
-                      <div className="col-5">
-                        <p>
-                          <strong>{mappedTerms.length}</strong>
-                          {" of " +
-                            terms.length +
-                            " " +
-                            Pluralize("property", terms.length) +
-                            " added to domains"}
-                        </p>
-                      </div>
-                      <div className="col-7">
-                        <div className="progress terms-progress">
-                          <div
-                            className="progress-bar bg-col-on-primary"
-                            role="progressbar"
-                            style={{
-                              width:
-                                (mappedTerms.length * 100) / terms.length + "%",
-                            }}
-                            aria-valuenow="0"
-                            aria-valuemin="0"
-                            aria-valuemax={terms.length}
-                          ></div>
-                        </div>
+              <div
+                className="col-lg-6 mh-100 p-lg-5 pt-5"
+                style={{ overflowY: "scroll" }}
+              >
+                <div className="border-bottom">
+                  <h6 className="subtitle">
+                    2. Add the properties to the proper domain
+                  </h6>
+                  <h1>Mapping {mapping.name}</h1>
+                  <div className="row">
+                    <div className="col-5">
+                      <p>
+                        <strong>{mappedTerms.length}</strong>
+                        {" of " +
+                          terms.length +
+                          " " +
+                          Pluralize("property", terms.length) +
+                          " added to domains"}
+                      </p>
+                    </div>
+                    <div className="col-7">
+                      <div className="progress terms-progress">
+                        <div
+                          className="progress-bar bg-col-on-primary"
+                          role="progressbar"
+                          style={{
+                            width:
+                              (mappedTerms.length * 100) / terms.length + "%",
+                          }}
+                          aria-valuenow="0"
+                          aria-valuemin="0"
+                          aria-valuemax={terms.length}
+                        ></div>
                       </div>
                     </div>
                   </div>
-                  <div className="mt-5">
-                    {/* DOMAINS */}
-                    {!loading && (
-                      <DomainCard
-                        domain={domain}
-                        mappedTerms={mappedTerms}
-                        selectedTermsCount={selectedTerms.length}
-                      />
-                    )}
+                </div>
+                <div className="mt-5">
+                  {/* DOMAINS */}
+                  {!loading && (
+                    <DomainCard
+                      domain={domain}
+                      mappedTerms={mappedTerms}
+                      selectedTermsCount={selectedTerms.length}
+                    />
+                  )}
+                </div>
+                <div className="mt-2">
+                  <SaveButtonOptions />
+                </div>
+              </div>
+
+              {/* RIGHT SIDE */}
+
+              <div
+                className="bg-col-secondary col-lg-6 mh-100 p-lg-5 pt-5"
+                style={{ overflowY: "scroll" }}
+              >
+                <div className="row">
+                  <div className="col-6">
+                    <h6 className="subtitle">{organization.name}</h6>
                   </div>
-                  <div className="mt-2">
-                    <SaveButtonOptions />
+                  <div className="col-6">
+                    <div className="form-check float-right">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value={hideMapped}
+                        onChange={(e) => setHideMapped(!hideMapped)}
+                        id="hideElems"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="hideElems"
+                      >
+                        Hide mapped properties
+                      </label>
+                    </div>
                   </div>
                 </div>
 
-                {/* RIGHT SIDE */}
-
-                <div className="col-lg-6 p-lg-5 pt-5 bg-col-secondary">
-                  <div className="border-bottom">
-                    <div className="row">
-                      <div className="col-6">
-                        <h6 className="subtitle">{user.organization?.name || 'Unknown'}</h6>
-                      </div>
-                      <div className="col-6">
-                        <div className="form-check float-right">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            value={hideMapped}
-                            onChange={(e) => setHideMapped(!hideMapped)}
-                            id="hideElems"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="hideElems"
-                          >
-                            Hide mapped properties
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-12 form-group input-group-has-icon">
-                        <FontAwesomeIcon
-                          icon={faSearch}
-                          className="form-control-feedback"
-                        />
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Find Element / Property"
-                          value={termsInputValue}
-                          onChange={filterTermsOnChange}
-                        />
-                      </div>
-                    </div>
-                    <p>
-                      <strong>{selectedTerms.length}</strong>{" "}
-                      {" " +
-                        Pluralize("property", selectedTerms.length) +
-                        " selected"}
-                      <button className="btn btn-link" onClick={toggleSelectAll}>
-                        {selectedTerms.length ? "Deselect" : "Select"} All
-                      </button>
-                    </p>
-                  </div>
-
-                  <div className="pr-5 mt-5">
-                    <AlertNotice
-                      cssClass="bg-col-primary col-background"
-                      title={
-                        terms.length +
-                        " " +
-                        Pluralize("property", terms.length) +
-                        " have been uploaded"
-                      }
-                      message="Drag the individual properties below to the matching domains on the left to begin mapping your specification"
+                <div className="row">
+                  <div className="col-12 form-group input-group-has-icon">
+                    <FontAwesomeIcon
+                      icon={faSearch}
+                      className="form-control-feedback"
                     />
-                    <div className="has-scrollbar scrollbar pr-5">
-                      {/* SELECTED TERMS */}
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Find Element / Property"
+                      value={termsInputValue}
+                      onChange={filterTermsOnChange}
+                    />
+                  </div>
+                </div>
 
-                      <Draggable
-                        items={selectedTerms}
-                        itemType={DraggableItemTypes.PROPERTIES_SET}
-                        afterDrop={afterDropTerm}
-                      >
-                        {filteredTerms({ pickSelected: true }).map((term) => {
-                          return hideMapped && termIsMapped(term) ? (
-                            ""
-                          ) : (
-                            <TermCard
-                              key={term.id}
-                              term={term}
-                              onClick={onTermClick}
-                              isMapped={termIsMapped}
-                              editEnabled={true}
-                              onEditClick={onEditTermClick}
-                              origin={mapping.origin}
-                            />
-                          );
-                        })}
-                      </Draggable>
+                <p>
+                  <strong>{selectedTerms.length}</strong>{" "}
+                  {" " +
+                    Pluralize("property", selectedTerms.length) +
+                    " selected"}
+                  <button className="btn btn-link" onClick={toggleSelectAll}>
+                    {selectedTerms.length ? "Deselect" : "Select"} All
+                  </button>
+                </p>
 
-                      {/* NOT SELECTED TERMS */}
-                      {filteredTerms({ pickSelected: false }).map((term) => {
+                <div className="mt-5">
+                  <AlertNotice
+                    cssClass="bg-col-primary col-background"
+                    title={
+                      terms.length +
+                      " " +
+                      Pluralize("property", terms.length) +
+                      " have been uploaded"
+                    }
+                    message="Drag the individual properties below to the matching domains on the left to begin mapping your specification"
+                  />
+
+                  <Fragment>
+                    {/* SELECTED TERMS */}
+
+                    <Draggable
+                      items={selectedTerms}
+                      itemType={DraggableItemTypes.PROPERTIES_SET}
+                      afterDrop={afterDropTerm}
+                    >
+                      {filteredTerms({ pickSelected: true }).map((term) => {
                         return hideMapped && termIsMapped(term) ? (
                           ""
                         ) : (
@@ -587,17 +578,34 @@ const MappingToDomains = (props) => {
                             editEnabled={true}
                             onEditClick={onEditTermClick}
                             origin={mapping.origin}
-                            onRevertMapping={handleRevertMapping}
                           />
                         );
                       })}
-                      {/* END NOT SELECTED TERMS */}
-                    </div>
-                  </div>
+                    </Draggable>
+
+                    {/* NOT SELECTED TERMS */}
+                    {filteredTerms({ pickSelected: false }).map((term) => {
+                      return hideMapped && termIsMapped(term) ? (
+                        ""
+                      ) : (
+                        <TermCard
+                          key={term.id}
+                          term={term}
+                          onClick={onTermClick}
+                          isMapped={termIsMapped}
+                          editEnabled={true}
+                          onEditClick={onEditTermClick}
+                          origin={mapping.origin}
+                          onRevertMapping={handleRevertMapping}
+                        />
+                      );
+                    })}
+                    {/* END NOT SELECTED TERMS */}
+                  </Fragment>
                 </div>
-              </React.Fragment>
-            )}
-          </div>
+              </div>
+            </React.Fragment>
+          )}
         </div>
       </div>
     </React.Fragment>

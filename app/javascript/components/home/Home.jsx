@@ -4,32 +4,16 @@ import LeftSideHome from "./LeftCol";
 import RightSideHome from "./RightCol";
 import TopNavOptions from "../shared/TopNavOptions";
 
-const Home = () => {
-  /**
-   * Configure the options to see at the center of the top navigation bar
-   */
-  const navCenterOptions = () => {
-    return (
-      <TopNavOptions 
-        viewMappings={true}
-        mapSpecification={true}
-      />
-    )
-  }
-
-  return (
-    <React.Fragment>
-      <div className="wrapper">
-        <TopNav centerContent={navCenterOptions} />
-        <div className="container-fluid container-wrapper">
-          <div className="row">
-            <LeftSideHome />
-            <RightSideHome />
-          </div>
-        </div>
-      </div>
-    </React.Fragment>
-  )
-}
+const Home = () => (
+  <div className="container-fluid">
+    <TopNav
+      centerContent={() => <TopNavOptions mapSpecification viewMappings />}
+    />
+    <div className="row">
+      <LeftSideHome />
+      <RightSideHome />
+    </div>
+  </div>
+);
 
 export default Home;
