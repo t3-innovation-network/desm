@@ -277,7 +277,7 @@ const Agents = () => {
           <h5 className="mt-3 text-center"> {confirmationMsg}</h5>
         </ConfirmDialog>
       )}
-      <div className="mt-5 ml-3">
+      <div className="mt-5">
         <TabGroup>
           {agentButtons()} {<SmallAddTabBtn onClickHandler={addAgent} />}{" "}
         </TabGroup>

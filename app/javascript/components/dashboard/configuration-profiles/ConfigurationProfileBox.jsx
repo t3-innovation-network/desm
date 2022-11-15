@@ -10,20 +10,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCogs } from "@fortawesome/free-solid-svg-icons";
 import { camelizeKeys } from "humps";
 
-export const CPBoxContainer = (props) => {
-  const { children, icon, linkTo, sideBoxClass } = props;
-  const action = props.action || (() => {});
-
-  return (
-    <div className="card mb-3 mr-3" style={{ width: "350px" }}>
-      <div className="row no-gutters" style={{ height: "130px" }}>
+export const CPBoxContainer = ({ action, children, icon, linkTo, sideBoxClass }) => (
+  <div className="col-12 col-lg-6 col-xl-4 mb-3">
+    <div className="card h-100">
+      <div className="row h-100 no-gutters">
         <div
-          className={"col-md-4 p-5 cursor-pointer " + (sideBoxClass || "")}
-          style={{ height: "130px" }}
+          className={"col-md-4 cursor-pointer d-flex justify-content-center align-items-center " + (sideBoxClass || "")}
           onClick={action}
         >
           {linkTo ? (
-            <Link to={linkTo} className="col-background">
+            <Link className="col-background" to={linkTo}>
               {icon}
             </Link>
           ) : (
@@ -33,8 +29,8 @@ export const CPBoxContainer = (props) => {
         <div className="col-md-8">{children}</div>
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 const CardBody = (props) => {
   const {
@@ -87,7 +83,7 @@ const CardBody = (props) => {
             to={linkTo}
             style={{ textDecoration: "none" }}
           >
-            <h5 className="card-title box-title">
+            <h5 className="card-title">
               {configurationProfile.name}
             </h5>
           </Link>
@@ -217,7 +213,7 @@ export default class ConfigurationProfileBox extends Component {
           ""
         ) : (
           <CPBoxContainer
-            sideBoxClass={`bg-dashboard-background col-background p-5 ${
+            sideBoxClass={`bg-dashboard-background ${
               configurationProfile.state === "deactivated" || processing
                 ? "disabled-container"
                 : ""
