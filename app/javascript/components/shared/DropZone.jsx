@@ -12,6 +12,7 @@ import Pluralize from "pluralize";
  */
 const DropZone = ({
   acceptedItemType,
+  children,
   droppedItem,
   placeholder,
   selectedCount,
@@ -30,6 +31,27 @@ const DropZone = ({
     }),
   });
 
+  const content = () => {
+    let status = "";
+
+    if (isActive) {
+      status = `Add ${Pluralize("Record", selectedCount, true)}`;
+    } else if (!children) {
+      status = placeholder;
+    }
+
+    return status ? (
+      <div
+        className="align-items-center d-flex justify-content-center py-5"
+        style={{ flex: 1 }}
+      >
+        {status}
+      </div>
+    ) : (
+      <div className="pb-0 pt-2 px-2">{children}</div>
+    );
+  };
+
   /**
    * Whether there's something being dragged
    */
@@ -37,18 +59,11 @@ const DropZone = ({
 
   return (
     <div
-      className={
-        "card mapping-term-drag-box pt-2 pb-2 ratio ratio-1x1" +
-        (isActive ? " dnd-active" : " border-dotted")
-      }
+      className={`card ${isActive ? "dnd-active" : "border-dotted"}`}
       ref={drop}
       style={style}
     >
-      <p className="mb-0 fully-centered" style={textStyle}>
-        {isActive
-          ? "Add " + (selectedCount + " " + Pluralize("Record", selectedCount))
-          : placeholder}
-      </p>
+      {content()}
     </div>
   );
 };

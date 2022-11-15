@@ -141,13 +141,13 @@ export default class TermCard extends Component {
 
   render() {
     const { selected, alwaysEnabled } = this.state;
-    const { term, isMapped, origin, disableClick } = this.props;
+    const { term, isMapped, origin, disableClick, expanded } = this.props;
 
     return isMapped(term) && !alwaysEnabled ? (
       this.disabledTermCard()
     ) : (
       <Collapsible
-        expanded
+        expanded={expanded === undefined ? true : expanded}
         cardStyle={
           "term-card with-shadow mb-2" +
           (selected ? " draggable term-selected" : "")

@@ -1,29 +1,39 @@
 import React from "react";
 import { DraggableItemTypes } from "../shared/DraggableItemTypes";
 import DropZone from "../shared/DropZone";
+import TermCard from "./TermCard";
 
-const DomainCard = (props) => (
-  <div className="card mb-2" key={props.domain.id}>
+const DomainCard = ({ domain, mappedTerms, selectedTermsCount }) => (
+  <div className="card mb-2" key={domain.id}>
     <div className="card-body">
       <div className="row">
         <div className="col-4">
           <h5>
-            <strong>{props.domain.pref_label}</strong>
+            <strong>{domain.pref_label}</strong>
           </h5>
-          {props.mappedTerms.length + " Added"}
+          {mappedTerms.length + " Added"}
         </div>
         <div className="col-8">
           {/* Only accept alignments if the domain has a spine */}
           <DropZone
-            droppedItem={{
-              name: props.domain.name,
-              uri: props.domain.id,
-            }}
+            droppedItem={{ name: domain.name, uri: domain.id }}
             acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
-            selectedCount={props.selectedTermsCount}
+            selectedCount={selectedTermsCount}
             placeholder="Drag a matching property here"
-            style={{ height: "200px" }}
-          />
+            style={{ minHeight: "200px" }}
+          >
+            {mappedTerms.length > 0 && (
+              mappedTerms.map(term => (
+                <TermCard
+                  disableClick
+                  expanded={false}
+                  isMapped={() => false}
+                  key={term.id}
+                  term={term}
+                />
+              ))
+            )}
+          </DropZone>
         </div>
       </div>
     </div>
