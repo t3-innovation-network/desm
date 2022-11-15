@@ -29,7 +29,7 @@ import { AppContext } from "../../contexts/AppContext";
 const AlignAndFineTune = (props) => {
   const { leadMapper, organization } = useContext(AppContext);
 
-  const alignmentsTableRef = useRef(null);
+  const leftColumnRef = useRef(null);
 
   /**
    * Flag to control when the user is adding a synthetic property
@@ -319,7 +319,7 @@ const AlignAndFineTune = (props) => {
     setChangesPerformed(changesPerformed + 1);
     setLoading(false);
 
-    alignmentsTableRef.current?.scroll(0, scrollTop);
+    leftColumnRef.current?.scroll(0, scrollTop);
   };
 
   /**
@@ -820,6 +820,8 @@ const AlignAndFineTune = (props) => {
             {/* LEFT SIDE */}
             <div
               className="col-lg-8 mh-100 p-lg-5 pt-5"
+              onScroll={e => setScrollTop(e.target.scrollTop)}
+              ref={leftColumnRef}
               style={{ overflowY: "scroll" }}
             >
               <SpineHeader
@@ -865,42 +867,37 @@ const AlignAndFineTune = (props) => {
                 <h4 className="col-3">Mapping Predicate</h4>
                 <h4 className="col-4">Mapped Term</h4>
               </div>
-              <div
-                onScroll={e => setScrollTop(e.target.scrollTop)}
-                ref={alignmentsTableRef}
-                style={{ overflow: "hidden scroll" }}
-              >
-                {!loading &&
-                  filteredSpineTerms.map((term) => {
-                    return props.hideMappedSpineTerms &&
-                      props.isMapped(term) ? (
-                      ""
-                    ) : loading ? (
-                      <Loader />
-                    ) : hideMappedSpineTerms && spineTermIsMapped(term) ? (
-                      ""
-                    ) : (
-                      <SpineTermRow
-                        key={term.id}
-                        term={term}
-                        alignment={alignmentForSpineTerm(term.id)}
-                        predicates={predicates}
-                        selectedAlignments={selectedAlignments}
-                        mappedTermsToSpineTerm={mappedTermsToSpineTerm}
-                        origin={mapping.origin}
-                        spineOrigin={mapping.spine_origin}
-                        onPredicateSelected={onPredicateSelected}
-                        onRevertMapping={(mappedTerm) =>
-                          handleRevertMapping(
-                            alignmentForSpineTerm(term.id),
-                            mappedTerm
-                          )
-                        }
-                      />
-                    );
-                  })
-                }
-              </div>
+
+              {!loading &&
+                filteredSpineTerms.map((term) => {
+                  return props.hideMappedSpineTerms &&
+                    props.isMapped(term) ? (
+                    ""
+                  ) : loading ? (
+                    <Loader />
+                  ) : hideMappedSpineTerms && spineTermIsMapped(term) ? (
+                    ""
+                  ) : (
+                    <SpineTermRow
+                      key={term.id}
+                      term={term}
+                      alignment={alignmentForSpineTerm(term.id)}
+                      predicates={predicates}
+                      selectedAlignments={selectedAlignments}
+                      mappedTermsToSpineTerm={mappedTermsToSpineTerm}
+                      origin={mapping.origin}
+                      spineOrigin={mapping.spine_origin}
+                      onPredicateSelected={onPredicateSelected}
+                      onRevertMapping={(mappedTerm) =>
+                        handleRevertMapping(
+                          alignmentForSpineTerm(term.id),
+                          mappedTerm
+                        )
+                      }
+                    />
+                  );
+                })
+              }
               <div className="mt-3">
                 <AlignmentOptions />
               </div>
