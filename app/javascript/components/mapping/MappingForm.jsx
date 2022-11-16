@@ -299,11 +299,6 @@ const MappingForm = () => {
 
     dispatch(setSpecToPreview(tempSpecs));
     dispatch(stopProcessingFile());
-
-    toast.info(
-      "Great! You selected the following domains: " +
-        uris.map((uri) => uri.toString()).join("\n")
-    );
   };
 
   /**
