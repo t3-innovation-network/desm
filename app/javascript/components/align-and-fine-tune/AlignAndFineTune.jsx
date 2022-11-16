@@ -862,6 +862,15 @@ const AlignAndFineTune = (props) => {
                   </div>
                 )}
               </div>
+
+              {mapping["new_spine_created?"] && (
+                <AlertNotice
+                  cssClass="bg-col-success col-background mb-5"
+                  message="No further mapping is necessary. If you want to publish the mapping, please click “Done Alignment.“"
+                  title="A new spine was created."
+                />
+              )}
+
               <div className="row mb-2">
                 <h4 className="col-5">Spine Term</h4>
                 <h4 className="col-3">Mapping Predicate</h4>

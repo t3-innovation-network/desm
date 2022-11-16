@@ -87,7 +87,9 @@ class Mapping < ApplicationRecord
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
   def as_json(options={})
-    super options.merge(methods: %i[uploaded? mapped? in_progress? origin spine_origin domain mapped_terms])
+    super options.merge(
+      methods: %i[uploaded? mapped? in_progress? origin spine_origin domain mapped_terms new_spine_created?]
+    )
   end
 
   ###
@@ -172,6 +174,10 @@ class Mapping < ApplicationRecord
   ###
   def spine_origin
     spine.organization.name
+  end
+
+  def new_spine_created?
+    spine.mappings.count == 1
   end
 
   ###
