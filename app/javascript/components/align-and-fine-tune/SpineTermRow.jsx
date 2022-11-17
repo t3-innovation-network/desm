@@ -294,7 +294,7 @@ const SpineTermRow = (props) => {
         </div>
 
         <div className="col-3">
-          {predicate ? (
+          {predicate && !term.synthetic ? (
             <Collapsible
               headerContent={predicateSelectedCard()}
               bodyContent={alignmentOptions()}
@@ -303,12 +303,6 @@ const SpineTermRow = (props) => {
               bodyStyle={"p-0"}
               cardHeaderStyle={"border-bottom"}
             />
-          ) : term.synthetic ? (
-            <div className="card">
-              <div className="card-header bg-col-primary col-background">
-                Synthetic
-              </div>
-            </div>
           ) : (
             <PredicateOptions
               predicates={predicates}
