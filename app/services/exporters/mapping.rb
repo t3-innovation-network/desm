@@ -38,7 +38,7 @@ module Exporters
     def export
       {
         "@context": CONTEXT,
-        "@graph": @instance.terms.map {|alignment|
+        "@graph": @instance.alignments.map {|alignment|
           term_nodes(alignment)
         }.flatten.unshift(main_node)
       }
@@ -58,7 +58,7 @@ module Exporters
         # @todo: Where to take this from
         "dcterms:description": "",
         "desm:abstractClassMapped": {"@id": @instance.specification.domain.uri},
-        "dcterms:hasPart": @instance.terms.map {|alignment|
+        "dcterms:hasPart": @instance.alignments.map {|alignment|
           {"@id": alignment.uri}
         }
       }
@@ -89,7 +89,7 @@ module Exporters
         "desm:mappedterm": alignment.mapped_terms.map {|mapped_term|
           {"@id": mapped_term.uri}
         },
-        "desm:mappingPredicate": {"@id": alignment.predicate.uri},
+        "desm:mappingPredicate": {"@id": alignment.predicate&.uri},
         "desm:spineTerm": {"@id": alignment.spine_term.uri}
       }
     end

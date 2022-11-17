@@ -123,11 +123,11 @@ export default class SpecsList extends Component {
    *
    * @param {Integer} mappingId
    */
-  handleExportMapping = async (mappingId) => {
-    let response = await fetchMappingToExport(mappingId);
+  handleExportMapping = async (mapping) => {
+    let response = await fetchMappingToExport(mapping.id);
 
     if (!this.anyError(response)) {
-      downloadFile(response.exportedMapping);
+      downloadFile(response.exportedMapping, `${mapping.name}.json`);
     }
   };
 
@@ -324,7 +324,7 @@ export default class SpecsList extends Component {
               <button
                 className="btn btn-sm btn-dark ml-2"
                 onClick={() =>
-                  this.handleExportMapping(mapping.id)
+                  this.handleExportMapping(mapping)
                 }
                 data-toggle="tooltip"
                 data-placement="top"
