@@ -46,6 +46,7 @@ jobs:
       MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
       MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
       MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+      APP_DOMAIN: http://example.com
 
     steps:
       - uses: actions/checkout@v2

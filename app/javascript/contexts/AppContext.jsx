@@ -3,14 +3,14 @@ import React, { createContext, useState } from "react";
 export const AppContext = createContext({});
 
 export const AppContextProvider = ({ children }) => {
-  const [currentConfigurationProfileId, setCurrentConfigurationProfileId] = useState();
+  const [currentConfigurationProfile, setCurrentConfigurationProfile] = useState();
   const [leadMapper, setLeadMapper] = useState(false);
   const [loggedIn, setLoggedIn] = useState();
   const [organization, setOrganization] = useState();
 
   React.useEffect(() => {
-    const { configurationProfileId, leadMapper, loggedIn, organization } = document.body.dataset;
-    setCurrentConfigurationProfileId(configurationProfileId);
+    const { configurationProfile, leadMapper, loggedIn, organization } = document.body.dataset;
+    configurationProfile && setCurrentConfigurationProfile(JSON.parse(configurationProfile));
     setLeadMapper(leadMapper === "true");
     setLoggedIn(loggedIn === "true");
     organization && setOrganization(JSON.parse(organization));
@@ -18,11 +18,11 @@ export const AppContextProvider = ({ children }) => {
 
   return (
     <AppContext.Provider value={{
-      currentConfigurationProfileId,
+      currentConfigurationProfile,
       leadMapper,
       loggedIn,
       organization,
-      setCurrentConfigurationProfileId,
+      setCurrentConfigurationProfile,
       setLeadMapper,
       setLoggedIn,
       setOrganization

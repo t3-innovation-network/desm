@@ -31,7 +31,7 @@ module CpState
     end
 
     def remove!
-      @configuration_profile.destroy!
+      @configuration_profile.delete!
     end
   end
 

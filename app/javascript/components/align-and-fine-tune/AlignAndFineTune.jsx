@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import fetchMapping from "../../services/fetchMapping";
 import fetchMappingSelectedTerms from "../../services/fetchMappingSelectedTerms";
@@ -29,7 +29,7 @@ import { AppContext } from "../../contexts/AppContext";
 const AlignAndFineTune = (props) => {
   const { leadMapper, organization } = useContext(AppContext);
 
-  const alignmentsTableRef = useRef(null);
+  const leftColumnRef = useRef(null);
 
   /**
    * Flag to control when the user is adding a synthetic property
@@ -319,7 +319,7 @@ const AlignAndFineTune = (props) => {
     setChangesPerformed(changesPerformed + 1);
     setLoading(false);
 
-    alignmentsTableRef.current?.scroll(0, scrollTop);
+    leftColumnRef.current?.scroll(0, scrollTop);
   };
 
   /**
@@ -794,216 +794,220 @@ const AlignAndFineTune = (props) => {
   }, []);
 
   return (
-    <React.Fragment>
-      <div className="wrapper">
-        <TopNav centerContent={navCenterOptions} />
-        {errors.length ? <AlertNotice message={errors} /> : ""}
-        <div className="container-fluid container-wrapper">
-          <div className="row">
-            {loading ? (
-              <Loader />
-            ) : (
-              <React.Fragment>
-                <ConfirmDialog
-                  onRequestClose={() => {
-                    handleCancelRemoveAlignment();
-                  }}
-                  onConfirm={() => handleRemoveAlignment()}
-                  visible={confirmingRemoveAlignment}
-                >
-                  <h2 className="text-center">
-                    You are removing an alignment permanently.
-                  </h2>
-                  <h5 className="mt-3 text-center">
-                    Please confirm this action.
-                  </h5>
-                </ConfirmDialog>
+    <div className="container-fluid d-flex flex-column h-100">
+      <TopNav centerContent={navCenterOptions} />
+      {errors.length ? <AlertNotice message={errors} /> : ""}
+      <div className="row overflow-auto">
+        {loading ? (
+          <Loader />
+        ) : (
+          <React.Fragment>
+            <ConfirmDialog
+              onRequestClose={() => {
+                handleCancelRemoveAlignment();
+              }}
+              onConfirm={() => handleRemoveAlignment()}
+              visible={confirmingRemoveAlignment}
+            >
+              <h2 className="text-center">
+                You are removing an alignment permanently.
+              </h2>
+              <h5 className="mt-3 text-center">
+                Please confirm this action.
+              </h5>
+            </ConfirmDialog>
 
-                {/* LEFT SIDE */}
-                <div
-                  className="col-lg-8 p-lg-5 pt-5 d-flex flex-column"
-                  style={{ maxHeight: "95%" }}
-                >
-                  <SpineHeader
-                    domain={mapping.domain}
-                    hideMappedSpineTerms={hideMappedSpineTerms}
-                    setHideMappedSpineTerms={setHideMappedSpineTerms}
-                    mappingSelectedTerms={mappingSelectedTerms}
-                    mappedSelectedTerms={mappedSelectedTerms}
-                    spineTermsInputValue={spineTermsInputValue}
-                    filterSpineTermsOnChange={filterSpineTermsOnChange}
-                    addingSynthetic={addingSynthetic}
-                    handleAddSynthetic={handleAddSynthetic}
+            {/* LEFT SIDE */}
+            <div
+              className="col-lg-8 mh-100 p-lg-5 pt-5"
+              onScroll={e => setScrollTop(e.target.scrollTop)}
+              ref={leftColumnRef}
+              style={{ overflowY: "scroll" }}
+            >
+              <SpineHeader
+                domain={mapping.domain}
+                hideMappedSpineTerms={hideMappedSpineTerms}
+                setHideMappedSpineTerms={setHideMappedSpineTerms}
+                mappingSelectedTerms={mappingSelectedTerms}
+                mappedSelectedTerms={mappedSelectedTerms}
+                spineTermsInputValue={spineTermsInputValue}
+                filterSpineTermsOnChange={filterSpineTermsOnChange}
+                addingSynthetic={addingSynthetic}
+                handleAddSynthetic={handleAddSynthetic}
+                alignments={alignments}
+              />
+              <div className="mt-5">
+                {/* CHANGELOG */}
+                {dateMapped && (
+                  <MappingChangeLog
+                    predicates={predicates}
+                    mapping={mapping}
+                    spineTerms={spineTerms}
                     alignments={alignments}
+                    dateMapped={dateMapped}
                   />
-                  <div className="mt-5">
-                    {/* CHANGELOG */}
-                    {dateMapped && (
-                      <MappingChangeLog
-                        predicates={predicates}
-                        mapping={mapping}
-                        spineTerms={spineTerms}
-                        alignments={alignments}
-                        dateMapped={dateMapped}
-                      />
-                    )}
+                )}
 
-                    {/* CANCEL SYNTHETIC TERM FORM */}
-                    {addingSynthetic && (
-                      <div className="row">
-                        <div className="col mb-3">
-                          <a
-                            className="col-primary cursor-pointer float-right"
-                            onClick={handleCancelSynthetic}
-                          >
-                            <strong>Cancel</strong>
-                          </a>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="row mb-2">
-                    <h4 className="col-5">Spine Term</h4>
-                    <h4 className="col-3">Mapping Predicate</h4>
-                    <h4 className="col-4">Mapped Term</h4>
-                  </div>
-                  <div
-                    onScroll={e => setScrollTop(e.target.scrollTop)}
-                    ref={alignmentsTableRef}
-                    style={{ overflow: "hidden scroll" }}
-                  >
-                    {!loading &&
-                      filteredSpineTerms.map((term) => {
-                        return props.hideMappedSpineTerms &&
-                          props.isMapped(term) ? (
-                          ""
-                        ) : loading ? (
-                          <Loader />
-                        ) : hideMappedSpineTerms && spineTermIsMapped(term) ? (
-                          ""
-                        ) : (
-                          <SpineTermRow
-                            key={term.id}
-                            term={term}
-                            alignment={alignmentForSpineTerm(term.id)}
-                            predicates={predicates}
-                            selectedAlignments={selectedAlignments}
-                            mappedTermsToSpineTerm={mappedTermsToSpineTerm}
-                            origin={mapping.origin}
-                            spineOrigin={mapping.spine_origin}
-                            onPredicateSelected={onPredicateSelected}
-                            onRevertMapping={(mappedTerm) =>
-                              handleRevertMapping(
-                                alignmentForSpineTerm(term.id),
-                                mappedTerm
-                              )
-                            }
-                          />
-                        );
-                      })
-                    }
-                  </div>
-                  <div className="mt-3">
-                    <AlignmentOptions />
-                  </div>
-                </div>
-
-                {/* RIGHT SIDE */}
-
-                <div className="col-lg-4 p-lg-5 pt-5 bg-col-secondary">
-                  <AlignmentsHeader
-                    organizationName={organization}
-                    domain={mapping.domain}
-                    selectedAlignments={selectedAlignments}
-                    hideMappedSelectedTerms={hideMappedSelectedTerms}
-                    setHideMappedSelectedTerms={setHideMappedSelectedTerms}
-                    mappingSelectedTerms={mappingSelectedTerms}
-                    mappedSelectedTerms={mappedSelectedTerms}
-                    mappingSelectedTermsInputValue={
-                      mappingSelectedTermsInputValue
-                    }
-                    filterMappingSelectedTermsOnChange={
-                      filterMappingSelectedTermsOnChange
-                    }
-                  />
-
-                  {/* MAPPING TERMS LIST */}
-
-                  <div className="pr-5 mt-5">
-                    <AlertNotice
-                      cssClass="bg-col-primary col-background"
-                      title={
-                        mappingSelectedTerms.length +
-                        " " +
-                        Pluralize("property", mappingSelectedTerms.length) +
-                        " have been selected from the original specification"
-                      }
-                      message={
-                        "The items below have been added to the " +
-                        _.capitalize(mapping.domain) +
-                        " domain. Now you can align them to the spine."
-                      }
-                    />
-                    <div className="has-scrollbar scrollbar pr-5">
-                      {/* SELECTED TERMS */}
-
-                      <Draggable
-                        items={selectedAlignments}
-                        itemType={DraggableItemTypes.PROPERTIES_SET}
-                        afterDrop={afterDropTerm}
+                {/* CANCEL SYNTHETIC TERM FORM */}
+                {addingSynthetic && (
+                  <div className="row">
+                    <div className="col mb-3">
+                      <a
+                        className="col-primary cursor-pointer float-right"
+                        onClick={handleCancelSynthetic}
                       >
-                        {filteredMappingSelectedTerms({
-                          pickSelected: true,
-                        }).map((term) => {
-                          return hideMappedSelectedTerms &&
-                            selectedTermIsMapped(term) ? (
-                            ""
-                          ) : (
-                            <TermCard
-                              key={term.id}
-                              term={term}
-                              onClick={onSelectedTermClick}
-                              editEnabled={false}
-                              isMapped={selectedTermIsMapped}
-                              origin={mapping.origin}
-                              alwaysEnabled={true}
-                            />
-                          );
-                        })}
-                      </Draggable>
-
-                      {/* NOT SELECTED TERMS */}
-                      {filteredMappingSelectedTerms({
-                        pickSelected: false,
-                      }).map((term) => {
-                        return hideMappedSelectedTerms &&
-                          selectedTermIsMapped(term) ? (
-                          ""
-                        ) : (
-                          <TermCard
-                            key={term.id}
-                            term={term}
-                            onClick={onSelectedTermClick}
-                            editEnabled={false}
-                            isMapped={selectedTermIsMapped}
-                            origin={mapping.origin}
-                            alwaysEnabled={true}
-                            disableClick={
-                              addingSynthetic && selectedAlignments.length > 0
-                            }
-                          />
-                        );
-                      })}
-                      {/* END NOT SELECTED TERMS */}
+                        <strong>Cancel</strong>
+                      </a>
                     </div>
                   </div>
-                </div>
-              </React.Fragment>
-            )}
-          </div>
-        </div>
+                )}
+              </div>
+
+              {mapping["new_spine_created?"] && (
+                <AlertNotice
+                  cssClass="bg-col-success col-background mb-5"
+                  message="No further mapping is necessary. If you want to publish the mapping, please click “Done Alignment.“"
+                  title="A new spine was created."
+                />
+              )}
+
+              <div className="row mb-2">
+                <h4 className="col-5">Spine Term</h4>
+                <h4 className="col-3">Mapping Predicate</h4>
+                <h4 className="col-4">Mapped Term</h4>
+              </div>
+
+              {!loading &&
+                filteredSpineTerms.map((term) => {
+                  return props.hideMappedSpineTerms &&
+                    props.isMapped(term) ? (
+                    ""
+                  ) : loading ? (
+                    <Loader />
+                  ) : hideMappedSpineTerms && spineTermIsMapped(term) ? (
+                    ""
+                  ) : (
+                    <SpineTermRow
+                      key={term.id}
+                      term={term}
+                      alignment={alignmentForSpineTerm(term.id)}
+                      predicates={predicates}
+                      selectedAlignments={selectedAlignments}
+                      mappedTermsToSpineTerm={mappedTermsToSpineTerm}
+                      origin={mapping.origin}
+                      spineOrigin={mapping.spine_origin}
+                      onPredicateSelected={onPredicateSelected}
+                      onRevertMapping={(mappedTerm) =>
+                        handleRevertMapping(
+                          alignmentForSpineTerm(term.id),
+                          mappedTerm
+                        )
+                      }
+                    />
+                  );
+                })
+              }
+              <div className="mt-3">
+                <AlignmentOptions />
+              </div>
+            </div>
+
+            {/* RIGHT SIDE */}
+
+            <div
+              className="bg-col-secondary col-lg-4 mh-100 p-lg-5 pt-5"
+              style={{ overflowY: "scroll" }}
+            >
+              <AlignmentsHeader
+                organizationName={organization.name}
+                domain={mapping.domain}
+                selectedAlignments={selectedAlignments}
+                hideMappedSelectedTerms={hideMappedSelectedTerms}
+                setHideMappedSelectedTerms={setHideMappedSelectedTerms}
+                mappingSelectedTerms={mappingSelectedTerms}
+                mappedSelectedTerms={mappedSelectedTerms}
+                mappingSelectedTermsInputValue={
+                  mappingSelectedTermsInputValue
+                }
+                filterMappingSelectedTermsOnChange={
+                  filterMappingSelectedTermsOnChange
+                }
+              />
+
+              {/* MAPPING TERMS LIST */}
+
+              <AlertNotice
+                cssClass="bg-col-primary col-background mt-5"
+                title={
+                  mappingSelectedTerms.length +
+                  " " +
+                  Pluralize("property", mappingSelectedTerms.length) +
+                  " have been selected from the original specification"
+                }
+                message={
+                  "The items below have been added to the " +
+                  _.capitalize(mapping.domain) +
+                  " domain. Now you can align them to the spine."
+                }
+              />
+
+              <Fragment>
+                {/* SELECTED TERMS */}
+
+                <Draggable
+                  items={selectedAlignments}
+                  itemType={DraggableItemTypes.PROPERTIES_SET}
+                  afterDrop={afterDropTerm}
+                >
+                  {filteredMappingSelectedTerms({
+                    pickSelected: true,
+                  }).map((term) => {
+                    return hideMappedSelectedTerms &&
+                      selectedTermIsMapped(term) ? (
+                      ""
+                    ) : (
+                      <TermCard
+                        key={term.id}
+                        term={term}
+                        onClick={onSelectedTermClick}
+                        editEnabled={false}
+                        isMapped={selectedTermIsMapped}
+                        origin={mapping.origin}
+                        alwaysEnabled={true}
+                      />
+                    );
+                  })}
+                </Draggable>
+
+                {/* NOT SELECTED TERMS */}
+                {filteredMappingSelectedTerms({
+                  pickSelected: false,
+                }).map((term) => {
+                  return hideMappedSelectedTerms &&
+                    selectedTermIsMapped(term) ? (
+                    ""
+                  ) : (
+                    <TermCard
+                      key={term.id}
+                      term={term}
+                      onClick={onSelectedTermClick}
+                      editEnabled={false}
+                      isMapped={selectedTermIsMapped}
+                      origin={mapping.origin}
+                      alwaysEnabled={true}
+                      disableClick={
+                        addingSynthetic && selectedAlignments.length > 0
+                      }
+                    />
+                  );
+                })}
+                {/* END NOT SELECTED TERMS */}
+              </Fragment>
+            </div>
+          </React.Fragment>
+        )}
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 

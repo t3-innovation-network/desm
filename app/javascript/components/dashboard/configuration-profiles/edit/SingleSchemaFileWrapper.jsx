@@ -43,17 +43,17 @@ const SchemaFileTabs = (props) => {
   const { activeTab, tabClickHandlerMD, tabClickHandlerCS } = props;
 
   return (
-    <TabGroup cssClass={"ml-3 mr-3"} controlledSize={false}>
+    <TabGroup cssClass={"ml-3 mr-3"}>
       <RemovableTab
         active={0 === activeTab}
         tabClickHandler={tabClickHandlerMD}
-        title={"MetaData"}
+        title="Term Definitions"
         showCloseBtn={false}
       />
       <RemovableTab
         active={1 === activeTab}
         tabClickHandler={tabClickHandlerCS}
-        title={"Concept Schemes"}
+        title="Controlled Vocabularies"
         showCloseBtn={false}
       />
     </TabGroup>

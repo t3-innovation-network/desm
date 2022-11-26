@@ -140,6 +140,9 @@ const Agents = () => {
           <label className="form-check-label" htmlFor="leadMapper">
             Lead Mapper?
           </label>
+          <div className="form-text">
+            Only lead mappers can publish completed mappings.
+          </div>
         </div>
 
         <div className="mt-5">
@@ -274,7 +277,7 @@ const Agents = () => {
           <h5 className="mt-3 text-center"> {confirmationMsg}</h5>
         </ConfirmDialog>
       )}
-      <div className="mt-5 ml-3">
+      <div className="mt-5">
         <TabGroup>
           {agentButtons()} {<SmallAddTabBtn onClickHandler={addAgent} />}{" "}
         </TabGroup>

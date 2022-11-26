@@ -26,7 +26,6 @@ class ConfigurationProfile < ApplicationRecord
   after_initialize :setup_schema_validators
   before_save :check_structure, if: :structure_changed?
   before_save :check_predicate_strongest_match, if: :predicate_strongest_match_changed?
-  before_destroy :check_ongoing_mappings, prepend: true
   after_save :create_new_entities, if: :active?
   before_destroy :remove_orphan_organizations
 
@@ -76,13 +75,6 @@ class ConfigurationProfile < ApplicationRecord
     state_handler.activate!
   end
 
-  def check_ongoing_mappings
-    return unless mappings.in_progress.any?
-
-    errors.add(:base, "In progress mappings, unable to remove")
-    throw :abort
-  end
-
   def check_structure
     if complete? && !structure_complete?
       incomplete!
@@ -101,6 +93,12 @@ class ConfigurationProfile < ApplicationRecord
 
   def deactivate!
     state_handler.deactivate!
+  end
+
+  def delete!
+    raise "In progress mappings, unable to remove" if mappings.in_progress.any?
+
+    delete
   end
 
   def export!

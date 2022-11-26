@@ -208,7 +208,7 @@ export default class PropertyMappingList extends Component {
   }
 
   async loadData() {
-    if (!this.context.currentConfigurationProfileId) {
+    if (!this.context.currentConfigurationProfile) {
       return;
     }
 
@@ -245,99 +245,97 @@ export default class PropertyMappingList extends Component {
     } = this.state;
 
     return (
-      <div className="wrapper">
+      <div className="container-fluid">
         <TopNav centerContent={this.navCenterOptions} />
         {/* ERRORS */}
         {errors.length ? <AlertNotice message={errors} /> : ""}
 
-        <div className="container-fluid container-wrapper">
-          <div className="row">
-            <div className="col p-lg-5 pt-5">
-              {!this.context.loggedIn && (
-                <ConfigurationProfileSelect onChange={this.loadData.bind(this)} />
-              )}
+        <div className="row">
+          <div className="col p-lg-5 pt-5">
+            {!this.context.loggedIn && (
+              <ConfigurationProfileSelect onChange={this.loadData.bind(this)} />
+            )}
 
-              {this.context.currentConfigurationProfileId && (
-                loading ? (
-                  <Loader />
-                ) : (
-                  <>
-                    <h1>Synthetic Spine Property Mapping By Category</h1>
+            {this.context.currentConfigurationProfile && (
+              loading ? (
+                <Loader />
+              ) : (
+                <>
+                  <h1>Synthetic Spine Property Mapping By Category</h1>
 
-                    <DesmTabs
-                      onTabClick={(id) => {
-                        this.setState({
-                          selectedDomain: domains.find((domain) => domain.id == id),
-                        });
-                      }}
-                      selectedId={selectedDomain?.id}
-                      values={domains}
-                    />
-                    <SearchBar
-                      onAlignmentOrderChange={(option) =>
-                        this.setState({ selectedAlignmentOrderOption: option })
-                      }
-                      onHideSpineTermsWithNoAlignmentsChange={(val) => {
-                        this.setState({
-                          hideSpineTermsWithNoAlignments: val,
-                        });
-                      }}
-                      onSpineOrderChange={(option) =>
-                        this.setState({ selectedSpineOrderOption: option })
-                      }
-                      onType={(val) => {
-                        this.setState({ propertiesInputValue: val });
-                      }}
-                      selectedAlignmentOrderOption={selectedAlignmentOrderOption}
-                      selectedSpineOrderOption={selectedSpineOrderOption}
-                    />
+                  <DesmTabs
+                    onTabClick={(id) => {
+                      this.setState({
+                        selectedDomain: domains.find((domain) => domain.id == id),
+                      });
+                    }}
+                    selectedId={selectedDomain?.id}
+                    values={domains}
+                  />
+                  <SearchBar
+                    onAlignmentOrderChange={(option) =>
+                      this.setState({ selectedAlignmentOrderOption: option })
+                    }
+                    onHideSpineTermsWithNoAlignmentsChange={(val) => {
+                      this.setState({
+                        hideSpineTermsWithNoAlignments: val,
+                      });
+                    }}
+                    onSpineOrderChange={(option) =>
+                      this.setState({ selectedSpineOrderOption: option })
+                    }
+                    onType={(val) => {
+                      this.setState({ propertiesInputValue: val });
+                    }}
+                    selectedAlignmentOrderOption={selectedAlignmentOrderOption}
+                    selectedSpineOrderOption={selectedSpineOrderOption}
+                  />
 
-                    {selectedDomain && (
-                      <>
-                        <PropertyMappingsFilter
-                          organizations={organizations}
-                          onAlignmentOrganizationSelected={(orgs) =>
-                            this.handleAlignmentOrganizationSelected(orgs)
-                          }
-                          onPredicateSelected={(sPredicates) =>
-                            this.handlePredicateSelected(sPredicates)
-                          }
-                          onSpineOrganizationSelected={(orgs) =>
-                            this.handleSpineOrganizationSelected(orgs)
-                          }
-                          predicates={predicates}
-                          selectedAlignmentOrderOption={selectedAlignmentOrderOption}
-                          selectedAlignmentOrganizations={
-                            selectedAlignmentOrganizations
-                          }
-                          selectedDomain={selectedDomain}
-                          selectedPredicates={selectedPredicates}
-                          selectedSpineOrderOption={selectedSpineOrderOption}
-                          selectedSpineOrganizations={selectedSpineOrganizations}
-                        />
+                  {selectedDomain && (
+                    <>
+                      <PropertyMappingsFilter
+                        organizations={organizations}
+                        onAlignmentOrganizationSelected={(orgs) =>
+                          this.handleAlignmentOrganizationSelected(orgs)
+                        }
+                        onPredicateSelected={(sPredicates) =>
+                          this.handlePredicateSelected(sPredicates)
+                        }
+                        onSpineOrganizationSelected={(orgs) =>
+                          this.handleSpineOrganizationSelected(orgs)
+                        }
+                        predicates={predicates}
+                        selectedAlignmentOrderOption={selectedAlignmentOrderOption}
+                        selectedAlignmentOrganizations={
+                          selectedAlignmentOrganizations
+                        }
+                        selectedDomain={selectedDomain}
+                        selectedPredicates={selectedPredicates}
+                        selectedSpineOrderOption={selectedSpineOrderOption}
+                        selectedSpineOrganizations={selectedSpineOrganizations}
+                      />
 
-                        <PropertiesList
-                          hideSpineTermsWithNoAlignments={
-                            hideSpineTermsWithNoAlignments
-                          }
-                          inputValue={propertiesInputValue}
-                          organizations={organizations}
-                          predicates={predicates}
-                          selectedAlignmentOrderOption={selectedAlignmentOrderOption}
-                          selectedAlignmentOrganizations={
-                            selectedAlignmentOrganizations
-                          }
-                          selectedDomain={selectedDomain}
-                          selectedPredicates={selectedPredicates}
-                          selectedSpineOrderOption={selectedSpineOrderOption}
-                          selectedSpineOrganizations={selectedSpineOrganizations}
-                        />
-                      </>
-                    )}
-                  </>
-                )
-              )}
-            </div>
+                      <PropertiesList
+                        hideSpineTermsWithNoAlignments={
+                          hideSpineTermsWithNoAlignments
+                        }
+                        inputValue={propertiesInputValue}
+                        organizations={organizations}
+                        predicates={predicates}
+                        selectedAlignmentOrderOption={selectedAlignmentOrderOption}
+                        selectedAlignmentOrganizations={
+                          selectedAlignmentOrganizations
+                        }
+                        selectedDomain={selectedDomain}
+                        selectedPredicates={selectedPredicates}
+                        selectedSpineOrderOption={selectedSpineOrderOption}
+                        selectedSpineOrganizations={selectedSpineOrganizations}
+                      />
+                    </>
+                  )}
+                </>
+              )
+            )}
           </div>
         </div>
       </div>

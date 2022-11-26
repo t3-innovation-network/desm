@@ -8,8 +8,6 @@
   position: relative;
 }
 .indicator > .indicator-step {
-  padding-left: 0.7vw;
-  padding-right: 0.7vw;
   position: relative;
   top: 0.5vw;
   min-width: 7vw;
@@ -19,6 +17,8 @@
   font-size: 12px;
   font-weight: bold;
   margin-bottom: 5px;
+  padding-left: 0.1vw;
+  padding-right: 0.7vw;
 }
 .indicator > .indicator-step > .indicator-dot {
   position: absolute;
@@ -38,7 +38,7 @@
   background: $foreground-color;
   position: absolute;
   top: 5px;
-  left: 8px;
+  left: -1px;
 }
 .indicator-step.active > .indicator-dot:after {
   background: $primary-color;

@@ -29,127 +29,103 @@ export const line = () => {
   return <div className="col-4 border-bottom" style={{ bottom: "1rem" }}></div>;
 };
 
-export const TabGroup = (props) => {
-  const { cssClass, children, controlledSize = true } = props;
-  return (
-    <div
-      className={`row ${
-        controlledSize
-          ? "row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5"
-          : ""
-      } ${cssClass || ""}`}
-    >
-      {children}
-    </div>
-  );
-};
+export const TabGroup = ({ cssClass, children }) => (
+  <div className={cssClass}>
+    {children}
+  </div>
+);
 
-export const RemovableTab = (props) => {
-  const {
-    active,
-    removeClickHandler,
-    tabClickHandler,
-    title,
-    showCloseBtn = true,
-  } = props;
+export const RemovableTab = ({
+  active,
+  removeClickHandler,
+  tabClickHandler,
+  title,
+  showCloseBtn = true,
+}) => (
+  <div
+    className={`col d-inline ${
+      active
+        ? "dashboard-active-tab border-left border-right"
+        : "border bg-col-on-primary-light col-background"
+    } rounded cursor-pointer pl-3 pr-4 py-3 text-center`}
+    onClick={tabClickHandler}
+    style={{
+      height: "50px",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+    }}
+  >
+    {title}
+    {showCloseBtn && (
+      <span
+        className="font-weight-bold"
+        onClick={(event) => {
+          event.stopPropagation();
+          removeClickHandler();
+        }}
+        style={{ position: "absolute", top: "0px", right: "5px" }}
+      >
+        x
+      </span>
+    )}
+  </div>
+);
 
-  return (
-    <div
-      className={`col ${
-        active
-          ? "dashboard-active-tab border-left border-right"
-          : "border bg-col-on-primary-light col-background"
-      } rounded cursor-pointer pl-2 pr-2 pt-3 pb-3 text-center`}
-      onClick={tabClickHandler}
+export const SmallRemovableTab = ({
+  active,
+  tabClickHandler,
+  removeClickHandler,
+  text,
+  tooltipMsg
+}) => (
+  <span className="cursor-pointer">
+    <span
+      className={`col-10 bg-dashboard-background ${
+        active ? "col-dashboard-highlight with-shadow" : "col-background"
+      } p-2 rounded text-center`}
       style={{
-        height: "50px",
+        maxWidth: "150px",
+        opacity: "80%",
         overflow: "hidden",
         textOverflow: "ellipsis",
+        maxHeight: "31px",
+      }}
+      data-toggle="tooltip"
+      data-placement="bottom"
+      title={tooltipMsg}
+      onClick={tabClickHandler}
+    >
+      {text}
+    </span>
+    <span
+      className="col-2 bg-dashboard-background col-background p-2 rounded text-center font-weight-bold"
+      style={{
+        maxWidth: "30px",
+        position: "relative",
+        right: "5px",
+        maxHeight: "31px",
+      }}
+      data-toggle="tooltip"
+      data-placement="bottom"
+      title="Click to remove this item"
+      onClick={(event) => {
+        event.stopPropagation();
+        removeClickHandler();
       }}
     >
-      {title}
-      {showCloseBtn && (
-        <span
-          className="font-weight-bold"
-          onClick={(event) => {
-            event.stopPropagation();
-            removeClickHandler();
-          }}
-          style={{ position: "absolute", top: "0px", right: "10px" }}
-        >
-          x
-        </span>
-      )}
-    </div>
-  );
-};
+      x
+    </span>
+  </span>
+);
 
-export const SmallRemovableTab = (props) => {
-  const {
-    active,
-    tabClickHandler,
-    removeClickHandler,
-    text,
-    tooltipMsg,
-  } = props;
-
-  return (
-    <div className="col mr-3 mt-3">
-      <div className="row cursor-pointer" style={{ minWidth: "130px" }}>
-        <div
-          className={`col-10 bg-dashboard-background ${
-            active ? "col-dashboard-highlight with-shadow" : "col-background"
-          } p-2 rounded text-center`}
-          style={{
-            maxWidth: "150px",
-            opacity: "80%",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            maxHeight: "31px",
-          }}
-          data-toggle="tooltip"
-          data-placement="bottom"
-          title={tooltipMsg}
-          onClick={tabClickHandler}
-        >
-          {text}
-        </div>
-        <div
-          className="col-2 bg-dashboard-background col-background p-2 rounded text-center font-weight-bold"
-          style={{
-            maxWidth: "30px",
-            position: "relative",
-            right: "5px",
-            maxHeight: "31px",
-          }}
-          data-toggle="tooltip"
-          data-placement="bottom"
-          title="Click to remove this item"
-          onClick={(event) => {
-            event.stopPropagation();
-            removeClickHandler();
-          }}
-        >
-          x
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export const SmallAddTabBtn = (props) => {
-  const { onClickHandler } = props;
-
-  return (
-    <div
-      className="col bg-dashboard-background-highlight col-background p-2 rounded text-center mt-3 mr-4 font-weight-bold cursor-pointer"
-      style={{ maxWidth: "50px" }}
-      onClick={onClickHandler}
-    >
-      +
-    </div>
-  );
-};
+export const SmallAddTabBtn = ({ onClickHandler }) => (
+  <span
+    className="bg-dashboard-background-highlight col-background cursor-pointer font-weight-bold px-3 py-2 rounded text-center"
+    onClick={onClickHandler}
+  >
+    +
+  </span>
+);
 
 export const AddTabBtn = (props) => {
   const { onClickHandler, tooltipMsg } = props;

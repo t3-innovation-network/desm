@@ -35,22 +35,18 @@ const Mapping = (props) => {
   };
 
   return (
-    <React.Fragment>
-      <div className="wrapper">
-        <TopNav centerContent={navCenterOptions} />
-        <div className="container-fluid container-wrapper">
-          {mappingFormErrors.length ? (
-            <AlertNotice message={mappingFormErrors} />
-          ) : (
-            ""
-          )}
-          <div className="row">
-            <MappingForm />
-            <MappingPreview redirect={handleRedirect} />
-          </div>
-        </div>
+    <div className="container-fluid">
+      <TopNav centerContent={navCenterOptions} />
+      {mappingFormErrors.length ? (
+        <AlertNotice message={mappingFormErrors} />
+      ) : (
+        ""
+      )}
+      <div className="row">
+        <MappingForm />
+        <MappingPreview redirect={handleRedirect} />
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 

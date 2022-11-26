@@ -10,18 +10,15 @@ import Pluralize from "pluralize";
  * @param {ItemType} acceptedItemType The type of item that this box accepts
  * @param {String} placeholder The text that is going to appear by default
  */
-const DropZone = (props) => {
-  /**
-   * Elements from props
-   */
-  const {
-    acceptedItemType,
-    droppedItem,
-    placeholder,
-    selectedCount,
-    textStyle,
-  } = props;
-
+const DropZone = ({
+  acceptedItemType,
+  children,
+  droppedItem,
+  placeholder,
+  selectedCount,
+  textStyle,
+  style
+}) => {
   /**
    * Draggable configuration
    */
@@ -34,6 +31,27 @@ const DropZone = (props) => {
     }),
   });
 
+  const content = () => {
+    let status = "";
+
+    if (isActive) {
+      status = `Add ${Pluralize("Record", selectedCount, true)}`;
+    } else if (!children) {
+      status = placeholder;
+    }
+
+    return status ? (
+      <div
+        className="align-items-center d-flex justify-content-center py-5"
+        style={{ flex: 1 }}
+      >
+        {status}
+      </div>
+    ) : (
+      <div className="pb-0 pt-2 px-2">{children}</div>
+    );
+  };
+
   /**
    * Whether there's something being dragged
    */
@@ -41,17 +59,11 @@ const DropZone = (props) => {
 
   return (
     <div
-      className={
-        "card mapping-term-drag-box pt-2 pb-2" +
-        (isActive ? " dnd-active" : " border-dotted")
-      }
+      className={`card ${isActive ? "dnd-active" : "border-dotted"}`}
       ref={drop}
+      style={style}
     >
-      <p className="mb-0 fully-centered" style={textStyle}>
-        {isActive
-          ? "Add " + (selectedCount + " " + Pluralize("Record", selectedCount))
-          : placeholder}
-      </p>
+      {content()}
     </div>
   );
 };

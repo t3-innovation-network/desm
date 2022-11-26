@@ -7,18 +7,12 @@
   src: url("../fonts/proxima-light/Proxima Nova Condensed Light.otf");
 }
 
-html,
-body,
-.container-fluid,
-.container-fluid > .row,
-.wrapper,
-body > div {
-  height: 100%;
-  font-size: 13px;
-}
+body {
+  font-family: "Proxima Nova Condensed Light", sans-serif;
 
-body.waiting {
-  cursor: wait;
+  &.waiting {
+    cursor: wait;
+  }
 }
 
 .subtitle {
@@ -34,18 +28,8 @@ section {
   margin-bottom: 2vw;
 }
 
-a {
-  color: $on-primary;
-}
-
 a:hover {
   color: $primary-color-light;
-}
-
-.wrapper {
-  margin-right: 7%;
-  margin-left: 7%;
-  font-family: "Proxima Nova Condensed Light", sans-serif;
 }
 
 .cursor-pointer {

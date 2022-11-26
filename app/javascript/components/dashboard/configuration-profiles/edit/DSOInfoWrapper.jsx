@@ -33,19 +33,13 @@ const DSOInfoWrapper = () => {
     );
   };
 
-  const dsoInfoTabs = () => {
-    return (
-      <Fragment>
-        <div className="row justify-content-center">
-          {tabIcon(0, faInfo, "DSO Basic Info")}
-          {line()}
-          {tabIcon(1, faUsers, "Agents")}
-          {line()}
-          {tabIcon(2, faFile, "Schema Files")}
-        </div>
-      </Fragment>
-    );
-  };
+  const dsoInfoTabs = () => (
+    <div className="row justify-content-center">
+      {tabIcon(0, faInfo, "DSO Basic Info")}
+      {line()}
+      {tabIcon(1, faUsers, "Agents")}
+    </div>
+  );
 
   const renderTab = () => {
     const dsoMetaData = <DSOMetaData dsoData={getDsos()[currentDsoIndex]} />;

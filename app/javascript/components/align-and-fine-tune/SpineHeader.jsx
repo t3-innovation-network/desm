@@ -98,7 +98,7 @@ const SpineHeader = (props) => {
             onClick={handleAddSynthetic}
             data-toggle="tooltip"
             data-placement="top"
-            title="Add a synthetic property to the spine. This new property will be available to map for this and further mappings"
+            title="Use this button to add new elements to the spine"
           >
             + Add Synthetic
           </button>
