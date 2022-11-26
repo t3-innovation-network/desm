@@ -325,7 +325,7 @@ describe ConfigurationProfile, type: :model do
     it "can't be removed if there is at least one in progress mapping" do
       @mapping.update!(status: :in_progress)
 
-      expect { @cp.remove! }.to raise_error ActiveRecord::RecordNotDestroyed
+      expect { @cp.remove! }.to raise_error("In progress mappings, unable to remove")
     end
 
     it "can be removed if there is none in progress mappings" do
