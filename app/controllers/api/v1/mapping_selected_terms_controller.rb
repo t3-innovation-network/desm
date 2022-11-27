@@ -23,7 +23,7 @@ class Api::V1::MappingSelectedTermsController < ApplicationController
   #   to the one passed in params
   ###
   def show
-    render json: @instance.selected_terms.order(:source_uri), include: [:property, :vocabularies]
+    render json: @instance.selected_terms.order(:source_uri), include: %i[property vocabularies]
   end
 
   ###

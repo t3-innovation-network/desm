@@ -64,7 +64,7 @@ const SpecsPreviewTabs = (props) => {
         defaultIndex={selectedTab}
         onSelect={index => setSelectedTab(index)}
       >
-        <TabList className="d-none">
+        <TabList>
           <Tab>
             <input
               checked={selectedTab === 0}

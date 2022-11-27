@@ -288,7 +288,7 @@ const MappingPreview = (props) => {
               <div className="row mb-3">
                 <div className="col">
                   <label
-                    className="col-primary cursor-pointer float-right d-none"
+                    className="col-primary cursor-pointer float-right"
                     data-toggle="tooltip"
                     data-placement="top"
                     title="Add a new vocabulary"
