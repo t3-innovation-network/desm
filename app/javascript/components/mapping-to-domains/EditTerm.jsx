@@ -13,9 +13,11 @@ import rawTerm from "./rawTerm";
 import AlertNotice from "../shared/AlertNotice";
 import ExpandableOptions from "../shared/ExpandableOptions";
 import createVocabulary from "../../services/createVocabulary";
-import { readNodeAttribute } from "./../../helpers/Vocabularies";
+import { readNodeAttribute, vocabName } from "./../../helpers/Vocabularies";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import extractVocabularies from "../../services/extractVocabularies";
+import _ from "lodash";
 
 export default class EditTerm extends Component {
   /**
@@ -163,27 +165,45 @@ export default class EditTerm extends Component {
    *
    * @param {Object} vocab
    */
-  handleVocabularyAdded = (data) => {
-    createVocabulary(data).then((response) => {
-      if (response.error) {
-        toast.error("Error! " + e.response.data.message);
-        return;
-      }
+  handleVocabularyAdded = async data => {
+    document.body.classList.add("waiting");
 
-      let tempTerm = this.state.term;
-      /// Add new vocabulary to the list of available ones
-      this.state.vocabularies.push({
-        id: response.vocabulary.id,
-        name: response.vocabulary.name,
-      });
-      /// Add new vocabulary to the term selected vocabularies
-      tempTerm.vocabularies.push({
-        id: response.vocabulary.id,
-        name: response.vocabulary.name,
-      });
+    const { vocabularies } = await extractVocabularies(data.vocabulary.content);
 
-      this.setState({ term: tempTerm });
+    const newVocabs = await Promise.all(
+      vocabularies.map(async content => {
+        try {
+          const name = vocabName(content["@graph"]);
+
+          if (!name) {
+            return;
+          }
+
+          const { vocabulary } = await createVocabulary({ vocabulary: { content, name }});
+          return vocabulary;
+        } catch {
+          return null;
+        }
+      })
+    );
+
+    const { term } = this.state;
+    const newVocabOptions = newVocabs.filter(Boolean).map(v => ({ id: v.id, name: v.name }));
+
+    this.setState({
+      vocabularies: _.uniqBy(
+        [...this.state.vocabularies, ...newVocabOptions],
+        v => v.name
+      )
     });
+
+    term.vocabularies = _.uniqBy(
+      [...term.vocabularies, ...newVocabOptions],
+      v => v.name
+    );
+
+    this.setState({ term });
+    document.body.classList.remove("waiting");
   };
 
   /**
