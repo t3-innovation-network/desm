@@ -197,12 +197,14 @@ const AlignAndFineTune = (props) => {
    * Returns whether all the terms from the specification are already mapped.
    * For a term to be correctly mapped, we ensure to detect the predicate for it.
    */
-  const allTermsMapped =
-    mappingSelectedTerms.every((term) =>
-      alignments.some((alignment) =>
-        alignment.mappedTerms.some((t) => t.id === term.id)
-      )
-    ) && alignments.every((alignment) => alignment.predicateId);
+  const noPartiallyMappedTerms = alignments.every(a => {
+    const predicate = predicates.find(p => p.id === a.predicateId);
+
+    return (
+      predicate?.source_uri?.toLowerCase()?.includes("nomatch") ||
+      Boolean(a.mappedTerms.length) == Boolean(a.predicateId)
+    );
+  });
 
   /**
    * Returns whether the term is already mapped to the spine. It can be 1 of 2 options:
@@ -403,7 +405,7 @@ const AlignAndFineTune = (props) => {
         <button
           className="btn btn-dark mr-2"
           onClick={handleSaveAlignment}
-          disabled={!changesPerformed || loading}
+          disabled={!changesPerformed || !noPartiallyMappedTerms || loading}
           data-toggle="tooltip"
           data-placement="bottom"
           title={
@@ -417,11 +419,11 @@ const AlignAndFineTune = (props) => {
           <button
             className="btn bg-col-primary col-background"
             onClick={handleDoneAlignment}
-            disabled={loading || !allTermsMapped}
+            disabled={loading || !noPartiallyMappedTerms}
             data-toggle="tooltip"
             data-placement="bottom"
             title={
-              allTermsMapped
+              noPartiallyMappedTerms
                 ? "Mark this mapping as finished"
                 : "Be sure to map all the properties to the spine, and to set a predicate to each alignment"
             }
