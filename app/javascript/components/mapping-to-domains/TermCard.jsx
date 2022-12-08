@@ -114,12 +114,7 @@ export default class TermCard extends Component {
             "col-8 mb-3" + (disableClick || selected ? "" : " cursor-pointer")
           }
         >
-          <strong>
-            <HoverableText
-              primaryContent={term.name}
-              secondaryContent={term.uri}
-            />
-          </strong>
+          <strong>{term.name}</strong>
         </div>
         <div className="col-4">
           <div className="float-right">
@@ -159,10 +154,13 @@ export default class TermCard extends Component {
         handleOnClick={disableClick ? null : this.handleTermClick}
         headerContent={this.termHeaderContent()}
         bodyContent={
-          <div className="card-body pt-0 pb-0">
-            <p>{term.property.comment}</p>
-            <p>{"Origin: " + origin}</p>
-          </div>
+          <>
+            <h6 className="card-subtitle mb-2 text-muted">
+              Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
+            </h6>
+            <p className="card-text">{term.property.comment}</p>
+            <p className="card-text">{"Origin: " + origin}</p>
+          </>
         }
       />
     );
