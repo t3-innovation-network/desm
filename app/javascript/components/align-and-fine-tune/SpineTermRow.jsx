@@ -275,9 +275,12 @@ const SpineTermRow = (props) => {
             cardStyle={"with-shadow mb-2"}
             observeOutside={false}
             bodyContent={
-              <Fragment>
-                <p>{term.property.comment}</p>
-                <p>
+              <>
+                <h6 className="card-subtitle mb-2 text-muted">
+                  Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
+                </h6>
+                <p className="card-text">{term.property.comment}</p>
+                <p className="card-text">
                   Origin:
                   {" "}
                   <span className="col-primary">{term.synthetic ? origin : term.organization.name}</span>
@@ -288,7 +291,7 @@ const SpineTermRow = (props) => {
                 ) : (
                   ""
                 )}
-              </Fragment>
+              </>
             }
           />
         </div>
@@ -340,8 +343,11 @@ const SpineTermRow = (props) => {
                 observeOutside={false}
                 bodyContent={
                   <React.Fragment>
-                    <p>{mTerm.property.comment}</p>
-                    <p>
+                    <h6 className="card-subtitle mb-2 text-muted">
+                      Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
+                    </h6>
+                    <p  className="card-text">{mTerm.property.comment}</p>
+                    <p  className="card-text">
                       Origin:
                       <span className="col-primary">{" " + origin}</span>
                     </p>
