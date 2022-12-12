@@ -73,7 +73,7 @@ module Converters
         "@id": scheme_id,
         "@type": "skos:ConceptScheme",
         "dct:title": "#{element_name} Option Set",
-        "dct:description": "Option set for the CEDS element #{element_name}",
+        "dct:description": "Option set for #{element_name}",
         "skos:hasTopConcept": concept_ids
       }
     end
@@ -87,7 +87,7 @@ module Converters
       {
         "@id": build_desm_uri(entity.upcase_first),
         "@type": "rdf:Class",
-        "rdfs:label": "CEDS #{entity}"
+        "rdfs:label": entity
       }
     end
 
@@ -109,8 +109,7 @@ module Converters
         "rdfs:comment": row[:definition],
         "desm:valueSpace": concept_scheme&.slice(:@id),
         "rdfs:domain": fetch_domain_class(entity).slice(:@id),
-        "rdfs:range": concept_scheme ? "skos:Concept" : "rdfs:Literal",
-        "rdfs:subPropertyOf": "https://ceds.ed.gov/element/#{global_id}"
+        "rdfs:range": concept_scheme ? "skos:Concept" : "rdfs:Literal"
       }
 
       resources << property
