@@ -276,9 +276,11 @@ const SpineTermRow = (props) => {
             observeOutside={false}
             bodyContent={
               <>
-                <h6 className="card-subtitle mb-2 text-muted">
-                  Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
-                </h6>
+                {term.sourceUri && (
+                  <h6 className="card-subtitle mb-2 text-muted">
+                    Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
+                  </h6>
+                )}
                 <p className="card-text">{term.property.comment}</p>
                 <p className="card-text">
                   Origin:
@@ -343,9 +345,11 @@ const SpineTermRow = (props) => {
                 observeOutside={false}
                 bodyContent={
                   <React.Fragment>
-                    <h6 className="card-subtitle mb-2 text-muted">
-                      Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
-                    </h6>
+                    {term.sourceUri && (
+                      <h6 className="card-subtitle mb-2 text-muted">
+                        Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
+                      </h6>
+                    )}
                     <p  className="card-text">{mTerm.property.comment}</p>
                     <p  className="card-text">
                       Origin:
