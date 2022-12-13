@@ -177,7 +177,7 @@ const PasswordStrengthInfo = () => {
         <strong>Important</strong>
       </h4>
       <p>
-        We validate the password based on its deductibility. You can try a
+        We require secure passwords. You can try a
         combination of the following suggestions:
       </p>
       <ul>
