@@ -606,9 +606,8 @@ const AlignAndFineTune = (props) => {
     let synthetics = alignments.filter(
       (alignment) => alignment.synthetic & !alignment.persisted
     );
-    let filteredAlignments = alignments.filter(
-      (alignment) => !alignment.synthetic && alignment.changed
-    );
+
+    const filteredAlignments = alignments.filter(a => a.changed);
     let savedTerms = 0;
 
     await Promise.all(
