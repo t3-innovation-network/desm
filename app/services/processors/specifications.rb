@@ -86,9 +86,12 @@ module Processors
       processor = new(file_content)
       # Since we're looking for domains inside the file,
       # we only care about the nodes with type 'rdf:Class'
-      domains = processor.graph.filter_map {|node|
+      domains = processor
+                .graph
+                .filter_map {|node|
         Parsers::JsonLd::Node.new(node, processor.context).rdfs_class_node
       }
+                .flatten
 
       processor.process_domains(domains)
     end
