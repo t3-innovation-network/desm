@@ -236,7 +236,6 @@ module Processors
 
         (
           parser.related_to_node_by?("domain", class_uri) ||
-          parser.related_to_node_by?("range", class_uri) ||
           parser.related_to_node_by?("dwcattributes:organizedInClass", class_uri) ||
           parser.types.eql_to?(class_uri)
         )
