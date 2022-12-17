@@ -74,8 +74,12 @@ module Parsers
       #   there's a class referenced in the type key, return that node. If this node itself
       #   represents an rdfs:Class, just return the node.
       ###
-      def rdfs_class_node
-        domains = Array.wrap(@node.fetch("rdfs:domain", @node["sdo:domainIncludes"]))
+      def rdfs_class_nodes
+        domains = Array.wrap(
+          @node.fetch("rdfs:domain", @node["sdo:domainIncludes"])
+        )
+
+        return [{"@id" => "rdfs:Resource", "rdfs:label" => "Resource"}] if domains.empty?
 
         nodes = domains.map do |domain|
           uri = domain.is_a?(Hash) ? domain["@id"] : domain

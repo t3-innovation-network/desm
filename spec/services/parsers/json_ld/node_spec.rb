@@ -25,7 +25,7 @@ RSpec.describe Parsers::JsonLd::Node do
     end
   end
 
-  describe "rdfs_class_node returns the same node when it's explicitly an rdfs:Class" do
+  describe "rdfs_class_nodes returns the same node when it's explicitly an rdfs:Class" do
     subject { described_class.new(credential_registry_node) }
     let(:credential_registry_node) {
       {
@@ -49,11 +49,11 @@ RSpec.describe Parsers::JsonLd::Node do
     }
 
     it "should return the same node" do
-      expect(subject.rdfs_class_node).to eq(credential_registry_node)
+      expect(subject.rdfs_class_nodes).to eq([{"@id" => "rdfs:Resource", "rdfs:label" => "Resource"}])
     end
   end
 
-  describe "rdfs_class_node with inference" do
+  describe "rdfs_class_nodes with inference" do
     subject { described_class.new(node_to_infer) }
     let(:node_to_infer) {
       {
@@ -65,10 +65,10 @@ RSpec.describe Parsers::JsonLd::Node do
     }
 
     it "should infer the node type" do
-      result = subject.rdfs_class_node
+      result = subject.rdfs_class_nodes
 
-      expect(result).not_to be_nil
-      expect(result["@type"]).to eq("http://www.w3.org/2000/01/rdf-schema#Class")
+      expect(result.size).to eq(1)
+      expect(result.dig(0, "@type")).to eq(nil)
     end
   end
 end
