@@ -7,6 +7,7 @@ import { vocabName } from "../../helpers/Vocabularies";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { render } from "react-dom";
+import pluralize from "pluralize";
 
 /**
  * Displays a specification and its vocabularies in the tabbed form
@@ -76,7 +77,7 @@ const SpecsPreviewTabs = (props) => {
             <strong className={propertiesCount < 1 ? "col-primary" : ""}>
               {propertiesCount + " "}
             </strong>
-            properties
+            {pluralize("property", propertiesCount)}
           </Tab>
 
           {vocabularies.map((content, i) => (
