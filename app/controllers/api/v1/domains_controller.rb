@@ -3,7 +3,7 @@
 ###
 # @description: Place all the actions related to domains
 ###
-class Api::V1::DomainsController < ApplicationController
+class API::V1::DomainsController < ApplicationController
   before_action :with_instance, only: :show
 
   ###

@@ -3,7 +3,7 @@
 ###
 # @description: Place all the actions related to specifications
 ###
-class Api::V1::SpecificationsController < ApplicationController
+class API::V1::SpecificationsController < ApplicationController
   ###
   # @description: Create a specification with its terms. Store it from an already
   #   filtered JSON object

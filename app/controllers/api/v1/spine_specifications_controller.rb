@@ -3,7 +3,7 @@
 ###
 # @description: Place all the actions related to spine specifications
 ###
-class Api::V1::SpineSpecificationsController < ApplicationController
+class API::V1::SpineSpecificationsController < ApplicationController
   ###
   # @description: Returns a filtered list of specifications for an organization
   ###

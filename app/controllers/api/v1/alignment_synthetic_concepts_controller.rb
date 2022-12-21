@@ -3,7 +3,7 @@
 ###
 # @description: Place all the actions related to vocabulary mappings
 ###
-class Api::V1::AlignmentSyntheticConceptsController < ApplicationController
+class API::V1::AlignmentSyntheticConceptsController < ApplicationController
   before_action :validate_mapped_concepts, only: [:create]
   after_action :set_mapped_concepts, only: [:create]
 

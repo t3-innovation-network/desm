@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::V1::ValidateConfigurationProfileController < ApplicationController
+class API::V1::ValidateConfigurationProfileController < ApplicationController
   def validate
     structure_param = JSON.parse(permitted_params[:structure]).to_h
     validation_result = ConfigurationProfile.validate_structure(structure_param)

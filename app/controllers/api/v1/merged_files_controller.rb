@@ -3,7 +3,7 @@
 ###
 # @description: Place all the actions related to specifications
 ###
-class Api::V1::MergedFilesController < ApplicationController
+class API::V1::MergedFilesController < ApplicationController
   before_action :with_instance
 
   ###

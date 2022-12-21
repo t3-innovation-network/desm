@@ -3,7 +3,7 @@
 ###
 # @description: Place all the actions related to organizations
 ###
-class Api::V1::RolesController < ApplicationController
+class API::V1::RolesController < ApplicationController
   ###
   # @description: Lists all the organizations
   ###
