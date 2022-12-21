@@ -75,10 +75,9 @@ module Parsers
       #   represents an rdfs:Class, just return the node.
       ###
       def rdfs_class_nodes
-        domains = Array.wrap(
-          @node.fetch("rdfs:domain", @node["sdo:domainIncludes"])
-        )
+        return [] unless types.rdf_property?
 
+        domains = Array.wrap(read!("domain").presence || read!("domainIncludes"))
         return [{"@id" => "rdfs:Resource", "rdfs:label" => "Resource"}] if domains.empty?
 
         nodes = domains.map do |domain|

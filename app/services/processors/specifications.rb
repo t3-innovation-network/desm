@@ -232,10 +232,12 @@ module Processors
       # Find all related properties
       props.select do |node|
         parser = Parsers::JsonLd::Node.new(node, @context)
-        next class_uri == "rdfs:Resource" unless parser.read!("domain")
+        domains = parser.read!("domain").presence || parser.read!("domainIncludes")
+        next class_uri == "rdfs:Resource" unless domains.present?
 
         (
           parser.related_to_node_by?("domain", class_uri) ||
+          parser.related_to_node_by?("domainIncludes", class_uri) ||
           parser.related_to_node_by?("dwcattributes:organizedInClass", class_uri) ||
           parser.types.eql_to?(class_uri)
         )

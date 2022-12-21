@@ -49,7 +49,7 @@ RSpec.describe Parsers::JsonLd::Node do
     }
 
     it "should return the same node" do
-      expect(subject.rdfs_class_nodes).to eq([{"@id" => "rdfs:Resource", "rdfs:label" => "Resource"}])
+      expect(subject.rdfs_class_nodes).to eq([])
     end
   end
 
@@ -65,10 +65,7 @@ RSpec.describe Parsers::JsonLd::Node do
     }
 
     it "should infer the node type" do
-      result = subject.rdfs_class_nodes
-
-      expect(result.size).to eq(1)
-      expect(result.dig(0, "@type")).to eq(nil)
+      expect(subject.rdfs_class_nodes).to eq([])
     end
   end
 end
