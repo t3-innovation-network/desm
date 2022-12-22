@@ -376,23 +376,6 @@ const MappingForm = () => {
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              {Boolean(files.length) && !submitted && !processingFile && (
-                <section>
-                  <button
-                    type="submit"
-                    className="btn bg-col-primary col-background with-shadow floating-spec-btn mt-3"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Import the specification"
-                    disabled={submitted}
-                  >
-                    <FontAwesomeIcon
-                      icon={faArrowRight}
-                      className="col-background"
-                    />
-                  </button>
-                </section>
-              )}
               <label htmlFor="specification_name">
                 Name of your specification
               </label>
@@ -509,6 +492,23 @@ const MappingForm = () => {
                 You can upload your specification as CSV, JSON-LD, JSON Schema,
                 RDF, or XML format
               </label>
+              {Boolean(files.length) && !submitted && !processingFile && (
+                <section>
+                  <button
+                    className="btn bg-col-primary col-background with-shadow floating-spec-btn mt-3"
+                    data-placement="top"
+                    data-toggle="tooltip"
+                    disabled={submitted}
+                    title="Import the specification"
+                    type="submit"
+                  >
+                    <FontAwesomeIcon
+                      icon={faArrowRight}
+                      className="col-background"
+                    />
+                  </button>
+                </section>
+              )}
             </div>
 
             <FileData />
