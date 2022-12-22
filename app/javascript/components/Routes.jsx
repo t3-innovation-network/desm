@@ -69,7 +69,7 @@ const Routes = (props) => {
         <ProtectedRoute
           exact
           path="/mappings"
-          allowedRoles={allRoles}
+          allowedRoles={onlyMappers}
           component={SpecsList}
         />
 
