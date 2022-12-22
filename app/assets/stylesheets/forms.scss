@@ -26,6 +26,10 @@
   right: -2.5rem;
   top: 50%;
   z-index: 5;
+
+  &:focus {
+    box-shadow: 0 0 0 .3rem rgba(0, 123, 255, .5) !important;
+  }
 }
 
 .react-codemirror2{
