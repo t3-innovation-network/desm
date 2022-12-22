@@ -3,7 +3,7 @@
 ###
 # @description: Place all the actions related to predicates
 ###
-class Api::V1::PredicatesController < ApplicationController
+class API::V1::PredicatesController < ApplicationController
   ###
   # @description: Lists all the predicates
   ###

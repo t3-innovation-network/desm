@@ -3,7 +3,7 @@
 ###
 # @description: Place all the actions related to vocabularies
 ###
-class Api::V1::VocabulariesController < ApplicationController
+class API::V1::VocabulariesController < ApplicationController
   before_action :authorize_with_policy
 
   ###

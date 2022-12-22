@@ -62,9 +62,11 @@ const MappingPreview = (props) => {
   /**
    * Gives the amount of properties found in the specification
    */
-  const propertiesCount =
-    (filteredFile["@graph"]?.length || 0) -
-    (mappingFormData?.selectedDomains?.length || 0);
+  const propertiesCount = (
+    (filteredFile["@graph"] || [])
+      .filter(r => /rdfs?:Property/.test(r["@type"]))
+      .length
+  );
   /**
    * Whether the form is submitted. This means all the fields are already filled, and the
    * file/s are uploaded. We can proceed with preview.

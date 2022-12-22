@@ -74,17 +74,23 @@ module Parsers
       #   there's a class referenced in the type key, return that node. If this node itself
       #   represents an rdfs:Class, just return the node.
       ###
-      def rdfs_class_node
-        # It's an rdfs:Class itself
-        return @node if @types.rdfs_class?
+      def rdfs_class_nodes
+        return [] unless types.rdf_property?
 
-        # It's not and rdfs:Class, nor an rdf:Property, or a skos:Concept
-        # We need to infer the type, it may be an rdfs:Class.
-        #
-        # In such case, we need to return the rdfs:Class node
-        infer_rdfs_class_node unless @types.includes_standardized_type?
+        domains = Array.wrap(read!("domain").presence || read!("domainIncludes"))
+        return [{"@id" => "rdfs:Resource", "rdfs:label" => "Resource"}] if domains.empty?
 
-        # Otherwise we don't return a value. nil will do.
+        nodes = domains.map do |domain|
+          uri = domain.is_a?(Hash) ? domain["@id"] : domain
+          next unless uri.present?
+
+          {
+            "@id" => uri,
+            "rdfs:label" => uri.split(%r{[#/:]}).last.titleize
+          }
+        end
+
+        nodes.compact
       end
 
       def id_to_name

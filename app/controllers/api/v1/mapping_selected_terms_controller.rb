@@ -3,7 +3,7 @@
 ###
 # @description: Place all the actions related to mappings
 ###
-class Api::V1::MappingSelectedTermsController < ApplicationController
+class API::V1::MappingSelectedTermsController < ApplicationController
   before_action :validate_mapping_terms, only: [:create]
   before_action :instantiate
 

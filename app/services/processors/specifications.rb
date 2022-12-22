@@ -86,9 +86,12 @@ module Processors
       processor = new(file_content)
       # Since we're looking for domains inside the file,
       # we only care about the nodes with type 'rdf:Class'
-      domains = processor.graph.filter_map {|node|
-        Parsers::JsonLd::Node.new(node, processor.context).rdfs_class_node
+      domains = processor
+                .graph
+                .filter_map {|node|
+        Parsers::JsonLd::Node.new(node, processor.context).rdfs_class_nodes
       }
+                .flatten
 
       processor.process_domains(domains)
     end
@@ -229,9 +232,12 @@ module Processors
       # Find all related properties
       props.select do |node|
         parser = Parsers::JsonLd::Node.new(node, @context)
+        domains = parser.read!("domain").presence || parser.read!("domainIncludes")
+        next class_uri == "rdfs:Resource" unless domains.present?
+
         (
           parser.related_to_node_by?("domain", class_uri) ||
-          parser.related_to_node_by?("range", class_uri) ||
+          parser.related_to_node_by?("domainIncludes", class_uri) ||
           parser.related_to_node_by?("dwcattributes:organizedInClass", class_uri) ||
           parser.types.eql_to?(class_uri)
         )

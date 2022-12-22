@@ -3,7 +3,7 @@
 ###
 # @description: Place all the actions related to mappings
 ###
-class Api::V1::MappingsController < ApplicationController
+class API::V1::MappingsController < ApplicationController
   before_action :authorize_with_policy
   before_action :instantiate_specification, only: :create
 

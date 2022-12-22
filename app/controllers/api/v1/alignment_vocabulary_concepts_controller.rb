@@ -3,7 +3,7 @@
 ###
 # @description: Place all the actions related to vocabulariy mappings
 ###
-class Api::V1::AlignmentVocabularyConceptsController < ApplicationController
+class API::V1::AlignmentVocabularyConceptsController < ApplicationController
   before_action :authorize_with_policy
 
   ###

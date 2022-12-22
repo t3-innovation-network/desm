@@ -3,7 +3,7 @@
 ###
 # @description: Place all the actions related to spine terms
 ###
-class Api::V1::SpineTermsController < ApplicationController
+class API::V1::SpineTermsController < ApplicationController
   before_action :validate_mapped_terms, only: [:create]
   after_action :set_mapped_terms, only: [:create]
 

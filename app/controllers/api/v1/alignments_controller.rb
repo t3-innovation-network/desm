@@ -3,7 +3,7 @@
 ###
 # @description: Place all the actions related to mapping alignments
 ###
-class Api::V1::AlignmentsController < ApplicationController
+class API::V1::AlignmentsController < ApplicationController
   before_action :authorize_with_policy, except: :index
 
   ###

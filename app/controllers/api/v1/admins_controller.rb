@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::V1::AdminsController < ApplicationController
+class API::V1::AdminsController < ApplicationController
   before_action :authorize!
   before_action :load_admin, only: %i[update destroy]
 

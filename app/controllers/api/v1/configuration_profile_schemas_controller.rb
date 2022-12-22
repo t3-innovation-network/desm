@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::V1::ConfigurationProfileSchemasController < ApplicationController
+class API::V1::ConfigurationProfileSchemasController < ApplicationController
   def show
     render json: determine_schema
   end

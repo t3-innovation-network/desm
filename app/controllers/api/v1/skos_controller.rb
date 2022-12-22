@@ -3,7 +3,7 @@
 ###
 # @description: Parse and return the result of fetching a skos structure through a URL
 ###
-class Api::V1::SkosController < ApplicationController
+class API::V1::SkosController < ApplicationController
   before_action :validate_labels_params, only: :labels
   before_action :instantiate_cp, only: :labels
   before_action :check_skos_method, only: :labels

@@ -3,7 +3,7 @@
 ###
 # @description: Place all the actions related to organizations
 ###
-class Api::V1::OrganizationsController < ApplicationController
+class API::V1::OrganizationsController < ApplicationController
   before_action :authorize_with_policy, except: :index
 
   ###
