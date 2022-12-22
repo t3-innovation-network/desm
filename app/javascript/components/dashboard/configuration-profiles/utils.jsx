@@ -43,17 +43,12 @@ export const RemovableTab = ({
   showCloseBtn = true,
 }) => (
   <div
-    className={`col d-inline ${
+    className={`d-inline-block ${
       active
         ? "dashboard-active-tab border-left border-right"
         : "border bg-col-on-primary-light col-background"
-    } rounded cursor-pointer pl-3 pr-4 py-3 text-center`}
+    } rounded cursor-pointer p-2 pl-3 pr-4 position-relative`}
     onClick={tabClickHandler}
-    style={{
-      height: "50px",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    }}
   >
     {title}
     {showCloseBtn && (
@@ -132,12 +127,12 @@ export const AddTabBtn = (props) => {
 
   return (
     <span
-      className="col pl-3 pr-3 pt-3 pb-3 text-center border rounded bg-dashboard-background-highlight col-background font-weight-bold cursor-pointer"
+      className="p-2 text-center border rounded bg-dashboard-background-highlight col-background font-weight-bold cursor-pointer"
       data-toggle="tooltip"
       data-placement="top"
       title={tooltipMsg || "Add new tab"}
       onClick={onClickHandler}
-      style={{ maxWidth: "50px", fontSize: "large", height: "50px" }}
+      style={{ maxWidth: "50px", fontSize: "large" }}
     >
       +
     </span>
