@@ -185,7 +185,7 @@ const AlignAndFineTune = (props) => {
         .toLowerCase()
         .includes(spineTermsInputValue.toLowerCase());
     }),
-    ["synthetic", t => t.name.toLowerCase()]
+    [t => t.createdAt ? 1 : 0, t => t.name.toLowerCase()]
   );
 
   /**
