@@ -73,12 +73,6 @@ class Mapping < ApplicationRecord
   after_create :generate_alignments
 
   ###
-  # @description: Remove all mapped terms from every alignment if we're going to
-  #   mark the mapping back as "uploaded"
-  ###
-  around_update :remove_alignments_mapped_terms, if: proc { status_changed? && uploaded? }
-
-  ###
   # METHODS
   ###
 
