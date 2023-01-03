@@ -13,7 +13,7 @@ const LeftSideHome = () => (
           data-placement="top"
           title="See all the finished mappings to a specification (or a specific domain)"
       >
-        View Specifications
+        View Shared Mappings
       </Link>
     </section>
     <section>

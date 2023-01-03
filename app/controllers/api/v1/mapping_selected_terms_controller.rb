@@ -32,7 +32,15 @@ class API::V1::MappingSelectedTermsController < ApplicationController
   def destroy
     term = Term.find(params[:term_id])
 
-    @instance.selected_terms.delete(term)
+    Mapping.transaction do
+      @instance.selected_terms.delete(term)
+
+      @instance
+        .alignments
+        .joins(:mapped_terms)
+        .where(terms: {id: term})
+        .each {|a| a.update!(mapped_terms: [], predicate: nil) }
+    end
 
     render json: @instance, include: :selected_terms
   end

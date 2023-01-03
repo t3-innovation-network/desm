@@ -350,7 +350,7 @@ ActiveRecord::Schema.define(version: 2022_10_28_183001) do
   add_foreign_key "alignment_mapped_terms", "alignments", on_delete: :cascade
   add_foreign_key "alignment_mapped_terms", "terms", on_delete: :cascade
   add_foreign_key "alignment_vocabularies", "alignments", on_delete: :cascade
-  add_foreign_key "alignment_vocabulary_concept_mapped_concepts", "alignment_vocabulary_concepts"
+  add_foreign_key "alignment_vocabulary_concept_mapped_concepts", "alignment_vocabulary_concepts", on_delete: :cascade
   add_foreign_key "alignment_vocabulary_concept_mapped_concepts", "skos_concepts"
   add_foreign_key "alignment_vocabulary_concepts", "alignment_vocabularies", on_delete: :cascade
   add_foreign_key "alignment_vocabulary_concepts", "predicates"

@@ -125,7 +125,7 @@ export default class MultipleDomainsModal extends Component {
                   onClick={() => this.handleSubmit()}
                   disabled={!this.selectedDomains().length}
                 >
-                  Done Selection
+                  Done Selecting
                 </button>
               </div>
             </div>
@@ -156,23 +156,22 @@ export default class MultipleDomainsModal extends Component {
 
           <div className="card-body has-scrollbar scrollbar">
             <div className="desm-radio">
-              {domains.map((dom) => {
-                return (
-                  <div className="desm-radio-primary" key={"radio-" + dom.id}>
-                    <input
-                      type="checkbox"
-                      name="domain-options"
-                      id={"chk-" + dom.id}
-                      onClick={() => this.handleDomainClick(dom.id)}
-                    />
-                    <HoverableText
-                      forComponent={"chk-" + dom.id}
-                      primaryContent={dom.label}
-                      secondaryContent={dom.uri}
-                    />
-                  </div>
-                );
-              })}
+              {domains.map((dom) => (
+                <div className="desm-radio-primary" key={"radio-" + dom.id}>
+                  <input
+                    id={"chk-" + dom.id}
+                    name="domain-options"
+                    onClick={() => this.handleDomainClick(dom.id)}
+                    tabIndex={0}
+                    type="checkbox"
+                  />
+                  <HoverableText
+                    forComponent={"chk-" + dom.id}
+                    primaryContent={dom.label}
+                    secondaryContent={dom.uri}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>

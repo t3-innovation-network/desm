@@ -19,7 +19,8 @@
 
 .desm-radio input[type="radio"]:empty,
 .desm-radio input[type="checkbox"]:empty {
-	display: none;
+	left: -9999px;
+	position: absolute;
 }
 
 .desm-radio input[type="radio"]:empty~label,
@@ -88,6 +89,10 @@
 .desm-radio-default input[type="checkbox"]:checked~label:before {
 	color: #333;
 	background-color: #ccc;
+}
+
+.desm-radio-primary {
+	position: relative;
 }
 
 .desm-radio-primary input[type="radio"]:checked~label:before,
