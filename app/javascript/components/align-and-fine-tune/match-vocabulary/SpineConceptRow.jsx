@@ -31,19 +31,6 @@ const SpineConceptRow = (props) => {
   } = props;
 
   /**
-   * To show on rows of synthetic concepts
-   */
-  const SyntheticPredicate = () => {
-    return (
-      <div className="card">
-        <div className="card-header bg-col-primary col-background">
-          No Match
-        </div>
-      </div>
-    );
-  };
-
-  /**
    * The name of the selected predicate
    */
   const predicateLabel = () => {
@@ -58,15 +45,11 @@ const SpineConceptRow = (props) => {
         <SimpleConceptCard concept={concept} origin={spineOrigin} />
       </div>
       <div className="col-4">
-        {concept.synthetic ? (
-          <SyntheticPredicate />
-        ) : (
-          <PredicateOptions
-            predicates={predicates}
-            onPredicateSelected={(predicate) => onPredicateSelected(predicate)}
-            predicate={predicateLabel}
-          />
-        )}
+        <PredicateOptions
+          predicates={predicates}
+          onPredicateSelected={(predicate) => onPredicateSelected(predicate)}
+          predicate={predicateLabel}
+        />
       </div>
       <div className="col-4">
         {alignment.mappedConceptsList && alignment.mappedConceptsList.length ? (

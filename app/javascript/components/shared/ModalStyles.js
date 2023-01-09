@@ -4,6 +4,7 @@ const ModalStyles = {
     bottom: "auto",
     left: "50%",
     marginRight: "-50%",
+    maxWidth: "95%",
     minWidth: "60%",
     padding: "0",
     right: "auto",

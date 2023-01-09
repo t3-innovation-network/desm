@@ -120,9 +120,6 @@ export default class MatchVocabulary extends Component {
     /// Name the synthetic spine concept
     let [mappedConcept] = alignment.mappedConceptsList;
     spineConcept.name = mappedConcept.name;
-
-    /// Add a new synthetic row
-    this.addSyntheticConceptRow();
   };
 
   /**
@@ -175,7 +172,7 @@ export default class MatchVocabulary extends Component {
 
     // Add a synthetic concept to have the chance to match concepts to
     // the "No Match" predicate option.
-    spineConcepts.push({
+    spineConcepts.unshift({
       id: nextSpineConceptId,
       name: "",
       definition: "Synthetic concept added to the vocabulary",
@@ -185,9 +182,7 @@ export default class MatchVocabulary extends Component {
     // Add the corresponding synthetic alignment
     alignmentConcepts.push({
       id: nextAlignmentId,
-      predicateId: predicates.find((predicate) =>
-        predicate.source_uri.toLowerCase().includes("nomatch")
-      ).id,
+      predicateId: predicates.find(p => p.strongest_match)?.id,
       spineConceptId: nextSpineConceptId,
       synthetic: true,
     });
@@ -356,7 +351,6 @@ export default class MatchVocabulary extends Component {
     this.setState({ loading: true });
 
     await this.fetchDataFromAPI();
-    _.isEmpty(errors) && this.addSyntheticConceptRow();
     this.setState({ loading: false });
   }
 
@@ -402,13 +396,28 @@ export default class MatchVocabulary extends Component {
     const Title = () => {
       return (
         <div className="row mb-3">
-          <div className="col-6">
-            <h4>T3 Spine</h4>
+          <div className="col-8">
+            <div className="row">
+              <div className="col-4">
+                <h4 className="text-center">T3 Spine</h4>
+              </div>
+              <div className="col-4 offset-4">
+                <h4 className="text-center">{mappingOrigin}</h4>
+              </div>
+            </div>
           </div>
-          <div className="col-3">
-            <h4>{mappingOrigin}</h4>
-          </div>
-          <div className="col-3">
+          <div className="col-4">
+            <div className="float-left">
+              <button
+                className="btn btn-dark"
+                onClick={this.addSyntheticConceptRow}
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Use this button to add new elements to the spine"
+              >
+                + Add Synthetic
+              </button>
+            </div>
             <div className="float-right">
               {this.filteredMappingConcepts({ pickSelected: true }).length +
                 " " +
@@ -416,7 +425,7 @@ export default class MatchVocabulary extends Component {
                   "concept",
                   this.filteredMappingConcepts({ pickSelected: true }).length
                 ) +
-                " concepts selected"}
+                " selected"}
             </div>
           </div>
         </div>
