@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { MAX_MAPPING_WEIGHT_PER_ORGANIZATION } from "../../helpers/Constants";
-import fetchAlignmentsForSpineTerm from "../../services/fetchAlignmentsForSpineTerm";
+import fetchAlignmentsForSpine from "../../services/fetchAlignmentsForSpine";
 import AlertNotice from "../shared/AlertNotice";
 import Loader from "../shared/Loader";
 import ProgressReportBar from "../shared/ProgressReportBar";
@@ -45,14 +45,10 @@ export default class PropertyCard extends Component {
   calculateMappingWeights = async () => {
     const { term } = this.props;
 
-    let response = await fetchAlignmentsForSpineTerm(term.id);
-
-    if (!this.anyError(response) && !_.isEmpty(response.alignments)) {
-      this.setState({
-        currentMappingWeight: this.calculateCurrentWeight(response.alignments),
-        maxMappingWeight: term.maxMappingWeight
-      });
-    }
+    this.setState({
+      currentMappingWeight: this.calculateCurrentWeight(term.alignments),
+      maxMappingWeight: term.maxMappingWeight
+    });
   };
 
   /**

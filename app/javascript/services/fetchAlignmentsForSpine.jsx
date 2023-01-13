@@ -1,9 +1,9 @@
 import { camelizeKeys } from "humps";
 import apiRequest from "./api/apiRequest";
 
-const fetchAlignmentsForSpineTerm = async (spineTermId) => {
+const fetchAlignmentsForSpine = async (spineId) => {
   let response = await apiRequest({
-    url: "/api/v1/alignments?spine_term_id=" + spineTermId,
+    url: `/api/v1/alignments?spine_id=${spineId}`,
     method: "get",
     successResponse: "alignments",
     defaultResponse: [],
@@ -12,4 +12,4 @@ const fetchAlignmentsForSpineTerm = async (spineTermId) => {
   return camelizeKeys(response);
 };
 
-export default fetchAlignmentsForSpineTerm;
+export default fetchAlignmentsForSpine;
