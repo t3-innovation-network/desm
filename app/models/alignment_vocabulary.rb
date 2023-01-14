@@ -10,6 +10,7 @@
 ###
 class AlignmentVocabulary < ApplicationRecord
   belongs_to :alignment
+  has_one :mapping, through: :alignment
   has_many :concepts, class_name: :AlignmentVocabularyConcept, dependent: :destroy
 
   after_create :assign_concepts_from_spine, unless: proc { concepts.count.positive? }
@@ -31,8 +32,9 @@ class AlignmentVocabulary < ApplicationRecord
     return unless spine_vocabulary.present?
 
     spine_vocabulary.concepts.each do |concept|
-      AlignmentVocabularyConcept.create!(
-        alignment_vocabulary: self,
+      concepts.create!(
+        mapped_concepts: [concept],
+        predicate_id: mapping.mapping_predicates.strongest_match_id,
         spine_concept_id: concept.id
       )
     end
