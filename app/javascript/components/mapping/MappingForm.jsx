@@ -170,13 +170,14 @@ const MappingForm = () => {
    * return the file as its needed, and with the proper format to be processed here
    */
   const handleMergeFiles = async () => {
-    let response = await mergeFiles(files);
+    const { error, mergedFileId } = await mergeFiles(files);
 
-    if (!anyError(response)) {
-      dispatch(setMergedFileId(response.mergedFileId));
-
-      return response.mergedFileId;
+    if (mergedFileId) {
+      dispatch(setMergedFileId(mergedFileId));
+      return mergedFileId;
     }
+
+    error && dispatch(setMappingFormErrors([error]));
   };
 
   /**
@@ -228,8 +229,9 @@ const MappingForm = () => {
    * Manage to work with only 1 file with all the information.
    */
   const processFiles = async () => {
-    let mergedFileId = await handleMergeFiles();
-    if (!mappingFormErrors.length) {
+    const mergedFileId = await handleMergeFiles();
+
+    if (mergedFileId) {
       await handleCheckDomainsInFile(mergedFileId);
     }
   };
