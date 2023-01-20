@@ -1,6 +1,6 @@
 import { filter } from "lodash";
 import React, { Component } from "react";
-import fetchAlignmentsForSpineTerm from "../../services/fetchAlignmentsForSpineTerm";
+import fetchAlignmentsForSpine from "../../services/fetchAlignmentsForSpine";
 import fetchDomain from "../../services/fetchDomain";
 import fetchSpineTerms from "../../services/fetchSpineTerms";
 import Loader from "../shared/Loader";
@@ -158,31 +158,21 @@ export default class PropertiesList extends Component {
    * This way we have the control onto show or hide the spine terms with no
    * alignments.
    *
-   * @param {Array} spineTerms
+   * @param {number} spineId
    */
-  decoratePropertiesWithAlignments = async (spineTerms) => {
-    await Promise.all(
-      spineTerms.map(async (term) => {
-        term.alignments = await this.handleFetchAlignmentsForSpineTerm(term.id);
-      })
-    );
-
-    return spineTerms;
-  };
-
-  /**
-   * Use the service to get all the available alignments of a spine specification term.
-   *
-   * @param {Array} spineTermId
-   */
-  handleFetchAlignmentsForSpineTerm = async (spineTermId) => {
-    let response = await fetchAlignmentsForSpineTerm(spineTermId);
+  decoratePropertiesWithAlignments = async (spineId, spineTerms) => {
+    const response = await fetchAlignmentsForSpine(spineId);
 
     if (!this.anyError(response)) {
-      return response.alignments.filter((alignment) => alignment.predicateId);
+      const { alignments } = response;
+      const groupedAlignments = _.groupBy(alignments, "spineTermId");
+
+      spineTerms.forEach(term =>
+        term.alignments = groupedAlignments[term.id] || []
+      );
     }
 
-    return [];
+    return spineTerms;
   };
 
   /**
@@ -192,13 +182,12 @@ export default class PropertiesList extends Component {
     let response = await fetchSpineTerms(spineId);
 
     if (!this.anyError(response)) {
-      let properties = await this.decoratePropertiesWithAlignments(
+      const properties = await this.decoratePropertiesWithAlignments(
+        spineId,
         response.terms
       );
 
-      this.setState({
-        properties: properties,
-      });
+      this.setState({ properties });
     }
   };
 

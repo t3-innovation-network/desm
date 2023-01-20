@@ -11,9 +11,16 @@ class API::V1::AlignmentsController < ApplicationController
   #   values detailed in filter method
   ###
   def index
-    terms = filter
+    terms = Alignment
+            .joins(mapping: :configuration_profile)
+            .where(
+              configuration_profiles: {id: current_configuration_profile},
+              mappings: {spine_id: params[:spine_id], status: :mapped}
+            )
+            .where.not(predicate_id: nil)
+            .order(:spine_term_id, :uri)
 
-    render json: terms, include: [:spine_term, :predicate, {mapped_terms: {include: %i[organization property]}}]
+    render json: terms, include: [:predicate, {mapped_terms: {include: %i[organization property]}}]
   end
 
   ###
@@ -46,23 +53,6 @@ class API::V1::AlignmentsController < ApplicationController
   ###
   def authorize_with_policy
     authorize(with_instance)
-  end
-
-  ###
-  # @description: Applies the filter/s from the params
-  # @return [ActiveRecord::Relation]
-  ###
-  def filter
-    terms = Alignment
-            .joins(mapping: :configuration_profile)
-            .where(
-              configuration_profiles: {id: current_configuration_profile},
-              mappings: {status: :mapped}
-            )
-
-    terms.where!(spine_term_id: params[:spine_term_id]) if params[:spine_term_id].present?
-
-    terms.order(:uri)
   end
 
   ###
