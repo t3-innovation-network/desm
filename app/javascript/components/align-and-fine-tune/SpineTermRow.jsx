@@ -345,9 +345,9 @@ const SpineTermRow = (props) => {
                 observeOutside={false}
                 bodyContent={
                   <React.Fragment>
-                    {term.sourceUri && (
+                    {mTerm.sourceUri && (
                       <h6 className="card-subtitle mb-2 text-muted">
-                        Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
+                        Name: <strong>{mTerm.sourceUri.split(/[/:]/).pop()}</strong>
                       </h6>
                     )}
                     <p  className="card-text">{mTerm.property.comment}</p>
