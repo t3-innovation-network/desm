@@ -30,8 +30,8 @@ class API::V1::MergedFilesController < ApplicationController
     )
 
     render json: @instance.id
-  rescue => e
-    render json: { message: e.message }, status: :internal_server_error
+  rescue StandardError => e
+    render json: {message: e.message}, status: :internal_server_error
   end
 
   ###
