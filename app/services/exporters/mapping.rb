@@ -98,11 +98,14 @@ module Exporters
         {"@id": mapped_term.uri} if mapped_term.uri.nil?
       }
 
+      mapped_terms.compact!
+      return if mapped_terms.empty?
+
       node = {
         "@id": "http://desmsolutions.org/TermMapping/#{alignment.id}",
         "@type": "desm:TermMapping",
         "dcterms:isPartOf": {"@id": "http://desmsolutions.org/TermMapping/#{@instance.id}"},
-        "desm:mappedterm": mapped_terms.compact,
+        "desm:mappedterm": mapped_terms,
         "desm:mappingPredicate": {"@id": alignment.predicate.uri},
         "desm:spineTerm": {"@id": alignment.spine_term.uri}
       }
