@@ -11,6 +11,7 @@
 class AlignmentVocabulary < ApplicationRecord
   belongs_to :alignment
   has_one :mapping, through: :alignment
+  has_one :spine_term, through: :alignment
   has_many :concepts, class_name: :AlignmentVocabularyConcept, dependent: :destroy
 
   after_create :assign_concepts_from_spine, unless: proc { concepts.count.positive? }
@@ -20,7 +21,7 @@ class AlignmentVocabulary < ApplicationRecord
   # @return [Vocabulary]
   ###
   def spine_vocabulary
-    alignment.spine_term.vocabularies.first
+    spine_term.vocabularies.first
   end
 
   ###
@@ -29,12 +30,12 @@ class AlignmentVocabulary < ApplicationRecord
   # @return [Array]
   ###
   def assign_concepts_from_spine
-    return unless spine_vocabulary.present?
+    spine = alignment.spine.mappings.count == 1
 
     spine_vocabulary.concepts.each do |concept|
       concepts.create!(
-        mapped_concepts: [concept],
-        predicate_id: mapping.mapping_predicates.strongest_match_id,
+        mapped_concepts: spine ? [concept] : [],
+        predicate_id: (mapping.mapping_predicates.strongest_match_id if spine),
         spine_concept_id: concept.id
       )
     end
