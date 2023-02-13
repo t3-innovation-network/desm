@@ -84,6 +84,16 @@ const MappingPredicates = () => {
     );
   };
 
+  const handleNameBlur = () => {
+    if (!name) {
+      dispatch(setEditCPErrors("File Name can't be blank"));
+      return;
+    }
+
+    dispatch(setEditCPErrors(null));
+    saveChanges();
+  };
+
   const handlePredicateChange = (e) => {
     const { value } = e.target;
     setPredicateStrongestMatch(value);
@@ -144,8 +154,8 @@ const MappingPredicates = () => {
             className="form-control input-lg"
             placeholder="The name of the skos file."
             value={name}
-            onChange={(e) => setName(e.target.value)}
-            onBlur={() => saveChanges()}
+            onChange={e => setName(e.target.value.trim())}
+            onBlur={handleNameBlur}
             autoFocus
           />
         </div>
@@ -194,7 +204,7 @@ const MappingPredicates = () => {
               type="url"
               className="form-control input-lg"
               value={origin}
-              onChange={(e) => setOrigin(e.target.value)}
+              onChange={e => setOrigin(e.target.value.trim())}
               pattern="https://.*"
               size="30"
               placeholder="https://example.com"

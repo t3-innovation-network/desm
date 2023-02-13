@@ -15,6 +15,15 @@ class API::V1::ConfigurationProfileActionsController < ApplicationController
 
     @instance.send(action)
     render json: @instance.reload, include: [standards_organizations: {include: :users}]
+  rescue CpState::NotYetReadyForTransition => e
+    message =
+      if @instance.incomplete?
+        ConfigurationProfile.validate_structure(@instance.structure, "complete")
+      else
+        e.message
+      end
+
+    render json: {message: message}, status: :internal_server_error
   end
 
   private

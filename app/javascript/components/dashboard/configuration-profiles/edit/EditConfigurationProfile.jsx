@@ -18,6 +18,7 @@ import {
 } from "../../../../actions/configurationProfiles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
+import CompleteStructureValidationErrors from "./CompleteStructureValidationErrors";
 
 const EditConfigurationProfile = (props) => {
   const [loading, setLoading] = useState(true);
@@ -82,15 +83,15 @@ const EditConfigurationProfile = (props) => {
       ) : (
         <div className="col mt-5">
           {errors && <AlertNotice message={errors} />}
-          <div className="row cp-container justify-content-center h-100">
-            <div className="col-3">
+          <div className="row h-100">
+            <div className="col-2">
               <div className="row justify-content-center h-100">
                 <div className="col">
                   <StepsAside />
                 </div>
               </div>
             </div>
-            <div className="col-9">
+            <div className="col-7">
               <div className="card border-top-dashboard-highlight h-100">
                 <div className="card-body d-flex flex-column">
                   <div className="row justify-content-center">
@@ -104,6 +105,9 @@ const EditConfigurationProfile = (props) => {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="col-3">
+              <CompleteStructureValidationErrors />
             </div>
           </div>
         </div>
