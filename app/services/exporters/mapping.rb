@@ -22,14 +22,76 @@ module Exporters
       "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
       "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
       "sdo": "http://schema.org/",
-      "xsd": "http://www.w3.org/2001/XMLSchema#"
+      "xsd": "http://www.w3.org/2001/XMLSchema#",
+      "dct:title": {
+        "@container": "@language"
+      },
+      "dct:description": {
+        "@container": "@language"
+      },
+      "dct:created": {
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      "dct:dateModified": {
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      "desm:abstractClassType": {
+        "@type": "@id"
+      },
+      "desm:hasClassMapping": {
+        "@type": "@id"
+      },
+      "desm:hasDSO": {
+        "@type": "@id"
+      },
+      "desm:abstractClassModeled": {
+        "@type": "@id"
+      },
+      "dct:hasPart": {
+        "@type": "@id"
+      },
+      "desm:spineTerm": {
+        "@type": "@id"
+      },
+      "desm:mappedTerm": {
+        "@type": "@id"
+      },
+      "desm:mappingPredicate": {
+        "@type": "@id"
+      },
+      "rdfs:label": {
+        "@container": "@language"
+      },
+      "rdfs:comment": {
+        "@container": "@language"
+      },
+      "rdfs:domain": {
+        "@type": "@id"
+      },
+      "rdfs:subPropertyOf": {
+        "@type": "@id"
+      },
+      "desm:inSchema": {
+        "@type": "@id"
+      }
     }.freeze
+
+    attr_reader :alignments, :mapping
+
+    delegate :created_at, :slug, :spine, :title, :updated_at,
+             to: :mapping
+    delegate :domain, to: :spine
 
     ###
     # @description: Initializes this class with the instance to export.
     ###
-    def initialize instance
-      @instance = instance
+    def initialize mapping
+      @alignments = mapping
+                    .alignments
+                    .where.not(predicate_id: nil)
+                    .includes(:mapped_terms, :predicate, :spine_term)
+
+      @mapping = mapping
     end
 
     ###
@@ -38,102 +100,83 @@ module Exporters
     def export
       {
         "@context": CONTEXT,
-        "@graph": [
-          main_node,
-          *term_nodes.compact
-        ]
+        "@graph": [config_node, class_node, *alignment_nodes]
       }
     end
 
-    ###
-    # @description: Specifies the format the main node (the node that represents the mapping itself)
-    #  should have.
-    ###
-    def main_node
-      {
-        "@id": "http://desmsolutions.org/TermMapping/#{@instance.id}",
-        "@type": "desm:AbstractClassMapping",
-        "dcterms:created": @instance.created_at.strftime("%F"),
-        "dcterms:dateModified": @instance.updated_at.strftime("%F"),
-        "dcterms:title": @instance.title,
-        # @todo: Where to take this from
-        "dcterms:description": "",
-        "desm:abstractClassMapped": {"@id": @instance.specification.domain.uri},
-        "dcterms:hasPart": @instance.alignments.map {|alignment|
-          {"@id": alignment.uri}
-        }
+    private
+
+    def alignment_nodes
+      @alignment_nodes ||= alignments.map {|alignment|
+        build_alignment_node(alignment)
       }
     end
 
-    ###
-    # @description: For each alignment to a spine term, we build basically 3 nodes, one ofr the
-    #   alignment, one for the mapped property (more than one if there are many), and the last one
-    #   for the spine property.
-    ###
-    def term_nodes
-      alignments = @instance
-                   .alignments
-                   .includes(:predicate, mapped_terms: :property, spine_term: :property)
-
-      alignments.map do |alignment|
-        alignment_node = build_alignment_node(alignment)
-        next unless alignment_node
-
-        [
-          alignment_node,
-          *alignment.mapped_terms.map {|term| build_property_node(term) },
-          build_property_node(alignment.spine_term)
-        ]
-      end
-    end
-
-    ###
-    # @description: Specifies the format the alignment node should have.
-    ###
     # rubocop:disable Metrics/AbcSize
-    def build_alignment_node alignment
-      return if alignment.predicate.nil? || alignment.spine_term.nil?
-
-      mapped_terms = alignment.mapped_terms.map {|mapped_term|
-        {"@id": mapped_term.uri} if mapped_term.uri.nil?
-      }
-
-      mapped_terms.compact!
-      return if mapped_terms.empty?
+    def build_alignment_node(alignment)
+      mapped_term = alignment.mapped_terms.first
+      spine_term = alignment.spine_term
 
       node = {
-        "@id": "http://desmsolutions.org/TermMapping/#{alignment.id}",
+        "@id": build_uri("termMapping#{alignment.id}"),
         "@type": "desm:TermMapping",
-        "dcterms:isPartOf": {"@id": "http://desmsolutions.org/TermMapping/#{@instance.id}"},
-        "desm:mappedterm": mapped_terms,
-        "desm:mappingPredicate": {"@id": alignment.predicate.uri},
-        "desm:spineTerm": {"@id": alignment.spine_term.uri}
+        "dct:dateModified": alignment.updated_at.to_date,
+        "dct:created": alignment.created_at.to_date
       }
 
-      node["desm:comment"] = alignment.comment if alignment.comment?
-      node
-    end
+      if alignment.comment?
+        node["dct:description"] = {
+          "en": alignment.comment
+        }
+      end
 
-    ###
-    # @description: Defines the structure of a generic property term.
-    ###
-    def build_property_node term
-      property = term.property
-
-      node = {
-        "@id": term.source_uri,
-        "@type": "rdf:Property",
-        "desm:sourceURI": {"@id": property.source_uri},
-        "rdfs:label": term.property.label
-      }
-
-      node["rdfs:comment"] = property.comment if property.comment?
-      node["rdfs:domain"] = {"@id": property.selected_domain} if property.selected_domain?
-      node["rdfs:range"] = {"@id": property.selected_range} if property.selected_range?
-      node["rdfs:subPropertyOf"] = {"@id": property.subproperty_of} if property.subproperty_of?
-      node["desm:valueSpace"] = {"@id": property.value_space} if property.value_space?
-      node
+      node.merge(
+        "desm:spineTerm": build_uri("terms/#{spine_term.id}"),
+        "desm:mappedTerm": (build_uri("terms/#{mapped_term.id}") if mapped_term),
+        "desm:mappingPredicate": build_uri("predicates/#{alignment.predicate.slug}")
+      )
     end
     # rubocop:enable Metrics/AbcSize
+
+    def build_uri(value)
+      URI(Desm::APP_DOMAIN) + "#{slug}-#{mapping.id}/#{value}"
+    end
+
+    def class_node
+      {
+        "@id": build_uri("classMapping"),
+        "@type": "desm:AbstractClassMapping",
+        "dct:title": {
+          "en": "`#{title}` class mapping"
+        },
+        "dct:description": {
+          "en": "A partial class mapping."
+        },
+        "dct:created": created_at.to_date,
+        "dct:dateModified": updated_at.to_date,
+        "desm:isClassMappingOf": build_uri("mappingConfig"),
+        "desm:abstractClassModeled": build_uri("AbstractClasses/#{domain.slug}"),
+        "dct:hasPart": alignment_nodes.map {|node| node.fetch(:"@id") }
+      }
+    end
+
+    def config_node
+      {
+        "@id": build_uri("mappingConfig"),
+        "@type": "desm:MappingConfiguration",
+        "dct:title": {
+          "en": "Configuration for `#{title}` mapping"
+        },
+        "dct:description": {
+          "en": "A partial mapping config."
+        },
+        "dct:created": created_at.to_date,
+        "dct:dateModified": updated_at.to_date,
+        "desm:hasClassMapping": "http://desmsolutions.org/#{slug}/classMapping",
+        "desm:abstractClassType": build_uri("AbstractClasses"),
+        "desm:mappingPredicateType": build_uri("MappingPredicates"),
+        "desm:hasDSO": build_uri("mappingConfig")
+      }
+    end
   end
 end
