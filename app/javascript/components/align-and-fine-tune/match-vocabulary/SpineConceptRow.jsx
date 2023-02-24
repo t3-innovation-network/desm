@@ -33,11 +33,8 @@ const SpineConceptRow = (props) => {
   /**
    * The name of the selected predicate
    */
-  const predicateLabel = () => {
-    return alignment.predicateId
-      ? predicates.find((p) => p.id === alignment.predicateId).pref_label
-      : null;
-  };
+  const predicateLabel = () => predicates.find(p => p.id === alignment.predicateId)?.pref_label;
+
 
   return (
     <div className="row mb-2" key={concept.id}>

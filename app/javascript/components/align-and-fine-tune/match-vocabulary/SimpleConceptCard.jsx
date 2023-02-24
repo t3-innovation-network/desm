@@ -8,26 +8,24 @@ import Collapsible from "../../shared/Collapsible";
  * @param {Object} concept
  * @param {String} origin
  */
-const SimpleConceptCard = (props) => {
-  const { concept, origin } = props;
-
-  return (
-    <Collapsible
-      expanded
-      headerContent={<strong>{concept.name}</strong>}
-      cardStyle={"with-shadow mb-2"}
-      observeOutside={false}
-      bodyContent={
-        <Fragment>
-          <p>{concept.definition}</p>
-          <p>
-            Origin:
-            <span className="col-primary">{" " + origin}</span>
-          </p>
-        </Fragment>
-      }
-    />
-  );
-};
+const SimpleConceptCard = ({ concept, origin }) => (
+  <Collapsible
+    expanded
+    headerContent={<strong>{concept.name}</strong>}
+    cardStyle={"with-shadow mb-2"}
+    observeOutside={false}
+    bodyContent={
+      <Fragment>
+        <p>
+          {_.isObject(concept.definition) ? concept.definition.en : concept.definition}
+        </p>
+        <p>
+          Origin:
+          <span className="col-primary">{" " + origin}</span>
+        </p>
+      </Fragment>
+    }
+  />
+);
 
 export default SimpleConceptCard;
