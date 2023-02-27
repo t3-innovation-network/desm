@@ -33,11 +33,16 @@ class Alignment < ApplicationRecord
   # @description: After matching some terms from the uploaded specification, we store it here.
   ###
   has_and_belongs_to_many :mapped_terms, join_table: :alignment_mapped_terms, class_name: :Term
+
+  has_one :spine, through: :mapping
+
   ###
   # @description: If this mapping term has a vocabulary and the spine term also does, it will be
   #   necessary to map the 2 of it
   ###
   has_one :vocabulary, class_name: :AlignmentVocabulary
+
+  has_many :alignment_vocabularies
 
   ###
   # VALIDATIONS

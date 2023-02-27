@@ -15,11 +15,10 @@ module Processors
     end
 
     def create_vocabulary name, configuration_profile
-      @vocabulary = Vocabulary.find_or_initialize_by(name: name) do |vocab|
-        vocab.update(
-          configuration_profile: configuration_profile,
-          context: @context || {},
-          content: first_concept_scheme_node
+      @vocabulary = configuration_profile.vocabularies.find_or_initialize_by(name: name) do |vocab|
+        vocab.update!(
+          content: first_concept_scheme_node,
+          context: @context || {}
         )
       end
     end
