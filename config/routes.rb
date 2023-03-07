@@ -45,6 +45,7 @@ Rails.application.routes.draw do
 
       get 'alignments/:id/vocabulary' => 'alignment_vocabularies#show'
       get 'mappings/:id/terms' => 'mappings#show_terms'
+      post 'mappings/:mapping_id/alignments' => 'alignments#create'
       post 'merged_files/:id/classes' => 'merged_files#classes'
       post 'merged_files/:id/filter' => 'merged_files#filter'
       get 'specifications/:id/terms' => 'terms#index'

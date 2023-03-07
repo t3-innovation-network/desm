@@ -23,6 +23,16 @@ class API::V1::AlignmentsController < ApplicationController
     render json: terms, include: [:predicate, {mapped_terms: {include: %i[organization property]}}]
   end
 
+  def create
+    alignments_params = params
+                        .permit(alignments: [:id, :predicate_id, {mapped_term_ids: []}])
+                        .require(:alignments)
+
+    mapping = current_user.mappings.find(params.fetch(:mapping_id))
+    SaveAlignments.call(alignments: alignments_params, mapping: mapping)
+    head :ok
+  end
+
   ###
   # @description: Updates a single mapping term, firstly updating its mapped terms
   ###

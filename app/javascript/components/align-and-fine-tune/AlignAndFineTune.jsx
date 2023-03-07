@@ -14,8 +14,8 @@ import SpineHeader from "./SpineHeader";
 import AlignmentsHeader from "./AlignmentsHeader";
 import Pluralize from "pluralize";
 import fetchAlignments from "../../services/fetchAlignments";
-import updateAlignment from "../../services/updateAlignment";
 import deleteAlignment from "../../services/deleteAlignment";
+import saveAlignments from "../../services/saveAlignments";
 import { toastr as toast } from "react-redux-toastr";
 import createSpineTerm from "../../services/createSpineTerm";
 import Draggable from "../shared/Draggable";
@@ -192,6 +192,15 @@ const AlignAndFineTune = (props) => {
    * All the terms that are already mapped
    */
   const mappedSelectedTerms = mappingSelectedTerms.filter(selectedTermIsMapped);
+
+  const completeAlignments = alignments.filter(a => {
+    const predicate = predicates.find(p => p.id === a.predicateId);
+
+    return (
+      predicate?.source_uri?.toLowerCase()?.includes("nomatch") ||
+      (a.predicateId && a.mappedTerms.length)
+    );
+  });
 
   /**
    * Returns whether all the terms from the specification are already mapped.
@@ -404,7 +413,7 @@ const AlignAndFineTune = (props) => {
       <React.Fragment>
         <button
           className="btn btn-dark mr-2"
-          onClick={handleSaveAlignment}
+          onClick={handleSaveAlignments}
           disabled={!changesPerformed || !noPartiallyMappedTerms || loading}
           data-toggle="tooltip"
           data-placement="bottom"
@@ -482,21 +491,21 @@ const AlignAndFineTune = (props) => {
    * Adds an extra property to the spineTerms collection
    */
   const addSyntheticTerm = () => {
-    let tempSpineTerms = spineTerms;
-    let maxId = nextId(tempSpineTerms);
+    const id = nextId(spineTerms);
 
-    tempSpineTerms.push({
-      id: maxId,
-      name: "",
-      synthetic: true,
-      property: {
-        comment: "Synthetic property added to spine",
-      },
-    });
+    setSpineTerms([
+      ...spineTerms,
+      {
+        id,
+        name: "",
+        synthetic: true,
+        property: {
+          comment: "Synthetic property added to spine"
+        }
+      }
+    ]);
 
-    setSpineTerms(tempSpineTerms);
-
-    return maxId;
+    return id;
   };
 
   /**
@@ -505,18 +514,16 @@ const AlignAndFineTune = (props) => {
    * @param {Integer} syntheticTermId
    */
   const addSyntheticAlignment = (syntheticTermId) => {
-    let tempAlignments = alignments;
-
-    tempAlignments.push({
-      id: nextId(tempAlignments),
-      synthetic: true,
-      mappedTerms: [],
-      spineTermId: syntheticTermId,
-      predicateId: strongestMatchPredicate?.id,
-      comment: null,
-    });
-
-    setAlignments(tempAlignments);
+    setAlignments([
+      ...alignments,
+      {
+        synthetic: true,
+        mappedTerms: [],
+        spineTermId: syntheticTermId,
+        predicateId: strongestMatchPredicate?.id,
+        comment: null
+      }
+    ]);
   };
 
   /**
@@ -570,7 +577,7 @@ const AlignAndFineTune = (props) => {
           uri: tempUri,
           predicateId: strongestMatchPredicate?.id,
           mappingId: mapping.id,
-          mappedTerms: alignment.mappedTerms.map((term) => term.id),
+          mappedTermsIds: alignment.mappedTerms.map((term) => term.id),
           synthetic: true,
         },
         spineId: mapping.spine_id,
@@ -582,69 +589,24 @@ const AlignAndFineTune = (props) => {
   };
 
   /**
-   * Save one only alignment to the service
-   *
-   * @param {Object} alignment
-   */
-  const saveOneAlignment = async (alignment) => {
-    let response = await updateAlignment({
-      id: alignment.id,
-      predicateId: alignment.predicateId,
-      mappedTerms: alignment.mappedTerms
-        ? alignment.mappedTerms.map((mt) => mt.id)
-        : [],
-    });
-
-    return !anyError(response);
-  };
-  /**
-   * Process each alignment to save, and save it in parallel
-   */
-  const saveAllAlignments = async () => {
-    /// Check for synthetic properties and save it if any
-    /// Do not create a synthetic if it's already persisted
-    let synthetics = alignments.filter(
-      (alignment) => alignment.synthetic & !alignment.persisted
-    );
-
-    const filteredAlignments = alignments.filter(a => a.changed);
-    let savedTerms = 0;
-
-    await Promise.all(
-      synthetics.map(async (synth) => {
-        let added = await saveSynthetic(synth);
-        if (added) {
-          savedTerms++;
-        }
-      })
-    );
-
-    /// If we had synthetics to save and we successfully saved it
-    if (!synthetics.length || (synthetics.length && savedTerms)) {
-      /// Save the rest of the changes (new alignments)
-      await Promise.all(
-        filteredAlignments.map(async (alignment) => {
-          if (await saveOneAlignment(alignment)) {
-            savedTerms++;
-          }
-        })
-      );
-
-      return savedTerms;
-    }
-  };
-
-  /**
    * Save the performed changes.
    */
-  const handleSaveAlignment = async () => {
+  const handleSaveAlignments = async () => {
     /// Save alignments
     setLoading(true);
-    let savedTerms = await saveAllAlignments();
+
+    const data = completeAlignments.map(alignment => ({
+      id: alignment.id,
+      predicateId: alignment.predicateId,
+      mappedTermIds: alignment.mappedTerms?.map(t => t.id) ?? []
+    }));
+
+    const { error } = await saveAlignments(mapping.id, data);
     setLoading(false);
 
-    /// Show success message (errors are managed in the previous function call)
-    if (savedTerms && !errors.length) {
+    if (error) {
+      setErrors([error]);
+    } else {
       setChangesPerformed(false);
       toast.success("Changes saved!");
 
@@ -667,7 +629,7 @@ const AlignAndFineTune = (props) => {
     if (!anyError(response)) {
       /// Save changes if necessary
       if (changesPerformed) {
-        await handleSaveAlignment();
+        await handleSaveAlignments();
       }
       /// Redirect to the specifications list
       props.history.push("/mappings");
