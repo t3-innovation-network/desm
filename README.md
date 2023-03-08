@@ -21,23 +21,25 @@ This application provides the means to map (crosswalk) data specifications (stan
 
 ## Local installation 2
 
-> Precondition -> The following technilogies are needed before starting the installation:
-> - ruby 2.7.1
-> - postgreSQL 13
-> - npm
-> - node
-> - yarn
+### Dependencies
+
+1. Ruby (see [.ruby-version](.ruby-version) or [Gemfile](Gemfile) to find out the required version)
+2. PostgreSQL 13
+3. Node 14 and Yarn
+4. libpq-dev
+
+### Steps
 
 1. Clone this project locally.
-2. Create an ".env" file by copying the ".env.example" file.
-3. Make sure the version of ruby on your system is the same as declared in the Gemfile.
-4. Run `bundle install` (backend dependencies).
-5. Run `yarn install` (frontend dependencies).
-6. Create a user in postgres to manage the db creation/migration. Or use postgres credentials.
-7. Make sure the ennvironment variables for the database are set into the .env file (the user and password should be the same as on the step 6.)
-8. Run `rake db:create db:migrate db:seed` (Database structure creation and population).
-9. Run `rails s`
-10. Go to http://localhost:3000
+2. Create a database user and enable a password-based authentication method for the user (e.g. `md5`).
+3. Create a `.env` file by copying the [.env.example](.env.example) file. Modify the `.env` file to use the database user's credentials.
+4. Run `gem install bundler:<VERSION>` to install Bundler (see the very bottom of [Gemfile.lock](Gemfile.lock) to find out the required version).
+5. Run `bin/bundle` to install the backend dependencies.
+6. Run `yarn install` to install the frontend dependencies.
+7. Run `bin/rails db:create db:migrate` to create the database.
+8. (Optional) Run `bin/rails db:seed` to populate the database with sample data.
+9. Run `bin/rails s` to start the server.
+10. Visit the app URL specified in the `.env` file.
 
 ## Collaborate
 
