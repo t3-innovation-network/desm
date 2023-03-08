@@ -111,7 +111,7 @@ class API::V1::MappingsController < ApplicationController
   def with_instance
     return Mapping.new if params[:id].blank?
 
-    @instance ||= current_organization.mappings.find(params[:id])
+    @instance ||= current_configuration_profile.mappings.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     raise "Couldn't find mapping"
   end
