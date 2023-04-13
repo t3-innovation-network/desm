@@ -4,8 +4,11 @@ require "faker"
 
 FactoryBot.define do
   factory :predicate do
-    pref_label { Faker::App.name }
-    definition { "MyText" }
-    source_uri { Faker::Lorem.sentence }
+    color { Faker::Color.hex_color }
+    definition { Faker::Lorem.sentence }
+    predicate_set
+    pref_label { Faker::Lorem.word }
+    source_uri { Faker::Internet.url }
+    weight { 3.50 }
   end
 end

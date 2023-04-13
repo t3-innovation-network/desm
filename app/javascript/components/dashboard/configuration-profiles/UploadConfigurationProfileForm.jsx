@@ -1,52 +1,42 @@
-import { decamelizeKeys } from "humps";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import checkCPStructureValidity from "../../../services/checkCPStructureValidity";
-import createCP from "../../../services/createCP";
+import importCP from "../../../services/importCP";
 import AlertNotice from "../../shared/AlertNotice";
 import { readFileContent } from "./utils";
+import Loader from "./../../shared/Loader";
 
 const UploadConfigurationProfileForm = () => {
   const [cpName, setCpName] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileContent, setFileContent] = useState(null);
-  const [errors, setErrors] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
-  const [fileIsValid, setFileIsValid] = useState(false);
-
-  const checkFileValidity = async () => {
-    let response = await checkCPStructureValidity(fileContent);
-    let validationResult = response?.validity?.validation;
-
-    if (validationResult.length) {
-      setErrors(validationResult);
-      setFileIsValid(false);
-      return;
-    }
-
-    setErrors([]);
-    setFileIsValid(true);
-  };
 
   const onFileChange = (event) => {
+    setError(null);
     setSelectedFile(event.target.files[0]);
   };
 
   const onFileUpload = async () => {
-    if (!fileContent || !cpName) {
-      setErrors(["Please be sure to type a name and select a file"]);
+    if (!fileContent) {
+      setError(["Please upload a file"]);
       return;
     }
 
     setError(null);
+    setLoading(true);
 
-    let response = await createCP({
+    let response = await importCP({
       name: cpName,
-      structure: decamelizeKeys(JSON.parse(fileContent)),
+      data: JSON.parse(fileContent)
     });
 
-    if (response.errors) {
-      setErrors([response.errors]);
+    setLoading(false);
+
+    if (response.error) {
+      setError(response.error);
+      setSelectedFile(null);
       return;
     }
 
@@ -58,32 +48,21 @@ const UploadConfigurationProfileForm = () => {
       readFileContent(
         selectedFile,
         (content) => setFileContent(content),
-        (error) => setErrors([error])
+        (error) => setError(error)
       );
   }, [selectedFile]);
 
-  useEffect(() => {
-    if (fileContent) checkFileValidity();
-  }, [fileContent]);
-
   return (
     <div className="col">
-      {errors.length > 0 ? (
+      {error ? (
         <div className="mt-3">
-          <AlertNotice message={errors} />
+          <AlertNotice message={error} />
         </div>
       ) : (
         ""
       )}
 
-      <div className="mt-5">
-        <div
-          className={`float-right ${
-            fileIsValid ? "text-success" : "text-danger"
-          }`}
-        >
-          {fileContent ? (fileIsValid ? "Valid" : "Invalid") : ""}
-        </div>
+      <div>
         <label>
           Configuration Profile Name
           <span className="text-danger">*</span>
@@ -109,7 +88,7 @@ const UploadConfigurationProfileForm = () => {
           data-show-caption="true"
           id="file-uploader"
           aria-describedby="upload-help"
-          accept=".json, .jsonld"
+          accept=".json"
           onChange={onFileChange}
         />
         <label className="custom-file-label" htmlFor="file-uploader">
@@ -117,27 +96,16 @@ const UploadConfigurationProfileForm = () => {
           <span className="text-danger">*</span>
         </label>
       </div>
-      {selectedFile && fileContent && (
-        <div className="mt-5">
-          <div
-            className="card mt-2 mb-2 has-scrollbar scrollbar"
-            style={{ maxHeight: "250px" }}
-          >
-            <div className="card-body">
-              <pre>
-                <code>{fileContent}</code>
-              </pre>
-            </div>
-          </div>
-        </div>
-      )}
       <div className="mt-5">
         <button
           className="btn btn-dark"
           onClick={onFileUpload}
-          disabled={!fileIsValid}
         >
-          Upload!
+          {loading ? (
+            <Loader noPadding smallSpinner />
+          ): (
+            "Upload!"
+          )}
         </button>
       </div>
     </div>

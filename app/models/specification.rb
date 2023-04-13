@@ -67,7 +67,7 @@ class Specification < ApplicationRecord
       version: version,
       use_case: use_case,
       domain: domain.uri,
-      terms: terms.map(&:uri).sort
+      terms: terms.map(&:source_uri).sort
     }
   end
 

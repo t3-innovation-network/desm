@@ -13,6 +13,7 @@ class PredicateSet < ApplicationRecord
   validates :title, presence: true
 
   belongs_to :strongest_match, class_name: "Predicate", optional: true
+  has_one :configuration_profile
   has_many :predicates
 
   alias_attribute :name, :title
@@ -28,7 +29,8 @@ class PredicateSet < ApplicationRecord
       source_uri: source_uri,
       description: description,
       created_at: created_at,
-      concepts: predicates.map(&:uri).sort
+      predicates: predicates.map(&:to_json_ld),
+      strongest_match: strongest_match&.source_uri
     }
   end
 end

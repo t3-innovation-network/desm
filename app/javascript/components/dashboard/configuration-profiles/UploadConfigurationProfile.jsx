@@ -20,34 +20,11 @@ const UploadByUrlForm = () => {
 const UploadZone = () => {
   const [mode, setMode] = useState("upload");
 
-  const uploadForm = () => {
-    return mode === "upload" ? (
-      <UploadConfigurationProfileForm />
-    ) : (
-      <UploadByUrlForm />
-    );
-  };
+  const uploadForm = () => <UploadConfigurationProfileForm />
 
   return (
-    <div className="mt-5">
-      <div className="col mr-3 mt-3">
-        <div
-          className="row align-items-center justify-content-center"
-          style={{ minWidth: "130px" }}
-        >
-          <ToggleBtn
-            active={mode === "upload"}
-            onClick={() => setMode("upload")}
-            text={"File Upload"}
-          />
-          <ToggleBtn
-            active={mode === "url"}
-            onClick={() => setMode("url")}
-            text={"Fetch By Url"}
-          />
-        </div>
-        <div className="row">{uploadForm()}</div>
-      </div>
+    <div className="col mr-3">
+      <div className="row">{uploadForm()}</div>
     </div>
   );
 };
@@ -97,16 +74,8 @@ class UploadConfigurationProfile extends Component {
 
   cardSubtitle = () => {
     return (
-      <p className="text-center mb-5" style={{ fontStyle: "italic" }}>
-        Please specify the origin of the configuration profile structure.
-        Remember it must match{" "}
-        <u
-          className="cursor-pointer col-dashboard-highlight text-underlne"
-          onClick={this.handleDownloadSchema}
-        >
-          this JSON Schema
-        </u>
-        .
+      <p className="text-center" style={{ fontStyle: "italic" }}>
+        Upload a previously exported configuration profile.
       </p>
     );
   };
@@ -118,11 +87,11 @@ class UploadConfigurationProfile extends Component {
       <DashboardContainer>
         {this.dashboardPath()}
 
-        <div className="col mt-5">
+        <div className="col">
           {errors.length ? <AlertNotice message={errors} /> : ""}
-          <div className="row h-50 justify-content-center mt-5">
+          <div className="row h-50 justify-content-center">
             <CenteredRoundedCard
-              title="Upload your configuration profile"
+              title="Import a configuration profile"
               subtitle={this.cardSubtitle()}
             >
               <UploadZone />

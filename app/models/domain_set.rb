@@ -28,7 +28,7 @@ class DomainSet < ApplicationRecord
       source_uri: source_uri,
       description: description,
       created_at: created_at,
-      concepts: domains.map(&:uri).sort
+      domains: domains.map(&:to_json_ld)
     }
   end
 end
