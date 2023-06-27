@@ -49,7 +49,7 @@ class User < ApplicationRecord
   end
 
   def password_token_valid?
-    (reset_password_sent_at + 4.hours) > Time.now.utc
+    reset_password_sent_at >= 3.days.ago
   end
 
   def profile_admin?
