@@ -31,46 +31,45 @@ export const alignmentSortOptions = {
  * @param {String} sortOption
  */
 export const implementSpineSort = (properties, sortOption) => {
+  let iteratee;
+
   switch (sortOption) {
     /**
      * Sort by alignment score. This is a number assigned via calculation in the frontend.
      */
     case spineSortOptions.OVERALL_ALIGNMENT_SCORE:
-      return properties.sort((a, b) => b.alignmentScore - a.alignmentScore);
+      iteratee = p => -(p.alignmentScore ?? 0);
+      break;
     /**
      * Sort by "identical" alignments ("identical" predicate label)
      */
     case spineSortOptions.TOTAL_IDENTICAL_ALIGNMENTS:
-      return properties.sort((a, b) =>
-        a.alignments.filter(
-          (a) => a.predicate.prefLabel.toLowerCase() == "identical"
-        ).length <
-        b.alignments.filter(
-          (a) => a.predicate.prefLabel.toLowerCase() == "identical"
-        ).length
-          ? 1
-          : -1
+      iteratee = p => (
+        -p
+          .alignments
+          .filter(a => a.predicate.prefLabel.toLowerCase() === "identical")
+          .length
       );
+      break;
     /**
      * Sort by organization name, since a property might be synthetic, meaning that a different
      * organization than the spine added it.
      */
     case spineSortOptions.ORGANIZATION:
-      return properties.sort((a, b) =>
-        a.organization.name > b.organization.name ? 1 : -1
-      );
+      iteratee = p => p.organization.name;
+      break;
     /**
      * Sort by selected domain class of the property. This field can be edited in the edit term screen.
      */
     case spineSortOptions.SPINE_CLASS_TYPE:
-      return properties.sort((a, b) =>
-        a.property.selectedDomain > b.property.selectedDomain ? 1 : -1
-      );
+      iteratee = p => p.property.selectedDomain;
+      break;
     /**
      * Sort by the spine property name
      */
     case spineSortOptions.SPINE_PROPERTY:
-      return properties.sort((a, b) => (a.name > b.name ? 1 : -1));
+      iteratee = "name";
+      break;
     /**
      * @todo Find out the meaning of this sorting strategy
      */
@@ -84,6 +83,8 @@ export const implementSpineSort = (properties, sortOption) => {
     default:
       return properties;
   }
+
+  return _.sortBy(properties, [iteratee, "name"]);
 };
 
 /**
