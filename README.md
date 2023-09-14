@@ -6,7 +6,7 @@ This application provides the means to map (crosswalk) data specifications (stan
 
 ## Local installation 1 (docker)
 
-> Precondition -> The following technolgoes are needed before starting the installation:
+> Precondition -> The following technologies are needed before starting the installation:
 > - docker
 > - docker compose
 
@@ -21,7 +21,7 @@ This application provides the means to map (crosswalk) data specifications (stan
 
 ## Local installation 2
 
-> Precondition -> The following technilogies are needed before starting the installation:
+> Precondition -> The following technologies are needed before starting the installation:
 > - ruby 2.7.1
 > - postgreSQL 13
 > - npm
