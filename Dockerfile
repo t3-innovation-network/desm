@@ -1,4 +1,4 @@
-FROM ruby:2.7.1
+FROM ruby:3.0.3
 
 RUN apt-get update -qq \
     && apt-get install -y curl \
@@ -24,7 +24,7 @@ RUN bundle install
 # Install all the frontend dependencies
 RUN yarn
 
-# Copy all the files from our current application to the /app 
+# Copy all the files from our current application to the /app
 COPY . .
 
 # Add a script to be executed on every container start

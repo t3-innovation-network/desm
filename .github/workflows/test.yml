@@ -36,7 +36,7 @@ jobs:
 
     env:
       RAILS_ENV: test
-      GEMFILE_RUBY_VERSION: 2.7.1
+      GEMFILE_RUBY_VERSION: 2.7.7
       POSTGRESQL_ADDRESS: localhost
       POSTGRESQL_DATABASE: postgres
       POSTGRESQL_USERNAME: postgres
@@ -55,7 +55,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           # Not needed with a .ruby-version file
-          ruby-version: 2.7.1
+          ruby-version: 3.0.3
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
 
