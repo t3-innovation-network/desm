@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthButton from "../auth/AuthButton";
 import DashboardBtn from "./DashboardBtn";
 import UserInfo from "../auth/UserInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { AppContext } from "../../contexts/AppContext";
 
 const TopNav = (props) => {
+  const { hideLogo } = useContext(AppContext);
+
   return (
     <React.Fragment>
       <nav className="navbar navbar-with-border with-shadow navbar-expand-lg pr-3">
@@ -15,7 +18,11 @@ const TopNav = (props) => {
             {/* BRAND BOX */}
 
             <div className="brand-box-container">
-              <Link to="/" className="navbar-brand nav-item brand-box" />
+              <Link
+                className="navbar-brand nav-item brand-box"
+                style={ hideLogo ? { backgroundSize: "0 0 " } : {}}
+                to="/"
+              />
             </div>
           </div>
         </div>

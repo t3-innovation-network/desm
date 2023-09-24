@@ -17,6 +17,7 @@
   <body
     class="h-100"
     data-configuration-profile="<%= current_configuration_profile&.as_json(only: [:id, :name])&.to_json %>"
+    data-hide-logo="<%= ENV['HIDE_LOGO'] %>"
     data-lead-mapper="<%= current_configuration_profile_user&.lead_mapper? %>"
     data-logged-in="<%= current_user.present? %>"
     data-organization="<%= current_organization&.to_json %>"
