@@ -112,7 +112,10 @@ module Converters
       domain_class = fetch_domain_class(key, data: data)
 
       unless already_processed
-        data.fetch("properties").each do |name, payload|
+        definitions = data.fetch("definitions", [])
+        properties = data.fetch("properties", [])
+
+        [*definitions, *properties].each do |name, payload|
           build_property(name, payload, domain_class)
         end
       end
