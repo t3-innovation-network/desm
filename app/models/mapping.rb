@@ -41,6 +41,10 @@ class Mapping < ApplicationRecord
   has_one :mapping_predicates, through: :configuration_profile
 
   has_many :alignments
+
+  has_many :predicates, through: :alignments
+
+  has_many :terms, source: :mapped_terms, through: :alignments
   ###
   # @description: The selected terms from the original uploaded specification. The user can select one
   #   ore more terms from it.
