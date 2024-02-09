@@ -13,3 +13,5 @@ export const APP_DOMAIN = process.env.APP_DOMAIN;
  * JWT variables to encode/decode secret values
  */
 export const PRIVATE_KEY = process.env.PRIVATE_KEY;
+
+export const EMAIL_REGEX = "^\\S+@\\S+\\.\\S+$";

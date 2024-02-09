@@ -175,7 +175,7 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
             id="origin"
             value={origin || ""}
             onChange={(event) => {
-              setOrigin(event.target.value);
+              setOrigin(event.target.value.trim());
             }}
             onBlur={() =>
               handleUrlBlur(

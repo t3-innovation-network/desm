@@ -7,6 +7,7 @@ import {
 } from "../../../../actions/configurationProfiles";
 import { validURL } from "../../../../helpers/URL";
 import updateCP from "../../../../services/updateCP";
+import { EMAIL_REGEX } from "../../../../helpers/Constants";
 
 const DSOMetaData = ({ dsoData }) => {
   const [name, setName] = useState("");
@@ -26,6 +27,31 @@ const DSOMetaData = ({ dsoData }) => {
     setHomepageURL(homepageUrl);
     setStandardsPage(standardsPage);
   }, [dsoData]);
+
+  const handleEmailBlur = () => {
+    if (!email) {
+      dispatch(setEditCPErrors("DSO Email can't be blank"));
+      return;
+    }
+
+    if (!email.match(EMAIL_REGEX)) {
+      dispatch(setEditCPErrors("DSO Email is invalid"));
+      return;
+    }
+
+    dispatch(setEditCPErrors(null));
+    handleBlur();
+  };
+
+  const handleNameBlur = () => {
+    if (!name) {
+      dispatch(setEditCPErrors("DSO Name can't be blank"));
+      return;
+    }
+
+    dispatch(setEditCPErrors(null));
+    handleBlur();
+  };
 
   const handleUrlBlur = (url) => {
     if (!validURL(url)) {
@@ -85,10 +111,8 @@ const DSOMetaData = ({ dsoData }) => {
             id="name"
             placeholder="The name of the organization"
             value={name || ""}
-            onChange={(event) => {
-              setName(event.target.value);
-            }}
-            onBlur={handleBlur}
+            onChange={e => setName(e.target.value.trim())}
+            onBlur={handleNameBlur}
             autoFocus
           />
         </div>
@@ -101,15 +125,12 @@ const DSOMetaData = ({ dsoData }) => {
         </label>
         <div className="input-group input-group">
           <input
-            type="email"
             className="form-control input-lg"
             id="email"
             placeholder="The email of the organization"
             value={email || ""}
-            onChange={(event) => {
-              setEmail(event.target.value);
-            }}
-            onBlur={handleBlur}
+            onChange={e => setEmail(e.target.value.trim())}
+            onBlur={handleEmailBlur}
           />
         </div>
       </div>

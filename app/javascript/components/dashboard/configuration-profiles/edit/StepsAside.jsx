@@ -7,19 +7,19 @@ const StepsAside = () => {
   const steps = [
     {
       number: 1,
-      description: "General data about the configuration profile",
+      description: "General info",
     },
     {
       number: 2,
-      description: "Select the mapping predicates",
+      description: "Mapping predicates",
     },
     {
       number: 3,
-      description: "Select the abstract classes",
+      description: "Abstract classes",
     },
     {
       number: 4,
-      description: "DSO's information",
+      description: "DSOs",
     },
   ];
 
@@ -30,7 +30,7 @@ const StepsAside = () => {
       {steps.map((step) => {
         return (
           <div
-            className="row justify-content-center cp-step-row"
+            className="row cp-step-row"
             key={step.number}
           >
             <div className="col-8">{step.description}</div>
@@ -40,7 +40,7 @@ const StepsAside = () => {
                   ? "bg-dashboard-background-highlight col-background"
                   : "border-color-dashboard col-dashboard-highlight"
               } p-3 text-center`}
-              style={{ maxWidth: "50px", height: "50px" }}
+              style={{ height: "50px", lineHeight: 1, maxWidth: "50px" }}
               onClick={() => dispatch(setStep(step.number))}
             >
               {step.number}

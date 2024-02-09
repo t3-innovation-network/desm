@@ -87,6 +87,16 @@ const AbstractClasses = () => {
     );
   };
 
+  const handleNameBlur = () => {
+    if (!name) {
+      dispatch(setEditCPErrors("File Name can't be blank"));
+      return;
+    }
+
+    dispatch(setEditCPErrors(null));
+    saveChanges();
+  };
+
   const saveChanges = async (data = null) => {
     dispatch(setSavingCP(true));
 
@@ -138,8 +148,8 @@ const AbstractClasses = () => {
             className="form-control input-lg"
             placeholder="The name of the skos file."
             value={name}
-            onChange={(e) => setName(event.target.value)}
-            onBlur={() => saveChanges()}
+            onChange={e => setName(e.target.value.trim())}
+            onBlur={handleNameBlur}
             autoFocus
           />
         </div>
@@ -155,7 +165,7 @@ const AbstractClasses = () => {
             placeholder="The version of the skos file"
             maxLength={5}
             value={version}
-            onChange={(e) => setVersion(event.target.value)}
+            onChange={e => setVersion(e.target.value.trim())}
             onBlur={() => saveChanges()}
           />
         </div>
@@ -188,7 +198,7 @@ const AbstractClasses = () => {
               type="url"
               className="form-control input-lg"
               value={origin}
-              onChange={(e) => setOrigin(e.target.value)}
+              onChange={e => setOrigin(e.target.value.trim())}
               pattern="https://.*"
               size="30"
               placeholder="https://example.com"

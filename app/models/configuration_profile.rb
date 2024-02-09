@@ -77,6 +77,12 @@ class ConfigurationProfile < ApplicationRecord
     state_handler.activate!
   end
 
+  def as_json(options={})
+    return super unless incomplete?
+
+    super(options.merge(methods: :complete_structure_validation_errors))
+  end
+
   def check_structure
     if complete? && !structure_complete?
       incomplete!
@@ -130,8 +136,11 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def structure_complete?
-    validation = self.class.validate_structure(structure, "complete")
-    validation.empty?
+    complete_structure_validation_errors.empty?
+  end
+
+  def complete_structure_validation_errors
+    self.class.validate_structure(structure, "complete")
   end
 
   def transition_to! new_state

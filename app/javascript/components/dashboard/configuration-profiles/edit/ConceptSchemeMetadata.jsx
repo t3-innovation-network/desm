@@ -149,7 +149,7 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
             id="origin"
             value={origin || ""}
             onChange={(event) => {
-              setOrigin(event.target.value);
+              setOrigin(event.target.value.trim());
             }}
             onBlur={() =>
               handleUrlBlur(

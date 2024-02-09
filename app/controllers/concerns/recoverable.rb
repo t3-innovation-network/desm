@@ -15,6 +15,7 @@ module Recoverable
     this_class.class_eval do
       errors_and_messages.each do |error, config|
         rescue_from error.to_s.constantize do |e|
+          byebug
           error_message =
             if config[:include_original_error_message]
               t(config[:message_key], message: e.message)

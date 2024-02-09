@@ -13,6 +13,7 @@ import {
   SmallRemovableTab,
   TabGroup,
 } from "../utils";
+import { EMAIL_REGEX } from "../../../../helpers/Constants";
 
 const Agents = () => {
   const leadMapperRef = useRef(false);
@@ -92,6 +93,31 @@ const Agents = () => {
     updateAgentsData();
   };
 
+  const handleEmailBlur = () => {
+    if (!email) {
+      dispatch(setEditCPErrors("Agent Email can't be blank"));
+      return;
+    }
+
+    if (!email.match(EMAIL_REGEX)) {
+      dispatch(setEditCPErrors("Agent Email is invalid"));
+      return;
+    }
+
+    dispatch(setEditCPErrors(null));
+    saveChanges();
+  };
+
+  const handleNameBlur = () => {
+    if (!fullname) {
+      dispatch(setEditCPErrors("Agent Full Name can't be blank"));
+      return;
+    }
+
+    dispatch(setEditCPErrors(null));
+    saveChanges();
+  };
+
   const handleRemoveAgent = () => {
     setConfirmationVisible(false);
     let localCP = currentCP;
@@ -158,10 +184,8 @@ const Agents = () => {
               name="fullname"
               placeholder="The name of this agent"
               value={fullname || ""}
-              onChange={(event) => {
-                setFullname(event.target.value);
-              }}
-              onBlur={saveChanges}
+              onChange={e => setFullname(e.target.value.trim())}
+              onBlur={handleNameBlur}
               autoFocus
             />
           </div>
@@ -174,16 +198,13 @@ const Agents = () => {
           </label>
           <div className="input-group input-group">
             <input
-              id="email"
               type="text"
               className="form-control input-lg"
               name="agentEmail"
               placeholder="The email of this agent"
               value={email || ""}
-              onChange={(event) => {
-                setEmail(event.target.value);
-              }}
-              onBlur={saveChanges}
+              onChange={e => setEmail(e.target.value.trim())}
+              onBlur={handleEmailBlur}
             />
           </div>
         </div>
