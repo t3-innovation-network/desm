@@ -1,14 +1,20 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: roles
+#
+#  id         :bigint           not null, primary key
+#  name       :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 require "rails_helper"
 
-describe Role, type: :model do
-  it "has a valid factory" do
-    expect(FactoryBot.build(:role)).to be_valid
+describe Role do
+  it "validates and has associations", :aggregate_failures do
+    is_expected.to validate_presence_of(:name)
+    expect(subject).to have_many(:assignments)
+    expect(subject).to have_many(:users).through(:assignments)
   end
-
-  it { should validate_presence_of(:name) }
-
-  it { should have_many(:assignments) }
-  it { should have_many(:users).through(:assignments) }
 end

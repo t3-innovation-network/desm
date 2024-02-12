@@ -4,6 +4,8 @@ require "rails_helper"
 
 RSpec.describe Parsers::JsonLd::Resolver do
   describe ".infer_rdfs_class_node Schema.org" do
+    subject { described_class.new(type, context) }
+
     let(:type) { "http://schema.org/EventStatusType" }
     let(:context) do
       {
@@ -12,7 +14,6 @@ RSpec.describe Parsers::JsonLd::Resolver do
         xsd: "http://www.w3.org/2001/XMLSchema#"
       }
     end
-    subject { described_class.new(type, context) }
 
     it "returns rdfs:Class type node for a not directly declared class (infer using the internet)" do
       result_node = subject.infer_rdfs_class_node
@@ -23,6 +24,8 @@ RSpec.describe Parsers::JsonLd::Resolver do
   end
 
   describe ".infer_rdfs_class_node ASN" do
+    subject { described_class.new(type, context) }
+
     let(:type) { "asn:Statement" }
     let(:context) do
       {
@@ -38,7 +41,6 @@ RSpec.describe Parsers::JsonLd::Resolver do
         dcterms: "http://purl.org/dc/terms/"
       }
     end
-    subject { described_class.new(type, context) }
 
     # ASN server is down.
     # @todo: Use VCR to test it when server is up again

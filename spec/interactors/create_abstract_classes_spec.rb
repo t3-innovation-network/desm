@@ -11,13 +11,13 @@ RSpec.describe CreateAbstractClasses, type: :interactor do
     end
 
     it "rejects creation if json body is not passed" do
-      result = CreateAbstractClasses.call
+      result = described_class.call
 
       expect(result.error).to eq("json body must be present")
     end
 
     it "Creates a domain set with its domains when uri is correct" do
-      result = CreateAbstractClasses.call({ json_body: test_json_body })
+      result = described_class.call({ json_body: test_json_body })
 
       expect(result.error).to be_nil
       expect(result.domain_set).to be_instance_of(DomainSet)

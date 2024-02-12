@@ -1,5 +1,5 @@
 /* Forms */
-@import 'colors.scss';
+@import 'colors';
 
 .form-group .form-control:focus {
   border-color: $primary-color;
@@ -28,27 +28,31 @@
   z-index: 5;
 
   &:focus {
-    box-shadow: 0 0 0 .3rem rgba(0, 123, 255, .5) !important;
+    box-shadow: 0 0 0 .3rem rgb(0 123 255 / 50%) !important;
   }
 }
 
 .react-codemirror2{
   height: 100%;
   max-height: 27rem;
+
   ::-webkit-scrollbar {
     height: 6px;
     width: 6px;
     background-color: $primary-color-highlight;
   }
+
   /* Handle */
   ::-webkit-scrollbar-thumb {
     background: $primary-color;
     border-radius: 8px;
   }
+
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background: $primary-color-light;
   }
+
   /* The corner where the vertical and horizontal scrollbars meet */
   ::-webkit-scrollbar-corner {
     background: $primary-color-light;

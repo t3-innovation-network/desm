@@ -1,6 +1,7 @@
 /* Desm Radio */
 
-@import 'colors.scss';
+@import 'colors';
+
 .desm-radio div {
 	clear: both;
 	overflow: hidden;
@@ -29,14 +30,11 @@
 	line-height: 2.5em;
 	text-indent: 3.25em;
 	cursor: pointer;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
 	user-select: none;
 }
 
-.desm-radio input[type="radio"]:empty~label:before,
-.desm-radio input[type="checkbox"]:empty~label:before {
+.desm-radio input[type="radio"]:empty~label::before,
+.desm-radio input[type="checkbox"]:empty~label::before {
 	position: absolute;
 	display: block;
 	top: 0;
@@ -49,17 +47,18 @@
 	border-radius: 3px 0 0 3px;
 }
 
-.desm-radio > .has-spine input[type="radio"]:empty~label:before,
-.desm-radio > .has-spine input[type="checkbox"]:empty~label:before {
+.desm-radio > .has-spine input[type="radio"]:empty~label::before,
+.desm-radio > .has-spine input[type="checkbox"]:empty~label::before {
 	background: green !important;
 }
+
 .desm-radio input[type="radio"]:hover:not(:checked)~label,
 .desm-radio input[type="checkbox"]:hover:not(:checked)~label {
 	color: $on-primary-light;
 }
 
-.desm-radio input[type="radio"]:hover:not(:checked)~label:before,
-.desm-radio input[type="checkbox"]:hover:not(:checked)~label:before {
+.desm-radio input[type="radio"]:hover:not(:checked)~label::before,
+.desm-radio input[type="checkbox"]:hover:not(:checked)~label::before {
 	content: '✓';
 	color: $foreground-color;
 	font-weight: bolder;
@@ -71,8 +70,8 @@
 	color: #777;
 }
 
-.desm-radio input[type="radio"]:checked~label:before,
-.desm-radio input[type="checkbox"]:checked~label:before {
+.desm-radio input[type="radio"]:checked~label::before,
+.desm-radio input[type="checkbox"]:checked~label::before {
 	content: '✓';
 	background-color: #ccc;
 	color: #333;
@@ -80,13 +79,13 @@
 	text-indent: .9em;
 }
 
-.desm-radio input[type="radio"]:focus~label:before,
-.desm-radio input[type="checkbox"]:focus~label:before {
+.desm-radio input[type="radio"]:focus~label::before,
+.desm-radio input[type="checkbox"]:focus~label::before {
 	box-shadow: 0 0 0 3px #999;
 }
 
-.desm-radio-default input[type="radio"]:checked~label:before,
-.desm-radio-default input[type="checkbox"]:checked~label:before {
+.desm-radio-default input[type="radio"]:checked~label::before,
+.desm-radio-default input[type="checkbox"]:checked~label::before {
 	color: #333;
 	background-color: #ccc;
 }
@@ -95,8 +94,8 @@
 	position: relative;
 }
 
-.desm-radio-primary input[type="radio"]:checked~label:before,
-.desm-radio-primary input[type="checkbox"]:checked~label:before {
+.desm-radio-primary input[type="radio"]:checked~label::before,
+.desm-radio-primary input[type="checkbox"]:checked~label::before {
 	color: #fff;
 	background-color: $on-primary;
 }

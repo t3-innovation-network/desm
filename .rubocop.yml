@@ -1,3 +1,6 @@
+require:
+ - 'test_prof/rubocop'
+
 AllCops:
   Include:
     - '**/*.rb'

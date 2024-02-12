@@ -1,5 +1,27 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: terms
+#
+#  id                            :bigint           not null, primary key
+#  identifier                    :string
+#  name                          :string
+#  raw                           :json             not null
+#  slug                          :string
+#  source_uri                    :string           not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#  configuration_profile_user_id :bigint           not null
+#
+# Indexes
+#
+#  index_terms_on_configuration_profile_user_id  (configuration_profile_user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (configuration_profile_user_id => configuration_profile_users.id) ON DELETE => cascade
+#
 ###
 # @description: Represents a node of a specification
 ###

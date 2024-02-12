@@ -11,17 +11,17 @@ RSpec.describe CreateConceptScheme, type: :interactor do
     end
 
     it "rejects creation if uri is not passed" do
-      result = CreateConceptScheme.call
+      result = described_class.call
 
       expect(result.error).to eq("uri must be present")
     end
 
     it "Creates a vocabulary with its concepts if uri is correct" do
-      result = CreateConceptScheme.call({
-                                          uri: test_uri,
-                                          name: "test",
-                                          configuration_profile: create(:configuration_profile)
-                                        })
+      result = described_class.call({
+                                      uri: test_uri,
+                                      name: "test",
+                                      configuration_profile: create(:configuration_profile)
+                                    })
 
       expect(result.error).to be_nil
       expect(result.vocabulary).to be_instance_of(Vocabulary)

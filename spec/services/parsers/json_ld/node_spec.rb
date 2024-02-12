@@ -5,6 +5,7 @@ require "rails_helper"
 RSpec.describe Parsers::JsonLd::Node do
   describe "read!" do
     subject { described_class.new(schema_node) }
+
     let(:schema_node) do
       {
         "@id": "http://schema.org/recipeCuisine",
@@ -20,13 +21,14 @@ RSpec.describe Parsers::JsonLd::Node do
       }
     end
 
-    it "should read the label correctly" do
+    it "reads the label correctly" do
       expect(subject.read!("label")).to eq("recipeCuisine")
     end
   end
 
   describe "rdfs_class_nodes returns the same node when it's explicitly an rdfs:Class" do
     subject { described_class.new(credential_registry_node) }
+
     let(:credential_registry_node) do
       {
         "@type": "rdfs:Class",
@@ -48,13 +50,14 @@ RSpec.describe Parsers::JsonLd::Node do
       }
     end
 
-    it "should return the same node" do
+    it "returns the same node" do
       expect(subject.rdfs_class_nodes).to eq([])
     end
   end
 
   describe "rdfs_class_nodes with inference" do
     subject { described_class.new(node_to_infer) }
+
     let(:node_to_infer) do
       {
         "@id": "http://schema.org/EventCancelled",
@@ -64,7 +67,7 @@ RSpec.describe Parsers::JsonLd::Node do
       }
     end
 
-    it "should infer the node type" do
+    it "infers the node type" do
       expect(subject.rdfs_class_nodes).to eq([])
     end
   end

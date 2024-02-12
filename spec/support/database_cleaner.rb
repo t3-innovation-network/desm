@@ -17,7 +17,7 @@ RSpec.configure do |config|
   # Here, we set the database_cleaner strategy to transaction, which means every test will create a database
   # transaction that will simply be rolled back when it ends, as if it never happened.
   ###
-  config.before(:each) do
+  config.before do
     DatabaseCleaner.strategy = :transaction
   end
 
@@ -25,11 +25,11 @@ RSpec.configure do |config|
   # DatabaseCleaner.start and DatabaseCleaner.end are simply the triggers to start the cleaning process before and
   # after each test.
   ###
-  config.before(:each) do
+  config.before do
     DatabaseCleaner.start
   end
 
-  config.after(:each) do
+  config.after do
     DatabaseCleaner.clean
   end
 end

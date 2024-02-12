@@ -4,22 +4,22 @@ require "rails_helper"
 
 RSpec.describe CreateCpStructure, type: :interactor do
   describe ".call" do
-    let(:conf_p) { FactoryBot.create(:configuration_profile) }
+    let(:conf_p) { create(:configuration_profile) }
 
     it "rejects creation if structure does not match a complete structure" do
-      result = CreateCpStructure.call
+      result = described_class.call
       expect(result.error).to eq("configuration_profile must be present")
 
-      result = CreateCpStructure.call({ configuration_profile: conf_p })
+      result = described_class.call({ configuration_profile: conf_p })
       expect(result.error).to eq("incomplete structure")
     end
 
-    context ".call with valid configuration profile structure" do
+    describe ".call with valid configuration profile structure" do
       before(:all) do
         Role.create!(name: "profile admin")
         Role.create!(name: "dso admin")
         Role.create!(name: "mapper")
-        @cp = FactoryBot.create(:configuration_profile)
+        @cp = create(:configuration_profile)
         complete_structure = Rails.root.join("spec", "fixtures", "complete.configuration.profile.json")
         valid_json_abstract_classes = JSON.parse(File.read(Rails.root.join("concepts", "desmAbstractClasses.json")))
         valid_json_mapping_predicates =
@@ -29,7 +29,7 @@ RSpec.describe CreateCpStructure, type: :interactor do
         @cp.structure = JSON.parse(File.read(complete_structure))
         @cp.json_abstract_classes = valid_json_abstract_classes
         @cp.json_mapping_predicates = valid_json_mapping_predicates
-        result = CreateCpStructure.call({ configuration_profile: @cp })
+        result = described_class.call({ configuration_profile: @cp })
 
         expect(result.error).to be_nil
       end

@@ -1,19 +1,37 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: users
+#
+#  id                     :bigint           not null, primary key
+#  email                  :string           not null
+#  fullname               :string           not null
+#  github_handle          :string
+#  password_digest        :string
+#  phone                  :string
+#  reset_password_sent_at :datetime
+#  reset_password_token   :string
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  organization_id        :integer
+#
+# Indexes
+#
+#  index_users_on_email  (email) UNIQUE
+#
 require "rails_helper"
 
-RSpec.describe User, type: :model do
-  let!(:user) { FactoryBot.build(:user) }
+RSpec.describe User do
+  let!(:user) { build(:user) }
 
-  it "has a valid factory" do
-    expect(FactoryBot.build(:user)).to be_valid
+  it "validates and has associations", :aggregate_failures do
+    is_expected.to validate_presence_of(:fullname)
+    expect(subject).to have_many(:assignments)
+    expect(subject).to have_many(:roles).through(:assignments)
   end
 
-  it { should have_many(:assignments) }
-  it { should have_many(:roles).through(:assignments) }
-  it { should validate_presence_of(:fullname) }
-
-  it "should be an admin if we configure it that way" do
+  it "is an admin if we configure it that way" do
     admin_role_name = Desm::ADMIN_ROLE_NAME
 
     user.roles << Role.create!(name: admin_role_name)
@@ -23,7 +41,7 @@ RSpec.describe User, type: :model do
 
   it "can not be created without an organization" do
     password = Faker::Internet.password(min_length: 10, max_length: 20, mix_case: true, special_characters: true)
-    admin = User.create!(
+    admin = described_class.create!(
       fullname: "test",
       email: "test@test.com",
       password: password,
@@ -32,7 +50,7 @@ RSpec.describe User, type: :model do
 
     expect(admin).not_to be_nil
     expect do
-      User.create!(
+      described_class.create!(
         fullname: "test",
         email: "test@test.com",
         password: password

@@ -1,5 +1,27 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: domains
+#
+#  id            :bigint           not null, primary key
+#  definition    :text
+#  pref_label    :string           not null
+#  slug          :string
+#  source_uri    :string           not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  domain_set_id :bigint           not null
+#
+# Indexes
+#
+#  index_domains_on_domain_set_id                 (domain_set_id)
+#  index_domains_on_domain_set_id_and_source_uri  (domain_set_id,source_uri) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (domain_set_id => domain_sets.id) ON DELETE => cascade
+#
 ###
 # @description: Represents a Concept, which is a domain from a Concept Scheme
 #   (also refered to as 'domain set'.

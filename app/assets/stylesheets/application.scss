@@ -1,4 +1,4 @@
-@import "colors.scss";
+@import "colors";
 
 /* General */
 
@@ -206,6 +206,7 @@ a:hover {
 
 .desm-tab-item:hover {
   background-color: $primary-color;
+
   &:not(.selected-item) {
     color: $primary-color-highlight;
   }
@@ -220,11 +221,6 @@ a:hover {
 }
 
 .non-selectable {
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Old versions of Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
@@ -267,8 +263,6 @@ a:hover {
 }
 
 .with-shadow {
-  -webkit-box-shadow: 4px 8px 5px -7px $on-primary-light;
-  -moz-box-shadow: 4px 8px 5px -7px $on-primary-light;
   box-shadow: 4px 8px 5px -7px $on-primary-light;
 }
 
@@ -314,7 +308,7 @@ a:hover {
 
 /* Mobile */
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .indicator {
     visibility: hidden;
   }
