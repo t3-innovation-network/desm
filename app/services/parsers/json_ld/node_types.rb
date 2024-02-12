@@ -35,7 +35,7 @@ module Parsers
       #   types. If so return it.
       # @return [String,FalseClass]
       ###
-      def standardized_type? type
+      def standardized_type?(type)
         return false if type.nil?
 
         type if NODE_TYPES.values.flatten.include?(type.downcase)

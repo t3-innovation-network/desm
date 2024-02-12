@@ -11,7 +11,7 @@ module Parsers
 
       SEPARATOR = ":"
 
-      def initialize(type, context={})
+      def initialize(type, context = {})
         @type = type
         @context = context
         @context = resolve_context if @context.is_a?(String) && uri?(@context)
@@ -28,7 +28,7 @@ module Parsers
         node_in_definition = find_original_node_in_fetched_definition(json_definition[:@graph])
 
         return unless !node_in_definition.nil? &&
-          Parsers::JsonLd::Node.new(node_in_definition).types.rdfs_class?
+                      Parsers::JsonLd::Node.new(node_in_definition).types.rdfs_class?
 
         node_definition_from_db(node_in_definition)
       end
@@ -55,17 +55,17 @@ module Parsers
         @type_name = @type.split(SEPARATOR).last
       end
 
-      def find_original_node_in_fetched_definition graph
-        graph.find {|node|
+      def find_original_node_in_fetched_definition(graph)
+        graph.find do |node|
           remove_protocol_from_uri(
             Parsers::JsonLd::Node.new(node).read!("id")
           )&.eql?(
             remove_protocol_from_uri(@full_definition_uri)
           )
-        }
+        end
       end
 
-      def node_definition_from_db node_in_definition
+      def node_definition_from_db(node_in_definition)
         node = RdfsClassNode.find_or_initialize_by(
           uri: @full_definition_uri
         ) do |n|
@@ -75,7 +75,7 @@ module Parsers
         node.definition
       end
 
-      def remove_protocol_from_uri uri
+      def remove_protocol_from_uri(uri)
         uri.sub(%r{^https?://(www.)?}, "")
       end
     end

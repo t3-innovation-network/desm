@@ -16,25 +16,25 @@ RSpec.describe CreateAgent, type: :interactor do
     end
 
     it "rejects creation if required info isn't provided" do
-      result = CreateAgent.call({github_handle: "richard0000"})
+      result = CreateAgent.call({ github_handle: "richard0000" })
       expect(result.error).to be("Email must be present")
       expect(result.agent).to be_nil
 
-      result = CreateAgent.call({github_handle: "richard0000", email: "test@test.com"})
+      result = CreateAgent.call({ github_handle: "richard0000", email: "test@test.com" })
       expect(result.agent).to be_nil
       expect(result.error).to be("Fullname must be present")
 
-      result = CreateAgent.call({github_handle: "richard0000", fullname: "test"})
+      result = CreateAgent.call({ github_handle: "richard0000", fullname: "test" })
       expect(result.agent).to be_nil
       expect(result.error).to be("Email must be present")
     end
 
     it "rejects creation if email is invalid" do
-      result = CreateAgent.call({github_handle: "richard0000", email: "testtest.com"})
+      result = CreateAgent.call({ github_handle: "richard0000", email: "testtest.com" })
       expect(result.agent).to be_nil
       expect(result.error).to be("Invalid email format")
 
-      result = CreateAgent.call({github_handle: "richard0000", email: "testtest@"})
+      result = CreateAgent.call({ github_handle: "richard0000", email: "testtest@" })
       expect(result.agent).to be_nil
       expect(result.error).to be("Invalid email format")
     end

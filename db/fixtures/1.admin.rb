@@ -1,4 +1,4 @@
-User.seed(:fullname, 
+User.seed(:fullname,
   {
   fullname: "admin",
   email: "admin@desmsolutions.org",

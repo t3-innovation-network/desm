@@ -11,7 +11,7 @@ class UserMailer < ApplicationMailer
 
     @reset_password_url = URI(@config[:host])
     @reset_password_url.path = "/reset-password"
-    @reset_password_url.query = {token: @user.reset_password_token}.to_query
+    @reset_password_url.query = { token: @user.reset_password_token }.to_query
 
     @title = t("mailers.welcome.title")
     mail(to: @user.email, subject: t("mailers.welcome.subject"))

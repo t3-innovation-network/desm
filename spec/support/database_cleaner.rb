@@ -9,7 +9,7 @@ RSpec.configure do |config|
   # Record's environment data, resulting in a NoEnvironmentInSchemaError every time your tests run.
   ###
   config.before(:suite) do
-    DatabaseCleaner.clean_with :truncation, except: %w[ar_internal_metadata]
+    DatabaseCleaner.clean_with :truncation, except: %w(ar_internal_metadata)
   end
 
   ###

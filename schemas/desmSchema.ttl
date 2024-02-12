@@ -12,57 +12,57 @@
 desm:AbstractClassMapping a rdfs:Class ;
     rdfs:label "Abstract Class Mapping"@en ;
     rdfs:comment "Resource describing mappings by one or more Data Standards Organizations (DSOs) to a single abstract class."@en ;
-    rdfs:isDefinedBy desm: 
-    .     
+    rdfs:isDefinedBy desm:
+    .
 desm:MappingConfiguration a rdfs:Class ;
     rdfs:label "Mapping Configuration Set"@en ;
     rdfs:comment "Resource identifying the form and aggregation of one or more mappings of one or more Abstract Class created by one or more Data Standards Organizations (DSOs)."@en ;
-    rdfs:isDefinedBy desm: 
-    . 
+    rdfs:isDefinedBy desm:
+    .
 desm:Agent a rdfs:Class ;
     rdfs:label "Agent"@en ;
     rdfs:comment "Personnel engaged in the process of crosswalking terms"@en ;
-    rdfs:isDefinedBy desm: 
-    .    
-rdfs:Class a rdfs:Class ; 
+    rdfs:isDefinedBy desm:
+    .
+rdfs:Class a rdfs:Class ;
     rdfs:label "Class"@en ;
     rdfs:comment "Type or class of resource to which properties are related."@en ;
     skos:scopeNote "Related to, but not the same as rdfs:Class."@en ;
-    rdfs:isDefinedBy rdfs: 
+    rdfs:isDefinedBy rdfs:
     .
 skos:Concept a rdfs:Class ;
     rdfs:label "Concept"@en ;
     rdfs:comment "An idea or notion; a unit of thought."@en ;
-    rdfs:isDefinedBy skos: 
+    rdfs:isDefinedBy skos:
     .
 skos:ConceptScheme a rdfs:Class ;
     rdfs:label "Concept Scheme"@en ;
     rdfs:comment "A set of concepts, optionally including statements about semantic relationships between those concepts."@en ;
     skos:scopeNote "A concept scheme may be defined to include concepts from different sources."@en ;
-    rdfs:isDefinedBy skos: 
+    rdfs:isDefinedBy skos:
     .
 desm:DSO a rdfs:Class ;
     rdfs:label "Data Standards Organization"@en ;
     rdfs:comment "Organization or person responsible for creating or making available a de facto or de jure data standard being crosswalked in a project."@en ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 rdf:Property a rdfs:Class ;
     rdfs:label "Property"@en ;
     rdfs:comment "Property in a cross walk crosswalked to a propery in the spine."@en ;
     skos:scopeNote "Crosswalks map a properties from the DSOs' schemas to properties in the synthetic spine."@en ;
-    rdfs:isDefinedBy rdf: 
+    rdfs:isDefinedBy rdf:
     .
 desm:Schema a rdfs:Class ;
-    rdfs:label "Schema"@en ;    
+    rdfs:label "Schema"@en ;
     rdfs:comment "Resource describing controlled concepts or enumerations."@en ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 desm:administrator a rdf:Property ;
     rdfs:label "Administrator"@en ;
     rdfs:comment "Agent with administrative duties."@en ;
     rdfs:domain desm:DSO ;
     rdfs:range desm:Agent;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 desm:asbtractClassModeled a rdf:Property ;
     rdfs:label "Abstract Class Modeled"@en ;
@@ -70,28 +70,28 @@ desm:asbtractClassModeled a rdf:Property ;
     skos:scopeNote "References a specific abstract class instance in the SKOS concept scheme for abstract classes identified in the configuration profile being used."@en ;
     rdfs:domain desm:AbstractClassMapping;
     rdfs:range skos:Concept;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 desm:asbtractClassType a rdf:Property ;
     rdfs:label "Abstract Class Type Scheme"@en ;
     rdfs:comment "The abstract class concept scheme used in a mapping project"@en ;
     rdfs:domain desm:AbstractClassSet;
     rdfs:range skos:COnceptScheme;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 skos:broader a rdf:Property ;
     rdfs:label "Has Broader"@en ;
     rdfs:comment "Broader concepts are typically rendered as parents in a concept hierarchy (tree)."@en ;
     rdfs:domain skos:Concept ;
     rdfs:range skos:Concept ;
-    rdfs:isDefinedBy skos: 
+    rdfs:isDefinedBy skos:
     .
 dct:created a rdf:Property ;
     rdfs:label "Date Created"@en ;
-    rdfs:comment "Date of creation of the resource."@en ;    
+    rdfs:comment "Date of creation of the resource."@en ;
     rdfs:domain desm:AbstractClassMapping, desm:AbstractClassSet;
     rdfs:range xsd:date;
-    rdfs:isDefinedBy dct: 
+    rdfs:isDefinedBy dct:
     .
 dct:creator a rdf:Property ;
     rdfs:label "Creator"@en ;
@@ -99,7 +99,7 @@ dct:creator a rdf:Property ;
     skos:scopeNote ""@en ;
     rdfs:domain desm:Schema ;
     rdfs:range desm:Agent ;
-    rdfs:isDefinedBy dct: 
+    rdfs:isDefinedBy dct:
     .
 sdo:email a rdf:Property ;
     rdfs:label "email"@en ;
@@ -113,14 +113,14 @@ desm:githubHandle a rdf:Property ;
     rdfs:comment "GitHub username."@en ;
     rdfs:domain desm:Agent;
     rdfs:range xsd:string ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 desm:hasDSO a rdf:Property ;
     rdfs:label "Has DSO"@en ;
     rdfs:comment "DSO participating in one or more asbtract class mappings in this project."@en ;
     rdfs:domain desm:MappingCOnfiguration;
     rdfs:range desm:DSO ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 dct:hasPart a rdf:Property ;
     rdfs:label "Has Part"@en ;
@@ -129,56 +129,56 @@ dct:hasPart a rdf:Property ;
         desm:AbstractCLassMapping ;
     rdfs:range desm:AbstractClassMapping ,
         desm:TermMapping ;
-    rdfs:isDefinedBy dct: 
+    rdfs:isDefinedBy dct:
     .
 desm:hasProperty a rdf:Property ;
     rdfs:label "Has Property"@en ;
     rdfs:comment "Property of a particular schema."@en ;
     rdfs:domain desm:Schema ;
     rdfs:range rdf:Property;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 desm:hasSchema a rdf:Property ;
     rdfs:label "Has Schema"@en ;
     rdfs:comment "Schema in which this property is defined."@en ;
     rdfs:domain rdf:Property ;
     rdfs:range desm:Schema ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 desm:hasScheme a rdf:Property ;
     rdfs:label "Has Scheme"@en ;
     rdfs:comment "Concept Scheme that belongs to this Data Standards Organization."@en ;
     rdfs:domain desm:DSO ;
     rdfs:range skos:ConceptScheme ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 desm:hasTermMapping a rdf:Property ;
     rdfs:label "Has Term Mapping"@en ;
     rdfs:comment "Relates a property to a term mapping in which it is included."@en ;
     rdfs:domain rdf:Property ;
     rdfs:range desm:TermMapping ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 skos:hasTopConcept a rdf:Property ;
     rdfs:label "hasTopCOncept"@en ;
     rdfs:comment "Relates, by convention, a concept scheme to a concept which is topmost in the broader\/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies."@en ;
     rdfs:domain skos:ConceptScheme ;
     rdfs:range skos:Concept ;
-    rdfs:isDefinedBy skos: 
+    rdfs:isDefinedBy skos:
     .
 desm:inSchema a rdf:Property ;
     rdfs:label "In Schema"@en ;
     rdfs:comment "Relates a property to a scheme in which it is included."@en ;
     rdfs:domain rdf:Property ;
     rdfs:range desm:Schema ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 skos:inScheme a rdf:Property ;
     rdfs:label "In Scheme"@en ;
-    rdfs:comment "Relates a resource (for example a concept) to a concept scheme in which it is included."@en ;    
+    rdfs:comment "Relates a resource (for example a concept) to a concept scheme in which it is included."@en ;
     rdfs:domain skos:Concept ;
     rdfs:range skos:ConceptScheme ;
-    rdfs:isDefinedBy skos: 
+    rdfs:isDefinedBy skos:
     .
 dct:isPartOf a rdf:Property ;
     rdfs:label "Is Part Of"@en ;
@@ -187,63 +187,63 @@ dct:isPartOf a rdf:Property ;
         desm:AbstractClassMapping ;
     rdfs:range  desm:AbstractMapping ,
         desm:AbstractClassSet ;
-    rdfs:isDefinedBy dct: 
+    rdfs:isDefinedBy dct:
     .
 desm:issue a rdf:Property ;
     rdfs:label "Issue"@en ;
     rdfs:comment "Recording of an issue with mapping a property to another property."@en ;
     rdfs:domain desm:TermMapping ;
     rdfs:range rdf:langString ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 rdfs:label a rdf:Property ;
     rdfs:label "Human-readable version of the name of a resource."@en ;
-    rdfs:domain rdf:Property , 
+    rdfs:domain rdf:Property ,
         rdfs:Class ;
     rdfs:range rdf:langString ;
-    rdfs:isDefinedBy rdfs: 
+    rdfs:isDefinedBy rdfs:
     .
 desm:mappedTerm a rdf:Property ;
     rdfs:label "Mapped Term"@en ;
     rdfs:comment "Property being mapped to a spine property."@en ;
     rdfs:domain desm:TermMapping ;
     rdfs:range rdf:Property ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 desm:mapper a rdf:Property ;
     rdfs:label "Mapper"@en ;
     rdfs:comment "An agent adminitering or performing a mapping or crosswalk."@en ;
     rdfs:domain desm:DSO ;
     rdfs:range desm:Agent ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 desm:mappingPredicate a rdf:Property ;
     rdfs:label "Mapping Predicate"@en ;
     rdfs:comment "Concept identifying the relationship between two properties being mapped."@en ;
     rdfs:domain desm:TermMapping ;
     rdfs:range skos:Concept ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 desm:mappingPredicateType a rdf:Property ;
     rdfs:label "Mapping Predicate Type"@en ;
     rdfs:comment "Concept scheme defining mapping predicate types."@en ;
     rdfs:domain desm:AbstractCLassSet ;
     rdfs:range skos:ConceptScheme ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 sdo:name a rdf:Property ;
     rdfs:label "Name"@en ;
     rdfs:comment "The name of the item."@en ;
     rdfs:domain desm:Agent ;
     rdfs:range rdf:langString ;
-    rdfs:isDefinedBy sdo: 
+    rdfs:isDefinedBy sdo:
     .
 skos:narrower a rdf:Property ;
     rdfs:label "Narrower"@en ;
     rdfs:comment "Narrower concepts are typically rendered as children in a concept hierarchy (tree)."@en ;
     rdfs:domain skos:Concept ;
     rdfs:range skos:Concept ;
-    rdfs:isDefinedBy skos: 
+    rdfs:isDefinedBy skos:
     .
 desm:range a rdf:Property ;
     rdfs:label "Range"@en ;
@@ -251,34 +251,34 @@ desm:range a rdf:Property ;
     rdfs:domain rdf:Property;
     rdfs:range skos:Concept ,
         desm:Class ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 desm:relatedSchema a rdf:Property ;
     rdfs:label "Related Schema"@en ;
     rdfs:comment "Schema to which a concept scheme provides property values."@en ;
     rdfs:domain skos:ConceptSCheme ;
     rdfs:range desm:Schema ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 desm:role a rdf:Property ;
     rdfs:label "Role"@en ;
     rdfs:comment "Functon or job of an agent."@en ;
     rdfs:domain desm:Agent ;
     rdfs:range rdf:langString ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 desm:sourcePath a rdf:Property ;
     rdfs:label "Source Path"@en ;
     rdfs:comment "Property or class path in a schema."@en ;
     rdfs:domain rdf:Property ;
     rdfs:range xsd:string ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 desm:spineTerm a rdf:Property ;
     rdfs:label "Spine Term"@en ;
     rdfs:comment "Property of the synthetic spine generated during the mapping process."@en ;
     rdfs:domain desm:TermMapping ;
     rdfs:range rdf:Property ;
-    rdfs:isDefinedBy desm: 
+    rdfs:isDefinedBy desm:
     .
 ]

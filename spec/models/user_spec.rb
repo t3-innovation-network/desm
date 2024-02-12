@@ -31,12 +31,12 @@ RSpec.describe User, type: :model do
     )
 
     expect(admin).not_to be_nil
-    expect {
+    expect do
       User.create!(
         fullname: "test",
         email: "test@test.com",
         password: password
       )
-    }.to raise_error ActiveRecord::RecordInvalid
+    end.to raise_error ActiveRecord::RecordInvalid
   end
 end

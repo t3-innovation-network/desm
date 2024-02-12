@@ -7,7 +7,7 @@ FactoryBot.define do
     configuration_profile_user
     source_uri { Faker::Internet.url }
     name { Faker::Name.unique.first_name }
-    raw {
+    raw do
       JSON.parse([
         "{\"id\":\"#{Faker::Name.unique.first_name}\"",
         "\"type\":\"rdf:Property\"",
@@ -16,6 +16,6 @@ FactoryBot.define do
         "\"range\":\"rdf:langString\"",
         "\"isDefinedBy\":\"rdfs:\"}"
       ].join(","))
-    }
+    end
   end
 end

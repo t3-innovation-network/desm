@@ -10,7 +10,7 @@ RSpec.describe CreateCpStructure, type: :interactor do
       result = CreateCpStructure.call
       expect(result.error).to eq("configuration_profile must be present")
 
-      result = CreateCpStructure.call({configuration_profile: conf_p})
+      result = CreateCpStructure.call({ configuration_profile: conf_p })
       expect(result.error).to eq("incomplete structure")
     end
 
@@ -29,7 +29,7 @@ RSpec.describe CreateCpStructure, type: :interactor do
         @cp.structure = JSON.parse(File.read(complete_structure))
         @cp.json_abstract_classes = valid_json_abstract_classes
         @cp.json_mapping_predicates = valid_json_mapping_predicates
-        result = CreateCpStructure.call({configuration_profile: @cp})
+        result = CreateCpStructure.call({ configuration_profile: @cp })
 
         expect(result.error).to be_nil
       end

@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { useSelector } from "react-redux";
 import DSOMetaData from "./DSOMetadata";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfo, faUsers, faFile } from "@fortawesome/free-solid-svg-icons";
+import { faInfo, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { activeTabClass, inactiveTabClass, line, tabStyle } from "../utils";
 import Agents from "./Agents";
 import SchemaFilesWrapper from "./SchemaFilesWrapper";

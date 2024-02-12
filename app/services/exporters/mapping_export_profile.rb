@@ -5,7 +5,7 @@ module Exporters
   # @description: Manages to export a mapping export profile in JSON-LD format to let the user download it.
   ###
   class MappingExportProfile
-    def initialize domain
+    def initialize(domain)
       @domain = domain
     end
 
@@ -23,16 +23,16 @@ module Exporters
 
     def configuration_profile
       structure = @domain.configuration_profile.structure
-                         .deep_transform_keys {|key| key.to_s.camelcase }
-                         .with_indifferent_access
+                    .deep_transform_keys { |key| key.to_s.camelcase }
+                    .with_indifferent_access
 
       remove_agents(structure)
     end
 
-    def remove_agents structure
-      structure["StandardsOrganizations"].each {|dso|
+    def remove_agents(structure)
+      structure["StandardsOrganizations"].each do |dso|
         dso.delete("dsoAgents")
-      }
+      end
       structure
     end
 

@@ -10,7 +10,7 @@ module Parsers
 
       attr_accessor :types, :context
 
-      def initialize node, context={}
+      def initialize(node, context = {})
         @node = node
         @context = context
         @types = TypeSet.new(node_types)
@@ -47,7 +47,7 @@ module Parsers
         values = node_attribute.values if node_attribute.is_a?(Hash)
 
         # We need the string values, each of it could be surrounded by "@id" key as an object
-        values.map {|value| (value.is_a?(Hash) && (value[:@id] || value["@id"])) || value }
+        values.map { |value| (value.is_a?(Hash) && (value[:@id] || value["@id"])) || value }
       end
 
       ###
@@ -56,7 +56,7 @@ module Parsers
       ###
       def related_to_node_by?(related_key, uri)
         # Infer the key name by proximity
-        key = @node.select {|key| key.to_s.match(Regexp.new(related_key)) }.keys.first
+        key = @node.select { |k| k.to_s.match(Regexp.new(related_key)) }.keys.first
 
         # Get the related nodes, one of these can be the one we're processing
         related_nodes = @node[key]
@@ -64,9 +64,9 @@ module Parsers
         # Ensure we're dealing with array (when it's only 1 it can be a single object)
         related_nodes = [related_nodes] if related_nodes.present? && !related_nodes.is_a?(Array)
 
-        related_nodes.present? && related_nodes.any? {|d|
+        related_nodes.present? && related_nodes.any? do |d|
           uri_eql?(d, uri)
-        }
+        end
       end
 
       ###
@@ -78,7 +78,7 @@ module Parsers
         return [] unless types.rdf_property?
 
         domains = Array.wrap(read!("domain").presence || read!("domainIncludes"))
-        return [{"@id" => "rdfs:Resource", "rdfs:label" => "Resource"}] if domains.empty?
+        return [{ "@id" => "rdfs:Resource", "rdfs:label" => "Resource" }] if domains.empty?
 
         nodes = domains.map do |domain|
           uri = domain.is_a?(Hash) ? domain["@id"] : domain
@@ -107,11 +107,11 @@ module Parsers
       # @return [Object]
       ###
       def find_node_key(attribute_name)
-        selected_node = @node.select {|key|
+        selected_node = @node.select do |key|
           key.to_s.camelize.downcase.match(
             Regexp.new(attribute_name.downcase)
           )
-        }
+        end
 
         selected_node = selected_node.first if selected_node.is_a?(Array) && selected_node.first.is_a?(Hash)
 
@@ -172,7 +172,7 @@ module Parsers
       # @param [Hash] node
       # @return [String]
       ###
-      def node_value node
+      def node_value(node)
         node = node.with_indifferent_access
 
         return node[:@value] if valid_node_key?(node, :@value)

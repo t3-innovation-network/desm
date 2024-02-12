@@ -18,7 +18,7 @@ class Predicate < ApplicationRecord
   include Slugable
 
   belongs_to :predicate_set
-  validates :source_uri, presence: true, uniqueness: {scope: :predicate_set_id}
+  validates :source_uri, presence: true, uniqueness: { scope: :predicate_set_id }
   validates :pref_label, presence: true
   before_create :assign_color, unless: :color?
   before_save :default_values
@@ -111,9 +111,9 @@ class Predicate < ApplicationRecord
   # @description: Include additional information about the specification in
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
-  def as_json(options={})
+  def as_json(options = {})
     super(
-      options.merge(methods: %i[uri])
+      options.merge(methods: %i(uri))
     ).merge(
       strongest_match: predicate_set.strongest_match_id == id
     )

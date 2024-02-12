@@ -10,7 +10,8 @@ describe Mapping, type: :model do
   it { should validate_presence_of(:name) }
 
   describe ".remove_alignments_mapped_terms" do
-    it "'in-progress' mapping has empty alignments after it is marked back as 'uploaded'" do
+    xit "'in-progress' mapping has empty alignments after it is marked back as 'uploaded'" do
+      # add test
     end
   end
 end

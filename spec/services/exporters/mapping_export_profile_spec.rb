@@ -33,7 +33,7 @@ RSpec.describe Exporters::MappingExportProfile do
       specification.update!(domain: domain)
       result = domain.mapping_export_profile
 
-      expect(result.keys).to eq(%i[@configurationProfile @abstractClass @spine])
+      expect(result.keys).to eq(%i(@configurationProfile @abstractClass @spine))
     end
   end
 end

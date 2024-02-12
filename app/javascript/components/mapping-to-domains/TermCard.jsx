@@ -7,7 +7,6 @@ import {
   faTimes,
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
-import HoverableText from "../shared/HoverableText.jsx";
 
 /**
  * @prop {Function} onClick Actions when the user clicks on it

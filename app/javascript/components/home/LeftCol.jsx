@@ -22,7 +22,7 @@ const LeftSideHome = () => (
     <section>
       <ol className="usage-explanation">
         <li>Upload your schema</li>
-        <li>Map the schema's properties and concepts</li>
+        <li>Map the schema&apos;s properties and concepts</li>
         <li>Review and download the completed mappings</li>
       </ol>
     </section>

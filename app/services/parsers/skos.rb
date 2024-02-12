@@ -6,7 +6,7 @@ module Parsers
   class Skos < Specification
     attr_accessor :graph, :context, :skos
 
-    def initialize args={}
+    def initialize(args = {})
       @context = args.fetch(:context, {})
       @graph = args.fetch(:graph, {})
       file_content = args.fetch(:file_content, nil)
@@ -16,12 +16,12 @@ module Parsers
     def valid_skos?
       build_skos
 
-      @skos[:@graph].any? {|node|
+      @skos[:@graph].any? do |node|
         Parsers::JsonLd::Node.new(node).types.concept_scheme?
-      } &&
-      @skos[:@graph].any? {|node|
-        Parsers::JsonLd::Node.new(node).types.concept?
-      }
+      end &&
+        @skos[:@graph].any? do |node|
+          Parsers::JsonLd::Node.new(node).types.concept?
+        end
     rescue InvalidSkosFile
       false
     end
@@ -34,7 +34,7 @@ module Parsers
     # @param [Object] scheme_node: The scheme node containing the uri of the related concepts
     # @return [Hash]
     ###
-    def build_skos scheme_node=nil
+    def build_skos(scheme_node = nil)
       scheme_node = scheme_nodes.first if scheme_node.nil?
       raise InvalidSkosFile, "The content is not a valid Skos file" if scheme_node.nil?
 
@@ -58,7 +58,7 @@ module Parsers
     #   no matter the origin of it
     ###
     def concepts_list_simplified
-      @graph.map {|node|
+      @graph.map do |node|
         parser = Parsers::JsonLd::Node.new(node)
 
         {
@@ -67,19 +67,19 @@ module Parsers
           name: parser.read!("label"),
           definition: parser.read!("description") || parser.read!("definition") || parser.read!("comment")
         }
-      }
+      end
     end
 
     def concept_names
-      concepts = concept_nodes.map {|concept|
+      concepts = concept_nodes.map do |concept|
         node = Parsers::JsonLd::Node.new(concept)
         {
           uri: node.read!("id"),
           label: node.read!("label")
         }
-      }
+      end
 
-      concepts.compact.sort_by {|c| c[:label] }
+      concepts.compact.sort_by { |c| c[:label] }
     end
 
     ###
@@ -87,9 +87,9 @@ module Parsers
     # @return [Array]
     ###
     def exclude_skos_types
-      @graph.reject {|node|
+      @graph.reject do |node|
         Parsers::JsonLd::Node.new(node).types.skos_type?
-      }
+      end
     end
 
     ###
@@ -97,22 +97,22 @@ module Parsers
     # @return [Array]
     ###
     def scheme_nodes
-      @scheme_nodes ||= @graph.select {|node|
+      @scheme_nodes ||= @graph.select do |node|
         Parsers::JsonLd::Node.new(node).types.concept_scheme?
-      }
+      end
     end
 
     def concept_node_hash
       @concept_node_hash ||= begin
-        concept_nodes = @graph.select {|node|
-          Array(Parsers::JsonLd::Node.new(node).read!("type")).any? {|type|
+        concept_nodes = @graph.select do |node|
+          Array(Parsers::JsonLd::Node.new(node).read!("type")).any? do |type|
             type.downcase.include?("concept") && !type.downcase.include?("conceptscheme")
-          }
-        }
+          end
+        end
 
-        concept_nodes.map {|node|
+        concept_nodes.to_h do |node|
           [Parsers::JsonLd::Node.new(node).read!("id").downcase, node]
-        }.to_h
+        end
       end
     end
 
@@ -132,7 +132,7 @@ module Parsers
     # @param [Hash] The concept scheme node
     # @return [Array] A collection of uris to identify the child concept nodes
     ###
-    def child_concepts_uris concept_scheme_node
+    def child_concepts_uris(concept_scheme_node)
       parser = Parsers::JsonLd::Node.new(concept_scheme_node)
       child_nodes = Array(parser.read!("hasConcept"))
 
@@ -161,7 +161,7 @@ module Parsers
     # @param [Array] vocab_graph: The vocabulary graph to be analyzed
     # @return [Hash] context: The wider context to be used as context source
     ###
-    def filter_context vocab_graph
+    def filter_context(vocab_graph)
       final_context = {}
 
       # We only have concepts at this point, so accessing the graph is fine.
@@ -173,7 +173,7 @@ module Parsers
           # We are only interested in those keys that uses the uris from the main context
           # If so, we add the key and value to our new context
           if using_context_uri(attr_key)
-            k, v = @context.find {|key, _value| key.include?(attr_key.split(":").first) }
+            k, v = @context.find { |key, _value| key.include?(attr_key.split(":").first) }
             final_context[k] = v
           end
         end
@@ -187,10 +187,10 @@ module Parsers
     # @param [Object] scheme_node: The scheme node containing the uri of the related concepts
     # @return [Array]
     ###
-    def identify_concepts scheme_node
-      child_concepts_uris(scheme_node).map {|concept_uri|
+    def identify_concepts(scheme_node)
+      child_concepts_uris(scheme_node).map do |concept_uri|
         concept_node_hash[concept_uri.downcase]
-      }.compact
+      end.compact
     end
 
     ###
@@ -199,14 +199,14 @@ module Parsers
     # @param [Array] nodes
     # @return [Array]
     ###
-    def process_node_uris nodes
-      nodes.map {|node|
+    def process_node_uris(nodes)
+      nodes.map do |node|
         if node.is_a?(String)
           node
         else
           node.is_a?(Hash) && (node["@id"] || node[:@id]) ? (node["@id"] || node[:@id]) : nil
         end
-      }.compact
+      end.compact
     end
 
     ###

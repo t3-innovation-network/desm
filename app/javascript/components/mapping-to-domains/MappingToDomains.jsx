@@ -229,7 +229,7 @@ const MappingToDomains = (props) => {
 
     /// Handle errors
     if (response.error) {
-      toast.error(e.response.data.message);
+      toast.error(response.error);
       return;
     }
 
@@ -407,11 +407,12 @@ const MappingToDomains = (props) => {
    * but it mimics the same action).
    */
   useEffect(() => {
+    let fn;
     if (loading) {
-      async function fetchData() {
+      fn = async function fetchData() {
         await fetchDataFromAPI();
       }
-      fetchData().then(() => {
+      fn().then(() => {
         if (_.isEmpty(errors)) {
           setLoading(false);
         }

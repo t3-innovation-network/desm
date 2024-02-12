@@ -49,9 +49,9 @@ namespace :seeders do
 
           # Inform the user
           puts "\n#{ActionController::Base.helpers.pluralize(d_set.domains.count, 'domain')} processed." +
-          (
-            d_set.domains.count < 1 ? " Be sure to correctly format the file as a json-ld skos concepts file." : ""
-          )
+               (
+                 d_set.domains.count < 1 ? " Be sure to correctly format the file as a json-ld skos concepts file." : ""
+               )
 
           processed += 1
         end
@@ -59,7 +59,7 @@ namespace :seeders do
     end
 
     puts "\n#{ActionController::Base.helpers.pluralize(processed, 'file')} processed." +
-      (processed < 1 ? " Be sure to name the files ending with 'abstractclasses'." : "")
+         (processed < 1 ? " Be sure to name the files ending with 'abstractclasses'." : "")
   end
 
   desc "Import the predicates from the skos file/s placed inside the 'concepts' directory"
@@ -97,10 +97,8 @@ namespace :seeders do
           p_set = processor.create
 
           # Inform the user
-          puts "\n#{ActionController::Base.helpers.pluralize(p_set.predicates.count, 'predicate')} processed." +
-          (
-            p_set.predicates.count < 1 ? " Be sure to correctly format the file as a json-ld skos concepts file." : ""
-          )
+          msg = " Be sure to correctly format the file as a json-ld skos concepts file." if p_set.predicates.count < 1
+          puts "\n#{ActionController::Base.helpers.pluralize(p_set.predicates.count, 'predicate')} processed.#{msg}"
 
           processed += 1
         end
@@ -108,6 +106,6 @@ namespace :seeders do
     end
 
     puts "\n#{ActionController::Base.helpers.pluralize(processed, 'file')} processed." +
-      (processed < 1 ? " Be sure to name the files ending with 'abstractclasses'." : "")
+         (processed < 1 ? " Be sure to name the files ending with 'abstractclasses'." : "")
   end
 end

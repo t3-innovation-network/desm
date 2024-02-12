@@ -3,7 +3,7 @@
 module Converters
   # Converts a ZIP archive containing JSON schemata to the JSON-LD format
   class JsonSchemaZip < Base
-    IGNORED_PROPERTIES = %w[@context id type].freeze
+    IGNORED_PROPERTIES = %w(@context id type).freeze
 
     ##
     # @param file [#path]

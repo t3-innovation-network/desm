@@ -14,21 +14,21 @@ module Exporters
     #   the prefixes an URIs are pre-existing constants.
     ###
     CONTEXT = {
-      "ceds": "http://desmsolutions.org/ns/ceds/",
-      "credReg": "http://desmsolutions.org/ns/credReg/",
-      "dct": "http://purl.org/dc/terms/",
-      "dcterms": "http://purl.org/dc/terms/",
-      "desm": "http://desmsolutions.org/ns/",
-      "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-      "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-      "sdo": "http://schema.org/",
-      "xsd": "http://www.w3.org/2001/XMLSchema#"
+      ceds: "http://desmsolutions.org/ns/ceds/",
+      credReg: "http://desmsolutions.org/ns/credReg/",
+      dct: "http://purl.org/dc/terms/",
+      dcterms: "http://purl.org/dc/terms/",
+      desm: "http://desmsolutions.org/ns/",
+      rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      rdfs: "http://www.w3.org/2000/01/rdf-schema#",
+      sdo: "http://schema.org/",
+      xsd: "http://www.w3.org/2001/XMLSchema#"
     }.freeze
 
     ###
     # @description: Initializes this class with the instance to export.
     ###
-    def initialize instance
+    def initialize(instance)
       @instance = instance
     end
 
@@ -38,9 +38,9 @@ module Exporters
     def export
       {
         "@context": CONTEXT,
-        "@graph": @instance.alignments.map {|alignment|
+        "@graph": @instance.alignments.map do |alignment|
           term_nodes(alignment)
-        }.flatten.unshift(main_node)
+        end.flatten.unshift(main_node)
       }
     end
 
@@ -57,10 +57,10 @@ module Exporters
         "dcterms:title": @instance.title,
         # @todo: Where to take this from
         "dcterms:description": "",
-        "desm:abstractClassMapped": {"@id": @instance.specification.domain.uri},
-        "dcterms:hasPart": @instance.alignments.map {|alignment|
-          {"@id": alignment.uri}
-        }
+        "desm:abstractClassMapped": { "@id": @instance.specification.domain.uri },
+        "dcterms:hasPart": @instance.alignments.map do |alignment|
+          { "@id": alignment.uri }
+        end
       }
     end
 
@@ -69,10 +69,10 @@ module Exporters
     #   alignment, one for the mapped property (more than one if there are many), and the last one
     #   for the spine property.
     ###
-    def term_nodes alignment
+    def term_nodes(alignment)
       [
         alignment_node(alignment),
-        alignment.mapped_terms.map {|term| property_node(term) },
+        alignment.mapped_terms.map { |term| property_node(term) },
         property_node(alignment.spine_term)
       ].flatten
     end
@@ -80,34 +80,34 @@ module Exporters
     ###
     # @description: Specifies the format the alignment node should have.
     ###
-    def alignment_node alignment
+    def alignment_node(alignment)
       {
         "@id": "http://desmsolutions.org/TermMapping/#{alignment.id}",
         "@type": "desm:TermMapping",
-        "dcterms:isPartOf": {"@id": "http://desmsolutions.org/TermMapping/#{@instance.id}"},
+        "dcterms:isPartOf": { "@id": "http://desmsolutions.org/TermMapping/#{@instance.id}" },
         "desm:comment": alignment.comment,
-        "desm:mappedterm": alignment.mapped_terms.map {|mapped_term|
-          {"@id": mapped_term.uri}
-        },
-        "desm:mappingPredicate": {"@id": alignment.predicate&.uri},
-        "desm:spineTerm": {"@id": alignment.spine_term.uri}
+        "desm:mappedterm": alignment.mapped_terms.map do |mapped_term|
+          { "@id": mapped_term.uri }
+        end,
+        "desm:mappingPredicate": { "@id": alignment.predicate&.uri },
+        "desm:spineTerm": { "@id": alignment.spine_term.uri }
       }
     end
 
     ###
     # @description: Defines the structure of a generic property term.
     ###
-    def property_node term
+    def property_node(term)
       {
         "@id": term.source_uri,
         "@type": "rdf:Property",
-        "desm:sourceURI": {"@id": term.property.source_uri},
-        "rdfs:subPropertyOf": {"@id": term.property.subproperty_of},
-        "desm:valueSpace": {"@id": term.property.value_space},
+        "desm:sourceURI": { "@id": term.property.source_uri },
+        "rdfs:subPropertyOf": { "@id": term.property.subproperty_of },
+        "desm:valueSpace": { "@id": term.property.value_space },
         "rdfs:label": term.property.label,
         "rdfs:comment": term.property.comment,
-        "rdfs:domain": {"@id": term.property.selected_domain},
-        "rdfs:range": {"@id": term.property.selected_range}
+        "rdfs:domain": { "@id": term.property.selected_domain },
+        "rdfs:range": { "@id": term.property.selected_range }
       }
     end
   end

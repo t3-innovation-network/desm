@@ -1,7 +1,7 @@
 /**
  * Represents the login action
  *
- * @returns {Object} 
+ * @returns {Object}
  */
 export const doLogin = () => {
   return {
@@ -12,7 +12,7 @@ export const doLogin = () => {
 /**
  * Represents the logout action
  *
- * @returns {Object} 
+ * @returns {Object}
  */
 export const doLogout = () => {
   return {
@@ -23,7 +23,7 @@ export const doLogout = () => {
 /**
  * Represents setting the user to an object with all its attributes
  *
- * @returns {Object} 
+ * @returns {Object}
  */
 export const setUser = (user) => {
   return {
@@ -35,7 +35,7 @@ export const setUser = (user) => {
 /**
  * Represents setting the user to an empty object (remove the user from the session)
  *
- * @returns {Object} 
+ * @returns {Object}
  */
 export const unsetUser = (user) => {
   return {

@@ -8,7 +8,7 @@ module Processors
   class Skos
     attr_reader :file_content, :graph, :concept_nodes
 
-    def initialize file
+    def initialize(file)
       @file_content =
         if file.is_a?(String)
           JSON.parse(file)
@@ -53,9 +53,9 @@ module Processors
     # @return [Array] A collection of only nodes of type "skos:concept".
     ###
     def filter_concept_nodes
-      @graph.select {|node|
+      @graph.select do |node|
         Parsers::JsonLd::Node.new(node).types.concept?
-      }
+      end
     end
 
     ###
@@ -63,7 +63,7 @@ module Processors
     # @param [Hash] context: The context to be evaluated
     # @return [Array]
     ###
-    def context_uris_list context
+    def context_uris_list(context)
       context.keys.map do |key|
         key.split(":").first
       end
@@ -75,14 +75,14 @@ module Processors
     # @param [Array] nodes
     # @return [Array]
     ###
-    def process_node_uris nodes
-      nodes.map {|node|
+    def process_node_uris(nodes)
+      nodes.map do |node|
         if node.is_a?(String)
           node
         else
           node.is_a?(Hash) && (node["@id"] || node[:@id]) ? (node["@id"] || node[:@id]) : nil
         end
-      }
+      end
     end
   end
 end

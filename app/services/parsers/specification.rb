@@ -23,12 +23,12 @@ module Parsers
     # @description: Initialize the specifications parser
     # @param [Hash|File] specification: The file content uploaded
     ###
-    def self.from_file specification
+    def self.from_file(specification)
       new(file_content: specification)
     end
 
     def to_jsonld
-      {'@context': context, '@graph': graph}
+      { "@context": context, "@graph": graph }
     end
 
     ###
@@ -40,7 +40,7 @@ module Parsers
     # @param [String|Hash] spec
     # @return [Hash]
     ###
-    def validate_spec_format spec
+    def validate_spec_format(spec)
       spec = JSON.parse(spec) if spec.is_a?(String)
       spec = spec.with_indifferent_access if spec.is_a?(Hash)
 

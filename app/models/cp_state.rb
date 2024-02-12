@@ -6,7 +6,7 @@ module CpState
   class ConfigurationProfileStructureError < StandardError; end
 
   class Base
-    def initialize configuration_profile
+    def initialize(configuration_profile)
       @configuration_profile = configuration_profile
     end
 

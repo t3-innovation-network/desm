@@ -16,7 +16,7 @@ module Processors
   class Predicates < Skos
     include Validatable
 
-    def initialize file, strongest_match=nil
+    def initialize(file, strongest_match = nil)
       @strongest_match = strongest_match
       super(file)
     end
@@ -79,7 +79,7 @@ module Processors
     #   type: "concept scheme"
     # @return [TrueClass|FalseClass]
     ###
-    def valid_predicate predicate_parser
+    def valid_predicate(predicate_parser)
       Array.wrap(predicate_parser.read!("type")).none? do |type|
         type.downcase.include?("conceptscheme")
       end

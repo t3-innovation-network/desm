@@ -61,7 +61,7 @@ class Mapping < ApplicationRecord
   # 2. "in-progress" It means that the user is already mapping terms but
   #    not yet finished mapping
   # 3. "mapped" It means the terms are confirmed as mapped to the spine
-  enum status: {uploaded: 0, in_progress: 1, mapped: 2}
+  enum status: { uploaded: 0, in_progress: 1, mapped: 2 }
 
   ###
   # CALLBACKS
@@ -80,10 +80,10 @@ class Mapping < ApplicationRecord
   # @description: Include additional information about the mapping in
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
-  def as_json(options={})
-    super options.merge(
-      methods: %i[uploaded? mapped? in_progress? origin spine_origin domain mapped_terms new_spine_created?]
-    )
+  def as_json(options = {})
+    super(options.merge(
+      methods: %i(uploaded? mapped? in_progress? origin spine_origin domain mapped_terms new_spine_created?)
+    ))
   end
 
   ###
@@ -138,9 +138,9 @@ class Mapping < ApplicationRecord
   # @description: Notify the user about changes on the mapping
   ###
   def notify_updated
-    involved_users.each {|user|
+    involved_users.each do |user|
       MappingMailer.with(mapping: self, user: user).updated.deliver_now
-    }
+    end
   end
 
   ###
@@ -182,7 +182,7 @@ class Mapping < ApplicationRecord
   # @param [Array] ids: A collection of ids representing the terms that are
   #   going to be added as "selected" to this mapping
   ###
-  def update_selected_terms ids
+  def update_selected_terms(ids)
     self.selected_term_ids = ids
     return if spine.terms.any?
 

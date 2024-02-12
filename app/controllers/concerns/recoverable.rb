@@ -33,8 +33,8 @@ module Recoverable
   # @param [String] message
   # @param [NamedRoute] path
   ###
-  def handle(message, http_code=:internal_server_error)
-    render json: {message: message}, status: http_code
+  def handle(message, http_code = :internal_server_error)
+    render json: { message: message }, status: http_code
   end
 
   ###
@@ -54,12 +54,12 @@ module Recoverable
   ###
   def self.define_errors
     {
-      "RuntimeError": {
+      RuntimeError: {
         message_key: "errors.general",
         status_code: :internal_server_error,
         include_original_error_message: true
       },
-      "ArgumentError": {
+      ArgumentError: {
         message_key: "errors.general",
         status_code: :unprocessable_entity,
         include_original_error_message: true
@@ -79,12 +79,12 @@ module Recoverable
         status_code: :unprocessable_entity,
         include_original_error_message: true
       },
-      "InvalidCredentials": {
+      InvalidCredentials: {
         message_key: "errors.auth.invalid_credentials",
         status_code: :unprocessable_entity,
         include_original_error_message: true
       },
-      "InvalidSpecification": {
+      InvalidSpecification: {
         message_key: "errors.specs.invalid_specification",
         status_code: :unprocessable_entity,
         include_original_error_message: false
@@ -104,7 +104,7 @@ module Recoverable
         status_code: :internal_server_error,
         include_original_error_message: true
       },
-      "StandardError": {
+      StandardError: {
         message_key: "errors.general",
         status_code: :internal_server_error,
         include_original_error_message: true

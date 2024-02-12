@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 source "https://rubygems.org"
-git_source(:github) {|repo| "https://github.com/#{repo}.git" }
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+
+ruby "3.0.3"
 
 ###
 # RUBY & RAILS
@@ -69,9 +71,6 @@ gem "react-rails"
 # A Ruby client library for Redis
 gem "redis"
 
-# Use rubocop to ensure our code is clean
-gem "rubocop", require: false
-
 gem "rubyzip", "~> 2.3", require: "zip"
 
 # Simplify seeding
@@ -89,24 +88,36 @@ gem "webpacker", "~> 5.0", ">= 5.0.1"
 gem "mimemagic", github: "mimemagicrb/mimemagic", ref: "01f92d86d15d85cfd0f20dabd025dcbd36a8a60f"
 
 group :development, :test do
+  gem "brakeman", require: false
+  gem "bullet"
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "capybara"
   gem "database_cleaner"
   gem "factory_bot_rails"
   gem "faker"
   gem "rspec-rails", "~> 4.0.1"
+  # Use rubocop to ensure our code is clean
+  gem "rubocop", "~> 1.60", require: false
   gem "shoulda-matchers"
+  gem "traceroute"
   gem "vcr", "~> 6.0"
   gem "webmock", "~> 3.13"
 end
 
 group :development do
+  gem "htmlbeautifier"
+  gem "rails-erd"
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem "listen", "~> 3.2"
+  gem "overcommit"
   # Let's take advantage of rerun gem for hot-reload in development
   gem "rerun"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem "spring"
   gem "spring-watcher-listen", "~> 2.0.0"
   gem "web-console", ">= 3.3.0"
+end
+
+group :test do
+  gem "simplecov", require: false
 end

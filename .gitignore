@@ -21,6 +21,8 @@
 # Ignore uploaded files in development.
 /storage/*
 !/storage/.keep
+/db/dumps/
+/notes
 
 /public/assets
 .byebug_history
@@ -42,4 +44,7 @@ yarn-debug.log*
 # Ignore IDE donfiguration files
 .idea/*
 .vscode/*
-.byebug_histroy
+
+# simplecov reports
+coverage
+

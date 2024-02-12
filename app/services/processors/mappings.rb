@@ -10,7 +10,7 @@ module Processors
     # @param specification [Specification] The specification that this mapping is created from
     # @param user [User]
     ###
-    def initialize specification, configuration_profile_user
+    def initialize(specification, configuration_profile_user)
       @specification = specification
       @configuration_profile_user = configuration_profile_user
       @organization = configuration_profile_user.organization

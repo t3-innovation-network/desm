@@ -1,25 +1,25 @@
 import apiService, { processMessage } from "./apiService";
 /**
  * Manages the api requests
- * 
+ *
  * The possible parameters are:
- * 
+ *
  * - url: The relative url (without the base) to hit
- * 
+ *
  * - method: The HTTP method (get, post, patch, put, delete)
- * 
+ *
  * - [defaultResponse]: The default response if something bad happens but
  * we manage handle hit (it could be an empty string or an empty array).
- * 
+ *
  * - [successResponse]: What to return if everything goes well. We have
  * the data, but if the caller expects to receive a named response, this
  * comes into play.
  *
  * - [payload]: The data to send in the request
- * 
+ *
  * - [options]: Additional options like the collection of headers in an object format (not an array)
- * 
- * @param {Object} props 
+ *
+ * @param {Object} props
  */
 const apiRequest = async (props) => {
   validateParams(props);
@@ -60,8 +60,8 @@ const apiRequest = async (props) => {
 
 /**
  * Validate the parameters passed in props.
- * 
- * @param {Object} props 
+ *
+ * @param {Object} props
  */
 const validateParams = (props) => {
   if (!_.has(props, "url")) {

@@ -7,11 +7,11 @@ import {
 } from "../../helpers/Vocabularies";
 import AlertNotice from "../shared/AlertNotice";
 import fetchExternalVocabulary from "./../../services/fetchExternalVocabulary";
-import { validURL } from "../../helpers/URL";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { readFileContent } from "../dashboard/configuration-profiles/utils";
 
+// eslint-disable-next-line no-undef
 var isJSON = require("is-valid-json");
 
 const UploadVocabulary = (props) => {
@@ -76,7 +76,7 @@ const UploadVocabulary = (props) => {
    */
   useEffect(() => {
     if (file != null) {
-      readFileContent(file, setFileContent, setErrors);
+      readFileContent(file, setFileContent, (error) => setErrors([error]));
     }
   }, [file]);
 

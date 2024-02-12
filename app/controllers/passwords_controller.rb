@@ -9,7 +9,7 @@ class PasswordsController < ApplicationController
 
   before_action :validate_email, only: :forgot
   before_action :validate_token, only: :reset
-  before_action :validate_password, only: %i[strength reset]
+  before_action :validate_password, only: %i(strength reset)
 
   ###
   # @description: Manages to generate a token and send it to the user via email with

@@ -1,5 +1,5 @@
-import { filter } from "lodash";
 import React, { Component } from "react";
+import AlertNotice from "../shared/AlertNotice";
 import fetchAlignmentsForSpine from "../../services/fetchAlignmentsForSpine";
 import fetchDomain from "../../services/fetchDomain";
 import fetchSpineTerms from "../../services/fetchSpineTerms";

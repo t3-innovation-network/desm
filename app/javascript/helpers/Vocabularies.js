@@ -158,7 +158,7 @@ export const readNodeAttribute = (node, attr) => {
   /// If it's an array, return the first element assuming it's a string. If it
   /// is not a string, just return an empty string.
   if (_.isArray(node[key])) {
-    [firstNode] = node[key];
+    var [firstNode] = node[key];
     return _.isString(firstNode) ? firstNode : "";
   }
 };

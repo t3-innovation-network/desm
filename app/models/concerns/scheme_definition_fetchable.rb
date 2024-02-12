@@ -12,7 +12,7 @@ module SchemeDefinitionFetchable
     "text/xml": ".xml"
   }.freeze
 
-  def fetch_definition uri
+  def fetch_definition(uri)
     return {} unless valid_uri?(uri)
 
     file = temp_file(uri)
@@ -39,21 +39,21 @@ module SchemeDefinitionFetchable
     HttpUrlValidator.valid?(uri) || File.exist?(uri)
   end
 
-  def temp_file uri
+  def temp_file(uri)
     file = Tempfile.new(["tmpschemfile", infer_extension(uri)])
     file.write(fetch_content(uri).force_encoding("UTF-8"))
     file.rewind
     file
   end
 
-  def fetch_content uri
+  def fetch_content(uri)
     repository = RDF::Repository.load(uri)
     repository.to_rdf_json.to_json
   rescue StandardError
     URI.parse(uri).open(allow_redirections: :all).read
   end
 
-  def infer_extension uri
+  def infer_extension(uri)
     ext = File.extname(uri)
     return ext if ext.present?
 

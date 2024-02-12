@@ -10,27 +10,27 @@ describe Domain, type: :model do
 
   before(:all) do
     name_raw = {
-      "id": "name",
-      "type": "rdf:Property",
-      "label": {"en": "Human-readable version of the name of a resource."},
-      "domain": [
+      id: "name",
+      type: "rdf:Property",
+      label: { en: "Human-readable version of the name of a resource." },
+      domain: [
         "rdf:Property",
         "rdfs:Class"
       ],
-      "range": "rdf:langString",
-      "isDefinedBy": "rdfs:"
+      range: "rdf:langString",
+      isDefinedBy: "rdfs:"
     }
 
     description_raw = {
-      "id": "description",
-      "type": "rdf:Property",
-      "label": {"en": "Extended description of a resource."},
-      "domain": [
+      id: "description",
+      type: "rdf:Property",
+      label: { en: "Extended description of a resource." },
+      domain: [
         "rdf:Property",
         "rdfs:Class"
       ],
-      "range": "rdf:langString",
-      "isDefinedBy": "rdfs:"
+      range: "rdf:langString",
+      isDefinedBy: "rdfs:"
     }
 
     FactoryBot.create(:term, name: "name", raw: name_raw,

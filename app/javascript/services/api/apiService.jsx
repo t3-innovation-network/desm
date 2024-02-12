@@ -9,7 +9,7 @@ const apiService = axios.create({
 
 /**
  * Process the message to show it properly
- * @param {Error} e 
+ * @param {Error} e
  */
 export const processMessage = (e) => {
   /// Default error message

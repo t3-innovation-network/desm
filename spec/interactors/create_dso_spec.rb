@@ -12,13 +12,13 @@ RSpec.describe CreateDso, type: :interactor do
     end
 
     it "rejects creation if not enough information is provided" do
-      result = CreateDso.call({administrator: admin})
+      result = CreateDso.call({ administrator: admin })
       expect(result.error).to eq("configuration profile must be present")
 
-      result = CreateDso.call({administrator: admin, configuration_profile: cp})
+      result = CreateDso.call({ administrator: admin, configuration_profile: cp })
       expect(result.error).to eq("email must be present")
 
-      result = CreateDso.call({administrator: admin, configuration_profile: cp, email: "test@email.com"})
+      result = CreateDso.call({ administrator: admin, configuration_profile: cp, email: "test@email.com" })
       expect(result.error).to eq("name must be present")
     end
 

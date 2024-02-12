@@ -117,9 +117,7 @@ export default class PropertyMappingList extends Component {
    */
   anyError(response) {
     if (response.error) {
-      let tempErrors = errors;
-      tempErrors.push(response.error);
-      this.setState({ errors: tempErrors });
+      this.setState({ errors: [...this.state.errors, response.error] });
     }
     /// It will return a truthy value (depending no the existence
     /// of the error on the response object)

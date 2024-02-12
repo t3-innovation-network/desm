@@ -13,7 +13,7 @@ RSpec.describe FetchSkosFile, type: :interactor do
     end
 
     it "returns a correct skos file structure if uri is correct" do
-      result = FetchSkosFile.call({uri: test_uri})
+      result = FetchSkosFile.call({ uri: test_uri })
 
       expect(result.error).to be_nil
       expect(result.skos_file.nil?).to be_falsey

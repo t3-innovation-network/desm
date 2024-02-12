@@ -13,13 +13,13 @@ module Tokenable
   extend ActiveSupport::Concern
 
   included do
-    MIN_PASSWORD_LENGTH = begin
+    MIN_PASSWORD_LENGTH = begin # rubocop:disable Lint/ConstantDefinitionInBlock
       Integer(Desm::MIN_PASSWORD_LENGTH)
     rescue StandardError
       8
     end
 
-    validates :password, length: {minimum: MIN_PASSWORD_LENGTH}, unless: -> { password.nil? }
+    validates :password, length: { minimum: MIN_PASSWORD_LENGTH }, unless: -> { password.nil? }
   end
 
   protected
@@ -29,7 +29,7 @@ module Tokenable
   #   that includes this concern.
   # @return [String]
   ###
-  def generate_token(token_column=nil)
+  def generate_token(token_column = nil)
     token_column ||= :token
 
     loop do
