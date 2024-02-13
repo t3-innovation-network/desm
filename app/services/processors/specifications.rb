@@ -157,7 +157,7 @@ module Processors
       }
 
       # Avoid duplicate nodes
-      final_spec[:@graph].uniq! { |node| [node["id"], node["@id"]] }.sort_by! do |node|
+      final_spec[:@graph].uniq! { |node| [node["id"], node["@id"]] }&.sort_by! do |node|
         Parsers::JsonLd::Node.new(node).read!("label") ? 1 : 0
       end
 
