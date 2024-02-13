@@ -1,4 +1,5 @@
 # T3 Innovation Network Data Schema Converter
+![tests](https://github.com/t3-innovation-network/desm/actions/workflows/test.yml/badge.svg) ![linters](https://github.com/t3-innovation-network/desm/actions/workflows/lint.yml/badge.svg)
 
 ![T3 Innovation Network Logo](https://res.cloudinary.com/ricardo-gamarra/image/upload/v1609273002/t3-desm/T3Logo_lv3xpn.png)
 
@@ -24,9 +25,7 @@ This application provides the means to map (crosswalk) data specifications (stan
 > Precondition -> The following technologies are needed before starting the installation:
 > - ruby 3.0.3
 > - postgreSQL 13
-> - npm
-> - node
-> - yarn
+> - node 16.20 & yarn
 
 1. Clone this project locally.
 2. Create an ".env" file by copying the ".env.example" file.
@@ -39,14 +38,26 @@ This application provides the means to map (crosswalk) data specifications (stan
 9. Run `rails s`
 10. Go to http://localhost:3000
 
+For running the wepack-dev-server alongside rails use:
+```
+gem install foreman
+foreman start -f Procfile.local --env ./.env.development
+```
+
 ## Collaborate
 
 > Please create an issue or a pull request. There's a GitHub Actions linting and testing workflow that will validate quality.
+All tasks are at [project board](https://github.com/orgs/t3-innovation-network/projects/1), issue card should be moved to the column that meets its status.
+
+Development process:
+1. All commits should be meaningful, preferably contain some feature or feedback changes/fixes.
+2. Add number of issue (#issue_number) at commit message, that way it's easier to track changes.
+3. Prefer rebase over merge if there is need to updated branch with master updates.
+4. When creating PR add issue number to the PR body, it'll be linked to the issue that way.
+5. After merging (only when QA passed and merge is approved by PM) delete the branch and squash commits if needed.
+
+It's highly recommended to setup linters (`rubocop/eslint/stylelint/prettier`) at IDE and `overcommit` hooks (`overcommit --install`) or run manualy before comitting to GH `overcommit -r`.
 
 ## Jobs
 
-Jobs in production are being scheduled with server configuration running commands in a periodical basis.
-
-If you want to run these jobs using a local scheduler, check out `whenever` gem. See gem [docs](https://github.com/javan/whenever).
-
-Please check the wiki in order to know how to use the tool
+No background jobs at the moment.

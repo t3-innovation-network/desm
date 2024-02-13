@@ -1,5 +1,5 @@
 /* Stepper (Inside the Navbar) */
-@import 'colors.scss';
+@import 'colors';
 
 .indicator{
   padding-left: 7vw;
@@ -7,11 +7,13 @@
   bottom: 0.5rem;
   position: relative;
 }
+
 .indicator > .indicator-step {
   position: relative;
   top: 0.5vw;
   min-width: 7vw;
 }
+
 .indicator > .indicator-step .indicator-stepnum {
   color: $foreground-color;
   font-size: 12px;
@@ -20,17 +22,19 @@
   padding-left: 0.1vw;
   padding-right: 0.7vw;
 }
+
 .indicator > .indicator-step > .indicator-dot {
   position: absolute;
-  width: 0px;
-  height: 0px;
+  width: 0;
+  height: 0;
   display: block;
   background: $primary-color-light;
   top: 15px;
   left: 0%;
   border-radius: 50%;
 }
-.indicator > .indicator-step > .indicator-dot:after {
+
+.indicator > .indicator-step > .indicator-dot::after {
   content: ' ';
   width: 10px;
   height: 10px;
@@ -40,49 +44,61 @@
   top: 5px;
   left: -1px;
 }
-.indicator-step.active > .indicator-dot:after {
+
+.indicator-step.active > .indicator-dot::after {
   background: $primary-color;
 }
-.indicator-step.complete > .indicator-dot:after {
+
+.indicator-step.complete > .indicator-dot::after {
   background: $on-primary;
 }
+
 .indicator > .indicator-step > .progress {
   position: relative;
-  border-radius: 0px;
+  border-radius: 0;
   height: 3px;
   box-shadow: none;
 }
+
 .indicator > .indicator-step > .progress > .progress-bar {
-  width:0px;
+  width:0;
   box-shadow: none;
   opacity: 0.2;
 }
+
 .indicator > .indicator-step.active > .progress > .progress-bar {
   background: $primary-color-light;
   width:100% !important;
 }
+
 .indicator > .indicator-step.complete > .progress > .progress-bar {
   background: $on-primary !important;
   width:100% !important;
   opacity: 0.5;
 }
+
 .indicator-step.active > .indicator-stepnum {
   color: $primary-color;
 }
+
 .indicator-step.complete > .indicator-stepnum {
  color: $on-primary;
 }
+
 .indicator > .indicator-step:first-child.active > .progress > .progress-bar {
   width:0%;
 }
+
 .indicator > .indicator-step:last-child.active > .progress > .progress-bar {
   width: 100%;
 }
+
 .indicator > .indicator-step.disabled > .indicator-dot {
   background-color: $primary-color-light;
   opacity: 0.2;
 }
-.indicator > .indicator-step.disabled > .indicator-dot:after {
+
+.indicator > .indicator-step.disabled > .indicator-dot::after {
   opacity: 0;
 }
 

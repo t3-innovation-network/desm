@@ -9,7 +9,7 @@
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "4.2.2",
+    "@rails/webpacker": "5.4.4",
     "axios": "^0.21.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "bootstrap": "^4.5.0",
@@ -39,23 +39,33 @@
     "redux": "^4.0.5",
     "styled-components": "^5.2.0",
     "turbolinks": "^5.2.0",
-    "validator": "^13.1.1"
+    "validator": "^13.1.1",
+    "webpack": "^4.46.0",
+    "webpack-cli": "^3.3.12"
   },
   "version": "0.1.0",
   "devDependencies": {
+    "@babel/plugin-transform-private-methods": "^7.23.3",
+    "@babel/plugin-transform-private-property-in-object": "^7.23.4",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-unused-imports": "^3.0.0",
+    "postcss": "^8.4.35",
     "prettier": "2.1.1",
-    "webpack-dev-server": "^4.7.4"
+    "stylelint": "^15.10.2",
+    "stylelint-config-prettier": "^9.0.5",
+    "stylelint-config-standard": "^34.0.0",
+    "stylelint-config-standard-scss": "^10.0.0",
+    "webpack-dev-server": "^3"
   },
   "engines": {
-    "node": ">=12.22.12",
+    "node": ">=16.20.0",
     "yarn": ">=1.0.1"
   },
   "scripts": {
-    "lint": "eslint --ext .js --ext .jsx app/javascript",
-    "lint:js": "eslint --ext .js --ext .jsx app/javascript"
+    "lint": "eslint --ext .js --ext .jsx app/javascript && stylelint 'app/assets/stylesheets/**/*.{css,scss}' --quiet",
+    "lint:js": "eslint --ext .js --ext .jsx app/javascript",
+    "lint:scss": "stylelint 'app/assets/stylesheets/**/*.{css,scss}' --quiet"
   }
 }

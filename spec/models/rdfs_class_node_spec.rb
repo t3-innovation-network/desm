@@ -1,13 +1,25 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: rdfs_class_nodes
+#
+#  id         :bigint           not null, primary key
+#  definition :jsonb
+#  uri        :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_rdfs_class_nodes_on_uri  (uri) UNIQUE
+#
 require "rails_helper"
 
-RSpec.describe RdfsClassNode, type: :model do
-  it "has a valid factory" do
-    expect(FactoryBot.build(:rdfs_class_node)).to be_valid
+RSpec.describe RdfsClassNode do
+  it "validates presence&uniqueness" do
+    is_expected.to validate_presence_of(:uri)
+    is_expected.to validate_presence_of(:definition)
+    is_expected.to validate_uniqueness_of(:uri)
   end
-
-  it { should validate_presence_of(:uri) }
-  it { should validate_presence_of(:definition) }
-  it { should validate_uniqueness_of(:uri) }
 end

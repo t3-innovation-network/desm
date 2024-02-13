@@ -23,6 +23,8 @@ gem "rack-cors", require: "rack/cors"
 # Audit changes
 gem "audited", "~> 4.9"
 
+gem "autoprefixer-rails"
+
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.2", require: false
 
@@ -83,11 +85,12 @@ gem "strong_password", "~> 0.0.8"
 gem "turbolinks", "~> 5"
 
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem "webpacker", "~> 5.0", ">= 5.0.1"
+gem "webpacker", "~> 5.x"
 
 gem "mimemagic", github: "mimemagicrb/mimemagic", ref: "01f92d86d15d85cfd0f20dabd025dcbd36a8a60f"
 
 group :development, :test do
+  gem "annotate"
   gem "brakeman", require: false
   gem "bullet"
   gem "byebug", platforms: %i[mri mingw x64_mingw]
@@ -98,6 +101,8 @@ group :development, :test do
   gem "rspec-rails", "~> 4.0.1"
   # Use rubocop to ensure our code is clean
   gem "rubocop", "~> 1.60", require: false
+  # Disable rubocop for specs for now, too many offenses
+  # gem "rubocop-rspec", require: false
   gem "shoulda-matchers"
   gem "traceroute"
   gem "vcr", "~> 6.0"
@@ -112,6 +117,8 @@ group :development do
   gem "overcommit"
   # Let's take advantage of rerun gem for hot-reload in development
   gem "rerun"
+  gem "solargraph"
+  gem "solargraph-rails"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem "spring"
   gem "spring-watcher-listen", "~> 2.0.0"
@@ -120,4 +127,9 @@ end
 
 group :test do
   gem "simplecov", require: false
+
+  # profiling, check https://test-prof.evilmartians.io/ + use venier for ruby > 3.2
+  gem "ruby-prof", ">= 0.17.0", require: false
+  gem "stackprof", ">= 0.2.9", require: false
+  gem "test-prof"
 end

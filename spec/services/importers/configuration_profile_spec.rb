@@ -180,46 +180,24 @@ RSpec.describe Importers::ConfigurationProfile do
   it "imports configuration profile" do
     expect do
       described_class.new(data).import
-    end.to change { Alignment.count }.by(1)
-             .and change { AlignmentVocabulary.count }.by(1)
-                    .and change { AlignmentVocabularyConcept.count }.by(1)
-                           .and change { ConfigurationProfile.count }.by(1)
-                                  .and change { ConfigurationProfileUser.count }.by(1)
-                                         .and change { Domain.count }.by(1)
-                                                .and change { DomainSet.count }.by(1)
-                                                       .and change {
-                                                              Mapping.count
-                                                            }.by(1)
-                                                              .and change {
-                                                                     Organization.count
-                                                                   }.by(1)
-                                                                     .and change {
-                                                                            Predicate.count
-                                                                          }.by(1)
-                                                                            .and change {
-                                                                                   PredicateSet.count
-                                                                                 }.by(1)
-                                                                                   .and change {
-                                                                                          Role.count
-                                                                                        }.by(1)
-                                                                                          .and change {
-                                                                                                 SkosConcept.count
-                                                                                               }.by(1)
-                                                                                                 .and change {
-                                                                                                        Specification.count
-                                                                                                      }.by(1)
-                                                                                                        .and change {
-                                                                                                               Spine.count
-                                                                                                             }.by(1)
-                                                                                                               .and change {
-                                                                                                                      Term.count
-                                                                                                                    }.by(1)
-                                                                                                                      .and change {
-                                                                                                                             User.count
-                                                                                                                           }.by(1)
-                                                                                                                             .and change {
-                                                                                                                                    Vocabulary.count
-                                                                                                                                  }.by(1)
+    end.to change(Alignment, :count).by(1)
+             .and change(AlignmentVocabulary, :count).by(1)
+                    .and change(AlignmentVocabularyConcept, :count).by(1)
+                           .and change(ConfigurationProfile, :count).by(1)
+                                  .and change(ConfigurationProfileUser, :count).by(1)
+                                         .and change(Domain, :count).by(1)
+                                                .and change(DomainSet, :count).by(1)
+                                                       .and change(Mapping, :count).by(1)
+                                                              .and change(Organization, :count).by(1)
+                                                                     .and change(Predicate, :count).by(1)
+                                                                            .and change(PredicateSet, :count).by(1)
+                                                                                   .and change(Role, :count).by(1)
+                                                                                          .and change(SkosConcept, :count).by(1)
+                                                                                                 .and change(Specification, :count).by(1)
+                                                                                                        .and change(Spine, :count).by(1)
+                                                                                                               .and change(Term, :count).by(1)
+                                                                                                                      .and change(User, :count).by(1)
+                                                                                                                             .and change(Vocabulary, :count).by(1)
                                                                                                                                     .and change {
                                                                                                                                            ActionMailer::Base.deliveries.size
                                                                                                                                          }.by(0)

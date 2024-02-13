@@ -4,31 +4,31 @@ require "rails_helper"
 
 RSpec.describe CreateDso, type: :interactor do
   describe ".call" do
-    let(:admin) { FactoryBot.build(:user) }
-    let(:cp) { FactoryBot.create(:configuration_profile) }
+    let(:admin) { build(:user) }
+    let(:cp) { create(:configuration_profile) }
 
     after(:all) do
       DatabaseCleaner.clean_with(:truncation)
     end
 
     it "rejects creation if not enough information is provided" do
-      result = CreateDso.call({ administrator: admin })
+      result = described_class.call({ administrator: admin })
       expect(result.error).to eq("configuration profile must be present")
 
-      result = CreateDso.call({ administrator: admin, configuration_profile: cp })
+      result = described_class.call({ administrator: admin, configuration_profile: cp })
       expect(result.error).to eq("email must be present")
 
-      result = CreateDso.call({ administrator: admin, configuration_profile: cp, email: "test@email.com" })
+      result = described_class.call({ administrator: admin, configuration_profile: cp, email: "test@email.com" })
       expect(result.error).to eq("name must be present")
     end
 
     it "creates a standards organization" do
-      result = CreateDso.call({
-                                administrator: admin,
-                                configuration_profile: cp,
-                                email: "test@email.com",
-                                name: "Test Name"
-                              })
+      result = described_class.call({
+                                      administrator: admin,
+                                      configuration_profile: cp,
+                                      email: "test@email.com",
+                                      name: "Test Name"
+                                    })
 
       expect(cp.standards_organizations).to eq([result.dso])
       expect(result.error).to be_nil

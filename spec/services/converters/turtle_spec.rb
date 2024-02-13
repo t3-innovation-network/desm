@@ -17,12 +17,9 @@ RSpec.describe Converters::Turtle do
       it "converts N-Triples to JSON-LD" do
         expect(result.keys).to eq(%i(@graph))
 
-        expect(graph.map { |r| r["@type"] }.uniq.compact).to match_array(
-          [
-            "http://purl.org/ASN/schema/core/Statement",
-            "http://purl.org/ASN/schema/core/StandardDocument"
-          ]
-        )
+        expect(graph.map do |r|
+                 r["@type"]
+               end.uniq.compact).to contain_exactly("http://purl.org/ASN/schema/core/Statement", "http://purl.org/ASN/schema/core/StandardDocument")
 
         expect(graph.uniq.size).to eq(graph.size)
       end

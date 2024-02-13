@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: skos_concepts
+#
+#  id  :bigint           not null, primary key
+#  raw :jsonb            not null
+#  uri :string           not null
+#
+# Indexes
+#
+#  index_skos_concepts_on_uri  (uri) UNIQUE
+#
 ###
 # @description: Represents an skos concept, which is an element composing a vocabulary
 #   This is a representation of a node inside a vocabualry graph

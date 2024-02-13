@@ -1,8 +1,39 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: configuration_profiles
+#
+#  id                        :bigint           not null, primary key
+#  description               :text
+#  json_abstract_classes     :jsonb
+#  json_mapping_predicates   :jsonb
+#  name                      :string
+#  predicate_strongest_match :string
+#  slug                      :string
+#  state                     :integer          default("incomplete"), not null
+#  structure                 :jsonb
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  administrator_id          :bigint
+#  domain_set_id             :bigint
+#  predicate_set_id          :bigint
+#
+# Indexes
+#
+#  index_configuration_profiles_on_administrator_id  (administrator_id)
+#  index_configuration_profiles_on_domain_set_id     (domain_set_id)
+#  index_configuration_profiles_on_predicate_set_id  (predicate_set_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (administrator_id => users.id) ON DELETE => nullify
+#  fk_rails_...  (domain_set_id => domain_sets.id)
+#  fk_rails_...  (predicate_set_id => predicate_sets.id)
+#
 require "rails_helper"
 
-describe ConfigurationProfile, type: :model do
+describe ConfigurationProfile do
   before(:all) do
     @complete_structure = JSON.parse(
       File.read(
@@ -16,13 +47,9 @@ describe ConfigurationProfile, type: :model do
     )
   end
 
-  it "has a valid factory" do
-    expect(FactoryBot.build(:configuration_profile)).to be_valid
-  end
-
   context "predicates strongest match" do
     before(:all) do
-      @cp = FactoryBot.create(:configuration_profile)
+      @cp = create(:configuration_profile)
     end
 
     after(:all) do
@@ -45,10 +72,10 @@ describe ConfigurationProfile, type: :model do
 
   context "when it is incomplete" do
     before(:all) do
-      @cp = FactoryBot.create(:configuration_profile)
+      @cp = create(:configuration_profile)
     end
 
-    before(:each) do
+    before do
       @cp.structure = {}
     end
 
@@ -56,11 +83,8 @@ describe ConfigurationProfile, type: :model do
       DatabaseCleaner.clean_with(:truncation)
     end
 
-    it "has incomplete state at creation" do
+    it "has incomplete state at creation and has not generated structure" do
       expect(@cp.state_handler).to be_instance_of(CpState::Incomplete)
-    end
-
-    it "has not generated structure" do
       expect(@cp.standards_organizations).to be_empty
     end
 
@@ -71,7 +95,7 @@ describe ConfigurationProfile, type: :model do
     it "can be exported" do
       exported_cp = @cp.export!
 
-      expect(exported_cp).to be_equal(@cp.structure)
+      expect(exported_cp).to equal(@cp.structure)
     end
 
     it "can not be deactivated" do
@@ -97,7 +121,7 @@ describe ConfigurationProfile, type: :model do
       Role.create!(name: "mapper")
       Role.create!(name: "profile admin")
 
-      @cp = FactoryBot.create(:configuration_profile)
+      @cp = create(:configuration_profile)
       @cp.update!(structure: @complete_structure)
     end
 
@@ -117,7 +141,7 @@ describe ConfigurationProfile, type: :model do
     it "can be exported" do
       exported_cp = @cp.export!
 
-      expect(exported_cp).to be_equal(@cp.structure)
+      expect(exported_cp).to equal(@cp.structure)
     end
 
     it "can not be deactivated" do
@@ -143,7 +167,7 @@ describe ConfigurationProfile, type: :model do
       Role.create!(name: "mapper")
       Role.create!(name: "profile admin")
 
-      @cp = FactoryBot.create(:configuration_profile)
+      @cp = create(:configuration_profile)
       @cp.update!(structure: @complete_structure)
       @cp.activate!
     end
@@ -170,7 +194,7 @@ describe ConfigurationProfile, type: :model do
     it "can be exported" do
       exported_cp = @cp.export!
 
-      expect(exported_cp).to be_equal(@cp.structure)
+      expect(exported_cp).to equal(@cp.structure)
     end
 
     it "can be deactivated" do
@@ -192,7 +216,7 @@ describe ConfigurationProfile, type: :model do
       Role.create!(name: "mapper")
       Role.create!(name: "profile admin")
 
-      @cp = FactoryBot.create(:configuration_profile)
+      @cp = create(:configuration_profile)
       @cp.update!(structure: @complete_structure)
       @cp.activate!
       @cp.deactivate!
@@ -214,7 +238,7 @@ describe ConfigurationProfile, type: :model do
     it "can be exported" do
       exported_cp = @cp.export!
 
-      expect(exported_cp).to be_equal(@cp.structure)
+      expect(exported_cp).to equal(@cp.structure)
     end
 
     it "can not be deactivated again" do
@@ -236,7 +260,7 @@ describe ConfigurationProfile, type: :model do
 
   context "when its structure has to be validated" do
     before(:all) do
-      @cp = FactoryBot.create(:configuration_profile)
+      @cp = create(:configuration_profile)
     end
 
     after(:all) do
@@ -249,7 +273,7 @@ describe ConfigurationProfile, type: :model do
       }
       @cp.update!(structure: invalid_object)
 
-      expect(@cp.structure_valid?).to be_falsey
+      expect(@cp).not_to be_structure_valid
     end
 
     it "accepts as valid but not as complete a json structure for a configuration profile" do
@@ -264,8 +288,8 @@ describe ConfigurationProfile, type: :model do
       }
       @cp.update!(structure: valid_object)
 
-      expect(@cp.structure_valid?).to be_truthy
-      expect(@cp.structure_complete?).to be_falsey
+      expect(@cp).to be_structure_valid
+      expect(@cp).not_to be_structure_complete
     end
 
     it "Returns the description of the errors when there are any" do
@@ -275,28 +299,28 @@ describe ConfigurationProfile, type: :model do
       }
 
       @cp.update!(structure: object_with_additional_properties)
-      validation_result = ConfigurationProfile.validate_structure(@cp.structure, "complete")
+      validation_result = described_class.validate_structure(@cp.structure, "complete")
 
-      expect(@cp.structure_valid?).to be_truthy
+      expect(@cp).to be_structure_valid
       expect(validation_result).to include(a_string_matching("did not contain a required property"))
     end
 
     it "accepts as complete a complete and valid json structure for a configuration profile" do
-      expect(@cp.structure_complete?).to be_falsey
+      expect(@cp).not_to be_structure_complete
       expect(@cp.state_handler).to be_instance_of(CpState::Incomplete)
 
       @cp.update!(structure: @complete_structure)
 
-      expect(@cp.structure_complete?).to be_truthy
+      expect(@cp).to be_structure_complete
       expect(@cp.state_handler).to be_instance_of(CpState::Complete)
     end
 
     it "rejects a configuration profile structure with an invalid email for an agent" do
       @cp.update!(structure: @valid_structure_with_invalid_email)
-      validation_result = ConfigurationProfile.validate_structure(@cp.structure)
+      validation_result = described_class.validate_structure(@cp.structure)
 
-      expect(@cp.structure_complete?).to be_falsey
-      expect(@cp.structure_valid?).to be_falsey
+      expect(@cp).not_to be_structure_complete
+      expect(@cp).not_to be_structure_valid
       expect(validation_result).to include(a_string_matching("did not match the regex"))
       expect(@cp.state_handler).to be_instance_of(CpState::Incomplete)
       expect { @cp.complete! }.to raise_error CpState::NotYetReadyForTransition
@@ -309,7 +333,7 @@ describe ConfigurationProfile, type: :model do
       Role.create!(name: "mapper")
       Role.create!(name: "profile admin")
 
-      @cp = FactoryBot.create(:configuration_profile)
+      @cp = create(:configuration_profile)
       @cp.update!(structure: @complete_structure)
       @cp.activate!
 
@@ -365,19 +389,19 @@ describe ConfigurationProfile, type: :model do
     it "doesn't leave orphan organizations" do
       expect do
         configuration_profile1.destroy
-      end.to(change { Alignment.count }.by(-10)
-      .and(change { Organization.count }.by(0))
-      .and(change { ConfigurationProfileUser.count }.by(-1))
-      .and(change { Mapping.count }.by(-1))
-      .and(change { Specification.count }.by(-1))
-      .and(change { Spine.count }.by(-1))
-      .and(change { User.count }.by(0)))
+      end.to(change(Alignment, :count).by(-10)
+      .and(change(Organization, :count).by(0))
+      .and(change(ConfigurationProfileUser, :count).by(-1))
+      .and(change(Mapping, :count).by(-1))
+      .and(change(Specification, :count).by(-1))
+      .and(change(Spine, :count).by(-1))
+      .and(change(User, :count).by(0)))
 
       expect { configuration_profile1.reload }.to raise_error(ActiveRecord::RecordNotFound)
       expect { mapping.reload }.to raise_error(ActiveRecord::RecordNotFound)
       expect { specification.reload }.to raise_error(ActiveRecord::RecordNotFound)
 
-      expect { configuration_profile2.destroy }.to(change { Organization.count }.by(-1))
+      expect { configuration_profile2.destroy }.to(change(Organization, :count).by(-1))
     end
   end
 end

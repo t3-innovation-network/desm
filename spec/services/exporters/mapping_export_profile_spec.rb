@@ -7,7 +7,7 @@ RSpec.describe Exporters::MappingExportProfile do
     Role.create!(name: "profile admin")
     Role.create!(name: "dso admin")
     Role.create!(name: "mapper")
-    @cp = FactoryBot.create(:configuration_profile)
+    @cp = create(:configuration_profile)
     complete_structure = Rails.root.join("spec", "fixtures", "complete.configuration.profile.json")
     valid_json_abstract_classes = JSON.parse(File.read(Rails.root.join("concepts", "desmAbstractClasses.json")))
     valid_json_mapping_predicates =
