@@ -3,12 +3,12 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.0.3"
+ruby "3.2.2"
 
 ###
 # RUBY & RAILS
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 6.0.3", ">= 6.0.3.2"
+gem "rails", "= 6.1.6.1"
 ###
 
 ###
@@ -51,6 +51,8 @@ gem "linkeddata", "~> 3.1"
 
 # Use mailgun servers for sending mails
 gem "mailgun_rails"
+
+gem "net-smtp", require: false
 
 # Allow redirections in URI.open
 gem "open_uri_redirections", "~> 0.2"

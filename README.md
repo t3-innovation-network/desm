@@ -23,7 +23,7 @@ This application provides the means to map (crosswalk) data specifications (stan
 ## Local installation 2
 
 > Precondition -> The following technologies are needed before starting the installation:
-> - ruby 3.0.3
+> - ruby 3.2.2
 > - postgreSQL 13
 > - node 16.20 & yarn
 

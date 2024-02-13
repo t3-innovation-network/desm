@@ -5,7 +5,7 @@ default: &default
       asset_pipeline_precompile: true
       node_version: 16.20.0
       operating_system: ubuntu2004
-      ruby_version: 3.0.3
+      ruby_version: 3.2.2
 
 production:
   <<: *default
