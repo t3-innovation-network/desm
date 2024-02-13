@@ -78,8 +78,8 @@ class Alignment < ApplicationRecord
   # @description: Include additional information about the mapping in
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
-  def as_json(options={})
-    super options.merge(methods: %i[origin])
+  def as_json(options = {})
+    super(options.merge(methods: %i(origin)))
   end
 
   ###
@@ -112,7 +112,7 @@ class Alignment < ApplicationRecord
   # @param [Array] ids: A collection of ids representing the terms that are
   #   going to be mapped to this alignment
   ###
-  def update_mapped_terms ids
+  def update_mapped_terms(ids)
     self.mapped_term_ids = ids
   end
 end

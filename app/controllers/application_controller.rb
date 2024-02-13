@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   # @description: Create a class instance of the model being represented
   # @return [Object] an instance of the class being represented
   ###
-  def with_instance model_name=nil
+  def with_instance(model_name = nil)
     model_name = controller_name.classify.constantize unless model_name.present?
     @instance = params[:id].present? ? model_name.find(params[:id]) : model_name.new
   end
@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
   # @description: Returns a 404 json response
   ###
   def not_found
-    render json: {error: t("errors.not_found")}, status: :not_found
+    render json: { error: t("errors.not_found") }, status: :not_found
   end
 
   private
@@ -76,6 +76,6 @@ class ApplicationController < ActionController::Base
   # @param [Exception] _exception The exception that was raised
   ###
   def user_not_authorized(_exception)
-    render json: {error: t("errors.auth.unauthorized_access")}, status: :unauthorized
+    render json: { error: t("errors.auth.unauthorized_access") }, status: :unauthorized
   end
 end

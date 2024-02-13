@@ -3,77 +3,81 @@
 ###
 # @description: Place all the actions related to organizations
 ###
-class API::V1::OrganizationsController < ApplicationController
-  before_action :authorize_with_policy, except: :index
+module API
+  module V1
+    class OrganizationsController < ApplicationController
+      before_action :authorize_with_policy, except: :index
 
-  ###
-  # @description: Lists all the organizations
-  ###
-  def index
-    organizations =
-      if current_configuration_profile
-        current_configuration_profile.standards_organizations
-      else
-        Organization.all
+      ###
+      # @description: Lists all the organizations
+      ###
+      def index
+        organizations =
+          if current_configuration_profile
+            current_configuration_profile.standards_organizations
+          else
+            Organization.all
+          end
+
+        render json: organizations.order(name: :asc).includes(:users),
+               include: :users
       end
 
-    render json: organizations.order(name: :asc).includes(:users),
-           include: :users
-  end
+      ###
+      # @description: Prepares the data for the edit form
+      ###
+      def show
+        render json: @instance
+      end
 
-  ###
-  # @description: Prepares the data for the edit form
-  ###
-  def show
-    render json: @instance
-  end
+      ###
+      # @description: Adds a new organization to the database
+      ###
+      def create
+        @instance = Organization.create(permitted_params)
 
-  ###
-  # @description: Adds a new organization to the database
-  ###
-  def create
-    @instance = Organization.create(permitted_params)
+        render json: {
+          success: true,
+          organization: @instance
+        }
+      end
 
-    render json: {
-      success: true,
-      organization: @instance
-    }
-  end
+      ###
+      # @description: Udates the attributes of an organization
+      ###
+      def update
+        @instance.update(permitted_params)
 
-  ###
-  # @description: Udates the attributes of an organization
-  ###
-  def update
-    @instance.update(permitted_params)
+        render json: @instance
+      end
 
-    render json: @instance
-  end
+      ###
+      # @description: Removes an organization from the database
+      ###
+      def destroy
+        @instance.destroy!
 
-  ###
-  # @description: Removes an organization from the database
-  ###
-  def destroy
-    @instance.destroy!
+        render json: {
+          status: :removed
+        }
+      end
 
-    render json: {
-      status: :removed
-    }
-  end
+      private
 
-  private
+      ###
+      # @description: Execute the authorization policy
+      ###
+      def authorize_with_policy
+        authorize(with_instance)
+      end
 
-  ###
-  # @description: Execute the authorization policy
-  ###
-  def authorize_with_policy
-    authorize(with_instance)
-  end
-
-  ###
-  # @description: Clean params
-  # @return [ActionController::Parameters]
-  ###
-  def permitted_params
-    params.require(:organization).permit(:name, :email)
+      ###
+      # @description: Clean params
+      # @return [ActionController::Parameters]
+      ###
+      def permitted_params
+        params.require(:organization).permit(:name, :email)
+      end
+    end
   end
 end

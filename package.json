@@ -43,7 +43,19 @@
   },
   "version": "0.1.0",
   "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-unused-imports": "^3.0.0",
     "prettier": "2.1.1",
     "webpack-dev-server": "^4.7.4"
+  },
+  "engines": {
+    "node": ">=12.22.12",
+    "yarn": ">=1.0.1"
+  },
+  "scripts": {
+    "lint": "eslint --ext .js --ext .jsx app/javascript",
+    "lint:js": "eslint --ext .js --ext .jsx app/javascript"
   }
 }

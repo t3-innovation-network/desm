@@ -77,7 +77,7 @@ const AdminForm = ({ record, onCancel, onSave }) => {
             />
             {record.id && (
               <small className="form-text text-muted">
-                Leave password blank if you don't want to change it
+                Leave password blank if you don&apos;t want to change it
               </small>
             )}
           </div>

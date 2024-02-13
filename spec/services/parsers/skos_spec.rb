@@ -50,7 +50,7 @@ RSpec.describe Parsers::Skos do
     end
 
     it "returns false for an invalid file" do
-      parser = described_class.new(file_content: {"name": "test"})
+      parser = described_class.new(file_content: { name: "test" })
       result = parser.valid_skos?
 
       expect(result).to be_falsey
@@ -69,8 +69,8 @@ RSpec.describe Parsers::Skos do
 
     it "raises InvalidSkosFile when the skos file is invalid" do
       invalid_file_content = {
-        "example": "of",
-        "invalid": "content"
+        example: "of",
+        invalid: "content"
       }
 
       parser = described_class.new(file_content: invalid_file_content)

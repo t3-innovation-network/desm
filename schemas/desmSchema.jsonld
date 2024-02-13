@@ -29,12 +29,12 @@
     "domain": {"id": "rdfs:domain", "type": "id"} ,
     "email": {"id": "sdo:email", "type": "xsd:string"} ,
     "githubHandle": {"id": "desm:githubHandle", "type": "xsd:string"} ,
-    "hasDSO": {"id": "desm:hasDSO", "type": "id"} , 
+    "hasDSO": {"id": "desm:hasDSO", "type": "id"} ,
     "hasPart": {"id": "dct:hasPart", "type": "id"} ,
     "hasProperty": {"id": "desm:hasProperty", "type": "id"} ,
     "hasSchema": {"id": "desm:hasSchema", "type": "id"} ,
     "hasScheme": {"id": "desm:hasScheme", "type": "id"} ,
-    "hasTermMapping": {"id": "desm:hasTermMapping", "type": "id"} ,   
+    "hasTermMapping": {"id": "desm:hasTermMapping", "type": "id"} ,
     "hasTopConcept": {"id": "skos:hasTopConcept", "type": "id"} ,
     "inSchema": {"id": "desm:inSchema", "type": "id"} ,
     "inScheme": {"id": "skos:inScheme", "type": "id"} ,
@@ -56,13 +56,13 @@
     "spineTerm": {"id": "desm:spineTerm", "type": "xsd:string"} ,
     "title": {"id": "dcterms:title", "@container": "@language"}
   },
-  
-  "@graph": 
+
+  "@graph":
     [
         {
             "id": "desm:AbstractClassMapping",
             "type": "rdfs:Class",
-            "label": {"en": "Abstract Class Mapping"}, 
+            "label": {"en": "Abstract Class Mapping"},
             "comment": {"en": "Resource describing mappings by one or more Data Standards Organizations (DSOs) to a single abstract class."},
             "isDefinedBy": "desm:"
         },
@@ -93,7 +93,7 @@
             "type": "rdfs:Class",
             "label": {"en": "Concept Scheme"},
             "comment": {"en": "A set of concepts, optionally including statements about semantic relationships between those concepts."},
-            "scopeNote": {"en": "A concept scheme may be defined to include concepts from different sources."}, 
+            "scopeNote": {"en": "A concept scheme may be defined to include concepts from different sources."},
             "isDefinedBy": "skos:"
         },
         {
@@ -223,7 +223,7 @@
                 "desm:TermMapping"
             ],
             "isDefinedBy": "dct:"
-        },        
+        },
         {
             "id": "desm:hasProperty",
             "type": "rdf:Property",
@@ -253,7 +253,7 @@
         },
         {
             "id": "desm:hasTermMapping",
-            "type": "rdf:Property" ,       
+            "type": "rdf:Property" ,
             "label": {"en": "Has Term Mapping"},
             "comment": {"en": "Relates a property to a term mapping in which it is included."},
             "domain": "rdf:Property",
@@ -292,7 +292,7 @@
             "type": "rdf:Property",
             "label": {"en": "Is Part Of"},
             "comment": {"en": "Related resource in which the described resource is physically or logically included."},
-            "domain": [    
+            "domain": [
                 "desm:TermMapping",
                 "desm:AbstractClassMapping"
             ],
@@ -370,7 +370,7 @@
         {
             "id": "skos:narrower",
             "type": "rdf:Property",
-            "label": {"en": "Narrower"}, 
+            "label": {"en": "Narrower"},
             "comment": {"en": "Narrower concepts are typically rendered as children in a concept hierarchy (tree)."},
             "domain": "skos:Concept",
             "range": "skos:Concept",
@@ -380,7 +380,7 @@
             "id": "desm:range",
             "type": "rdf:Property",
             "label": {"en": "Range"},
-            "comment": {"en": "Property to used to state that the values of a property are instances of one or more classes."}, 
+            "comment": {"en": "Property to used to state that the values of a property are instances of one or more classes."},
             "domain": "rdf:Property",
             "range": [
                 "skos:Concept",

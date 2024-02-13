@@ -21,7 +21,7 @@ RSpec.describe Importers::ConfigurationProfile do
   let(:mapping_description) { Faker::Lorem.sentence }
   let(:mapping_name) { Faker::Lorem.word }
   let(:mapping_slug) { Faker::Lorem.word }
-  let(:mapping_status) { %w[uploaded in_progress mapped].sample }
+  let(:mapping_status) { %w(uploaded in_progress mapped).sample }
   let(:mapping_title) { Faker::Lorem.word }
   let(:name) { Faker::Lorem.word }
   let(:organization_description) { Faker::Lorem.sentence }
@@ -41,7 +41,7 @@ RSpec.describe Importers::ConfigurationProfile do
   let(:specification_name) { Faker::Lorem.word }
   let(:specification_version) { "1" }
   let(:specification_use_case) { Faker::Lorem.word }
-  let(:state) { %w[incomplete complete active deactivated].sample }
+  let(:state) { %w(incomplete complete active deactivated).sample }
   let(:structure) { JSON(Faker::Json.shallow_json) }
   let(:term_identifier) { Faker::Lorem.word }
   let(:term_name) { Faker::Lorem.word }
@@ -167,7 +167,7 @@ RSpec.describe Importers::ConfigurationProfile do
       ],
       "vocabularies" => [
         {
-          "concepts" => [{"raw" => concept_raw, "uri" => concept_uri}],
+          "concepts" => [{ "raw" => concept_raw, "uri" => concept_uri }],
           "content" => vocabulary_content,
           "context" => vocabulary_context,
           "name" => vocabulary_name
@@ -176,62 +176,53 @@ RSpec.describe Importers::ConfigurationProfile do
     }
   end
 
+  # rubocop:disable Layout/LineLength
   it "imports configuration profile" do
-    expect {
+    expect do
       described_class.new(data).import
-    }.to change { Alignment.count }.by(1)
-                                   .and change { AlignmentVocabulary.count }.by(1)
+    end.to change { Alignment.count }.by(1)
+             .and change { AlignmentVocabulary.count }.by(1)
+                    .and change { AlignmentVocabularyConcept.count }.by(1)
+                           .and change { ConfigurationProfile.count }.by(1)
+                                  .and change { ConfigurationProfileUser.count }.by(1)
+                                         .and change { Domain.count }.by(1)
+                                                .and change { DomainSet.count }.by(1)
+                                                       .and change {
+                                                              Mapping.count
+                                                            }.by(1)
+                                                              .and change {
+                                                                     Organization.count
+                                                                   }.by(1)
+                                                                     .and change {
+                                                                            Predicate.count
+                                                                          }.by(1)
                                                                             .and change {
-                                                                                   AlignmentVocabularyConcept.count
+                                                                                   PredicateSet.count
                                                                                  }.by(1)
-      .and change {
-             ConfigurationProfile.count
-           }.by(1)
-      .and change {
-             ConfigurationProfileUser.count
-           }.by(1)
-      .and change {
-             Domain.count
-           }.by(1)
-      .and change {
-             DomainSet.count
-           }.by(1)
-      .and change {
-             Mapping.count
-           }.by(1)
-      .and change {
-             Organization.count
-           }.by(1)
-      .and change {
-             Predicate.count
-           }.by(1)
-      .and change {
-             PredicateSet.count
-           }.by(1)
-      .and change {
-             Role.count
-           }.by(1)
-      .and change {
-             SkosConcept.count
-           }.by(1)
-      .and change {
-             Specification.count
-           }.by(1)
-      .and change {
-             Spine.count
-           }.by(1)
-      .and change {
-             Term.count
-           }.by(1)
-      .and change {
-             User.count
-           }.by(1)
-      .and change {
-             Vocabulary.count
-           }.by(1)
-      .and change {
-             ActionMailer::Base.deliveries.size
-           }.by(0)
+                                                                                   .and change {
+                                                                                          Role.count
+                                                                                        }.by(1)
+                                                                                          .and change {
+                                                                                                 SkosConcept.count
+                                                                                               }.by(1)
+                                                                                                 .and change {
+                                                                                                        Specification.count
+                                                                                                      }.by(1)
+                                                                                                        .and change {
+                                                                                                               Spine.count
+                                                                                                             }.by(1)
+                                                                                                               .and change {
+                                                                                                                      Term.count
+                                                                                                                    }.by(1)
+                                                                                                                      .and change {
+                                                                                                                             User.count
+                                                                                                                           }.by(1)
+                                                                                                                             .and change {
+                                                                                                                                    Vocabulary.count
+                                                                                                                                  }.by(1)
+                                                                                                                                    .and change {
+                                                                                                                                           ActionMailer::Base.deliveries.size
+                                                                                                                                         }.by(0)
 
     profile = ConfigurationProfile.last
     expect(profile.configuration_profile_users.count).to eq(1)
@@ -350,4 +341,5 @@ RSpec.describe Importers::ConfigurationProfile do
     expect(alignment_vocabulary_concept.predicate).to eq(predicate)
     expect(alignment_vocabulary_concept.spine_concept).to eq(concept)
   end
+  # rubocop:enable Layout/LineLength
 end

@@ -18,9 +18,8 @@
     "prefLabel": {"@id": "skos:prefLabel", "@container": "@language"},
     "title": {"@id": "dcterms:title", "@container": "@language"}
   },
-  
   "@graph": [
-     {
+    {
       "id": "desm:mappingClasses",
       "type": "skos:ConceptScheme",
       "title": {"en-us": "Test Abstract Mapping Class: Competency"},

@@ -56,12 +56,13 @@ export default class PropertyMappingsFilter extends Component {
       (sOrg) => sOrg.id == orgId
     );
 
+    let tempSelectedSpineOrganizations;
     if (isSelected) {
-      var tempSelectedSpineOrganizations = selectedSpineOrganizations.filter(
+      tempSelectedSpineOrganizations = selectedSpineOrganizations.filter(
         (org) => org.id != orgId
       );
     } else {
-      var tempSelectedSpineOrganizations = [
+      tempSelectedSpineOrganizations = [
         ...selectedSpineOrganizations,
         organizations.find((org) => org.id == orgId),
       ];
@@ -86,12 +87,13 @@ export default class PropertyMappingsFilter extends Component {
       (sOrg) => sOrg.id == orgId
     );
 
+    let tempSelectedAlignmentOrganizations;
     if (isSelected) {
-      var tempSelectedAlignmentOrganizations = selectedAlignmentOrganizations.filter(
+      tempSelectedAlignmentOrganizations = selectedAlignmentOrganizations.filter(
         (org) => org.id != orgId
       );
     } else {
-      var tempSelectedAlignmentOrganizations = [
+      tempSelectedAlignmentOrganizations = [
         ...selectedAlignmentOrganizations,
         organizations.find((org) => org.id == orgId),
       ];
@@ -112,12 +114,13 @@ export default class PropertyMappingsFilter extends Component {
       (sPredicate) => sPredicate.id == predicateId
     );
 
+    let tempSelectedPredicates;
     if (isSelected) {
-      var tempSelectedPredicates = selectedPredicates.filter(
+      tempSelectedPredicates = selectedPredicates.filter(
         (sPredicate) => sPredicate.id != predicateId
       );
     } else {
-      var tempSelectedPredicates = [
+      tempSelectedPredicates = [
         ...selectedPredicates,
         predicates.find((sPredicate) => sPredicate.id == predicateId),
       ];

@@ -17,13 +17,13 @@ RSpec.describe CreateSchema, type: :interactor do
       result = CreateSchema.call
       expect(result.error).to eq("domain_id must be present")
 
-      result = CreateSchema.call({domain_id: domain.id})
+      result = CreateSchema.call({ domain_id: domain.id })
       expect(result.error).to eq("name must be present")
 
-      result = CreateSchema.call({domain_id: domain.id, name: "test"})
+      result = CreateSchema.call({ domain_id: domain.id, name: "test" })
       expect(result.error).to eq("configuration profile user must be present")
 
-      result = CreateSchema.call({domain_id: domain.id, name: "test", configuration_profile_user: user})
+      result = CreateSchema.call({ domain_id: domain.id, name: "test", configuration_profile_user: user })
       expect(result.error).to eq("uri must be present")
     end
 

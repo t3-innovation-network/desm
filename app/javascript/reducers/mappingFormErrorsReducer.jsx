@@ -3,7 +3,7 @@
  * and errors can occur in different files, to avoid passing errors on props
  * or having error messages in different parts of the screen, this reducer
  * gathers the mapping form errors.
- * 
+ *
  * @returns {Array}
  */
 const mappingFormErrorsReducer = (state = [], action) => {

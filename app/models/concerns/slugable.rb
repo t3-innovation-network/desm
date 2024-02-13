@@ -18,7 +18,7 @@ module Slugable
 
   private
 
-  def uri_safe str
+  def uri_safe(str)
     URI.encode_www_form_component(str)
   end
 

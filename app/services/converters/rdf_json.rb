@@ -12,7 +12,7 @@ module Converters
       reader = RDF::JSON::Reader.open(file.path)
       graph = RDF::Graph.new << reader
       expanded_resources = JSON::LD::API.fromRdf(graph)
-      context = reader.prefixes.map {|key, term| [key.to_s, term.value] }.to_h
+      context = reader.prefixes.to_h { |key, term| [key.to_s, term.value] }
       JSON::LD::API.compact(expanded_resources, context).symbolize_keys
     rescue StandardError
       file_content = File.read(file)

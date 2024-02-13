@@ -170,7 +170,7 @@ RSpec.describe Exporters::ConfigurationProfile do
   let(:vocabulary_data) do
     [
       {
-        "concepts" => [{"raw" => concept.raw, "uri" => concept.uri}],
+        "concepts" => [{ "raw" => concept.raw, "uri" => concept.uri }],
         "content" => vocabulary.content,
         "context" => vocabulary.context,
         "name" => vocabulary.name

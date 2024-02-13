@@ -166,19 +166,14 @@ const PageStepRenderer = () => {
   switch (currentStep) {
     case 1:
       return <CPMetaData />;
-      break;
     case 2:
       return <MappingPredicates />;
-      break;
     case 3:
       return <AbstractClasses />;
-      break;
     case 4:
       return <DSOsInfo />;
-      break;
     default:
       return <CPMetaData />;
-      break;
   }
 };
 

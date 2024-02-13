@@ -1,11 +1,11 @@
 /**
  * Sets the vocabularies collection (on upload phase) to an empty array or a valid one
  * depending on the action
- * 
+ *
  * These are the vocabularies found in the files selected by the user in the attachment
  * input on the "mapping form", or in the further screens when uploading vocabularies
  * for the specification.
- * 
+ *
  * @returns {Array}
  */
 const vocabulariesReducer = (state = [], action) => {

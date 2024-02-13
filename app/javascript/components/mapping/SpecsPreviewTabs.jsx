@@ -6,7 +6,6 @@ import { setVocabularies } from "../../actions/vocabularies";
 import { vocabName } from "../../helpers/Vocabularies";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { render } from "react-dom";
 import pluralize from "pluralize";
 
 /**

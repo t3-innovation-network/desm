@@ -1,6 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { MAX_MAPPING_WEIGHT_PER_ORGANIZATION } from "../../helpers/Constants";
-import fetchAlignmentsForSpine from "../../services/fetchAlignmentsForSpine";
 import AlertNotice from "../shared/AlertNotice";
 import Loader from "../shared/Loader";
 import ProgressReportBar from "../shared/ProgressReportBar";

@@ -24,13 +24,14 @@ class User < ApplicationRecord
   after_create :send_welcome_email, unless: :skip_sending_welcome_email
   after_save :update_configuration_profiles
 
-  def as_json(options={})
-    super options.merge(methods: %i[roles])
+  def as_json(options = {})
+    super(options.merge(methods: %i(roles)))
   end
 
   def assign_role(role_id)
     return false if Role.find(role_id) && !Assignment.where(user_id: id, role_id: role_id)
-    return true if Assignment.create!(user_id: id, role_id: role_id)
+
+    true if Assignment.create!(user_id: id, role_id: role_id)
   end
 
   def available_domains
@@ -65,7 +66,7 @@ class User < ApplicationRecord
   end
 
   def role?(role)
-    roles.any? {|r| r.name.underscore.to_sym.eql?(role.to_s.underscore.to_sym) }
+    roles.any? { |r| r.name.underscore.to_sym.eql?(role.to_s.underscore.to_sym) }
   end
 
   def send_reset_password_instructions

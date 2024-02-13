@@ -30,9 +30,9 @@ describe ConfigurationProfile, type: :model do
     end
 
     it "fail to save an invalid predicate strongest match" do
-      expect {
+      expect do
         @cp.update!(predicate_strongest_match: "should-fail-test.com/123456")
-      }.to raise_error ActiveRecord::RecordNotSaved
+      end.to raise_error ActiveRecord::RecordNotSaved
     end
 
     it "accepts a valid predicate strongest match" do
@@ -245,7 +245,7 @@ describe ConfigurationProfile, type: :model do
 
     it "rejects an invalid json structure for a configuration profile" do
       invalid_object = {
-        "standardsOrganizations": 123
+        standardsOrganizations: 123
       }
       @cp.update!(structure: invalid_object)
 
@@ -254,11 +254,11 @@ describe ConfigurationProfile, type: :model do
 
     it "accepts as valid but not as complete a json structure for a configuration profile" do
       valid_object = {
-        "name": "Test CP",
-        "description": "Example description for configuration profile",
-        "standardsOrganizations": [
+        name: "Test CP",
+        description: "Example description for configuration profile",
+        standardsOrganizations: [
           {
-            "name": "Example SDO"
+            name: "Example SDO"
           }
         ]
       }
@@ -270,8 +270,8 @@ describe ConfigurationProfile, type: :model do
 
     it "Returns the description of the errors when there are any" do
       object_with_additional_properties = {
-        "name": "Test CP",
-        "description": "Example description for a configuration profile"
+        name: "Test CP",
+        description: "Example description for a configuration profile"
       }
 
       @cp.update!(structure: object_with_additional_properties)
@@ -342,20 +342,20 @@ describe ConfigurationProfile, type: :model do
     let(:user1) { create(:user) }
     let(:user2) { create(:user) }
 
-    let!(:configuration_profile_user1) {
+    let!(:configuration_profile_user1) do
       create(:configuration_profile_user, configuration_profile: configuration_profile1, user: user1)
-    }
-    let!(:configuration_profile_user2) {
+    end
+    let!(:configuration_profile_user2) do
       create(:configuration_profile_user, configuration_profile: configuration_profile2, user: user2)
-    }
+    end
     let!(:specification) { create(:specification, configuration_profile_user: configuration_profile_user1) }
-    let!(:mapping) {
+    let!(:mapping) do
       create(:mapping, configuration_profile_user: configuration_profile_user1, specification: specification)
-    }
+    end
 
     before do
       mapping.spine.terms = create_list(:term, 10)
-      10.times {|i| create(:alignment, mapping: mapping, spine_term: mapping.spine.terms[i]) }
+      10.times { |i| create(:alignment, mapping: mapping, spine_term: mapping.spine.terms[i]) }
 
       organization = create(:organization)
       configuration_profile1.standards_organizations << organization
@@ -363,9 +363,9 @@ describe ConfigurationProfile, type: :model do
     end
 
     it "doesn't leave orphan organizations" do
-      expect {
+      expect do
         configuration_profile1.destroy
-      }.to(change { Alignment.count }.by(-10)
+      end.to(change { Alignment.count }.by(-10)
       .and(change { Organization.count }.by(0))
       .and(change { ConfigurationProfileUser.count }.by(-1))
       .and(change { Mapping.count }.by(-1))

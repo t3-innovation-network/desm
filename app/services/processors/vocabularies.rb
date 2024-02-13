@@ -6,7 +6,7 @@ module Processors
   #   skos concepts as a graph
   ###
   class Vocabularies < Skos
-    def create name, configuration_profile
+    def create(name, configuration_profile)
       @vocabulary = create_vocabulary(name, configuration_profile)
 
       @vocabulary.concepts = create_concepts
@@ -14,7 +14,7 @@ module Processors
       @vocabulary
     end
 
-    def create_vocabulary name, configuration_profile
+    def create_vocabulary(name, configuration_profile)
       @vocabulary = configuration_profile.vocabularies.find_or_initialize_by(name: name) do |vocab|
         vocab.update!(
           content: first_concept_scheme_node,
@@ -27,11 +27,11 @@ module Processors
       concept_nodes.map do |concept|
         SkosConcept.find_or_initialize_by(
           uri: Parsers::JsonLd::Node.new(concept).read!("id")
-        ) {|c_concept|
+        ) do |c_concept|
           c_concept.update(
             raw: concept
           )
-        }
+        end
       rescue StandardError => e
         Rails.logger.error(e.inspect)
         SkosConcept.find_by_uri(Parsers::JsonLd::Node.new(concept).read!("id"))
@@ -50,7 +50,7 @@ module Processors
           # We are only interested in those keys that uses the uris from the main context
           # If so, we add the key and value to our new context
           if using_context_uri(context, attr_key)
-            k, v = context.find {|key, _value| key.include?(attr_key.split(":").first) }
+            k, v = context.find { |key, _value| key.include?(attr_key.split(":").first) }
             final_context[k] = v
           end
         end

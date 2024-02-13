@@ -63,7 +63,7 @@ Early Learning,EL Organization,Identification,No,State ANSI Code,The American Na
 17 - Illinois
 18 - Indiana
 19 - Iowa
-20 - Kansas 
+20 - Kansas
 21 - Kentucky
 22 - Louisiana
 23 - Maine
@@ -103,7 +103,7 @@ Early Learning,EL Organization,Identification,No,State ANSI Code,The American Na
 66 - Guam
 68 - Marshall Islands
 69 - Northern Mariana Islands
-70 - Palau 
+70 - Palau
 72 - Puerto Rico
 78 - Virgin Islands of the U.S.
 ","Early Learning -> Staff Quality
@@ -1999,7 +1999,7 @@ Cognitive - Cognitive development delay
 Communication - Communication development delay
 NoDelay - No delay, needs follow-up
 None - None
-CarnegieUnits - Carnegie Units 
+CarnegieUnits - Carnegie Units
 Physical - Physical development delay
 SocialEmotional - Social or emotional development delay
 NoDelayDetected - No delay detected
@@ -3410,39 +3410,39 @@ Postsecondary Education -> IPEDS
 Postsecondary Education -> IPEDS -> HR
 Postsecondary Education -> Transition",,,,Postsecondary: As defined in IPEDS,000255,,Sex,https://ceds.ed.gov/cedselementdetails.aspx?termid=15255,Click here to submit comment
 Early Learning,Parent/Guardian,Demographic,No,Standard Occupational Classification,"A Bureau of Labor Statistics coding system for classifying occupations by work performed and, in some cases, on the skills, education and training needed to perform the work at a competent level. See http://www.bls.gov/soc/soc_structure_2010.pdf.",None,Postsecondary Education -> IPEDS -> HR,,##-####,,,000730,,StandardOccupationalClassification,https://ceds.ed.gov/cedselementdetails.aspx?termid=15707,Click here to submit comment
-Early Learning,Parent/Guardian,Education,No,Highest Level of Education Completed,"The extent of formal instruction a person has received (e.g., the highest grade in school completed or its equivalent or the highest degree received).","01043 - No school completed 
-00788 - Preschool 
-00805 - Kindergarten 
-00790 - First grade 
-00791 - Second grade 
-00792 - Third grade 
-00793 - Fourth grade 
-00794 - Fifth grade 
-00795 - Sixth grade 
-00796 - Seventh grade 
-00798 - Eighth grade 
-00799 - Ninth grade 
-00800 - Tenth grade 
-00801 - Eleventh Grade 
-01809 - 12th grade, no diploma 
-01044 - High school diploma 
-02408 - High school completers (e.g., certificate of attendance) 
-02409 - High school equivalency (e.g., GED) 
+Early Learning,Parent/Guardian,Education,No,Highest Level of Education Completed,"The extent of formal instruction a person has received (e.g., the highest grade in school completed or its equivalent or the highest degree received).","01043 - No school completed
+00788 - Preschool
+00805 - Kindergarten
+00790 - First grade
+00791 - Second grade
+00792 - Third grade
+00793 - Fourth grade
+00794 - Fifth grade
+00795 - Sixth grade
+00796 - Seventh grade
+00798 - Eighth grade
+00799 - Ninth grade
+00800 - Tenth grade
+00801 - Eleventh Grade
+01809 - 12th grade, no diploma
+01044 - High school diploma
+02408 - High school completers (e.g., certificate of attendance)
+02409 - High school equivalency (e.g., GED)
 00819 - Career and Technical Education certificate
 00803 - Grade 13
-01049 - Some college but no degree 
-01047 - Formal award, certificate or diploma (less than one year) 
-01048 - Formal award, certificate or diploma (more than or equal to one year) 
-01050 - Associate's degree (two years or more) 
+01049 - Some college but no degree
+01047 - Formal award, certificate or diploma (less than one year)
+01048 - Formal award, certificate or diploma (more than or equal to one year)
+01050 - Associate's degree (two years or more)
 73063 - Adult education certification, endorsement, or degree
-01051 - Bachelor's (Baccalaureate) degree 
-01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.) 
-01055 - Specialist's degree (e.g., Ed.S.) 
+01051 - Bachelor's (Baccalaureate) degree
+01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.)
+01055 - Specialist's degree (e.g., Ed.S.)
 73081 - Post-master’s certificate
-01052 - Graduate certificate 
-01057 - Doctoral (Doctor's) degree 
-01053 - First-professional degree 
-01056 - Post-professional degree 
+01052 - Graduate certificate
+01057 - Doctoral (Doctor's) degree
+01053 - First-professional degree
+01056 - Post-professional degree
 73082 - Doctor’s degree-research/scholarship
 73083 - Doctor’s degree-professional practice
 73084 - Doctor’s degree-other
@@ -4191,39 +4191,39 @@ Early Learning,EL Staff,Education,No,Early Learning Staff Total College Credits 
 Early Learning,EL Staff,Education,No,Number of School-age Education Postsecondary Credit Hours,"The number of college course credit hours an individual has successfully completed that are related to K-12 education, parks and recreation, and juvenile justice.",None,Early Learning -> Staff Quality,,Numeric - up to 2 digits after decimal place,,,000816,,NumberOfSchoolageEducationPostsecondaryCreditHours,https://ceds.ed.gov/cedselementdetails.aspx?termid=15815,Click here to submit comment
 Early Learning,EL Staff,Education,No,Staff Education Entry Date,"The year, month and day that a staff member began participating in an educational experience (course, educational program, or formal education activity).",None,Early Learning -> Staff Quality,,YYYY-MM-DD,,,000793,,StaffEducationEntryDate,https://ceds.ed.gov/cedselementdetails.aspx?termid=15792,Click here to submit comment
 Early Learning,EL Staff,Education,No,Staff Education Withdrawal Date,"The year, month and day that an individual ceased participating in an educational experience without completing the course, educational program, or staff development activity.",None,Early Learning -> Staff Quality,,YYYY-MM-DD,,,000794,,StaffEducationWithdrawalDate,https://ceds.ed.gov/cedselementdetails.aspx?termid=15793,Click here to submit comment
-Early Learning,EL Staff,Education,No,Highest Level of Education Completed,"The extent of formal instruction a person has received (e.g., the highest grade in school completed or its equivalent or the highest degree received).","01043 - No school completed 
-00788 - Preschool 
-00805 - Kindergarten 
-00790 - First grade 
-00791 - Second grade 
-00792 - Third grade 
-00793 - Fourth grade 
-00794 - Fifth grade 
-00795 - Sixth grade 
-00796 - Seventh grade 
-00798 - Eighth grade 
-00799 - Ninth grade 
-00800 - Tenth grade 
-00801 - Eleventh Grade 
-01809 - 12th grade, no diploma 
-01044 - High school diploma 
-02408 - High school completers (e.g., certificate of attendance) 
-02409 - High school equivalency (e.g., GED) 
+Early Learning,EL Staff,Education,No,Highest Level of Education Completed,"The extent of formal instruction a person has received (e.g., the highest grade in school completed or its equivalent or the highest degree received).","01043 - No school completed
+00788 - Preschool
+00805 - Kindergarten
+00790 - First grade
+00791 - Second grade
+00792 - Third grade
+00793 - Fourth grade
+00794 - Fifth grade
+00795 - Sixth grade
+00796 - Seventh grade
+00798 - Eighth grade
+00799 - Ninth grade
+00800 - Tenth grade
+00801 - Eleventh Grade
+01809 - 12th grade, no diploma
+01044 - High school diploma
+02408 - High school completers (e.g., certificate of attendance)
+02409 - High school equivalency (e.g., GED)
 00819 - Career and Technical Education certificate
 00803 - Grade 13
-01049 - Some college but no degree 
-01047 - Formal award, certificate or diploma (less than one year) 
-01048 - Formal award, certificate or diploma (more than or equal to one year) 
-01050 - Associate's degree (two years or more) 
+01049 - Some college but no degree
+01047 - Formal award, certificate or diploma (less than one year)
+01048 - Formal award, certificate or diploma (more than or equal to one year)
+01050 - Associate's degree (two years or more)
 73063 - Adult education certification, endorsement, or degree
-01051 - Bachelor's (Baccalaureate) degree 
-01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.) 
-01055 - Specialist's degree (e.g., Ed.S.) 
+01051 - Bachelor's (Baccalaureate) degree
+01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.)
+01055 - Specialist's degree (e.g., Ed.S.)
 73081 - Post-master’s certificate
-01052 - Graduate certificate 
-01057 - Doctoral (Doctor's) degree 
-01053 - First-professional degree 
-01056 - Post-professional degree 
+01052 - Graduate certificate
+01057 - Doctoral (Doctor's) degree
+01053 - First-professional degree
+01056 - Post-professional degree
 73082 - Doctor’s degree-research/scholarship
 73083 - Doctor’s degree-professional practice
 73084 - Doctor’s degree-other
@@ -4644,12 +4644,12 @@ K-12 -> LEA-to-LEA Student Record Exchange
 K-12 -> LEA-to-SEA Student Record Exchange
 Postsecondary Education -> Transition",,Numeric - up to 2 digits after decimal place,,,000200,,NumberOfCreditsEarned,https://ceds.ed.gov/cedselementdetails.aspx?termid=15200,Click here to submit comment
 Early Learning,EL Staff,Professional Development,No,Course Credit Units,"The type of credit (unit, semester, or quarter) associated with the credit hours earned for the course.","NoCredit - No Credit
-Quarter - Quarter 
-Semester - Semester 
-Units - Units 
-CarnegieUnits - Carnegie Units 
-ContinuingEducationUnits - Continuing Education Units 
-ClockHours - Clock Hours 
+Quarter - Quarter
+Semester - Semester
+Units - Units
+CarnegieUnits - Carnegie Units
+ContinuingEducationUnits - Continuing Education Units
+ClockHours - Clock Hours
 Other - Other
 Unreported - Unreported
 ",Postsecondary Education -> Transition,,,,,000057,,CourseCreditUnits,https://ceds.ed.gov/cedselementdetails.aspx?termid=15057,Click here to submit comment
@@ -4989,7 +4989,7 @@ SemesterCredits - Semester credits
 Early Learning,EL Staff,Professional Development Activity,No,Professional Development Activity Credits,The number of credits a professional development activity provides.,None,,,Numeric - up to 2 digits after decimal place,,,001437,,ProfessionalDevelopmentActivityCredits,https://ceds.ed.gov/cedselementdetails.aspx?termid=16407,Click here to submit comment
 Early Learning,EL Staff,Professional Development Activity,No,Professional Development Activity Target Audience,A categorization of the audience for which the professional development activity is intended.,"AdministrativeSupportStaff - Administrative Support Staff
 Administrators - Administrators
-AllOtherSupportStaff - All Other Support Staff 
+AllOtherSupportStaff - All Other Support Staff
 BehavioralSpecialists - Behavioral Specialists
 ELAssistantTeachers - Early Leaning Assistant Teachers
 ELTeachers - Early Learning Teachers
@@ -6321,7 +6321,7 @@ K12,K12 School,Address,Yes,State ANSI Code,The American National Standards Insti
 17 - Illinois
 18 - Indiana
 19 - Iowa
-20 - Kansas 
+20 - Kansas
 21 - Kentucky
 22 - Louisiana
 23 - Maine
@@ -6361,7 +6361,7 @@ K12,K12 School,Address,Yes,State ANSI Code,The American National Standards Insti
 66 - Guam
 68 - Marshall Islands
 69 - Northern Mariana Islands
-70 - Palau 
+70 - Palau
 72 - Puerto Rico
 78 - Virgin Islands of the U.S.
 ","Early Learning -> Staff Quality
@@ -6505,7 +6505,7 @@ K-12 -> LEA-to-LEA Student Record Exchange
 K-12 -> LEA-to-SEA Student Record Exchange",Updated,,"Update element ""Program Type:"" add the ""Title I"" option to the set to support EDFacts.",,000225,,ProgramType,https://ceds.ed.gov/cedselementdetails.aspx?termid=15225,Click here to submit comment
 K12,K12 School,Directory,No,Alternative School Focus Type,An indication of the specific group of students whose needs the alternative school is designed to meet.,"Academic - Alternative school for students with academic difficulties
 Discipline - Alternative school for students with discipline problems
-Both - Alternative school for students with both discipline and academic problems 
+Both - Alternative school for students with both discipline and academic problems
 ",K-12 -> Civil Rights Data Collection,,,,,000015,,AlternativeSchoolFocusType,https://ceds.ed.gov/cedselementdetails.aspx?termid=15015,Click here to submit comment
 K12,K12 School,Directory,No,Advanced Placement Course Self Selection,An indication of whether enrollment via self-selection by the student is permitted for all Advanced Placement (AP) courses offered.,"Yes
 No
@@ -6748,7 +6748,7 @@ NoTitleIII - No Title III
 NA - Not applicable
 ",K-12 -> EDFacts,,,,,000554,AMAO Progress Attainment Status for LEP Students,AMAOProgressAttainmentStatusForLEPStudents,https://ceds.ed.gov/cedselementdetails.aspx?termid=15545,Click here to submit comment
 K12,K12 School,Accountability,No,Proficiency Target Status for Math,An indication of whether the school or district met the math proficiency target in accordance with state definition for the purposes of determining AYP.,"Met - Met: Regular Determination
-MetGrowthModel - Met: Growth Model 
+MetGrowthModel - Met: Growth Model
 MetBecauseSafeHarbor - Met Because of Safe Harbor
 DidNotMeetTarget - Did Not Meet Target
 TooFewStudents - Too Few Students for Reliability
@@ -6756,7 +6756,7 @@ NoStudents - No Students in the Sub-group
 NA - Not applicable
 ",K-12 -> EDFacts,,,,,000221,,ProficiencyTargetStatusForMath,https://ceds.ed.gov/cedselementdetails.aspx?termid=15221,Click here to submit comment
 K12,K12 School,Accountability,No,Proficiency Target Status for Reading and Language Arts,An indication of whether the school or district met the reading/language arts proficiency target in accordance with state definition for the purposes of determining AYP.,"Met - Met: Regular Determination
-MetGrowthModel - Met: Growth Model 
+MetGrowthModel - Met: Growth Model
 MetBecauseSafeHarbor - Met Because of Safe Harbor
 DidNotMeetTarget - Did Not Meet Target
 TooFewStudents - Too Few Students for Reliability
@@ -6796,11 +6796,11 @@ K12,K12 School,Accountability,No,High School Graduation Rate Indicator Status,An
 MetTarget - Met (Target)
 DidNotMeet - Did Not Meet
 TooFewStudents - Too Few Students
-NoStudents - There are no students in a student subgroup. 
+NoStudents - There are no students in a student subgroup.
 NA - Not applicable
 ",K-12 -> EDFacts,,,,,000140,,HighSchoolGraduationRateIndicatorStatus,https://ceds.ed.gov/cedselementdetails.aspx?termid=15140,Click here to submit comment
 K12,K12 School,Accountability,No,Corrective Action Type,The types of corrective actions under ESEA as amended.,"CA1 - Required implementation of a new research-based curriculum or instructional program
-CA2 - Extension of the school year or school day 
+CA2 - Extension of the school year or school day
 CA3 - Replacement of staff members relevant to the school's low performance
 CA4 - Significant decrease in management authority at the school level
 CA5 - Replacement of the principal
@@ -7589,7 +7589,7 @@ K12,LEA,Address,No,State ANSI Code,The American National Standards Institute (AN
 17 - Illinois
 18 - Indiana
 19 - Iowa
-20 - Kansas 
+20 - Kansas
 21 - Kentucky
 22 - Louisiana
 23 - Maine
@@ -7629,7 +7629,7 @@ K12,LEA,Address,No,State ANSI Code,The American National Standards Institute (AN
 66 - Guam
 68 - Marshall Islands
 69 - Northern Mariana Islands
-70 - Palau 
+70 - Palau
 72 - Puerto Rico
 78 - Virgin Islands of the U.S.
 ","Early Learning -> Staff Quality
@@ -7719,7 +7719,7 @@ NoTitleIII - No Title III
 NA - Not applicable
 ",K-12 -> EDFacts,,,,,000554,AMAO Progress Attainment Status for LEP Students,AMAOProgressAttainmentStatusForLEPStudents,https://ceds.ed.gov/cedselementdetails.aspx?termid=15545,Click here to submit comment
 K12,LEA,Accountability,No,Proficiency Target Status for Math,An indication of whether the school or district met the math proficiency target in accordance with state definition for the purposes of determining AYP.,"Met - Met: Regular Determination
-MetGrowthModel - Met: Growth Model 
+MetGrowthModel - Met: Growth Model
 MetBecauseSafeHarbor - Met Because of Safe Harbor
 DidNotMeetTarget - Did Not Meet Target
 TooFewStudents - Too Few Students for Reliability
@@ -7727,7 +7727,7 @@ NoStudents - No Students in the Sub-group
 NA - Not applicable
 ",K-12 -> EDFacts,,,,,000221,,ProficiencyTargetStatusForMath,https://ceds.ed.gov/cedselementdetails.aspx?termid=15221,Click here to submit comment
 K12,LEA,Accountability,No,Proficiency Target Status for Reading and Language Arts,An indication of whether the school or district met the reading/language arts proficiency target in accordance with state definition for the purposes of determining AYP.,"Met - Met: Regular Determination
-MetGrowthModel - Met: Growth Model 
+MetGrowthModel - Met: Growth Model
 MetBecauseSafeHarbor - Met Because of Safe Harbor
 DidNotMeetTarget - Did Not Meet Target
 TooFewStudents - Too Few Students for Reliability
@@ -7762,7 +7762,7 @@ K12,LEA,Accountability,No,High School Graduation Rate Indicator Status,An indica
 MetTarget - Met (Target)
 DidNotMeet - Did Not Meet
 TooFewStudents - Too Few Students
-NoStudents - There are no students in a student subgroup. 
+NoStudents - There are no students in a student subgroup.
 NA - Not applicable
 ",K-12 -> EDFacts,,,,,000140,,HighSchoolGraduationRateIndicatorStatus,https://ceds.ed.gov/cedselementdetails.aspx?termid=15140,Click here to submit comment
 K12,LEA,Accountability,No,Local Education Agency Improvement Status,An indication of the improvement stage for AYP of the local education agency (LEA).,"CorrectiveAction - Corrective action
@@ -8620,7 +8620,7 @@ K12,SEA,Address,No,State ANSI Code,The American National Standards Institute (AN
 17 - Illinois
 18 - Indiana
 19 - Iowa
-20 - Kansas 
+20 - Kansas
 21 - Kentucky
 22 - Louisiana
 23 - Maine
@@ -8660,7 +8660,7 @@ K12,SEA,Address,No,State ANSI Code,The American National Standards Institute (AN
 66 - Guam
 68 - Marshall Islands
 69 - Northern Mariana Islands
-70 - Palau 
+70 - Palau
 72 - Puerto Rico
 78 - Virgin Islands of the U.S.
 ","Early Learning -> Staff Quality
@@ -9167,7 +9167,7 @@ DidNotMeet - Did not meet
 NoTitleIII - No Title III
 NA - Not applicable
 ",K-12 -> EDFacts,,,,,000554,AMAO Progress Attainment Status for LEP Students,AMAOProgressAttainmentStatusForLEPStudents,https://ceds.ed.gov/cedselementdetails.aspx?termid=15545,Click here to submit comment
-K12,SEA,Accountability,No,Career and Technical Education Graduation Rate Inclusion,An indication of how CTE concentrators are included in the state's computation of its graduation rate.,"IncludedAsGraduated - Included in computation as graduated 
+K12,SEA,Accountability,No,Career and Technical Education Graduation Rate Inclusion,An indication of how CTE concentrators are included in the state's computation of its graduation rate.,"IncludedAsGraduated - Included in computation as graduated
 NotIncludedAsGraduated - Included in computation as not graduated.
 ",K-12 -> EDFacts,,,,,000075,CTE Graduation Rate Inclusion,CTEGraduationRateInclusion,https://ceds.ed.gov/cedselementdetails.aspx?termid=15075,Click here to submit comment
 K12,SEA,Finance,No,Fiscal Year,"The year a school uses for budgeting, accounting, and reporting financials.",None,,,YYYY,,,001639,,FiscalYear,https://ceds.ed.gov/cedselementdetails.aspx?termid=16620,Click here to submit comment
@@ -14752,7 +14752,7 @@ No
 ",,,,,,000525,,PrimaryAssignmentIndicator,https://ceds.ed.gov/cedselementdetails.aspx?termid=15516,Click here to submit comment
 K12,K12 Staff,Assignment,No,K12 Staff Classification,"The titles of employment, official status, or rank of education staff.","AdministrativeSupportStaff - Administrative Support Staff
 Administrators - Administrators
-AllOtherSupportStaff - All Other Support Staff 
+AllOtherSupportStaff - All Other Support Staff
 BehavioralSpecialists - Behavioral Specialists
 ELAssistantTeachers - Early Learning Assistant Teachers
 ELTeachers - Early Learning Teachers
@@ -14807,7 +14807,7 @@ Recruiters - Recruiters
 RecordsTransferStaff - Records Transfer Staff
 ",K-12 -> EDFacts,,,,Funded by Title I-C.,000188,MEP Staff Category,MigrantEducationProgramStaffCategory,https://ceds.ed.gov/cedselementdetails.aspx?termid=15188,Click here to submit comment
 K12,K12 Staff,Assignment,No,Title I Program Staff Category,"Titles of employment, official status, or rank for staff working in a Title I program.","TitleITeacher - Title I Teachers
-TitleIParaprofessional - Title I Paraprofessionals 
+TitleIParaprofessional - Title I Paraprofessionals
 TitleISupportStaff - Title I Clerical Support Staff
 TitleIAdministrator - Title I Administrators (non-clerical)
 TitleIOtherParaprofessional - Title I Other Paraprofessionals
@@ -14872,7 +14872,7 @@ TeacherAssistant - Teacher assistant
 Temporary - Temporary
 09999 - Other
 ",Postsecondary Education -> Teacher Education,,,,,000278,,TeachingCredentialType,https://ceds.ed.gov/cedselementdetails.aspx?termid=15278,Click here to submit comment
-K12,K12 Staff,Credential or License,No,Teaching Credential Basis,An indication of the pre-determined criteria for granting the teaching credential that a person holds.,"01050 - Associate's degree (two years or more) 
+K12,K12 Staff,Credential or License,No,Teaching Credential Basis,An indication of the pre-determined criteria for granting the teaching credential that a person holds.,"01050 - Associate's degree (two years or more)
 01235 - 4-year bachelor's degree
 01236 - 5-year bachelor's degree
 73205 - Post-baccalaureate certificate
@@ -14888,39 +14888,39 @@ K12,K12 Staff,Credential or License,No,Teaching Credential Basis,An indication o
 K12,K12 Staff,Credential or License,No,Credential Issuance Date,"The year, month and day on which an active credential was issued to a person.",None,Early Learning -> Staff Quality,,YYYY-MM-DD,,,000070,,CredentialIssuanceDate,https://ceds.ed.gov/cedselementdetails.aspx?termid=15070,Click here to submit comment
 K12,K12 Staff,Credential or License,No,Credential Expiration Date,"The year, month and day on which an active credential held by a person will expire.",None,Early Learning -> Staff Quality,,YYYY-MM-DD,,,000069,,CredentialExpirationDate,https://ceds.ed.gov/cedselementdetails.aspx?termid=15069,Click here to submit comment
 K12,K12 Staff,Credential or License,No,Years of Prior Teaching Experience,The total number of years prior to this job that a person has previously held a teaching position in one or more education institutions.,None,K-12 -> Teacher Compensation Survey,Updated,Numeric - up to 2 digits after decimal place,"Updating element definition for ""YearsOfPriorTeachingExperience"" to clarify that it means prior to the current job.",,000302,,YearsOfPriorTeachingExperience,https://ceds.ed.gov/cedselementdetails.aspx?termid=15302,Click here to submit comment
-K12,K12 Staff,Credential or License,No,Highest Level of Education Completed,"The extent of formal instruction a person has received (e.g., the highest grade in school completed or its equivalent or the highest degree received).","01043 - No school completed 
-00788 - Preschool 
-00805 - Kindergarten 
-00790 - First grade 
-00791 - Second grade 
-00792 - Third grade 
-00793 - Fourth grade 
-00794 - Fifth grade 
-00795 - Sixth grade 
-00796 - Seventh grade 
-00798 - Eighth grade 
-00799 - Ninth grade 
-00800 - Tenth grade 
-00801 - Eleventh Grade 
-01809 - 12th grade, no diploma 
-01044 - High school diploma 
-02408 - High school completers (e.g., certificate of attendance) 
-02409 - High school equivalency (e.g., GED) 
+K12,K12 Staff,Credential or License,No,Highest Level of Education Completed,"The extent of formal instruction a person has received (e.g., the highest grade in school completed or its equivalent or the highest degree received).","01043 - No school completed
+00788 - Preschool
+00805 - Kindergarten
+00790 - First grade
+00791 - Second grade
+00792 - Third grade
+00793 - Fourth grade
+00794 - Fifth grade
+00795 - Sixth grade
+00796 - Seventh grade
+00798 - Eighth grade
+00799 - Ninth grade
+00800 - Tenth grade
+00801 - Eleventh Grade
+01809 - 12th grade, no diploma
+01044 - High school diploma
+02408 - High school completers (e.g., certificate of attendance)
+02409 - High school equivalency (e.g., GED)
 00819 - Career and Technical Education certificate
 00803 - Grade 13
-01049 - Some college but no degree 
-01047 - Formal award, certificate or diploma (less than one year) 
-01048 - Formal award, certificate or diploma (more than or equal to one year) 
-01050 - Associate's degree (two years or more) 
+01049 - Some college but no degree
+01047 - Formal award, certificate or diploma (less than one year)
+01048 - Formal award, certificate or diploma (more than or equal to one year)
+01050 - Associate's degree (two years or more)
 73063 - Adult education certification, endorsement, or degree
-01051 - Bachelor's (Baccalaureate) degree 
-01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.) 
-01055 - Specialist's degree (e.g., Ed.S.) 
+01051 - Bachelor's (Baccalaureate) degree
+01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.)
+01055 - Specialist's degree (e.g., Ed.S.)
 73081 - Post-master’s certificate
-01052 - Graduate certificate 
-01057 - Doctoral (Doctor's) degree 
-01053 - First-professional degree 
-01056 - Post-professional degree 
+01052 - Graduate certificate
+01057 - Doctoral (Doctor's) degree
+01053 - First-professional degree
+01056 - Post-professional degree
 73082 - Doctor’s degree-research/scholarship
 73083 - Doctor’s degree-professional practice
 73084 - Doctor’s degree-other
@@ -15382,7 +15382,7 @@ SemesterCredits - Semester credits
 K12,K12 Staff,Professional Development Activity,No,Professional Development Activity Credits,The number of credits a professional development activity provides.,None,,,Numeric - up to 2 digits after decimal place,,,001437,,ProfessionalDevelopmentActivityCredits,https://ceds.ed.gov/cedselementdetails.aspx?termid=16407,Click here to submit comment
 K12,K12 Staff,Professional Development Activity,No,Professional Development Activity Target Audience,A categorization of the audience for which the professional development activity is intended.,"AdministrativeSupportStaff - Administrative Support Staff
 Administrators - Administrators
-AllOtherSupportStaff - All Other Support Staff 
+AllOtherSupportStaff - All Other Support Staff
 BehavioralSpecialists - Behavioral Specialists
 ELAssistantTeachers - Early Leaning Assistant Teachers
 ELTeachers - Early Learning Teachers
@@ -15597,39 +15597,39 @@ SickLeave - Sick leave
 Suspension - Suspension
 WorkersCompensation - Workers compensation
 ",,,,,,000624,,LeaveEventType,https://ceds.ed.gov/cedselementdetails.aspx?termid=15617,Click here to submit comment
-K12,K12 Staff,Education,No,Highest Level of Education Completed,"The extent of formal instruction a person has received (e.g., the highest grade in school completed or its equivalent or the highest degree received).","01043 - No school completed 
-00788 - Preschool 
-00805 - Kindergarten 
-00790 - First grade 
-00791 - Second grade 
-00792 - Third grade 
-00793 - Fourth grade 
-00794 - Fifth grade 
-00795 - Sixth grade 
-00796 - Seventh grade 
-00798 - Eighth grade 
-00799 - Ninth grade 
-00800 - Tenth grade 
-00801 - Eleventh Grade 
-01809 - 12th grade, no diploma 
-01044 - High school diploma 
-02408 - High school completers (e.g., certificate of attendance) 
-02409 - High school equivalency (e.g., GED) 
+K12,K12 Staff,Education,No,Highest Level of Education Completed,"The extent of formal instruction a person has received (e.g., the highest grade in school completed or its equivalent or the highest degree received).","01043 - No school completed
+00788 - Preschool
+00805 - Kindergarten
+00790 - First grade
+00791 - Second grade
+00792 - Third grade
+00793 - Fourth grade
+00794 - Fifth grade
+00795 - Sixth grade
+00796 - Seventh grade
+00798 - Eighth grade
+00799 - Ninth grade
+00800 - Tenth grade
+00801 - Eleventh Grade
+01809 - 12th grade, no diploma
+01044 - High school diploma
+02408 - High school completers (e.g., certificate of attendance)
+02409 - High school equivalency (e.g., GED)
 00819 - Career and Technical Education certificate
 00803 - Grade 13
-01049 - Some college but no degree 
-01047 - Formal award, certificate or diploma (less than one year) 
-01048 - Formal award, certificate or diploma (more than or equal to one year) 
-01050 - Associate's degree (two years or more) 
+01049 - Some college but no degree
+01047 - Formal award, certificate or diploma (less than one year)
+01048 - Formal award, certificate or diploma (more than or equal to one year)
+01050 - Associate's degree (two years or more)
 73063 - Adult education certification, endorsement, or degree
-01051 - Bachelor's (Baccalaureate) degree 
-01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.) 
-01055 - Specialist's degree (e.g., Ed.S.) 
+01051 - Bachelor's (Baccalaureate) degree
+01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.)
+01055 - Specialist's degree (e.g., Ed.S.)
 73081 - Post-master’s certificate
-01052 - Graduate certificate 
-01057 - Doctoral (Doctor's) degree 
-01053 - First-professional degree 
-01056 - Post-professional degree 
+01052 - Graduate certificate
+01057 - Doctoral (Doctor's) degree
+01053 - First-professional degree
+01056 - Post-professional degree
 73082 - Doctor’s degree-research/scholarship
 73083 - Doctor’s degree-professional practice
 73084 - Doctor’s degree-other
@@ -15740,12 +15740,12 @@ K-12 -> Teacher-Student Data Link -> Class Section",,Alphanumeric - 60 character
 K12,K12 Course,,No,Course Description,A description of the course content and/or goals. Reference may be made to state or national content standards.,None,,,Alphanumeric - 60 characters maximum,,,000517,,CourseDescription,https://ceds.ed.gov/cedselementdetails.aspx?termid=15508,Click here to submit comment
 K12,K12 Course,,No,Course Department Name,Department with jurisdiction over this course.,None,,,Alphanumeric - 60 characters maximum,,,001549,,CourseDepartmentName,https://ceds.ed.gov/cedselementdetails.aspx?termid=16525,Click here to submit comment
 K12,K12 Course,,No,Course Credit Units,"The type of credit (unit, semester, or quarter) associated with the credit hours earned for the course.","NoCredit - No Credit
-Quarter - Quarter 
-Semester - Semester 
-Units - Units 
-CarnegieUnits - Carnegie Units 
-ContinuingEducationUnits - Continuing Education Units 
-ClockHours - Clock Hours 
+Quarter - Quarter
+Semester - Semester
+Units - Units
+CarnegieUnits - Carnegie Units
+ContinuingEducationUnits - Continuing Education Units
+ClockHours - Clock Hours
 Other - Other
 Unreported - Unreported
 ",Postsecondary Education -> Transition,,,,,000057,,CourseCreditUnits,https://ceds.ed.gov/cedselementdetails.aspx?termid=15057,Click here to submit comment
@@ -18494,8 +18494,8 @@ Tribal - Tribal Colleges
 Postsecondary Education -> Transition",,,,,000038,,CarnegieBasicClassification,https://ceds.ed.gov/cedselementdetails.aspx?termid=15038,Click here to submit comment
 Postsecondary,PS Institution,Directory,No,Session Designator,The academic session for which the data are recorded and applicable.,None,"K-12 -> High School Feedback Report
 Postsecondary Education -> Transition",,YYYY-MM,,,000252,,SessionDesignator,https://ceds.ed.gov/cedselementdetails.aspx?termid=15252,Click here to submit comment
-Postsecondary,PS Institution,Directory,No,Predominant Calendar System,The method by which an institution structures most of its courses for the academic year.,"Semester - Semester 
-Quarter - Quarter 
+Postsecondary,PS Institution,Directory,No,Predominant Calendar System,The method by which an institution structures most of its courses for the academic year.,"Semester - Semester
+Quarter - Quarter
 Trimester - Trimester
 4-1-4 - 4-1-4 or similar plan
 Other - Other academic plan
@@ -20529,7 +20529,7 @@ TeacherAssistant - Teacher assistant
 Temporary - Temporary
 09999 - Other
 ",Postsecondary Education -> Teacher Education,,,,,000278,,TeachingCredentialType,https://ceds.ed.gov/cedselementdetails.aspx?termid=15278,Click here to submit comment
-Postsecondary,PS Student,Teacher Education/Preparation,No,Teaching Credential Basis,An indication of the pre-determined criteria for granting the teaching credential that a person holds.,"01050 - Associate's degree (two years or more) 
+Postsecondary,PS Student,Teacher Education/Preparation,No,Teaching Credential Basis,An indication of the pre-determined criteria for granting the teaching credential that a person holds.,"01050 - Associate's degree (two years or more)
 01235 - 4-year bachelor's degree
 01236 - 5-year bachelor's degree
 73205 - Post-baccalaureate certificate
@@ -22113,12 +22113,12 @@ Postsecondary,Course Section,Course,No,NCES College Course Map Code,A taxonomy s
 Postsecondary,Course Section,Course,No,Course Subject Abbreviation,The alphabetic abbreviation of the academic department or discipline offering the course. It is one part of the total course identifier number.,None,Postsecondary Education -> Transition,,Alphanumeric - 10 characters maximum,,,000066,,CourseSubjectAbbreviation,https://ceds.ed.gov/cedselementdetails.aspx?termid=15066,Click here to submit comment
 Postsecondary,Course Section,Course,No,Postsecondary Course Title,The name or title of the course taken by a student at an academic institution.,None,Postsecondary Education -> Transition,,Alphanumeric - 60 characters maximum,,,000068,,PostsecondaryCourseTitle,https://ceds.ed.gov/cedselementdetails.aspx?termid=15068,Click here to submit comment
 Postsecondary,Course Section,Course,No,Course Credit Units,"The type of credit (unit, semester, or quarter) associated with the credit hours earned for the course.","NoCredit - No Credit
-Quarter - Quarter 
-Semester - Semester 
-Units - Units 
-CarnegieUnits - Carnegie Units 
-ContinuingEducationUnits - Continuing Education Units 
-ClockHours - Clock Hours 
+Quarter - Quarter
+Semester - Semester
+Units - Units
+CarnegieUnits - Carnegie Units
+ContinuingEducationUnits - Continuing Education Units
+ClockHours - Clock Hours
 Other - Other
 Unreported - Unreported
 ",Postsecondary Education -> Transition,,,,,000057,,CourseCreditUnits,https://ceds.ed.gov/cedselementdetails.aspx?termid=15057,Click here to submit comment
@@ -23669,7 +23669,7 @@ Licensure - Licensure
 Other - Other
 Registration - Registration
 ",,,,,,000071,,CredentialType,https://ceds.ed.gov/cedselementdetails.aspx?termid=15071,Click here to submit comment
-Career and Technical,CTE Staff,Credential or License,No,Teaching Credential Basis,An indication of the pre-determined criteria for granting the teaching credential that a person holds.,"01050 - Associate's degree (two years or more) 
+Career and Technical,CTE Staff,Credential or License,No,Teaching Credential Basis,An indication of the pre-determined criteria for granting the teaching credential that a person holds.,"01050 - Associate's degree (two years or more)
 01235 - 4-year bachelor's degree
 01236 - 5-year bachelor's degree
 73205 - Post-baccalaureate certificate
@@ -23711,12 +23711,12 @@ K-12 -> Teacher-Student Data Link -> Class Section",,Alphanumeric - 60 character
 Career and Technical,Course,,No,Course Description,A description of the course content and/or goals. Reference may be made to state or national content standards.,None,,,Alphanumeric - 60 characters maximum,,,000517,,CourseDescription,https://ceds.ed.gov/cedselementdetails.aspx?termid=15508,Click here to submit comment
 Career and Technical,Course,,No,Course Department Name,Department with jurisdiction over this course.,None,,,Alphanumeric - 60 characters maximum,,,001549,,CourseDepartmentName,https://ceds.ed.gov/cedselementdetails.aspx?termid=16525,Click here to submit comment
 Career and Technical,Course,,No,Course Credit Units,"The type of credit (unit, semester, or quarter) associated with the credit hours earned for the course.","NoCredit - No Credit
-Quarter - Quarter 
-Semester - Semester 
-Units - Units 
-CarnegieUnits - Carnegie Units 
-ContinuingEducationUnits - Continuing Education Units 
-ClockHours - Clock Hours 
+Quarter - Quarter
+Semester - Semester
+Units - Units
+CarnegieUnits - Carnegie Units
+ContinuingEducationUnits - Continuing Education Units
+ClockHours - Clock Hours
 Other - Other
 Unreported - Unreported
 ",Postsecondary Education -> Transition,,,,,000057,,CourseCreditUnits,https://ceds.ed.gov/cedselementdetails.aspx?termid=15057,Click here to submit comment
@@ -24271,12 +24271,12 @@ Career and Technical,Course Section,Course,No,Course Section Assessment Reportin
 ","K-12 -> High School Generated Transcript
 School Readiness",,,,,000027,,CourseSectionAssessmentReportingMethod,https://ceds.ed.gov/cedselementdetails.aspx?termid=15027,Click here to submit comment
 Career and Technical,Course Section,Course,No,Course Credit Units,"The type of credit (unit, semester, or quarter) associated with the credit hours earned for the course.","NoCredit - No Credit
-Quarter - Quarter 
-Semester - Semester 
-Units - Units 
-CarnegieUnits - Carnegie Units 
-ContinuingEducationUnits - Continuing Education Units 
-ClockHours - Clock Hours 
+Quarter - Quarter
+Semester - Semester
+Units - Units
+CarnegieUnits - Carnegie Units
+ContinuingEducationUnits - Continuing Education Units
+ClockHours - Clock Hours
 Other - Other
 Unreported - Unreported
 ",Postsecondary Education -> Transition,,,,,000057,,CourseCreditUnits,https://ceds.ed.gov/cedselementdetails.aspx?termid=15057,Click here to submit comment
@@ -25258,39 +25258,39 @@ K-12 -> High School Generated Transcript
 K-12 -> LEA-to-LEA Student Record Exchange
 K-12 -> LEA-to-SEA Student Record Exchange
 Postsecondary Education -> Transition",,Numeric - up to 2 digits after decimal place,,,000200,,NumberOfCreditsEarned,https://ceds.ed.gov/cedselementdetails.aspx?termid=15200,Click here to submit comment
-Adult Education,AE Student,Academic Record,No,Highest Level of Education Completed,"The extent of formal instruction a person has received (e.g., the highest grade in school completed or its equivalent or the highest degree received).","01043 - No school completed 
-00788 - Preschool 
-00805 - Kindergarten 
-00790 - First grade 
-00791 - Second grade 
-00792 - Third grade 
-00793 - Fourth grade 
-00794 - Fifth grade 
-00795 - Sixth grade 
-00796 - Seventh grade 
-00798 - Eighth grade 
-00799 - Ninth grade 
-00800 - Tenth grade 
-00801 - Eleventh Grade 
-01809 - 12th grade, no diploma 
-01044 - High school diploma 
-02408 - High school completers (e.g., certificate of attendance) 
-02409 - High school equivalency (e.g., GED) 
+Adult Education,AE Student,Academic Record,No,Highest Level of Education Completed,"The extent of formal instruction a person has received (e.g., the highest grade in school completed or its equivalent or the highest degree received).","01043 - No school completed
+00788 - Preschool
+00805 - Kindergarten
+00790 - First grade
+00791 - Second grade
+00792 - Third grade
+00793 - Fourth grade
+00794 - Fifth grade
+00795 - Sixth grade
+00796 - Seventh grade
+00798 - Eighth grade
+00799 - Ninth grade
+00800 - Tenth grade
+00801 - Eleventh Grade
+01809 - 12th grade, no diploma
+01044 - High school diploma
+02408 - High school completers (e.g., certificate of attendance)
+02409 - High school equivalency (e.g., GED)
 00819 - Career and Technical Education certificate
 00803 - Grade 13
-01049 - Some college but no degree 
-01047 - Formal award, certificate or diploma (less than one year) 
-01048 - Formal award, certificate or diploma (more than or equal to one year) 
-01050 - Associate's degree (two years or more) 
+01049 - Some college but no degree
+01047 - Formal award, certificate or diploma (less than one year)
+01048 - Formal award, certificate or diploma (more than or equal to one year)
+01050 - Associate's degree (two years or more)
 73063 - Adult education certification, endorsement, or degree
-01051 - Bachelor's (Baccalaureate) degree 
-01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.) 
-01055 - Specialist's degree (e.g., Ed.S.) 
+01051 - Bachelor's (Baccalaureate) degree
+01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.)
+01055 - Specialist's degree (e.g., Ed.S.)
 73081 - Post-master’s certificate
-01052 - Graduate certificate 
-01057 - Doctoral (Doctor's) degree 
-01053 - First-professional degree 
-01056 - Post-professional degree 
+01052 - Graduate certificate
+01057 - Doctoral (Doctor's) degree
+01053 - First-professional degree
+01056 - Post-professional degree
 73082 - Doctor’s degree-research/scholarship
 73083 - Doctor’s degree-professional practice
 73084 - Doctor’s degree-other
@@ -26106,39 +26106,39 @@ SpecialEducationCertification - Special Education Certification
 TESOLCertification - Teachers of English to Speakers of Other Languages (TESOL) Certification
 None - None
 ",,,,,,001085,,AdultEducationCertificationType,https://ceds.ed.gov/cedselementdetails.aspx?termid=15775,Click here to submit comment
-Adult Education,AE Staff,Credential,No,Highest Level of Education Completed,"The extent of formal instruction a person has received (e.g., the highest grade in school completed or its equivalent or the highest degree received).","01043 - No school completed 
-00788 - Preschool 
-00805 - Kindergarten 
-00790 - First grade 
-00791 - Second grade 
-00792 - Third grade 
-00793 - Fourth grade 
-00794 - Fifth grade 
-00795 - Sixth grade 
-00796 - Seventh grade 
-00798 - Eighth grade 
-00799 - Ninth grade 
-00800 - Tenth grade 
-00801 - Eleventh Grade 
-01809 - 12th grade, no diploma 
-01044 - High school diploma 
-02408 - High school completers (e.g., certificate of attendance) 
-02409 - High school equivalency (e.g., GED) 
+Adult Education,AE Staff,Credential,No,Highest Level of Education Completed,"The extent of formal instruction a person has received (e.g., the highest grade in school completed or its equivalent or the highest degree received).","01043 - No school completed
+00788 - Preschool
+00805 - Kindergarten
+00790 - First grade
+00791 - Second grade
+00792 - Third grade
+00793 - Fourth grade
+00794 - Fifth grade
+00795 - Sixth grade
+00796 - Seventh grade
+00798 - Eighth grade
+00799 - Ninth grade
+00800 - Tenth grade
+00801 - Eleventh Grade
+01809 - 12th grade, no diploma
+01044 - High school diploma
+02408 - High school completers (e.g., certificate of attendance)
+02409 - High school equivalency (e.g., GED)
 00819 - Career and Technical Education certificate
 00803 - Grade 13
-01049 - Some college but no degree 
-01047 - Formal award, certificate or diploma (less than one year) 
-01048 - Formal award, certificate or diploma (more than or equal to one year) 
-01050 - Associate's degree (two years or more) 
+01049 - Some college but no degree
+01047 - Formal award, certificate or diploma (less than one year)
+01048 - Formal award, certificate or diploma (more than or equal to one year)
+01050 - Associate's degree (two years or more)
 73063 - Adult education certification, endorsement, or degree
-01051 - Bachelor's (Baccalaureate) degree 
-01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.) 
-01055 - Specialist's degree (e.g., Ed.S.) 
+01051 - Bachelor's (Baccalaureate) degree
+01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.)
+01055 - Specialist's degree (e.g., Ed.S.)
 73081 - Post-master’s certificate
-01052 - Graduate certificate 
-01057 - Doctoral (Doctor's) degree 
-01053 - First-professional degree 
-01056 - Post-professional degree 
+01052 - Graduate certificate
+01057 - Doctoral (Doctor's) degree
+01053 - First-professional degree
+01056 - Post-professional degree
 73082 - Doctor’s degree-research/scholarship
 73083 - Doctor’s degree-professional practice
 73084 - Doctor’s degree-other
@@ -26184,39 +26184,39 @@ DUNS - Dun and Bradstreet number
 OtherFederal - Other federally assigned number
 Other - Other
 ",,,,,,000781,,AdultEducationServiceProviderIdentificationSystem,https://ceds.ed.gov/cedselementdetails.aspx?termid=15778,Click here to submit comment
-Adult Education,AE Staff,Education,No,Highest Level of Education Completed,"The extent of formal instruction a person has received (e.g., the highest grade in school completed or its equivalent or the highest degree received).","01043 - No school completed 
-00788 - Preschool 
-00805 - Kindergarten 
-00790 - First grade 
-00791 - Second grade 
-00792 - Third grade 
-00793 - Fourth grade 
-00794 - Fifth grade 
-00795 - Sixth grade 
-00796 - Seventh grade 
-00798 - Eighth grade 
-00799 - Ninth grade 
-00800 - Tenth grade 
-00801 - Eleventh Grade 
-01809 - 12th grade, no diploma 
-01044 - High school diploma 
-02408 - High school completers (e.g., certificate of attendance) 
-02409 - High school equivalency (e.g., GED) 
+Adult Education,AE Staff,Education,No,Highest Level of Education Completed,"The extent of formal instruction a person has received (e.g., the highest grade in school completed or its equivalent or the highest degree received).","01043 - No school completed
+00788 - Preschool
+00805 - Kindergarten
+00790 - First grade
+00791 - Second grade
+00792 - Third grade
+00793 - Fourth grade
+00794 - Fifth grade
+00795 - Sixth grade
+00796 - Seventh grade
+00798 - Eighth grade
+00799 - Ninth grade
+00800 - Tenth grade
+00801 - Eleventh Grade
+01809 - 12th grade, no diploma
+01044 - High school diploma
+02408 - High school completers (e.g., certificate of attendance)
+02409 - High school equivalency (e.g., GED)
 00819 - Career and Technical Education certificate
 00803 - Grade 13
-01049 - Some college but no degree 
-01047 - Formal award, certificate or diploma (less than one year) 
-01048 - Formal award, certificate or diploma (more than or equal to one year) 
-01050 - Associate's degree (two years or more) 
+01049 - Some college but no degree
+01047 - Formal award, certificate or diploma (less than one year)
+01048 - Formal award, certificate or diploma (more than or equal to one year)
+01050 - Associate's degree (two years or more)
 73063 - Adult education certification, endorsement, or degree
-01051 - Bachelor's (Baccalaureate) degree 
-01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.) 
-01055 - Specialist's degree (e.g., Ed.S.) 
+01051 - Bachelor's (Baccalaureate) degree
+01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.)
+01055 - Specialist's degree (e.g., Ed.S.)
 73081 - Post-master’s certificate
-01052 - Graduate certificate 
-01057 - Doctoral (Doctor's) degree 
-01053 - First-professional degree 
-01056 - Post-professional degree 
+01052 - Graduate certificate
+01057 - Doctoral (Doctor's) degree
+01053 - First-professional degree
+01056 - Post-professional degree
 73082 - Doctor’s degree-research/scholarship
 73083 - Doctor’s degree-professional practice
 73084 - Doctor’s degree-other
@@ -26656,12 +26656,12 @@ Postsecondary Education -> Transition",,YYYY-MM-DD,,,000054,,CourseBeginDate,htt
 Adult Education,Course Section,Course,No,Course End Date,"The year, month and day an instance of a course ends.",None,"K-12 -> High School Feedback Report
 Postsecondary Education -> Transition",Updated,YYYY-MM-DD,"Adding usage note to clarify that exit dates are inclusive, i.e. the dates represent the last day that the person was enrolled, participated, or received services, not the day after.","All CEDS Exit and End Dates represent the last day of the date range specified, such as the last day that a person was enrolled, participated, or received services.",000059,,CourseEndDate,https://ceds.ed.gov/cedselementdetails.aspx?termid=15059,Click here to submit comment
 Adult Education,Course Section,Course,No,Course Credit Units,"The type of credit (unit, semester, or quarter) associated with the credit hours earned for the course.","NoCredit - No Credit
-Quarter - Quarter 
-Semester - Semester 
-Units - Units 
-CarnegieUnits - Carnegie Units 
-ContinuingEducationUnits - Continuing Education Units 
-ClockHours - Clock Hours 
+Quarter - Quarter
+Semester - Semester
+Units - Units
+CarnegieUnits - Carnegie Units
+ContinuingEducationUnits - Continuing Education Units
+ClockHours - Clock Hours
 Other - Other
 Unreported - Unreported
 ",Postsecondary Education -> Transition,,,,,000057,,CourseCreditUnits,https://ceds.ed.gov/cedselementdetails.aspx?termid=15057,Click here to submit comment
@@ -29132,39 +29132,39 @@ Assessments,Assessment Registration,,No,Assessment Registration Assignor Identif
 ,,,,,,,,,,,"CEDS ""Identifier"" elements reflect the intent of the XSD:Token format, i.e. a string in which carriage return, line feed, and tab characters have been removed as well as any internal sequences of two or more spaces and any leading or trailing spaces.",,,,,
 ,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,"An Identifier MAY be a Universally Unique Identifier (UUID) / Globally Unique Identifier (GUID), i.e.128-bit unique identifiers generated according to the algorithms and encoding standards of RFC 4122.",,,,,
-Assessments,Assessment Registration,,No,Assessment Registration Grade Level to Be Assessed,The grade or level at which the learner is to be assessed.,"01043 - No school completed 
-00788 - Preschool 
-00805 - Kindergarten 
-00790 - First grade 
-00791 - Second grade 
-00792 - Third grade 
-00793 - Fourth grade 
-00794 - Fifth grade 
-00795 - Sixth grade 
-00796 - Seventh grade 
-00798 - Eighth grade 
-00799 - Ninth grade 
-00800 - Tenth grade 
-00801 - Eleventh Grade 
-01809 - 12th grade, no diploma 
-01044 - High school diploma 
-02408 - High school completers (e.g., certificate of attendance) 
-02409 - High school equivalency (e.g., GED) 
+Assessments,Assessment Registration,,No,Assessment Registration Grade Level to Be Assessed,The grade or level at which the learner is to be assessed.,"01043 - No school completed
+00788 - Preschool
+00805 - Kindergarten
+00790 - First grade
+00791 - Second grade
+00792 - Third grade
+00793 - Fourth grade
+00794 - Fifth grade
+00795 - Sixth grade
+00796 - Seventh grade
+00798 - Eighth grade
+00799 - Ninth grade
+00800 - Tenth grade
+00801 - Eleventh Grade
+01809 - 12th grade, no diploma
+01044 - High school diploma
+02408 - High school completers (e.g., certificate of attendance)
+02409 - High school equivalency (e.g., GED)
 00819 - Career and Technical Education certificate
 00803 - Grade 13
-01049 - Some college but no degree 
-01047 - Formal award, certificate or diploma (less than one year) 
-01048 - Formal award, certificate or diploma (more than or equal to one year) 
-01050 - Associate's degree (two years or more) 
+01049 - Some college but no degree
+01047 - Formal award, certificate or diploma (less than one year)
+01048 - Formal award, certificate or diploma (more than or equal to one year)
+01050 - Associate's degree (two years or more)
 73063 - Adult education certification, endorsement, or degree
-01051 - Bachelor's (Baccalaureate) degree 
-01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.) 
-01055 - Specialist's degree (e.g., Ed.S.) 
+01051 - Bachelor's (Baccalaureate) degree
+01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.)
+01055 - Specialist's degree (e.g., Ed.S.)
 73081 - Post-master’s certificate
-01052 - Graduate certificate 
-01057 - Doctoral (Doctor's) degree 
-01053 - First-professional degree 
-01056 - Post-professional degree 
+01052 - Graduate certificate
+01057 - Doctoral (Doctor's) degree
+01053 - First-professional degree
+01056 - Post-professional degree
 73083 - Doctor’s degree-professional practice
 73084 - Doctor’s degree-other
 73085 - Doctor’s degree-research/scholarship
@@ -30100,39 +30100,39 @@ Competencies,Competency Definition,,No,Competency Definition Parent Identifier,"
 ,,,,,,,,,,,"An Identifier MAY be a Universally Unique Identifier (UUID) / Globally Unique Identifier (GUID), i.e.128-bit unique identifiers generated according to the algorithms and encoding standards of RFC 4122.",,,,,
 Competencies,Competency Definition,,No,Competency Definition Parent Code,A human-referenceable code designated by the publisher to identify the parent item in the hierarchy of competency definitions.,None,,Updated,Alphanumeric - 30 characters maximum,"Entity name changed from ""Competency Item"" to ""Competency Definition"" to support alignment across standards and reduce confusion by those who might think this is a ""competency assertion"" that is attributed to a person rather than what it is, a definition of a competency that could apply to any person.",,000873,"Learning Standard Item Parent Code, Competency Item Parent Code",CompetencyDefinitionParentCode,https://ceds.ed.gov/cedselementdetails.aspx?termid=15873,Click here to submit comment
 Competencies,Competency Definition,,No,Competency Definition Parent URL,A network-resolvable Uniform Resource Locator (URL) pointing to the authoritative reference for the hierarchal parent of the competency definition.,None,,Updated,Alphanumeric - 512 characters maximum,"Entity name changed from ""Competency Item"" to ""Competency Definition"" to support alignment across standards and reduce confusion by those who might think this is a ""competency assertion"" that is attributed to a person rather than what it is, a definition of a competency that could apply to any person.",,001094,"Learning Standard Item Parent URL, Competency Item Parent URL",CompetencyDefinitionParentURL,https://ceds.ed.gov/cedselementdetails.aspx?termid=16078,Click here to submit comment
-Competencies,Competency Definition,,No,Competency Definition Education Level,"The education level, grade level or primary instructional level at which a Competency Definition is intended.","01043 - No school completed 
-00788 - Preschool 
-00805 - Kindergarten 
-00790 - First grade 
-00791 - Second grade 
-00792 - Third grade 
-00793 - Fourth grade 
-00794 - Fifth grade 
-00795 - Sixth grade 
-00796 - Seventh grade 
-00798 - Eighth grade 
-00799 - Ninth grade 
-00800 - Tenth grade 
-00801 - Eleventh Grade 
-01809 - 12th grade, no diploma 
-01044 - High school diploma 
-02408 - High school completers (e.g., certificate of attendance) 
-02409 - High school equivalency (e.g., GED) 
+Competencies,Competency Definition,,No,Competency Definition Education Level,"The education level, grade level or primary instructional level at which a Competency Definition is intended.","01043 - No school completed
+00788 - Preschool
+00805 - Kindergarten
+00790 - First grade
+00791 - Second grade
+00792 - Third grade
+00793 - Fourth grade
+00794 - Fifth grade
+00795 - Sixth grade
+00796 - Seventh grade
+00798 - Eighth grade
+00799 - Ninth grade
+00800 - Tenth grade
+00801 - Eleventh Grade
+01809 - 12th grade, no diploma
+01044 - High school diploma
+02408 - High school completers (e.g., certificate of attendance)
+02409 - High school equivalency (e.g., GED)
 00819 - Career and Technical Education certificate
 00803 - Grade 13
-01049 - Some college but no degree 
-01047 - Formal award, certificate or diploma (less than one year) 
-01048 - Formal award, certificate or diploma (more than or equal to one year) 
-01050 - Associate's degree (two years or more) 
+01049 - Some college but no degree
+01047 - Formal award, certificate or diploma (less than one year)
+01048 - Formal award, certificate or diploma (more than or equal to one year)
+01050 - Associate's degree (two years or more)
 73063 - Adult education certification, endorsement, or degree
-01051 - Bachelor's (Baccalaureate) degree 
-01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.) 
-01055 - Specialist's degree (e.g., Ed.S.) 
+01051 - Bachelor's (Baccalaureate) degree
+01054 - Master's degree (e.g., M.A., M.S., M. Eng., M.Ed., M.S.W., M.B.A., M.L.S.)
+01055 - Specialist's degree (e.g., Ed.S.)
 73081 - Post-master’s certificate
-01052 - Graduate certificate 
-01057 - Doctoral (Doctor's) degree 
-01053 - First-professional degree 
-01056 - Post-professional degree 
+01052 - Graduate certificate
+01057 - Doctoral (Doctor's) degree
+01053 - First-professional degree
+01056 - Post-professional degree
 73082 - Doctor’s degree-research/scholarship
 73083 - Doctor’s degree-professional practice
 73084 - Doctor’s degree-other

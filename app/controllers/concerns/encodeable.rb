@@ -6,7 +6,7 @@
 module Encodeable
   extend ActiveSupport::Concern
 
-  def decode token
+  def decode(token)
     decoded = JWT.decode(
       token,
       Desm::PRIVATE_KEY,

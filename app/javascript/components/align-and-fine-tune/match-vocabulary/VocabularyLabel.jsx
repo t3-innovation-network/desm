@@ -12,7 +12,7 @@ import React from "react";
 const VocabularyLabel = ({ onVocabularyClick, term }) => (
   <p
     className={
-      "col-primary underlined" + (Boolean(onVocabularyClick) ? " cursor-pointer" : "")
+      "col-primary underlined" + (onVocabularyClick ? " cursor-pointer" : "")
     }
     onClick={() => onVocabularyClick?.(term)}
   >

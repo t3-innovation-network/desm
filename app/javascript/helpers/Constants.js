@@ -8,8 +8,10 @@ export const MAX_MAPPING_WEIGHT_PER_ORGANIZATION = 5;
 /**
  * Base URL of the api to make calls to endpoints
  */
-export const APP_DOMAIN = process.env.APP_DOMAIN;
+// TODO: check if it'll work the same way if to move from webpacker
+export const APP_DOMAIN = process.env.APP_DOMAIN; // eslint-disable-line no-undef
 /**
  * JWT variables to encode/decode secret values
  */
-export const PRIVATE_KEY = process.env.PRIVATE_KEY;
+// TODO: check if it'll work the same way if to move from webpacker
+export const PRIVATE_KEY = process.env.PRIVATE_KEY; // eslint-disable-line no-undef

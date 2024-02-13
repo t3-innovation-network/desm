@@ -202,6 +202,7 @@ const PasswordStrengthInfo = () => {
 /**
  * The miminum acceptable password length
  */
-const minPasswordLength = process.env.MIN_PASSWORD_LENGTH || 7;
+// TODO: check if it'll work the same way if to move from webpacker
+const minPasswordLength = process.env.MIN_PASSWORD_LENGTH || 7; // eslint-disable-line no-undef
 
 export default ResetPass;

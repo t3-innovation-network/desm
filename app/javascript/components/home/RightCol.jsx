@@ -38,7 +38,7 @@ const RightSideHome = () => (
 
     <p>
       The crosswalks are based on pairwise mapping of terms from
-      the different standards to a "synthetic spine",
+      the different standards to a &quot;synthetic spine&quot;,
       a schema-neutral synthesis of terms that is created during the mapping.
       Mappings from terms in one standard to terms in another can then be
       inferred where their respective mappings to the spine are transitive.
@@ -49,7 +49,7 @@ const RightSideHome = () => (
       {" "}
       <a
         href="https://github.com/t3-innovation-network/desm"
-        target="_blank"
+        target="_blank" rel="noreferrer"
       >
         DESM tool
       </a>
@@ -60,7 +60,7 @@ const RightSideHome = () => (
     <p>
       <a
         href="https://github.com/t3-innovation-network/desm/blob/main/README.md"
-        target="_blank"
+        target="_blank" rel="noreferrer"
       >
         Instructions for setting up an instance
       </a>
@@ -71,7 +71,7 @@ const RightSideHome = () => (
     <p>
       <a
         href="https://github.com/t3-innovation-network/desm/wiki"
-        target="_blank"
+        target="_blank" rel="noreferrer"
       >
         Instructions for carrying out a mapping
       </a>
@@ -80,7 +80,7 @@ const RightSideHome = () => (
     </p>
 
     <p>
-      DESM is sponsored by the U.S. Chamber of Commerce Foundations' T3
+      DESM is sponsored by the U.S. Chamber of Commerce Foundations&apos; T3
       Innovation Network program. The T3 Open Competency Network,
       in partnership with the T3 Data and Technology Standards Network
       is responsible for the requirements and project plans that are used

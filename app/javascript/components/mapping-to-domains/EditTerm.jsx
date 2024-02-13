@@ -110,7 +110,7 @@ export default class EditTerm extends Component {
    * Vocabulary change
    */
   handleVocabularyChange = (val) => {
-    let tempTerm = this.state.term;
+    let tempTerm = {...this.state.term};
     if (tempTerm.vocabularies.find((vocab) => vocab.id == val)) {
       tempTerm.vocabularies = tempTerm.vocabularies.filter(
         (vocab) => vocab.id != val
@@ -128,8 +128,9 @@ export default class EditTerm extends Component {
    * Get the mapping from the service
    */
   handlePropertyChange = (event) => {
-    this.state.term.property[event.target.name] = event.target.value;
-    this.setState({ term: this.state.term });
+    let term = {...this.state.term};
+    term.property[event.target.name] = event.target.value;
+    this.setState({ term: term });
   };
 
   /**

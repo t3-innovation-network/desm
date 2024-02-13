@@ -1,0 +1,224 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Unscoped Find",
+      "warning_code": 82,
+      "fingerprint": "150bd4df9d23c0da185232cd4df58918c68f6ca2a8bc5a2a43619bba91dc2c47",
+      "check_name": "UnscopedFind",
+      "message": "Unscoped call to `Term#find`",
+      "file": "app/controllers/api/v1/mapping_selected_terms_controller.rb",
+      "line": 35,
+      "link": "https://brakemanscanner.org/docs/warning_types/unscoped_find/",
+      "code": "Term.find(params[:term_id])",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "API::V1::MappingSelectedTermsController",
+        "method": "destroy"
+      },
+      "user_input": "params[:term_id]",
+      "confidence": "Weak",
+      "cwe_id": [
+        285
+      ],
+      "note": "TODO: need to be sorted"
+    },
+    {
+      "warning_type": "Dangerous Send",
+      "warning_code": 23,
+      "fingerprint": "18ac4a751900014962ca1c7d7e910e6638e91da727d4e5b246a85665bf1d61f0",
+      "check_name": "Send",
+      "message": "User controlled method execution",
+      "file": "app/controllers/api/v1/skos_controller.rb",
+      "line": 52,
+      "link": "https://brakemanscanner.org/docs/warning_types/dangerous_send/",
+      "code": "@cp.send(params[:skos_method].to_sym)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "API::V1::SkosController",
+        "method": "check_skos_method"
+      },
+      "user_input": "params[:skos_method].to_sym",
+      "confidence": "High",
+      "cwe_id": [
+        77
+      ],
+      "note": "TODO: need to be sorted"
+    },
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 70,
+      "fingerprint": "2d7e247519fbe98dbcab5033dda8d85fc73dd70be9bbd6dc2d5c6f0a61fdbc4d",
+      "check_name": "MassAssignment",
+      "message": "Specify exact keys allowed for mass assignment instead of using `permit!` which allows any keys",
+      "file": "app/controllers/api/v1/configuration_profiles_controller.rb",
+      "line": 56,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params[:data].permit!",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "API::V1::ConfigurationProfilesController",
+        "method": "import"
+      },
+      "user_input": null,
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": "TODO: need to be sorted"
+    },
+    {
+      "warning_type": "Unscoped Find",
+      "warning_code": 82,
+      "fingerprint": "503f5bd91cb8a7adf455fbc59f3f95047bab9d9b5026e5368cda8f37ddc67ce7",
+      "check_name": "UnscopedFind",
+      "message": "Unscoped call to `Spine#find`",
+      "file": "app/controllers/api/v1/spine_specifications_controller.rb",
+      "line": 17,
+      "link": "https://brakemanscanner.org/docs/warning_types/unscoped_find/",
+      "code": "Spine.find(params[:id])",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "API::V1::SpineSpecificationsController",
+        "method": "show"
+      },
+      "user_input": "params[:id]",
+      "confidence": "Weak",
+      "cwe_id": [
+        285
+      ],
+      "note": "TODO: need to be sorted"
+    },
+    {
+      "warning_type": "Missing Encryption",
+      "warning_code": 109,
+      "fingerprint": "6a26086cd2400fbbfb831b2f8d7291e320bcc2b36984d2abc359e41b3b63212b",
+      "check_name": "ForceSSL",
+      "message": "The application does not force use of HTTPS: `config.force_ssl` is not enabled",
+      "file": "config/environments/production.rb",
+      "line": 1,
+      "link": "https://brakemanscanner.org/docs/warning_types/missing_encryption/",
+      "code": null,
+      "render_path": null,
+      "location": null,
+      "user_input": null,
+      "confidence": "High",
+      "cwe_id": [
+        311
+      ],
+      "note": "TODO: need to be sorted"
+    },
+    {
+      "warning_type": "Unmaintained Dependency",
+      "warning_code": 123,
+      "fingerprint": "715ee6d743a8af33c7b930d728708ce19c765fb40e2ad9d2b974db04d92dc7d1",
+      "check_name": "EOLRuby",
+      "message": "Support for Ruby 3.0.3 ends on 2024-03-31",
+      "file": ".ruby-version",
+      "line": 1,
+      "link": "https://brakemanscanner.org/docs/warning_types/unmaintained_dependency/",
+      "code": null,
+      "render_path": null,
+      "location": null,
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        1104
+      ],
+      "note": "TODO: need to be updated"
+    },
+    {
+      "warning_type": "Unscoped Find",
+      "warning_code": 82,
+      "fingerprint": "9920186ea3809b5182af8271d12518d07ec0f91996aa65d9a089c89afbfd058f",
+      "check_name": "UnscopedFind",
+      "message": "Unscoped call to `Specification#find`",
+      "file": "app/controllers/api/v1/mappings_controller.rb",
+      "line": 102,
+      "link": "https://brakemanscanner.org/docs/warning_types/unscoped_find/",
+      "code": "Specification.find(params[:specification_id])",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "API::V1::MappingsController",
+        "method": "instantiate_specification"
+      },
+      "user_input": "params[:specification_id]",
+      "confidence": "Weak",
+      "cwe_id": [
+        285
+      ],
+      "note": "TODO: need to be sorted"
+    },
+    {
+      "warning_type": "Dangerous Send",
+      "warning_code": 23,
+      "fingerprint": "b79eab947533003c1dcccbddc48414614637a82ce6579d8ea48e6a355139927c",
+      "check_name": "Send",
+      "message": "User controlled method execution",
+      "file": "app/controllers/api/v1/skos_controller.rb",
+      "line": 30,
+      "link": "https://brakemanscanner.org/docs/warning_types/dangerous_send/",
+      "code": "ConfigurationProfile.find(params[:configuration_profile_id]).send(params[:skos_method].to_sym)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "API::V1::SkosController",
+        "method": "labels"
+      },
+      "user_input": "params[:skos_method].to_sym",
+      "confidence": "High",
+      "cwe_id": [
+        77
+      ],
+      "note": "TODO: need to be sorted"
+    },
+    {
+      "warning_type": "Unmaintained Dependency",
+      "warning_code": 120,
+      "fingerprint": "d84924377155b41e094acae7404ec2e521629d86f97b0ff628e3d1b263f8101c",
+      "check_name": "EOLRails",
+      "message": "Support for Rails 6.0.4.7 ended on 2023-06-01",
+      "file": "Gemfile.lock",
+      "line": 268,
+      "link": "https://brakemanscanner.org/docs/warning_types/unmaintained_dependency/",
+      "code": null,
+      "render_path": null,
+      "location": null,
+      "user_input": null,
+      "confidence": "High",
+      "cwe_id": [
+        1104
+      ],
+      "note": "TODO: need to be updated"
+    },
+    {
+      "warning_type": "Unscoped Find",
+      "warning_code": 82,
+      "fingerprint": "e2479ca7663947759c467eec6f0537176cba9ff25ef0fc7f01179a132a6519e6",
+      "check_name": "UnscopedFind",
+      "message": "Unscoped call to `Specification#find`",
+      "file": "app/controllers/api/v1/specifications_controller.rb",
+      "line": 23,
+      "link": "https://brakemanscanner.org/docs/warning_types/unscoped_find/",
+      "code": "Specification.find(params[:id])",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "API::V1::SpecificationsController",
+        "method": "show"
+      },
+      "user_input": "params[:id]",
+      "confidence": "Weak",
+      "cwe_id": [
+        285
+      ],
+      "note": "TODO: need to be sorted"
+    }
+  ],
+  "updated": "2024-02-12 16:09:03 +0400",
+  "brakeman_version": "6.1.2"
+}

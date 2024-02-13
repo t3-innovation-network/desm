@@ -36,7 +36,7 @@ module Converters
     # @param technical_name [String]
     # @return [Hash]
     def build_concept(option, scheme_id, technical_name)
-      head, *tail = option.split(/-/)
+      head, *tail = option.split("-")
       label = head.strip
       definition = tail.any? ? tail.join("-").strip : label
 
@@ -44,7 +44,7 @@ module Converters
         "@id": build_desm_uri("#{technical_name}#{label}"),
         "@type": "skos:Concept",
         "skos:prefLabel": label,
-        "skos:definition": {"en": definition},
+        "skos:definition": { en: definition },
         "skos:inScheme": scheme_id
       }
 

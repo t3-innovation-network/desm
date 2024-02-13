@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import TopNav from "../shared/TopNav";
 import MappingForm from "./MappingForm";
 import MappingPreview from "./MappingPreview";

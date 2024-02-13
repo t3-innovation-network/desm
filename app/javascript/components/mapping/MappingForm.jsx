@@ -189,7 +189,7 @@ const MappingForm = () => {
     let response = await checkDomainsInFile(mergedFileId);
 
     if (!anyError(response)) {
-      if (!Boolean(response.domains.length)) {
+      if (!response.domains.length) {
         dispatch(
           setMappingFormErrors([
             "We couldn't find any classes in the provided file",

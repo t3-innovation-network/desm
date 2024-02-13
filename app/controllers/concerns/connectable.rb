@@ -13,10 +13,8 @@ module Connectable
   ###
   def uri?(string)
     uri = URI.parse(string)
-    %w[http https].include?(uri.scheme)
-  rescue URI::BadURIError
-    false
-  rescue URI::InvalidURIError
+    %w(http https).include?(uri.scheme)
+  rescue URI::BadURIError, URI::InvalidURIError
     false
   end
 
@@ -26,7 +24,7 @@ module Connectable
   # @param [String] uri: The http address to fetch the content from
   # @return [String]
   ###
-  def http_get uri
+  def http_get(uri)
     HTTParty.get(uri)
   rescue StandardError => e
     Rails.logger.error(e.inspect)

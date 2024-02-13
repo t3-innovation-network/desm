@@ -15,7 +15,7 @@ RSpec.describe Converters::RdfXml do
       let(:filename) { "ASN_D2695955.rdf" }
 
       it "converts RDF/XML to JSON-LD" do
-        expect(result.keys).to eq(%i[@context @graph])
+        expect(result.keys).to eq(%i(@context @graph))
 
         expect(result.fetch(:@context)).to eq(
           "asn" => "http://purl.org/ASN/schema/core/",
@@ -31,8 +31,8 @@ RSpec.describe Converters::RdfXml do
           "rdfs" => "http://www.w3.org/2000/01/rdf-schema#"
         )
 
-        expect(graph.map {|r| r["@type"] }.uniq.compact).to match_array(
-          %w[asn:Statement asn:StandardDocument]
+        expect(graph.map { |r| r["@type"] }.uniq.compact).to match_array(
+          %w(asn:Statement asn:StandardDocument)
         )
 
         expect(graph.uniq.size).to eq(graph.size)
@@ -43,7 +43,7 @@ RSpec.describe Converters::RdfXml do
       let(:filename) { "dwcterms.rdf" }
 
       it "converts RDF/XML to JSON-LD" do
-        expect(result.keys).to eq(%i[@context @graph])
+        expect(result.keys).to eq(%i(@context @graph))
 
         expect(result.fetch(:@context)).to eq(
           "dwcattributes" => "http://rs.tdwg.org/dwc/terms/attributes/",
@@ -52,8 +52,8 @@ RSpec.describe Converters::RdfXml do
           "rdfs" => "http://www.w3.org/2000/01/rdf-schema#"
         )
 
-        expect(graph.map {|r| r["@type"] }.uniq.compact.sort).to match_array(
-          %w[rdf:Property rdfs:Class]
+        expect(graph.map { |r| r["@type"] }.uniq.compact.sort).to match_array(
+          %w(rdf:Property rdfs:Class)
         )
 
         expect(graph.uniq.size).to eq(graph.size)

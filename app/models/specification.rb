@@ -56,8 +56,8 @@ class Specification < ApplicationRecord
   # @description: Include additional information about the specification in
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
-  def as_json(options={})
-    super options.merge(methods: %i[domain])
+  def as_json(options = {})
+    super(options.merge(methods: %i(domain)))
   end
 
   def to_json_ld

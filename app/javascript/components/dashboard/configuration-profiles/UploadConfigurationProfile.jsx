@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import AlertNotice from "../../shared/AlertNotice";
 import { downloadFile } from "../../../helpers/Export";
 import fetchValidSchema from "../../../services/fetchValidSchema";
-import { CenteredRoundedCard, ToggleBtn } from "./utils";
+import { CenteredRoundedCard } from "./utils";
 import UploadConfigurationProfileForm from "./UploadConfigurationProfileForm";
 
 const UploadByUrlForm = () => {

@@ -148,7 +148,7 @@ export const NoDataFound = (props) => {
         <img src={noDataImg} alt="No data found" />
       </div>
       <div className="pl-5 pr-5 text-center font-italic">
-        <h4>Couldn't find anything here!</h4>
+        <h4>Couldn&apos;t find anything here!</h4>
         <p>{text}</p>
       </div>
     </Fragment>
@@ -221,9 +221,7 @@ export const readFileContent = (file, onLoad, onError) => {
   };
 
   reader.onerror = function (e) {
-    let tempErrors = errors;
-    tempErrors.push("File could not be read! Code: " + e.target.error.code);
-    onError(tempErrors);
+    onError(`File could not be read! Code: ${e.target.error.code}`);
   };
 
   reader.readAsText(file);

@@ -39,7 +39,7 @@ class ConfigurationProfile < ApplicationRecord
   #   parsing the structure.
   # 3. "deactivated" Can not be operated unless it's for removal or export. It can only be activated again, which
   #   will not trigger the structure creation again.
-  enum state: {incomplete: 0, complete: 1, active: 2, deactivated: 3}
+  enum state: { incomplete: 0, complete: 1, active: 2, deactivated: 3 }
 
   COMPLETE_SCHEMA = Rails.root.join("ns", "complete.configurationProfile.schema.json")
   VALID_SCHEMA = Rails.root.join("ns", "valid.configurationProfile.schema.json")
@@ -48,7 +48,7 @@ class ConfigurationProfile < ApplicationRecord
     throw :abort if json_mapping_predicates.nil?
 
     concepts = Parsers::Skos.new(file_content: json_mapping_predicates).concept_names
-    throw :abort unless concepts.map {|c| c[:uri] }.include?(predicate_strongest_match)
+    throw :abort unless concepts.map { |c| c[:uri] }.include?(predicate_strongest_match)
   end
 
   def self.complete_schema
@@ -59,14 +59,14 @@ class ConfigurationProfile < ApplicationRecord
     read_schema(VALID_SCHEMA)
   end
 
-  def self.read_schema schema
+  def self.read_schema(schema)
     JSON.parse(
       File.read(schema)
     )
   end
 
-  def self.validate_structure struct, type="valid"
-    struct = struct.deep_transform_keys {|key| key.to_s.camelize(:lower) }
+  def self.validate_structure(struct, type = "valid")
+    struct = struct.deep_transform_keys { |key| key.to_s.camelize(:lower) }
     JSON::Validator.fully_validate(
       type.eql?("valid") ? valid_schema : complete_schema,
       struct
@@ -108,7 +108,7 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def generate_structure
-    CreateCpStructure.call({configuration_profile: self})
+    CreateCpStructure.call({ configuration_profile: self })
   end
 
   def remove!
@@ -134,7 +134,7 @@ class ConfigurationProfile < ApplicationRecord
     validation.empty?
   end
 
-  def transition_to! new_state
+  def transition_to!(new_state)
     public_send(persisted? ? :update_column : :update_attribute, :state, new_state)
   end
 

@@ -22,7 +22,7 @@ class Domain < ApplicationRecord
   belongs_to :domain_set
   has_one :spine, dependent: :destroy
   has_one :configuration_profile, through: :domain_set
-  validates :source_uri, presence: true, uniqueness: {scope: :domain_set_id}
+  validates :source_uri, presence: true, uniqueness: { scope: :domain_set_id }
   validates :pref_label, presence: true
   alias_attribute :name, :pref_label
 
@@ -35,8 +35,8 @@ class Domain < ApplicationRecord
     !spine.nil?
   end
 
-  def as_json(options={})
-    super options.merge(methods: %i[spine? spine])
+  def as_json(options = {})
+    super(options.merge(methods: %i(spine? spine)))
   end
 
   def to_json_ld

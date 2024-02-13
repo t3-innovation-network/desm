@@ -25,7 +25,8 @@ import SelectConfigurationProfile from "./auth/SelectConfigurationProfile";
 import EditProfile from "./auth/EditProfile";
 import Admins from "../components/dashboard/admins/Admins";
 
-const adminRoleName = process.env.ADMIN_ROLE_NAME || "Super Admin";
+// TODO: check if it'll work the same way if to move from webpacker
+const adminRoleName = process.env.ADMIN_ROLE_NAME || "Super Admin"; // eslint-disable-line no-undef
 const allRoles = [adminRoleName, "Mapper", "DSO Admin", "Profile Admin"];
 const onlySuperAdmin = [adminRoleName];
 const onlyMappers = ["Mapper"];
