@@ -98,6 +98,8 @@ group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "capybara"
   gem "database_cleaner"
+  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "factory_bot_rails"
   gem "faker"
   gem "rspec-rails", "~> 4.0.1"
@@ -130,8 +132,9 @@ end
 group :test do
   gem "simplecov", require: false
 
-  # profiling, check https://test-prof.evilmartians.io/ + use venier for ruby > 3.2
+  # profiling, check https://test-prof.evilmartians.io/
   gem "ruby-prof", ">= 0.17.0", require: false
   gem "stackprof", ">= 0.2.9", require: false
   gem "test-prof"
+  gem "vernier", ">= 0.3.0", require: false
 end
