@@ -96,5 +96,5 @@ class Specification < ApplicationRecord
     }
   end
 
-  scope :for_dso, ->(dso) { where(user: dso.users) }
+  scope :for_dso, ->(dso) { joins(:user).where(users: { id: dso.users }) }
 end
