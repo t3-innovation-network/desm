@@ -1,8 +1,8 @@
-import React from "react";
-import ProgressReportBar from "../shared/ProgressReportBar";
-import Pluralize from "pluralize";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import React from 'react';
+import ProgressReportBar from '../shared/ProgressReportBar';
+import Pluralize from 'pluralize';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Props
@@ -34,14 +34,14 @@ const AlignmentsHeader = (props) => {
       <div className="row">
         <div className="col-6">
           <p>
-            <strong>{organizationName + " > "}</strong>
+            <strong>{organizationName + ' > '}</strong>
             {domain}
           </p>
         </div>
         <div className="col-6">
           <p className="float-right">
-            <strong>{selectedAlignments.length}</strong>{" "}
-            {Pluralize("property", selectedAlignments.length) + " selected"}
+            <strong>{selectedAlignments.length}</strong>{' '}
+            {Pluralize('property', selectedAlignments.length) + ' selected'}
           </p>
         </div>
       </div>
@@ -53,14 +53,9 @@ const AlignmentsHeader = (props) => {
               className="custom-control-input desm-custom-control-input cursor-pointer"
               id="hideMappingElems"
               checked={hideMappedSelectedTerms}
-              onChange={(e) =>
-                setHideMappedSelectedTerms(!hideMappedSelectedTerms)
-              }
+              onChange={(e) => setHideMappedSelectedTerms(!hideMappedSelectedTerms)}
             />
-            <label
-              className="custom-control-label cursor-pointer"
-              htmlFor="hideMappingElems"
-            >
+            <label className="custom-control-label cursor-pointer" htmlFor="hideMappingElems">
               Hide Mapped Elements
             </label>
           </div>
@@ -68,8 +63,8 @@ const AlignmentsHeader = (props) => {
         <div
           className="col-4"
           style={{
-            position: "relative",
-            bottom: "1rem",
+            position: 'relative',
+            bottom: '1rem',
           }}
         >
           <ProgressReportBar

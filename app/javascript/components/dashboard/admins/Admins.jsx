@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
-import { toastr as toast } from "react-redux-toastr";
-import DashboardContainer from "../DashboardContainer";
-import deleteAdmin from "../../../services/deleteAdmin";
-import fetchAdmins from "../../../services/fetchAdmins";
-import ModalStyles from "../../shared/ModalStyles";
-import AdminForm from "./AdminForm";
+import React, { useEffect, useState } from 'react';
+import Modal from 'react-modal';
+import { toastr as toast } from 'react-redux-toastr';
+import DashboardContainer from '../DashboardContainer';
+import deleteAdmin from '../../../services/deleteAdmin';
+import fetchAdmins from '../../../services/fetchAdmins';
+import ModalStyles from '../../shared/ModalStyles';
+import AdminForm from './AdminForm';
 
 const Admins = () => {
-  Modal.setAppElement("body");
+  Modal.setAppElement('body');
 
   const [admins, setAdmins] = useState([]);
   const [toBeEdited, setToBeEdited] = useState();
 
   const handleDelete = async (admin) => {
-    if (window.confirm("Are you sure?")) {
+    if (window.confirm('Are you sure?')) {
       const { error } = await deleteAdmin(admin.id);
 
       if (error) {
@@ -22,20 +22,20 @@ const Admins = () => {
         return;
       }
 
-      setAdmins(admins => admins.filter(a => a.id != admin.id));
-      toast.info("Admin user removed!");
+      setAdmins((admins) => admins.filter((a) => a.id != admin.id));
+      toast.info('Admin user removed!');
     }
   };
 
   const handleSave = (admin) => {
     if (toBeEdited.id) {
-      const index = admins.findIndex(a => a.id === toBeEdited.id);
+      const index = admins.findIndex((a) => a.id === toBeEdited.id);
       admins[index] = admin;
       setAdmins(admins);
-      toast.info("Changes saved!");
+      toast.info('Changes saved!');
     } else {
       setAdmins([admin, ...admins]);
-      toast.info("New admin user added!");
+      toast.info('New admin user added!');
     }
 
     setToBeEdited(undefined);
@@ -54,10 +54,7 @@ const Admins = () => {
         <h1>Admin Users</h1>
 
         <p>
-          <button
-            className="btn btn-primary"
-            onClick={() => setToBeEdited({})}
-          >
+          <button className="btn btn-primary" onClick={() => setToBeEdited({})}>
             Add Admin User
           </button>
         </p>
@@ -71,21 +68,15 @@ const Admins = () => {
             </tr>
           </thead>
           <tbody>
-            {admins.map(a => (
+            {admins.map((a) => (
               <tr key={a.id}>
                 <td>{a.email}</td>
                 <td>{a.fullname}</td>
                 <td>
-                  <button
-                    className="btn btn-sm btn-primary mr-3"
-                    onClick={() => setToBeEdited(a)}
-                  >
+                  <button className="btn btn-sm btn-primary mr-3" onClick={() => setToBeEdited(a)}>
                     Edit
                   </button>
-                  <button
-                    className="btn btn-sm btn-danger"
-                    onClick={() => handleDelete(a)}
-                  >
+                  <button className="btn btn-sm btn-danger" onClick={() => handleDelete(a)}>
                     Delete
                   </button>
                 </td>
@@ -95,11 +86,7 @@ const Admins = () => {
         </table>
       </div>
       {Boolean(toBeEdited) && (
-        <Modal
-          isOpen
-          onRequestClose={() => setToBeEdited(undefined)}
-          style={ModalStyles}
-        >
+        <Modal isOpen onRequestClose={() => setToBeEdited(undefined)} style={ModalStyles}>
           <AdminForm
             record={toBeEdited}
             onCancel={() => setToBeEdited(undefined)}

@@ -1,29 +1,28 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../../contexts/AppContext";
-import fetchConfigurationProfiles from "../../services/fetchConfigurationProfiles";
-import setConfigurationProfile from "../../services/setConfigurationProfile";
-import Loader from "../shared/Loader";
+import React, { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../../contexts/AppContext';
+import fetchConfigurationProfiles from '../../services/fetchConfigurationProfiles';
+import setConfigurationProfile from '../../services/setConfigurationProfile';
+import Loader from '../shared/Loader';
 
 const ConfigurationProfileSelect = ({ onChange }) => {
   const {
     currentConfigurationProfile,
     setCurrentConfigurationProfile,
     setLeadMapper,
-    setOrganization
+    setOrganization,
   } = useContext(AppContext);
 
   const [configurationProfiles, setConfigurationProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  const [
-    selectedConfigurationProfile,
-    setSelectedConfigurationProfile
-  ] = useState(currentConfigurationProfile);
+  const [selectedConfigurationProfile, setSelectedConfigurationProfile] = useState(
+    currentConfigurationProfile
+  );
 
   const handleChange = (e) => {
-    const configurationProfile = configurationProfiles.find(p =>
-      p.id.toString() === e.target.value
+    const configurationProfile = configurationProfiles.find(
+      (p) => p.id.toString() === e.target.value
     );
 
     setSelectedConfigurationProfile(configurationProfile);
@@ -33,8 +32,8 @@ const ConfigurationProfileSelect = ({ onChange }) => {
     e.preventDefault();
     setSubmitting(true);
 
-    const configurationProfile = configurationProfiles.find(p =>
-      p.id === selectedConfigurationProfile.id
+    const configurationProfile = configurationProfiles.find(
+      (p) => p.id === selectedConfigurationProfile.id
     );
 
     await setConfigurationProfile(selectedConfigurationProfile.id);
@@ -45,15 +44,14 @@ const ConfigurationProfileSelect = ({ onChange }) => {
     onChange?.();
   };
 
-  const placeholderOptionText = (
-    loading ? "Loading…" : (configurationProfiles.length ? "Choose…" : "No data")
-  );
+  const placeholderOptionText = loading
+    ? 'Loading…'
+    : configurationProfiles.length
+    ? 'Choose…'
+    : 'No data';
 
-  const submitDisabled = (
-    !configurationProfiles.length ||
-      !selectedConfigurationProfile ||
-      submitting
-  );
+  const submitDisabled =
+    !configurationProfiles.length || !selectedConfigurationProfile || submitting;
 
   useEffect(() => {
     (async () => {
@@ -65,9 +63,7 @@ const ConfigurationProfileSelect = ({ onChange }) => {
 
   return (
     <div className="card mb-3">
-      <div className="card-header">
-        Choose Configuration Profile
-      </div>
+      <div className="card-header">Choose Configuration Profile</div>
       <div className="card-body">
         <form className="form-inline" onSubmit={handleSubmit}>
           <label className="mr-2" htmlFor="currentConfigurationProfile">
@@ -81,15 +77,14 @@ const ConfigurationProfileSelect = ({ onChange }) => {
             value={selectedConfigurationProfile?.id}
           >
             <option value="">{placeholderOptionText}</option>
-            {configurationProfiles.map(p => (
-              <option key={p.id} value={p.id}>{p.name}</option>
+            {configurationProfiles.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+              </option>
             ))}
           </select>
-          <button
-            className="btn btn-primary"
-            disabled={submitDisabled}
-          >
-            {loading ? <Loader noPadding smallSpinner /> : "Submit"}
+          <button className="btn btn-primary" disabled={submitDisabled}>
+            {loading ? <Loader noPadding smallSpinner /> : 'Submit'}
           </button>
         </form>
       </div>

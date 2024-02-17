@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 /**
  * @description Renders an Alert box with a title and a message
@@ -17,13 +17,9 @@ const AlertNotice = (props) => {
   const { cssClass, title, message, onClose } = props;
 
   return (
-    <div
-      className={
-        "alert alert-dismissible " + (cssClass ? cssClass : "alert-danger")
-      }
-    >
+    <div className={'alert alert-dismissible ' + (cssClass ? cssClass : 'alert-danger')}>
       <h4>
-        <strong>{title ? title : "Attention!"}</strong>
+        <strong>{title ? title : 'Attention!'}</strong>
       </h4>
       {_.isArray(message) ? (
         message.map((msg, i) => {
@@ -39,7 +35,7 @@ const AlertNotice = (props) => {
       <button
         type="button"
         className="close"
-        data-dismiss={!onClose && "alert"}
+        data-dismiss={!onClose && 'alert'}
         aria-label="Close"
         onClick={onClose}
       >

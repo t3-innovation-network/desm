@@ -1,19 +1,19 @@
-import React, { Fragment } from "react";
-import TopNav from "../shared/TopNav";
-import { Link } from "react-router-dom";
-import fetchMappings from "../../services/fetchMappings";
-import Loader from "../shared/Loader";
-import TopNavOptions from "../shared/TopNavOptions";
-import SpineSpecsList from "./SpineSpecsList";
-import _ from "lodash";
-import ConfirmDialog from "../shared/ConfirmDialog";
-import { toastr as toast } from "react-redux-toastr";
-import deleteMapping from "../../services/deleteMapping";
-import fetchMappingToExport from "../../services/fetchMappingToExport";
-import { downloadFile } from "../../helpers/Export";
-import updateMapping from "../../services/updateMapping";
-import { Component } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { Fragment } from 'react';
+import TopNav from '../shared/TopNav';
+import { Link } from 'react-router-dom';
+import fetchMappings from '../../services/fetchMappings';
+import Loader from '../shared/Loader';
+import TopNavOptions from '../shared/TopNavOptions';
+import SpineSpecsList from './SpineSpecsList';
+import _ from 'lodash';
+import ConfirmDialog from '../shared/ConfirmDialog';
+import { toastr as toast } from 'react-redux-toastr';
+import deleteMapping from '../../services/deleteMapping';
+import fetchMappingToExport from '../../services/fetchMappingToExport';
+import { downloadFile } from '../../helpers/Export';
+import updateMapping from '../../services/updateMapping';
+import { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUndo,
   faPencilAlt,
@@ -21,8 +21,8 @@ import {
   faDownload,
   faLayerGroup,
   faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-import { AppContext } from "../../contexts/AppContext";
+} from '@fortawesome/free-solid-svg-icons';
+import { AppContext } from '../../contexts/AppContext';
 
 export default class SpecsList extends Component {
   static contextType = AppContext;
@@ -43,7 +43,7 @@ export default class SpecsList extends Component {
     /**
      * Represents the filter value to configure the query to get the specifications
      */
-    filter: "user",
+    filter: 'user',
     /**
      * Whether the page is loading results or not
      */
@@ -62,12 +62,12 @@ export default class SpecsList extends Component {
      */
     filterOptions: [
       {
-        key: "user",
-        value: "Only My Mappings",
+        key: 'user',
+        value: 'Only My Mappings',
       },
       {
-        key: "all",
-        value: "All Mappings",
+        key: 'all',
+        value: 'All Mappings',
       },
     ],
   };
@@ -139,11 +139,11 @@ export default class SpecsList extends Component {
     let response = await deleteMapping(mappingIdToRemove);
 
     if (!this.anyError(response, errorsWhileRemoving)) {
-      toast.success("Mapping removed");
+      toast.success('Mapping removed');
 
       this.setState({
         confirmingRemove: false,
-        mappings: mappings.filter(m => m.id != mappingIdToRemove)
+        mappings: mappings.filter((m) => m.id != mappingIdToRemove),
       });
     }
   };
@@ -171,15 +171,15 @@ export default class SpecsList extends Component {
     /// Change the mapping status
     let response = await updateMapping({
       id: mappingId,
-      status: "in_progress",
+      status: 'in_progress',
     });
 
     if (!this.anyError(response)) {
       /// Change 'in-memory' status
       let mapping = mappings.find((m) => m.id === mappingId);
-      mapping.status = "in_progress";
-      mapping["in_progress?"] = true;
-      mapping["mapped?"] = false;
+      mapping.status = 'in_progress';
+      mapping['in_progress?'] = true;
+      mapping['mapped?'] = false;
 
       this.setState(
         {
@@ -191,7 +191,7 @@ export default class SpecsList extends Component {
       );
 
       /// Notify the user
-      toast.success("Status changed!");
+      toast.success('Status changed!');
     }
 
     this.setState({ loading: false });
@@ -210,16 +210,16 @@ export default class SpecsList extends Component {
     /// Change the mapping status
     let response = await updateMapping({
       id: mappingId,
-      status: "uploaded",
+      status: 'uploaded',
     });
 
     if (!this.anyError(response)) {
       /// Change 'in-memory' status
       let mapping = mappings.find((m) => m.id === mappingId);
-      mapping.status = "uploaded";
-      mapping["mapped?"] = false;
-      mapping["in_progress?"] = false;
-      mapping["uploaded?"] = true;
+      mapping.status = 'uploaded';
+      mapping['mapped?'] = false;
+      mapping['in_progress?'] = false;
+      mapping['uploaded?'] = true;
 
       this.setState(
         {
@@ -231,7 +231,7 @@ export default class SpecsList extends Component {
       );
 
       /// Notify the user
-      toast.success("Status changed!");
+      toast.success('Status changed!');
     }
 
     this.setState({ loading: false });
@@ -269,27 +269,17 @@ export default class SpecsList extends Component {
           {mapping.title} ({mapping.specification.name})
         </td>
         <td>{mapping.specification.version}</td>
-        <td>
-          {mapping.mapped_terms +
-            "/" +
-            mapping.selected_terms.length}
-        </td>
-        <td>
-          {_.startCase(_.toLower(mapping.status))}
-        </td>
+        <td>{mapping.mapped_terms + '/' + mapping.selected_terms.length}</td>
+        <td>{_.startCase(_.toLower(mapping.status))}</td>
         <td>{mapping.specification.user.fullname}</td>
         <td>
-          {mapping["mapped?"] ? (
+          {mapping['mapped?'] ? (
             <>
               {fromSameOrg && (
                 <>
                   <button
                     className="btn btn-sm btn-dark ml-2"
-                    onClick={() =>
-                      this.handleMarkToInProgress(
-                        mapping.id
-                      )
-                    }
+                    onClick={() => this.handleMarkToInProgress(mapping.id)}
                     data-toggle="tooltip"
                     data-placement="top"
                     title="Mark this mapping back to 'in progress'"
@@ -298,9 +288,7 @@ export default class SpecsList extends Component {
                   </button>
 
                   <Link
-                    to={
-                      "/mappings/" + mapping.id + "/align"
-                    }
+                    to={'/mappings/' + mapping.id + '/align'}
                     className="btn btn-sm btn-dark ml-2"
                     data-toggle="tooltip"
                     data-placement="top"
@@ -323,9 +311,7 @@ export default class SpecsList extends Component {
 
               <button
                 className="btn btn-sm btn-dark ml-2"
-                onClick={() =>
-                  this.handleExportMapping(mapping)
-                }
+                onClick={() => this.handleExportMapping(mapping)}
                 data-toggle="tooltip"
                 data-placement="top"
                 title="Export this mapping"
@@ -335,36 +321,28 @@ export default class SpecsList extends Component {
             </>
           ) : (
             <>
-              {mapping["in_progress?"] ? (
-                fromSameOrg && (
-                  <button
-                    className="btn btn-sm btn-dark ml-2"
-                    onClick={() =>
-                      this.handleMarkToUploaded(
-                        mapping.id
-                      )
-                    }
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Mark this mapping back to 'uploaded'"
-                  >
-                    <FontAwesomeIcon icon={faUndo} />
-                  </button>
-                )
-              ) : (
-                ""
-              )}
+              {mapping['in_progress?']
+                ? fromSameOrg && (
+                    <button
+                      className="btn btn-sm btn-dark ml-2"
+                      onClick={() => this.handleMarkToUploaded(mapping.id)}
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Mark this mapping back to 'uploaded'"
+                    >
+                      <FontAwesomeIcon icon={faUndo} />
+                    </button>
+                  )
+                : ''}
               {fromSameOrg && (
                 <Link
                   to={
-                    mapping["uploaded?"]
+                    mapping['uploaded?']
                       ? /// This mapping has mapped terms, but it has not finished selecting the terms from the specification
-                        "/mappings/" + mapping.id
+                        '/mappings/' + mapping.id
                       : /// It's on the 3d step (align and fine tune), already selected the terms from the specification, and
                         /// now it's mapping terms into the spine terms
-                        "/mappings/" +
-                        mapping.id +
-                        "/align"
+                        '/mappings/' + mapping.id + '/align'
                   }
                   className="btn btn-sm ml-2 bg-col-primary col-background"
                   data-toggle="tooltip"
@@ -379,9 +357,7 @@ export default class SpecsList extends Component {
 
           {fromSameOrg && (
             <button
-              onClick={() =>
-                this.handleConfirmRemove(mapping.id)
-              }
+              onClick={() => this.handleConfirmRemove(mapping.id)}
               className="btn btn-sm btn-dark ml-2"
               data-toggle="tooltip"
               data-placement="top"
@@ -396,46 +372,29 @@ export default class SpecsList extends Component {
   };
 
   render() {
-    const {
-      confirmingRemove,
-      filter,
-      filterOptions,
-      loading,
-      mappings,
-    } = this.state;
+    const { confirmingRemove, filter, filterOptions, loading, mappings } = this.state;
 
     return (
       <div className="container-fluid">
         <TopNav centerContent={this.navCenterOptions} />
         <div className="row">
           <div className="col p-lg-5 pt-5">
-            <h1>
-              My Specifications
-            </h1>
+            <h1>My Specifications</h1>
             <p>
-              Current configuration profile:
-              {" "}
-              <mark>
-                {this.context.currentConfigurationProfile.name}
-              </mark>
+              Current configuration profile:{' '}
+              <mark>{this.context.currentConfigurationProfile.name}</mark>
             </p>
             {loading ? (
               <Loader />
             ) : (
               <Fragment>
                 <ConfirmDialog
-                  onRequestClose={() =>
-                    this.setState({ confirmingRemove: false })
-                  }
+                  onRequestClose={() => this.setState({ confirmingRemove: false })}
                   onConfirm={() => this.handleRemoveMapping()}
                   visible={confirmingRemove}
                 >
-                  <h2 className="text-center">
-                    You are removing a specification
-                  </h2>
-                  <h5 className="mt-3 text-center">
-                    Please confirm this action.
-                  </h5>
+                  <h2 className="text-center">You are removing a specification</h2>
+                  <h5 className="mt-3 text-center">Please confirm this action.</h5>
                 </ConfirmDialog>
 
                 <div className="table-responsive">
@@ -451,9 +410,7 @@ export default class SpecsList extends Component {
                           <select
                             className="form-control"
                             value={filter}
-                            onChange={(e) =>
-                              this.handleFilterChange(e.target.value)
-                            }
+                            onChange={(e) => this.handleFilterChange(e.target.value)}
                           >
                             {filterOptions.map(function (option) {
                               return (
@@ -468,11 +425,7 @@ export default class SpecsList extends Component {
                     </thead>
                     <tbody>
                       <SpineSpecsList filter={filter} />
-                      {mappings.length > 0 ? (
-                        mappings.map(this.renderMapping)
-                      ) : (
-                        <tr />
-                      )}
+                      {mappings.length > 0 ? mappings.map(this.renderMapping) : <tr />}
                     </tbody>
                   </table>
 
@@ -481,16 +434,10 @@ export default class SpecsList extends Component {
                   {mappings.length === 0 && (
                     <div className="card text-center">
                       <div className="card-header bg-col-on-primary-highlight">
-                        <p>
-                          All the specifications you and your team map will be
-                          visible here
-                        </p>
+                        <p>All the specifications you and your team map will be visible here</p>
                       </div>
                       <div className="card-body bg-col-on-primary-highlight">
-                        <Link
-                          to="/new-mapping"
-                          className="btn bg-col-primary col-background"
-                        >
+                        <Link to="/new-mapping" className="btn bg-col-primary col-background">
                           Map a specification
                         </Link>
                       </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 /**
  * Props
@@ -18,8 +18,7 @@ const ChangeDetails = (props) => {
    * @param {Integer} predicateId
    */
   const predicateLabel = (predicateId) => {
-    return predicates.find((predicate) => predicate.id == predicateId)
-      .pref_label;
+    return predicates.find((predicate) => predicate.id == predicateId).pref_label;
   };
 
   /**
@@ -32,8 +31,8 @@ const ChangeDetails = (props) => {
    */
   const printChangeValue = (property, value) => {
     switch (property) {
-      case "predicate_id":
-        return value ? predicateLabel(value) : "not defined";
+      case 'predicate_id':
+        return value ? predicateLabel(value) : 'not defined';
       default:
         return value;
     }
@@ -50,10 +49,10 @@ const ChangeDetails = (props) => {
    */
   const printProperty = (property) => {
     switch (property) {
-      case "predicate_id":
-        return "Property";
-      case "spine_term_id":
-        return "Spine Term";
+      case 'predicate_id':
+        return 'Property';
+      case 'spine_term_id':
+        return 'Spine Term';
       default:
         return _.capitalize(property);
     }
@@ -64,25 +63,22 @@ const ChangeDetails = (props) => {
     changeRows.push(
       <div className="row" key={changeRows.length}>
         <p>
-          For <strong>{spineTerm.name + ", "}</strong>
-          {" " + printProperty(property)}
+          For <strong>{spineTerm.name + ', '}</strong>
+          {' ' + printProperty(property)}
           {
             /// We are fetching only audits with action: "update". It implies that the auditable
             /// changes comes as an array, being the first index for the old value, and the second
             /// index, for the new value, like this: [old_value, new_value]
             _.isArray(change.audited_changes[property])
-              ? " was " +
-                printChangeValue(
-                  property,
-                  change.audited_changes[property][0]
-                ) +
-                " - changed to: "
-              : ""
+              ? ' was ' +
+                printChangeValue(property, change.audited_changes[property][0]) +
+                ' - changed to: '
+              : ''
           }
           <strong>
             {_.isArray(change.audited_changes[property])
               ? printChangeValue(property, change.audited_changes[property][1])
-              : ""}
+              : ''}
           </strong>
         </p>
       </div>

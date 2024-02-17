@@ -1,10 +1,10 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const fetchMappingToExport = async (mappingId) => {
   return await apiRequest({
-    url: "/api/v1/mappings/" + mappingId + "/export",
-    method: "get",
-    successResponse: "exportedMapping"
+    url: '/api/v1/mappings/' + mappingId + '/export',
+    method: 'get',
+    successResponse: 'exportedMapping',
   });
 };
 

@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import TopNav from "../shared/TopNav";
-import forgotPassword from "../../services/forgotPassword";
-import AlertNotice from "../shared/AlertNotice";
-import TopNavOptions from "../shared/TopNavOptions";
-import { Link } from "react-router-dom";
-import { toastr } from "react-redux-toastr";
-import Loader from "../shared/Loader";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faKey } from "@fortawesome/free-solid-svg-icons";
+import React, { Component } from 'react';
+import TopNav from '../shared/TopNav';
+import forgotPassword from '../../services/forgotPassword';
+import AlertNotice from '../shared/AlertNotice';
+import TopNavOptions from '../shared/TopNavOptions';
+import { Link } from 'react-router-dom';
+import { toastr } from 'react-redux-toastr';
+import Loader from '../shared/Loader';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faKey } from '@fortawesome/free-solid-svg-icons';
 
 class ForgotPass extends Component {
   /**
    * Represents the state of this component.
    */
   state = {
-    email: "",
-    errors: "",
+    email: '',
+    errors: '',
     sending: false,
   };
 
@@ -43,8 +43,7 @@ class ForgotPass extends Component {
       /// Manage the errors
       if (response.error) {
         this.setState({
-          errors:
-            response.error + "\n. We were not able to reset your password.",
+          errors: response.error + '\n. We were not able to reset your password.',
           sending: false,
         });
         return;
@@ -52,17 +51,15 @@ class ForgotPass extends Component {
 
       /// Reset the errors in state
       this.setState({
-        errors: "",
+        errors: '',
         sending: false,
       });
 
       /// Notify the user
-      toastr.success(
-        "We sent you an email with instructions on how to reset your password"
-      );
+      toastr.success('We sent you an email with instructions on how to reset your password');
 
       /// Redirect the user to home
-      this.props.history.push("/");
+      this.props.history.push('/');
     });
   };
 
@@ -91,8 +88,8 @@ class ForgotPass extends Component {
                 <FontAwesomeIcon icon={faKey} />
                 <span className="pl-2 subtitle">Reset Password</span>
                 <p>
-                  Please type your email, and we will send you an email with
-                  instructions on how to reset your password.
+                  Please type your email, and we will send you an email with instructions on how to
+                  reset your password.
                 </p>
               </div>
               <div className="card-body">
@@ -115,14 +112,10 @@ class ForgotPass extends Component {
                   </div>
 
                   <button type="submit" className="btn btn-dark">
-                    {sending ? (
-                      <Loader noPadding={true} smallSpinner={true} />
-                    ) : (
-                      "Send"
-                    )}
+                    {sending ? <Loader noPadding={true} smallSpinner={true} /> : 'Send'}
                   </button>
                 </form>
-                <Link className="col-primary" to={"/sign-in"}>
+                <Link className="col-primary" to={'/sign-in'}>
                   Login
                 </Link>
               </div>

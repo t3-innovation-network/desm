@@ -1,11 +1,11 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const fetchSpecification = async (specId) => {
   return await apiRequest({
-    url: "/api/v1/specifications/" + specId,
-    method: "get",
+    url: '/api/v1/specifications/' + specId,
+    method: 'get',
     defaultResponse: {},
-    successResponse: "specification",
+    successResponse: 'specification',
   });
 };
 

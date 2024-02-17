@@ -1,11 +1,11 @@
-import { decamelizeKeys } from "humps";
-import apiRequest from "./api/apiRequest";
+import { decamelizeKeys } from 'humps';
+import apiRequest from './api/apiRequest';
 
 const createSpec = async (data) => {
   /// Do the request
   const response = await apiRequest({
-    url: "/api/v1/specifications",
-    method: "post",
+    url: '/api/v1/specifications',
+    method: 'post',
     payload: {
       specification: decamelizeKeys(data),
     },

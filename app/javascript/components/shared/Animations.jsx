@@ -1,5 +1,5 @@
-import styled, { keyframes } from "styled-components";
-import { fadeIn, slideInDown } from "react-animations";
+import styled, { keyframes } from 'styled-components';
+import { fadeIn, slideInDown } from 'react-animations';
 
 const fadeInAnimation = keyframes`${fadeIn}`;
 const slideInDownAnimation = keyframes`${slideInDown}`;

@@ -1,35 +1,35 @@
-import React from "react";
-import UsersIndex from "./dashboard/users/UsersIndex";
-import EditUser from "./dashboard/users/EditUser";
-import Registration from "./auth/Registration";
-import OrganizationsIndex from "./dashboard/organizations/OrganizationsIndex";
-import EditOrganization from "./dashboard/organizations/EditOrganization";
-import CreateOrganization from "./dashboard/organizations/CreateOrganization";
-import Home from "./home/Home";
-import SignIn from "./auth/SignIn";
-import ProtectedRoute from "./auth/ProtectedRoute";
-import Mapping from "./mapping/Mapping";
-import MainDashboard from "./dashboard/MainDashboard";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import SpecsList from "./specifications-list/SpecsList";
-import AlignAndFineTune from "./align-and-fine-tune/AlignAndFineTune";
-import MappingToDomains from "./mapping-to-domains/MappingToDomains";
-import EditSpecification from "./edit-specification/EditSpecification";
-import PropertyMappingList from "./property-mapping-list/PropertyMappingList";
-import ForgotPass from "./auth/ForgotPass";
-import ResetPass from "./auth/ResetPass";
-import ConfigurationProfilesIndex from "./dashboard/configuration-profiles/ConfigurationProfilesIndex";
-import EditConfigurationProfile from "./dashboard/configuration-profiles/edit/EditConfigurationProfile";
-import UploadConfigurationProfile from "./dashboard/configuration-profiles/UploadConfigurationProfile";
-import SelectConfigurationProfile from "./auth/SelectConfigurationProfile";
-import EditProfile from "./auth/EditProfile";
-import Admins from "../components/dashboard/admins/Admins";
+import React from 'react';
+import UsersIndex from './dashboard/users/UsersIndex';
+import EditUser from './dashboard/users/EditUser';
+import Registration from './auth/Registration';
+import OrganizationsIndex from './dashboard/organizations/OrganizationsIndex';
+import EditOrganization from './dashboard/organizations/EditOrganization';
+import CreateOrganization from './dashboard/organizations/CreateOrganization';
+import Home from './home/Home';
+import SignIn from './auth/SignIn';
+import ProtectedRoute from './auth/ProtectedRoute';
+import Mapping from './mapping/Mapping';
+import MainDashboard from './dashboard/MainDashboard';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import SpecsList from './specifications-list/SpecsList';
+import AlignAndFineTune from './align-and-fine-tune/AlignAndFineTune';
+import MappingToDomains from './mapping-to-domains/MappingToDomains';
+import EditSpecification from './edit-specification/EditSpecification';
+import PropertyMappingList from './property-mapping-list/PropertyMappingList';
+import ForgotPass from './auth/ForgotPass';
+import ResetPass from './auth/ResetPass';
+import ConfigurationProfilesIndex from './dashboard/configuration-profiles/ConfigurationProfilesIndex';
+import EditConfigurationProfile from './dashboard/configuration-profiles/edit/EditConfigurationProfile';
+import UploadConfigurationProfile from './dashboard/configuration-profiles/UploadConfigurationProfile';
+import SelectConfigurationProfile from './auth/SelectConfigurationProfile';
+import EditProfile from './auth/EditProfile';
+import Admins from '../components/dashboard/admins/Admins';
 
 // TODO: check if it'll work the same way if to move from webpacker
-const adminRoleName = process.env.ADMIN_ROLE_NAME || "Super Admin"; // eslint-disable-line no-undef
-const allRoles = [adminRoleName, "Mapper", "DSO Admin", "Profile Admin"];
+const adminRoleName = process.env.ADMIN_ROLE_NAME || 'Super Admin'; // eslint-disable-line no-undef
+const allRoles = [adminRoleName, 'Mapper', 'DSO Admin', 'Profile Admin'];
 const onlySuperAdmin = [adminRoleName];
-const onlyMappers = ["Mapper"];
+const onlyMappers = ['Mapper'];
 
 const Routes = (props) => {
   const { handleLogin } = props;
@@ -37,42 +37,33 @@ const Routes = (props) => {
   return (
     <Router>
       <Switch>
-        <Route exact path={"/"} component={Home} />
+        <Route exact path={'/'} component={Home} />
 
         <Route
           exact
-          path={"/sign-in"}
+          path={'/sign-in'}
           render={(props) => <SignIn {...props} handleLogin={handleLogin} />}
         />
 
         <Route
           exact
-          path={"/forgot-password"}
-          render={(props) => (
-            <ForgotPass {...props} handleLogin={handleLogin} />
-          )}
+          path={'/forgot-password'}
+          render={(props) => <ForgotPass {...props} handleLogin={handleLogin} />}
         />
 
         <Route
           exact
-          path={"/reset-password"}
+          path={'/reset-password'}
           render={(props) => <ResetPass {...props} handleLogin={handleLogin} />}
         />
 
         <Route
           exact
-          path={"/mappings-list"}
-          render={(props) => (
-            <PropertyMappingList {...props} handleLogin={handleLogin} />
-          )}
+          path={'/mappings-list'}
+          render={(props) => <PropertyMappingList {...props} handleLogin={handleLogin} />}
         />
 
-        <ProtectedRoute
-          exact
-          path="/mappings"
-          allowedRoles={onlyMappers}
-          component={SpecsList}
-        />
+        <ProtectedRoute exact path="/mappings" allowedRoles={onlyMappers} component={SpecsList} />
 
         <ProtectedRoute
           exact
@@ -81,12 +72,7 @@ const Routes = (props) => {
           component={EditSpecification}
         />
 
-        <ProtectedRoute
-          exact
-          path="/new-mapping"
-          allowedRoles={onlyMappers}
-          component={Mapping}
-        />
+        <ProtectedRoute exact path="/new-mapping" allowedRoles={onlyMappers} component={Mapping} />
 
         <ProtectedRoute
           exact

@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Fragment } from "react";
-import Collapsible from "../../shared/Collapsible";
+import React, { Component } from 'react';
+import { Fragment } from 'react';
+import Collapsible from '../../shared/Collapsible';
 
 /**
  * Structure of a concept of the mapped term vocabulary
@@ -38,10 +38,8 @@ class ConceptCard extends Component {
     return (
       <Collapsible
         headerContent={<strong>{concept.name}</strong>}
-        cardStyle={
-          "with-shadow mb-2" + (selected ? " draggable term-selected" : "")
-        }
-        cardHeaderColStyle={selected ? "" : "cursor-pointer"}
+        cardStyle={'with-shadow mb-2' + (selected ? ' draggable term-selected' : '')}
+        cardHeaderColStyle={selected ? '' : 'cursor-pointer'}
         observeOutside={false}
         handleOnClick={this.handleClick}
         bodyContent={
@@ -49,7 +47,7 @@ class ConceptCard extends Component {
             <p>{concept.definition}</p>
             <p>
               Origin:
-              <span className="col-primary">{" " + origin}</span>
+              <span className="col-primary">{' ' + origin}</span>
             </p>
           </Fragment>
         }

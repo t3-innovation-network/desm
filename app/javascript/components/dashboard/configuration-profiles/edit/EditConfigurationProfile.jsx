@@ -1,23 +1,23 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import fetchConfigurationProfile from "../../../../services/fetchConfigurationProfile";
-import AlertNotice from "../../../shared/AlertNotice";
-import Loader from "../../../shared/Loader";
-import DashboardContainer from "../../DashboardContainer";
-import { stateStyle } from "../utils";
-import StepsAside from "./StepsAside";
-import CPMetaData from "./CPMetaData";
-import MappingPredicates from "./MappingPredicates";
-import AbstractClasses from "./AbstractClasses";
-import DSOsInfo from "./DSOsInfo";
-import { useDispatch, useSelector } from "react-redux";
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import fetchConfigurationProfile from '../../../../services/fetchConfigurationProfile';
+import AlertNotice from '../../../shared/AlertNotice';
+import Loader from '../../../shared/Loader';
+import DashboardContainer from '../../DashboardContainer';
+import { stateStyle } from '../utils';
+import StepsAside from './StepsAside';
+import CPMetaData from './CPMetaData';
+import MappingPredicates from './MappingPredicates';
+import AbstractClasses from './AbstractClasses';
+import DSOsInfo from './DSOsInfo';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrentConfigurationProfile,
   setEditCPErrors,
   setStep,
-} from "../../../../actions/configurationProfiles";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+} from '../../../../actions/configurationProfiles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
 
 const EditConfigurationProfile = (props) => {
   const [loading, setLoading] = useState(true);
@@ -26,27 +26,24 @@ const EditConfigurationProfile = (props) => {
   const dashboardPath = () => {
     return (
       <div className="float-right">
-        <FontAwesomeIcon icon={faHome} />{" "}
+        <FontAwesomeIcon icon={faHome} />{' '}
         <span>
           <Link className="col-on-primary" to="/">
             Home
           </Link>
-        </span>{" "}
-        {`>`}{" "}
+        </span>{' '}
+        {`>`}{' '}
         <span>
           <Link className="col-on-primary" to="/dashboard">
             Dashboard
           </Link>
-        </span>{" "}
-        {`>`}{" "}
+        </span>{' '}
+        {`>`}{' '}
         <span>
-          <Link
-            className="col-on-primary"
-            to="/dashboard/configuration-profiles"
-          >
+          <Link className="col-on-primary" to="/dashboard/configuration-profiles">
             Configuration Profiles
           </Link>
-        </span>{" "}
+        </span>{' '}
         {`>`} <span>Edit</span>
       </div>
     );
@@ -132,27 +129,22 @@ const CPCardHeader = () => {
 
   useEffect(() => {
     return () => timeoutId.current && clearTimeout(timeoutId.current);
-  }, [])
+  }, []);
 
   return (
     <Fragment>
       <div className="col-4">
-        <h3 className="float-left">
-          {configurationProfile.name}
-        </h3>
+        <h3 className="float-left">{configurationProfile.name}</h3>
       </div>
       <div className="col-4">
         {showChangesSaved && (
           <p className="text-center col-on-primary-light">
-            {savingCP ? "Saving ..." : "All changes saved"}
+            {savingCP ? 'Saving ...' : 'All changes saved'}
           </p>
         )}
       </div>
       <div className="col-4">
-        <p
-          className="float-right"
-          style={stateStyle(configurationProfile.state)}
-        >
+        <p className="float-right" style={stateStyle(configurationProfile.state)}>
           {_.capitalize(configurationProfile.state)}
         </p>
       </div>
@@ -183,10 +175,10 @@ const PrevNextButtons = () => {
 
   return (
     <Fragment>
-      {currentStep !== 1  && currentStep !== 4 && (
+      {currentStep !== 1 && currentStep !== 4 && (
         <button
           className="btn btn-dark mr-3"
-          style={{ width: "10rem" }}
+          style={{ width: '10rem' }}
           onClick={() => {
             dispatch(setStep(currentStep - 1));
           }}
@@ -197,7 +189,7 @@ const PrevNextButtons = () => {
       {currentStep !== 4 && (
         <button
           className="btn btn-dark mr-3"
-          style={{ width: "10rem" }}
+          style={{ width: '10rem' }}
           onClick={() => {
             dispatch(setStep(currentStep + 1));
           }}

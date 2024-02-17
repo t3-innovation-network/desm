@@ -1,4 +1,4 @@
-import apiService, { processMessage } from "./apiService";
+import apiService, { processMessage } from './apiService';
 /**
  * Manages the api requests
  *
@@ -29,8 +29,8 @@ const apiRequest = async (props) => {
     url: props.url,
     method: props.method,
     data: props.payload,
-    options: props.options
-  /// Process the errors globally
+    options: props.options,
+    /// Process the errors globally
   }).catch((error) => {
     return {
       error: processMessage(error),
@@ -64,11 +64,11 @@ const apiRequest = async (props) => {
  * @param {Object} props
  */
 const validateParams = (props) => {
-  if (!_.has(props, "url")) {
-    throw "Url not provided";
+  if (!_.has(props, 'url')) {
+    throw 'Url not provided';
   }
-  if (!_.has(props, "method")) {
-    throw "Method not provided";
+  if (!_.has(props, 'method')) {
+    throw 'Method not provided';
   }
 };
 

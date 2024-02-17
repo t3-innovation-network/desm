@@ -1,12 +1,8 @@
-import React, { Component } from "react";
-import Collapsible from "../shared/Collapsible.jsx";
-import Loader from "../shared/Loader.jsx";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPencilAlt,
-  faTimes,
-  faCheck,
-} from "@fortawesome/free-solid-svg-icons";
+import React, { Component } from 'react';
+import Collapsible from '../shared/Collapsible.jsx';
+import Loader from '../shared/Loader.jsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * @prop {Function} onClick Actions when the user clicks on it
@@ -108,11 +104,7 @@ export default class TermCard extends Component {
 
     return (
       <div className="row">
-        <div
-          className={
-            "col-8 mb-3" + (disableClick || selected ? "" : " cursor-pointer")
-          }
-        >
+        <div className={'col-8 mb-3' + (disableClick || selected ? '' : ' cursor-pointer')}>
           <strong>{term.name}</strong>
         </div>
         <div className="col-4">
@@ -142,14 +134,9 @@ export default class TermCard extends Component {
     ) : (
       <Collapsible
         expanded={expanded === undefined ? true : expanded}
-        cardStyle={
-          "term-card with-shadow mb-2" +
-          (selected ? " draggable term-selected" : "")
-        }
-        cardHeaderStyle={"no-color-header pb-0"}
-        cardHeaderColStyle={
-          disableClick ? "" : selected ? "" : "cursor-pointer"
-        }
+        cardStyle={'term-card with-shadow mb-2' + (selected ? ' draggable term-selected' : '')}
+        cardHeaderStyle={'no-color-header pb-0'}
+        cardHeaderColStyle={disableClick ? '' : selected ? '' : 'cursor-pointer'}
         handleOnClick={disableClick ? null : this.handleTermClick}
         headerContent={this.termHeaderContent()}
         bodyContent={
@@ -158,7 +145,7 @@ export default class TermCard extends Component {
               Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
             </h6>
             <p className="card-text">{term.property.comment}</p>
-            <p className="card-text">{"Origin: " + origin}</p>
+            <p className="card-text">{'Origin: ' + origin}</p>
           </>
         }
       />

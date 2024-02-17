@@ -1,18 +1,14 @@
-import React, { Fragment, useEffect, useState } from "react";
-import FileInfo from "../mapping/FileInfo";
-import {
-  validVocabulary,
-  vocabName,
-  countConcepts,
-} from "../../helpers/Vocabularies";
-import AlertNotice from "../shared/AlertNotice";
-import fetchExternalVocabulary from "./../../services/fetchExternalVocabulary";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { readFileContent } from "../dashboard/configuration-profiles/utils";
+import React, { Fragment, useEffect, useState } from 'react';
+import FileInfo from '../mapping/FileInfo';
+import { validVocabulary, vocabName, countConcepts } from '../../helpers/Vocabularies';
+import AlertNotice from '../shared/AlertNotice';
+import fetchExternalVocabulary from './../../services/fetchExternalVocabulary';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { readFileContent } from '../dashboard/configuration-profiles/utils';
 
 // eslint-disable-next-line no-undef
-var isJSON = require("is-valid-json");
+var isJSON = require('is-valid-json');
 
 const UploadVocabulary = (props) => {
   /**
@@ -23,8 +19,8 @@ const UploadVocabulary = (props) => {
    * Represents the available types of fetching a vocabulary
    */
   const uploadModes = {
-    FILE_UPLOAD: "file-upload",
-    FETCH_BY_URL: "fetch-by-url",
+    FILE_UPLOAD: 'file-upload',
+    FETCH_BY_URL: 'fetch-by-url',
   };
   /**
    * The current upload mode
@@ -38,16 +34,16 @@ const UploadVocabulary = (props) => {
   /**
    * The content of the file. Set after reading it with a "FileReader"
    */
-  const [fileContent, setFileContent] = useState("");
+  const [fileContent, setFileContent] = useState('');
   /**
    * Name for the vocabulary
    */
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
 
   /**
    * URL to fetch the vocabulary from
    */
-  const [vocabularyURL, setVocabularyURL] = useState("");
+  const [vocabularyURL, setVocabularyURL] = useState('');
 
   /**
    * The vocabulary that's fetched using an external URL
@@ -57,7 +53,7 @@ const UploadVocabulary = (props) => {
   /**
    * The name of the vocabulary that's fetched using an external URL
    */
-  const [fetchedVocabularyName, setFetchedVocabularyName] = useState("");
+  const [fetchedVocabularyName, setFetchedVocabularyName] = useState('');
 
   const [fetching, setFetching] = useState(false);
 
@@ -90,7 +86,7 @@ const UploadVocabulary = (props) => {
     return file != null ? (
       <FileInfo selectedFile={file} key={Date.now() + file.lastModified} />
     ) : (
-      ""
+      ''
     );
   };
 
@@ -103,9 +99,7 @@ const UploadVocabulary = (props) => {
     let isValid = isJSON(content);
 
     if (!isValid) {
-      setErrors([
-        "Invalid JSON!\nBe sure to validate the file before uploading",
-      ]);
+      setErrors(['Invalid JSON!\nBe sure to validate the file before uploading']);
     }
 
     return isValid;
@@ -115,7 +109,7 @@ const UploadVocabulary = (props) => {
    * Fetch the vocabulary from the provided URL
    */
   const handleFetchVocabulary = async () => {
-    document.body.classList.add("waiting");
+    document.body.classList.add('waiting');
     setFetching(true);
 
     const { error, vocabulary } = await fetchExternalVocabulary(vocabularyURL);
@@ -127,7 +121,7 @@ const UploadVocabulary = (props) => {
       handleSetFetchedVocabularyName(vocabulary);
     }
 
-    document.body.classList.remove("waiting");
+    document.body.classList.remove('waiting');
     setFetching(false);
   };
 
@@ -135,9 +129,9 @@ const UploadVocabulary = (props) => {
    * Safely try to get the vocabulary name
    */
   const handleSetFetchedVocabularyName = (vocab) => {
-    let name = "";
+    let name = '';
     try {
-      name = vocabName(vocab["@graph"]);
+      name = vocabName(vocab['@graph']);
       setFetchedVocabularyName(name);
     } catch (e) {
       setErrors([e]);
@@ -147,7 +141,7 @@ const UploadVocabulary = (props) => {
   const handleVocabularyURLChange = (e) => {
     setErrors([]);
     setVocabularyURL(e.target.value);
-  }
+  };
 
   /**
    * Determines the vocabulary validity
@@ -316,7 +310,7 @@ const UploadVocabulary = (props) => {
    */
   return (
     <Fragment>
-      {errors.length ? <AlertNotice message={errors} /> : ""}
+      {errors.length ? <AlertNotice message={errors} /> : ''}
       <div className="card">
         <div className="card-header">
           <div className="row">
@@ -324,10 +318,7 @@ const UploadVocabulary = (props) => {
               <h4>Uploading Vocabulary</h4>
             </div>
             <div className="col-2">
-              <a
-                className="float-right cursor-pointer"
-                onClick={props.onRequestClose}
-              >
+              <a className="float-right cursor-pointer" onClick={props.onRequestClose}>
                 <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
               </a>
             </div>
@@ -352,16 +343,13 @@ const UploadVocabulary = (props) => {
                 required
               />
             </div>
-            {uploadMode == uploadModes.FILE_UPLOAD ? (
-              <FileUploadForm />
-            ) : (
-              URLUploadForm()
-            )}
+            {uploadMode == uploadModes.FILE_UPLOAD ? <FileUploadForm /> : URLUploadForm()}
 
             {uploadMode == uploadModes.FILE_UPLOAD && <FileData />}
 
-            {uploadMode == uploadModes.FETCH_BY_URL &&
-              !_.isEmpty(fetchedVocabulary) && <FetchedVocabularyPreview />}
+            {uploadMode == uploadModes.FETCH_BY_URL && !_.isEmpty(fetchedVocabulary) && (
+              <FetchedVocabularyPreview />
+            )}
 
             <div className="row">
               <div className="col">

@@ -1,10 +1,10 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const fetchDomains = async () => {
   const response = await apiRequest({
-    url: "/api/v1/domains",
-    method: "get",
-    successResponse: "domains",
+    url: '/api/v1/domains',
+    method: 'get',
+    successResponse: 'domains',
   });
 
   if (!response.error) {
@@ -14,7 +14,7 @@ const fetchDomains = async () => {
           id: domain.id,
           uri: domain.uri,
           name: domain.pref_label,
-          spine: domain["spine?"],
+          spine: domain['spine?'],
           spineId: domain.spine?.id,
         };
       }),

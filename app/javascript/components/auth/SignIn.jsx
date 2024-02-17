@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import TopNav from "../shared/TopNav";
-import signIn from "../../services/signIn";
-import AlertNotice from "../shared/AlertNotice";
-import TopNavOptions from "../shared/TopNavOptions";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUsers } from "@fortawesome/free-solid-svg-icons";
-import { isAdmin } from "../../helpers/Auth";
+import React, { Component } from 'react';
+import TopNav from '../shared/TopNav';
+import signIn from '../../services/signIn';
+import AlertNotice from '../shared/AlertNotice';
+import TopNavOptions from '../shared/TopNavOptions';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { isAdmin } from '../../helpers/Auth';
 
 class SignIn extends Component {
   /**
@@ -14,9 +14,9 @@ class SignIn extends Component {
    * going to be sent to the API service in order to create a session
    */
   state = {
-    email: "",
-    password: "",
-    errors: "",
+    email: '',
+    password: '',
+    errors: '',
   };
 
   /**
@@ -25,7 +25,7 @@ class SignIn extends Component {
    */
   handleSuccessfullAuth(user) {
     this.props.handleLogin(user);
-    this.props.history.push(isAdmin(user) ? "/" : "/select-configuration-profile");
+    this.props.history.push(isAdmin(user) ? '/' : '/select-configuration-profile');
   }
 
   /**
@@ -38,7 +38,7 @@ class SignIn extends Component {
     signIn(email, password).then((response) => {
       if (response.error) {
         this.setState({
-          errors: response.error + "\nWe were not able to sign you in.",
+          errors: response.error + '\nWe were not able to sign you in.',
         });
         return;
       }
@@ -70,9 +70,7 @@ class SignIn extends Component {
         <TopNav centerContent={this.navCenterOptions} />
         <div className="row mt-5">
           <div className="col-lg-6 mx-auto">
-            {this.state.errors && (
-              <AlertNotice message={this.state.errors} />
-            )}
+            {this.state.errors && <AlertNotice message={this.state.errors} />}
 
             <div className="card">
               <div className="card-header">
@@ -118,7 +116,7 @@ class SignIn extends Component {
                     Sign In
                   </button>
                 </form>
-                <Link className="col-primary" to={"forgot-password"}>
+                <Link className="col-primary" to={'forgot-password'}>
                   Forgot password?
                 </Link>
               </div>

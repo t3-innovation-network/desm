@@ -1,9 +1,9 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const deleteMapping = async (alignmentId) => {
   return await apiRequest({
-    url: "/api/v1/alignments/" + alignmentId,
-    method: "delete"
+    url: '/api/v1/alignments/' + alignmentId,
+    method: 'delete',
   });
 };
 

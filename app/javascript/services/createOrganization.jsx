@@ -1,10 +1,10 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const createOrganization = async (data) => {
   const response = await apiRequest({
-    url: "/api/v1/organizations",
-    method:"post",
-    payload: data
+    url: '/api/v1/organizations',
+    method: 'post',
+    payload: data,
   });
   return response;
 };

@@ -1,10 +1,10 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const checkLoginStatus = async (props) => {
   return await apiRequest({
-    url: "/session_status",
-    method: "get",
-    successResponse: "session",
+    url: '/session_status',
+    method: 'get',
+    successResponse: 'session',
   }).then((response) => {
     if (response.error) {
       return response;

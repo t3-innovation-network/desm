@@ -1,42 +1,42 @@
-import React, { Component } from "react";
-import DashboardContainer from "../DashboardContainer";
-import createOrganization from "../../../services/createOrganization";
-import { toastr as toast } from "react-redux-toastr";
-import AlertNotice from "../../shared/AlertNotice";
-import { Link } from "react-router-dom";
-import { faBuilding, faHome } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { Component } from 'react';
+import DashboardContainer from '../DashboardContainer';
+import createOrganization from '../../../services/createOrganization';
+import { toastr as toast } from 'react-redux-toastr';
+import AlertNotice from '../../shared/AlertNotice';
+import { Link } from 'react-router-dom';
+import { faBuilding, faHome } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default class CreateOrganization extends Component {
   state = {
-    errors: "",
+    errors: '',
     organization: {
-      name: "",
-      email: "",
+      name: '',
+      email: '',
     },
   };
 
   dashboardPath = () => {
     return (
       <div className="float-right">
-        <FontAwesomeIcon icon={faHome} />{" "}
+        <FontAwesomeIcon icon={faHome} />{' '}
         <span>
           <Link className="col-on-primary" to="/">
             Home
           </Link>
-        </span>{" "}
-        {`>`}{" "}
+        </span>{' '}
+        {`>`}{' '}
         <span>
           <Link className="col-on-primary" to="/dashboard">
             Dashboard
           </Link>
-        </span>{" "}
-        {`>`}{" "}
+        </span>{' '}
+        {`>`}{' '}
         <span>
           <Link className="col-on-primary" to="/dashboard/organizations">
             Organizations
           </Link>
-        </span>{" "}
+        </span>{' '}
         {`>`} <span>Create</span>
       </div>
     );
@@ -57,10 +57,8 @@ export default class CreateOrganization extends Component {
     }
 
     if (response.success) {
-      toast.success(
-        "Organization " + organization.name + " was successfully created"
-      );
-      this.props.history.push("/dashboard/organizations");
+      toast.success('Organization ' + organization.name + ' was successfully created');
+      this.props.history.push('/dashboard/organizations');
       return;
     }
   };

@@ -5,7 +5,7 @@
  */
 export const doLogin = () => {
   return {
-    type: "SIGN_IN",
+    type: 'SIGN_IN',
   };
 };
 
@@ -16,7 +16,7 @@ export const doLogin = () => {
  */
 export const doLogout = () => {
   return {
-    type: "SIGN_OUT",
+    type: 'SIGN_OUT',
   };
 };
 
@@ -27,10 +27,10 @@ export const doLogout = () => {
  */
 export const setUser = (user) => {
   return {
-    type: "SET_USER",
-    payload: user
-  }
-}
+    type: 'SET_USER',
+    payload: user,
+  };
+};
 
 /**
  * Represents setting the user to an empty object (remove the user from the session)
@@ -39,6 +39,6 @@ export const setUser = (user) => {
  */
 export const unsetUser = (user) => {
   return {
-    type: "UNSET_USER"
-  }
-}
+    type: 'UNSET_USER',
+  };
+};

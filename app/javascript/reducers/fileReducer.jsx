@@ -9,9 +9,9 @@
  */
 const fileReducer = (state = [], action) => {
   switch (action.type) {
-    case "SET_FILES":
+    case 'SET_FILES':
       return action.payload;
-    case "UNSET_FILES":
+    case 'UNSET_FILES':
       return [];
     default:
       return state;

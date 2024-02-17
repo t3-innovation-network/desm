@@ -1,11 +1,11 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const fetchSpine = async (id) => {
   return await apiRequest({
     url: `/api/v1/spine_specifications/${id}`,
-    method: "get",
+    method: 'get',
     defaultResponse: {},
-    successResponse: "spine",
+    successResponse: 'spine',
   });
 };
 

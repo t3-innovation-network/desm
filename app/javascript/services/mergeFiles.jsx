@@ -1,20 +1,20 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const mergeFiles = async (files) => {
   /// Prepare the data
   let data = new FormData();
-  files.forEach(file => data.append("files[]", file));
+  files.forEach((file) => data.append('files[]', file));
 
   /// Send the files to the api to analyze
   const response = await apiRequest({
-    url: "/api/v1/merged_files",
-    method: "post",
+    url: '/api/v1/merged_files',
+    method: 'post',
     payload: data,
     deafultResponse: [],
-    successResponse: "mergedFileId",
+    successResponse: 'mergedFileId',
     options: {
       headers: {
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
       },
     },
   });

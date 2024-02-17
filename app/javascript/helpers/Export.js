@@ -1,4 +1,4 @@
-const contentType = "application/json;charset=utf-8;";
+const contentType = 'application/json;charset=utf-8;';
 
 /**
  * Saves an object to a files and download it.
@@ -7,14 +7,13 @@ const contentType = "application/json;charset=utf-8;";
  * @param {String} name
  */
 export const downloadFile = (objectData, name = null) => {
-  let filename = name || "export.json";
+  let filename = name || 'export.json';
 
   if (window.navigator && window.navigator.msSaveOrOpenBlob) {
     /// Build binary large object (BLOB)
-    var blob = new Blob(
-      [decodeURIComponent(encodeURI(JSON.stringify(objectData)))],
-      { type: contentType }
-    );
+    var blob = new Blob([decodeURIComponent(encodeURI(JSON.stringify(objectData)))], {
+      type: contentType,
+    });
     /// Save it using the navigator api
     navigator.msSaveOrOpenBlob(blob, filename);
     /// If all good, stop execution
@@ -33,14 +32,10 @@ export const downloadFile = (objectData, name = null) => {
  * @param {String} filename
  */
 const downloadWithLink = (objectData, filename) => {
-  var a = document.createElement("a");
+  var a = document.createElement('a');
   a.download = filename;
-  a.href =
-    "data:" +
-    contentType +
-    "," +
-    encodeURIComponent(JSON.stringify(objectData));
-  a.target = "_blank";
+  a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(objectData));
+  a.target = '_blank';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

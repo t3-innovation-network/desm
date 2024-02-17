@@ -1,31 +1,31 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import updateCP from "../../../../services/updateCP";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import updateCP from '../../../../services/updateCP';
 import {
   setCurrentConfigurationProfile,
   setEditCPErrors,
   setSavingCP,
-} from "../../../../actions/configurationProfiles";
-import { validURL } from "../../../../helpers/URL";
-import fetchSkosFile from "../../../../services/fetchSkosFile";
-import Loader from "../../../shared/Loader";
-import { useEffect } from "react";
-import fetchCPSkosLabels from "../../../../services/fetchCpSkosLabels";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload } from "@fortawesome/free-solid-svg-icons";
-import { downloadFile } from "../../../../helpers/Export";
-import fetchMappingExportProfile from "../../../../services/fetchMappingExportProfile";
-import _ from "lodash";
-import { toastr as toast } from "react-redux-toastr";
+} from '../../../../actions/configurationProfiles';
+import { validURL } from '../../../../helpers/URL';
+import fetchSkosFile from '../../../../services/fetchSkosFile';
+import Loader from '../../../shared/Loader';
+import { useEffect } from 'react';
+import fetchCPSkosLabels from '../../../../services/fetchCpSkosLabels';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { downloadFile } from '../../../../helpers/Export';
+import fetchMappingExportProfile from '../../../../services/fetchMappingExportProfile';
+import _ from 'lodash';
+import { toastr as toast } from 'react-redux-toastr';
 
 const AbstractClasses = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
   const dispatch = useDispatch();
 
-  const [name, setName] = useState("");
-  const [version, setVersion] = useState("");
-  const [description, setDescription] = useState("");
-  const [origin, setOrigin] = useState("");
+  const [name, setName] = useState('');
+  const [version, setVersion] = useState('');
+  const [description, setDescription] = useState('');
+  const [origin, setOrigin] = useState('');
   const [jsonAbstractClasses, setJsonAbstractClasses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [urlEditable, setUrlEditable] = useState(!origin);
@@ -41,15 +41,13 @@ const AbstractClasses = () => {
         name,
         origin,
         version,
-      })
-    }
+      }),
+    },
   });
 
   const handleFetchUrl = () => {
     if (!validURL(origin)) {
-      dispatch(
-        setEditCPErrors("The abstract classes origin must be a valid URL")
-      );
+      dispatch(setEditCPErrors('The abstract classes origin must be a valid URL'));
       return;
     }
     dispatch(setEditCPErrors(null));
@@ -62,7 +60,7 @@ const AbstractClasses = () => {
     const { error, skosFile, valid } = await fetchSkosFile(origin);
 
     if (error || !valid) {
-      dispatch(setEditCPErrors(error || "Invalid Skos File"));
+      dispatch(setEditCPErrors(error || 'Invalid Skos File'));
       setLoading(false);
       return;
     }
@@ -74,17 +72,15 @@ const AbstractClasses = () => {
   };
 
   const handleFetchAbstractClassesLabels = () => {
-    fetchCPSkosLabels(configurationProfile.id, "json_abstract_classes").then(
-      (response) => {
-        if (response.error) {
-          let message = response.error;
-          dispatch(setEditCPErrors(message));
-          return;
-        }
-
-        setAbstractClassesLabels(response.conceptNames);
+    fetchCPSkosLabels(configurationProfile.id, 'json_abstract_classes').then((response) => {
+      if (response.error) {
+        let message = response.error;
+        dispatch(setEditCPErrors(message));
+        return;
       }
-    );
+
+      setAbstractClassesLabels(response.conceptNames);
+    });
   };
 
   const saveChanges = async (data = null) => {
@@ -107,12 +103,12 @@ const AbstractClasses = () => {
 
     if (!abstractClasses) return;
 
-    const { description, name, origin, version } = abstractClasses
-    setDescription(description || "");
-    setName(name || "");
-    setOrigin(origin || "");
+    const { description, name, origin, version } = abstractClasses;
+    setDescription(description || '');
+    setName(name || '');
+    setOrigin(origin || '');
     setUrlEditable(!origin);
-    setVersion(version || "");
+    setVersion(version || '');
   }, [configurationProfile.structure.abstractClasses]);
 
   useEffect(() => {
@@ -202,11 +198,7 @@ const AbstractClasses = () => {
               data-placement="bottom"
               title="Fetch the concepts"
             >
-              {loading ? (
-                <Loader noPadding smallSpinner />
-              ) : (
-                "Fetch"
-              )}
+              {loading ? <Loader noPadding smallSpinner /> : 'Fetch'}
             </button>
           </div>
         ) : (
@@ -224,20 +216,20 @@ const AbstractClasses = () => {
           </div>
         )}
         <small className="col-on-primary-light font-italic">
-          Please be sure the content is in one of the following formats: CSV,
-          JSON, JSONLD, RDF or XML
+          Please be sure the content is in one of the following formats: CSV, JSON, JSONLD, RDF or
+          XML
         </small>
       </div>
 
-      {configurationProfile.state === "active" &&
-        abstractClassesLabels.length > 0 ? (
+      {configurationProfile.state === 'active' && abstractClassesLabels.length > 0 ? (
         <AbstractClassesTable abstractClassesLabels={abstractClassesLabels} />
-      ) : <ul>
-        {abstractClassesLabels.map((acl) => {
-          return <li key={acl["uri"]}>{acl["label"]}</li>
-        })
-        }
-      </ul>}
+      ) : (
+        <ul>
+          {abstractClassesLabels.map((acl) => {
+            return <li key={acl['uri']}>{acl['label']}</li>;
+          })}
+        </ul>
+      )}
     </div>
   );
 };
@@ -277,14 +269,12 @@ const AbstractClassesTable = ({ abstractClassesLabels }) => {
         <tbody>
           {abstractClassesLabels.map((concept) => {
             return (
-              <tr key={concept["uri"]}>
-                <td>{concept["label"]}</td>
+              <tr key={concept['uri']}>
+                <td>{concept['label']}</td>
                 <td>
                   <button
                     className="btn btn-sm btn-dark ml-2"
-                    onClick={() =>
-                      handleGetMappingExportProfile(concept["label"])
-                    }
+                    onClick={() => handleGetMappingExportProfile(concept['label'])}
                     data-toggle="tooltip"
                     data-placement="top"
                     title="Export corresponding mapping export profile for this abstract class"

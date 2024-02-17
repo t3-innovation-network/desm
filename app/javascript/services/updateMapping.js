@@ -1,9 +1,9 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const updateMapping = async (mapping) => {
   return await apiRequest({
-    url: "/api/v1/mappings/" + mapping.id,
-    method: "put",
+    url: '/api/v1/mappings/' + mapping.id,
+    method: 'put',
     payload: mapping,
   });
 };

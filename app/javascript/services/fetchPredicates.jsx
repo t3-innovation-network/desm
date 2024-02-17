@@ -1,11 +1,11 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const fetchPredicates = async () => {
   return await apiRequest({
-    url: "/api/v1/predicates",
-    method: "get",
+    url: '/api/v1/predicates',
+    method: 'get',
     defaultResponse: [],
-    successResponse: "predicates",
+    successResponse: 'predicates',
   });
 };
 

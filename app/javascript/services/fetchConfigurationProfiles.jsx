@@ -1,12 +1,12 @@
-import { camelizeKeys } from "humps";
-import apiRequest from "./api/apiRequest";
+import { camelizeKeys } from 'humps';
+import apiRequest from './api/apiRequest';
 
 const fetchConfigurationProfiles = async () => {
   let response = await apiRequest({
-    url: "/api/v1/configuration_profiles",
-    method: "get",
+    url: '/api/v1/configuration_profiles',
+    method: 'get',
     defaultResponse: [],
-    successResponse: "configurationProfiles",
+    successResponse: 'configurationProfiles',
   });
 
   return camelizeKeys(response);

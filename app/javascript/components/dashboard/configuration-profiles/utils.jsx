@@ -1,6 +1,6 @@
-import React, { Fragment } from "react";
-import moment from "moment";
-import noDataImg from "./../../../../assets/images/no-data-found.png";
+import React, { Fragment } from 'react';
+import moment from 'moment';
+import noDataImg from './../../../../assets/images/no-data-found.png';
 
 export const stateStyle = (state) => {
   return {
@@ -9,31 +9,25 @@ export const stateStyle = (state) => {
 };
 
 const stateColorsList = {
-  active: "green",
-  deactivated: "grey",
-  incomplete: "red",
-  complete: "orange",
+  active: 'green',
+  deactivated: 'grey',
+  incomplete: 'red',
+  complete: 'orange',
 };
 
 export const formatDateForInput = (dateString) => {
-  return moment(dateString)
-    .locale(navigator.language)
-    .format(moment.HTML5_FMT.DATE);
+  return moment(dateString).locale(navigator.language).format(moment.HTML5_FMT.DATE);
 };
 
-export const tabStyle = { height: "30px", maxWidth: "30px" };
-export const activeTabClass = "bg-dashboard-background col-background";
-export const inactiveTabClass = "border-color-dashboard-dark col-dashboard";
+export const tabStyle = { height: '30px', maxWidth: '30px' };
+export const activeTabClass = 'bg-dashboard-background col-background';
+export const inactiveTabClass = 'border-color-dashboard-dark col-dashboard';
 
 export const line = () => {
-  return <div className="col-4 border-bottom" style={{ bottom: "1rem" }}></div>;
+  return <div className="col-4 border-bottom" style={{ bottom: '1rem' }}></div>;
 };
 
-export const TabGroup = ({ cssClass, children }) => (
-  <div className={cssClass}>
-    {children}
-  </div>
-);
+export const TabGroup = ({ cssClass, children }) => <div className={cssClass}>{children}</div>;
 
 export const RemovableTab = ({
   active,
@@ -45,8 +39,8 @@ export const RemovableTab = ({
   <div
     className={`d-inline-block ${
       active
-        ? "dashboard-active-tab border-left border-right"
-        : "border bg-col-on-primary-light col-background"
+        ? 'dashboard-active-tab border-left border-right'
+        : 'border bg-col-on-primary-light col-background'
     } rounded cursor-pointer p-2 pl-3 pr-4 position-relative`}
     onClick={tabClickHandler}
   >
@@ -58,7 +52,7 @@ export const RemovableTab = ({
           event.stopPropagation();
           removeClickHandler();
         }}
-        style={{ position: "absolute", top: "0px", right: "5px" }}
+        style={{ position: 'absolute', top: '0px', right: '5px' }}
       >
         x
       </span>
@@ -71,19 +65,19 @@ export const SmallRemovableTab = ({
   tabClickHandler,
   removeClickHandler,
   text,
-  tooltipMsg
+  tooltipMsg,
 }) => (
   <span className="cursor-pointer">
     <span
       className={`col-10 bg-dashboard-background ${
-        active ? "col-dashboard-highlight with-shadow" : "col-background"
+        active ? 'col-dashboard-highlight with-shadow' : 'col-background'
       } p-2 rounded text-center`}
       style={{
-        maxWidth: "150px",
-        opacity: "80%",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        maxHeight: "31px",
+        maxWidth: '150px',
+        opacity: '80%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        maxHeight: '31px',
       }}
       data-toggle="tooltip"
       data-placement="bottom"
@@ -95,10 +89,10 @@ export const SmallRemovableTab = ({
     <span
       className="col-2 bg-dashboard-background col-background p-2 rounded text-center font-weight-bold"
       style={{
-        maxWidth: "30px",
-        position: "relative",
-        right: "5px",
-        maxHeight: "31px",
+        maxWidth: '30px',
+        position: 'relative',
+        right: '5px',
+        maxHeight: '31px',
       }}
       data-toggle="tooltip"
       data-placement="bottom"
@@ -130,9 +124,9 @@ export const AddTabBtn = (props) => {
       className="p-2 text-center border rounded bg-dashboard-background-highlight col-background font-weight-bold cursor-pointer"
       data-toggle="tooltip"
       data-placement="top"
-      title={tooltipMsg || "Add new tab"}
+      title={tooltipMsg || 'Add new tab'}
       onClick={onClickHandler}
-      style={{ maxWidth: "50px", fontSize: "large" }}
+      style={{ maxWidth: '50px', fontSize: 'large' }}
     >
       +
     </span>
@@ -164,8 +158,8 @@ export const CenteredRoundedCard = (props) => {
       style={{
         ...styles,
         ...{
-          borderRadius: "10px",
-          height: "fit-content",
+          borderRadius: '10px',
+          height: 'fit-content',
         },
       }}
     >
@@ -192,15 +186,15 @@ export const ToggleBtn = (props) => {
     <div
       className={`cursor-pointer col-10 ${
         active
-          ? "bg-dashboard-background-highlight col-background with-shadow"
-          : "bg-dashboard-background-highlight2 col-dashboard-highlight"
+          ? 'bg-dashboard-background-highlight col-background with-shadow'
+          : 'bg-dashboard-background-highlight2 col-dashboard-highlight'
       }  p-2 rounded text-center`}
       style={{
-        maxWidth: "150px",
-        opacity: "80%",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        maxHeight: "31px",
+        maxWidth: '150px',
+        opacity: '80%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        maxHeight: '31px',
       }}
       data-toggle="tooltip"
       data-placement="bottom"

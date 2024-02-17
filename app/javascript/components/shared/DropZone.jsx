@@ -1,6 +1,6 @@
-import React from "react";
-import { useDrop } from "react-dnd";
-import Pluralize from "pluralize";
+import React from 'react';
+import { useDrop } from 'react-dnd';
+import Pluralize from 'pluralize';
 
 /**
  * Props:
@@ -17,7 +17,7 @@ const DropZone = ({
   placeholder,
   selectedCount,
   textStyle,
-  style
+  style,
 }) => {
   /**
    * Draggable configuration
@@ -32,19 +32,16 @@ const DropZone = ({
   });
 
   const content = () => {
-    let status = "";
+    let status = '';
 
     if (isActive) {
-      status = `Add ${Pluralize("Record", selectedCount, true)}`;
+      status = `Add ${Pluralize('Record', selectedCount, true)}`;
     } else if (!children) {
       status = placeholder;
     }
 
     return status ? (
-      <div
-        className="align-items-center d-flex justify-content-center py-5"
-        style={{ flex: 1 }}
-      >
+      <div className="align-items-center d-flex justify-content-center py-5" style={{ flex: 1 }}>
         {status}
       </div>
     ) : (
@@ -58,11 +55,7 @@ const DropZone = ({
   const isActive = canDrop && isOver;
 
   return (
-    <div
-      className={`card ${isActive ? "dnd-active" : "border-dotted"}`}
-      ref={drop}
-      style={style}
-    >
+    <div className={`card ${isActive ? 'dnd-active' : 'border-dotted'}`} ref={drop} style={style}>
       {content()}
     </div>
   );

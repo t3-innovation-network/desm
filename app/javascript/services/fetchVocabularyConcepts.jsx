@@ -1,11 +1,11 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const fetchVocabularyConcepts = async (vocabId) => {
   return await apiRequest({
-    url: "/api/v1/vocabularies/" + vocabId,
+    url: '/api/v1/vocabularies/' + vocabId,
     defaultResponse: [],
-    successResponse: "vocabulary",
-    method: "get",
+    successResponse: 'vocabulary',
+    method: 'get',
   });
 };
 

@@ -1,22 +1,22 @@
-import React, { Component } from "react";
-import DashboardContainer from "./DashboardContainer";
-import AlertNotice from "../shared/AlertNotice";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
-import fetchConfigurationProfiles from "../../services/fetchConfigurationProfiles";
-import fetchMappings from "../../services/fetchMappings";
+import React, { Component } from 'react';
+import DashboardContainer from './DashboardContainer';
+import AlertNotice from '../shared/AlertNotice';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+import fetchConfigurationProfiles from '../../services/fetchConfigurationProfiles';
+import fetchMappings from '../../services/fetchMappings';
 
 export default class MainDashboard extends Component {
   state = {
     configurationProfiles: [],
-    errors: "",
+    errors: '',
     filterOptions: [
-      { id: 1, name: "All" },
-      { id: 2, name: "Incomplete" },
-      { id: 3, name: "Complete" },
-      { id: 4, name: "Active" },
-      { id: 5, name: "Deactivated" },
+      { id: 1, name: 'All' },
+      { id: 2, name: 'Incomplete' },
+      { id: 3, name: 'Complete' },
+      { id: 4, name: 'Active' },
+      { id: 5, name: 'Deactivated' },
     ],
     mappings: [],
     selectedOptionId: 1,
@@ -25,12 +25,12 @@ export default class MainDashboard extends Component {
   dashboardPath = () => {
     return (
       <div className="float-right">
-        <FontAwesomeIcon icon={faHome} className="mr-2" />{" "}
+        <FontAwesomeIcon icon={faHome} className="mr-2" />{' '}
         <span>
           <Link className="col-on-primary" to="/">
             Home
           </Link>
-        </span>{" "}
+        </span>{' '}
         {`>`} <span>Dashboard</span>
       </div>
     );
@@ -75,24 +75,16 @@ export default class MainDashboard extends Component {
 
   filteredCps = () => {
     switch (this.state.selectedOptionId) {
-      case "1":
+      case '1':
         return this.state.configurationProfiles;
-      case "2":
-        return this.state.configurationProfiles.filter(
-          (cp) => cp.state === "incomplete"
-        );
-      case "3":
-        return this.state.configurationProfiles.filter(
-          (cp) => cp.state === "complete"
-        );
-      case "4":
-        return this.state.configurationProfiles.filter(
-          (cp) => cp.state === "active"
-        );
-      case "5":
-        return this.state.configurationProfiles.filter(
-          (cp) => cp.state === "deactivated"
-        );
+      case '2':
+        return this.state.configurationProfiles.filter((cp) => cp.state === 'incomplete');
+      case '3':
+        return this.state.configurationProfiles.filter((cp) => cp.state === 'complete');
+      case '4':
+        return this.state.configurationProfiles.filter((cp) => cp.state === 'active');
+      case '5':
+        return this.state.configurationProfiles.filter((cp) => cp.state === 'deactivated');
       default:
         return this.state.configurationProfiles;
     }
@@ -115,7 +107,7 @@ export default class MainDashboard extends Component {
       .reduce((a, b) => a + b, 0);
 
   activeMappingsCount = () =>
-    this.state.mappings.filter((mapping) => mapping["in_progress?"]).length;
+    this.state.mappings.filter((mapping) => mapping['in_progress?']).length;
 
   schemesCount = () =>
     this.filteredCps()
@@ -152,10 +144,7 @@ export default class MainDashboard extends Component {
                         required={true}
                         defaultChecked={opt.id === 1}
                       />
-                      <label
-                        className="ml-2 cursor-pointer"
-                        htmlFor={`filterOption-${opt.id}`}
-                      >
+                      <label className="ml-2 cursor-pointer" htmlFor={`filterOption-${opt.id}`}>
                         {opt.name}
                       </label>
                     </div>
@@ -168,32 +157,23 @@ export default class MainDashboard extends Component {
 
               <div className="row">
                 <div className="col-xl-3 col-sm-6 py-2">
-                  <InfoBox
-                    count={this.cpsCount()}
-                    text={"Configuration Profiles"}
-                  />
+                  <InfoBox count={this.cpsCount()} text={'Configuration Profiles'} />
                 </div>
 
                 <div className="col-xl-3 col-sm-6 py-2">
-                  <InfoBox
-                    count={this.dsosCount()}
-                    text={"Data Standards Organizations"}
-                  />
+                  <InfoBox count={this.dsosCount()} text={'Data Standards Organizations'} />
                 </div>
 
                 <div className="col-xl-3 col-sm-6 py-2">
-                  <InfoBox count={this.agentsCount()} text={"Agents"} />
+                  <InfoBox count={this.agentsCount()} text={'Agents'} />
                 </div>
 
                 <div className="col-xl-3 col-sm-6 py-2">
-                  <InfoBox
-                    count={this.activeMappingsCount()}
-                    text={"Active Mappings"}
-                  />
+                  <InfoBox count={this.activeMappingsCount()} text={'Active Mappings'} />
                 </div>
 
                 <div className="col-xl-3 col-sm-6 py-2">
-                  <InfoBox count={this.schemesCount()} text={"Schemes"} />
+                  <InfoBox count={this.schemesCount()} text={'Schemes'} />
                 </div>
               </div>
             </div>
@@ -208,7 +188,7 @@ const InfoBox = (props) => {
   const { count, text } = props;
 
   return (
-    <div className="card" style={{ height: "8rem" }}>
+    <div className="card" style={{ height: '8rem' }}>
       <div className="card-body rounded bg-dashboard-background col-background text-center">
         <h2>{count}</h2>
         <p>{text}</p>

@@ -1,9 +1,9 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const updateOrganization = async (id, data) => {
   return await apiRequest({
-    url: "/api/v1/organizations/" + id,
-    method: "put",
+    url: '/api/v1/organizations/' + id,
+    method: 'put',
     payload: data,
   });
 };

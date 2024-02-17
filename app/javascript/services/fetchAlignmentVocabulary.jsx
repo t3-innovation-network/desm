@@ -1,12 +1,12 @@
-import { camelizeKeys } from "humps";
-import apiRequest from "./api/apiRequest";
+import { camelizeKeys } from 'humps';
+import apiRequest from './api/apiRequest';
 
 const fetchAlignmentVocabulary = async (alignmentId) => {
-  let response =  await apiRequest({
-    url: "/api/v1/alignments/" + alignmentId + "/vocabulary",
-    method: "get",
+  let response = await apiRequest({
+    url: '/api/v1/alignments/' + alignmentId + '/vocabulary',
+    method: 'get',
     defaultResponse: [],
-    successResponse: "alignmentConcepts",
+    successResponse: 'alignmentConcepts',
   });
 
   return camelizeKeys(response);

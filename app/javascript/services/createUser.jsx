@@ -1,9 +1,9 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const createUser = async (fullname, email, organization_id, role_id) => {
   const response = await apiRequest({
-    url: "/registrations",
-    method: "post",
+    url: '/registrations',
+    method: 'post',
     payload: {
       user: {
         fullname: fullname,

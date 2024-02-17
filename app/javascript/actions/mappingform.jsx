@@ -5,7 +5,7 @@
  */
 export const doSubmit = () => {
   return {
-    type: "SUBMIT",
+    type: 'SUBMIT',
   };
 };
 
@@ -18,7 +18,7 @@ export const doSubmit = () => {
  */
 export const doUnsubmit = () => {
   return {
-    type: "UNSUBMIT",
+    type: 'UNSUBMIT',
   };
 };
 
@@ -30,7 +30,7 @@ export const doUnsubmit = () => {
  */
 export const startProcessingFile = () => {
   return {
-    type: "START_PROCESSING_FILE",
+    type: 'START_PROCESSING_FILE',
   };
 };
 
@@ -42,7 +42,7 @@ export const startProcessingFile = () => {
  */
 export const stopProcessingFile = () => {
   return {
-    type: "STOP_PROCESSING_FILE",
+    type: 'STOP_PROCESSING_FILE',
   };
 };
 
@@ -53,7 +53,7 @@ export const stopProcessingFile = () => {
  */
 export const setMappingFormData = (data) => {
   return {
-    type: "SET_MAPPING_FORM_DATA",
+    type: 'SET_MAPPING_FORM_DATA',
     payload: data,
   };
 };
@@ -65,7 +65,7 @@ export const setMappingFormData = (data) => {
  */
 export const unsetMappingFormData = () => {
   return {
-    type: "UNSET_MAPPING_FORM_DATA",
+    type: 'UNSET_MAPPING_FORM_DATA',
   };
 };
 
@@ -76,7 +76,7 @@ export const unsetMappingFormData = () => {
  */
 export const setMappingFormErrors = (errors) => {
   return {
-    type: "SET_MAPPING_FORM_ERRORS",
+    type: 'SET_MAPPING_FORM_ERRORS',
     payload: errors,
   };
 };
@@ -88,6 +88,6 @@ export const setMappingFormErrors = (errors) => {
  */
 export const unsetMappingFormErrors = () => {
   return {
-    type: "UNSET_MAPPING_FORM_ERRORS",
+    type: 'UNSET_MAPPING_FORM_ERRORS',
   };
 };

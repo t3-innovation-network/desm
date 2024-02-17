@@ -1,29 +1,26 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrentConfigurationProfile,
   setEditCPErrors,
   setSavingCP,
-} from "../../../../actions/configurationProfiles";
-import updateCP from "../../../../services/updateCP";
-import fetchCPSkosLabels from "../../../../services/fetchCpSkosLabels";
-import { validURL } from "../../../../helpers/URL";
+} from '../../../../actions/configurationProfiles';
+import updateCP from '../../../../services/updateCP';
+import fetchCPSkosLabels from '../../../../services/fetchCpSkosLabels';
+import { validURL } from '../../../../helpers/URL';
 
 const SchemaFileMetadata = ({ schemaFileIdx }) => {
   const currentCP = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
   const schemaFiles =
-    currentCP.structure.standardsOrganizations[currentDSOIndex]
-      .associatedSchemas || [];
+    currentCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas || [];
   const file = schemaFiles[schemaFileIdx] || {};
 
-  const [abstractClass, setAbstractClass] = useState(
-    file.associatedAbstractClass || ""
-  );
-  const [fileName, setFileName] = useState(file.name || "");
-  const [fileVersion, setFileVersion] = useState(file.version || "");
-  const [description, setDescription] = useState(file.description || "");
-  const [origin, setOrigin] = useState(file.origin || "");
+  const [abstractClass, setAbstractClass] = useState(file.associatedAbstractClass || '');
+  const [fileName, setFileName] = useState(file.name || '');
+  const [fileVersion, setFileVersion] = useState(file.version || '');
+  const [description, setDescription] = useState(file.description || '');
+  const [origin, setOrigin] = useState(file.origin || '');
   const [abstractClassesLabels, setAbstractClassesLabels] = useState([]);
   const dispatch = useDispatch();
 
@@ -38,17 +35,14 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
       description: description,
       origin: origin,
       version: fileVersion,
-      associatedConceptSchemes:
-        schemaFiles[schemaFileIdx].associatedConceptSchemes,
+      associatedConceptSchemes: schemaFiles[schemaFileIdx].associatedConceptSchemes,
     });
 
     const localCP = currentCP;
 
-    localCP.structure.standardsOrganizations[
-      currentDSOIndex
-    ].associatedSchemas = files;
+    localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas = files;
 
-    const  {configurationProfile, error } = await updateCP(currentCP.id, localCP);
+    const { configurationProfile, error } = await updateCP(currentCP.id, localCP);
 
     if (error) {
       dispatch(setEditCPErrors(error));
@@ -60,12 +54,8 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
     dispatch(setSavingCP(false));
   };
 
-  const handleUrlBlur = (
-    url,
-    errorMessage = "Must be a valid URL",
-    blurHandler
-  ) => {
-    if (url === "") {
+  const handleUrlBlur = (url, errorMessage = 'Must be a valid URL', blurHandler) => {
+    if (url === '') {
       dispatch(setEditCPErrors(null));
       blurHandler();
       return;
@@ -80,25 +70,23 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
   };
 
   const handleFetchAbstractClassesLabels = () => {
-    fetchCPSkosLabels(currentCP.id, "json_abstract_classes").then(
-      (response) => {
-        if (response.error) {
-          let message = response.error;
-          dispatch(setEditCPErrors(message));
-          return;
-        }
-
-        setAbstractClassesLabels(response.conceptNames);
+    fetchCPSkosLabels(currentCP.id, 'json_abstract_classes').then((response) => {
+      if (response.error) {
+        let message = response.error;
+        dispatch(setEditCPErrors(message));
+        return;
       }
-    );
+
+      setAbstractClassesLabels(response.conceptNames);
+    });
   };
 
   useEffect(() => {
-    setAbstractClass(file.associatedAbstractClass || "");
-    setFileName(file.name || "");
-    setFileVersion(file.version || "");
-    setDescription(file.description || "");
-    setOrigin(file.origin || "");
+    setAbstractClass(file.associatedAbstractClass || '');
+    setFileName(file.name || '');
+    setFileVersion(file.version || '');
+    setDescription(file.description || '');
+    setOrigin(file.origin || '');
     handleFetchAbstractClassesLabels();
   }, [schemaFileIdx]);
 
@@ -119,7 +107,7 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
             className="form-control input-lg"
             id="filename"
             placeholder="The name of the schema file"
-            value={fileName || ""}
+            value={fileName || ''}
             onChange={(event) => {
               setFileName(event.target.value);
             }}
@@ -137,7 +125,7 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
             className="form-control input-lg"
             id="version"
             placeholder="The version of the schema file"
-            value={fileVersion || ""}
+            value={fileVersion || ''}
             onChange={(event) => {
               setFileVersion(event.target.value);
             }}
@@ -153,11 +141,11 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
             className="form-control input-lg"
             id="description"
             placeholder="A detailed description of the schema file. E.g. what it represents, which concepts should be expected it to contain."
-            value={description || ""}
+            value={description || ''}
             onChange={(event) => {
               setDescription(event.target.value);
             }}
-            style={{ height: "10rem" }}
+            style={{ height: '10rem' }}
             onBlur={saveChanges}
           />
         </div>
@@ -173,17 +161,11 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
             type="url"
             className="form-control input-lg"
             id="origin"
-            value={origin || ""}
+            value={origin || ''}
             onChange={(event) => {
               setOrigin(event.target.value);
             }}
-            onBlur={() =>
-              handleUrlBlur(
-                origin,
-                "The origin must be a valid URL",
-                saveChanges
-              )
-            }
+            onBlur={() => handleUrlBlur(origin, 'The origin must be a valid URL', saveChanges)}
             pattern="https://.*"
             size="30"
             placeholder="https://example.com"
@@ -191,8 +173,8 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
           />
         </div>
         <small className="col-on-primary-light font-italic">
-          Please be sure the content is in one of the following formats: CSV,
-          JSON, JSONLD, RDF or XML
+          Please be sure the content is in one of the following formats: CSV, JSON, JSONLD, RDF or
+          XML
         </small>
       </div>
 
@@ -210,11 +192,11 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
               {abstractClassesLabels.map(function (option) {
                 return (
                   <option
-                    key={option["uri"]}
-                    value={option["uri"]}
-                    defaultChecked={option["uri"] === abstractClass}
+                    key={option['uri']}
+                    value={option['uri']}
+                    defaultChecked={option['uri'] === abstractClass}
                   >
-                    {option["label"]}
+                    {option['label']}
                   </option>
                 );
               })}
@@ -223,9 +205,8 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
         </div>
       ) : (
         <p>
-          This configuration profile has no abstract classes yet selected.
-          Please go to Step 2 and select one so each schema file can be related
-          to an abstract class.
+          This configuration profile has no abstract classes yet selected. Please go to Step 2 and
+          select one so each schema file can be related to an abstract class.
         </p>
       )}
     </Fragment>

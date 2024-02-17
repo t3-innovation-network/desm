@@ -1,5 +1,5 @@
-import apiRequest from "./api/apiRequest";
-import queryString from "query-string";
+import apiRequest from './api/apiRequest';
+import queryString from 'query-string';
 import { decamelizeKeys } from 'humps';
 
 const fetchAudits = async (filters) => {
@@ -13,15 +13,15 @@ const fetchAudits = async (filters) => {
     const query = decamelizeKeys(filters);
 
     /// Return the filter in a query string format
-    return queryString.stringify(query, { arrayFormat: "comma" });
+    return queryString.stringify(query, { arrayFormat: 'comma' });
   };
 
-  if (_.isEmpty(filters)) throw "No parameters received"
+  if (_.isEmpty(filters)) throw 'No parameters received';
 
   return await apiRequest({
-    url: "/api/v1/audits?" + buildFilter(filters),
-    method: "get",
-    successResponse: "audits",
+    url: '/api/v1/audits?' + buildFilter(filters),
+    method: 'get',
+    successResponse: 'audits',
   });
 };
 

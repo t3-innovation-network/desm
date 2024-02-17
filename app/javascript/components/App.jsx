@@ -1,28 +1,28 @@
-import React, { useContext, useEffect, useState } from "react";
-import AlertNotice from "../components/shared/AlertNotice";
-import checkLoginStatus from "./../services/checkLoginStatus";
-import { useSelector } from "react-redux";
-import { doLogin, setUser } from "../actions/sessions";
-import { useDispatch } from "react-redux";
-import Routes from "./Routes";
-import Loader from "./shared/Loader";
-import ReduxToastr from "react-redux-toastr";
-import { toastr as toast } from "react-redux-toastr";
-import { AppContext } from "../contexts/AppContext";
+import React, { useContext, useEffect, useState } from 'react';
+import AlertNotice from '../components/shared/AlertNotice';
+import checkLoginStatus from './../services/checkLoginStatus';
+import { useSelector } from 'react-redux';
+import { doLogin, setUser } from '../actions/sessions';
+import { useDispatch } from 'react-redux';
+import Routes from './Routes';
+import Loader from './shared/Loader';
+import ReduxToastr from 'react-redux-toastr';
+import { toastr as toast } from 'react-redux-toastr';
+import { AppContext } from '../contexts/AppContext';
 
 const App = () => {
   const { setLoggedIn } = useContext(AppContext);
   const isLoggedIn = useSelector((state) => state.loggedIn);
   const dispatch = useDispatch();
 
-  const [errors, setErrors] = useState("");
+  const [errors, setErrors] = useState('');
   const [loading, setLoading] = useState(true);
 
   const handleLogin = (data) => {
     dispatch(doLogin());
     dispatch(setUser(data));
     setLoggedIn(true);
-    toast.info("Signed In");
+    toast.info('Signed In');
   };
 
   const checkLoginStatusAPI = async () => {

@@ -1,5 +1,5 @@
 /* Navbar Styles */
-@import "colors";
+@import 'colors';
 
 .nav-container {
   padding-left: 0 !important;
@@ -24,12 +24,12 @@
 }
 
 #toggle-nav {
-  position: relative;
   bottom: -7px;
+  position: relative;
 }
 
 .brand-box {
-  background-image: url("../images/t3-logo.png");
+  background-image: url('../images/t3-logo.png');
   background-repeat: no-repeat;
   background-size: 12rem;
 }

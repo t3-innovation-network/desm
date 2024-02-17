@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrentConfigurationProfile,
   setEditCPErrors,
   setSavingCP,
-} from "../../../../actions/configurationProfiles";
-import { validURL } from "../../../../helpers/URL";
-import updateCP from "../../../../services/updateCP";
+} from '../../../../actions/configurationProfiles';
+import { validURL } from '../../../../helpers/URL';
+import updateCP from '../../../../services/updateCP';
 
 const DSOMetaData = ({ dsoData }) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [description, setDescription] = useState("");
-  const [homepageUrl, setHomepageURL] = useState("");
-  const [standardsPage, setStandardsPage] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [description, setDescription] = useState('');
+  const [homepageUrl, setHomepageURL] = useState('');
+  const [standardsPage, setStandardsPage] = useState('');
   const configurationProfile = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
   const dispatch = useDispatch();
@@ -29,9 +29,7 @@ const DSOMetaData = ({ dsoData }) => {
 
   const handleUrlBlur = (url) => {
     if (!validURL(url)) {
-      dispatch(
-        setEditCPErrors("Please check the standards page and the homepage URL.")
-      );
+      dispatch(setEditCPErrors('Please check the standards page and the homepage URL.'));
       return;
     }
     dispatch(setEditCPErrors(null));
@@ -64,8 +62,8 @@ const DSOMetaData = ({ dsoData }) => {
         email,
         homepageUrl,
         name,
-        standardsPage
-      })
+        standardsPage,
+      }),
     };
 
     return localCP;
@@ -84,7 +82,7 @@ const DSOMetaData = ({ dsoData }) => {
             className="form-control input-lg"
             id="name"
             placeholder="The name of the organization"
-            value={name || ""}
+            value={name || ''}
             onChange={(event) => {
               setName(event.target.value);
             }}
@@ -105,7 +103,7 @@ const DSOMetaData = ({ dsoData }) => {
             className="form-control input-lg"
             id="email"
             placeholder="The email of the organization"
-            value={email || ""}
+            value={email || ''}
             onChange={(event) => {
               setEmail(event.target.value);
             }}
@@ -121,11 +119,11 @@ const DSOMetaData = ({ dsoData }) => {
             className="form-control input-lg"
             id="description"
             placeholder="A description that provides consistent information about the standards organization"
-            value={description || ""}
+            value={description || ''}
             onChange={(event) => {
               setDescription(event.target.value);
             }}
-            style={{ height: "10rem" }}
+            style={{ height: '10rem' }}
             onBlur={handleBlur}
           />
         </div>
@@ -139,7 +137,7 @@ const DSOMetaData = ({ dsoData }) => {
             className="form-control input-lg"
             id="homepageUrl"
             placeholder="The homepage URL of the standards organization"
-            value={homepageUrl || ""}
+            value={homepageUrl || ''}
             onChange={(event) => {
               setHomepageURL(event.target.value);
             }}
@@ -156,7 +154,7 @@ const DSOMetaData = ({ dsoData }) => {
             className="form-control input-lg"
             id="standardsPage"
             placeholder="The homepage URL of the standards organization"
-            value={standardsPage || ""}
+            value={standardsPage || ''}
             onChange={(event) => {
               setStandardsPage(event.target.value);
             }}

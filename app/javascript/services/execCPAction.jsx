@@ -1,5 +1,5 @@
-import { decamelizeKeys } from "humps";
-import apiRequest from "./api/apiRequest";
+import { decamelizeKeys } from 'humps';
+import apiRequest from './api/apiRequest';
 
 const execCPAction = async (id, action) => {
   let payload = decamelizeKeys({
@@ -10,7 +10,7 @@ const execCPAction = async (id, action) => {
 
   return await apiRequest({
     url: `/api/v1/configuration_profiles/${id}/action`,
-    method: "post",
+    method: 'post',
     payload,
   });
 };

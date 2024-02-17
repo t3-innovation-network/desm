@@ -6,9 +6,9 @@
  */
 const loggedReducer = (state = false, action) => {
   switch (action.type) {
-    case "SIGN_IN":
+    case 'SIGN_IN':
       return true;
-    case "SIGN_OUT":
+    case 'SIGN_OUT':
       return false;
     default:
       return state;

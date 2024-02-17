@@ -57,6 +57,7 @@
     "stylelint-config-prettier": "^9.0.5",
     "stylelint-config-standard": "^34.0.0",
     "stylelint-config-standard-scss": "^10.0.0",
+    "stylelint-order": "^6.0.4",
     "webpack-dev-server": "^3"
   },
   "engines": {
@@ -64,8 +65,10 @@
     "yarn": ">=1.0.1"
   },
   "scripts": {
-    "lint": "eslint --ext .js --ext .jsx app/javascript && stylelint 'app/assets/stylesheets/**/*.{css,scss}' --quiet",
-    "lint:js": "eslint --ext .js --ext .jsx app/javascript",
-    "lint:scss": "stylelint 'app/assets/stylesheets/**/*.{css,scss}' --quiet"
+    "lint": "yarn lint:js && yarn lint:scss",
+    "lint:js": "prettier -c 'app/javascript/**/*.{js,jsx}' && eslint --ext .js --ext .jsx app/javascript",
+    "lint:js:fix": "prettier -w 'app/javascript/**/*.{js,jsx}' && eslint --ext .js,.jsx app/javascript  --quiet --fix",
+    "lint:scss": "prettier -c 'app/assets/stylesheets/**/*.{css,scss}' && stylelint 'app/assets/stylesheets/**/*.{css,scss}' --quiet",
+    "lint:scss:fix": "prettier -w 'app/assets/stylesheets/**/*.{css,scss}' && stylelint 'app/assets/stylesheets/**/*.{css,scss}' --quiet --fix"
   }
 }

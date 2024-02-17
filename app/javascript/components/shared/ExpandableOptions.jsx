@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { SlideInDown, FadeIn } from "./Animations.jsx";
-import OutsideAlerter from "./OutsideAlerter.jsx";
+import React, { Component } from 'react';
+import { SlideInDown, FadeIn } from './Animations.jsx';
+import OutsideAlerter from './OutsideAlerter.jsx';
 
 /**
  * Props:
@@ -48,7 +48,7 @@ class ExpandableOptions extends Component {
       <OutsideAlerter onOutsideAlert={() => this.handleShrink()}>
         {expanded ? (
           <SlideInDown className="float-over">
-            <div className={"card" + (cardCssClass ? " " + cardCssClass : "")}>
+            <div className={'card' + (cardCssClass ? ' ' + cardCssClass : '')}>
               {this.props.options.map((option) => {
                 return (
                   <div
@@ -64,11 +64,11 @@ class ExpandableOptions extends Component {
           </SlideInDown>
         ) : (
           <FadeIn>
-            <div className={"card" + (cardCssClass ? " " + cardCssClass : "")}>
+            <div className={'card' + (cardCssClass ? ' ' + cardCssClass : '')}>
               <div
                 className={
-                  "card-header cursor-pointer" +
-                  (cardHeaderCssClass ? " " + cardHeaderCssClass : "")
+                  'card-header cursor-pointer' +
+                  (cardHeaderCssClass ? ' ' + cardHeaderCssClass : '')
                 }
                 onClick={this.handleExpand}
               >

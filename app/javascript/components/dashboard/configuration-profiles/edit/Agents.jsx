@@ -1,18 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrentConfigurationProfile,
   setEditCPErrors,
   setSavingCP,
-} from "../../../../actions/configurationProfiles";
-import updateCP from "../../../../services/updateCP";
-import ConfirmDialog from "../../../shared/ConfirmDialog";
-import {
-  NoDataFound,
-  SmallAddTabBtn,
-  SmallRemovableTab,
-  TabGroup,
-} from "../utils";
+} from '../../../../actions/configurationProfiles';
+import updateCP from '../../../../services/updateCP';
+import ConfirmDialog from '../../../shared/ConfirmDialog';
+import { NoDataFound, SmallAddTabBtn, SmallRemovableTab, TabGroup } from '../utils';
 
 const Agents = () => {
   const leadMapperRef = useRef(false);
@@ -21,10 +16,10 @@ const Agents = () => {
   const getDsos = () => currentCP.structure.standardsOrganizations || [];
   const [agentsData, setAgentsData] = useState([]);
   const [currentAgentIndex, setCurrentAgentIndex] = useState(-1);
-  const [fullname, setFullname] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [githubHandle, setGithubHandle] = useState("");
+  const [fullname, setFullname] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [githubHandle, setGithubHandle] = useState('');
   const [leadMapper, setLeadMapper] = useState(false);
   const [confirmationVisible, setConfirmationVisible] = useState(false);
   const confirmationMsg = `Please confirm if you really want to remove agent ${fullname}`;
@@ -35,13 +30,11 @@ const Agents = () => {
     setAgentsData([
       ...agentsData,
       {
-        fullname: `Mapper N${agentsData.length + 1}`
+        fullname: `Mapper N${agentsData.length + 1}`,
       },
     ]);
 
-    localCP.structure.standardsOrganizations[
-      currentDSOIndex
-    ].dsoAgents = agentsData;
+    localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents = agentsData;
 
     setCurrentAgentIndex(agentsData.length);
   };
@@ -99,8 +92,7 @@ const Agents = () => {
       currentAgentIndex,
       1
     );
-    let newAgentsData =
-      localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents;
+    let newAgentsData = localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents;
 
     setAgentsData(newAgentsData);
     setCurrentAgentIndex(newAgentsData.length - 1);
@@ -126,13 +118,13 @@ const Agents = () => {
   const selectedAgentInfo = () => {
     return (
       <div className="col">
-         <div className="form-check mt-5">
+        <div className="form-check mt-5">
           <input
             checked={leadMapper}
             className="form-check-input"
             id="leadMapper"
             onChange={(event) => {
-              setLeadMapper(leadMapperRef.current = event.target.checked);
+              setLeadMapper((leadMapperRef.current = event.target.checked));
               saveChanges();
             }}
             type="checkbox"
@@ -140,9 +132,7 @@ const Agents = () => {
           <label className="form-check-label" htmlFor="leadMapper">
             Lead Mapper?
           </label>
-          <div className="form-text">
-            Only lead mappers can publish completed mappings.
-          </div>
+          <div className="form-text">Only lead mappers can publish completed mappings.</div>
         </div>
 
         <div className="mt-5">
@@ -157,7 +147,7 @@ const Agents = () => {
               className="form-control input-lg"
               name="fullname"
               placeholder="The name of this agent"
-              value={fullname || ""}
+              value={fullname || ''}
               onChange={(event) => {
                 setFullname(event.target.value);
               }}
@@ -179,7 +169,7 @@ const Agents = () => {
               className="form-control input-lg"
               name="agentEmail"
               placeholder="The email of this agent"
-              value={email || ""}
+              value={email || ''}
               onChange={(event) => {
                 setEmail(event.target.value);
               }}
@@ -198,7 +188,7 @@ const Agents = () => {
               className="form-control input-lg"
               name="agentPhone"
               placeholder="The phone of this agent"
-              value={phone || ""}
+              value={phone || ''}
               onChange={(event) => {
                 setPhone(event.target.value);
               }}
@@ -216,7 +206,7 @@ const Agents = () => {
               className="form-control input-lg"
               name="githubHandle"
               placeholder="The github username of this agent"
-              value={githubHandle || ""}
+              value={githubHandle || ''}
               onChange={(event) => {
                 setGithubHandle(event.target.value);
               }}
@@ -237,7 +227,7 @@ const Agents = () => {
       fullname,
       githubHandle,
       phone,
-      leadMapper
+      leadMapper,
     });
 
     setAgentsData(data);
@@ -259,7 +249,7 @@ const Agents = () => {
     if (agent) {
       setFullname(agent.fullname);
       setEmail(agent.email);
-      setLeadMapper(leadMapperRef.current = Boolean(agent.leadMapper));
+      setLeadMapper((leadMapperRef.current = Boolean(agent.leadMapper)));
       setPhone(agent.phone);
       setGithubHandle(agent.githubHandle);
     }
@@ -279,7 +269,7 @@ const Agents = () => {
       )}
       <div className="mt-5">
         <TabGroup>
-          {agentButtons()} {<SmallAddTabBtn onClickHandler={addAgent} />}{" "}
+          {agentButtons()} {<SmallAddTabBtn onClickHandler={addAgent} />}{' '}
         </TabGroup>
       </div>
       <div className="row justify-content-center">

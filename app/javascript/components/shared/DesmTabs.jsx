@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 /**
  * Props:
@@ -17,10 +17,10 @@ export default class DesmTabs extends Component {
       <div className="row mt-5">
         {values.map((value) => (
           <span
-            className={`badge badge-${selectedId === value.id ? "primary" : "secondary"} m-2`}
+            className={`badge badge-${selectedId === value.id ? 'primary' : 'secondary'} m-2`}
             key={value.id}
             onClick={() => onTabClick(value.id)}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: 'pointer' }}
           >
             {value.name}
           </span>

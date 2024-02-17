@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { FadeIn } from "./Animations.jsx";
-import OutsideAlerter from "./OutsideAlerter.jsx";
+import React, { Component } from 'react';
+import { FadeIn } from './Animations.jsx';
+import OutsideAlerter from './OutsideAlerter.jsx';
 
 /**
  * Props:
@@ -64,41 +64,27 @@ export default class Collapsible extends Component {
     } = this.props;
 
     return (
-      <OutsideAlerter
-        onOutsideAlert={observeOutside ? () => this.hideBody() : () => {}}
-      >
+      <OutsideAlerter onOutsideAlert={observeOutside ? () => this.hideBody() : () => {}}>
         <FadeIn>
-          <div className={"card" + (cardStyle ? " " + cardStyle : "")}>
-            <div
-              className={
-                "card-header" + (cardHeaderStyle ? " " + cardHeaderStyle : "")
-              }
-            >
+          <div className={'card' + (cardStyle ? ' ' + cardStyle : '')}>
+            <div className={'card-header' + (cardHeaderStyle ? ' ' + cardHeaderStyle : '')}>
               <div className="row">
                 <div
-                  className={
-                    "col-10" +
-                    (cardHeaderColStyle ? " " + cardHeaderColStyle : "")
-                  }
+                  className={'col-10' + (cardHeaderColStyle ? ' ' + cardHeaderColStyle : '')}
                   onClick={this.handleClick}
                 >
                   {headerContent}
                 </div>
                 <div className="col">
-                  <span
-                    className="cursor-pointer float-right"
-                    onClick={this.toggleShowBody}
-                  >
-                    {showBody ? "▲" : "▼"}
+                  <span className="cursor-pointer float-right" onClick={this.toggleShowBody}>
+                    {showBody ? '▲' : '▼'}
                   </span>
                 </div>
               </div>
             </div>
             {showBody && (
               <FadeIn>
-                <div
-                  className={"card-body" + (bodyStyle ? " " + bodyStyle : "")}
-                >
+                <div className={'card-body' + (bodyStyle ? ' ' + bodyStyle : '')}>
                   {bodyContent}
                 </div>
               </FadeIn>

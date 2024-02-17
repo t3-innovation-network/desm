@@ -1,12 +1,7 @@
-import React, { useState, useEffect } from "react";
-import FileInfo from "./FileInfo";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  setFiles,
-  setFilteredFile,
-  setMergedFileId,
-  setSpecToPreview,
-} from "../../actions/files";
+import React, { useState, useEffect } from 'react';
+import FileInfo from './FileInfo';
+import { useSelector, useDispatch } from 'react-redux';
+import { setFiles, setFilteredFile, setMergedFileId, setSpecToPreview } from '../../actions/files';
 import {
   doSubmit,
   startProcessingFile,
@@ -15,18 +10,18 @@ import {
   doUnsubmit,
   setMappingFormErrors,
   unsetMappingFormErrors,
-} from "../../actions/mappingform";
-import fetchDomains from "../../services/fetchDomains";
-import fetchMergedFile from "../../services/fetchMergedFile";
-import { toastr as toast } from "react-redux-toastr";
-import MultipleDomainsModal from "./MultipleDomainsModal";
-import checkDomainsInFile from "../../services/checkDomainsInFile";
-import filterSpecification from "../../services/filterSpecification";
-import mergeFiles from "../../services/mergeFiles";
-import { setVocabularies } from "../../actions/vocabularies";
-import { validURL } from "../../helpers/URL";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+} from '../../actions/mappingform';
+import fetchDomains from '../../services/fetchDomains';
+import fetchMergedFile from '../../services/fetchMergedFile';
+import { toastr as toast } from 'react-redux-toastr';
+import MultipleDomainsModal from './MultipleDomainsModal';
+import checkDomainsInFile from '../../services/checkDomainsInFile';
+import filterSpecification from '../../services/filterSpecification';
+import mergeFiles from '../../services/mergeFiles';
+import { setVocabularies } from '../../actions/vocabularies';
+import { validURL } from '../../helpers/URL';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 const MappingForm = () => {
   /**
@@ -46,7 +41,7 @@ const MappingForm = () => {
    * The value of the input that the user is typing in the search box
    * when there are many domains in the uploaded file
    */
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   /**
    * The domains that includes the string typed by the user in the
    * search box when there are many domains in the uploaded file
@@ -74,7 +69,7 @@ const MappingForm = () => {
   /**
    * Name of the specification
    */
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   /**
    * Whether we are processing the file or not
    */
@@ -90,11 +85,11 @@ const MappingForm = () => {
   /**
    * Use case for this specification
    */
-  const [useCase, setUseCase] = useState("");
+  const [useCase, setUseCase] = useState('');
   /**
    * Version of this specification
    */
-  const [version, setVersion] = useState("");
+  const [version, setVersion] = useState('');
   const dispatch = useDispatch();
 
   /**
@@ -190,11 +185,7 @@ const MappingForm = () => {
 
     if (!anyError(response)) {
       if (!response.domains.length) {
-        dispatch(
-          setMappingFormErrors([
-            "We couldn't find any classes in the provided file",
-          ])
-        );
+        dispatch(setMappingFormErrors(["We couldn't find any classes in the provided file"]));
         return;
       }
 
@@ -244,7 +235,7 @@ const MappingForm = () => {
 
     // Check the form validity
     if (mappingFormErrors.length) {
-      toast.error("Please correct the errors first");
+      toast.error('Please correct the errors first');
       event.preventDefault();
       return;
     }
@@ -312,9 +303,7 @@ const MappingForm = () => {
 
     if (files.length > 0) {
       files.map((file) => {
-        fileCards.push(
-          <FileInfo selectedFile={file} key={Date.now() + file.lastModified} />
-        );
+        fileCards.push(<FileInfo selectedFile={file} key={Date.now() + file.lastModified} />);
       });
     }
 
@@ -363,8 +352,7 @@ const MappingForm = () => {
 
       <div
         className={
-          (submitted || processingFile ? "disabled-container " : " ") +
-          "col-lg-6 p-lg-5 pt-5"
+          (submitted || processingFile ? 'disabled-container ' : ' ') + 'col-lg-6 p-lg-5 pt-5'
         }
       >
         <div className="mandatory-fields-notice">
@@ -378,9 +366,7 @@ const MappingForm = () => {
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="specification_name">
-                Name of your specification
-              </label>
+              <label htmlFor="specification_name">Name of your specification</label>
               <input
                 type="text"
                 name="name"
@@ -419,16 +405,14 @@ const MappingForm = () => {
                 onChange={(e) => setUseCase(e.target.value)}
                 disabled={submitted}
               />
-              <small className="form-text text-muted">
-                It must be a valid URL
-              </small>
+              <small className="form-text text-muted">It must be a valid URL</small>
             </div>
 
             <div className="form-group">
               <label>Which domain are you uploading?</label>
 
               <div className="desm-radio">
-                {domains.map(domain => (
+                {domains.map((domain) => (
                   <div className="desm-radio-primary" key={domain.id}>
                     <input
                       disabled={submitted}
@@ -440,7 +424,7 @@ const MappingForm = () => {
                       value={domain.id}
                     />
                     <label
-                      className={domain.spine ? "text-success" : undefined}
+                      className={domain.spine ? 'text-success' : undefined}
                       htmlFor={domain.id}
                     >
                       <strong>{domain.name}</strong>
@@ -453,14 +437,12 @@ const MappingForm = () => {
                 Boolean(files.length) &&
                 !submitted &&
                 !processingFile && (
-                  <span style={{ color: "red" }}>
-                    Please select a domain from the list ☝️{" "}
-                  </span>
+                  <span style={{ color: 'red' }}>Please select a domain from the list ☝️ </span>
                 )}
 
               <small className="mb-3">
-                Domains in <span className="badge badge-success">green</span>{" "}
-                have a spine already uploaded
+                Domains in <span className="badge badge-success">green</span> have a spine already
+                uploaded
               </small>
             </div>
             <div className="form-group">
@@ -491,8 +473,7 @@ const MappingForm = () => {
                 </div>
               </div>
               <label className="mt-3">
-                You can upload your specification as CSV, JSON-LD, JSON Schema,
-                RDF, or XML format
+                You can upload your specification as CSV, JSON-LD, JSON Schema, RDF, or XML format
               </label>
               {Boolean(files.length) && !submitted && !processingFile && (
                 <section>
@@ -504,10 +485,7 @@ const MappingForm = () => {
                     title="Import the specification"
                     type="submit"
                   >
-                    <FontAwesomeIcon
-                      icon={faArrowRight}
-                      className="col-background"
-                    />
+                    <FontAwesomeIcon icon={faArrowRight} className="col-background" />
                   </button>
                 </section>
               )}

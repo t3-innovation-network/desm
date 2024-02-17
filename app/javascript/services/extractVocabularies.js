@@ -1,12 +1,12 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const extractVocabularies = async (content) => {
   return await apiRequest({
-    url: "/api/v1/vocabularies/extract",
-    method: "post",
+    url: '/api/v1/vocabularies/extract',
+    method: 'post',
     payload: { content },
     defaultResponse: [],
-    successResponse: "vocabularies"
+    successResponse: 'vocabularies',
   });
 };
 

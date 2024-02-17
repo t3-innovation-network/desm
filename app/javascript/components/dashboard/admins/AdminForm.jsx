@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import createAdmin from "../../../services/createAdmin";
-import updateAdmin from "../../../services/updateAdmin";
-import AlertNotice from "../../shared/AlertNotice";
+import React, { useState } from 'react';
+import createAdmin from '../../../services/createAdmin';
+import updateAdmin from '../../../services/updateAdmin';
+import AlertNotice from '../../shared/AlertNotice';
 
 const AdminForm = ({ record, onCancel, onSave }) => {
-  const [email, setEmail] = useState(record.email || "");
+  const [email, setEmail] = useState(record.email || '');
   const [error, setError] = useState();
-  const [fullname, setFullname] = useState(record.fullname || "");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [fullname, setFullname] = useState(record.fullname || '');
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -17,10 +17,9 @@ const AdminForm = ({ record, onCancel, onSave }) => {
 
     const data = _.pickBy({ email, fullname, password, passwordConfirmation });
 
-    const { admin, error } = await (record.id
-      ? updateAdmin.bind(this, record.id)
-      : createAdmin
-    )(data);
+    const { admin, error } = await (record.id ? updateAdmin.bind(this, record.id) : createAdmin)(
+      data
+    );
 
     setSubmitting(false);
 
@@ -35,7 +34,7 @@ const AdminForm = ({ record, onCancel, onSave }) => {
   return (
     <div className="card">
       <div className="card-header">
-        <h5 className="card-title">{record.id ? "Edit" : "Add"} Admin User</h5>
+        <h5 className="card-title">{record.id ? 'Edit' : 'Add'} Admin User</h5>
       </div>
 
       <div className="card-body">
@@ -48,7 +47,7 @@ const AdminForm = ({ record, onCancel, onSave }) => {
               className="form-control"
               disabled={submitting}
               id="fullname"
-              onChange={e => setFullname(e.target.value)}
+              onChange={(e) => setFullname(e.target.value)}
               value={fullname}
             />
           </div>
@@ -59,7 +58,7 @@ const AdminForm = ({ record, onCancel, onSave }) => {
               className="form-control"
               disabled={submitting}
               id="email"
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               type="email"
               value={email}
             />
@@ -71,7 +70,7 @@ const AdminForm = ({ record, onCancel, onSave }) => {
               className="form-control"
               disabled={submitting}
               id="password"
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               type="password"
               value={password}
             />
@@ -88,7 +87,7 @@ const AdminForm = ({ record, onCancel, onSave }) => {
               className="form-control"
               disabled={submitting}
               id="passwordConfirmation"
-              onChange={e => setPasswordConfirmation(e.target.value)}
+              onChange={(e) => setPasswordConfirmation(e.target.value)}
               type="password"
               value={passwordConfirmation}
             />
@@ -101,11 +100,12 @@ const AdminForm = ({ record, onCancel, onSave }) => {
           >
             Save
           </button>
-          <button className="btn btn-default" onClick={onCancel}>Cancel</button>
+          <button className="btn btn-default" onClick={onCancel}>
+            Cancel
+          </button>
         </form>
       </div>
     </div>
-
   );
 };
 

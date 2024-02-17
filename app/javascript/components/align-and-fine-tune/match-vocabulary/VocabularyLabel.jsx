@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 /**
  * Here we take the first vocabulary. This term might have more than only 1 associated,
@@ -11,9 +11,7 @@ import React from "react";
  */
 const VocabularyLabel = ({ onVocabularyClick, term }) => (
   <p
-    className={
-      "col-primary underlined" + (onVocabularyClick ? " cursor-pointer" : "")
-    }
+    className={'col-primary underlined' + (onVocabularyClick ? ' cursor-pointer' : '')}
     onClick={() => onVocabularyClick?.(term)}
   >
     {term.vocabularies[0].name}

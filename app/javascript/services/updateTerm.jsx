@@ -1,10 +1,10 @@
-import { decamelizeKeys } from "humps";
-import apiRequest from "./api/apiRequest";
+import { decamelizeKeys } from 'humps';
+import apiRequest from './api/apiRequest';
 
 const updateTerm = async (term) => {
   return await apiRequest({
-    url: "/api/v1/terms/" + term.id,
-    method: "put",
+    url: '/api/v1/terms/' + term.id,
+    method: 'put',
     payload: {
       term: {
         name: term.name,

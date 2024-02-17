@@ -1,21 +1,21 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrentConfigurationProfile,
   setEditCPErrors,
   setSavingCP,
-} from "../../../../actions/configurationProfiles";
-import { validURL } from "../../../../helpers/URL";
-import updateCP from "../../../../services/updateCP";
+} from '../../../../actions/configurationProfiles';
+import { validURL } from '../../../../helpers/URL';
+import updateCP from '../../../../services/updateCP';
 
 const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
   const currentCP = useSelector((state) => state.currentCP);
   const currentDSOIndex = useSelector((state) => state.currentDSOIndex);
 
-  const [name, setName] = useState("");
-  const [version, setVersion] = useState("");
-  const [description, setDescription] = useState("");
-  const [origin, setOrigin] = useState("");
+  const [name, setName] = useState('');
+  const [version, setVersion] = useState('');
+  const [description, setDescription] = useState('');
+  const [origin, setOrigin] = useState('');
   const dispatch = useDispatch();
 
   const saveChanges = async () => {
@@ -29,7 +29,7 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
       description,
       name,
       origin,
-      version
+      version,
     });
 
     const { configurationProfile, error } = await updateCP(currentCP.id, localCP);
@@ -44,12 +44,8 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
     dispatch(setSavingCP(false));
   };
 
-  const handleUrlBlur = (
-    url,
-    errorMessage = "Must be a valid URL",
-    blurHandler
-  ) => {
-    if (url === "") {
+  const handleUrlBlur = (url, errorMessage = 'Must be a valid URL', blurHandler) => {
+    if (url === '') {
       dispatch(setEditCPErrors(null));
       blurHandler();
       return;
@@ -64,20 +60,18 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
   };
 
   useEffect(() => {
-    const schemaFiles = currentCP
-      .structure
-      .standardsOrganizations[currentDSOIndex]
-      .associatedSchemas || [];
+    const schemaFiles =
+      currentCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas || [];
 
     const schemaFile = schemaFiles[schemaFileIdx] || {};
     const conceptScheme = (schemaFile.associatedConceptSchemes || [])[conceptSchemeIdx];
 
     const { description, name, origin, version } = conceptScheme || {};
 
-    setDescription(description || "");
-    setName(name || "");
-    setOrigin(origin || "");
-    setVersion(version || "");
+    setDescription(description || '');
+    setName(name || '');
+    setOrigin(origin || '');
+    setVersion(version || '');
   }, [conceptSchemeIdx, currentDSOIndex, schemaFileIdx]);
 
   return (
@@ -93,7 +87,7 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
             className="form-control input-lg"
             id="filename"
             placeholder="The name of the concept scheme file"
-            value={name || ""}
+            value={name || ''}
             onChange={(event) => {
               setName(event.target.value);
             }}
@@ -111,7 +105,7 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
             className="form-control input-lg"
             id="version"
             placeholder="The version of the concept scheme file"
-            value={version || ""}
+            value={version || ''}
             onChange={(event) => {
               setVersion(event.target.value);
             }}
@@ -127,18 +121,18 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
             className="form-control input-lg"
             id="description"
             placeholder="A detailed description of the concept scheme file. E.g. what it represents, which concepts should be expected it to contain."
-            value={description || ""}
+            value={description || ''}
             onChange={(event) => {
               setDescription(event.target.value);
             }}
-            style={{ height: "10rem" }}
+            style={{ height: '10rem' }}
             onBlur={saveChanges}
           />
         </div>
       </div>
 
       <div className="mt-5">
-         <label htmlFor="origin">
+        <label htmlFor="origin">
           Origin (URL)
           <span className="ml-1 text-danger">*</span>
         </label>
@@ -147,25 +141,19 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
             type="url"
             className="form-control input-lg"
             id="origin"
-            value={origin || ""}
+            value={origin || ''}
             onChange={(event) => {
               setOrigin(event.target.value);
             }}
-            onBlur={() =>
-              handleUrlBlur(
-                origin,
-                "The origin must be a valid URL",
-                saveChanges
-              )
-            }
+            onBlur={() => handleUrlBlur(origin, 'The origin must be a valid URL', saveChanges)}
             pattern="https://.*"
             size="30"
             placeholder="https://example.com"
           />
         </div>
         <small className="col-on-primary-light font-italic">
-          Please be sure the content is in one of the following formats: CSV,
-          JSON, JSONLD, RDF or XML
+          Please be sure the content is in one of the following formats: CSV, JSON, JSONLD, RDF or
+          XML
         </small>
       </div>
     </Fragment>
