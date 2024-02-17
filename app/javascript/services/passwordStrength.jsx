@@ -1,9 +1,9 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const passwordStrength = async (password) => {
   return await apiRequest({
-    url: "/password/strength",
-    method: "post",
+    url: '/password/strength',
+    method: 'post',
     payload: {
       user: {
         password: password,

@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import AlertNotice from "../shared/AlertNotice";
-import fetchAlignmentsForSpine from "../../services/fetchAlignmentsForSpine";
-import fetchDomain from "../../services/fetchDomain";
-import fetchSpineTerms from "../../services/fetchSpineTerms";
-import Loader from "../shared/Loader";
-import NoSpineAlert from "./NoSpineAlert";
-import PropertyAlignments from "./PropertyAlignments";
-import PropertyCard from "./PropertyCard";
-import { implementSpineSort } from "./SortOptions";
+import React, { Component } from 'react';
+import AlertNotice from '../shared/AlertNotice';
+import fetchAlignmentsForSpine from '../../services/fetchAlignmentsForSpine';
+import fetchDomain from '../../services/fetchDomain';
+import fetchSpineTerms from '../../services/fetchSpineTerms';
+import Loader from '../shared/Loader';
+import NoSpineAlert from './NoSpineAlert';
+import PropertyAlignments from './PropertyAlignments';
+import PropertyCard from './PropertyCard';
+import { implementSpineSort } from './SortOptions';
 
 /**
  * @description: The list of properties with its alignments. Contains all the information about the property
@@ -61,8 +61,7 @@ export default class PropertiesList extends Component {
   /**
    * The list of ids for the selected predicates
    */
-  selectedPredicateIds = () =>
-    this.props.selectedPredicates.map((predicate) => predicate.id);
+  selectedPredicateIds = () => this.props.selectedPredicates.map((predicate) => predicate.id);
 
   /**
    * The list of ids for the selected alignment organizations
@@ -73,18 +72,13 @@ export default class PropertiesList extends Component {
   /**
    * The list of ids for the selected spine organizations
    */
-  selectedSpineOrganizationIds = () =>
-    this.props.selectedSpineOrganizations.map((org) => org.id);
+  selectedSpineOrganizationIds = () => this.props.selectedSpineOrganizations.map((org) => org.id);
 
   /**
    * Returns the list of properties filtered by the value the user typed in the searchbar
    */
   filteredProperties = () => {
-    const {
-      inputValue,
-      hideSpineTermsWithNoAlignments,
-      selectedSpineOrderOption,
-    } = this.props;
+    const { inputValue, hideSpineTermsWithNoAlignments, selectedSpineOrderOption } = this.props;
     const { properties } = this.state;
 
     let filteredProps = properties.filter(
@@ -102,15 +96,11 @@ export default class PropertiesList extends Component {
             /// It matches the selected alignment organizations
             property.alignments.some((alignment) =>
               alignment.mappedTerms.some((mTerm) =>
-                this.selectedAlignmentOrganizationIds().includes(
-                  mTerm.organizationId
-                )
+                this.selectedAlignmentOrganizationIds().includes(mTerm.organizationId)
               )
             ) &&
             /// It matches the selected spine organizations
-            this.selectedSpineOrganizationIds().includes(
-              property.organizationId
-            )))
+            this.selectedSpineOrganizationIds().includes(property.organizationId)))
     );
 
     return implementSpineSort(filteredProps, selectedSpineOrderOption);
@@ -143,7 +133,7 @@ export default class PropertiesList extends Component {
     let response = await fetchDomain(selectedDomain.id);
 
     if (!this.anyError(response)) {
-      if (!response.domain["spine?"]) {
+      if (!response.domain['spine?']) {
         this.setState({ spineExists: false });
         return false;
       }
@@ -165,11 +155,9 @@ export default class PropertiesList extends Component {
 
     if (!this.anyError(response)) {
       const { alignments } = response;
-      const groupedAlignments = _.groupBy(alignments, "spineTermId");
+      const groupedAlignments = _.groupBy(alignments, 'spineTermId');
 
-      spineTerms.forEach(term =>
-        term.alignments = groupedAlignments[term.id] || []
-      );
+      spineTerms.forEach((term) => (term.alignments = groupedAlignments[term.id] || []));
     }
 
     return spineTerms;
@@ -182,10 +170,7 @@ export default class PropertiesList extends Component {
     let response = await fetchSpineTerms(spineId);
 
     if (!this.anyError(response)) {
-      const properties = await this.decoratePropertiesWithAlignments(
-        spineId,
-        response.terms
-      );
+      const properties = await this.decoratePropertiesWithAlignments(spineId, response.terms);
 
       this.setState({ properties });
     }
@@ -279,9 +264,7 @@ export default class PropertiesList extends Component {
                 predicates={predicates}
                 selectedDomain={selectedDomain}
                 term={term}
-                onAlignmentScoreFetched={(score) =>
-                  this.handleAlignmentScoreFetched(term, score)
-                }
+                onAlignmentScoreFetched={(score) => this.handleAlignmentScoreFetched(term, score)}
               />
             </div>
             <div className="col-8">

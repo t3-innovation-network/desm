@@ -1,17 +1,17 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import fetchSpine from "../../services/fetchSpine";
-import fetchSpineTerms from "../../services/fetchSpineTerms";
-import EditTerm from "../mapping-to-domains/EditTerm";
-import TermCard from "../mapping-to-domains/TermCard";
-import AlertNotice from "../shared/AlertNotice";
-import Loader from "../shared/Loader";
-import TopNav from "../shared/TopNav";
-import TopNavOptions from "../shared/TopNavOptions";
-import Pluralize from "pluralize";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { AppContext } from "../../contexts/AppContext";
+import React, { Fragment, useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import fetchSpine from '../../services/fetchSpine';
+import fetchSpineTerms from '../../services/fetchSpineTerms';
+import EditTerm from '../mapping-to-domains/EditTerm';
+import TermCard from '../mapping-to-domains/TermCard';
+import AlertNotice from '../shared/AlertNotice';
+import Loader from '../shared/Loader';
+import TopNav from '../shared/TopNav';
+import TopNavOptions from '../shared/TopNavOptions';
+import Pluralize from 'pluralize';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { AppContext } from '../../contexts/AppContext';
 
 const EditSpecification = (props) => {
   const { organization } = useContext(AppContext);
@@ -45,7 +45,7 @@ const EditSpecification = (props) => {
    * The value of the input that the user is typing in the search box
    * to filter the list of terms
    */
-  const [termsInputValue, setTermsInputValue] = useState("");
+  const [termsInputValue, setTermsInputValue] = useState('');
 
   /**
    * Whether we are editing a term or not. Useful to show/hide the
@@ -184,7 +184,7 @@ const EditSpecification = (props) => {
       <div className="container-fluid">
         <TopNav centerContent={navCenterOptions} />
 
-        {errors.length ? <AlertNotice message={errors} /> : ""}
+        {errors.length ? <AlertNotice message={errors} /> : ''}
 
         <div className="row">
           {loading ? (
@@ -195,10 +195,7 @@ const EditSpecification = (props) => {
                 <div className="row">
                   <div className="col">
                     <h2>
-                      Spine for{" "}
-                      <strong className="col-primary">
-                        {domain.pref_label}
-                      </strong>
+                      Spine for <strong className="col-primary">{domain.pref_label}</strong>
                     </h2>
                   </div>
                 </div>
@@ -209,10 +206,7 @@ const EditSpecification = (props) => {
                 </div>
                 <div className="row">
                   <div className="col-12 form-group input-group-has-icon">
-                    <FontAwesomeIcon
-                      icon={faSearch}
-                      className="form-control-feedback"
-                    />
+                    <FontAwesomeIcon icon={faSearch} className="form-control-feedback" />
 
                     <input
                       type="text"
@@ -230,9 +224,9 @@ const EditSpecification = (props) => {
                   cssClass="bg-col-primary col-background"
                   title={
                     terms.length +
-                    " " +
-                    Pluralize("property", terms.length) +
-                    " recognized for this spine"
+                    ' ' +
+                    Pluralize('property', terms.length) +
+                    ' recognized for this spine'
                   }
                   message="You can edit each term of your specification until you are confident with names, vocabularies, uri's and more."
                 />

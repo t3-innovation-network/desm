@@ -1,21 +1,24 @@
-import React, { Component, Fragment } from "react";
-import Loader from "./../../shared/Loader";
-import EllipsisOptions from "../../shared/EllipsisOptions";
-import ConfirmDialog from "../../shared/ConfirmDialog";
-import { CPActionHandlerFactory } from "./CPActionHandler";
-import ActivateProgress from "./ActivateProgress";
-import { Link } from "react-router-dom";
-import { stateStyle } from "./utils";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCogs } from "@fortawesome/free-solid-svg-icons";
-import { camelizeKeys } from "humps";
+import React, { Component, Fragment } from 'react';
+import Loader from './../../shared/Loader';
+import EllipsisOptions from '../../shared/EllipsisOptions';
+import ConfirmDialog from '../../shared/ConfirmDialog';
+import { CPActionHandlerFactory } from './CPActionHandler';
+import ActivateProgress from './ActivateProgress';
+import { Link } from 'react-router-dom';
+import { stateStyle } from './utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCogs } from '@fortawesome/free-solid-svg-icons';
+import { camelizeKeys } from 'humps';
 
 export const CPBoxContainer = ({ action, children, icon, linkTo, sideBoxClass }) => (
   <div className="col-12 col-lg-6 col-xl-4 mb-3">
     <div className="card h-100">
       <div className="row h-100 no-gutters">
         <div
-          className={"col-md-4 cursor-pointer d-flex justify-content-center align-items-center " + (sideBoxClass || "")}
+          className={
+            'col-md-4 cursor-pointer d-flex justify-content-center align-items-center ' +
+            (sideBoxClass || '')
+          }
           onClick={action}
         >
           {linkTo ? (
@@ -33,71 +36,53 @@ export const CPBoxContainer = ({ action, children, icon, linkTo, sideBoxClass })
 );
 
 const CardBody = (props) => {
-  const {
-    configurationProfile,
-    errors,
-    handleOptionSelected,
-    linkTo,
-    processing,
-  } = props;
+  const { configurationProfile, errors, handleOptionSelected, linkTo, processing } = props;
 
   const cpStateOptions = {
     active: [
-      { id: 3, name: "deactivate" },
-      { id: 4, name: "export" },
-      { id: 5, name: "remove" },
+      { id: 3, name: 'deactivate' },
+      { id: 4, name: 'export' },
+      { id: 5, name: 'remove' },
     ],
     complete: [
-      { id: 1, name: "activate" },
-      { id: 4, name: "export" },
-      { id: 5, name: "remove" },
+      { id: 1, name: 'activate' },
+      { id: 4, name: 'export' },
+      { id: 5, name: 'remove' },
     ],
     deactivated: [
-      { id: 1, name: "activate" },
-      { id: 4, name: "export" },
-      { id: 5, name: "remove" },
+      { id: 1, name: 'activate' },
+      { id: 4, name: 'export' },
+      { id: 5, name: 'remove' },
     ],
     incomplete: [
-      { id: 2, name: "complete" },
-      { id: 4, name: "export" },
-      { id: 5, name: "remove" },
+      { id: 2, name: 'complete' },
+      { id: 4, name: 'export' },
+      { id: 5, name: 'remove' },
     ],
   };
 
-  const totalAgents = () => (
+  const totalAgents = () =>
     new Set(
-      configurationProfile
-        .structure
-        ?.standardsOrganizations
-        ?.map(o => (o?.dsoAgents || []).map(a => a.email))
+      configurationProfile.structure?.standardsOrganizations
+        ?.map((o) => (o?.dsoAgents || []).map((a) => a.email))
         ?.flat() || []
-    ).size
-  );
+    ).size;
 
   return (
     <div className="card-body">
       <div className="row no-gutters">
         <div className="col-md-10">
-          <Link
-            className="col-on-primary"
-            to={linkTo}
-            style={{ textDecoration: "none" }}
-          >
-            <h5 className="card-title">
-              {configurationProfile.name}
-            </h5>
+          <Link className="col-on-primary" to={linkTo} style={{ textDecoration: 'none' }}>
+            <h5 className="card-title">{configurationProfile.name}</h5>
           </Link>
-          {processing && <Loader noPadding={true} cssClass={"float-over"} />}
-          <p
-            className="card-text mb-0"
-            style={stateStyle(configurationProfile.state)}
-          >
+          {processing && <Loader noPadding={true} cssClass={'float-over'} />}
+          <p className="card-text mb-0" style={stateStyle(configurationProfile.state)}>
             {_.capitalize(configurationProfile.state)}
           </p>
-          <p className="card-text mb-0">{totalAgents() + " agent(s)"}</p>
+          <p className="card-text mb-0">{totalAgents() + ' agent(s)'}</p>
           <p className="card-text">
             <small className="text-muted">
-              {new Date(configurationProfile.createdAt).toLocaleString("en-US")}
+              {new Date(configurationProfile.createdAt).toLocaleString('en-US')}
             </small>
           </p>
         </div>
@@ -202,27 +187,22 @@ export default class ConfigurationProfileBox extends Component {
             visible={confirmationVisible}
           >
             <h2 className="text-center">Attention!</h2>
-            <h5 className="mt-3 text-center">
-              {" "}
-              {actionHandler.confirmationMsg}
-            </h5>
+            <h5 className="mt-3 text-center"> {actionHandler.confirmationMsg}</h5>
           </ConfirmDialog>
         )}
         <ActivateProgress visible={activating} />
         {removed ? (
-          ""
+          ''
         ) : (
           <CPBoxContainer
             sideBoxClass={`bg-dashboard-background ${
-              configurationProfile.state === "deactivated" || processing
-                ? "disabled-container"
-                : ""
+              configurationProfile.state === 'deactivated' || processing ? 'disabled-container' : ''
             }`}
             icon={
               <FontAwesomeIcon
                 icon={faCogs}
                 className="fa-3x"
-                style={{ transform: "translateY(20%) translateX(-5%)" }}
+                style={{ transform: 'translateY(20%) translateX(-5%)' }}
               />
             }
             linkTo={`/dashboard/configuration-profiles/${configurationProfile.id}`}

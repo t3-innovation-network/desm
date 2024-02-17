@@ -1,10 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import AuthButton from "../auth/AuthButton";
-import DashboardBtn from "./DashboardBtn";
-import UserInfo from "../auth/UserInfo";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import AuthButton from '../auth/AuthButton';
+import DashboardBtn from './DashboardBtn';
+import UserInfo from '../auth/UserInfo';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 const TopNav = (props) => {
   return (
@@ -44,7 +44,7 @@ const TopNav = (props) => {
               <li className="nav-item">
                 <UserInfo />
               </li>
-              {!window.location.pathname.includes("dashboard") && (
+              {!window.location.pathname.includes('dashboard') && (
                 <li className="nav-item">
                   <DashboardBtn />
                 </li>

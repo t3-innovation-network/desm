@@ -6,9 +6,9 @@
  */
 const submittedReducer = (state = false, action) => {
   switch (action.type) {
-    case "SUBMIT":
+    case 'SUBMIT':
       return true;
-    case "UNSUBMIT":
+    case 'UNSUBMIT':
       return false;
     default:
       return state;

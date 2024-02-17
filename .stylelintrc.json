@@ -4,9 +4,11 @@
     "stylelint-config-prettier",
     "stylelint-config-standard-scss"
   ],
+  "plugins": ["stylelint-order"],
   "rules": {
     "declaration-block-trailing-semicolon": null,
     "no-descending-specificity": null,
-    "selector-class-pattern": null
+    "selector-class-pattern": null,
+    "order/properties-alphabetical-order": true
   }
 }

@@ -1,11 +1,11 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const fetchUsers = async () => {
   return await apiRequest({
-    url: "/users",
-    method: "get",
+    url: '/users',
+    method: 'get',
     defaultResponse: [],
-    successResponse: "users",
+    successResponse: 'users',
   });
 };
 

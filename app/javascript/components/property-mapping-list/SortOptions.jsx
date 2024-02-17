@@ -4,11 +4,11 @@
  * @todo Resolve the commented sort options
  */
 export const spineSortOptions = {
-  OVERALL_ALIGNMENT_SCORE: "Overall Alignment Score",
-  TOTAL_IDENTICAL_ALIGNMENTS: "Total Identical Alignments",
-  ORGANIZATION: "Organization",
-  SPINE_CLASS_TYPE: "Spine Class/Type",
-  SPINE_PROPERTY: "Spine Property",
+  OVERALL_ALIGNMENT_SCORE: 'Overall Alignment Score',
+  TOTAL_IDENTICAL_ALIGNMENTS: 'Total Identical Alignments',
+  ORGANIZATION: 'Organization',
+  SPINE_CLASS_TYPE: 'Spine Class/Type',
+  SPINE_PROPERTY: 'Spine Property',
   // HAS_ALIGNMENT_ISSUES: "Has Alignment Issues",
   // SOURCE_DATA_ORDER: "Source Data Order",
 };
@@ -17,11 +17,11 @@ export const spineSortOptions = {
  * Options for sorting a collection of alignments
  */
 export const alignmentSortOptions = {
-  ORGANIZATION: "Organization",
-  CLASS_TYPE: "Class/Type",
-  ALIGNMENT_SCORE: "Alignment Score",
-  PROPERTY: "Property",
-  HAS_ALIGNMENT_ISSUES: "Has Alignment Issues",
+  ORGANIZATION: 'Organization',
+  CLASS_TYPE: 'Class/Type',
+  ALIGNMENT_SCORE: 'Alignment Score',
+  PROPERTY: 'Property',
+  HAS_ALIGNMENT_ISSUES: 'Has Alignment Issues',
 };
 
 /**
@@ -38,37 +38,33 @@ export const implementSpineSort = (properties, sortOption) => {
      * Sort by alignment score. This is a number assigned via calculation in the frontend.
      */
     case spineSortOptions.OVERALL_ALIGNMENT_SCORE:
-      iteratee = p => -(p.alignmentScore ?? 0);
+      iteratee = (p) => -(p.alignmentScore ?? 0);
       break;
     /**
      * Sort by "identical" alignments ("identical" predicate label)
      */
     case spineSortOptions.TOTAL_IDENTICAL_ALIGNMENTS:
-      iteratee = p => (
-        -p
-          .alignments
-          .filter(a => a.predicate.prefLabel.toLowerCase() === "identical")
-          .length
-      );
+      iteratee = (p) =>
+        -p.alignments.filter((a) => a.predicate.prefLabel.toLowerCase() === 'identical').length;
       break;
     /**
      * Sort by organization name, since a property might be synthetic, meaning that a different
      * organization than the spine added it.
      */
     case spineSortOptions.ORGANIZATION:
-      iteratee = p => p.organization.name;
+      iteratee = (p) => p.organization.name;
       break;
     /**
      * Sort by selected domain class of the property. This field can be edited in the edit term screen.
      */
     case spineSortOptions.SPINE_CLASS_TYPE:
-      iteratee = p => p.property.selectedDomain;
+      iteratee = (p) => p.property.selectedDomain;
       break;
     /**
      * Sort by the spine property name
      */
     case spineSortOptions.SPINE_PROPERTY:
-      iteratee = "name";
+      iteratee = 'name';
       break;
     /**
      * @todo Find out the meaning of this sorting strategy
@@ -84,7 +80,7 @@ export const implementSpineSort = (properties, sortOption) => {
       return properties;
   }
 
-  return _.sortBy(properties, [iteratee, "name"]);
+  return _.sortBy(properties, [iteratee, 'name']);
 };
 
 /**
@@ -105,18 +101,13 @@ export const implementAlignmentSort = (properties, sortOption) => {
      */
     case alignmentSortOptions.CLASS_TYPE:
       return properties.sort((a, b) =>
-        a.mappedTerms[0].property.selectedDomain >
-        b.mappedTerms[0].property.selectedDomain
-          ? 1
-          : -1
+        a.mappedTerms[0].property.selectedDomain > b.mappedTerms[0].property.selectedDomain ? 1 : -1
       );
     /**
      * Sort by the alignment weight.
      */
     case alignmentSortOptions.ALIGNMENT_SCORE:
-      return properties.sort((a, b) =>
-        a.predicate.weight > b.predicate.weight ? 1 : -1
-      );
+      return properties.sort((a, b) => (a.predicate.weight > b.predicate.weight ? 1 : -1));
     /**
      * Sort by the property name.
      */

@@ -9,9 +9,9 @@
  */
 const mergedFileReducer = (state = {}, action) => {
   switch (action.type) {
-    case "SET_MERGED_FILE":
+    case 'SET_MERGED_FILE':
       return action.payload;
-    case "UNSET_MERGED_FILE":
+    case 'UNSET_MERGED_FILE':
       return {};
     default:
       return state;

@@ -1,13 +1,13 @@
-import React, { Fragment, useEffect, useState } from "react";
-import deleteSpecification from "../../services/deleteSpecification";
-import fetchSpineSpecifications from "../../services/fetchSpineSpecifications";
-import { Link } from "react-router-dom";
-import { toastr as toast } from "react-redux-toastr";
-import ConfirmDialog from "../shared/ConfirmDialog";
-import AlertNotice from "../shared/AlertNotice";
-import Loader from "../shared/Loader";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
+import React, { Fragment, useEffect, useState } from 'react';
+import deleteSpecification from '../../services/deleteSpecification';
+import fetchSpineSpecifications from '../../services/fetchSpineSpecifications';
+import { Link } from 'react-router-dom';
+import { toastr as toast } from 'react-redux-toastr';
+import ConfirmDialog from '../shared/ConfirmDialog';
+import AlertNotice from '../shared/AlertNotice';
+import Loader from '../shared/Loader';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * @description A list of spine specifications from the user or all the users of the organization
@@ -81,7 +81,7 @@ const SpineSpecsList = (props) => {
     let response = await deleteSpecification(spineIdToRemove);
 
     if (!anyError(response, errorsWhileRemoving, setErrorsWhileRemoving)) {
-      toast.success("Spine removed");
+      toast.success('Spine removed');
 
       /// Update the UI
       setSpines(spines.filter((spine) => spine.id !== spineIdToRemove));
@@ -125,9 +125,7 @@ const SpineSpecsList = (props) => {
         onConfirm={() => handleRemoveSpine()}
         visible={confirmingRemove}
       >
-        {errorsWhileRemoving.length ? (
-          <AlertNotice message={errorsWhileRemoving} />
-        ) : null}
+        {errorsWhileRemoving.length ? <AlertNotice message={errorsWhileRemoving} /> : null}
         <h2 className="text-center">You are removing the spine</h2>
         <h5 className="mt-3 text-center">Please confirm this action.</h5>
       </ConfirmDialog>
@@ -143,8 +141,7 @@ const SpineSpecsList = (props) => {
           return (
             <tr key={spine.id}>
               <td>
-                {spine.name + " "}{" "}
-                <strong className="col-primary">- Spine</strong>
+                {spine.name + ' '} <strong className="col-primary">- Spine</strong>
               </td>
               <td />
               <td />
@@ -152,7 +149,7 @@ const SpineSpecsList = (props) => {
               <td />
               <td>
                 <Link
-                  to={"/specifications/" + spine.id}
+                  to={'/specifications/' + spine.id}
                   className="btn btn-sm btn-dark ml-2"
                   data-toggle="tooltip"
                   data-placement="top"

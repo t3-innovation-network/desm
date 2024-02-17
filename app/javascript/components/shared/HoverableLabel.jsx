@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { transparentCardStyle } from "./Styles";
+import React, { Component } from 'react';
+import { transparentCardStyle } from './Styles';
 
 /**
  * Props:
@@ -37,22 +37,19 @@ export default class HoverableLabel extends Component {
       >
         <div className="col">
           <div
-            className={"card" + (showing ? " with-shadow" : " borderless")}
+            className={'card' + (showing ? ' with-shadow' : ' borderless')}
             style={transparentCardStyle}
           >
             <div
               className={
-                "card-header bottom-borderless" +
-                (labelCSSClass ? " " + labelCSSClass : "")
+                'card-header bottom-borderless' + (labelCSSClass ? ' ' + labelCSSClass : '')
               }
             >
               <div className="row">
                 <div className="col-10 cursor-pointer">
                   <label className="non-selectable">{label}</label>
                 </div>
-                <div className="col-2 cursor-pointer">
-                  {showing ? "▲" : "▼"}
-                </div>
+                <div className="col-2 cursor-pointer">{showing ? '▲' : '▼'}</div>
               </div>
             </div>
             {showing && <div className="card-body">{content}</div>}

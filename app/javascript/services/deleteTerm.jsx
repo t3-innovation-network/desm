@@ -1,9 +1,9 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const deleteTerm = async (term_id) => {
   return await apiRequest({
-    url: "/api/v1/terms/" + term_id,
-    method: "delete"
+    url: '/api/v1/terms/' + term_id,
+    method: 'delete',
   });
 };
 

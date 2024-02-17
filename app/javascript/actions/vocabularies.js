@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { vocabName } from "../helpers/Vocabularies";
+import _ from 'lodash';
+import { vocabName } from '../helpers/Vocabularies';
 
 /**
  * Represents setting the vocabularies when the user uploads the files
@@ -7,14 +7,11 @@ import { vocabName } from "../helpers/Vocabularies";
  * @returns {Array}
  */
 export const setVocabularies = (vocabularies) => {
-  const uniqueVocabularies = _.uniqBy(
-    vocabularies,
-    v => vocabName(v["@graph"])
-  );
+  const uniqueVocabularies = _.uniqBy(vocabularies, (v) => vocabName(v['@graph']));
 
   return {
-    type: "SET_VOCABULARIES",
-    payload: uniqueVocabularies
+    type: 'SET_VOCABULARIES',
+    payload: uniqueVocabularies,
   };
 };
 
@@ -25,6 +22,6 @@ export const setVocabularies = (vocabularies) => {
  */
 export const unsetVocabularies = () => {
   return {
-    type: "UNSET_VOCABULARIES",
+    type: 'UNSET_VOCABULARIES',
   };
 };

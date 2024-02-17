@@ -1,10 +1,10 @@
-import React from "react";
-import TopNav from "../shared/TopNav";
-import MappingForm from "./MappingForm";
-import MappingPreview from "./MappingPreview";
-import TopNavOptions from "../shared/TopNavOptions";
-import AlertNotice from "../shared/AlertNotice";
-import { useSelector } from "react-redux";
+import React from 'react';
+import TopNav from '../shared/TopNav';
+import MappingForm from './MappingForm';
+import MappingPreview from './MappingPreview';
+import TopNavOptions from '../shared/TopNavOptions';
+import AlertNotice from '../shared/AlertNotice';
+import { useSelector } from 'react-redux';
 
 const Mapping = (props) => {
   /**
@@ -25,23 +25,14 @@ const Mapping = (props) => {
    */
   const navCenterOptions = () => {
     return (
-      <TopNavOptions
-        viewMappings={true}
-        mapSpecification={true}
-        stepper={true}
-        stepperStep={1}
-      />
+      <TopNavOptions viewMappings={true} mapSpecification={true} stepper={true} stepperStep={1} />
     );
   };
 
   return (
     <div className="container-fluid">
       <TopNav centerContent={navCenterOptions} />
-      {mappingFormErrors.length ? (
-        <AlertNotice message={mappingFormErrors} />
-      ) : (
-        ""
-      )}
+      {mappingFormErrors.length ? <AlertNotice message={mappingFormErrors} /> : ''}
       <div className="row">
         <MappingForm />
         <MappingPreview redirect={handleRedirect} />

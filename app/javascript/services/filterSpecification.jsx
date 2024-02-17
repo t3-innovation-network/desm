@@ -1,4 +1,4 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 /**
  * @param {Integer} mergedFileId: The id of the file to be filtered.
  * @param {Array} uri: The list of identifiers of the rdfs:Class'es selected.
@@ -16,13 +16,13 @@ const filterSpecification = async (uris, mergedFileId) => {
    * that's also related to the selected class and so on.
    */
   return await apiRequest({
-    url: "/api/v1/merged_files/" + mergedFileId + "/filter",
-    method: "post",
+    url: '/api/v1/merged_files/' + mergedFileId + '/filter',
+    method: 'post',
     payload: {
       uris: uris,
     },
-    defaultResponse: "",
-    successResponse: "filtered",
+    defaultResponse: '',
+    successResponse: 'filtered',
   });
 };
 

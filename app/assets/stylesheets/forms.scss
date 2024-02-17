@@ -7,8 +7,8 @@
 }
 
 .domain-option {
-  padding-top: 0.2vw;
   padding-bottom: 0.2vw;
+  padding-top: 0.2vw;
 }
 
 .form-group {
@@ -28,18 +28,18 @@
   z-index: 5;
 
   &:focus {
-    box-shadow: 0 0 0 .3rem rgb(0 123 255 / 50%) !important;
+    box-shadow: 0 0 0 0.3rem rgb(0 123 255 / 50%) !important;
   }
 }
 
-.react-codemirror2{
+.react-codemirror2 {
   height: 100%;
   max-height: 27rem;
 
   ::-webkit-scrollbar {
+    background-color: $primary-color-highlight;
     height: 6px;
     width: 6px;
-    background-color: $primary-color-highlight;
   }
 
   /* Handle */
@@ -59,11 +59,11 @@
   }
 }
 
-.CodeMirror{
+.CodeMirror {
   height: 100% !important;
 }
 
-.custom-select:focus{
+.custom-select:focus {
   border-color: $primary-color !important;
   box-shadow: 0 0 0 0.2rem $background-color-dark !important;
 }

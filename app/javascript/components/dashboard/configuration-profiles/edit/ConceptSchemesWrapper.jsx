@@ -1,19 +1,14 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrentConfigurationProfile,
   setEditCPErrors,
   setSavingCP,
-} from "../../../../actions/configurationProfiles";
-import updateCP from "../../../../services/updateCP";
-import ConfirmDialog from "../../../shared/ConfirmDialog";
-import {
-  NoDataFound,
-  SmallAddTabBtn,
-  SmallRemovableTab,
-  TabGroup,
-} from "../utils";
-import ConceptSchemeMetadata from "./ConceptSchemeMetadata";
+} from '../../../../actions/configurationProfiles';
+import updateCP from '../../../../services/updateCP';
+import ConfirmDialog from '../../../shared/ConfirmDialog';
+import { NoDataFound, SmallAddTabBtn, SmallRemovableTab, TabGroup } from '../utils';
+import ConceptSchemeMetadata from './ConceptSchemeMetadata';
 
 const ConceptSchemesWrapper = ({ schemaFileIdx }) => {
   const currentCP = useSelector((state) => state.currentCP);
@@ -37,8 +32,8 @@ const ConceptSchemesWrapper = ({ schemaFileIdx }) => {
             setConfirmationVisible(true);
           }}
           tabClickHandler={() => setActiveTab(idx)}
-          text={file.name || ""}
-          tooltipMsg={`View/Edit ${file.name || ""}`}
+          text={file.name || ''}
+          tooltipMsg={`View/Edit ${file.name || ''}`}
         />
       );
     });
@@ -49,7 +44,7 @@ const ConceptSchemesWrapper = ({ schemaFileIdx }) => {
     let localFiles = [
       ...conceptSchemes,
       {
-        name: `Concept Scheme ${conceptSchemes.length + 1}`
+        name: `Concept Scheme ${conceptSchemes.length + 1}`,
       },
     ];
 
@@ -72,8 +67,8 @@ const ConceptSchemesWrapper = ({ schemaFileIdx }) => {
     ].associatedConceptSchemes.splice(idxToRemove, 1);
 
     const conceptSchemes =
-      localCP.structure.standardsOrganizations[currentDSOIndex]
-        .associatedSchemas[schemaFileIdx].associatedConceptSchemes;
+      localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas[schemaFileIdx]
+        .associatedConceptSchemes;
 
     setActiveTab(conceptSchemes.length ? 0 : -1);
     dispatch(setCurrentConfigurationProfile(localCP));
@@ -94,10 +89,8 @@ const ConceptSchemesWrapper = ({ schemaFileIdx }) => {
   };
 
   useEffect(() => {
-    const schemaFiles = currentCP
-      .structure
-      .standardsOrganizations[currentDSOIndex]
-      .associatedSchemas || [];
+    const schemaFiles =
+      currentCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas || [];
 
     const schemaFile = schemaFiles[schemaFileIdx] || {};
     setSchemaFile(schemaFile);
@@ -121,16 +114,12 @@ const ConceptSchemesWrapper = ({ schemaFileIdx }) => {
       )}
       <div className="mt-5 ml-3">
         <TabGroup>
-          {conceptSchemeBtns()}{" "}
-          {<SmallAddTabBtn onClickHandler={handleAddConceptScheme} />}{" "}
+          {conceptSchemeBtns()} {<SmallAddTabBtn onClickHandler={handleAddConceptScheme} />}{' '}
         </TabGroup>
       </div>
       {conceptSchemes.length ? (
         <div className="mt-5">
-          <ConceptSchemeMetadata
-            schemaFileIdx={schemaFileIdx}
-            conceptSchemeIdx={activeTab}
-          />
+          <ConceptSchemeMetadata schemaFileIdx={schemaFileIdx} conceptSchemeIdx={activeTab} />
         </div>
       ) : (
         <NoDataFound

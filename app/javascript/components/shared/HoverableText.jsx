@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 /**
  * Props:
@@ -31,9 +31,7 @@ class HoverableText extends Component {
         htmlFor={forComponent}
       >
         <span>{primaryContent}</span>
-        {hovering ? (
-          <span style={{ color: "grey" }}>{" - " + secondaryContent}</span>
-        ) : null}
+        {hovering ? <span style={{ color: 'grey' }}>{' - ' + secondaryContent}</span> : null}
       </label>
     );
   }

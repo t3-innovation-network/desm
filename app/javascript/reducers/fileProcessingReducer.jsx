@@ -9,9 +9,9 @@
  */
 const fileProcessingReducer = (state = false, action) => {
   switch (action.type) {
-    case "START_PROCESSING_FILE":
+    case 'START_PROCESSING_FILE':
       return true;
-    case "STOP_PROCESSING_FILE":
+    case 'STOP_PROCESSING_FILE':
       return false;
     default:
       return state;

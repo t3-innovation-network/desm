@@ -6,9 +6,9 @@ export const DraggableItemTypes = {
   /**
    * Represents a set of properties.
    */
-  PROPERTIES_SET: "properties-set",
+  PROPERTIES_SET: 'properties-set',
   /**
    * Represents a set of concepts inside a concept scheme
    */
-  CONCEPTS_SET: "concepts-set",
+  CONCEPTS_SET: 'concepts-set',
 };

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import ExpandableOptions from "./ExpandableOptions";
+import React, { useState } from 'react';
+import ExpandableOptions from './ExpandableOptions';
 
 /**
  * The predicates list as "Expandable"
@@ -42,13 +42,12 @@ const PredicateOptions = (props) => {
     props.onPredicateSelected(predicate);
   };
 
-
   return (
     <ExpandableOptions
       options={predicatesAsOptions()}
       onClose={(predicate) => handlePredicateSelected(predicate)}
       selectedOption={predicate}
-      cardCssClass={"with-shadow"}
+      cardCssClass={'with-shadow'}
     />
   );
 };

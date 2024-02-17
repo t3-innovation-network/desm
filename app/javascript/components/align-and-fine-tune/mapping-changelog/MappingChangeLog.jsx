@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import fetchAudits from "../../../services/fetchAudits";
-import Collapsible from "../../shared/Collapsible";
-import ChangeDetails from "./ChangeDetails";
-import Moment from "moment";
+import React, { useEffect, useState } from 'react';
+import fetchAudits from '../../../services/fetchAudits';
+import Collapsible from '../../shared/Collapsible';
+import ChangeDetails from './ChangeDetails';
+import Moment from 'moment';
 
 /**
  * @description Renders a card with information about the changes in the mapping provided
@@ -30,9 +30,9 @@ const MappingChangeLog = (props) => {
   const handleFetchChanges = async () => {
     // Get changes from the api service
     let response = await fetchAudits({
-      className: "Alignment",
+      className: 'Alignment',
       instanceIds: alignments.map((mt) => mt.id),
-      auditAction: "update",
+      auditAction: 'update',
       dateFrom: dateMapped,
     });
 
@@ -70,11 +70,7 @@ const MappingChangeLog = (props) => {
             <li key={i}>
               <div className="ml-3">
                 <div className="row">
-                  <strong>
-                    {Moment(change.created_at).format(
-                      "MMMM Do YYYY, h:mm:ss a"
-                    )}
-                  </strong>
+                  <strong>{Moment(change.created_at).format('MMMM Do YYYY, h:mm:ss a')}</strong>
                 </div>
                 <ChangeDetails
                   spineTerm={spineTermForAlignment(change.auditable_id)}
@@ -97,13 +93,13 @@ const MappingChangeLog = (props) => {
    */
   return !_.isEmpty(changes) ? (
     <Collapsible
-      cardStyle={"mb-3 alert-info"}
-      cardHeaderStyle={"bottom-borderless"}
+      cardStyle={'mb-3 alert-info'}
+      cardHeaderStyle={'bottom-borderless'}
       bodyContent={<ChangelogStruct />}
       headerContent={<h4>Changelog</h4>}
     />
   ) : (
-    ""
+    ''
   );
 };
 

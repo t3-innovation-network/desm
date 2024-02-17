@@ -1,30 +1,30 @@
-import React, { Fragment, useContext, useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import fetchMapping from "../../services/fetchMapping";
-import fetchMappingSelectedTerms from "../../services/fetchMappingSelectedTerms";
-import fetchPredicates from "../../services/fetchPredicates";
-import fetchSpineTerms from "../../services/fetchSpineTerms";
-import TermCard from "../mapping-to-domains/TermCard";
-import AlertNotice from "../shared/AlertNotice";
-import Loader from "../shared/Loader";
-import TopNav from "../shared/TopNav";
-import TopNavOptions from "../shared/TopNavOptions";
-import SpineTermRow from "./SpineTermRow";
-import SpineHeader from "./SpineHeader";
-import AlignmentsHeader from "./AlignmentsHeader";
-import Pluralize from "pluralize";
-import fetchAlignments from "../../services/fetchAlignments";
-import deleteAlignment from "../../services/deleteAlignment";
-import saveAlignments from "../../services/saveAlignments";
-import { toastr as toast } from "react-redux-toastr";
-import createSpineTerm from "../../services/createSpineTerm";
-import Draggable from "../shared/Draggable";
-import { DraggableItemTypes } from "../shared/DraggableItemTypes";
-import updateMapping from "../../services/updateMapping";
-import MappingChangeLog from "./mapping-changelog/MappingChangeLog";
-import fetchAudits from "../../services/fetchAudits";
-import ConfirmDialog from "../shared/ConfirmDialog";
-import { AppContext } from "../../contexts/AppContext";
+import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import fetchMapping from '../../services/fetchMapping';
+import fetchMappingSelectedTerms from '../../services/fetchMappingSelectedTerms';
+import fetchPredicates from '../../services/fetchPredicates';
+import fetchSpineTerms from '../../services/fetchSpineTerms';
+import TermCard from '../mapping-to-domains/TermCard';
+import AlertNotice from '../shared/AlertNotice';
+import Loader from '../shared/Loader';
+import TopNav from '../shared/TopNav';
+import TopNavOptions from '../shared/TopNavOptions';
+import SpineTermRow from './SpineTermRow';
+import SpineHeader from './SpineHeader';
+import AlignmentsHeader from './AlignmentsHeader';
+import Pluralize from 'pluralize';
+import fetchAlignments from '../../services/fetchAlignments';
+import deleteAlignment from '../../services/deleteAlignment';
+import saveAlignments from '../../services/saveAlignments';
+import { toastr as toast } from 'react-redux-toastr';
+import createSpineTerm from '../../services/createSpineTerm';
+import Draggable from '../shared/Draggable';
+import { DraggableItemTypes } from '../shared/DraggableItemTypes';
+import updateMapping from '../../services/updateMapping';
+import MappingChangeLog from './mapping-changelog/MappingChangeLog';
+import fetchAudits from '../../services/fetchAudits';
+import ConfirmDialog from '../shared/ConfirmDialog';
+import { AppContext } from '../../contexts/AppContext';
 
 const AlignAndFineTune = (props) => {
   const { leadMapper, organization } = useContext(AppContext);
@@ -48,9 +48,7 @@ const AlignAndFineTune = (props) => {
   /**
    * Controls displaying the removal confirmation dialog
    */
-  const [confirmingRemoveAlignment, setConfirmingRemoveAlignment] = useState(
-    false
-  );
+  const [confirmingRemoveAlignment, setConfirmingRemoveAlignment] = useState(false);
   /**
    * The date the mapping was marked as "mapped", which is "completed".
    */
@@ -83,10 +81,7 @@ const AlignAndFineTune = (props) => {
    * The value of the input that the user is typing in the search box
    * to filter the list of mapping terms
    */
-  const [
-    mappingSelectedTermsInputValue,
-    setMappingSelectedTermsInputValue,
-  ] = useState("");
+  const [mappingSelectedTermsInputValue, setMappingSelectedTermsInputValue] = useState('');
   /**
    * Represents the alignment that's going to be removed if the user confirms that action
    */
@@ -104,7 +99,7 @@ const AlignAndFineTune = (props) => {
    * The value of the input that the user is typing in the search box
    * to filter the list of spine terms
    */
-  const [spineTermsInputValue, setSpineTermsInputValue] = useState("");
+  const [spineTermsInputValue, setSpineTermsInputValue] = useState('');
 
   const [scrollTop, setScrollTop] = useState(0);
   /**
@@ -124,7 +119,7 @@ const AlignAndFineTune = (props) => {
     return term.selected;
   });
 
-  const strongestMatchPredicate = predicates.find(p => p.strongest_match);
+  const strongestMatchPredicate = predicates.find((p) => p.strongest_match);
 
   /**
    * Manage to change values from mapping term inputs in the state
@@ -168,9 +163,7 @@ const AlignAndFineTune = (props) => {
       .filter((term) => {
         return (
           (options.pickSelected ? term.selected : !term.selected) &&
-          term.name
-            .toLowerCase()
-            .includes(mappingSelectedTermsInputValue.toLowerCase())
+          term.name.toLowerCase().includes(mappingSelectedTermsInputValue.toLowerCase())
         );
       })
       .sort((a, b) => (a.name > b.name ? 1 : -1));
@@ -181,11 +174,9 @@ const AlignAndFineTune = (props) => {
    */
   const filteredSpineTerms = _.sortBy(
     spineTerms.filter((term) => {
-      return term.name
-        .toLowerCase()
-        .includes(spineTermsInputValue.toLowerCase());
+      return term.name.toLowerCase().includes(spineTermsInputValue.toLowerCase());
     }),
-    [t => t.createdAt ? 1 : 0, t => t.name.toLowerCase()]
+    [(t) => (t.createdAt ? 1 : 0), (t) => t.name.toLowerCase()]
   );
 
   /**
@@ -193,11 +184,11 @@ const AlignAndFineTune = (props) => {
    */
   const mappedSelectedTerms = mappingSelectedTerms.filter(selectedTermIsMapped);
 
-  const completeAlignments = alignments.filter(a => {
-    const predicate = predicates.find(p => p.id === a.predicateId);
+  const completeAlignments = alignments.filter((a) => {
+    const predicate = predicates.find((p) => p.id === a.predicateId);
 
     return (
-      predicate?.source_uri?.toLowerCase()?.includes("nomatch") ||
+      predicate?.source_uri?.toLowerCase()?.includes('nomatch') ||
       (a.predicateId && a.mappedTerms.length)
     );
   });
@@ -206,11 +197,11 @@ const AlignAndFineTune = (props) => {
    * Returns whether all the terms from the specification are already mapped.
    * For a term to be correctly mapped, we ensure to detect the predicate for it.
    */
-  const noPartiallyMappedTerms = alignments.every(a => {
-    const predicate = predicates.find(p => p.id === a.predicateId);
+  const noPartiallyMappedTerms = alignments.every((a) => {
+    const predicate = predicates.find((p) => p.id === a.predicateId);
 
     return (
-      predicate?.source_uri?.toLowerCase()?.includes("nomatch") ||
+      predicate?.source_uri?.toLowerCase()?.includes('nomatch') ||
       Boolean(a.mappedTerms.length) == Boolean(a.predicateId)
     );
   });
@@ -236,9 +227,7 @@ const AlignAndFineTune = (props) => {
    * 2. The mapping term is already mapped in the backend (is one of the mapping terms mapped in DB).
    */
   const spineTermIsMapped = (spineTerm) => {
-    let alg = alignments.find(
-      (alignment) => alignment.spineTermId === spineTerm.id
-    );
+    let alg = alignments.find((alignment) => alignment.spineTermId === spineTerm.id);
     return alg.mappedTerms.length;
   };
 
@@ -273,9 +262,7 @@ const AlignAndFineTune = (props) => {
    */
   const onPredicateSelected = (spineTerm, predicate) => {
     let tempAlignments = alignments;
-    let selectedAlignment = tempAlignments.find(
-      (alg) => alg.spineTermId === spineTerm.id
-    );
+    let selectedAlignment = tempAlignments.find((alg) => alg.spineTermId === spineTerm.id);
     selectedAlignment.predicateId = predicate.id;
     selectedAlignment.changed = true;
 
@@ -341,14 +328,8 @@ const AlignAndFineTune = (props) => {
 
     if (!anyError(response)) {
       /// Update the UI
-      setAlignments([
-        ...alignments.filter((mt) => mt.id !== alignmentToRemove.id),
-      ]);
-      setSpineTerms([
-        ...spineTerms.filter(
-          (sTerm) => sTerm.id !== alignmentToRemove.spineTermId
-        ),
-      ]);
+      setAlignments([...alignments.filter((mt) => mt.id !== alignmentToRemove.id)]);
+      setSpineTerms([...spineTerms.filter((sTerm) => sTerm.id !== alignmentToRemove.spineTermId)]);
 
       /// Close the modal confirmation window
       setConfirmingRemoveAlignment(false);
@@ -358,7 +339,7 @@ const AlignAndFineTune = (props) => {
       setChangesPerformed(changesPerformed - 1);
 
       /// Communicate the operation result to the user
-      toast.success("Synthetic alignment successfully removed");
+      toast.success('Synthetic alignment successfully removed');
     }
   };
 
@@ -382,9 +363,7 @@ const AlignAndFineTune = (props) => {
   const handleRevertMapping = (alignment, mappedTerm) => {
     alignment.changed = true;
     alignment.previousMappedTerms = alignment.mappedTerms;
-    alignment.mappedTerms = alignment.mappedTerms.filter(
-      (mTerm) => mTerm.id !== mappedTerm.id
-    );
+    alignment.mappedTerms = alignment.mappedTerms.filter((mTerm) => mTerm.id !== mappedTerm.id);
 
     /// If there's no mapped terms after removing the selected one (this was the last mapped
     /// term, and we removed it) remove the predicate
@@ -418,13 +397,13 @@ const AlignAndFineTune = (props) => {
           data-toggle="tooltip"
           data-placement="bottom"
           title={
-            "You can save the changes to continue mapping later" +
-            (changesPerformed ? "" : ". Try making a change!")
+            'You can save the changes to continue mapping later' +
+            (changesPerformed ? '' : '. Try making a change!')
           }
         >
           Save
         </button>
-        {leadMapper && mapping.status !== "mapped" && (
+        {leadMapper && mapping.status !== 'mapped' && (
           <button
             className="btn bg-col-primary col-background"
             onClick={handleDoneAlignment}
@@ -433,8 +412,8 @@ const AlignAndFineTune = (props) => {
             data-placement="bottom"
             title={
               noPartiallyMappedTerms
-                ? "Mark this mapping as finished"
-                : "Be sure to map all the properties to the spine, and to set a predicate to each alignment"
+                ? 'Mark this mapping as finished'
+                : 'Be sure to map all the properties to the spine, and to set a predicate to each alignment'
             }
           >
             Done Alignment
@@ -482,9 +461,7 @@ const AlignAndFineTune = (props) => {
    * @param {Array} collection
    */
   const nextId = (collection) => {
-    return (
-      1 + collection.reduce((max, elem) => (elem.id > max ? elem.id : max), 0)
-    );
+    return 1 + collection.reduce((max, elem) => (elem.id > max ? elem.id : max), 0);
   };
 
   /**
@@ -497,12 +474,12 @@ const AlignAndFineTune = (props) => {
       ...spineTerms,
       {
         id,
-        name: "",
+        name: '',
         synthetic: true,
         property: {
-          comment: "Synthetic property added to spine"
-        }
-      }
+          comment: 'Synthetic property added to spine',
+        },
+      },
     ]);
 
     return id;
@@ -521,8 +498,8 @@ const AlignAndFineTune = (props) => {
         mappedTerms: [],
         spineTermId: syntheticTermId,
         predicateId: strongestMatchPredicate?.id,
-        comment: null
-      }
+        comment: null,
+      },
     ]);
   };
 
@@ -561,19 +538,18 @@ const AlignAndFineTune = (props) => {
   const saveSynthetic = async (alignment) => {
     if (!alignment.mappedTerms.length) {
       let tempErrors = errors;
-      tempErrors.push("You must select at least 1 term to add the synthetic!");
+      tempErrors.push('You must select at least 1 term to add the synthetic!');
       setErrors(tempErrors);
       return false;
     }
     let [mappedTerm] = alignment.mappedTerms;
-    let tempUri = mappedTerm.uri + "-synthetic";
+    let tempUri = mappedTerm.uri + '-synthetic';
 
     let response = await createSpineTerm({
       synthetic: {
         alignment: {
           comment:
-            "Alignment for a synthetic property added to the spine. Synthetic uri: " +
-            tempUri,
+            'Alignment for a synthetic property added to the spine. Synthetic uri: ' + tempUri,
           uri: tempUri,
           predicateId: strongestMatchPredicate?.id,
           mappingId: mapping.id,
@@ -595,10 +571,10 @@ const AlignAndFineTune = (props) => {
     /// Save alignments
     setLoading(true);
 
-    const data = completeAlignments.map(alignment => ({
+    const data = completeAlignments.map((alignment) => ({
       id: alignment.id,
       predicateId: alignment.predicateId,
-      mappedTermIds: alignment.mappedTerms?.map(t => t.id) ?? []
+      mappedTermIds: alignment.mappedTerms?.map((t) => t.id) ?? [],
     }));
 
     const { error } = await saveAlignments(mapping.id, data);
@@ -608,10 +584,10 @@ const AlignAndFineTune = (props) => {
       setErrors([error]);
     } else {
       setChangesPerformed(false);
-      toast.success("Changes saved!");
+      toast.success('Changes saved!');
 
       /// Redirect to the list of specifications
-      props.history.push("/mappings");
+      props.history.push('/mappings');
     }
   };
 
@@ -623,7 +599,7 @@ const AlignAndFineTune = (props) => {
     /// mapping phase
     let response = await updateMapping({
       id: mapping.id,
-      status: "mapped",
+      status: 'mapped',
     });
 
     if (!anyError(response)) {
@@ -632,7 +608,7 @@ const AlignAndFineTune = (props) => {
         await handleSaveAlignments();
       }
       /// Redirect to the specifications list
-      props.history.push("/mappings");
+      props.history.push('/mappings');
     }
   };
 
@@ -701,16 +677,16 @@ const AlignAndFineTune = (props) => {
    * when the mapping changed from "in-progress" to "mapped".
    */
   const handleFetchMappingChanges = async (mapping) => {
-    if (mapping.status === "mapped") {
+    if (mapping.status === 'mapped') {
       let response = await fetchAudits({
-        className: "Mapping",
+        className: 'Mapping',
         instanceIds: mapping.id,
-        auditAction: "update",
+        auditAction: 'update',
       });
 
       if (!anyError(response)) {
         let statusChangedAudit = response.audits.find(
-          (audit) => audit.audited_changes["status"].toString() === "1,2"
+          (audit) => audit.audited_changes['status'].toString() === '1,2'
         );
 
         if (statusChangedAudit) {
@@ -759,7 +735,7 @@ const AlignAndFineTune = (props) => {
   return (
     <div className="container-fluid d-flex flex-column h-100">
       <TopNav centerContent={navCenterOptions} />
-      {errors.length ? <AlertNotice message={errors} /> : ""}
+      {errors.length ? <AlertNotice message={errors} /> : ''}
       <div className="row overflow-auto">
         {loading ? (
           <Loader />
@@ -772,20 +748,16 @@ const AlignAndFineTune = (props) => {
               onConfirm={() => handleRemoveAlignment()}
               visible={confirmingRemoveAlignment}
             >
-              <h2 className="text-center">
-                You are removing an alignment permanently.
-              </h2>
-              <h5 className="mt-3 text-center">
-                Please confirm this action.
-              </h5>
+              <h2 className="text-center">You are removing an alignment permanently.</h2>
+              <h5 className="mt-3 text-center">Please confirm this action.</h5>
             </ConfirmDialog>
 
             {/* LEFT SIDE */}
             <div
               className="col-lg-8 mh-100 p-lg-5 pt-5"
-              onScroll={e => setScrollTop(e.target.scrollTop)}
+              onScroll={(e) => setScrollTop(e.target.scrollTop)}
               ref={leftColumnRef}
-              style={{ overflowY: "scroll" }}
+              style={{ overflowY: 'scroll' }}
             >
               <SpineHeader
                 domain={mapping.domain}
@@ -826,7 +798,7 @@ const AlignAndFineTune = (props) => {
                 )}
               </div>
 
-              {mapping["new_spine_created?"] && (
+              {mapping['new_spine_created?'] && (
                 <AlertNotice
                   cssClass="bg-col-success col-background mb-5"
                   message="No further mapping is necessary. If you want to publish the mapping, please click “Done Alignment.“"
@@ -842,13 +814,12 @@ const AlignAndFineTune = (props) => {
 
               {!loading &&
                 filteredSpineTerms.map((term) => {
-                  return props.hideMappedSpineTerms &&
-                    props.isMapped(term) ? (
-                    ""
+                  return props.hideMappedSpineTerms && props.isMapped(term) ? (
+                    ''
                   ) : loading ? (
                     <Loader />
                   ) : hideMappedSpineTerms && spineTermIsMapped(term) ? (
-                    ""
+                    ''
                   ) : (
                     <SpineTermRow
                       key={term.id}
@@ -861,15 +832,11 @@ const AlignAndFineTune = (props) => {
                       spineOrigin={mapping.spine_origin}
                       onPredicateSelected={onPredicateSelected}
                       onRevertMapping={(mappedTerm) =>
-                        handleRevertMapping(
-                          alignmentForSpineTerm(term.id),
-                          mappedTerm
-                        )
+                        handleRevertMapping(alignmentForSpineTerm(term.id), mappedTerm)
                       }
                     />
                   );
-                })
-              }
+                })}
               <div className="mt-3">
                 <AlignmentOptions />
               </div>
@@ -879,7 +846,7 @@ const AlignAndFineTune = (props) => {
 
             <div
               className="bg-col-secondary col-lg-4 mh-100 p-lg-5 pt-5"
-              style={{ overflowY: "scroll" }}
+              style={{ overflowY: 'scroll' }}
             >
               <AlignmentsHeader
                 organizationName={organization.name}
@@ -889,12 +856,8 @@ const AlignAndFineTune = (props) => {
                 setHideMappedSelectedTerms={setHideMappedSelectedTerms}
                 mappingSelectedTerms={mappingSelectedTerms}
                 mappedSelectedTerms={mappedSelectedTerms}
-                mappingSelectedTermsInputValue={
-                  mappingSelectedTermsInputValue
-                }
-                filterMappingSelectedTermsOnChange={
-                  filterMappingSelectedTermsOnChange
-                }
+                mappingSelectedTermsInputValue={mappingSelectedTermsInputValue}
+                filterMappingSelectedTermsOnChange={filterMappingSelectedTermsOnChange}
               />
 
               {/* MAPPING TERMS LIST */}
@@ -903,14 +866,14 @@ const AlignAndFineTune = (props) => {
                 cssClass="bg-col-primary col-background mt-5"
                 title={
                   mappingSelectedTerms.length +
-                  " " +
-                  Pluralize("property", mappingSelectedTerms.length) +
-                  " have been selected from the original specification"
+                  ' ' +
+                  Pluralize('property', mappingSelectedTerms.length) +
+                  ' have been selected from the original specification'
                 }
                 message={
-                  "The items below have been added to the " +
+                  'The items below have been added to the ' +
                   _.capitalize(mapping.domain) +
-                  " domain. Now you can align them to the spine."
+                  ' domain. Now you can align them to the spine.'
                 }
               />
 
@@ -925,9 +888,8 @@ const AlignAndFineTune = (props) => {
                   {filteredMappingSelectedTerms({
                     pickSelected: true,
                   }).map((term) => {
-                    return hideMappedSelectedTerms &&
-                      selectedTermIsMapped(term) ? (
-                      ""
+                    return hideMappedSelectedTerms && selectedTermIsMapped(term) ? (
+                      ''
                     ) : (
                       <TermCard
                         key={term.id}
@@ -946,9 +908,8 @@ const AlignAndFineTune = (props) => {
                 {filteredMappingSelectedTerms({
                   pickSelected: false,
                 }).map((term) => {
-                  return hideMappedSelectedTerms &&
-                    selectedTermIsMapped(term) ? (
-                    ""
+                  return hideMappedSelectedTerms && selectedTermIsMapped(term) ? (
+                    ''
                   ) : (
                     <TermCard
                       key={term.id}
@@ -958,9 +919,7 @@ const AlignAndFineTune = (props) => {
                       isMapped={selectedTermIsMapped}
                       origin={mapping.origin}
                       alwaysEnabled={true}
-                      disableClick={
-                        addingSynthetic && selectedAlignments.length > 0
-                      }
+                      disableClick={addingSynthetic && selectedAlignments.length > 0}
                     />
                   );
                 })}

@@ -1,5 +1,5 @@
-import React from "react";
-import { useDrag } from "react-dnd";
+import React from 'react';
+import { useDrag } from 'react-dnd';
 
 /**
  * This class will hold a list of items that can be dragged and the dropped
@@ -49,10 +49,7 @@ const Draggable = (props) => {
    * Only make it draggable when the selected items are more than 1
    */
   return (
-    <div
-      ref={items.length ? drag : null}
-      className={isDragging ? " is-dragging" : ""}
-    >
+    <div ref={items.length ? drag : null} className={isDragging ? ' is-dragging' : ''}>
       {children}
     </div>
   );

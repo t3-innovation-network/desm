@@ -1,13 +1,13 @@
-import React, { Component, useState } from "react";
-import DashboardContainer from "../DashboardContainer";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-import AlertNotice from "../../shared/AlertNotice";
-import { downloadFile } from "../../../helpers/Export";
-import fetchValidSchema from "../../../services/fetchValidSchema";
-import { CenteredRoundedCard } from "./utils";
-import UploadConfigurationProfileForm from "./UploadConfigurationProfileForm";
+import React, { Component, useState } from 'react';
+import DashboardContainer from '../DashboardContainer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
+import AlertNotice from '../../shared/AlertNotice';
+import { downloadFile } from '../../../helpers/Export';
+import fetchValidSchema from '../../../services/fetchValidSchema';
+import { CenteredRoundedCard } from './utils';
+import UploadConfigurationProfileForm from './UploadConfigurationProfileForm';
 
 const UploadByUrlForm = () => {
   return (
@@ -18,9 +18,9 @@ const UploadByUrlForm = () => {
 };
 
 const UploadZone = () => {
-  const [mode, setMode] = useState("upload");
+  const [mode, setMode] = useState('upload');
 
-  const uploadForm = () => <UploadConfigurationProfileForm />
+  const uploadForm = () => <UploadConfigurationProfileForm />;
 
   return (
     <div className="col mr-3">
@@ -47,18 +47,18 @@ class UploadConfigurationProfile extends Component {
   dashboardPath = () => {
     return (
       <div className="float-right">
-        <FontAwesomeIcon icon={faHome} />{" "}
+        <FontAwesomeIcon icon={faHome} />{' '}
         <span>
           <Link className="col-on-primary" to="/">
             Home
           </Link>
-        </span>{" "}
-        {`>`}{" "}
+        </span>{' '}
+        {`>`}{' '}
         <span>
           <Link className="col-on-primary" to="/dashboard">
             Dashboard
           </Link>
-        </span>{" "}
+        </span>{' '}
         {`>`} <span>Configuration Profiles</span> {`>`} <span>New</span>
       </div>
     );
@@ -74,7 +74,7 @@ class UploadConfigurationProfile extends Component {
 
   cardSubtitle = () => {
     return (
-      <p className="text-center" style={{ fontStyle: "italic" }}>
+      <p className="text-center" style={{ fontStyle: 'italic' }}>
         Upload a previously exported configuration profile.
       </p>
     );
@@ -88,7 +88,7 @@ class UploadConfigurationProfile extends Component {
         {this.dashboardPath()}
 
         <div className="col">
-          {errors.length ? <AlertNotice message={errors} /> : ""}
+          {errors.length ? <AlertNotice message={errors} /> : ''}
           <div className="row h-50 justify-content-center">
             <CenteredRoundedCard
               title="Import a configuration profile"

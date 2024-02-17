@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
-import { setVocabularies } from "../../actions/vocabularies";
-import { vocabName } from "../../helpers/Vocabularies";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import pluralize from "pluralize";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
+import { setVocabularies } from '../../actions/vocabularies';
+import { vocabName } from '../../helpers/Vocabularies';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import pluralize from 'pluralize';
 
 /**
  * Displays a specification and its vocabularies in the tabbed form
@@ -48,46 +48,30 @@ const SpecsPreviewTabs = (props) => {
     dispatch(setVocabularies(tempVocabularies));
   };
 
-  const renderSpec = (spec) => (
-    JSON.stringify(
-      { "@graph": spec["@graph"] },
-      null,
-      2
-    )
-  );
+  const renderSpec = (spec) => JSON.stringify({ '@graph': spec['@graph'] }, null, 2);
 
   return (
     <React.Fragment>
       <Tabs
-        className={"mt-3" + (disabled ? " disabled-container" : "")}
+        className={'mt-3' + (disabled ? ' disabled-container' : '')}
         defaultFocus={true}
         defaultIndex={selectedTab}
-        onSelect={index => setSelectedTab(index)}
+        onSelect={(index) => setSelectedTab(index)}
       >
         <TabList>
           <Tab>
-            <input
-              checked={selectedTab === 0}
-              className="mr-2"
-              readOnly
-              type="radio"
-            />
-            Spec {" - "}
-            <strong className={propertiesCount < 1 ? "col-primary" : ""}>
-              {propertiesCount + " "}
+            <input checked={selectedTab === 0} className="mr-2" readOnly type="radio" />
+            Spec {' - '}
+            <strong className={propertiesCount < 1 ? 'col-primary' : ''}>
+              {propertiesCount + ' '}
             </strong>
-            {pluralize("property", propertiesCount)}
+            {pluralize('property', propertiesCount)}
           </Tab>
 
           {vocabularies.map((content, i) => (
             <Tab key={i}>
-              <input
-                checked={selectedTab === i + 1}
-                className="mr-2"
-                readOnly
-                type="radio"
-              />
-              {vocabName(content["@graph"])}
+              <input checked={selectedTab === i + 1} className="mr-2" readOnly type="radio" />
+              {vocabName(content['@graph'])}
             </Tab>
           ))}
         </TabList>
@@ -117,11 +101,7 @@ const SpecsPreviewTabs = (props) => {
                     title="Remove this vocabulary"
                     disabled={disabled}
                   >
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      aria-hidden="true"
-                      className="cursor-pointer"
-                    />
+                    <FontAwesomeIcon icon={faTrash} aria-hidden="true" className="cursor-pointer" />
                   </button>
                 </div>
                 <div className="card-body  has-scrollbar scrollbar">

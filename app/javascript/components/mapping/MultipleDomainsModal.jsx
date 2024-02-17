@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import Modal from "react-modal";
-import HoverableText from "../shared/HoverableText";
-import ModalStyles from "../shared/ModalStyles";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faSearch } from "@fortawesome/free-solid-svg-icons";
+import React, { Component } from 'react';
+import Modal from 'react-modal';
+import HoverableText from '../shared/HoverableText';
+import ModalStyles from '../shared/ModalStyles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Props:
@@ -29,8 +29,7 @@ export default class MultipleDomainsModal extends Component {
   /**
    * The list of selected domains. The ones the user selects
    */
-  selectedDomains = () =>
-    this.state.domainsList.filter((domain) => domain.selected);
+  selectedDomains = () => this.state.domainsList.filter((domain) => domain.selected);
 
   /**
    * Actions to execute when a domain is clicked
@@ -60,7 +59,7 @@ export default class MultipleDomainsModal extends Component {
    * Tasks when mounting this component
    */
   componentDidMount() {
-    Modal.setAppElement("body");
+    Modal.setAppElement('body');
   }
 
   /**
@@ -78,13 +77,7 @@ export default class MultipleDomainsModal extends Component {
     /**
      * Elements from props
      */
-    const {
-      domains,
-      inputValue,
-      onFilterChange,
-      modalIsOpen,
-      onRequestClose,
-    } = this.props;
+    const { domains, inputValue, onFilterChange, modalIsOpen, onRequestClose } = this.props;
 
     return (
       <Modal
@@ -95,7 +88,7 @@ export default class MultipleDomainsModal extends Component {
         shouldCloseOnEsc={false}
         shouldCloseOnOverlayClick={false}
       >
-        <div className="card" style={{ maxHeight: "45rem" }}>
+        <div className="card" style={{ maxHeight: '45rem' }}>
           <div className="card-header">
             <div className="row">
               <div className="col-10">
@@ -104,10 +97,7 @@ export default class MultipleDomainsModal extends Component {
                 </h5>
               </div>
               <div className="col-2">
-                <a
-                  className="float-right cursor-pointer"
-                  onClick={onRequestClose}
-                >
+                <a className="float-right cursor-pointer" onClick={onRequestClose}>
                   <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
                 </a>
               </div>
@@ -115,9 +105,7 @@ export default class MultipleDomainsModal extends Component {
 
             <div className="row">
               <div className="col-10">
-                <label>
-                  {this.selectedDomains().length + " domains selected"}
-                </label>
+                <label>{this.selectedDomains().length + ' domains selected'}</label>
               </div>
               <div className="col-2">
                 <button
@@ -132,15 +120,9 @@ export default class MultipleDomainsModal extends Component {
 
             <div className="row">
               <div className="col">
-                <strong>
-                  Please select one or more domains from the list to begin
-                  mapping
-                </strong>
+                <strong>Please select one or more domains from the list to begin mapping</strong>
                 <div className="form-group input-group-has-icon">
-                  <FontAwesomeIcon
-                    icon={faSearch}
-                    className="form-control-feedback"
-                  />
+                  <FontAwesomeIcon icon={faSearch} className="form-control-feedback" />
                   <input
                     type="text"
                     className="form-control"
@@ -157,16 +139,16 @@ export default class MultipleDomainsModal extends Component {
           <div className="card-body has-scrollbar scrollbar">
             <div className="desm-radio">
               {domains.map((dom) => (
-                <div className="desm-radio-primary" key={"radio-" + dom.id}>
+                <div className="desm-radio-primary" key={'radio-' + dom.id}>
                   <input
-                    id={"chk-" + dom.id}
+                    id={'chk-' + dom.id}
                     name="domain-options"
                     onClick={() => this.handleDomainClick(dom.id)}
                     tabIndex={0}
                     type="checkbox"
                   />
                   <HoverableText
-                    forComponent={"chk-" + dom.id}
+                    forComponent={'chk-' + dom.id}
                     primaryContent={dom.label}
                     secondaryContent={dom.uri}
                   />

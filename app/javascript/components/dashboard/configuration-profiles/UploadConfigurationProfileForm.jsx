@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
-import importCP from "../../../services/importCP";
-import AlertNotice from "../../shared/AlertNotice";
-import { readFileContent } from "./utils";
-import Loader from "./../../shared/Loader";
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
+import importCP from '../../../services/importCP';
+import AlertNotice from '../../shared/AlertNotice';
+import { readFileContent } from './utils';
+import Loader from './../../shared/Loader';
 
 const UploadConfigurationProfileForm = () => {
-  const [cpName, setCpName] = useState("");
+  const [cpName, setCpName] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileContent, setFileContent] = useState(null);
   const [error, setError] = useState(null);
@@ -20,7 +20,7 @@ const UploadConfigurationProfileForm = () => {
 
   const onFileUpload = async () => {
     if (!fileContent) {
-      setError(["Please upload a file"]);
+      setError(['Please upload a file']);
       return;
     }
 
@@ -29,7 +29,7 @@ const UploadConfigurationProfileForm = () => {
 
     let response = await importCP({
       name: cpName,
-      data: JSON.parse(fileContent)
+      data: JSON.parse(fileContent),
     });
 
     setLoading(false);
@@ -40,7 +40,7 @@ const UploadConfigurationProfileForm = () => {
       return;
     }
 
-    history.push("/dashboard/configuration-profiles");
+    history.push('/dashboard/configuration-profiles');
   };
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const UploadConfigurationProfileForm = () => {
           <AlertNotice message={error} />
         </div>
       ) : (
-        ""
+        ''
       )}
 
       <div>
@@ -73,7 +73,7 @@ const UploadConfigurationProfileForm = () => {
             className="form-control input-lg"
             name="fullname"
             placeholder="The name of the new Configuration Profile"
-            value={cpName || ""}
+            value={cpName || ''}
             onChange={(event) => {
               setCpName(event.target.value);
             }}
@@ -97,15 +97,8 @@ const UploadConfigurationProfileForm = () => {
         </label>
       </div>
       <div className="mt-5">
-        <button
-          className="btn btn-dark"
-          onClick={onFileUpload}
-        >
-          {loading ? (
-            <Loader noPadding smallSpinner />
-          ): (
-            "Upload!"
-          )}
+        <button className="btn btn-dark" onClick={onFileUpload}>
+          {loading ? <Loader noPadding smallSpinner /> : 'Upload!'}
         </button>
       </div>
     </div>

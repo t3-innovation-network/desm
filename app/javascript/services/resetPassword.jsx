@@ -1,9 +1,9 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const resetPassword = async (password, token) => {
   return await apiRequest({
-    url: "/password/reset",
-    method: "post",
+    url: '/password/reset',
+    method: 'post',
     payload: {
       user: {
         password: password,

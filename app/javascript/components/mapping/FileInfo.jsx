@@ -1,7 +1,7 @@
-import mime from "mime";
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFile } from "@fortawesome/free-solid-svg-icons";
+import mime from 'mime';
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFile } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Prints a card with basic information about the selected file.
@@ -28,8 +28,7 @@ const FileInfo = (props) => {
           <strong>File Type:</strong> {mime.getType(selectedFile.name)}
         </p>
         <p>
-          <strong>Last Modified:</strong>{" "}
-          {" " + new Date(selectedFile.lastModified).toDateString()}
+          <strong>Last Modified:</strong> {' ' + new Date(selectedFile.lastModified).toDateString()}
         </p>
       </div>
     </div>

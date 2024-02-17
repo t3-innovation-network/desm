@@ -1,13 +1,9 @@
-import { downloadFile } from "../../../helpers/Export";
-import execCPAction from "../../../services/execCPAction";
-import removeCP from "../../../services/removeCP";
+import { downloadFile } from '../../../helpers/Export';
+import execCPAction from '../../../services/execCPAction';
+import removeCP from '../../../services/removeCP';
 
 export class CPActionHandler {
-  constructor(
-    action,
-    needsConfirmation = false,
-    confirmationMsg = "Please confirm this action"
-  ) {
+  constructor(action, needsConfirmation = false, confirmationMsg = 'Please confirm this action') {
     this.action = action;
     this.needsConfirmation = needsConfirmation;
     this.confirmationMsg = confirmationMsg;
@@ -25,7 +21,7 @@ export class CPActionHandler {
 export class Activate extends CPActionHandler {
   constructor() {
     super(
-      "activate",
+      'activate',
       true,
       "By marking this Configuration Profile as 'Active', we will try to generate all the necessary data in this DESM instance.\
       This task includes the creation of the DSO's, agents and schemas. Please confirm to begin the process."
@@ -45,7 +41,7 @@ export class Activate extends CPActionHandler {
 export class Complete extends CPActionHandler {
   constructor() {
     super(
-      "complete",
+      'complete',
       true,
       "If you mark this Configuration Profile as 'completed', we will evaluate the information provided. If it fails, please \
       review the information is complete."
@@ -56,10 +52,10 @@ export class Complete extends CPActionHandler {
 export class Deactivate extends CPActionHandler {
   constructor() {
     super(
-      "deactivate",
+      'deactivate',
       true,
-      "By deactivating this Configuration Profile, it will not be available to use in this DESM instance. This means that the \
-      agents belonging to it will not be able to begin or continue mapping. Please confirm."
+      'By deactivating this Configuration Profile, it will not be available to use in this DESM instance. This means that the \
+      agents belonging to it will not be able to begin or continue mapping. Please confirm.'
     );
   }
 
@@ -70,14 +66,11 @@ export class Deactivate extends CPActionHandler {
 
 export class Export extends CPActionHandler {
   constructor() {
-    super("export", false);
+    super('export', false);
   }
 
   handleResponse(response, context) {
-    downloadFile(
-      response,
-      `configuration-profile-${new Date().toISOString()}.json`
-    );
+    downloadFile(response, `configuration-profile-${new Date().toISOString()}.json`);
     context.stopProcessing();
   }
 }
@@ -85,7 +78,7 @@ export class Export extends CPActionHandler {
 export class Remove extends CPActionHandler {
   constructor() {
     super(
-      "remove",
+      'remove',
       true,
       "Attention! Removing this Configuration Profile implies permanently loosing all the data in it. This includes the mapping, \
        DSO's and agents involved, and even the metadata. Make sure you export the metadata first. Please confirm."
@@ -103,21 +96,21 @@ export class Remove extends CPActionHandler {
 
 export class CPActionHandlerFactory {
   constructor(action) {
-    if (!action) throw "No action provided";
+    if (!action) throw 'No action provided';
     this.action = action;
   }
 
   get() {
     switch (this.action) {
-      case "activate":
+      case 'activate':
         return new Activate();
-      case "complete":
+      case 'complete':
         return new Complete();
-      case "deactivate":
+      case 'deactivate':
         return new Deactivate();
-      case "export":
+      case 'export':
         return new Export();
-      case "remove":
+      case 'remove':
         return new Remove();
     }
   }

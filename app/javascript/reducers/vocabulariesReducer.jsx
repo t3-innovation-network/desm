@@ -10,9 +10,9 @@
  */
 const vocabulariesReducer = (state = [], action) => {
   switch (action.type) {
-    case "SET_VOCABULARIES":
+    case 'SET_VOCABULARIES':
       return action.payload;
-    case "UNSET_VOCABULARIES":
+    case 'UNSET_VOCABULARIES':
       return [];
     default:
       return state;

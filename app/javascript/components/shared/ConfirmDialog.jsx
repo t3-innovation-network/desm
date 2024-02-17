@@ -1,9 +1,9 @@
-import Modal from "react-modal";
-import React, { useEffect, useState } from "react";
-import { SlideInDown } from "./Animations.jsx";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import Loader from "./Loader.jsx";
+import Modal from 'react-modal';
+import React, { useEffect, useState } from 'react';
+import { SlideInDown } from './Animations.jsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Loader from './Loader.jsx';
 
 /**
  * @prop {Function} onConfirm
@@ -11,7 +11,7 @@ import Loader from "./Loader.jsx";
  * @prop {Boolean} visible
  */
 const ConfirmDialog = (props) => {
-  Modal.setAppElement("body");
+  Modal.setAppElement('body');
 
   /**
    * Elements from props
@@ -32,13 +32,13 @@ const ConfirmDialog = (props) => {
       isOpen={visible}
       onRequestClose={onRequestClose}
       contentLabel="Please Confirm"
-      className={"fit-content-height m-5"}
-      style={{ marginLeft: "50%", marginRight: "50%" }}
+      className={'fit-content-height m-5'}
+      style={{ marginLeft: '50%', marginRight: '50%' }}
       shouldCloseOnEsc={false}
       shouldCloseOnOverlayClick={false}
     >
       <SlideInDown>
-        <div className="card centered-width" style={{ maxHeight: "45rem" }}>
+        <div className="card centered-width" style={{ maxHeight: '45rem' }}>
           <div className="card-header">
             <div className="row">
               <div className="col-10">
@@ -65,7 +65,7 @@ const ConfirmDialog = (props) => {
                   disabled={waiting}
                   onClick={handleConfirm}
                 >
-                  {waiting ? <Loader noPadding smallSpinner /> : "Confirm"}
+                  {waiting ? <Loader noPadding smallSpinner /> : 'Confirm'}
                 </button>
                 <button
                   className="btn btn-dark float-right ml-3"

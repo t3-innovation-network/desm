@@ -1,14 +1,14 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrentConfigurationProfile,
   setEditCPErrors,
   setSavingCP,
-} from "../../../../actions/configurationProfiles";
-import updateCP from "../../../../services/updateCP";
-import ConfirmDialog from "../../../shared/ConfirmDialog";
-import { AddTabBtn, NoDataFound, RemovableTab, TabGroup } from "../utils";
-import SingleSchemaFileWrapper from "./SingleSchemaFileWrapper";
+} from '../../../../actions/configurationProfiles';
+import updateCP from '../../../../services/updateCP';
+import ConfirmDialog from '../../../shared/ConfirmDialog';
+import { AddTabBtn, NoDataFound, RemovableTab, TabGroup } from '../utils';
+import SingleSchemaFileWrapper from './SingleSchemaFileWrapper';
 
 const SchemaFilesWrapper = () => {
   const currentCP = useSelector((state) => state.currentCP);
@@ -26,15 +26,13 @@ const SchemaFilesWrapper = () => {
       ...schemaFiles,
       {
         name: `Schema File N${schemaFiles.length + 1}`,
-        origin: "",
-        description: "",
-        associatedAbstractClass: "",
+        origin: '',
+        description: '',
+        associatedAbstractClass: '',
         associatedConceptSchemes: [],
       },
     ];
-    localCP.structure.standardsOrganizations[
-      currentDSOIndex
-    ].associatedSchemas = localFiles;
+    localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas = localFiles;
 
     dispatch(setCurrentConfigurationProfile(localCP));
     save(localCP);
@@ -44,13 +42,12 @@ const SchemaFilesWrapper = () => {
   const handleRemoveFile = () => {
     setConfirmationVisible(false);
     let localCP = currentCP;
-    localCP.structure.standardsOrganizations[
-      currentDSOIndex
-    ].associatedSchemas.splice(idxToRemove, 1);
+    localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas.splice(
+      idxToRemove,
+      1
+    );
 
-    let newSchemas =
-      localCP.structure.standardsOrganizations[currentDSOIndex]
-        .associatedSchemas;
+    let newSchemas = localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas;
 
     setActiveTab(newSchemas.length - 1);
     save(localCP);
@@ -91,17 +88,15 @@ const SchemaFilesWrapper = () => {
   };
 
   useEffect(() => {
-    const schemaFiles = currentCP
-      .structure
-      .standardsOrganizations[currentDSOIndex]
-      .associatedSchemas;
+    const schemaFiles =
+      currentCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas;
 
     setSchemaFiles(schemaFiles || []);
 
     if (activeTab === -1 && schemaFiles.length) {
       setActiveTab(0);
     }
-  }, [currentCP, currentDSOIndex])
+  }, [currentCP, currentDSOIndex]);
 
   return (
     <Fragment>
@@ -116,11 +111,11 @@ const SchemaFilesWrapper = () => {
         </ConfirmDialog>
       )}
       <div className="mt-5 w-100">
-        <TabGroup cssClass={"ml-3 mr-3"}>
+        <TabGroup cssClass={'ml-3 mr-3'}>
           {schemaFileTabs()}
           <AddTabBtn
             onClickHandler={handleAddFile}
-            tooltipMsg={"Create a new schema file for this DSO"}
+            tooltipMsg={'Create a new schema file for this DSO'}
           />
         </TabGroup>
       </div>

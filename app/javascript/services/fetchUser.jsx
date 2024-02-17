@@ -1,11 +1,11 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 async function fetchUser(user_id) {
   const response = await apiRequest({
-    url: "/users/" + user_id,
-    method: "get",
+    url: '/users/' + user_id,
+    method: 'get',
     defaultResponse: {},
-    successResponse: "user",
+    successResponse: 'user',
   });
   /// We have a list of users from the backend
   if (!response.error) {

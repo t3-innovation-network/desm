@@ -1,20 +1,15 @@
-import React, { Component } from "react";
-import DashboardContainer from "../DashboardContainer";
-import { Link } from "react-router-dom";
-import fetchUsers from "../../../services/fetchUsers";
-import AlertNotice from "../../shared/AlertNotice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUsers,
-  faPlusCircle,
-  faPencilAlt,
-  faHome,
-} from "@fortawesome/free-solid-svg-icons";
+import React, { Component } from 'react';
+import DashboardContainer from '../DashboardContainer';
+import { Link } from 'react-router-dom';
+import fetchUsers from '../../../services/fetchUsers';
+import AlertNotice from '../../shared/AlertNotice';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUsers, faPlusCircle, faPencilAlt, faHome } from '@fortawesome/free-solid-svg-icons';
 
 export default class UsersIndex extends Component {
   state = {
     users: [],
-    errors: "",
+    errors: '',
   };
 
   componentDidMount() {
@@ -24,18 +19,18 @@ export default class UsersIndex extends Component {
   dashboardPath = () => {
     return (
       <div className="float-right">
-        <FontAwesomeIcon icon={faHome} />{" "}
+        <FontAwesomeIcon icon={faHome} />{' '}
         <span>
           <Link className="col-on-primary" to="/">
             Home
           </Link>
-        </span>{" "}
-        {`>`}{" "}
+        </span>{' '}
+        {`>`}{' '}
         <span>
           <Link className="col-on-primary" to="/dashboard">
             Dashboard
           </Link>
-        </span>{" "}
+        </span>{' '}
         {`>`} <span>Users</span>
       </div>
     );
@@ -65,10 +60,7 @@ export default class UsersIndex extends Component {
           <div className="card-header">
             <FontAwesomeIcon icon={faUsers} />
             <span className="pl-2 subtitle">Users</span>
-            <Link
-              to="/dashboard/users/new"
-              className="float-right btn btn-dark btn-sm"
-            >
+            <Link to="/dashboard/users/new" className="float-right btn btn-dark btn-sm">
               <FontAwesomeIcon icon={faPlusCircle} />
               <span className="pl-2">Add User</span>
             </Link>
@@ -92,14 +84,8 @@ export default class UsersIndex extends Component {
                         <td>{user.email}</td>
                         <td>{user.organization?.name}</td>
                         <td>
-                          <Link
-                            to={"/dashboard/users/" + user.id}
-                            className="btn btn-dark"
-                          >
-                            <FontAwesomeIcon
-                              icon={faPencilAlt}
-                              aria-hidden="true"
-                            />
+                          <Link to={'/dashboard/users/' + user.id} className="btn btn-dark">
+                            <FontAwesomeIcon icon={faPencilAlt} aria-hidden="true" />
                           </Link>
                         </td>
                       </tr>

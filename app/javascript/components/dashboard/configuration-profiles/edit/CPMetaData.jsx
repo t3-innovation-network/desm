@@ -1,40 +1,35 @@
-import _ from "lodash";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import updateCP from "../../../../services/updateCP";
+import _ from 'lodash';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import updateCP from '../../../../services/updateCP';
 import {
   setCurrentConfigurationProfile,
   setEditCPErrors,
   setSavingCP,
-} from "../../../../actions/configurationProfiles";
-import { formatDateForInput } from "../utils";
+} from '../../../../actions/configurationProfiles';
+import { formatDateForInput } from '../utils';
 
 const CPMetaData = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
   const [name, setName] = useState(configurationProfile.name);
-  const [description, setDescription] = useState(
-    configurationProfile.description
-  );
-  const [createdAt, setCreatedAt] = useState(
-    formatDateForInput(configurationProfile.createdAt)
-  );
-  const [updatedAt, setUpdatedAt] = useState(
-    formatDateForInput(configurationProfile.updatedAt)
-  );
+  const [description, setDescription] = useState(configurationProfile.description);
+  const [createdAt, setCreatedAt] = useState(formatDateForInput(configurationProfile.createdAt));
+  const [updatedAt, setUpdatedAt] = useState(formatDateForInput(configurationProfile.updatedAt));
   const dispatch = useDispatch();
 
-  const buildCpData = () => _.pickBy({
-    ...configurationProfile,
-    createdAt,
-    description,
-    name,
-    structure: _.pickBy({
-      ...configurationProfile.structure,
+  const buildCpData = () =>
+    _.pickBy({
+      ...configurationProfile,
+      createdAt,
       description,
-      name
-    }),
-    updatedAt
-  });
+      name,
+      structure: _.pickBy({
+        ...configurationProfile.structure,
+        description,
+        name,
+      }),
+      updatedAt,
+    });
 
   const handleBlur = () => {
     dispatch(setSavingCP(true));
@@ -84,11 +79,11 @@ const CPMetaData = () => {
             className="form-control input-lg"
             name="description"
             placeholder="A description that provides consistent information about the standards organization"
-            value={description || ""}
+            value={description || ''}
             onChange={(event) => {
               setDescription(event.target.value);
             }}
-            style={{ height: "20rem" }}
+            style={{ height: '20rem' }}
             onBlur={handleBlur}
           />
         </div>

@@ -1,25 +1,25 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import TopNav from "../shared/TopNav";
-import Loader from "../shared/Loader";
-import fetchMapping from "../../services/fetchMapping";
-import { useSelector } from "react-redux";
-import AlertNotice from "../shared/AlertNotice";
-import TopNavOptions from "../shared/TopNavOptions";
-import TermCard from "./TermCard";
-import DomainCard from "./DomainCard";
-import EditTerm from "./EditTerm";
-import fetchSpecification from "../../services/fetchSpecification";
-import fetchSpecificationTerms from "../../services/fetchSpecificationTerms";
-import updateMappingSelectedTerms from "../../services/updateMappingSelectedTerms";
-import { toastr as toast } from "react-redux-toastr";
-import updateMapping from "../../services/updateMapping";
-import Draggable from "../shared/Draggable";
-import { DraggableItemTypes } from "../shared/DraggableItemTypes";
-import deleteMappingSelectedTerm from "../../services/deleteMappingSelectedTerm";
-import Pluralize from "pluralize";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { AppContext  } from "../../contexts/AppContext";
+import React, { Fragment, useContext, useEffect, useState } from 'react';
+import TopNav from '../shared/TopNav';
+import Loader from '../shared/Loader';
+import fetchMapping from '../../services/fetchMapping';
+import { useSelector } from 'react-redux';
+import AlertNotice from '../shared/AlertNotice';
+import TopNavOptions from '../shared/TopNavOptions';
+import TermCard from './TermCard';
+import DomainCard from './DomainCard';
+import EditTerm from './EditTerm';
+import fetchSpecification from '../../services/fetchSpecification';
+import fetchSpecificationTerms from '../../services/fetchSpecificationTerms';
+import updateMappingSelectedTerms from '../../services/updateMappingSelectedTerms';
+import { toastr as toast } from 'react-redux-toastr';
+import updateMapping from '../../services/updateMapping';
+import Draggable from '../shared/Draggable';
+import { DraggableItemTypes } from '../shared/DraggableItemTypes';
+import deleteMappingSelectedTerm from '../../services/deleteMappingSelectedTerm';
+import Pluralize from 'pluralize';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { AppContext } from '../../contexts/AppContext';
 
 const MappingToDomains = (props) => {
   const { organization } = useContext(AppContext);
@@ -85,7 +85,7 @@ const MappingToDomains = (props) => {
    * The value of the input that the user is typing in the search box
    * to filter the list of terms
    */
-  const [termsInputValue, setTermsInputValue] = useState("");
+  const [termsInputValue, setTermsInputValue] = useState('');
 
   /**
    * The selected or not selected terms that includes the string typed by the user in the
@@ -125,7 +125,7 @@ const MappingToDomains = (props) => {
   /**
    * The selected terms.
    */
-  const selectedTerms = terms.filter((t => t.selected));
+  const selectedTerms = terms.filter((t) => t.selected);
 
   /**
    * Action to perform after a term is dropped
@@ -235,15 +235,13 @@ const MappingToDomains = (props) => {
 
     /// Update the mapping selected terms
     let tempMapping = mapping;
-    tempMapping.selected_terms = tempMapping.selected_terms.filter(
-      (term) => term.id !== termId
-    );
+    tempMapping.selected_terms = tempMapping.selected_terms.filter((term) => term.id !== termId);
 
     /// Update the UI
     setMapping(tempMapping);
     setTerms([...terms]);
 
-    toast.success("Changes saved");
+    toast.success('Changes saved');
   };
 
   /**
@@ -273,11 +271,7 @@ const MappingToDomains = (props) => {
           onClick={handleSaveChanges}
           disabled={!changesPerformed || savingChanges}
         >
-          {savingChanges ? (
-            <Loader noPadding={true} smallSpinner={true} />
-          ) : (
-            "Save Changes"
-          )}
+          {savingChanges ? <Loader noPadding={true} smallSpinner={true} /> : 'Save Changes'}
         </button>
       </Fragment>
     );
@@ -291,7 +285,7 @@ const MappingToDomains = (props) => {
     // the name in the backend), so we say it's begun terms mapping phase
     let response = await updateMapping({
       id: mapping.id,
-      status: "in_progress",
+      status: 'in_progress',
     });
     if (!anyError(response)) {
       // Save changes if necessary
@@ -299,7 +293,7 @@ const MappingToDomains = (props) => {
         await handleSaveChanges();
       }
       // Redirect to 3rd step mapping ("Align and Fine Tune")
-      props.history.push("/mappings/" + mapping.id + "/align");
+      props.history.push('/mappings/' + mapping.id + '/align');
     }
   };
 
@@ -325,7 +319,7 @@ const MappingToDomains = (props) => {
           setMapping(tempMapping);
         });
 
-      toast.success("Changes saved");
+      toast.success('Changes saved');
       setChangesPerformed(0);
       setSavingChanges(false);
     }
@@ -398,7 +392,7 @@ const MappingToDomains = (props) => {
 
   const toggleSelectAll = () => {
     const selected = !selectedTerms.length;
-    setTerms(terms => terms.map(t => Object.assign(t, { selected })));
+    setTerms((terms) => terms.map((t) => Object.assign(t, { selected })));
   };
 
   /**
@@ -411,7 +405,7 @@ const MappingToDomains = (props) => {
     if (loading) {
       fn = async function fetchData() {
         await fetchDataFromAPI();
-      }
+      };
       fn().then(() => {
         if (_.isEmpty(errors)) {
           setLoading(false);
@@ -432,7 +426,7 @@ const MappingToDomains = (props) => {
       />
       <div className="container-fluid d-flex flex-column h-100">
         <TopNav centerContent={navCenterOptions} />
-        {errors.length ? <AlertNotice message={errors} /> : ""}
+        {errors.length ? <AlertNotice message={errors} /> : ''}
         <div className="row overflow-auto">
           {loading ? (
             <Loader />
@@ -440,24 +434,19 @@ const MappingToDomains = (props) => {
             <React.Fragment>
               {/* LEFT SIDE */}
 
-              <div
-                className="col-lg-6 mh-100 p-lg-5 pt-5"
-                style={{ overflowY: "scroll" }}
-              >
+              <div className="col-lg-6 mh-100 p-lg-5 pt-5" style={{ overflowY: 'scroll' }}>
                 <div className="border-bottom">
-                  <h6 className="subtitle">
-                    2. Add the properties to the proper domain
-                  </h6>
+                  <h6 className="subtitle">2. Add the properties to the proper domain</h6>
                   <h1>Mapping {mapping.name}</h1>
                   <div className="row">
                     <div className="col-5">
                       <p>
                         <strong>{mappedTerms.length}</strong>
-                        {" of " +
+                        {' of ' +
                           terms.length +
-                          " " +
-                          Pluralize("property", terms.length) +
-                          " added to domains"}
+                          ' ' +
+                          Pluralize('property', terms.length) +
+                          ' added to domains'}
                       </p>
                     </div>
                     <div className="col-7">
@@ -466,8 +455,7 @@ const MappingToDomains = (props) => {
                           className="progress-bar bg-col-on-primary"
                           role="progressbar"
                           style={{
-                            width:
-                              (mappedTerms.length * 100) / terms.length + "%",
+                            width: (mappedTerms.length * 100) / terms.length + '%',
                           }}
                           aria-valuenow="0"
                           aria-valuemin="0"
@@ -496,7 +484,7 @@ const MappingToDomains = (props) => {
 
               <div
                 className="bg-col-secondary col-lg-6 mh-100 p-lg-5 pt-5"
-                style={{ overflowY: "scroll" }}
+                style={{ overflowY: 'scroll' }}
               >
                 <div className="row">
                   <div className="col-6">
@@ -511,10 +499,7 @@ const MappingToDomains = (props) => {
                         onChange={(e) => setHideMapped(!hideMapped)}
                         id="hideElems"
                       />
-                      <label
-                        className="form-check-label"
-                        htmlFor="hideElems"
-                      >
+                      <label className="form-check-label" htmlFor="hideElems">
                         Hide mapped properties
                       </label>
                     </div>
@@ -523,10 +508,7 @@ const MappingToDomains = (props) => {
 
                 <div className="row">
                   <div className="col-12 form-group input-group-has-icon">
-                    <FontAwesomeIcon
-                      icon={faSearch}
-                      className="form-control-feedback"
-                    />
+                    <FontAwesomeIcon icon={faSearch} className="form-control-feedback" />
                     <input
                       type="text"
                       className="form-control"
@@ -538,12 +520,10 @@ const MappingToDomains = (props) => {
                 </div>
 
                 <p>
-                  <strong>{selectedTerms.length}</strong>{" "}
-                  {" " +
-                    Pluralize("property", selectedTerms.length) +
-                    " selected"}
+                  <strong>{selectedTerms.length}</strong>{' '}
+                  {' ' + Pluralize('property', selectedTerms.length) + ' selected'}
                   <button className="btn btn-link" onClick={toggleSelectAll}>
-                    {selectedTerms.length ? "Deselect" : "Select"} All
+                    {selectedTerms.length ? 'Deselect' : 'Select'} All
                   </button>
                 </p>
 
@@ -552,9 +532,9 @@ const MappingToDomains = (props) => {
                     cssClass="bg-col-primary col-background"
                     title={
                       terms.length +
-                      " " +
-                      Pluralize("property", terms.length) +
-                      " have been uploaded"
+                      ' ' +
+                      Pluralize('property', terms.length) +
+                      ' have been uploaded'
                     }
                     message="Drag the individual properties below to the matching domains on the left to begin mapping your specification"
                   />
@@ -569,7 +549,7 @@ const MappingToDomains = (props) => {
                     >
                       {filteredTerms({ pickSelected: true }).map((term) => {
                         return hideMapped && termIsMapped(term) ? (
-                          ""
+                          ''
                         ) : (
                           <TermCard
                             key={term.id}
@@ -587,7 +567,7 @@ const MappingToDomains = (props) => {
                     {/* NOT SELECTED TERMS */}
                     {filteredTerms({ pickSelected: false }).map((term) => {
                       return hideMapped && termIsMapped(term) ? (
-                        ""
+                        ''
                       ) : (
                         <TermCard
                           key={term.id}

@@ -1,5 +1,5 @@
-import React from "react";
-import coffeeWait from "../../../assets/images/coffee-wait.gif";
+import React from 'react';
+import coffeeWait from '../../../assets/images/coffee-wait.gif';
 
 /**
  * Props:
@@ -16,20 +16,11 @@ const Loader = (props) => {
   const { message, noPadding, smallSpinner, showImage, cssClass } = props;
 
   return (
-    <div
-      className={
-        "container text-center" +
-        (noPadding ? "" : " p-5") +
-        (` ${cssClass}` || "")
-      }
-    >
+    <div className={'container text-center' + (noPadding ? '' : ' p-5') + (` ${cssClass}` || '')}>
       {showImage ? (
-        ""
+        ''
       ) : (
-        <div
-          className={"spinner-grow" + (smallSpinner ? " spinner-grow-sm" : "")}
-          role="status"
-        />
+        <div className={'spinner-grow' + (smallSpinner ? ' spinner-grow-sm' : '')} role="status" />
       )}
       {message ? (
         <div className="card borderless bg-transparent mt-5">
@@ -39,15 +30,15 @@ const Loader = (props) => {
               <img
                 src={coffeeWait}
                 alt="Go get a coffee while waiting"
-                style={{ width: "25%", padding: "2rem" }}
+                style={{ width: '25%', padding: '2rem' }}
               />
             ) : (
-              ""
+              ''
             )}
           </div>
         </div>
       ) : (
-        ""
+        ''
       )}
     </div>
   );

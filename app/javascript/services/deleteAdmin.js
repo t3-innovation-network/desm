@@ -1,9 +1,9 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const deleteAdmin = async (id) => {
   return await apiRequest({
     url: `/api/v1/admins/${id}`,
-    method: "delete"
+    method: 'delete',
   });
 };
 

@@ -1,12 +1,12 @@
-import React, { Fragment, useState } from "react";
-import { useSelector } from "react-redux";
-import DSOMetaData from "./DSOMetadata";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfo, faUsers } from "@fortawesome/free-solid-svg-icons";
-import { activeTabClass, inactiveTabClass, line, tabStyle } from "../utils";
-import Agents from "./Agents";
-import SchemaFilesWrapper from "./SchemaFilesWrapper";
-import { useEffect } from "react";
+import React, { Fragment, useState } from 'react';
+import { useSelector } from 'react-redux';
+import DSOMetaData from './DSOMetadata';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfo, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { activeTabClass, inactiveTabClass, line, tabStyle } from '../utils';
+import Agents from './Agents';
+import SchemaFilesWrapper from './SchemaFilesWrapper';
+import { useEffect } from 'react';
 
 const DSOInfoWrapper = () => {
   const currentCP = useSelector((state) => state.currentCP);
@@ -23,21 +23,16 @@ const DSOInfoWrapper = () => {
         style={tabStyle}
         onClick={() => setCurrentTab(index)}
       >
-        <FontAwesomeIcon
-          icon={icon}
-          data-toggle="tooltip"
-          data-placement="bottom"
-          title={text}
-        />
+        <FontAwesomeIcon icon={icon} data-toggle="tooltip" data-placement="bottom" title={text} />
       </div>
     );
   };
 
   const dsoInfoTabs = () => (
     <div className="row justify-content-center">
-      {tabIcon(0, faInfo, "DSO Basic Info")}
+      {tabIcon(0, faInfo, 'DSO Basic Info')}
       {line()}
-      {tabIcon(1, faUsers, "Agents")}
+      {tabIcon(1, faUsers, 'Agents')}
     </div>
   );
 

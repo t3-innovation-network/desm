@@ -1,27 +1,27 @@
-import _ from "lodash";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import updateCP from "../../../../services/updateCP";
+import _ from 'lodash';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import updateCP from '../../../../services/updateCP';
 import {
   setCurrentConfigurationProfile,
   setEditCPErrors,
   setSavingCP,
-} from "../../../../actions/configurationProfiles";
-import { validURL } from "../../../../helpers/URL";
-import fetchSkosFile from "../../../../services/fetchSkosFile";
-import Loader from "../../../shared/Loader";
-import fetchCPSkosLabels from "../../../../services/fetchCpSkosLabels";
+} from '../../../../actions/configurationProfiles';
+import { validURL } from '../../../../helpers/URL';
+import fetchSkosFile from '../../../../services/fetchSkosFile';
+import Loader from '../../../shared/Loader';
+import fetchCPSkosLabels from '../../../../services/fetchCpSkosLabels';
 
 const MappingPredicates = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
   const dispatch = useDispatch();
 
-  const [name, setName] = useState("");
-  const [version, setVersion] = useState("");
-  const [description, setDescription] = useState("");
-  const [origin, setOrigin] = useState("");
+  const [name, setName] = useState('');
+  const [version, setVersion] = useState('');
+  const [description, setDescription] = useState('');
+  const [origin, setOrigin] = useState('');
   const [jsonMappingPredicates, setJsonMappingPredicates] = useState([]);
-  const [predicateStrongestMatch, setPredicateStrongestMatch] = useState("");
+  const [predicateStrongestMatch, setPredicateStrongestMatch] = useState('');
   const [loading, setLoading] = useState(false);
   const [urlEditable, setUrlEditable] = useState(true);
   const [predicateLabels, setPredicateLabels] = useState([]);
@@ -37,15 +37,13 @@ const MappingPredicates = () => {
         name,
         origin,
         version,
-      })
-    }
+      }),
+    },
   });
 
   const handleFetchUrl = () => {
     if (!validURL(origin)) {
-      dispatch(
-        setEditCPErrors("The mapping predicates origin must be a valid URL")
-      );
+      dispatch(setEditCPErrors('The mapping predicates origin must be a valid URL'));
       return;
     }
     dispatch(setEditCPErrors(null));
@@ -58,9 +56,9 @@ const MappingPredicates = () => {
     const { error, skosFile, valid } = await fetchSkosFile(origin);
 
     if (error || !valid) {
-      dispatch(setEditCPErrors(error || "Invalid Skos File"));
+      dispatch(setEditCPErrors(error || 'Invalid Skos File'));
       setLoading(false);
-      setOrigin("");
+      setOrigin('');
       return;
     }
 
@@ -71,17 +69,15 @@ const MappingPredicates = () => {
   };
 
   const handleFetchPredicateLabels = () => {
-    fetchCPSkosLabels(configurationProfile.id, "json_mapping_predicates").then(
-      (response) => {
-        if (response.error) {
-          let message = response.error;
-          dispatch(setEditCPErrors(message));
-          return;
-        }
-
-        setPredicateLabels(response.conceptNames);
+    fetchCPSkosLabels(configurationProfile.id, 'json_mapping_predicates').then((response) => {
+      if (response.error) {
+        let message = response.error;
+        dispatch(setEditCPErrors(message));
+        return;
       }
-    );
+
+      setPredicateLabels(response.conceptNames);
+    });
   };
 
   const handlePredicateChange = (e) => {
@@ -110,12 +106,12 @@ const MappingPredicates = () => {
 
     if (!mappingPredicates) return;
 
-    const { description, name, origin, version } = mappingPredicates
-    setDescription(description || "");
-    setName(name || "");
-    setOrigin(origin || "");
+    const { description, name, origin, version } = mappingPredicates;
+    setDescription(description || '');
+    setName(name || '');
+    setOrigin(origin || '');
     setUrlEditable(!origin);
-    setVersion(version || "");
+    setVersion(version || '');
   }, [configurationProfile.structure.mappingPredicates]);
 
   useEffect(() => {
@@ -208,11 +204,7 @@ const MappingPredicates = () => {
               data-placement="bottom"
               title="Fetch the concepts"
             >
-              {loading ? (
-                <Loader noPadding smallSpinner />
-              ) : (
-                "Fetch"
-              )}
+              {loading ? <Loader noPadding smallSpinner /> : 'Fetch'}
             </button>
           </div>
         ) : (
@@ -233,9 +225,7 @@ const MappingPredicates = () => {
 
       {predicateLabels.length > 0 && (
         <div>
-          <p className="mt-5 font-weight-bold">
-            👇 Please, select the strongest match
-          </p>
+          <p className="mt-5 font-weight-bold">👇 Please, select the strongest match</p>
           <div className="form-group">
             {predicateLabels.map((concept, index) => {
               const { label, uri } = concept;
@@ -251,10 +241,7 @@ const MappingPredicates = () => {
                     type="radio"
                     value={uri}
                   />
-                  <label
-                    className="cursor-pointer form-check-label"
-                    htmlFor={id}
-                  >
+                  <label className="cursor-pointer form-check-label" htmlFor={id}>
                     {label}
                   </label>
                 </div>

@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import EditAlignment from "./EditAlignment";
-import { toastr as toast } from "react-redux-toastr";
-import Collapsible from "../shared/Collapsible";
-import MatchVocabulary from "./match-vocabulary/MatchVocabulary";
-import DropZone from "../shared/DropZone";
-import PredicateOptions from "../shared/PredicateOptions";
-import { DraggableItemTypes } from "../shared/DraggableItemTypes";
-import VocabularyLabel from "./match-vocabulary/VocabularyLabel";
-import { Fragment } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from 'react';
+import EditAlignment from './EditAlignment';
+import { toastr as toast } from 'react-redux-toastr';
+import Collapsible from '../shared/Collapsible';
+import MatchVocabulary from './match-vocabulary/MatchVocabulary';
+import DropZone from '../shared/DropZone';
+import PredicateOptions from '../shared/PredicateOptions';
+import { DraggableItemTypes } from '../shared/DraggableItemTypes';
+import VocabularyLabel from './match-vocabulary/VocabularyLabel';
+import { Fragment } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Props:
@@ -43,13 +43,13 @@ const SpineTermRow = (props) => {
   /**
    * The selected mode to open the edit window
    */
-  const [editMode, setEditMode] = useState("comment");
+  const [editMode, setEditMode] = useState('comment');
 
   /**
    * The predicate option selected (the strongest match predicate by default)
    */
-  const [predicate, setPredicate] = useState(() =>
-    predicates.find((predicate) => predicate.id === alignment.predicateId)?.pref_label
+  const [predicate, setPredicate] = useState(
+    () => predicates.find((predicate) => predicate.id === alignment.predicateId)?.pref_label
   );
 
   /**
@@ -67,9 +67,7 @@ const SpineTermRow = (props) => {
   /**
    * The term we are using to match vocabularies against the spine
    */
-  const [mappedTermMatching, setMappedTermMatching] = useState(
-    mappedTermsToSpineTerm(term)[0]
-  );
+  const [mappedTermMatching, setMappedTermMatching] = useState(mappedTermsToSpineTerm(term)[0]);
 
   /**
    * If the mapping term (alignment) has a predicate selected, lets find it.
@@ -83,8 +81,8 @@ const SpineTermRow = (props) => {
    */
   const alignmentOptions = () => {
     let options = [
-      { id: 1, name: "Edit" },
-      { id: 2, name: "Comment" },
+      { id: 1, name: 'Edit' },
+      { id: 2, name: 'Comment' },
     ];
 
     return (
@@ -124,10 +122,7 @@ const SpineTermRow = (props) => {
     return (
       <React.Fragment>
         {alignment.comment && (
-          <FontAwesomeIcon
-            icon={faCircle}
-            className="fa-xs col-success float-left comment-dot"
-          />
+          <FontAwesomeIcon icon={faCircle} className="fa-xs col-success float-left comment-dot" />
         )}
         <strong>{predicate}</strong>
       </React.Fragment>
@@ -142,12 +137,12 @@ const SpineTermRow = (props) => {
    */
   const handlePredicateOptionSelected = (option) => {
     switch (option.name.toLowerCase()) {
-      case "edit":
-        setEditMode("edit");
+      case 'edit':
+        setEditMode('edit');
         setEditing(true);
         break;
-      case "comment":
-        setEditMode("comment");
+      case 'comment':
+        setEditMode('comment');
         setEditing(true);
         break;
       default:
@@ -172,7 +167,7 @@ const SpineTermRow = (props) => {
    */
   const handleOnPredicateUpdated = (result) => {
     if (result.saved) {
-      toast.success("Changes saved!");
+      toast.success('Changes saved!');
 
       setPredicate(result.predicate.name);
       props.onPredicateSelected(term, result.predicate);
@@ -187,7 +182,7 @@ const SpineTermRow = (props) => {
    */
   const handleOnCommentUpdated = (result) => {
     if (result.saved) {
-      toast.success("Changes saved!");
+      toast.success('Changes saved!');
     }
 
     /// Update the mapping term in state (if there's a comment, we need to
@@ -245,9 +240,7 @@ const SpineTermRow = (props) => {
           predicates={predicates}
           alignment={alignment}
           spineTerm={term}
-          predicate={predicates.find(
-            (predicate) => predicate.id === alignment.predicateId
-          )}
+          predicate={predicates.find((predicate) => predicate.id === alignment.predicateId)}
           mode={editMode}
           onRequestClose={onRequestEditClose}
         />
@@ -265,14 +258,14 @@ const SpineTermRow = (props) => {
           alignment={alignment}
         />
       ) : (
-        ""
+        ''
       )}
       <div className="row mb-2" key={term.id}>
         <div className="col-5">
           <Collapsible
             expanded
             headerContent={<strong>{term.name}</strong>}
-            cardStyle={"with-shadow mb-2"}
+            cardStyle={'with-shadow mb-2'}
             observeOutside={false}
             bodyContent={
               <>
@@ -283,16 +276,13 @@ const SpineTermRow = (props) => {
                 )}
                 <p className="card-text">{term.property.comment}</p>
                 <p className="card-text">
-                  Origin:
-                  {" "}
-                  <span className="col-primary">{term.synthetic ? origin : term.organization.name}</span>
+                  Origin:{' '}
+                  <span className="col-primary">
+                    {term.synthetic ? origin : term.organization.name}
+                  </span>
                 </p>
 
-                {alignmentHasVocabulary() ? (
-                  <VocabularyLabel term={term} />
-                ) : (
-                  ""
-                )}
+                {alignmentHasVocabulary() ? <VocabularyLabel term={term} /> : ''}
               </>
             }
           />
@@ -303,17 +293,15 @@ const SpineTermRow = (props) => {
             <Collapsible
               headerContent={predicateSelectedCard()}
               bodyContent={alignmentOptions()}
-              cardStyle={"with-shadow mb-2"}
+              cardStyle={'with-shadow mb-2'}
               observeOutside={true}
-              bodyStyle={"p-0"}
-              cardHeaderStyle={"border-bottom"}
+              bodyStyle={'p-0'}
+              cardHeaderStyle={'border-bottom'}
             />
           ) : (
             <PredicateOptions
               predicates={predicates}
-              onPredicateSelected={(predicate) =>
-                handlePredicateSelected(term, predicate)
-              }
+              onPredicateSelected={(predicate) => handlePredicateSelected(term, predicate)}
               predicate={predicate}
             />
           )}
@@ -340,7 +328,7 @@ const SpineTermRow = (props) => {
                     </div>
                   </div>
                 }
-                cardStyle={"with-shadow mb-2"}
+                cardStyle={'with-shadow mb-2'}
                 key={mTerm.id}
                 observeOutside={false}
                 bodyContent={
@@ -350,10 +338,10 @@ const SpineTermRow = (props) => {
                         Name: <strong>{mTerm.sourceUri.split(/[/:]/).pop()}</strong>
                       </h6>
                     )}
-                    <p  className="card-text">{mTerm.property.comment}</p>
-                    <p  className="card-text">
+                    <p className="card-text">{mTerm.property.comment}</p>
+                    <p className="card-text">
                       Origin:
-                      <span className="col-primary">{" " + origin}</span>
+                      <span className="col-primary">{' ' + origin}</span>
                     </p>
                     {alignmentHasVocabulary() ? (
                       <VocabularyLabel
@@ -361,7 +349,7 @@ const SpineTermRow = (props) => {
                         term={mTerm}
                       />
                     ) : (
-                      ""
+                      ''
                     )}
                   </React.Fragment>
                 }

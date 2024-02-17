@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import Loader from "../shared/Loader";
-import { implementAlignmentSort } from "./SortOptions";
+import React, { Component } from 'react';
+import Loader from '../shared/Loader';
+import { implementAlignmentSort } from './SortOptions';
 
 /**
  * @description A list of alignments with information like predicate, comment, and more.
@@ -39,8 +39,7 @@ export default class PropertyAlignments extends Component {
   /**
    * The list of ids for the selected predicates
    */
-  selectedPredicateIds = () =>
-    this.props.selectedPredicates.map((predicate) => predicate.id);
+  selectedPredicateIds = () => this.props.selectedPredicates.map((predicate) => predicate.id);
 
   /**
    * The list of ids for the selected alignment organizations
@@ -51,8 +50,7 @@ export default class PropertyAlignments extends Component {
   /**
    * The list of ids for the selected spine organizations
    */
-  selectedSpineOrganizationIds = () =>
-    this.props.selectedSpineOrganizations.map((org) => org.id);
+  selectedSpineOrganizationIds = () => this.props.selectedSpineOrganizations.map((org) => org.id);
 
   /**
    * The list of alignments filtered using the values in the filters bar
@@ -89,7 +87,7 @@ export default class PropertyAlignments extends Component {
         return alignment.mappedTerms.length ? (
           <AlignmentCard alignment={alignment} key={alignment.id} />
         ) : (
-          ""
+          ''
         );
       })
     );
@@ -120,9 +118,7 @@ class AlignmentCard extends Component {
   printMappedTermProperty = (propertyName) => {
     const { alignment } = this.props;
 
-    return alignment.mappedTerms
-      .reduce((a, b) => a + (b[propertyName] + ", "), "")
-      .slice(0, -2);
+    return alignment.mappedTerms.reduce((a, b) => a + (b[propertyName] + ', '), '').slice(0, -2);
   };
 
   /**
@@ -139,7 +135,7 @@ class AlignmentCard extends Component {
     const { alignment } = this.props;
 
     return alignment.mappedTerms
-      .reduce((a, b) => a + (b.property[propertyName] + ", "), "")
+      .reduce((a, b) => a + (b.property[propertyName] + ', '), '')
       .slice(0, -2);
   };
 
@@ -165,30 +161,26 @@ class AlignmentCard extends Component {
               <h5>{alignment.mappedTerms[0].property.scheme}</h5>
             </div>
             <div className="col-2">
-              <small className="mt-3 col-on-primary-light">
-                Element/Property
-              </small>
-              <h5>{this.printMappedTermProperty("name")}</h5>
+              <small className="mt-3 col-on-primary-light">Element/Property</small>
+              <h5>{this.printMappedTermProperty('name')}</h5>
 
               <small className="mt-3 col-on-primary-light">Class/Type</small>
               <h5>{alignment.mappedTerms[0].property.selectedDomain}</h5>
             </div>
             <div className="col-6">
               <small className="mt-3 col-on-primary-light">Definition</small>
-              <h5>{this.printMappedProperty("comment")}</h5>
+              <h5>{this.printMappedProperty('comment')}</h5>
             </div>
             <div className="col-2">
               <div className="card borderless">
                 <div
                   className="card-hader text-center desm-rounded p-3"
                   style={{
-                    backgroundColor: alignment.predicate.color || "unset",
-                    color: alignment.predicate.color ? "White" : "DarkSlateGrey"
-                   }}
+                    backgroundColor: alignment.predicate.color || 'unset',
+                    color: alignment.predicate.color ? 'White' : 'DarkSlateGrey',
+                  }}
                 >
-                  <strong>
-                    {alignment.predicate ? alignment.predicate.prefLabel : ""}
-                  </strong>
+                  <strong>{alignment.predicate ? alignment.predicate.prefLabel : ''}</strong>
                 </div>
               </div>
               {alignment.comment && (
@@ -200,9 +192,7 @@ class AlignmentCard extends Component {
                     })
                   }
                 >
-                  {showingAlignmentComment
-                    ? "Hide Alignment Notes"
-                    : "Alignment Notes"}
+                  {showingAlignmentComment ? 'Hide Alignment Notes' : 'Alignment Notes'}
                 </label>
               )}
             </div>

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { iterableSelectableOptions } from "../../helpers/Iterables";
-import ExpandableOptions from "../shared/ExpandableOptions";
-import { alignmentSortOptions, spineSortOptions } from "./SortOptions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import React, { Component } from 'react';
+import { iterableSelectableOptions } from '../../helpers/Iterables';
+import ExpandableOptions from '../shared/ExpandableOptions';
+import { alignmentSortOptions, spineSortOptions } from './SortOptions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * @description A complete row with a search bar to filter properties
@@ -23,7 +23,7 @@ export default class SearchBar extends Component {
     /**
      * The typed characters in the searchbox
      */
-    inputValue: "",
+    inputValue: '',
     /**
      * Flag to determine whether to show or not the spine terms with no mapped terms
      */
@@ -115,10 +115,7 @@ export default class SearchBar extends Component {
         <div className="col-3">
           <hr className="bottom-border-white" />
           <div className="form-group input-group-has-icon">
-            <FontAwesomeIcon
-              icon={faSearch}
-              className="form-control-feedback"
-            />
+            <FontAwesomeIcon icon={faSearch} className="form-control-feedback" />
             <input
               type="text"
               className="form-control form-control-lg"
@@ -133,10 +130,8 @@ export default class SearchBar extends Component {
         <div className="col-3">
           <label>Sort Spine By</label>
           <ExpandableOptions
-            cardHeaderCssClass={"bottom-borderless"}
-            onClose={(option) =>
-              this.handleSpineOrderOptionsChanged(option.name)
-            }
+            cardHeaderCssClass={'bottom-borderless'}
+            onClose={(option) => this.handleSpineOrderOptionsChanged(option.name)}
             options={iterableSelectableOptions(_.values(spineSortOptions))}
             selectedOption={selectedSpineOrderOption}
           />
@@ -145,11 +140,9 @@ export default class SearchBar extends Component {
         <div className="col-3">
           <label>Sort Aligned Items By</label>
           <ExpandableOptions
-            cardHeaderCssClass={"bottom-borderless"}
+            cardHeaderCssClass={'bottom-borderless'}
             options={iterableSelectableOptions(_.values(alignmentSortOptions))}
-            onClose={(option) =>
-              this.handleAlignmentOrderOptionsChanged(option.name)
-            }
+            onClose={(option) => this.handleAlignmentOrderOptionsChanged(option.name)}
             selectedOption={selectedAlignmentOrderOption}
           />
         </div>

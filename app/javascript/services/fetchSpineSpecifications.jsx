@@ -1,10 +1,10 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const fetchSpineSpecifications = async (filter) => {
   return await apiRequest({
-    url: "/api/v1/spine_specifications" + (filter ? "?filter=" + filter : ""),
-    method: "get",
-    successResponse: "specifications",
+    url: '/api/v1/spine_specifications' + (filter ? '?filter=' + filter : ''),
+    method: 'get',
+    successResponse: 'specifications',
   });
 };
 

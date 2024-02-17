@@ -8,9 +8,9 @@
  */
 const mappingFormErrorsReducer = (state = [], action) => {
   switch (action.type) {
-    case "SET_MAPPING_FORM_ERRORS":
+    case 'SET_MAPPING_FORM_ERRORS':
       return action.payload;
-    case "UNSET_MAPPING_FORM_ERRORS":
+    case 'UNSET_MAPPING_FORM_ERRORS':
       return [];
     default:
       return state;

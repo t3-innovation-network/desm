@@ -1,20 +1,15 @@
-import React, { Component } from "react";
-import DashboardContainer from "../DashboardContainer";
-import { Link } from "react-router-dom";
-import fetchOrganizations from "../../../services/fetchOrganizations";
-import AlertNotice from "../../shared/AlertNotice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBuilding,
-  faPlusCircle,
-  faPencilAlt,
-  faHome,
-} from "@fortawesome/free-solid-svg-icons";
+import React, { Component } from 'react';
+import DashboardContainer from '../DashboardContainer';
+import { Link } from 'react-router-dom';
+import fetchOrganizations from '../../../services/fetchOrganizations';
+import AlertNotice from '../../shared/AlertNotice';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBuilding, faPlusCircle, faPencilAlt, faHome } from '@fortawesome/free-solid-svg-icons';
 
 export default class OrganizationsIndex extends Component {
   state = {
     organizations: [],
-    errors: "",
+    errors: '',
   };
 
   componentDidMount() {
@@ -24,18 +19,18 @@ export default class OrganizationsIndex extends Component {
   dashboardPath = () => {
     return (
       <div className="float-right">
-        <FontAwesomeIcon icon={faHome} />{" "}
+        <FontAwesomeIcon icon={faHome} />{' '}
         <span>
           <Link className="col-on-primary" to="/">
             Home
           </Link>
-        </span>{" "}
-        {`>`}{" "}
+        </span>{' '}
+        {`>`}{' '}
         <span>
           <Link className="col-on-primary" to="/dashboard">
             Dashboard
           </Link>
-        </span>{" "}
+        </span>{' '}
         {`>`} <span>Organizations</span>
       </div>
     );
@@ -65,10 +60,7 @@ export default class OrganizationsIndex extends Component {
           <div className="card-header">
             <FontAwesomeIcon icon={faBuilding} />
             <span className="pl-2 subtitle">Organizations</span>
-            <Link
-              to="/dashboard/organizations/new"
-              className="float-right btn btn-dark btn-sm"
-            >
+            <Link to="/dashboard/organizations/new" className="float-right btn btn-dark btn-sm">
               <FontAwesomeIcon icon={faPlusCircle} />
               <span className="pl-2">Add Organization</span>
             </Link>
@@ -91,13 +83,10 @@ export default class OrganizationsIndex extends Component {
                         <td>{organization.email}</td>
                         <td>
                           <Link
-                            to={"/dashboard/organizations/" + organization.id}
+                            to={'/dashboard/organizations/' + organization.id}
                             className="btn btn-dark"
                           >
-                            <FontAwesomeIcon
-                              icon={faPencilAlt}
-                              aria-hidden="true"
-                            />
+                            <FontAwesomeIcon icon={faPencilAlt} aria-hidden="true" />
                           </Link>
                         </td>
                       </tr>

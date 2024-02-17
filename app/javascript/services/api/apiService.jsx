@@ -1,5 +1,5 @@
-import axios from "axios";
-import { APP_DOMAIN } from "../../helpers/Constants";
+import axios from 'axios';
+import { APP_DOMAIN } from '../../helpers/Constants';
 
 const apiService = axios.create({
   /// Tells the API that's ok to get the cookie in our client
@@ -13,7 +13,7 @@ const apiService = axios.create({
  */
 export const processMessage = (e) => {
   /// Default error message
-  let message = "We found an error!";
+  let message = 'We found an error!';
 
   /// Override default message with the generic from the error object
   if (e.message) {
@@ -26,6 +26,6 @@ export const processMessage = (e) => {
   }
 
   return message;
-}
+};
 
 export default apiService;

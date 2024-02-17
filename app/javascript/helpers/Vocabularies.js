@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 /**
  * Generate a name for the vocabulary
@@ -8,15 +8,12 @@ import _ from "lodash";
 export const vocabName = (graph) => {
   let schemeNode = graphMainNode(graph);
 
-  if (!schemeNode) throw "ConceptScheme node not found!";
+  if (!schemeNode) throw 'ConceptScheme node not found!';
 
   /// Look for an attribute with a name for the vocabulary in the concept scheme node
-  let name = "";
+  let name = '';
   for (let attr in schemeNode) {
-    if (
-      attr.toLowerCase().includes("title") ||
-      attr.toLowerCase().includes("label")
-    ) {
+    if (attr.toLowerCase().includes('title') || attr.toLowerCase().includes('label')) {
       name = readNodeAttribute(schemeNode, attr);
 
       break;
@@ -34,9 +31,7 @@ export const vocabName = (graph) => {
  */
 export const graphMainNode = (graph) => {
   return graph.find((node) => {
-    return nodeTypes(node).find((type) =>
-      type?.toLowerCase()?.includes("conceptscheme")
-    );
+    return nodeTypes(node).find((type) => type?.toLowerCase()?.includes('conceptscheme'));
   });
 };
 
@@ -56,28 +51,27 @@ export const validVocabulary = (vocab) => {
 
   let errors = [];
 
-  let hasContext = vocab["@context"];
-  let hasGraph = vocab["@graph"];
-  let hasMainNode = hasGraph && graphMainNode(vocab["@graph"]);
+  let hasContext = vocab['@context'];
+  let hasGraph = vocab['@graph'];
+  let hasMainNode = hasGraph && graphMainNode(vocab['@graph']);
   let hasConcepts =
     hasGraph &&
-    vocab["@graph"].some((node) =>
-      nodeTypes(node).some(
-        (type) => {
-          if (!type) {
-            return false;
-          }
-
-          return type.toLowerCase().includes("concept") &&
-          !type.toLowerCase().includes("conceptscheme")
+    vocab['@graph'].some((node) =>
+      nodeTypes(node).some((type) => {
+        if (!type) {
+          return false;
         }
-      )
+
+        return (
+          type.toLowerCase().includes('concept') && !type.toLowerCase().includes('conceptscheme')
+        );
+      })
     );
 
-  if (!hasContext) errors.push("Missing context.");
-  if (!hasGraph) errors.push("Missing graph.");
-  if (!hasMainNode) errors.push("Missing concept scheme node.");
-  if (!hasConcepts) errors.push("Missing concept nodes");
+  if (!hasContext) errors.push('Missing context.');
+  if (!hasGraph) errors.push('Missing graph.');
+  if (!hasMainNode) errors.push('Missing concept scheme node.');
+  if (!hasConcepts) errors.push('Missing concept nodes');
 
   return {
     errors: errors,
@@ -96,17 +90,17 @@ export const countConcepts = (vocab) => {
 
   const conceptSchemes = {};
 
-  vocab["@graph"].forEach(node => {
+  vocab['@graph'].forEach((node) => {
     const types = nodeTypes(node);
     let ids = [];
 
-    if (types.some(t => t.toLowerCase().includes("conceptscheme"))) {
-      ids = [node["@id"]];
-    } else if (types.some(t => t.toLowerCase().includes("concept"))) {
-      ids = node["skos:inScheme"];
+    if (types.some((t) => t.toLowerCase().includes('conceptscheme'))) {
+      ids = [node['@id']];
+    } else if (types.some((t) => t.toLowerCase().includes('concept'))) {
+      ids = node['skos:inScheme'];
     }
 
-    ids.forEach(id => {
+    ids.forEach((id) => {
       if (conceptSchemes[id]) {
         conceptSchemes[id].push(node);
       } else {
@@ -115,9 +109,10 @@ export const countConcepts = (vocab) => {
     });
   });
 
-  return Object.values(conceptSchemes).map(graph => (
-    { name: vocabName(graph), conceptsCount: graph.length - 1 }
-  ));
+  return Object.values(conceptSchemes).map((graph) => ({
+    name: vocabName(graph),
+    conceptsCount: graph.length - 1,
+  }));
 };
 
 /**
@@ -127,7 +122,7 @@ export const countConcepts = (vocab) => {
  * @param {String} attr
  */
 export const readNodeAttribute = (node, attr) => {
-  if (_.isNull(node)) return "";
+  if (_.isNull(node)) return '';
 
   /// Return straight if the node itself is a String
   if (_.isString(node)) return node;
@@ -146,9 +141,9 @@ export const readNodeAttribute = (node, attr) => {
   /// us a string, firstly prioritizing "@value" and "@id"
   if (_.isObject(node[key])) {
     /// If we recognize the "@value" key, we can return that
-    if (node[key]["@value"]) return readNodeAttribute(node[key], "@value");
+    if (node[key]['@value']) return readNodeAttribute(node[key], '@value');
     /// If we recognize the "@id" key, we can return that
-    if (node[key]["@id"]) return readNodeAttribute(node[key], "@id");
+    if (node[key]['@id']) return readNodeAttribute(node[key], '@id');
 
     for (let a in node[key]) {
       return readNodeAttribute(node[key], a);
@@ -159,7 +154,7 @@ export const readNodeAttribute = (node, attr) => {
   /// is not a string, just return an empty string.
   if (_.isArray(node[key])) {
     var [firstNode] = node[key];
-    return _.isString(firstNode) ? firstNode : "";
+    return _.isString(firstNode) ? firstNode : '';
   }
 };
 
@@ -182,7 +177,7 @@ const findNodeKey = (node, attr) => {
  * @returns String
  */
 const nodeTypes = (node) => {
-  let type = node["type"] || node["@type"];
+  let type = node['type'] || node['@type'];
 
   return _.isArray(type) ? type : [type];
 };

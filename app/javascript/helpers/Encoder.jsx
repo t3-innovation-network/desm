@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken'
-import { PRIVATE_KEY } from "./Constants";
+import jwt from 'jsonwebtoken';
+import { PRIVATE_KEY } from './Constants';
 
 /**
  * Encodes sensitive information inside an object using JSON Web Token

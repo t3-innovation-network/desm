@@ -1,11 +1,11 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const fetchRoles = async () => {
   return await apiRequest({
-    url: "/api/v1/roles",
-    method: "get",
+    url: '/api/v1/roles',
+    method: 'get',
     defaultResponse: [],
-    successResponse: "roles",
+    successResponse: 'roles',
   });
 };
 

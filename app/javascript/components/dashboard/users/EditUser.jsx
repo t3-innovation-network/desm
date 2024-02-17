@@ -1,27 +1,27 @@
-import React, { Component } from "react";
-import DashboardContainer from "../DashboardContainer";
-import fetchOrganizations from "../../../services/fetchOrganizations";
-import fetchRoles from "../../../services/fetchRoles";
-import AlertNotice from "../../shared/AlertNotice";
-import fetchUser from "../../../services/fetchUser";
-import deleteUser from "../../../services/deleteUser";
-import updateUser from "../../../services/updateUser";
-import { toastr as toast } from "react-redux-toastr";
-import { Link } from "react-router-dom";
-import Loader from "../../shared/Loader";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faTrash, faHome } from "@fortawesome/free-solid-svg-icons";
+import React, { Component } from 'react';
+import DashboardContainer from '../DashboardContainer';
+import fetchOrganizations from '../../../services/fetchOrganizations';
+import fetchRoles from '../../../services/fetchRoles';
+import AlertNotice from '../../shared/AlertNotice';
+import fetchUser from '../../../services/fetchUser';
+import deleteUser from '../../../services/deleteUser';
+import updateUser from '../../../services/updateUser';
+import { toastr as toast } from 'react-redux-toastr';
+import { Link } from 'react-router-dom';
+import Loader from '../../shared/Loader';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faTrash, faHome } from '@fortawesome/free-solid-svg-icons';
 
 export default class EditUser extends Component {
   state = {
-    fullname: "",
-    email: "",
-    organization_id: "",
-    role_id: "",
+    fullname: '',
+    email: '',
+    organization_id: '',
+    role_id: '',
     user_id: this.props.match.params.id,
     organizations: [],
     roles: [],
-    errors: "",
+    errors: '',
     loading: true,
   };
 
@@ -34,24 +34,24 @@ export default class EditUser extends Component {
   dashboardPath = () => {
     return (
       <div className="float-right">
-        <FontAwesomeIcon icon={faHome} />{" "}
+        <FontAwesomeIcon icon={faHome} />{' '}
         <span>
           <Link className="col-on-primary" to="/">
             Home
           </Link>
-        </span>{" "}
-        {`>`}{" "}
+        </span>{' '}
+        {`>`}{' '}
         <span>
           <Link className="col-on-primary" to="/dashboard">
             Dashboard
           </Link>
-        </span>{" "}
-        {`>`}{" "}
+        </span>{' '}
+        {`>`}{' '}
         <span>
           <Link className="col-on-primary" to="/dashboard/users">
             Users
           </Link>
-        </span>{" "}
+        </span>{' '}
         {`>`} <span>Edit</span>
       </div>
     );
@@ -67,8 +67,8 @@ export default class EditUser extends Component {
           return;
         }
 
-        toast.info("User successfully removed");
-        this.props.history.push("/dashboard/users");
+        toast.info('User successfully removed');
+        this.props.history.push('/dashboard/users');
       })
       .catch((error) => {});
   }
@@ -137,20 +137,16 @@ export default class EditUser extends Component {
   handleSubmit = (event) => {
     const { email, fullname, organization_id, role_id, user_id } = this.state;
 
-    updateUser(user_id, email, fullname, organization_id, role_id).then(
-      (response) => {
-        if (response.error) {
-          this.setState({
-            errors: response.error,
-          });
-          return;
-        }
-        toast.success(
-          "User " + fullname + " (" + user_id + ") was successfully updated"
-        );
-        this.props.history.push("/dashboard/users");
+    updateUser(user_id, email, fullname, organization_id, role_id).then((response) => {
+      if (response.error) {
+        this.setState({
+          errors: response.error,
+        });
+        return;
       }
-    );
+      toast.success('User ' + fullname + ' (' + user_id + ') was successfully updated');
+      this.props.history.push('/dashboard/users');
+    });
 
     event.preventDefault();
   };
@@ -194,8 +190,7 @@ export default class EditUser extends Component {
               <React.Fragment>
                 <div className="mandatory-fields-notice">
                   <small className="form-text text-muted">
-                    Fields with <span className="text-danger">*</span> are
-                    mandatory!
+                    Fields with <span className="text-danger">*</span> are mandatory!
                   </small>
                 </div>
 

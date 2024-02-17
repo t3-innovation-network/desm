@@ -1,17 +1,17 @@
 /* Stepper (Inside the Navbar) */
 @import 'colors';
 
-.indicator{
-  padding-left: 7vw;
-  margin-left: -5rem !important;
+.indicator {
   bottom: 0.5rem;
+  margin-left: -5rem !important;
+  padding-left: 7vw;
   position: relative;
 }
 
 .indicator > .indicator-step {
+  min-width: 7vw;
   position: relative;
   top: 0.5vw;
-  min-width: 7vw;
 }
 
 .indicator > .indicator-step .indicator-stepnum {
@@ -24,25 +24,25 @@
 }
 
 .indicator > .indicator-step > .indicator-dot {
-  position: absolute;
-  width: 0;
-  height: 0;
-  display: block;
   background: $primary-color-light;
-  top: 15px;
-  left: 0%;
   border-radius: 50%;
+  display: block;
+  height: 0;
+  left: 0%;
+  position: absolute;
+  top: 15px;
+  width: 0;
 }
 
 .indicator > .indicator-step > .indicator-dot::after {
-  content: ' ';
-  width: 10px;
-  height: 10px;
-  border-radius: 50px;
   background: $foreground-color;
+  border-radius: 50px;
+  content: ' ';
+  height: 10px;
+  left: -1px;
   position: absolute;
   top: 5px;
-  left: -1px;
+  width: 10px;
 }
 
 .indicator-step.active > .indicator-dot::after {
@@ -54,27 +54,27 @@
 }
 
 .indicator > .indicator-step > .progress {
-  position: relative;
   border-radius: 0;
-  height: 3px;
   box-shadow: none;
+  height: 3px;
+  position: relative;
 }
 
 .indicator > .indicator-step > .progress > .progress-bar {
-  width:0;
   box-shadow: none;
   opacity: 0.2;
+  width: 0;
 }
 
 .indicator > .indicator-step.active > .progress > .progress-bar {
   background: $primary-color-light;
-  width:100% !important;
+  width: 100% !important;
 }
 
 .indicator > .indicator-step.complete > .progress > .progress-bar {
   background: $on-primary !important;
-  width:100% !important;
   opacity: 0.5;
+  width: 100% !important;
 }
 
 .indicator-step.active > .indicator-stepnum {
@@ -82,11 +82,11 @@
 }
 
 .indicator-step.complete > .indicator-stepnum {
- color: $on-primary;
+  color: $on-primary;
 }
 
 .indicator > .indicator-step:first-child.active > .progress > .progress-bar {
-  width:0%;
+  width: 0%;
 }
 
 .indicator > .indicator-step:last-child.active > .progress > .progress-bar {
@@ -102,6 +102,6 @@
   opacity: 0;
 }
 
-.indicator > .indicator-step.disabled a.indicator-dot{
+.indicator > .indicator-step.disabled a.indicator-dot {
   pointer-events: none;
 }

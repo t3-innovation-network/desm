@@ -1,13 +1,13 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toastr as toast } from "react-redux-toastr";
-import { setUser } from "../../actions/sessions";
-import updateUser from "../../services/updateUser";
-import AlertNotice from "../shared/AlertNotice";
-import TopNav from "../shared/TopNav";
-import TopNavOptions from "../shared/TopNavOptions";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toastr as toast } from 'react-redux-toastr';
+import { setUser } from '../../actions/sessions';
+import updateUser from '../../services/updateUser';
+import AlertNotice from '../shared/AlertNotice';
+import TopNav from '../shared/TopNav';
+import TopNavOptions from '../shared/TopNavOptions';
 
 const EditProfile = ({ history }) => {
   const dispatch = useDispatch();
@@ -16,8 +16,8 @@ const EditProfile = ({ history }) => {
   const [email, setEmail] = useState(user.email);
   const [error, setError] = useState();
   const [fullname, setFullname] = useState(user.fullname);
-  const [githubHandle, setGithubHandle] = useState(user.github_handle || "");
-  const [phone, setPhone] = useState(user.phone || "");
+  const [githubHandle, setGithubHandle] = useState(user.github_handle || '');
+  const [phone, setPhone] = useState(user.phone || '');
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (event) => {
@@ -33,15 +33,13 @@ const EditProfile = ({ history }) => {
     }
 
     dispatch(setUser(response.user));
-    history.push("/");
-    toast.info("Profile changes saved!");
+    history.push('/');
+    toast.info('Profile changes saved!');
   };
 
   return (
     <div className="container-fluid">
-      <TopNav
-        centerContent={() => <TopNavOptions viewMappings mapSpecification />}
-      />
+      <TopNav centerContent={() => <TopNavOptions viewMappings mapSpecification />} />
 
       <div className="row mt-5">
         <div className="col-lg-6 mx-auto">
@@ -100,11 +98,7 @@ const EditProfile = ({ history }) => {
                   />
                 </div>
 
-                <button
-                  className="btn btn-primary"
-                  disabled={submitting}
-                  type="submit"
-                >
+                <button className="btn btn-primary" disabled={submitting} type="submit">
                   Save
                 </button>
               </form>

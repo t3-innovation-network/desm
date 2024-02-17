@@ -2,35 +2,35 @@
 
 /* Drag and Drop Classes */
 
-.dnd-active{
+.dnd-active {
   border: solid 3px $primary-color !important;
   color: $primary-color;
   font-weight: bold;
 }
 
-.domain-drag-box{
+.domain-drag-box {
   min-height: 3.5vw;
   text-align: center;
 }
 
-.mapping-term-drag-box{
+.mapping-term-drag-box {
   height: calc(1.5em + 1.8rem + 2px);
   text-align: center;
 }
 
-.draggable{
+.draggable {
   cursor: move;
 }
 
-.not-draggable{
+.not-draggable {
   cursor: not-allowed;
 }
 
-.is-dragging{
+.is-dragging {
   opacity: 0.4;
 }
 
-.terms-progress{
+.terms-progress {
   height: 0.5rem !important;
   margin-top: 10px;
 }

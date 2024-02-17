@@ -1,29 +1,29 @@
-import Modal from "react-modal";
-import React from "react";
-import { SlideInDown } from "../../shared/Animations";
-import { CenteredRoundedCard } from "./utils";
-import Loader from "../../shared/Loader";
+import Modal from 'react-modal';
+import React from 'react';
+import { SlideInDown } from '../../shared/Animations';
+import { CenteredRoundedCard } from './utils';
+import Loader from '../../shared/Loader';
 
 /**
  * @prop {Boolean} visible
  */
 const ActivateProgress = (props) => {
-  Modal.setAppElement("body");
+  Modal.setAppElement('body');
 
   const { visible } = props;
 
   const steps = [
     {
       id: 1,
-      name: "Creating Configuration Profile Metadata",
+      name: 'Creating Configuration Profile Metadata',
     },
     {
       id: 2,
-      name: "Creating Abstract Classes",
+      name: 'Creating Abstract Classes',
     },
     {
       id: 3,
-      name: "Creating Mapping Predicates",
+      name: 'Creating Mapping Predicates',
     },
     {
       id: 4,
@@ -33,8 +33,8 @@ const ActivateProgress = (props) => {
 
   const data = {
     message:
-      "Please wait, we are creating all the necessary elements to get this configuration profile activated. It could take a few minutes.",
-    title: "Activating Configuration Profile",
+      'Please wait, we are creating all the necessary elements to get this configuration profile activated. It could take a few minutes.',
+    title: 'Activating Configuration Profile',
   };
 
   const renderSteps = () => {
@@ -44,9 +44,9 @@ const ActivateProgress = (props) => {
           className="card mb-5"
           key={step.id}
           style={{
-            maxWidth: "50%",
-            margin: "auto",
-            borderRadius: "10px",
+            maxWidth: '50%',
+            margin: 'auto',
+            borderRadius: '10px',
           }}
         >
           <div className="card-header">
@@ -55,13 +55,13 @@ const ActivateProgress = (props) => {
                 <div
                   className="col-primary text-center"
                   style={{
-                    position: "inherit",
-                    transform: "translate(-50%, -50%)",
-                    top: "50%",
-                    left: "50%",
+                    position: 'inherit',
+                    transform: 'translate(-50%, -50%)',
+                    top: '50%',
+                    left: '50%',
                   }}
                 >
-                  <h6 style={{ fontWeight: "bold" }}>{step.id}</h6>
+                  <h6 style={{ fontWeight: 'bold' }}>{step.id}</h6>
                 </div>
               </div>
               <div className="col-10 text-center">
@@ -77,7 +77,7 @@ const ActivateProgress = (props) => {
   return (
     <Modal
       isOpen={visible}
-      className={"fit-content-height"}
+      className={'fit-content-height'}
       shouldCloseOnEsc={false}
       shouldCloseOnOverlayClick={false}
     >
@@ -86,11 +86,11 @@ const ActivateProgress = (props) => {
           <CenteredRoundedCard
             title={data.title}
             subtitle={
-              <h4 className="text-center mb-5" style={{ fontStyle: "italic" }}>
+              <h4 className="text-center mb-5" style={{ fontStyle: 'italic' }}>
                 {data.message}
               </h4>
             }
-            styles={{ transform: "translate(0, 10%)" }}
+            styles={{ transform: 'translate(0, 10%)' }}
           >
             <Loader />
             {renderSteps()}

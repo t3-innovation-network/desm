@@ -1,14 +1,14 @@
-@import "colors";
+@import 'colors';
 
 /* General */
 
 @font-face {
-  font-family: "Proxima Nova Condensed Light";
-  src: url("../fonts/proxima-light/Proxima Nova Condensed Light.otf");
+  font-family: 'Proxima Nova Condensed Light';
+  src: url('../fonts/proxima-light/Proxima Nova Condensed Light.otf');
 }
 
 body {
-  font-family: "Proxima Nova Condensed Light", sans-serif;
+  font-family: 'Proxima Nova Condensed Light', sans-serif;
 
   &.waiting {
     cursor: wait;
@@ -16,8 +16,8 @@ body {
 }
 
 .subtitle {
-  font-weight: bold;
   font-size: 18px;
+  font-weight: bold;
 }
 
 .small-text {
@@ -65,11 +65,11 @@ a:hover {
 }
 
 .fully-centered {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  margin: 0;
-  top: 50%;
   left: 50%;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .desm-col-header {
@@ -186,13 +186,13 @@ a:hover {
 }
 
 .comment-dot {
-  position: relative;
   left: -10px;
+  position: relative;
 }
 
 .rounded-divider {
-  border-top: 2px solid #bbb;
   border-radius: 5px;
+  border-top: 2px solid #bbb;
 }
 
 .desm-rounded {
@@ -226,7 +226,7 @@ a:hover {
 }
 
 .fit-content-height {
-  min-height: "fit-content";
+  min-height: 'fit-content';
 }
 
 .centered-width {
@@ -238,13 +238,13 @@ a:hover {
 /* Scrollbar */
 
 .has-scrollbar {
-  overflow-y: scroll;
   max-height: 45vw;
+  overflow-y: scroll;
 }
 
 .scrollbar::-webkit-scrollbar {
-  width: 6px;
   background-color: $background-color-dark;
+  width: 6px;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
@@ -267,9 +267,9 @@ a:hover {
 }
 
 .box-title {
+  max-height: 40px;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-height: 40px;
 }
 
 .border-top-dashboard-highlight {

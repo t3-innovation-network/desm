@@ -6,7 +6,7 @@
  */
 export const setFiles = (files) => {
   return {
-    type: "SET_FILES",
+    type: 'SET_FILES',
     payload: files,
   };
 };
@@ -18,7 +18,7 @@ export const setFiles = (files) => {
  */
 export const unsetFiles = () => {
   return {
-    type: "UNSET_FILES",
+    type: 'UNSET_FILES',
   };
 };
 
@@ -29,7 +29,7 @@ export const unsetFiles = () => {
  */
 export const setSpecToPreview = (specs) => {
   return {
-    type: "SET_PREVIEW_SPECS",
+    type: 'SET_PREVIEW_SPECS',
     payload: specs,
   };
 };
@@ -41,7 +41,7 @@ export const setSpecToPreview = (specs) => {
  */
 export const unsetSpecToPreview = (specs) => {
   return {
-    type: "UNSET_PREVIEW_SPECS",
+    type: 'UNSET_PREVIEW_SPECS',
     payload: specs,
   };
 };
@@ -54,7 +54,7 @@ export const unsetSpecToPreview = (specs) => {
  */
 export const setMergedFileId = (fileId) => {
   return {
-    type: "SET_MERGED_FILE",
+    type: 'SET_MERGED_FILE',
     payload: fileId,
   };
 };
@@ -66,7 +66,7 @@ export const setMergedFileId = (fileId) => {
  */
 export const unsetMergedFileId = () => {
   return {
-    type: "UNSET_MERGED_FILE",
+    type: 'UNSET_MERGED_FILE',
   };
 };
 
@@ -77,7 +77,7 @@ export const unsetMergedFileId = () => {
  */
 export const setFilteredFile = (fileContent) => {
   return {
-    type: "SET_FILTERED_FILE",
+    type: 'SET_FILTERED_FILE',
     payload: fileContent,
   };
 };
@@ -89,6 +89,6 @@ export const setFilteredFile = (fileContent) => {
  */
 export const unsetFilteredFile = () => {
   return {
-    type: "UNSET_FILTERED_FILE",
+    type: 'UNSET_FILTERED_FILE',
   };
 };

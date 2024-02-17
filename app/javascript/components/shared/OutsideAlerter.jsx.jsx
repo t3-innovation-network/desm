@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 /**
  * Component that alerts if you click outside of it
@@ -17,16 +17,16 @@ export default class OutsideAlerter extends Component {
    * Attach listeners on mount
    */
   componentDidMount() {
-    document.addEventListener("mousedown", this.handleClickOutside);
-    document.addEventListener("keydown", this.handleEscPressed);
+    document.addEventListener('mousedown', this.handleClickOutside);
+    document.addEventListener('keydown', this.handleEscPressed);
   }
 
   /**
    * Dispose listeners on unmount
    */
   componentWillUnmount() {
-    document.removeEventListener("mousedown", this.handleClickOutside);
-    document.removeEventListener("keydown", this.handleEscPressed);
+    document.removeEventListener('mousedown', this.handleClickOutside);
+    document.removeEventListener('keydown', this.handleEscPressed);
   }
 
   /**
@@ -46,7 +46,7 @@ export default class OutsideAlerter extends Component {
    * @param {KeyboardEvent} event
    */
   handleEscPressed(event) {
-    if (event.code === "Escape") {
+    if (event.code === 'Escape') {
       this.props.onOutsideAlert();
     }
   }

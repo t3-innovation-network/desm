@@ -1,17 +1,17 @@
-import React, { Component, Fragment } from "react";
-import Modal from "react-modal";
-import fetchAlignmentVocabulary from "../../../services/fetchAlignmentVocabulary";
-import fetchVocabularyConcepts from "../../../services/fetchVocabularyConcepts";
-import updateAlignmentVocabularyConcept from "../../../services/updateAlignmentVocabularyConcept";
-import AlertNotice from "../../shared/AlertNotice";
-import Loader from "../../shared/Loader";
-import ModalStyles from "../../shared/ModalStyles";
-import HeaderContent from "./HeaderContent";
-import MappingConceptsList from "./MappingConceptsList";
-import SpineConceptRow from "./SpineConceptRow";
-import { toastr as toast } from "react-redux-toastr";
-import createSyntheticVocabularyConcept from "../../../services/createSyntheticVocabularyConcept";
-import Pluralize from "pluralize";
+import React, { Component, Fragment } from 'react';
+import Modal from 'react-modal';
+import fetchAlignmentVocabulary from '../../../services/fetchAlignmentVocabulary';
+import fetchVocabularyConcepts from '../../../services/fetchVocabularyConcepts';
+import updateAlignmentVocabularyConcept from '../../../services/updateAlignmentVocabularyConcept';
+import AlertNotice from '../../shared/AlertNotice';
+import Loader from '../../shared/Loader';
+import ModalStyles from '../../shared/ModalStyles';
+import HeaderContent from './HeaderContent';
+import MappingConceptsList from './MappingConceptsList';
+import SpineConceptRow from './SpineConceptRow';
+import { toastr as toast } from 'react-redux-toastr';
+import createSyntheticVocabularyConcept from '../../../services/createSyntheticVocabularyConcept';
+import Pluralize from 'pluralize';
 
 /**
  * Props
@@ -68,8 +68,7 @@ export default class MatchVocabulary extends Component {
   /**
    * The changed alignments
    */
-  changedAlignments = () =>
-    this.state.alignmentConcepts.filter((alignment) => alignment.updated);
+  changedAlignments = () => this.state.alignmentConcepts.filter((alignment) => alignment.updated);
 
   /**
    * Mark the term as "selected"
@@ -92,9 +91,7 @@ export default class MatchVocabulary extends Component {
   handleOnPredicateSelected = (concept, predicate) => {
     const { alignmentConcepts, changesPerformed } = this.state;
 
-    let alignment = alignmentConcepts.find(
-      (conc) => conc.spineConceptId === concept.id
-    );
+    let alignment = alignmentConcepts.find((conc) => conc.spineConceptId === concept.id);
     alignment.predicateId = predicate.id;
     alignment.updated = true;
 
@@ -113,9 +110,7 @@ export default class MatchVocabulary extends Component {
     const { spineConcepts } = this.state;
 
     /// Instantiate the spine concept
-    let spineConcept = spineConcepts.find(
-      (concept) => concept.id === alignment.spineConceptId
-    );
+    let spineConcept = spineConcepts.find((concept) => concept.id === alignment.spineConceptId);
 
     /// Name the synthetic spine concept
     let [mappedConcept] = alignment.mappedConceptsList;
@@ -167,22 +162,22 @@ export default class MatchVocabulary extends Component {
     const { alignmentConcepts, spineConcepts } = this.state;
     const { predicates } = this.props;
 
-    let nextSpineConceptId = _.maxBy(spineConcepts, "id").id + 1;
-    let nextAlignmentId = _.maxBy(alignmentConcepts, "id").id + 1;
+    let nextSpineConceptId = _.maxBy(spineConcepts, 'id').id + 1;
+    let nextAlignmentId = _.maxBy(alignmentConcepts, 'id').id + 1;
 
     // Add a synthetic concept to have the chance to match concepts to
     // the "No Match" predicate option.
     spineConcepts.unshift({
       id: nextSpineConceptId,
-      name: "",
-      definition: "Synthetic concept added to the vocabulary",
+      name: '',
+      definition: 'Synthetic concept added to the vocabulary',
       synthetic: true,
     });
 
     // Add the corresponding synthetic alignment
     alignmentConcepts.push({
       id: nextAlignmentId,
-      predicateId: predicates.find(p => p.strongest_match)?.id,
+      predicateId: predicates.find((p) => p.strongest_match)?.id,
       spineConceptId: nextSpineConceptId,
       synthetic: true,
     });
@@ -221,9 +216,7 @@ export default class MatchVocabulary extends Component {
         let response = updateAlignmentVocabularyConcept({
           id: alignment.id,
           predicateId: alignment.predicateId,
-          mappedConcepts: alignment.mappedConceptsList.map(
-            (concept) => concept.id
-          ),
+          mappedConcepts: alignment.mappedConceptsList.map((concept) => concept.id),
         });
 
         // Stop the execution on any error. The details will be shown on the screen by AlertNotice
@@ -242,24 +235,20 @@ export default class MatchVocabulary extends Component {
     this.changedAlignments()
       .filter((a) => a.synthetic)
       .forEach((alignment) => {
-        let spineConcept = spineConcepts.find(
-          (sc) => sc.id === alignment.spineConceptId
-        );
+        let spineConcept = spineConcepts.find((sc) => sc.id === alignment.spineConceptId);
         let response = createSyntheticVocabularyConcept({
           spine_concept: {
-            uri: "http://desm.org/concepts/concepts/" + spineConcept.name,
+            uri: 'http://desm.org/concepts/concepts/' + spineConcept.name,
             raw: {
-              id: "http://desm.org/concepts/concepts/" + spineConcept.name,
-              type: "skos:Concept",
+              id: 'http://desm.org/concepts/concepts/' + spineConcept.name,
+              type: 'skos:Concept',
               prefLabel: {
-                "en-us": spineConcept.name,
+                'en-us': spineConcept.name,
               },
               definition: {
-                "en-us":
-                  "Synthetic concept added to the vocabulary for " +
-                  spineConcept.name,
+                'en-us': 'Synthetic concept added to the vocabulary for ' + spineConcept.name,
               },
-              inScheme: "http://desm.org/concepts/mappingClasses",
+              inScheme: 'http://desm.org/concepts/mappingClasses',
             },
           },
           alignment: {
@@ -285,7 +274,7 @@ export default class MatchVocabulary extends Component {
     this.saveChangedAlignments();
     this.saveSyntheticAlignments();
 
-    toast.success("The vocabulary changes were successfully saved!");
+    toast.success('The vocabulary changes were successfully saved!');
     onRequestClose();
   };
 
@@ -352,13 +341,13 @@ export default class MatchVocabulary extends Component {
 
     await this.fetchDataFromAPI();
     this.setState({ loading: false });
-  }
+  };
 
   /**
    * Set the window properly in the body element at the load stage
    */
   componentDidMount = () => {
-    Modal.setAppElement("body");
+    Modal.setAppElement('body');
     this.handleFetchDataFromAPI();
   };
 
@@ -374,21 +363,9 @@ export default class MatchVocabulary extends Component {
   };
 
   render() {
-    const {
-      modalIsOpen,
-      onRequestClose,
-      mappingOrigin,
-      spineOrigin,
-      predicates,
-    } = this.props;
+    const { modalIsOpen, onRequestClose, mappingOrigin, spineOrigin, predicates } = this.props;
 
-    const {
-      loading,
-      errors,
-      spineConcepts,
-      alignmentConcepts,
-      changesPerformed,
-    } = this.state;
+    const { loading, errors, spineConcepts, alignmentConcepts, changesPerformed } = this.state;
 
     /**
      * Structure for the title
@@ -420,12 +397,9 @@ export default class MatchVocabulary extends Component {
             </div>
             <div className="float-right">
               {this.filteredMappingConcepts({ pickSelected: true }).length +
-                " " +
-                Pluralize(
-                  "concept",
-                  this.filteredMappingConcepts({ pickSelected: true }).length
-                ) +
-                " selected"}
+                ' ' +
+                Pluralize('concept', this.filteredMappingConcepts({ pickSelected: true }).length) +
+                ' selected'}
             </div>
           </div>
         </div>
@@ -454,7 +428,7 @@ export default class MatchVocabulary extends Component {
             </div>
             <div className="card-body">
               {/* Manage to show the errors, if any */}
-              {errors.length ? <AlertNotice message={errors} /> : ""}
+              {errors.length ? <AlertNotice message={errors} /> : ''}
 
               {loading ? (
                 <Loader />
@@ -469,8 +443,7 @@ export default class MatchVocabulary extends Component {
                          * Instantiate the alignment to pass to the spine concept row through props
                          */
                         let _alignment = alignmentConcepts.find(
-                          (alignment) =>
-                            alignment.spineConceptId === concept.id
+                          (alignment) => alignment.spineConceptId === concept.id
                         );
 
                         return !_.isUndefined(_alignment) ? (
@@ -490,7 +463,9 @@ export default class MatchVocabulary extends Component {
                               }).length
                             }
                           />
-                        ) : "";
+                        ) : (
+                          ''
+                        );
                       })}
                     </div>
                     <div className="col-4 bg-col-secondary pt-3">

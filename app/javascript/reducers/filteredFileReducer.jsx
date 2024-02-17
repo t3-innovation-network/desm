@@ -10,9 +10,9 @@
  */
 const filteredFileReducer = (state = {}, action) => {
   switch (action.type) {
-    case "SET_FILTERED_FILE":
+    case 'SET_FILTERED_FILE':
       return action.payload;
-    case "UNSET_FILTERED_FILE":
+    case 'UNSET_FILTERED_FILE':
       return {};
     default:
       return state;

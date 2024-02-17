@@ -9,9 +9,9 @@
  */
 const mappingFormReducer = (state = {}, action) => {
   switch (action.type) {
-    case "SET_MAPPING_FORM_DATA":
+    case 'SET_MAPPING_FORM_DATA':
       return action.payload;
-    case "UNSET_MAPPING_FORM_DATA":
+    case 'UNSET_MAPPING_FORM_DATA':
       return {};
     default:
       return state;

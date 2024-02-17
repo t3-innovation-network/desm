@@ -1,11 +1,11 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const fetchOrganizations = async () => {
   return await apiRequest({
-    url: "/api/v1/organizations",
-    method: "get",
+    url: '/api/v1/organizations',
+    method: 'get',
     defaultResponse: [],
-    successResponse: "organizations",
+    successResponse: 'organizations',
   });
 };
 

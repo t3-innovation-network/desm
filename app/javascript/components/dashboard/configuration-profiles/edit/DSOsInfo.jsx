@@ -1,15 +1,15 @@
-import React, { Fragment, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { Fragment, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrentConfigurationProfile,
   setCurrentDSOIndex,
   setEditCPErrors,
   setSavingCP,
-} from "../../../../actions/configurationProfiles";
-import DSOInfoWrapper from "./DSOInfoWrapper";
-import updateCP from "../../../../services/updateCP";
-import { AddTabBtn, NoDataFound, RemovableTab, TabGroup } from "../utils";
-import ConfirmDialog from "../../../shared/ConfirmDialog";
+} from '../../../../actions/configurationProfiles';
+import DSOInfoWrapper from './DSOInfoWrapper';
+import updateCP from '../../../../services/updateCP';
+import { AddTabBtn, NoDataFound, RemovableTab, TabGroup } from '../utils';
+import ConfirmDialog from '../../../shared/ConfirmDialog';
 
 const DSOTab = (props) => {
   const { active, dso, onClickHandler, onRemoveHandler } = props;
@@ -105,11 +105,11 @@ const DSOsInfo = () => {
         </ConfirmDialog>
       )}
       <div className="mt-5 w-100">
-        <TabGroup cssClass={"ml-3 mr-3"}>
-          {dsos.length ? dsoTabs() : ""}
+        <TabGroup cssClass={'ml-3 mr-3'}>
+          {dsos.length ? dsoTabs() : ''}
           <AddTabBtn
             onClickHandler={() => addDso()}
-            tooltipMsg={"Create a new DSO for this Configuration Profile"}
+            tooltipMsg={'Create a new DSO for this Configuration Profile'}
           />
         </TabGroup>
       </div>

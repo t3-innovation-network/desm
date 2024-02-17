@@ -1,13 +1,13 @@
-import { decamelizeKeys } from "humps";
-import apiRequest from "./api/apiRequest";
+import { decamelizeKeys } from 'humps';
+import apiRequest from './api/apiRequest';
 
 const saveAlignments = async (mappingId, data) => {
   return await apiRequest({
     url: `/api/v1/mappings/${mappingId}/alignments`,
-    method: "post",
+    method: 'post',
     payload: {
-      alignments: decamelizeKeys(data)
-    }
+      alignments: decamelizeKeys(data),
+    },
   });
 };
 

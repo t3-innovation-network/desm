@@ -1,9 +1,9 @@
-import apiRequest from "./api/apiRequest";
+import apiRequest from './api/apiRequest';
 
 const signIn = async (email, password) => {
   return await apiRequest({
-    url: "/sessions",
-    method: "post",
+    url: '/sessions',
+    method: 'post',
     payload: {
       user: {
         email: email,
@@ -11,7 +11,7 @@ const signIn = async (email, password) => {
       },
     },
     defaultResponse: {},
-    successResponse: "user",
+    successResponse: 'user',
   });
 };
 
