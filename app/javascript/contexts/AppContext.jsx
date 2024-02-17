@@ -3,18 +3,15 @@ import React, { createContext, useState } from 'react';
 export const AppContext = createContext({});
 
 export const AppContextProvider = ({ children }) => {
-  const [currentConfigurationProfile, setCurrentConfigurationProfile] = useState();
-  const [leadMapper, setLeadMapper] = useState(false);
-  const [loggedIn, setLoggedIn] = useState();
-  const [organization, setOrganization] = useState();
-
-  React.useEffect(() => {
-    const { configurationProfile, leadMapper, loggedIn, organization } = document.body.dataset;
-    configurationProfile && setCurrentConfigurationProfile(JSON.parse(configurationProfile));
-    setLeadMapper(leadMapper === 'true');
-    setLoggedIn(loggedIn === 'true');
-    organization && setOrganization(JSON.parse(organization));
-  }, []);
+  const data = document.body.dataset;
+  const [currentConfigurationProfile, setCurrentConfigurationProfile] = useState(
+    data.configurationProfile ? JSON.parse(data.configurationProfile) : null
+  );
+  const [leadMapper, setLeadMapper] = useState(data.leadMapper === 'true');
+  const [loggedIn, setLoggedIn] = useState(data.loggedIn === 'true');
+  const [organization, setOrganization] = useState(
+    data.organization ? JSON.parse(data.organization) : null
+  );
 
   return (
     <AppContext.Provider

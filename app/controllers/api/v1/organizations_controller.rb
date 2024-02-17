@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class OrganizationsController < ApplicationController
+    class OrganizationsController < BaseController
       before_action :authorize_with_policy, except: :index
 
       ###

@@ -41,9 +41,8 @@ export default class TermCard extends Component {
 
     // local value (this term)
     this.setState({ selected: !selected }, () => {
-      // props value (the term inside the list in the parent component)
-      term.selected = !term.selected;
-      onClick(term);
+      // callback to the parent component, don't mutate the term object
+      onClick({ ...term, selected: !term.selected });
     });
   };
 

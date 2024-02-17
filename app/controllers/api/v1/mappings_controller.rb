@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class MappingsController < ApplicationController
+    class MappingsController < BaseController
       before_action :authorize_with_policy
       before_action :instantiate_specification, only: :create
 
@@ -50,7 +50,7 @@ module API
             current_configuration_profile_user.mappings
           end
 
-        render json: mappings.order(:title),
+        render json: mappings.includes(:organization, :spine, :selected_terms, :specification).order(:title),
                include: [
                  :organization,
                  :selected_terms,
@@ -71,7 +71,7 @@ module API
       #   to the one passed in params
       ###
       def show_terms
-        render json: @instance.alignments.order(:uri),
+        render json: @instance.alignments.includes(:mapped_terms).order(:uri),
                include: { mapped_terms: { include: %i(property vocabularies) } }
       end
 

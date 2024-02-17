@@ -73,9 +73,20 @@ class ApplicationController < ActionController::Base
   ###
   # @description: Returns a json message when an error happens due to an unpermittted
   #   access to an action
-  # @param [Exception] _exception The exception that was raised
+  # @param [Exception] err The exception that was raised
   ###
-  def user_not_authorized(_exception)
-    render json: { error: t("errors.auth.unauthorized_access") }, status: :unauthorized
+  def user_not_authorized(err)
+    policy_name = err.policy.class.to_s.underscore
+    message = I18n.t("#{policy_name}.#{err.query}", scope: "pundit", default: :default)
+
+    respond_to do |format|
+      format.html do
+        flash[:alert] = message
+        redirect_back(fallback_location: root_path)
+      end
+      format.json do
+        render json: { error: message }, status: :unauthorized
+      end
+    end
   end
 end

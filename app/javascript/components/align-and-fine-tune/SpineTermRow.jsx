@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EditAlignment from './EditAlignment';
 import { toastr as toast } from 'react-redux-toastr';
 import Collapsible from '../shared/Collapsible';
@@ -7,9 +7,9 @@ import DropZone from '../shared/DropZone';
 import PredicateOptions from '../shared/PredicateOptions';
 import { DraggableItemTypes } from '../shared/DraggableItemTypes';
 import VocabularyLabel from './match-vocabulary/VocabularyLabel';
-import { Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { noMatchPredicate } from './stores/mappingStore';
 
 /**
  * Props:
@@ -26,6 +26,8 @@ const SpineTermRow = (props) => {
    * The data passed in props
    */
   const {
+    alignment,
+    onUpdateAlignmentComment,
     mappedTermsToSpineTerm,
     origin,
     onRevertMapping,
@@ -34,11 +36,6 @@ const SpineTermRow = (props) => {
     spineOrigin,
     term,
   } = props;
-
-  /**
-   * The mapping term (alignment) representing this row
-   */
-  const [alignment, setAlignment] = useState(props.alignment);
 
   /**
    * The selected mode to open the edit window
@@ -68,6 +65,10 @@ const SpineTermRow = (props) => {
    * The term we are using to match vocabularies against the spine
    */
   const [mappedTermMatching, setMappedTermMatching] = useState(mappedTermsToSpineTerm(term)[0]);
+
+  useEffect(() => {
+    if (!alignment.predicateId) setPredicate(null);
+  }, [alignment.predicateId]);
 
   /**
    * If the mapping term (alignment) has a predicate selected, lets find it.
@@ -183,14 +184,11 @@ const SpineTermRow = (props) => {
   const handleOnCommentUpdated = (result) => {
     if (result.saved) {
       toast.success('Changes saved!');
+
+      // Update the mapping term in state (if there's a comment, we need to
+      // redraw in order to let the orange dot to appear)
+      onUpdateAlignmentComment({ id: alignment.id, comment: result.comment });
     }
-
-    /// Update the mapping term in state (if there's a comment, we need to
-    /// redraw in order to let the orange dot to appear)
-    let tempAlignment = alignment;
-    alignment.comment = result.comment;
-    setAlignment(tempAlignment);
-
     setEditing(false);
   };
 
@@ -202,10 +200,6 @@ const SpineTermRow = (props) => {
    */
   const handleRevertMapping = (mTerm) => {
     onRevertMapping(mTerm);
-
-    if (!alignment.mappedTerms.length) {
-      setPredicate(null);
-    }
   };
 
   /**
@@ -229,6 +223,13 @@ const SpineTermRow = (props) => {
   const onRequestVocabsClose = () => {
     setMatchingVocab(false);
   };
+
+  const mappedTerms = mappedTermsToSpineTerm(term);
+  const withPredicate = predicate && !noMatchPredicate(predicate);
+  const clsPredicate =
+    (withPredicate && mappedTerms.length === 0) || (!predicate && mappedTerms.length > 0)
+      ? 'border-warning'
+      : '';
 
   return (
     <React.Fragment>
@@ -293,7 +294,7 @@ const SpineTermRow = (props) => {
             <Collapsible
               headerContent={predicateSelectedCard()}
               bodyContent={alignmentOptions()}
-              cardStyle={'with-shadow mb-2'}
+              cardStyle={`with-shadow mb-2 ${clsPredicate}`}
               observeOutside={true}
               bodyStyle={'p-0'}
               cardHeaderStyle={'border-bottom'}
@@ -302,13 +303,14 @@ const SpineTermRow = (props) => {
             <PredicateOptions
               predicates={predicates}
               onPredicateSelected={(predicate) => handlePredicateSelected(term, predicate)}
+              cls={clsPredicate}
               predicate={predicate}
             />
           )}
         </div>
 
         <div className="col-4">
-          {mappedTermsToSpineTerm(term).map((mTerm) => {
+          {mappedTerms.map((mTerm) => {
             return (
               <Collapsible
                 expanded
@@ -328,7 +330,7 @@ const SpineTermRow = (props) => {
                     </div>
                   </div>
                 }
-                cardStyle={'with-shadow mb-2'}
+                cardStyle={`with-shadow mb-2 ${predicate ? '' : 'border-warning'}`}
                 key={mTerm.id}
                 observeOutside={false}
                 bodyContent={
@@ -356,11 +358,12 @@ const SpineTermRow = (props) => {
               />
             );
           })}
-          {!mappedTermsToSpineTerm(term).length && (
+          {!mappedTerms.length && (
             <DropZone
               selectedCount={selectedAlignments.length}
               acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
               droppedItem={{ id: term.id }}
+              cls={withPredicate ? 'border-warning' : ''}
               placeholder="Drag a matching property here"
             />
           )}

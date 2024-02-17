@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class TermsController < ApplicationController
+    class TermsController < BaseController
       before_action :authorize_with_policy, except: :index
 
       ###

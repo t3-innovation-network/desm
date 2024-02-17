@@ -6,7 +6,8 @@ import Pluralize from 'pluralize';
  * Props:
  * @param {Object} droppedItem The element that's going to be dropped
  * @param {Integer} selectedCount The number of elements being dragged
- * @param {Style} textStyle CSS styles for the text inside
+ * @param {Style} style CSS styles for the box
+ * @param {String} CSS class for the box
  * @param {ItemType} acceptedItemType The type of item that this box accepts
  * @param {String} placeholder The text that is going to appear by default
  */
@@ -16,7 +17,7 @@ const DropZone = ({
   droppedItem,
   placeholder,
   selectedCount,
-  textStyle,
+  cls,
   style,
 }) => {
   /**
@@ -55,7 +56,11 @@ const DropZone = ({
   const isActive = canDrop && isOver;
 
   return (
-    <div className={`card ${isActive ? 'dnd-active' : 'border-dotted'}`} ref={drop} style={style}>
+    <div
+      className={`card ${isActive ? 'dnd-active' : 'border-dotted'} ${cls}`}
+      ref={drop}
+      style={style}
+    >
       {content()}
     </div>
   );
