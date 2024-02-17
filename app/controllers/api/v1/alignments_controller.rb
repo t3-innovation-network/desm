@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class AlignmentsController < ApplicationController
+    class AlignmentsController < BaseController
       before_action :authorize_with_policy, except: :index
 
       ###
@@ -30,9 +30,15 @@ module API
                               .permit(alignments: [:id, :predicate_id, { mapped_term_ids: [] }])
                               .require(:alignments)
 
-        mapping = current_user.mappings.find(params.fetch(:mapping_id))
-        SaveAlignments.call(alignments: alignments_params, mapping:)
-        head :ok
+        mapping = policy_scope(Mapping).find_by(id: params.fetch(:mapping_id))
+        raise Pundit::NotAuthorizedError, "not allowed to update this mapping" unless mapping.present?
+
+        interactor = SaveAlignments.call(alignments: alignments_params, mapping:)
+        if interactor.success?
+          head :ok
+        else
+          render json: { error: interactor.error }, status: :unprocessable_entity
+        end
       end
 
       ###

@@ -26,20 +26,20 @@ const App = () => {
   };
 
   const checkLoginStatusAPI = async () => {
-    await checkLoginStatus({ loggedIn: isLoggedIn }).then((response) => {
-      /// Process any server errors
-      if (response.error) {
-        setErrors(response.error);
-        setLoading(false);
-        return;
-      }
-      /// If we have something to change
-      if (response.loggedIn) {
-        dispatch(doLogin());
-        dispatch(setUser(response.user));
-      }
-      setLoading(false);
-    });
+    await checkLoginStatus({ loggedIn: isLoggedIn })
+      .then((response) => {
+        /// Process any server errors
+        if (response.error) {
+          setErrors(response.error);
+          return;
+        }
+        /// If we have something to change
+        if (response.loggedIn) {
+          dispatch(doLogin());
+          dispatch(setUser(response.user));
+        }
+      })
+      .finally(() => setLoading(false));
   };
 
   /**

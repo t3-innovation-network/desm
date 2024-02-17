@@ -23,13 +23,8 @@ gem "rack-cors", require: "rack/cors"
 # Audit changes
 gem "audited", "~> 4.9"
 
-gem "autoprefixer-rails"
-
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.2", require: false
-
-# Load env variables in dev & test modes
-gem "dotenv-rails", "~> 2.7", groups: %i[development test]
 
 # For http requests
 gem "httparty"
@@ -69,9 +64,6 @@ gem "pundit"
 # Centralize access to tasks
 gem "rake"
 
-# Get react support on rails
-gem "react-rails"
-
 # A Ruby client library for Redis
 gem "redis"
 
@@ -100,6 +92,8 @@ group :development, :test do
   gem "database_cleaner"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri mingw x64_mingw]
+  # Load env variables in dev & test modes
+  gem "dotenv-rails", "~> 2.7"
   gem "factory_bot_rails"
   gem "faker"
   gem "rspec-rails", "~> 4.0.1"

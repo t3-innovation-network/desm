@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class AlignmentVocabulariesController < ApplicationController
+    class AlignmentVocabulariesController < BaseController
       ###
       # @description: Returns the vocabulary mapping for a specific alignment,
       #   with its concepts

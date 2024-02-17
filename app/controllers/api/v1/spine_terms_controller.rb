@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class SpineTermsController < ApplicationController
+    class SpineTermsController < BaseController
       before_action :validate_mapped_terms, only: [:create]
       after_action :set_mapped_terms, only: [:create]
 

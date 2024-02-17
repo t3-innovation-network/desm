@@ -293,6 +293,10 @@ a:hover {
   border: 2px solid $dashboard-background-color;
 }
 
+.border-warning {
+  border: 1px solid $warning-color !important;
+}
+
 .dashboard-active-tab {
   border-top: 2px solid $dashboard-background-color-highlight;
 }

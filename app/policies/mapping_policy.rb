@@ -90,4 +90,12 @@ class MappingPolicy < ApplicationPolicy
   def update?
     @user.present?
   end
+
+  class Scope < ApplicationPolicy::Scope
+    def resolve
+      return scope.all if user.super_admin?
+
+      user.mappings
+    end
+  end
 end

@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class MappingSelectedTermsController < ApplicationController
+    class MappingSelectedTermsController < BaseController
       before_action :validate_mapping_terms, only: [:create]
       before_action :instantiate
 

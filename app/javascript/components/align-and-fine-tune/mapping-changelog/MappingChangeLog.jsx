@@ -47,7 +47,7 @@ const MappingChangeLog = (props) => {
   const spineTermForAlignment = (alignmentId) => {
     let alignment = alignments.find((alignment) => alignment.id === alignmentId);
 
-    return spineTerms.find((sTerm) => sTerm.id === alignment.spine_term_id);
+    return spineTerms.find((sTerm) => sTerm.id === alignment.spineTermId);
   };
 
   /**

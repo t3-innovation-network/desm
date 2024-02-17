@@ -12,3 +12,5 @@ en:
       invalid_credentials: "Invalid email or password. Please try again."
     specs:
       invalid_specification: "Invalid specification. Please validate the uploaded file. It has to be a valid JSON-LD, XML, RDF, or CSV file.s"
+  pundit:
+    default: You are not authorized to perform this action.

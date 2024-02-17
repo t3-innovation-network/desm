@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class SkosController < ApplicationController
+    class SkosController < BaseController
       before_action :validate_labels_params, only: :labels
       before_action :instantiate_cp, only: :labels
       before_action :check_skos_method, only: :labels

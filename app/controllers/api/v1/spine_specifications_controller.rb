@@ -5,12 +5,12 @@
 ###
 module API
   module V1
-    class SpineSpecificationsController < ApplicationController
+    class SpineSpecificationsController < BaseController
       ###
       # @description: Returns a filtered list of specifications for an organization
       ###
       def index
-        render json: current_configuration_profile.spines
+        render json: current_configuration_profile.spines.includes(:terms)
       end
 
       def show
