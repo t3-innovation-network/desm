@@ -121,10 +121,11 @@ export const mappingStore = (initialData = {}) => ({
   // Alignments that are ready to be saved
   completeAlignments: computed((state) =>
     state.alignments.filter((a) => {
-      const predicate = state.predicates.find((p) => p.id === a.predicateId);
-
-      return noMatchPredicate(predicate) || (a.predicateId && a.mappedTerms.length);
+      return state.noMatchPredicateId === a.predicateId || (a.predicateId && a.mappedTerms.length);
     })
+  ),
+  noMatchPredicateId: computed(
+    (state) => state.predicates.find((p) => noMatchPredicate(p))?.id || -1
   ),
   /**
    * Returns whether all the terms from the specification are already mapped.
@@ -133,10 +134,9 @@ export const mappingStore = (initialData = {}) => ({
   noPartiallyMappedTerms: computed((state) => state.partiallyMappedTerms.length === 0),
   partiallyMappedTerms: computed((state) =>
     state.alignments.filter((a) => {
-      const predicate = state.predicates.find((p) => p.id === a.predicateId);
-
       return !(
-        noMatchPredicate(predicate) || Boolean(a.mappedTerms.length) == Boolean(a.predicateId)
+        state.noMatchPredicateId === a.predicateId ||
+        Boolean(a.mappedTerms.length) == Boolean(a.predicateId)
       );
     })
   ),
@@ -169,8 +169,11 @@ export const mappingStore = (initialData = {}) => ({
    * 2. The term is already mapped in the backend (is one of the mapping terms in DB).
    */
   selectedTermIsMapped: computed((state) => (alignment) =>
-    state.alignments.some((alg) =>
-      alg.mappedTerms.some((mappedTerm) => mappedTerm.id === alignment.id)
+    state.alignments.some(
+      (alg) =>
+        alg.predicateId &&
+        !(state.noMatchPredicateId === alg.predicateId) &&
+        alg.mappedTerms.some((mappedTerm) => mappedTerm.id === alignment.id)
     )
   ),
   /**
@@ -182,7 +185,9 @@ export const mappingStore = (initialData = {}) => ({
    */
   spineTermIsMapped: computed((state) => (spineTerm) => {
     let alg = state.alignments.find((alignment) => alignment.spineTermId === spineTerm.id);
-    return alg?.mappedTerms?.length;
+    return (
+      alg?.predicateId && (state.noMatchPredicateId === alg.predicateId || alg?.mappedTerms?.length)
+    );
   }),
 
   // sync actions
