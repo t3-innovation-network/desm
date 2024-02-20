@@ -24,6 +24,7 @@ const SpineHeader = (props) => {
     filterSpineTermsOnChange,
     handleAddSynthetic,
     alignments,
+    noMatchPredicateId,
   } = props;
 
   return (
@@ -63,7 +64,13 @@ const SpineHeader = (props) => {
         >
           <ProgressReportBar
             maxValue={alignments.length}
-            currentValue={alignments.filter((alignment) => alignment.mappedTerms.length).length}
+            currentValue={
+              alignments.filter(
+                (alignment) =>
+                  alignment.predicateId &&
+                  (alignment.predicateId === noMatchPredicateId || alignment.mappedTerms.length)
+              ).length
+            }
             messageReport="Mapped"
             cssClass="bg-col-on-primary"
           />

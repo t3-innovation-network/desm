@@ -169,6 +169,7 @@ const AlignAndFineTune = (props) => {
         filterSpineTermsOnChange={actions.filterSpineTermsOnChange}
         addingSynthetic={addingSynthetic}
         handleAddSynthetic={actions.handleAddSynthetic}
+        noMatchPredicateId={state.noMatchPredicateId}
         alignments={alignments}
       />
       <div className="mt-5">
