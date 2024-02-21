@@ -40,11 +40,11 @@ class Organization < ApplicationRecord
 
   def to_json_ld
     {
-      uri: uri,
-      email: email,
+      uri:,
+      email:,
       configurationProfile: configuration_profile.uri,
-      name: name,
-      created_at: created_at
+      name:,
+      created_at:
     }
   end
 end

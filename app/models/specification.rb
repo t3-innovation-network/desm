@@ -71,8 +71,8 @@ class Specification < ApplicationRecord
   ###
   def spine!
     Spine.create!(
-      configuration_profile_user: configuration_profile_user,
-      domain: domain,
+      configuration_profile_user:,
+      domain:,
       name: domain.name
     )
   end
@@ -87,10 +87,10 @@ class Specification < ApplicationRecord
 
   def to_json_ld
     {
-      name: name,
-      uri: uri,
-      version: version,
-      use_case: use_case,
+      name:,
+      uri:,
+      version:,
+      use_case:,
       domain: domain.uri,
       terms: terms.map(&:source_uri).sort
     }

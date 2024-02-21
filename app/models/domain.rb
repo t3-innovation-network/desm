@@ -63,10 +63,10 @@ class Domain < ApplicationRecord
 
   def to_json_ld
     json = {
-      uri: uri,
-      source_uri: source_uri,
-      pref_label: pref_label,
-      definition: definition
+      uri:,
+      source_uri:,
+      pref_label:,
+      definition:
     }
     json[:spine] = spine.uri if spine?
 

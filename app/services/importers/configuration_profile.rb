@@ -71,7 +71,7 @@ module Importers
           user = User
                    .create_with(
                      **user_data.slice(*%w(fullname github_handle phone)),
-                     organization_id: organization_id,
+                     organization_id:,
                      password: ENV.fetch("DEFAULT_PASS"),
                      skip_sending_welcome_email: true
                    )
@@ -84,7 +84,7 @@ module Importers
           profile_user = profile.configuration_profile_users.create!(
             lead_mapper: user_data.fetch("lead_mapper"),
             organization: Organization.find_by(name: user_data.fetch("organization")),
-            user: user
+            user:
           )
 
           user_data.fetch("terms").each do |term_data|
@@ -109,7 +109,7 @@ module Importers
 
             specification = profile_user.specifications.create!(
               **specification_data.slice(*%w(name selected_domains_from_file version use_case)),
-              domain: domain,
+              domain:,
               terms: profile.terms.where(source_uri: specification_data.fetch("terms"))
             )
 
@@ -118,8 +118,8 @@ module Importers
             mapping = profile_user.mappings.create!(
               **mapping_data.slice(*%w(description name status title)),
               selected_terms: profile.terms.where(source_uri: mapping_data.fetch("selected_terms")),
-              specification: specification,
-              spine: spine
+              specification:,
+              spine:
             )
 
             mapping_data.fetch("alignments").each do |alignment_data|
@@ -140,8 +140,8 @@ module Importers
               alignment = mapping.alignments.create!(
                 **alignment_data.slice(*%w(comment synthetic uri)),
                 mapped_terms: profile.terms.where(source_uri: alignment_data.fetch("mapped_terms")),
-                predicate: predicate,
-                spine_term: spine_term
+                predicate:,
+                spine_term:
               )
 
               vocabulary_data = alignment_data.fetch("vocabulary")

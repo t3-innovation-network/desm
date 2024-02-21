@@ -12,7 +12,7 @@ RSpec.describe Parsers::Skos do
 
   describe ".scheme_nodes" do
     it "returns a list of one only node" do
-      parser = described_class.new(file_content: file_content)
+      parser = described_class.new(file_content:)
       result = parser.scheme_nodes
 
       expect(result.count).to eq(1)
@@ -21,7 +21,7 @@ RSpec.describe Parsers::Skos do
 
   describe ".concepts_list_simplified" do
     it "returns a formatted list of concepts" do
-      parser = described_class.new(file_content: file_content)
+      parser = described_class.new(file_content:)
       result = parser.concepts_list_simplified
 
       expect(result.count).to eq(parser.graph.count)
@@ -33,7 +33,7 @@ RSpec.describe Parsers::Skos do
 
   describe ".concept_names" do
     it "returns an array of strings with the concept labels" do
-      parser = described_class.new(file_content: file_content)
+      parser = described_class.new(file_content:)
       result = parser.concept_names
 
       expect(result.count).to eq(parser.graph.count - 1)
@@ -43,7 +43,7 @@ RSpec.describe Parsers::Skos do
 
   describe ".valid_skos" do
     it "returns true for a valid skos file" do
-      parser = described_class.new(file_content: file_content)
+      parser = described_class.new(file_content:)
       result = parser.valid_skos?
 
       expect(result).to be_truthy
@@ -59,7 +59,7 @@ RSpec.describe Parsers::Skos do
 
   describe ".build_skos" do
     it "returns a valid skos file" do
-      parser = described_class.new(file_content: file_content)
+      parser = described_class.new(file_content:)
       result = parser.build_skos
 
       expect(result).to have_key(:@context)

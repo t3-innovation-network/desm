@@ -44,7 +44,7 @@ RSpec.describe User do
     admin = described_class.create!(
       fullname: "test",
       email: "test@test.com",
-      password: password,
+      password:,
       skip_validating_organization: true
     )
 
@@ -53,7 +53,7 @@ RSpec.describe User do
       described_class.create!(
         fullname: "test",
         email: "test@test.com",
-        password: password
+        password:
       )
     end.to raise_error ActiveRecord::RecordInvalid
   end

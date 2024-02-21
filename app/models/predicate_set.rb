@@ -47,10 +47,10 @@ class PredicateSet < ApplicationRecord
   def to_json_ld
     {
       name: title,
-      uri: uri,
-      source_uri: source_uri,
-      description: description,
-      created_at: created_at,
+      uri:,
+      source_uri:,
+      description:,
+      created_at:,
       predicates: predicates.map(&:to_json_ld),
       strongest_match: strongest_match&.source_uri
     }

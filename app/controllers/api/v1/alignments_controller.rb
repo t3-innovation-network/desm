@@ -31,7 +31,7 @@ module API
                               .require(:alignments)
 
         mapping = current_user.mappings.find(params.fetch(:mapping_id))
-        SaveAlignments.call(alignments: alignments_params, mapping: mapping)
+        SaveAlignments.call(alignments: alignments_params, mapping:)
         head :ok
       end
 

@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
   ###
   def current_configuration_profile
     id = session[:current_configuration_profile_id]
-    configuration_profile = ConfigurationProfile.find_by(id: id) if id
+    configuration_profile = ConfigurationProfile.find_by(id:) if id
     return configuration_profile if configuration_profile
 
     current_user&.configuration_profiles&.first

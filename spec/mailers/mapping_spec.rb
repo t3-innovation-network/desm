@@ -6,7 +6,7 @@ RSpec.describe MappingMailer do
   describe "updated" do
     let(:mapping) { build(:mapping) }
     let(:user) { build(:user) }
-    let(:mail) { described_class.with(mapping: mapping, user: user).updated }
+    let(:mail) { described_class.with(mapping:, user:).updated }
 
     it "renders the headers and the body" do
       expect(mail.subject).to eq(I18n.t("mailers.mapping_updated.subject"))

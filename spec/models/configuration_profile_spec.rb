@@ -374,12 +374,12 @@ describe ConfigurationProfile do
     end
     let!(:specification) { create(:specification, configuration_profile_user: configuration_profile_user1) }
     let!(:mapping) do
-      create(:mapping, configuration_profile_user: configuration_profile_user1, specification: specification)
+      create(:mapping, configuration_profile_user: configuration_profile_user1, specification:)
     end
 
     before do
       mapping.spine.terms = create_list(:term, 10)
-      10.times { |i| create(:alignment, mapping: mapping, spine_term: mapping.spine.terms[i]) }
+      10.times { |i| create(:alignment, mapping:, spine_term: mapping.spine.terms[i]) }
 
       organization = create(:organization)
       configuration_profile1.standards_organizations << organization

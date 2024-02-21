@@ -121,7 +121,7 @@ class Mapping < ApplicationRecord
     spine.terms.each do |term|
       alignments.create!(
         mapped_terms: (first_upload ? [term] : []),
-        predicate_id: predicate_id,
+        predicate_id:,
         spine_term_id: term.id,
         uri: term.uri
       )
@@ -165,7 +165,7 @@ class Mapping < ApplicationRecord
   ###
   def notify_updated
     involved_users.each do |user|
-      MappingMailer.with(mapping: self, user: user).updated.deliver_now
+      MappingMailer.with(mapping: self, user:).updated.deliver_now
     end
   end
 
