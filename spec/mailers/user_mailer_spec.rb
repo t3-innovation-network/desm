@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe UserMailer do
   describe "welcome" do
     let(:user) { create(:user) }
-    let(:mail) { described_class.with(user: user).welcome }
+    let(:mail) { described_class.with(user:).welcome }
 
     it "renders the headers  and the body" do
       expect(mail.subject).to eq(I18n.t("mailers.welcome.subject"))
@@ -17,7 +17,7 @@ RSpec.describe UserMailer do
 
   describe "forgot_pass" do
     let(:user) { build(:user) }
-    let(:mail) { described_class.with(user: user).forgot_pass }
+    let(:mail) { described_class.with(user:).forgot_pass }
 
     it "renders the headers and the body" do
       expect(mail.subject).to eq(I18n.t("mailers.forgot_pass.subject"))

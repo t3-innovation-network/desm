@@ -41,10 +41,10 @@ class DomainSet < ApplicationRecord
   def to_json_ld
     {
       name: title,
-      uri: uri,
-      source_uri: source_uri,
-      description: description,
-      created_at: created_at,
+      uri:,
+      source_uri:,
+      description:,
+      created_at:,
       domains: domains.map(&:to_json_ld)
     }
   end

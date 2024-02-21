@@ -35,10 +35,10 @@ class SaveAlignments
     spine.terms << term
 
     mapping.alignments.create!(
-      comment: comment,
+      comment:,
       spine_term: term,
       synthetic: true,
-      uri: uri,
+      uri:,
       **params.slice(:mapped_term_ids, :predicate_id)
     )
 

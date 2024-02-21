@@ -38,7 +38,7 @@ FactoryBot.define do
     specification do
       create(
         :specification,
-        configuration_profile_user: configuration_profile_user
+        configuration_profile_user:
       )
     end
   end

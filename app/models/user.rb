@@ -49,9 +49,9 @@ class User < ApplicationRecord
   end
 
   def assign_role(role_id)
-    return false if Role.find(role_id) && !Assignment.where(user_id: id, role_id: role_id)
+    return false if Role.find(role_id) && !Assignment.where(user_id: id, role_id:)
 
-    true if Assignment.create!(user_id: id, role_id: role_id)
+    true if Assignment.create!(user_id: id, role_id:)
   end
 
   def available_domains

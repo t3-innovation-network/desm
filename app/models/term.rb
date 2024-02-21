@@ -92,13 +92,13 @@ class Term < ApplicationRecord
 
     Property.create!(
       term: self,
-      uri: uri,
+      uri:,
       source_uri: parser.read!("id"),
       comment: parser.read!("comment"),
       label: parser.read!("label") || parser.read!("id"),
-      domain: domain,
+      domain:,
       selected_domain: domain&.first,
-      range: range,
+      range:,
       selected_range: range&.first,
       subproperty_of: parser.read!("subproperty")
     )

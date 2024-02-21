@@ -30,7 +30,7 @@ RSpec.describe Exporters::MappingExportProfile do
     it "contains the necessary elements" do
       domain = Domain.first
       specification = Specification.first
-      specification.update!(domain: domain)
+      specification.update!(domain:)
       result = domain.mapping_export_profile
 
       expect(result.keys).to eq(%i(@configurationProfile @abstractClass @spine))

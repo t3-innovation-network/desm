@@ -10,7 +10,7 @@ module Parsers
       @context = args.fetch(:context, {})
       @graph = args.fetch(:graph, {})
       file_content = args.fetch(:file_content, nil)
-      super(file_content: file_content) if file_content
+      super(file_content:) if file_content
     end
 
     def valid_skos?
