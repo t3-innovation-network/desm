@@ -342,8 +342,8 @@ const SpineTermRow = (props) => {
                     )}
                     <p className="card-text">{mTerm.property.comment}</p>
                     <p className="card-text">
-                      Origin:
-                      <span className="col-primary">{' ' + origin}</span>
+                      ID:
+                      <span>{' ' + mTerm.sourceUri}</span>
                     </p>
                     {alignmentHasVocabulary() ? (
                       <VocabularyLabel

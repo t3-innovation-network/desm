@@ -75,7 +75,8 @@ module Parsers
         node = Parsers::JsonLd::Node.new(concept)
         {
           uri: node.read!("id"),
-          label: node.read!("label")
+          label: node.read!("label"),
+          definition: node.read!("definition") || node.read!("description") || node.read!("comment")
         }
       end
 

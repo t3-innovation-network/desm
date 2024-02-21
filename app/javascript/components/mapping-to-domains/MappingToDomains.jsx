@@ -558,7 +558,6 @@ const MappingToDomains = (props) => {
                             isMapped={termIsMapped}
                             editEnabled={true}
                             onEditClick={onEditTermClick}
-                            origin={mapping.origin}
                           />
                         );
                       })}
@@ -576,7 +575,6 @@ const MappingToDomains = (props) => {
                           isMapped={termIsMapped}
                           editEnabled={true}
                           onEditClick={onEditTermClick}
-                          origin={mapping.origin}
                           onRevertMapping={handleRevertMapping}
                         />
                       );

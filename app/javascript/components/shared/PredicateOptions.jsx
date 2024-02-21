@@ -28,6 +28,7 @@ const PredicateOptions = (props) => {
       return {
         name: predicate.pref_label,
         id: predicate.id,
+        description: predicate.definition,
       };
     });
   };

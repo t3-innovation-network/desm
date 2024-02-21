@@ -57,6 +57,11 @@ class ExpandableOptions extends Component {
                     onClick={() => this.handleOptionClick(option)}
                   >
                     {option.name}
+                    {option.description && (
+                      <div className="text-muted lh-sm">
+                        <small>{option.description}</small>
+                      </div>
+                    )}
                   </div>
                 );
               })}

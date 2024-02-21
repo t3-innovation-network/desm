@@ -69,14 +69,16 @@ export const noMatchPredicate = (predicate) =>
   (isString(predicate) && predicate.toLowerCase().includes('no match')) ||
   predicate?.source_uri?.toLowerCase()?.includes('nomatch');
 
-const filterTerms = (terms, inputValue, options = { pickSelected: false }) =>
-  terms
-    .filter(
-      (term) =>
-        (options.pickSelected ? term.selected : !term.selected) &&
-        term.name.toLowerCase().includes(inputValue.toLowerCase())
-    )
+const filterTerms = (terms, inputValue, options = { pickSelected: false }) => {
+  const searchValue = inputValue.toLowerCase();
+  const searchBy = (term) =>
+    term.name.toLowerCase().includes(searchValue) ||
+    term.sourceUri?.toLowerCase()?.includes(searchValue) ||
+    term.property?.comment?.toLowerCase()?.includes(searchValue);
+  return terms
+    .filter((term) => (options.pickSelected ? term.selected : !term.selected) && searchBy(term))
     .sort((a, b) => (a.name > b.name ? 1 : -1));
+};
 
 export const mappingStore = (initialData = {}) => ({
   ...baseModel(initialData),

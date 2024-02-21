@@ -240,7 +240,6 @@ const EditSpecification = (props) => {
                         isMapped={() => false}
                         editEnabled={true}
                         onEditClick={onEditTermClick}
-                        origin={term.organization.name}
                         disableClick={true}
                       />
                     );

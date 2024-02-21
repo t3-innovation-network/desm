@@ -126,7 +126,7 @@ export default class TermCard extends Component {
 
   render() {
     const { selected, alwaysEnabled } = this.state;
-    const { term, isMapped, origin, disableClick, expanded } = this.props;
+    const { term, isMapped, disableClick, expanded } = this.props;
 
     return isMapped(term) && !alwaysEnabled ? (
       this.disabledTermCard()
@@ -144,7 +144,7 @@ export default class TermCard extends Component {
               Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
             </h6>
             <p className="card-text">{term.property.comment}</p>
-            <p className="card-text">{'Origin: ' + origin}</p>
+            <p className="card-text">{'ID: ' + term.sourceUri}</p>
           </>
         }
       />
