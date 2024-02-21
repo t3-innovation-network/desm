@@ -1,4 +1,5 @@
 @import 'colors';
+@import 'utilities';
 
 /* General */
 
@@ -79,6 +80,10 @@ a:hover {
 .hover-col-primary:hover {
   background-color: $primary-color;
   color: $foreground-color;
+
+  .text-muted {
+    color: $foreground-color !important;
+  }
 }
 
 .underlined {

@@ -229,7 +229,6 @@ const AlignAndFineTune = (props) => {
             onClick={onSelectedTermClick}
             editEnabled={false}
             isMapped={state.selectedTermIsMapped}
-            origin={mapping.origin}
             alwaysEnabled={true}
             disableClick={options.disableClick}
           />
