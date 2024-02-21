@@ -1,5 +1,5 @@
 import { action, computed, thunk } from 'easy-peasy';
-import { isEmpty, remove, sortBy } from 'lodash';
+import { isEmpty, isString, remove, sortBy } from 'lodash';
 import { toastr as toast } from 'react-redux-toastr';
 import { baseModel, nextId } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
@@ -66,6 +66,7 @@ export const defaultState = {
 };
 
 export const noMatchPredicate = (predicate) =>
+  (isString(predicate) && predicate.toLowerCase().includes('no match')) ||
   predicate?.source_uri?.toLowerCase()?.includes('nomatch');
 
 const filterTerms = (terms, inputValue, options = { pickSelected: false }) =>
@@ -386,6 +387,14 @@ export const mappingStore = (initialData = {}) => ({
       predicateId: alignment.predicateId,
       mappedTermIds: alignment.mappedTerms?.map((t) => t.id) ?? [],
     }));
+
+    if (isEmpty(data)) {
+      actions.setLoading(false);
+      if (params.partiallySave) {
+        toast.warning('No changes/data to save');
+      }
+      return true;
+    }
 
     const response = await saveAlignments(state.mapping.id, data, params);
     actions.setLoading(false);
