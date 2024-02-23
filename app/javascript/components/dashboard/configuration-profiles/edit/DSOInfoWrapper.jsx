@@ -23,7 +23,7 @@ const DSOInfoWrapper = () => {
         style={tabStyle}
         onClick={() => setCurrentTab(index)}
       >
-        <FontAwesomeIcon icon={icon} data-toggle="tooltip" data-placement="bottom" title={text} />
+        <FontAwesomeIcon icon={icon} title={text} />
       </div>
     );
   };

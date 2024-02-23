@@ -126,7 +126,7 @@ class Registration extends Component {
     return (
       <React.Fragment>
         <DashboardContainer>
-          {errors && <AlertNotice message={errors} />}
+          {errors && <AlertNotice message={errors} onClose={() => this.setState({ errors: '' })} />}
           {this.dashboardPath()}
 
           {loading ? (

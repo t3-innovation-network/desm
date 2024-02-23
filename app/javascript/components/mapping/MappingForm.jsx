@@ -479,8 +479,6 @@ const MappingForm = () => {
                 <section>
                   <button
                     className="btn bg-col-primary col-background with-shadow floating-spec-btn mt-3"
-                    data-placement="top"
-                    data-toggle="tooltip"
                     disabled={submitted}
                     title="Import the specification"
                     type="submit"

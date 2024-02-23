@@ -92,7 +92,7 @@ const EditAlignment = (props) => {
           </a>
         </div>
         <div className="card-body">
-          {error && <AlertNotice message={error} />}
+          {error && <AlertNotice message={error} onClose={() => setError(null)} />}
 
           <div className="row">
             <div className="col-4">

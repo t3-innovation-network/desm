@@ -94,8 +94,6 @@ const SpineHeader = (props) => {
           <button
             className="btn btn-block btn-dark"
             onClick={handleAddSynthetic}
-            data-toggle="tooltip"
-            data-placement="top"
             title="Use this button to add new elements to the spine"
           >
             + Add Synthetic

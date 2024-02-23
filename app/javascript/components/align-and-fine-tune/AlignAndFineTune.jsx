@@ -288,7 +288,9 @@ const AlignAndFineTune = (props) => {
   return (
     <div className="container-fluid d-flex flex-column h-100">
       <TopNav centerContent={navCenterOptions} />
-      {state.hasErrors ? <AlertNotice message={state.errors} /> : null}
+      {state.hasErrors ? (
+        <AlertNotice message={state.errors} onClose={actions.clearErrors} />
+      ) : null}
       <div className="row overflow-auto">
         {state.loading ? (
           <Loader />

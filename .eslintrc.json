@@ -4,7 +4,6 @@
     "es2021": true
   },
   "globals": {
-    "$": false,
     "_": false
   },
   "extends": [

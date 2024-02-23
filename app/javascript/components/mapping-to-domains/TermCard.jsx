@@ -74,8 +74,6 @@ export default class TermCard extends Component {
             <div className="row">
               <div
                 className="col-1 cursor-pointer"
-                data-toggle="tooltip"
-                data-placement="top"
                 title="Revert selecting this term"
                 onClick={() => this.handleOnRevertMapping(term.id)}
               >
