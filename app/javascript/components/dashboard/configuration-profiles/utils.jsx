@@ -79,8 +79,6 @@ export const SmallRemovableTab = ({
         textOverflow: 'ellipsis',
         maxHeight: '31px',
       }}
-      data-toggle="tooltip"
-      data-placement="bottom"
       title={tooltipMsg}
       onClick={tabClickHandler}
     >
@@ -94,8 +92,6 @@ export const SmallRemovableTab = ({
         right: '5px',
         maxHeight: '31px',
       }}
-      data-toggle="tooltip"
-      data-placement="bottom"
       title="Click to remove this item"
       onClick={(event) => {
         event.stopPropagation();
@@ -122,8 +118,6 @@ export const AddTabBtn = (props) => {
   return (
     <span
       className="p-2 text-center border rounded bg-dashboard-background-highlight col-background font-weight-bold cursor-pointer"
-      data-toggle="tooltip"
-      data-placement="top"
       title={tooltipMsg || 'Add new tab'}
       onClick={onClickHandler}
       style={{ maxWidth: '50px', fontSize: 'large' }}
@@ -196,8 +190,6 @@ export const ToggleBtn = (props) => {
         textOverflow: 'ellipsis',
         maxHeight: '31px',
       }}
-      data-toggle="tooltip"
-      data-placement="bottom"
       title="Upload a File"
       onClick={onClick}
     >

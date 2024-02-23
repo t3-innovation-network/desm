@@ -56,7 +56,7 @@ const App = () => {
       {loading ? (
         <Loader />
       ) : errors ? (
-        <AlertNotice message={errors} />
+        <AlertNotice message={errors} onClose={() => setErrors(null)} />
       ) : (
         <React.Fragment>
           <ReduxToastr position="top-center" className="desm-toast" />

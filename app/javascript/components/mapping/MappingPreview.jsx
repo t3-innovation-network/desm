@@ -109,7 +109,8 @@ const MappingPreview = (props) => {
     dispatch(unsetFilteredFile());
 
     /// Reset the file uploader
-    $('#file-uploader').val('');
+    let fileUploader = document.getElementById('file-uploader');
+    if (fileUploader) fileUploader.value = '';
   };
 
   /**
@@ -266,8 +267,6 @@ const MappingPreview = (props) => {
                         className="btn bg-col-primary col-background ml-2"
                         disabled={creatingSpec || !filteredFile || !propertiesCount}
                         onClick={handleLooksGood}
-                        data-toggle="tooltip"
-                        data-placement="bottom"
                         title={
                           !propertiesCount
                             ? 'No properties were found in the uploaded file/s. Please review it an try again'
@@ -284,8 +283,6 @@ const MappingPreview = (props) => {
                 <div className="col">
                   <label
                     className="col-primary cursor-pointer float-right"
-                    data-toggle="tooltip"
-                    data-placement="top"
                     title="Add a new vocabulary"
                     onClick={() => setAddingVocabulary(true)}
                   >

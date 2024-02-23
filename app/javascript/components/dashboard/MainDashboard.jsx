@@ -38,9 +38,9 @@ export default class MainDashboard extends Component {
 
   fetchConfigurationProfilesAPI() {
     fetchConfigurationProfiles().then((response) => {
-      if (response.errors) {
+      if (response.error) {
         this.setState({
-          errors: response.errors,
+          errors: response.error,
         });
         return;
       }
@@ -52,9 +52,9 @@ export default class MainDashboard extends Component {
 
   fetchMappingsAPI() {
     fetchMappings().then((response) => {
-      if (response.errors) {
+      if (response.error) {
         this.setState({
-          errors: response.errors,
+          errors: response.error,
         });
         return;
       }
@@ -153,7 +153,9 @@ export default class MainDashboard extends Component {
               </div>
             </div>
             <div className="col-9">
-              {errors && <AlertNotice message={errors} />}
+              {errors && (
+                <AlertNotice message={errors} onClose={() => this.setState({ errors: '' })} />
+              )}
 
               <div className="row">
                 <div className="col-xl-3 col-sm-6 py-2">

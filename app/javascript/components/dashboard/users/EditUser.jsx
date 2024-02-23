@@ -165,7 +165,16 @@ export default class EditUser extends Component {
 
     return (
       <DashboardContainer>
-        {errors && <AlertNotice message={errors} />}
+        {errors && (
+          <AlertNotice
+            message={errors}
+            onClose={() =>
+              this.setState({
+                errors: '',
+              })
+            }
+          />
+        )}
         {this.dashboardPath()}
         {loading ? (
           <Loader />
@@ -176,8 +185,6 @@ export default class EditUser extends Component {
               <span className="pl-2 subtitle">User {fullname}</span>
               <button
                 className="btn btn-dark float-right"
-                data-toggle="tooltip"
-                data-placement="bottom"
                 title="Delete this user"
                 onClick={() => {
                   this.deleteUserAPI();

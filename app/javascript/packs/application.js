@@ -3,23 +3,43 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-require('@rails/ujs').start();
+// NOTE: don't need packages below as this functionality isn't in use
+// add to package.json if needed
+// require('@rails/ujs').start();
 // require('turbolinks').start();
-require('@rails/activestorage').start();
+// require('@rails/activestorage').start();
 // require('channels');
-require('codemirror/lib/codemirror.css');
 
-// Uncomment to copy all static images under ../images to the output folder and reference
-// them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
-// or the `imagePath` JavaScript helper below.
-//
-// const images = require.context('../images', true)
-// const imagePath = (name) => images(name, true)
-import 'bootstrap';
-import './src/application.scss';
+import React from 'react';
+import { render } from 'react-dom';
+import App from '../components/App';
+import allReducers from '../reducers';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { AppContextProvider } from '../contexts/AppContext';
+
+import '../styles/application.scss';
 import '../../assets/stylesheets/application';
-import '../../assets/stylesheets/navbar';
-import '../../assets/stylesheets/stepper';
-import '../../assets/stylesheets/customradio';
-import '../../assets/stylesheets/forms';
-import '../../assets/stylesheets/drag-n-drop';
+
+const store = createStore(
+  allReducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.createElement('div');
+  container.classList.add('vh-100');
+
+  render(
+    <Provider store={store}>
+      <DndProvider backend={HTML5Backend}>
+        <AppContextProvider>
+          <App />
+        </AppContextProvider>
+      </DndProvider>
+    </Provider>,
+    document.body.appendChild(container)
+  );
+});

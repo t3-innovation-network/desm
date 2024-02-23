@@ -86,7 +86,7 @@ const ResetPass = (props) => {
       <TopNav centerContent={navCenterOptions} />
       <div className="row mt-5">
         <div className="col-lg-6 mx-auto">
-          {errors && <AlertNotice message={errors} />}
+          {errors && <AlertNotice message={errors} onClose={() => setErrors('')} />}
 
           {_.isEmpty(token) ? (
             <AlertNotice message={'No token provided'} />

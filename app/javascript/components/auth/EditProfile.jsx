@@ -43,7 +43,7 @@ const EditProfile = ({ history }) => {
 
       <div className="row mt-5">
         <div className="col-lg-6 mx-auto">
-          {error && <AlertNotice message={error} />}
+          {error && <AlertNotice message={error} onClose={() => setError(null)} />}
 
           <div className="card">
             <div className="card-header">

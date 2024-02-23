@@ -16,6 +16,7 @@ const AlertNotice = (props) => {
    * Elements from props
    */
   const { cssClass, title, message, onClose } = props;
+
   if (isEmpty(message)) return null;
 
   const renderError = () => {
@@ -38,15 +39,11 @@ const AlertNotice = (props) => {
         <strong>{title ? title : 'Attention!'}</strong>
       </h4>
       {renderError()}
-      <button
-        type="button"
-        className="close"
-        data-dismiss={!onClose && 'alert'}
-        aria-label="Close"
-        onClick={onClose}
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
+      {onClose && (
+        <button type="button" className="close" aria-label="Close" onClick={onClose}>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      )}
     </div>
   );
 };

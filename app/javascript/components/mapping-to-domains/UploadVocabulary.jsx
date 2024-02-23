@@ -310,7 +310,7 @@ const UploadVocabulary = (props) => {
    */
   return (
     <Fragment>
-      {errors.length ? <AlertNotice message={errors} /> : ''}
+      {errors.length ? <AlertNotice message={errors} onClose={() => setErrors([])} /> : ''}
       <div className="card">
         <div className="card-header">
           <div className="row">

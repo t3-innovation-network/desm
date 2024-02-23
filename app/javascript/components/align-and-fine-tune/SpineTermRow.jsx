@@ -318,8 +318,6 @@ const SpineTermRow = (props) => {
                   <div className="row">
                     <div
                       className="col-1 cursor-pointer"
-                      data-toggle="tooltip"
-                      data-placement="top"
                       title="Revert selecting this term"
                       onClick={() => handleRevertMapping(mTerm)}
                     >

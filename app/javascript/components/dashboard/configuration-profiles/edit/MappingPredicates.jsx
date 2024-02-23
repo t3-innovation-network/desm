@@ -200,8 +200,6 @@ const MappingPredicates = () => {
               className="btn btn-dark ml-2"
               onClick={handleFetchUrl}
               disabled={!origin}
-              data-toggle="tooltip"
-              data-placement="bottom"
               title="Fetch the concepts"
             >
               {loading ? <Loader noPadding smallSpinner /> : 'Fetch'}
@@ -213,8 +211,6 @@ const MappingPredicates = () => {
             <button
               className="btn btn-dark ml-auto"
               onClick={() => setUrlEditable(true)}
-              data-toggle="tooltip"
-              data-placement="bottom"
               title="Edit the origin Url"
             >
               Edit

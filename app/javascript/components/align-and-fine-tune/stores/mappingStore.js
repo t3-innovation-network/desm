@@ -375,7 +375,7 @@ export const mappingStore = (initialData = {}) => ({
       // Communicate the operation result to the user
       toast.success('Synthetic alignment successfully removed');
     } else {
-      actions.addError(response.error);
+      actions.setError(response.error);
     }
   }),
   /**

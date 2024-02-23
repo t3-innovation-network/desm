@@ -117,7 +117,16 @@ export default class EditOrganization extends Component {
 
     return (
       <DashboardContainer>
-        {errors && <AlertNotice message={errors} />}
+        {errors && (
+          <AlertNotice
+            message={errors}
+            onClose={() =>
+              this.setState({
+                errors: '',
+              })
+            }
+          />
+        )}
         {this.dashboardPath()}
 
         <div className="card mt-5">
@@ -126,8 +135,6 @@ export default class EditOrganization extends Component {
             <span className="pl-2 subtitle">Organization {organization.name}</span>
             <button
               className="btn btn-dark float-right"
-              data-toggle="tooltip"
-              data-placement="bottom"
               title="Delete this organization"
               onClick={() => {
                 this.deleteOrganizationAPI();

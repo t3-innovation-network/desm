@@ -36,9 +36,8 @@ class UploadConfigurationProfile extends Component {
 
   anyError(response, errorsList = this.state.errors) {
     if (response.error) {
-      errorsList.push(response.error);
       this.setState({
-        errors: [...new Set(errorsList)],
+        errors: [...errorsList, response.error],
       });
     }
     return !_.isUndefined(response.error);
@@ -88,7 +87,11 @@ class UploadConfigurationProfile extends Component {
         {this.dashboardPath()}
 
         <div className="col">
-          {errors.length ? <AlertNotice message={errors} /> : ''}
+          {errors.length ? (
+            <AlertNotice message={errors} onClose={() => this.setState({ errors: [] })} />
+          ) : (
+            ''
+          )}
           <div className="row h-50 justify-content-center">
             <CenteredRoundedCard
               title="Import a configuration profile"

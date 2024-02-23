@@ -279,7 +279,18 @@ export default class EditTerm extends Component {
           </div>
 
           <div className="card-body scrollbar has-scrollbar">
-            {error ? <AlertNotice message={error} /> : ''}
+            {error ? (
+              <AlertNotice
+                message={error}
+                onClose={() =>
+                  this.setState({
+                    error: null,
+                  })
+                }
+              />
+            ) : (
+              ''
+            )}
             {loading ? (
               <Loader />
             ) : (

@@ -194,12 +194,8 @@ export default class MatchVocabulary extends Component {
    * @param {HttpResponse} response
    */
   anyError(response) {
-    const { errors } = this.state;
-
     if (response.error) {
-      let tempErrors = errors;
-      tempErrors.push(response.error);
-      this.setState({ errors: tempErrors });
+      this.setState({ errors: [...this.state.errors, response.error] });
     }
     /// It will return a truthy value (depending no the existence
     /// of the errors on the response object)
@@ -336,7 +332,6 @@ export default class MatchVocabulary extends Component {
    * Use the API to get the information and update the internal status
    */
   handleFetchDataFromAPI = async () => {
-    const { errors } = this.state;
     this.setState({ loading: true });
 
     await this.fetchDataFromAPI();
@@ -388,8 +383,6 @@ export default class MatchVocabulary extends Component {
               <button
                 className="btn btn-dark"
                 onClick={this.addSyntheticConceptRow}
-                data-toggle="tooltip"
-                data-placement="top"
                 title="Use this button to add new elements to the spine"
               >
                 + Add Synthetic
@@ -428,7 +421,11 @@ export default class MatchVocabulary extends Component {
             </div>
             <div className="card-body">
               {/* Manage to show the errors, if any */}
-              {errors.length ? <AlertNotice message={errors} /> : ''}
+              {errors.length ? (
+                <AlertNotice message={errors} onClose={() => this.setState({ errors: [] })} />
+              ) : (
+                ''
+              )}
 
               {loading ? (
                 <Loader />
