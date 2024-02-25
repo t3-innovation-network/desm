@@ -71,6 +71,13 @@ class ApplicationController < ActionController::Base
   end
 
   ###
+  # @description: Returns a pundit user object
+  ###
+  def pundit_user
+    UserContext.new(current_user, organization: current_organization, configuration_profile: current_configuration_profile, configuration_profile_user: current_configuration_profile_user)
+  end
+
+  ###
   # @description: Returns a json message when an error happens due to an unpermittted
   #   access to an action
   # @param [Exception] err The exception that was raised

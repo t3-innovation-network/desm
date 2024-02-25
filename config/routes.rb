@@ -135,7 +135,7 @@ Rails.application.routes.draw do
   post 'password/forgot', to: 'passwords#forgot'
   post 'password/reset', to: 'passwords#reset'
 
-  namespace :api do
+  namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :alignments, only: [:destroy, :index, :update]
       resources :alignment_vocabulary_concepts, only: [:update]

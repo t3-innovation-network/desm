@@ -5,6 +5,9 @@ const apiService = axios.create({
   // Tells the API that's ok to get the cookie in our client
   withCredentials: true,
   baseURL: APP_DOMAIN,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 /**

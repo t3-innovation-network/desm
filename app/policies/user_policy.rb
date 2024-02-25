@@ -5,21 +5,12 @@
 #   user records.
 ###
 class UserPolicy < ApplicationPolicy
-  def initialize(user, record)
-    super(user, record)
-    @user = user
-    @record = record
-    @admin_role_name = Desm::ADMIN_ROLE_NAME.downcase.to_sym
-
-    raise Pundit::NotAuthorizedError unless user&.role?(@admin_role_name) || user == record
-  end
-
   ###
   # @description: Determines if the user has access to the index for this resource
   # @return [TrueClass]
   ###
   def index?
-    @user.role?(@admin_role_name)
+    signed_in? && admin_role?
   end
 
   ###
@@ -27,7 +18,7 @@ class UserPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def show?
-    @user.role?(@admin_role_name)
+    signed_in? && admin_role?
   end
 
   ###
@@ -35,7 +26,7 @@ class UserPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def create?
-    @user.role?(@admin_role_name)
+    signed_in? && admin_role?
   end
 
   ###
@@ -43,7 +34,7 @@ class UserPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def update?
-    @user.role?(@admin_role_name) || @user == @record
+    signed_in? && (admin_role? || @user.user == @record)
   end
 
   ###
@@ -51,6 +42,6 @@ class UserPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def destroy?
-    @user.role?(@admin_role_name)
+    signed_in? && admin_role?
   end
 end

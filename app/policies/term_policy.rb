@@ -5,22 +5,13 @@
 #   term records.
 ###
 class TermPolicy < ApplicationPolicy
-  def initialize(user, record)
-    super(user, record)
-    @user = user || @current_user
-    @record = record
-
-    # Signed in users
-    raise Pundit::NotAuthorizedError unless user.present?
-  end
-
   ###
   # @description: Determines if the user can see this resource
   # @return [TrueClass]
   ###
   def show?
     # Signed in users
-    @user.present?
+    signed_in?
   end
 
   ###
@@ -28,7 +19,7 @@ class TermPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def update?
-    @user.present?
+    signed_in?
   end
 
   ###
@@ -36,7 +27,7 @@ class TermPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def destroy?
-    @user.present?
+    signed_in?
   end
 
   ###
@@ -44,6 +35,6 @@ class TermPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def index?
-    @user.present?
+    signed_in?
   end
 end
