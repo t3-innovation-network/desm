@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Collapsible from '../shared/Collapsible.jsx';
 import Loader from '../shared/Loader.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,137 +15,92 @@ import { faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons
  * @prop {Function} onEditClick The logic to execute when the user click "edit"
  * @prop {Function} onRevertMapping The logic to execute when click on the option to revert a term from being mapped
  */
-export default class TermCard extends Component {
-  state = {
-    /**
-     * Whether the term is selected or not
-     */
-    selected: this.props.term.selected,
-    /**
-     * Whether this card should be available to drag after the first successful drop
-     */
-    alwaysEnabled: this.props.alwaysEnabled,
-    /**
-     * Whether we are processing the revert action to mark this term as "not selected".
-     */
-    reverting: false,
+
+const TermCard = ({ term, editEnabled, disableClick, ...props }) => {
+  const [reverting, setReverting] = useState(false);
+  // callback to the parent component, don't mutate the term object
+  const handleTermClick = () => props.onClick({ ...term, selected: !term.selected });
+  // Manage to execute the revert action on this term using the function passesd in props
+  const handleOnRevertMapping = async () => {
+    setReverting(true);
+    try {
+      await props.onRevertMapping(term.id);
+    } finally {
+      setReverting(false);
+    }
   };
 
   /**
-   * Make both the term for this component and the one in the mapping,
-   * selected or not selected
-   */
-  handleTermClick = () => {
-    const { term, onClick } = this.props;
-    const { selected } = this.state;
-
-    // local value (this term)
-    this.setState({ selected: !selected }, () => {
-      // callback to the parent component, don't mutate the term object
-      onClick({ ...term, selected: !term.selected });
-    });
-  };
-
-  /**
-   * Manage to execute the revert action on this term using the function passesd in props
-   */
-  handleOnRevertMapping = async (termId) => {
-    const { onRevertMapping } = this.props;
-
-    this.setState({ reverting: true });
-    await onRevertMapping(termId);
-    this.setState({ reverting: false });
-  };
-  /**
-
    * After dragging a term card, if it's not meant to be "always enabled" (multiple times draggable),
    * it becomes disabled.
    */
-  disabledTermCard = () => {
-    const { term } = this.props;
-    const { reverting } = this.state;
-
-    return (
-      <div className="card term-card with-shadow mb-2 disabled-container not-draggable">
-        <div className="card-header no-color-header">
-          {reverting ? (
-            <Loader noPadding={true} smallSpinner={true} />
-          ) : (
-            <div className="row">
-              <div
-                className="col-1 cursor-pointer"
-                title="Revert selecting this term"
-                onClick={() => this.handleOnRevertMapping(term.id)}
-              >
-                <FontAwesomeIcon icon={faTimes} />
-              </div>
-              <div className="col-7 non-selectable">{term.name}</div>
-              <div className="col-4">
-                <div className="float-right">
-                  <FontAwesomeIcon icon={faCheck} />
-                </div>
+  const disabledTermCard = () => (
+    <div className="card term-card with-shadow mb-2 disabled-container not-draggable">
+      <div className="card-header no-color-header">
+        {reverting ? (
+          <Loader noPadding={true} smallSpinner={true} />
+        ) : (
+          <div className="row">
+            <div
+              className="col-1 cursor-pointer"
+              title="Revert selecting this term"
+              onClick={handleOnRevertMapping}
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </div>
+            <div className="col-7 non-selectable">{term.name}</div>
+            <div className="col-4">
+              <div className="float-right">
+                <FontAwesomeIcon icon={faCheck} />
               </div>
             </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  // The content of the header (The component when it's shrinked)
+  const termHeaderContent = () => (
+    <div className="row">
+      <div className={'col-8 mb-3' + (disableClick || term.selected ? '' : ' cursor-pointer')}>
+        <strong>{term.name}</strong>
+      </div>
+      <div className="col-4">
+        <div className="float-right">
+          {editEnabled && (
+            <button onClick={() => props.onEditClick(term)} className="btn">
+              <FontAwesomeIcon icon={faPencilAlt} />
+            </button>
           )}
         </div>
       </div>
-    );
-  };
+    </div>
+  );
 
-  /**
-   * The content of the header (The component when it's shrinked)
-   */
-  termHeaderContent = () => {
-    const { term, onEditClick, editEnabled, disableClick } = this.props;
-    const { selected } = this.state;
+  return props.isMapped(term) && !props.alwaysEnabled ? (
+    disabledTermCard()
+  ) : (
+    <Collapsible
+      expanded={props.expanded === undefined ? true : props.expanded}
+      cardStyle={
+        'term-card with-shadow draggable mb-2' + (term.selected ? ' draggable term-selected' : '')
+      }
+      cardHeaderStyle={'no-color-header pb-0'}
+      cardHeaderColStyle={disableClick ? '' : term.selected ? '' : 'cursor-pointer'}
+      handleOnClick={disableClick ? null : handleTermClick}
+      headerContent={termHeaderContent()}
+      bodyContent={
+        <>
+          <h6 className="card-subtitle mb-2 text-muted">
+            Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
+          </h6>
+          <p className="card-text">{term.property.comment}</p>
+          <p className="card-text">{'ID: ' + term.sourceUri}</p>
+        </>
+      }
+    />
+  );
+};
 
-    return (
-      <div className="row">
-        <div className={'col-8 mb-3' + (disableClick || selected ? '' : ' cursor-pointer')}>
-          <strong>{term.name}</strong>
-        </div>
-        <div className="col-4">
-          <div className="float-right">
-            {editEnabled && (
-              <button
-                onClick={() => {
-                  onEditClick(term);
-                }}
-                className="btn"
-              >
-                <FontAwesomeIcon icon={faPencilAlt} />
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  render() {
-    const { selected, alwaysEnabled } = this.state;
-    const { term, isMapped, disableClick, expanded } = this.props;
-
-    return isMapped(term) && !alwaysEnabled ? (
-      this.disabledTermCard()
-    ) : (
-      <Collapsible
-        expanded={expanded === undefined ? true : expanded}
-        cardStyle={'term-card with-shadow mb-2' + (selected ? ' draggable term-selected' : '')}
-        cardHeaderStyle={'no-color-header pb-0'}
-        cardHeaderColStyle={disableClick ? '' : selected ? '' : 'cursor-pointer'}
-        handleOnClick={disableClick ? null : this.handleTermClick}
-        headerContent={this.termHeaderContent()}
-        bodyContent={
-          <>
-            <h6 className="card-subtitle mb-2 text-muted">
-              Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
-            </h6>
-            <p className="card-text">{term.property.comment}</p>
-            <p className="card-text">{'ID: ' + term.sourceUri}</p>
-          </>
-        }
-      />
-    );
-  }
-}
+export default TermCard;

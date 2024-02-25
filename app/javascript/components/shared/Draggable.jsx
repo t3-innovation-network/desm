@@ -27,10 +27,7 @@ const Draggable = (props) => {
      * The DropZone element can be configured to accept specific
      * type of elements
      */
-    item: {
-      items: items,
-      type: itemType,
-    },
+    type: itemType,
     end: (item, monitor) => {
       /**
        * The element where it was dropped in
@@ -49,7 +46,7 @@ const Draggable = (props) => {
    * Only make it draggable when the selected items are more than 1
    */
   return (
-    <div ref={items.length ? drag : null} className={isDragging ? ' is-dragging' : ''}>
+    <div ref={drag} className={isDragging ? ' is-dragging' : ''}>
       {children}
     </div>
   );
