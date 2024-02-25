@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import {} from 'react';
 import Draggable from '../../shared/Draggable';
 import { DraggableItemTypes } from '../../shared/DraggableItemTypes';
 import ConceptCard from './ConceptCard';
@@ -28,7 +28,7 @@ const MappingConceptsList = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       {/* SELECTED CONCEPTS */}
       <Draggable
         items={filteredMappingConcepts({ pickSelected: true })}
@@ -54,7 +54,7 @@ const MappingConceptsList = (props) => {
         );
       })}
       {/* END NOT SELECTED CONCEPTS */}
-    </Fragment>
+    </>
   );
 };
 export default MappingConceptsList;

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import fetchDomains from '../../services/fetchDomains';
 import fetchOrganizations from '../../services/fetchOrganizations';
 import fetchPredicates from '../../services/fetchPredicates';

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import DashboardContainer from '../dashboard/DashboardContainer';
 import fetchOrganizations from '../../services/fetchOrganizations';
 import fetchRoles from '../../services/fetchRoles';
@@ -124,7 +124,7 @@ class Registration extends Component {
     } = this.state;
 
     return (
-      <React.Fragment>
+      <>
         <DashboardContainer>
           {errors && <AlertNotice message={errors} onClose={() => this.setState({ errors: '' })} />}
           {this.dashboardPath()}
@@ -224,7 +224,7 @@ class Registration extends Component {
             </div>
           )}
         </DashboardContainer>
-      </React.Fragment>
+      </>
     );
   }
 }

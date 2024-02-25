@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import fetchAudits from '../../../services/fetchAudits';
 import Collapsible from '../../shared/Collapsible';
 import ChangeDetails from './ChangeDetails';

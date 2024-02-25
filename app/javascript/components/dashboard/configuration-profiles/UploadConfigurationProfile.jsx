@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import { Component, useState } from 'react';
 import DashboardContainer from '../DashboardContainer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';

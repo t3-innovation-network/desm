@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import FileInfo from './FileInfo';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFiles, setFilteredFile, setMergedFileId, setSpecToPreview } from '../../actions/files';
@@ -308,10 +308,10 @@ const MappingForm = () => {
     }
 
     return (
-      <React.Fragment>
+      <>
         <label>{files ? files.length : 0} files attached</label>
         {fileCards}
-      </React.Fragment>
+      </>
     );
   };
 
@@ -340,7 +340,7 @@ const MappingForm = () => {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <MultipleDomainsModal
         domains={filteredDomainsInFile}
         inputValue={inputValue}
@@ -493,7 +493,7 @@ const MappingForm = () => {
           </form>
         </section>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

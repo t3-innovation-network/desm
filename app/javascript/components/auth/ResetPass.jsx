@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TopNav from '../shared/TopNav';
 import resetPassword from '../../services/resetPassword';
 import AlertNotice from '../shared/AlertNotice';

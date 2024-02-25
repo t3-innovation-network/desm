@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import DashboardContainer from '../DashboardContainer';
 import fetchOrganization from '../../../services/fetchOrganization';
 import AlertNotice from '../../shared/AlertNotice';
@@ -144,7 +144,7 @@ export default class EditOrganization extends Component {
             </button>
           </div>
           <div className="card-body">
-            <React.Fragment>
+            <>
               <div className="mandatory-fields-notice">
                 <small className="form-text text-muted">
                   Fields with <span className="text-danger">*</span> are mandatory!
@@ -189,7 +189,7 @@ export default class EditOrganization extends Component {
                   Send
                 </button>
               </form>
-            </React.Fragment>
+            </>
           </div>
         </div>
       </DashboardContainer>

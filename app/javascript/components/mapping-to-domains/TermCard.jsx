@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Collapsible from '../shared/Collapsible.jsx';
 import Loader from '../shared/Loader.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

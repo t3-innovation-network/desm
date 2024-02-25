@@ -1,13 +1,3 @@
-import React from 'react';
-
-/**
- * Structure of the header for the "Match Vocabulary" component
- *
- * Props:
- * @param {Function} onRequestClose
- * @param {Function} onRequestSave
- * @param {Boolean} disableSave
- */
 const HeaderContent = (props) => {
   const { onRequestClose, onRequestSave, disableSave } = props;
 

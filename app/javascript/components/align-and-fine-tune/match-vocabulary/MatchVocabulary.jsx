@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import { Component } from 'react';
 import Modal from 'react-modal';
 import fetchAlignmentVocabulary from '../../../services/fetchAlignmentVocabulary';
 import fetchVocabularyConcepts from '../../../services/fetchVocabularyConcepts';
@@ -430,7 +430,7 @@ export default class MatchVocabulary extends Component {
               {loading ? (
                 <Loader />
               ) : (
-                <Fragment>
+                <>
                   <Title />
 
                   <div className="row">
@@ -474,7 +474,7 @@ export default class MatchVocabulary extends Component {
                       />
                     </div>
                   </div>
-                </Fragment>
+                </>
               )}
             </div>
           </div>

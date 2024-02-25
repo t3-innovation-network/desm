@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import fetchSpine from '../../services/fetchSpine';
 import fetchSpineTerms from '../../services/fetchSpineTerms';
@@ -172,7 +172,7 @@ const EditSpecification = (props) => {
   }, []);
 
   return (
-    <Fragment>
+    <>
       <EditTerm
         modalIsOpen={editingTerm}
         onRequestClose={() => {
@@ -250,7 +250,7 @@ const EditSpecification = (props) => {
           )}
         </div>
       </div>
-    </Fragment>
+    </>
   );
 };
 

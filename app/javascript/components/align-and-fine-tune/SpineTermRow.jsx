@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import EditAlignment from './EditAlignment';
 import { toastr as toast } from 'react-redux-toastr';
 import Collapsible from '../shared/Collapsible';
@@ -87,7 +87,7 @@ const SpineTermRow = (props) => {
     ];
 
     return (
-      <React.Fragment>
+      <>
         {options.map((option) => {
           return (
             <div
@@ -99,7 +99,7 @@ const SpineTermRow = (props) => {
             </div>
           );
         })}
-      </React.Fragment>
+      </>
     );
   };
 
@@ -121,12 +121,12 @@ const SpineTermRow = (props) => {
    */
   const predicateSelectedCard = () => {
     return (
-      <React.Fragment>
+      <>
         {alignment.comment && (
           <FontAwesomeIcon icon={faCircle} className="fa-xs col-success float-left comment-dot" />
         )}
         <strong>{predicate}</strong>
-      </React.Fragment>
+      </>
     );
   };
 
@@ -232,7 +232,7 @@ const SpineTermRow = (props) => {
       : '';
 
   return (
-    <React.Fragment>
+    <>
       {alignment.predicateId && (
         <EditAlignment
           modalIsOpen={editing}
@@ -332,7 +332,7 @@ const SpineTermRow = (props) => {
                 key={mTerm.id}
                 observeOutside={false}
                 bodyContent={
-                  <React.Fragment>
+                  <>
                     {mTerm.sourceUri && (
                       <h6 className="card-subtitle mb-2 text-muted">
                         Name: <strong>{mTerm.sourceUri.split(/[/:]/).pop()}</strong>
@@ -351,7 +351,7 @@ const SpineTermRow = (props) => {
                     ) : (
                       ''
                     )}
-                  </React.Fragment>
+                  </>
                 }
               />
             );
@@ -367,7 +367,7 @@ const SpineTermRow = (props) => {
           )}
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

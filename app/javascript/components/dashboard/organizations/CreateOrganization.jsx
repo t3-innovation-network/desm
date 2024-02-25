@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import DashboardContainer from '../DashboardContainer';
 import createOrganization from '../../../services/createOrganization';
 import { toastr as toast } from 'react-redux-toastr';
@@ -78,7 +78,7 @@ export default class CreateOrganization extends Component {
     const { errors, organization } = this.state;
 
     return (
-      <React.Fragment>
+      <>
         <DashboardContainer>
           {errors && (
             <AlertNotice
@@ -138,7 +138,7 @@ export default class CreateOrganization extends Component {
             </div>
           </div>
         </DashboardContainer>
-      </React.Fragment>
+      </>
     );
   }
 }

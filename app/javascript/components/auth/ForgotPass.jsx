@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import TopNav from '../shared/TopNav';
 import forgotPassword from '../../services/forgotPassword';
 import AlertNotice from '../shared/AlertNotice';

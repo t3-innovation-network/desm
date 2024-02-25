@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import AlertNotice from '../components/shared/AlertNotice';
 import checkLoginStatus from './../services/checkLoginStatus';
 import { useSelector } from 'react-redux';
@@ -52,18 +52,18 @@ const App = () => {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       {loading ? (
         <Loader />
       ) : errors ? (
         <AlertNotice message={errors} onClose={() => setErrors(null)} />
       ) : (
-        <React.Fragment>
+        <>
           <ReduxToastr position="top-center" className="desm-toast" />
           <Routes handleLogin={handleLogin} />
-        </React.Fragment>
+        </>
       )}
-    </React.Fragment>
+    </>
   );
 };
 

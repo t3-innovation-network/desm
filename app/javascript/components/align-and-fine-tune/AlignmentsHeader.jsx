@@ -1,4 +1,3 @@
-import React from 'react';
 import ProgressReportBar from '../shared/ProgressReportBar';
 import Pluralize from 'pluralize';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { DraggableItemTypes } from '../shared/DraggableItemTypes';
 import DropZone from '../shared/DropZone';
 import TermCard from './TermCard';

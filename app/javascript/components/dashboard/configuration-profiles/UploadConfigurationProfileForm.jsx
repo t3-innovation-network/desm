@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import importCP from '../../../services/importCP';
 import AlertNotice from '../../shared/AlertNotice';

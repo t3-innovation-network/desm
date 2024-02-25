@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * Button to accept the mapping alignment.
  */
@@ -14,7 +12,7 @@ const AlignmentsOptions = (props) => {
   } = props;
 
   return (
-    <React.Fragment>
+    <>
       <button
         className="btn btn-dark mr-2"
         onClick={handleSaveAlignments}
@@ -40,7 +38,7 @@ const AlignmentsOptions = (props) => {
           Done
         </button>
       )}
-    </React.Fragment>
+    </>
   );
 };
 

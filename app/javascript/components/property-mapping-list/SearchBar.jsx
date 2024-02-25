@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { iterableSelectableOptions } from '../../helpers/Iterables';
 import ExpandableOptions from '../shared/ExpandableOptions';
 import { alignmentSortOptions, spineSortOptions } from './SortOptions';

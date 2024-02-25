@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import DashboardContainer from '../DashboardContainer';
 import { Link } from 'react-router-dom';
 import fetchUsers from '../../../services/fetchUsers';

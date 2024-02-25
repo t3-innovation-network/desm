@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RemovableTab, TabGroup } from '../utils';
 import ConceptSchemesWrapper from './ConceptSchemesWrapper';
 import SchemaFileMetadata from './SchemaFileMetadata';
@@ -12,7 +12,7 @@ const SingleSchemaFileWrapper = (props) => {
   }, [props.schemaFileIdx]);
 
   return (
-    <Fragment>
+    <>
       <div className="w-100">
         <SchemaFileTabs
           activeTab={activeTab}
@@ -35,7 +35,7 @@ const SingleSchemaFileWrapper = (props) => {
           </div>
         )}
       </div>
-    </Fragment>
+    </>
   );
 };
 

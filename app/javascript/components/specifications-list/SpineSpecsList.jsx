@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import deleteSpecification from '../../services/deleteSpecification';
 import fetchSpineSpecifications from '../../services/fetchSpineSpecifications';
 import { Link } from 'react-router-dom';
@@ -113,7 +113,7 @@ const SpineSpecsList = (props) => {
   }, []);
 
   return (
-    <Fragment>
+    <>
       {errors.length ? <AlertNotice message={errors} onClose={() => setErrors([])} /> : null}
 
       <ConfirmDialog
@@ -168,7 +168,7 @@ const SpineSpecsList = (props) => {
           );
         })
       )}
-    </Fragment>
+    </>
   );
 };
 

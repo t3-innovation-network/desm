@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import AlertNotice from '../shared/AlertNotice';
 import fetchAlignmentsForSpine from '../../services/fetchAlignmentsForSpine';
 import fetchDomain from '../../services/fetchDomain';

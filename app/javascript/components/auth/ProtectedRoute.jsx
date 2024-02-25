@@ -1,4 +1,3 @@
-import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toastr as toast } from 'react-redux-toastr';

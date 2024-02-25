@@ -1,4 +1,3 @@
-import React from 'react';
 import ProgressReportBar from '../shared/ProgressReportBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';

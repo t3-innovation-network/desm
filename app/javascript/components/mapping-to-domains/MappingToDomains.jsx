@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import TopNav from '../shared/TopNav';
 import Loader from '../shared/Loader';
 import fetchMapping from '../../services/fetchMapping';
@@ -264,7 +264,7 @@ const MappingToDomains = (props) => {
    */
   const SaveButtonOptions = () => {
     return (
-      <Fragment>
+      <>
         <DoneDomainMapping />
         <button
           className="btn btn-dark ml-3"
@@ -273,7 +273,7 @@ const MappingToDomains = (props) => {
         >
           {savingChanges ? <Loader noPadding={true} smallSpinner={true} /> : 'Save Changes'}
         </button>
-      </Fragment>
+      </>
     );
   };
 
@@ -412,7 +412,7 @@ const MappingToDomains = (props) => {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <EditTerm
         modalIsOpen={editingTerm}
         onRequestClose={() => {
@@ -428,7 +428,7 @@ const MappingToDomains = (props) => {
           {loading ? (
             <Loader />
           ) : (
-            <React.Fragment>
+            <>
               {/* LEFT SIDE */}
 
               <div className="col-lg-6 mh-100 p-lg-5 pt-5" style={{ overflowY: 'scroll' }}>
@@ -536,7 +536,7 @@ const MappingToDomains = (props) => {
                     message="Drag the individual properties below to the matching domains on the left to begin mapping your specification"
                   />
 
-                  <Fragment>
+                  <>
                     {/* SELECTED TERMS */}
 
                     <Draggable
@@ -577,14 +577,14 @@ const MappingToDomains = (props) => {
                       );
                     })}
                     {/* END NOT SELECTED TERMS */}
-                  </Fragment>
+                  </>
                 </div>
               </div>
-            </React.Fragment>
+            </>
           )}
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

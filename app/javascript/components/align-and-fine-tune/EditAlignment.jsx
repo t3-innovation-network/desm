@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import updateAlignment from '../../services/updateAlignment';
 import AlertNotice from '../shared/AlertNotice';

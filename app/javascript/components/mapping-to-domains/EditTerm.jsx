@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import Modal from 'react-modal';
 import fetchTerm from '../../services/fetchTerm';
 import updateTerm from '../../services/updateTerm';
@@ -294,7 +294,7 @@ export default class EditTerm extends Component {
             {loading ? (
               <Loader />
             ) : (
-              <React.Fragment>
+              <>
                 <div className="row">
                   {/* LEFT COLUMN */}
                   <div className={(uploadingVocabulary ? 'disabled-container ' : '') + 'col-6'}>
@@ -483,7 +483,7 @@ export default class EditTerm extends Component {
                         }
                       />
                     ) : (
-                      <React.Fragment>
+                      <>
                         <div style={{ height: '78%' }}>
                           <label>
                             <strong>Raw</strong>
@@ -494,7 +494,7 @@ export default class EditTerm extends Component {
                             disabled={uploadingVocabulary}
                           />
                         </div>
-                      </React.Fragment>
+                      </>
                     )}
                   </div>
                 </div>
@@ -502,7 +502,7 @@ export default class EditTerm extends Component {
                 <div className="row ">
                   <div className="col">
                     {!uploadingVocabulary && (
-                      <React.Fragment>
+                      <>
                         <button
                           className="btn btn-outline-secondary ml-2 float-right"
                           onClick={this.handleRemoveTerm}
@@ -512,11 +512,11 @@ export default class EditTerm extends Component {
                         <button className="btn btn-dark float-right" onClick={this.handleSaveTerm}>
                           Save and Exit
                         </button>
-                      </React.Fragment>
+                      </>
                     )}
                   </div>
                 </div>
-              </React.Fragment>
+              </>
             )}
           </div>
         </div>

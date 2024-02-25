@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useRef, useMemo } from 'react';
+import { useContext, useEffect, useRef, useMemo } from 'react';
 import { compact } from 'lodash';
 import TermCard from '../mapping-to-domains/TermCard';
 import AlertNotice from '../shared/AlertNotice';
@@ -267,7 +267,7 @@ const AlignAndFineTune = (props) => {
         }
       />
 
-      <Fragment>
+      <>
         {/* SELECTED TERMS */}
         <Draggable
           items={state.selectedAlignments}
@@ -281,7 +281,7 @@ const AlignAndFineTune = (props) => {
           disableClick: addingSynthetic && state.selectedAlignments.length > 0,
         })}
         {/* END NOT SELECTED TERMS */}
-      </Fragment>
+      </>
     </div>
   );
 
@@ -295,13 +295,13 @@ const AlignAndFineTune = (props) => {
         {state.loading ? (
           <Loader />
         ) : (
-          <React.Fragment>
+          <>
             {confirmDialog()}
             {/* LEFT SIDE */}
             {renderLeftSide()}
             {/* RIGHT SIDE */}
             {renderRightSide()}
-          </React.Fragment>
+          </>
         )}
       </div>
     </div>

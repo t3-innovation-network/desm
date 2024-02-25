@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import DSOMetaData from './DSOMetadata';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -54,10 +54,10 @@ const DSOInfoWrapper = () => {
   useEffect(() => setCurrentTab(0), [currentDsoIndex]);
 
   return (
-    <Fragment>
+    <>
       {dsoInfoTabs()}
       {renderTab()}
-    </Fragment>
+    </>
   );
 };
 

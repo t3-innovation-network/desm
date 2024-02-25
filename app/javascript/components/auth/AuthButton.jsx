@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { doLogout, unsetUser } from '../../actions/sessions';
@@ -40,11 +40,11 @@ const AuthButton = () => {
   /// Show "Sing in" except for sign in page
   else if (window.location.href.indexOf('sign-in') === -1) {
     return (
-      <React.Fragment>
+      <>
         <Link to={'/sign-in'} className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark">
           Sign In
         </Link>
-      </React.Fragment>
+      </>
     );
   }
   /// If the user is not signed in, but we are already in the sign in page
