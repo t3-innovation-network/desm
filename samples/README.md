@@ -1,0 +1,1 @@
+This folder contains examples of various files from previous mapping exercises such as: abstract class defintitions, mapping predicates, mapping output files, test schemas and controlled vocabularies / terms sets / enums used for testing.

@@ -8,7 +8,7 @@
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-[
+
 desm:AbstractClassMapping a rdfs:Class ;
     rdfs:label "Abstract Class Mapping"@en ;
     rdfs:comment "Resource describing mappings by one or more Data Standards Organizations (DSOs) to a single abstract class."@en ;
@@ -281,4 +281,3 @@ desm:spineTerm a rdf:Property ;
     rdfs:range rdf:Property ;
     rdfs:isDefinedBy desm:
     .
-]
