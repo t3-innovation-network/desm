@@ -310,61 +310,59 @@ const SpineTermRow = (props) => {
         </div>
 
         <div className="col-4">
-          {mappedTerms.map((mTerm) => {
-            return (
-              <Collapsible
-                expanded
-                headerContent={
-                  <div className="row">
-                    <div
-                      className="col-1 cursor-pointer"
-                      title="Revert selecting this term"
-                      onClick={() => handleRevertMapping(mTerm)}
-                    >
-                      <FontAwesomeIcon icon={faTimes} />
+          <DropZone
+            acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
+            droppedItem={{ id: term.id }}
+            cls={clsPredicate}
+            placeholder="Drag a matching property here"
+          >
+            {mappedTerms.map((mTerm) => {
+              return (
+                <Collapsible
+                  expanded
+                  headerContent={
+                    <div className="row">
+                      <div
+                        className="col-1 cursor-pointer"
+                        title="Revert selecting this term"
+                        onClick={() => handleRevertMapping(mTerm)}
+                      >
+                        <FontAwesomeIcon icon={faTimes} />
+                      </div>
+                      <div className="col-10">
+                        <strong>{mTerm.name}</strong>
+                      </div>
                     </div>
-                    <div className="col-10">
-                      <strong>{mTerm.name}</strong>
-                    </div>
-                  </div>
-                }
-                cardStyle={`with-shadow mb-2 ${predicate ? '' : 'border-warning'}`}
-                key={mTerm.id}
-                observeOutside={false}
-                bodyContent={
-                  <>
-                    {mTerm.sourceUri && (
-                      <h6 className="card-subtitle mb-2 text-muted">
-                        Name: <strong>{mTerm.sourceUri.split(/[/:]/).pop()}</strong>
-                      </h6>
-                    )}
-                    <p className="card-text">{mTerm.property.comment}</p>
-                    <p className="card-text">
-                      ID:
-                      <span>{' ' + mTerm.sourceUri}</span>
-                    </p>
-                    {alignmentHasVocabulary() ? (
-                      <VocabularyLabel
-                        onVocabularyClick={handleMatchVocabularyClick}
-                        term={mTerm}
-                      />
-                    ) : (
-                      ''
-                    )}
-                  </>
-                }
-              />
-            );
-          })}
-          {!mappedTerms.length && (
-            <DropZone
-              selectedCount={selectedAlignments.length}
-              acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
-              droppedItem={{ id: term.id }}
-              cls={withPredicate ? 'border-warning' : ''}
-              placeholder="Drag a matching property here"
-            />
-          )}
+                  }
+                  cardStyle={`with-shadow mb-2 ${predicate ? '' : 'border-warning'}`}
+                  key={mTerm.id}
+                  observeOutside={false}
+                  bodyContent={
+                    <>
+                      {mTerm.sourceUri && (
+                        <h6 className="card-subtitle mb-2 text-muted">
+                          Name: <strong>{mTerm.sourceUri.split(/[/:]/).pop()}</strong>
+                        </h6>
+                      )}
+                      <p className="card-text">{mTerm.property.comment}</p>
+                      <p className="card-text">
+                        ID:
+                        <span>{' ' + mTerm.sourceUri}</span>
+                      </p>
+                      {alignmentHasVocabulary() ? (
+                        <VocabularyLabel
+                          onVocabularyClick={handleMatchVocabularyClick}
+                          term={mTerm}
+                        />
+                      ) : (
+                        ''
+                      )}
+                    </>
+                  }
+                />
+              );
+            })}
+          </DropZone>
         </div>
       </div>
     </>

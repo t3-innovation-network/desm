@@ -2,11 +2,17 @@ import { useState } from 'react';
 import Collapsible from '../shared/Collapsible.jsx';
 import Loader from '../shared/Loader.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPencilAlt,
+  faTimes,
+  faCheck,
+  faUpDownLeftRight,
+} from '@fortawesome/free-solid-svg-icons';
+import classNames from 'classnames';
 
 /**
  * @prop {Function} onClick Actions when the user clicks on it
- * @prop {Boolean} disableClick Whether we allow to click on this card. If true, it wil trigger onClick
+ * @prop {Boolean} disableClick Whether we allow to click on this card. If true, it will trigger onClick
  * @prop {Object} term The term object
  * @prop {String} origin The name of the organization that created the term specification
  * @prop {Boolean} alwaysEnabled Whether after dragged it remains available to drag again
@@ -60,36 +66,37 @@ const TermCard = ({ term, editEnabled, disableClick, ...props }) => {
     </div>
   );
 
+  const headerCls = classNames({ 'cursor-pointer': !disableClick });
+
   // The content of the header (The component when it's shrinked)
   const termHeaderContent = () => (
-    <div className="row">
-      <div className={'col-8 mb-3' + (disableClick || term.selected ? '' : ' cursor-pointer')}>
-        <strong>{term.name}</strong>
-      </div>
-      <div className="col-4">
-        <div className="float-right">
-          {editEnabled && (
-            <button onClick={() => props.onEditClick(term)} className="btn">
-              <FontAwesomeIcon icon={faPencilAlt} />
-            </button>
-          )}
-        </div>
-      </div>
+    <div className={headerCls}>
+      {!disableClick && <FontAwesomeIcon className="mr-2" icon={faUpDownLeftRight} />}
+      <strong>{term.name}</strong>
+      {editEnabled && (
+        <button onClick={() => props.onEditClick(term)} className="btn">
+          <FontAwesomeIcon icon={faPencilAlt} />
+        </button>
+      )}
     </div>
   );
+
+  const cardCls = classNames('term-card with-shadow draggable mb-2', {
+    'term-selected': term.selected,
+  });
+  const cardHeaderCls = classNames({ 'cursor-pointer': !disableClick || !term.selected });
 
   return props.isMapped(term) && !props.alwaysEnabled ? (
     disabledTermCard()
   ) : (
     <Collapsible
       expanded={props.expanded === undefined ? true : props.expanded}
-      cardStyle={
-        'term-card with-shadow draggable mb-2' + (term.selected ? ' draggable term-selected' : '')
-      }
-      cardHeaderStyle={'no-color-header pb-0'}
-      cardHeaderColStyle={disableClick ? '' : term.selected ? '' : 'cursor-pointer'}
+      bodyStyle={'pt-2'}
+      cardStyle={cardCls}
+      cardHeaderStyle={'no-color-header'}
+      cardHeaderColStyle={cardHeaderCls}
       handleOnClick={disableClick ? null : handleTermClick}
-      headerContent={termHeaderContent()}
+      headerContent={props.headerContent || termHeaderContent()}
       bodyContent={
         <>
           <h6 className="card-subtitle mb-2 text-muted">

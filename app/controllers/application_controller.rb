@@ -74,7 +74,9 @@ class ApplicationController < ActionController::Base
   # @description: Returns a pundit user object
   ###
   def pundit_user
-    UserContext.new(current_user, organization: current_organization, configuration_profile: current_configuration_profile, configuration_profile_user: current_configuration_profile_user)
+    UserContext.new(current_user, organization: current_organization,
+                                  configuration_profile: current_configuration_profile,
+                                  configuration_profile_user: current_configuration_profile_user)
   end
 
   ###

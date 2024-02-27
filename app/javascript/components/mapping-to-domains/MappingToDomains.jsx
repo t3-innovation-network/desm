@@ -130,19 +130,21 @@ const MappingToDomains = (props) => {
   /**
    * Action to perform after a term is dropped
    */
-  const afterDropTerm = () => {
-    /// Mark the terms as not selected and mapped
-    let tempTerms = selectedTerms;
+  const afterDropTerm = (_spineTerm, items) => {
+    // Mark the terms as not selected and mapped
+    let tempTerms = [...terms];
     tempTerms.forEach((termToMap) => {
-      termToMap.mapped = true;
-      termToMap.selected = !termToMap.selected;
+      if (items.some((item) => item.id === termToMap.id)) {
+        termToMap.mapped = true;
+        termToMap.selected = false;
+      }
     });
 
-    /// Count the amont of changes
-    setChangesPerformed(changesPerformed + tempTerms.length);
+    // Count the amont of changes
+    setChangesPerformed(changesPerformed + items.length);
 
-    /// Refresh the UI
-    setTerms([...terms]);
+    // update the state
+    setTerms(tempTerms);
   };
 
   /**
@@ -213,7 +215,7 @@ const MappingToDomains = (props) => {
     let tempTerms = [...terms];
     let term = tempTerms.find((t) => t.id == termId);
 
-    /// Revert the mapping without interact with the API.
+    // Revert the mapping without interact with the API.
     if (term.mapped) {
       term.mapped = false;
       setTerms(tempTerms);
@@ -221,23 +223,23 @@ const MappingToDomains = (props) => {
       return;
     }
 
-    /// Update through the api service
+    // Update through the api service
     let response = await deleteMappingSelectedTerm({
       mappingId: mapping.id,
       termId: termId,
     });
 
-    /// Handle errors
+    // Handle errors
     if (response.error) {
       toast.error(response.error);
       return;
     }
 
-    /// Update the mapping selected terms
+    // Update the mapping selected terms
     let tempMapping = mapping;
     tempMapping.selected_terms = tempMapping.selected_terms.filter((term) => term.id !== termId);
 
-    /// Update the UI
+    // Update the UI
     setMapping(tempMapping);
     setTerms([...terms]);
 
@@ -334,8 +336,8 @@ const MappingToDomains = (props) => {
     if (response.error) {
       setErrors([...errors, response.error]);
     }
-    /// It will return a truthy value (depending no the existence
-    /// of the errors on the response object)
+    // It will return a truthy value (depending no the existence
+    // of the errors on the response object)
     return !_.isUndefined(response.error);
   }
 
@@ -469,6 +471,7 @@ const MappingToDomains = (props) => {
                       domain={domain}
                       mappedTerms={mappedTerms}
                       selectedTermsCount={selectedTerms.length}
+                      onRevertMapping={handleRevertMapping}
                     />
                   )}
                 </div>
@@ -487,20 +490,6 @@ const MappingToDomains = (props) => {
                   <div className="col-6">
                     <h6 className="subtitle">{organization.name}</h6>
                   </div>
-                  <div className="col-6">
-                    <div className="form-check float-right">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value={hideMapped}
-                        onChange={(e) => setHideMapped(!hideMapped)}
-                        id="hideElems"
-                      />
-                      <label className="form-check-label" htmlFor="hideElems">
-                        Hide mapped properties
-                      </label>
-                    </div>
-                  </div>
                 </div>
 
                 <div className="row">
@@ -516,14 +505,29 @@ const MappingToDomains = (props) => {
                   </div>
                 </div>
 
-                <p>
-                  <strong>{selectedTerms.length}</strong>{' '}
-                  {' ' + Pluralize('property', selectedTerms.length) + ' selected'}
-                  <button className="btn btn-link" onClick={toggleSelectAll}>
-                    {selectedTerms.length ? 'Deselect' : 'Select'} All
-                  </button>
-                </p>
-
+                <div className="row">
+                  <div className="col-6">
+                    <strong>{selectedTerms.length}</strong>{' '}
+                    {' ' + Pluralize('property', selectedTerms.length) + ' selected'}
+                    <button className="btn btn-link py-0" onClick={toggleSelectAll}>
+                      {selectedTerms.length ? 'Deselect' : 'Select'} All
+                    </button>
+                  </div>
+                  <div className="col-6">
+                    <div className="form-check float-right">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value={hideMapped}
+                        onChange={(_e) => setHideMapped(!hideMapped)}
+                        id="hideElems"
+                      />
+                      <label className="form-check-label" htmlFor="hideElems">
+                        Hide mapped properties
+                      </label>
+                    </div>
+                  </div>
+                </div>
                 <div className="mt-5">
                   <AlertNotice
                     cssClass="bg-col-primary col-background"
@@ -565,15 +569,21 @@ const MappingToDomains = (props) => {
                       return hideMapped && termIsMapped(term) ? (
                         ''
                       ) : (
-                        <TermCard
+                        <Draggable
                           key={term.id}
-                          term={term}
-                          onClick={onTermClick}
-                          isMapped={termIsMapped}
-                          editEnabled={true}
-                          onEditClick={onEditTermClick}
-                          onRevertMapping={handleRevertMapping}
-                        />
+                          items={[term]}
+                          itemType={DraggableItemTypes.PROPERTIES_SET}
+                          afterDrop={afterDropTerm}
+                        >
+                          <TermCard
+                            term={term}
+                            onClick={onTermClick}
+                            isMapped={termIsMapped}
+                            editEnabled={true}
+                            onEditClick={onEditTermClick}
+                            onRevertMapping={handleRevertMapping}
+                          />
+                        </Draggable>
                       );
                     })}
                     {/* END NOT SELECTED TERMS */}
