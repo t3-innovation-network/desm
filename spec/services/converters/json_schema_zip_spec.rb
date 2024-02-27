@@ -8,9 +8,7 @@ RSpec.describe Converters::JsonSchemaZip do
     let(:result) { described_class.convert(file) }
 
     let(:file) do
-      Rack::Test::UploadedFile.new(
-        Rails.root.join("spec", "fixtures", "ims.zip")
-      )
+      Rack::Test::UploadedFile.new(file_fixture("ims.zip"))
     end
 
     it "converts zipped JSON schemata to JSON-LD" do

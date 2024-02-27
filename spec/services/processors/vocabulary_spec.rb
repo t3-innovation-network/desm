@@ -7,9 +7,7 @@ RSpec.describe Processors::Vocabularies do
     let(:file_content) { File.read(file) }
     let(:configuration_profile) { create(:configuration_profile) }
     let(:file) do
-      Rack::Test::UploadedFile.new(
-        Rails.root.join("spec", "fixtures", "DisabilityLevelCodeList.json")
-      )
+      Rack::Test::UploadedFile.new(file_fixture("DisabilityLevelCodeList.json"))
     end
 
     it "creates a vocabulary with its concepts" do

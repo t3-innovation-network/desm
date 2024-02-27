@@ -8,7 +8,7 @@ RSpec.describe Converters::RdfXml do
     let(:result) { described_class.convert(file) }
 
     let(:file) do
-      Rack::Test::UploadedFile.new(Rails.root.join("spec", "fixtures", filename))
+      Rack::Test::UploadedFile.new(file_fixture(filename))
     end
 
     context "ASN" do

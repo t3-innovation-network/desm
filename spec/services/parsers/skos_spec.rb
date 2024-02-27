@@ -5,9 +5,7 @@ require "rails_helper"
 RSpec.describe Parsers::Skos do
   let(:file_content) { File.read(file) }
   let(:file) do
-    Rack::Test::UploadedFile.new(
-      Rails.root.join("spec", "fixtures", "desmMappingPredicates.json")
-    )
+    Rack::Test::UploadedFile.new(file_fixture("desmMappingPredicates.json"))
   end
 
   describe ".scheme_nodes" do

@@ -8,9 +8,7 @@ RSpec.describe Converters::XmlSchema do
     let(:result) { described_class.convert(file) }
 
     let(:file) do
-      Rack::Test::UploadedFile.new(
-        Rails.root.join("spec", "fixtures", "pesc.xml")
-      )
+      Rack::Test::UploadedFile.new(file_fixture("pesc.xml"))
     end
 
     it "converts XML schema to JSON-LD" do
