@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe CreateMappingPredicates, type: :interactor do
   describe ".call" do
-    let(:test_json_body) { JSON.parse(File.read(Rails.root.join("concepts", "desmMappingPredicates.json"))) }
+    let(:test_json_body) { json_fixture("desmMappingPredicates.json") }
 
     after(:all) do
       DatabaseCleaner.clean_with(:truncation)

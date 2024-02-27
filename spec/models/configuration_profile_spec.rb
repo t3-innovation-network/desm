@@ -35,16 +35,8 @@ require "rails_helper"
 
 describe ConfigurationProfile do
   before(:all) do
-    @complete_structure = JSON.parse(
-      File.read(
-        Rails.root.join("spec", "fixtures", "complete.configuration.profile.json")
-      )
-    )
-    @valid_structure_with_invalid_email = JSON.parse(
-      File.read(
-        Rails.root.join("spec", "fixtures", "valid.configuration.profile.with.invalid.email.json")
-      )
-    )
+    @complete_structure = json_fixture("complete.configuration.profile.json")
+    @valid_structure_with_invalid_email = json_fixture("valid.configuration.profile.with.invalid.email.json")
   end
 
   context "predicates strongest match" do

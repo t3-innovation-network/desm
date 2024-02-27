@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe CreateConceptScheme, type: :interactor do
   describe ".call" do
-    let(:test_uri) { Rails.root.join("spec", "fixtures", "DisabilityLevelCodeList.json") }
+    let(:test_uri) { file_fixture("DisabilityLevelCodeList.json") }
 
     after(:all) do
       DatabaseCleaner.clean_with(:truncation)

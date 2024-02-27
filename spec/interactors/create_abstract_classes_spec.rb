@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe CreateAbstractClasses, type: :interactor do
   describe ".call" do
-    let(:test_json_body) { JSON.parse(File.read(Rails.root.join("concepts", "desmAbstractClasses.json"))) }
+    let(:test_json_body) { json_fixture("desmAbstractClasses.json") }
 
     after(:all) do
       DatabaseCleaner.clean_with(:truncation)

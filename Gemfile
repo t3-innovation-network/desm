@@ -102,15 +102,15 @@ group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "factory_bot_rails"
   gem "faker"
-  gem "rspec-rails", "~> 4.0.1"
+  gem "rspec-rails"
   # Use rubocop to ensure our code is clean
   gem "rubocop", "~> 1.60", require: false
   # Disable rubocop for specs for now, too many offenses
   # gem "rubocop-rspec", require: false
   gem "shoulda-matchers"
   gem "traceroute"
-  gem "vcr", "~> 6.0"
-  gem "webmock", "~> 3.13"
+  gem "vcr", "~> 6.2"
+  gem "webmock", "~> 3.23"
 end
 
 group :development do

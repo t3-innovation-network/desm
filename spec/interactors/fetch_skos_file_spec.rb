@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe FetchSkosFile, type: :interactor do
   describe ".call" do
-    let(:test_uri) { Rails.root.join("concepts", "desmAbstractClasses.json") }
+    let(:test_uri) { file_fixture("desmAbstractClasses.json") }
 
     it "rejects creation if uri is not passed" do
       result = described_class.call
