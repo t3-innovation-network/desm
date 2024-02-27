@@ -78,7 +78,9 @@ const EditConfigurationProfile = (props) => {
         <Loader />
       ) : (
         <div className="col mt-5">
-          {errors && <AlertNotice message={errors} />}
+          {errors && (
+            <AlertNotice message={errors} onClose={() => dispatch(setEditCPErrors(null))} />
+          )}
           <div className="row cp-container justify-content-center h-100">
             <div className="col-3">
               <div className="row justify-content-center h-100">

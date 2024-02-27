@@ -332,10 +332,7 @@ const MappingToDomains = (props) => {
    */
   function anyError(response) {
     if (response.error) {
-      let tempErrors = errors;
-      tempErrors.push(response.error);
-      setErrors([]);
-      setErrors(tempErrors);
+      setErrors([...errors, response.error]);
     }
     /// It will return a truthy value (depending no the existence
     /// of the errors on the response object)
@@ -426,7 +423,7 @@ const MappingToDomains = (props) => {
       />
       <div className="container-fluid d-flex flex-column h-100">
         <TopNav centerContent={navCenterOptions} />
-        {errors.length ? <AlertNotice message={errors} /> : ''}
+        {errors.length ? <AlertNotice message={errors} onClose={() => setErrors([])} /> : ''}
         <div className="row overflow-auto">
           {loading ? (
             <Loader />

@@ -9,8 +9,6 @@ const LeftSideHome = () => (
       <Link
         to="/mappings-list"
         className="btn wide-btn btn-dark"
-        data-toggle="tooltip"
-        data-placement="top"
         title="See all the finished mappings to a specification (or a specific domain)"
       >
         View Shared Mappings
@@ -30,8 +28,6 @@ const LeftSideHome = () => (
       <Link
         to="/new-mapping"
         className="btn wide-btn btn-dark"
-        data-toggle="tooltip"
-        data-placement="top"
         title="Create a mapping between 2 specifications"
       >
         New Mapping

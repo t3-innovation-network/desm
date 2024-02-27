@@ -56,8 +56,7 @@ const SpineSpecsList = (props) => {
    */
   function anyError(response, errorsList, updateErrors) {
     if (response.error) {
-      errorsList.push(response.error);
-      updateErrors([...new Set(errorsList)]);
+      updateErrors([...errorsList, response.error]);
     }
     /// It will return a truthy value (depending no the existence
     /// of the errors on the response object)
@@ -115,7 +114,7 @@ const SpineSpecsList = (props) => {
 
   return (
     <Fragment>
-      {errors.length ? <AlertNotice message={errors} /> : null}
+      {errors.length ? <AlertNotice message={errors} onClose={() => setErrors([])} /> : null}
 
       <ConfirmDialog
         onRequestClose={() => {
@@ -125,7 +124,9 @@ const SpineSpecsList = (props) => {
         onConfirm={() => handleRemoveSpine()}
         visible={confirmingRemove}
       >
-        {errorsWhileRemoving.length ? <AlertNotice message={errorsWhileRemoving} /> : null}
+        {errorsWhileRemoving.length ? (
+          <AlertNotice message={errorsWhileRemoving} onClose={() => setErrorsWhileRemoving([])} />
+        ) : null}
         <h2 className="text-center">You are removing the spine</h2>
         <h5 className="mt-3 text-center">Please confirm this action.</h5>
       </ConfirmDialog>
@@ -151,8 +152,6 @@ const SpineSpecsList = (props) => {
                 <Link
                   to={'/specifications/' + spine.id}
                   className="btn btn-sm btn-dark ml-2"
-                  data-toggle="tooltip"
-                  data-placement="top"
                   title="Edit the spine. You can edit each property here."
                 >
                   <FontAwesomeIcon icon={faPencilAlt} />
@@ -160,8 +159,6 @@ const SpineSpecsList = (props) => {
                 <button
                   onClick={() => handleConfirmRemove(spine.id)}
                   className="btn btn-sm btn-dark ml-2"
-                  data-toggle="tooltip"
-                  data-placement="top"
                   title="Remove the spine"
                 >
                   <FontAwesomeIcon icon={faTrash} />

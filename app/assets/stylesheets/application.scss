@@ -1,4 +1,9 @@
 @import 'colors';
+@import 'customradio';
+@import 'drag-n-drop';
+@import 'forms';
+@import 'navbar';
+@import 'stepper';
 @import 'utilities';
 
 /* General */
@@ -258,6 +263,9 @@ a:hover {
 }
 
 /* Others */
+button[disabled] {
+  pointer-events: auto;
+}
 
 .desm-tooltip {
   color: $primary-color;

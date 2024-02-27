@@ -280,8 +280,6 @@ export default class SpecsList extends Component {
                   <button
                     className="btn btn-sm btn-dark ml-2"
                     onClick={() => this.handleMarkToInProgress(mapping.id)}
-                    data-toggle="tooltip"
-                    data-placement="top"
                     title="Mark this mapping back to 'in progress'"
                   >
                     <FontAwesomeIcon icon={faUndo} />
@@ -290,8 +288,6 @@ export default class SpecsList extends Component {
                   <Link
                     to={'/mappings/' + mapping.id + '/align'}
                     className="btn btn-sm btn-dark ml-2"
-                    data-toggle="tooltip"
-                    data-placement="top"
                     title="Edit this mapping"
                   >
                     <FontAwesomeIcon icon={faPencilAlt} />
@@ -302,8 +298,6 @@ export default class SpecsList extends Component {
               <Link
                 to={`/mappings-list?abstractClass=${mapping.domain}`}
                 className="btn btn-sm btn-dark ml-2"
-                data-toggle="tooltip"
-                data-placement="top"
                 title="View this mapping"
               >
                 <FontAwesomeIcon icon={faEye} />
@@ -312,8 +306,6 @@ export default class SpecsList extends Component {
               <button
                 className="btn btn-sm btn-dark ml-2"
                 onClick={() => this.handleExportMapping(mapping)}
-                data-toggle="tooltip"
-                data-placement="top"
                 title="Export this mapping"
               >
                 <FontAwesomeIcon icon={faDownload} />
@@ -326,8 +318,6 @@ export default class SpecsList extends Component {
                     <button
                       className="btn btn-sm btn-dark ml-2"
                       onClick={() => this.handleMarkToUploaded(mapping.id)}
-                      data-toggle="tooltip"
-                      data-placement="top"
                       title="Mark this mapping back to 'uploaded'"
                     >
                       <FontAwesomeIcon icon={faUndo} />
@@ -345,8 +335,6 @@ export default class SpecsList extends Component {
                         '/mappings/' + mapping.id + '/align'
                   }
                   className="btn btn-sm ml-2 bg-col-primary col-background"
-                  data-toggle="tooltip"
-                  data-placement="top"
                   title="Resume, continue mapping"
                 >
                   <FontAwesomeIcon icon={faLayerGroup} />
@@ -359,8 +347,6 @@ export default class SpecsList extends Component {
             <button
               onClick={() => this.handleConfirmRemove(mapping.id)}
               className="btn btn-sm btn-dark ml-2"
-              data-toggle="tooltip"
-              data-placement="top"
               title="Remove this mapping"
             >
               <FontAwesomeIcon icon={faTrash} />

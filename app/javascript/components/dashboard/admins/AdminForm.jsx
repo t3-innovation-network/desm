@@ -39,7 +39,7 @@ const AdminForm = ({ record, onCancel, onSave }) => {
 
       <div className="card-body">
         <form onSubmit={handleSubmit}>
-          {error && <AlertNotice message={error} />}
+          {error && <AlertNotice message={error} onClose={() => setError(null)} />}
 
           <div className="form-group">
             <label htmlFor="fullname">Full Name</label>

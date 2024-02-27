@@ -194,8 +194,6 @@ const AbstractClasses = () => {
               className="btn btn-dark ml-2"
               onClick={handleFetchUrl}
               disabled={!origin}
-              data-toggle="tooltip"
-              data-placement="bottom"
               title="Fetch the concepts"
             >
               {loading ? <Loader noPadding smallSpinner /> : 'Fetch'}
@@ -207,8 +205,6 @@ const AbstractClasses = () => {
             <button
               className="btn btn-dark ml-auto"
               onClick={() => setUrlEditable(true)}
-              data-toggle="tooltip"
-              data-placement="bottom"
               title="Edit the origin Url"
             >
               Edit
@@ -275,8 +271,6 @@ const AbstractClassesTable = ({ abstractClassesLabels }) => {
                   <button
                     className="btn btn-sm btn-dark ml-2"
                     onClick={() => handleGetMappingExportProfile(concept['label'])}
-                    data-toggle="tooltip"
-                    data-placement="top"
                     title="Export corresponding mapping export profile for this abstract class"
                   >
                     <FontAwesomeIcon icon={faDownload} />

@@ -11,8 +11,6 @@ const TopNavOptions = (props) => {
             <Link
               to="/mappings"
               className="nav-link nav-title-highlighted"
-              data-toggle="tooltip"
-              data-placement="top"
               title="See the list of your specifications (and those of your organization)"
             >
               View Mappings
@@ -24,8 +22,6 @@ const TopNavOptions = (props) => {
             <Link
               to="/new-mapping"
               className="btn wide-btn btn-outline-secondary"
-              data-toggle="tooltip"
-              data-placement="top"
               title="Create a mapping between 2 specifications"
             >
               New Mapping

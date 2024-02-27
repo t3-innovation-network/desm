@@ -96,8 +96,6 @@ const SpecsPreviewTabs = (props) => {
                     onClick={() => {
                       handleRemoveVocabulary(i);
                     }}
-                    data-toggle="tooltip"
-                    data-placement="top"
                     title="Remove this vocabulary"
                     disabled={disabled}
                   >
