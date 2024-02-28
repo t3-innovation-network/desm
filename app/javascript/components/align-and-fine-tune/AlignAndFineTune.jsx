@@ -42,9 +42,7 @@ const AlignAndFineTune = (props) => {
   );
 
   // Mark the term as "selected"
-  const onSelectedTermClick = (clickedTerm) => {
-    if (!clickedTerm.mappedTo) actions.markMappingTermSelected(clickedTerm);
-  };
+  const onSelectedTermClick = (clickedTerm) => actions.markMappingTermSelected(clickedTerm);
 
   // Link the predicate to the corresponding mapping term
   const onPredicateSelected = (spineTerm, predicate) =>

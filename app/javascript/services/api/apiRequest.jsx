@@ -1,3 +1,4 @@
+import { camelizeKeys } from 'humps';
 import apiService, { processMessage } from './apiService';
 /**
  * Manages the api requests
@@ -7,6 +8,8 @@ import apiService, { processMessage } from './apiService';
  * - url: The relative url (without the base) to hit
  *
  * - method: The HTTP method (get, post, patch, put, delete)
+ *
+ * - camelizeKeys: If the response should be camelized or not, should become a default eventually
  *
  * - [defaultResponse]: The default response if something bad happens but
  * we manage handle hit (it could be an empty string or an empty array).
@@ -51,7 +54,7 @@ const apiRequest = async (props) => {
     responseData = {};
     responseData[props.successResponse] = response.data;
   }
-  return responseData;
+  return props.camelizeKeys ? camelizeKeys(responseData) : responseData;
 };
 
 /**

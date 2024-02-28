@@ -69,7 +69,7 @@ export const noMatchPredicate = (predicate) =>
   (isString(predicate) && predicate.toLowerCase().includes('no match')) ||
   predicate?.source_uri?.toLowerCase()?.includes('nomatch');
 
-const filterTerms = (terms, inputValue, options = { pickSelected: false }) => {
+export const filterTerms = (terms, inputValue, options = { pickSelected: false }) => {
   const searchValue = inputValue.toLowerCase();
   const searchBy = (term) =>
     term.name.toLowerCase().includes(searchValue) ||
@@ -494,7 +494,7 @@ export const mappingStore = (initialData = {}) => ({
    * Fetch changes from the api service. This is only used to get the exact date
    * when the mapping changed from "in-progress" to "mapped".
    */
-  handleFetchMappingChanges: thunk(async (actions, params = {}, h) => {
+  handleFetchMappingChanges: thunk(async (actions, _params = {}, h) => {
     const state = h.getState();
     if (state.mapping.status === 'mapped') {
       let response = await fetchAudits({
