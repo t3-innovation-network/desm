@@ -20,6 +20,8 @@ gem "rack-cors", require: "rack/cors"
 ###
 # REST OF THE DEPENDENCIES
 
+gem "active_model_serializers", "~> 0.10.0"
+
 # Audit changes
 gem "audited", "~> 4.9"
 
@@ -32,7 +34,7 @@ gem "httparty"
 gem "interactor-rails", "~> 2.0"
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem "jbuilder", "~> 2.7"
+# gem "jbuilder", "~> 2.7"
 
 gem "json_schema_tools", "~> 0.6"
 

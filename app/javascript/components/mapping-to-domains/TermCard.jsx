@@ -100,7 +100,7 @@ const TermCard = ({ term, editEnabled, disableClick, ...props }) => {
       bodyContent={
         <>
           <h6 className="card-subtitle text-muted">
-            Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
+            Name: <strong>{term.title}</strong>
           </h6>
           <p className="card-text">{term.property.comment}</p>
           <p className="card-text">{'ID: ' + term.sourceUri}</p>

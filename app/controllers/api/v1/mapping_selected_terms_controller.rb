@@ -17,7 +17,7 @@ module API
         # Proceed to create the mapping terms
         @instance.update_selected_terms(params[:term_ids])
 
-        render json: @instance, include: :selected_terms
+        render json: @instance, spine: true
       end
 
       ###
@@ -25,7 +25,7 @@ module API
       #   to the one passed in params
       ###
       def show
-        render json: @instance.selected_terms.order(:source_uri), include: %i(property vocabularies)
+        render json: @instance.selected_terms.includes(%i(property vocabularies)).order(:source_uri)
       end
 
       ###
@@ -44,7 +44,7 @@ module API
             .each { |a| a.update!(mapped_terms: [], predicate: nil) }
         end
 
-        render json: @instance, include: :selected_terms
+        render json: @instance
       end
 
       private

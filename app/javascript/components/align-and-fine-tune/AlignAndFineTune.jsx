@@ -135,7 +135,6 @@ const AlignAndFineTune = (props) => {
             term={term}
             alignment={state.alignmentForSpineTerm(term.id)}
             predicates={predicates}
-            selectedAlignments={state.selectedAlignments}
             mappedTermsToSpineTerm={state.mappedTermsToSpineTerm}
             origin={mapping.origin}
             spineOrigin={mapping.spine_origin}
@@ -261,7 +260,7 @@ const AlignAndFineTune = (props) => {
         title={`${mappingSelectedTerms.length} ${Pluralize(
           'property',
           mappingSelectedTerms.length
-        )} have been selected from from the original specification`}
+        )} have been selected from ${mapping.specification.name}.`}
         message={
           'Now you can drag and drop them to map them individually a property in the spine or click on several and drag them to map them as a group.'
         }

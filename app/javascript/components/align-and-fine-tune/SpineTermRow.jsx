@@ -32,7 +32,6 @@ const SpineTermRow = (props) => {
     origin,
     onRevertMapping,
     predicates,
-    selectedAlignments,
     spineOrigin,
     term,
   } = props;
@@ -270,9 +269,9 @@ const SpineTermRow = (props) => {
             observeOutside={false}
             bodyContent={
               <>
-                {term.sourceUri && (
+                {term.title && (
                   <h6 className="card-subtitle text-muted">
-                    Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
+                    Name: <strong>{term.title}</strong>
                   </h6>
                 )}
                 <p className="card-text">{term.property.comment}</p>
@@ -339,9 +338,9 @@ const SpineTermRow = (props) => {
                   observeOutside={false}
                   bodyContent={
                     <>
-                      {mTerm.sourceUri && (
+                      {mTerm.title && (
                         <h6 className="card-subtitle text-muted">
-                          Name: <strong>{mTerm.sourceUri.split(/[/:]/).pop()}</strong>
+                          Name: <strong>{mTerm.title}</strong>
                         </h6>
                       )}
                       <p className="card-text">{mTerm.property.comment}</p>

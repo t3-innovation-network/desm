@@ -98,7 +98,7 @@ class User < ApplicationRecord
   end
 
   def super_admin?
-    role?(:"super admin")
+    role?(Desm::ADMIN_ROLE_NAME.downcase.to_sym)
   end
 
   def update_role(role_id)

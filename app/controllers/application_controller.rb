@@ -40,25 +40,26 @@ class ApplicationController < ActionController::Base
   # @description: Returns the current configuration profile
   ###
   def current_configuration_profile
-    id = session[:current_configuration_profile_id]
-    configuration_profile = ConfigurationProfile.find_by(id:) if id
-    return configuration_profile if configuration_profile
-
-    current_user&.configuration_profiles&.first
+    @current_configuration_profile ||= begin
+      id = session[:current_configuration_profile_id]
+      configuration_profile = ConfigurationProfile.find_by(id:) if id
+      configuration_profile || current_user&.configuration_profiles&.first
+    end
   end
 
   ###
   # @description: Returns the current configuration profile/user connection
   ###
   def current_configuration_profile_user
-    current_configuration_profile&.configuration_profile_users&.find_by(user: current_user)
+    @current_configuration_profile_user ||=
+      current_configuration_profile&.configuration_profile_users&.find_by(user: current_user)
   end
 
   ###
   # @description: Returns the current organization
   ###
   def current_organization
-    current_configuration_profile_user&.organization
+    @current_organization ||= current_configuration_profile_user&.organization
   end
 
   ###
@@ -74,8 +75,7 @@ class ApplicationController < ActionController::Base
   # @description: Returns a pundit user object
   ###
   def pundit_user
-    UserContext.new(current_user, organization: current_organization,
-                                  configuration_profile: current_configuration_profile,
+    UserContext.new(current_user, configuration_profile: current_configuration_profile,
                                   configuration_profile_user: current_configuration_profile_user)
   end
 

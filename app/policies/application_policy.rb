@@ -75,7 +75,7 @@ class ApplicationPolicy
   private
 
   def admin_role?
-    @user.user.role?(Desm::ADMIN_ROLE_NAME.downcase.to_sym)
+    @user.user.super_admin?
   end
 
   def signed_in?
