@@ -14,7 +14,7 @@ export default class DesmTabs extends Component {
     const { values, selectedId, onTabClick } = this.props;
 
     return (
-      <div className="row mt-5">
+      <div className="row mt-4">
         {values.map((value) => (
           <span
             className={`badge badge-${selectedId === value.id ? 'primary' : 'secondary'} m-2`}

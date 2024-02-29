@@ -15,7 +15,7 @@ const SideBar = () => {
   return (
     <>
       <aside className="p-0 col-background">
-        <nav className="navbar navbar-expand bg-dashboard-background flex-md-column flex-row mt-5 align-items-start no-sides-padding">
+        <nav className="navbar navbar-expand bg-dashboard-background flex-md-column flex-row mt-4 align-items-start no-sides-padding">
           <div className="collapse navbar-collapse w-100">
             <ul className="flex-md-column flex-row navbar-nav w-100 justify-content-between">
               <li className="nav-item">

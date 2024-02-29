@@ -84,7 +84,7 @@ const ResetPass = (props) => {
   return (
     <div className="container-fluid">
       <TopNav centerContent={navCenterOptions} />
-      <div className="row mt-5">
+      <div className="row mt-4">
         <div className="col-lg-6 mx-auto">
           {errors && <AlertNotice message={errors} onClose={() => setErrors('')} />}
 

@@ -271,7 +271,7 @@ const SpineTermRow = (props) => {
             bodyContent={
               <>
                 {term.sourceUri && (
-                  <h6 className="card-subtitle mb-2 text-muted">
+                  <h6 className="card-subtitle text-muted">
                     Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
                   </h6>
                 )}
@@ -340,7 +340,7 @@ const SpineTermRow = (props) => {
                   bodyContent={
                     <>
                       {mTerm.sourceUri && (
-                        <h6 className="card-subtitle mb-2 text-muted">
+                        <h6 className="card-subtitle text-muted">
                           Name: <strong>{mTerm.sourceUri.split(/[/:]/).pop()}</strong>
                         </h6>
                       )}

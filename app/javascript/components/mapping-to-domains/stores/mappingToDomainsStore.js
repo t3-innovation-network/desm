@@ -1,7 +1,7 @@
 import { action, computed, thunk } from 'easy-peasy';
-import { isEmpty, isString, remove, sortBy, uniqBy } from 'lodash';
+import { remove } from 'lodash';
 import { toastr as toast } from 'react-redux-toastr';
-import { baseModel, nextId } from '../../stores/baseModel';
+import { baseModel } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
 import deleteMappingSelectedTerm from '../../../services/deleteMappingSelectedTerm';
 import fetchMapping from '../../../services/fetchMapping';
@@ -108,7 +108,7 @@ export const mappingToDomainsStore = (initialData = {}) => ({
 
   // thunks
   // Domain mappping complete. Confirm to save status in the backend
-  handleDoneAlignment: thunk(async (actions, _params = {}, h) => {
+  handleDoneDomainMapping: thunk(async (actions, _params = {}, h) => {
     const state = h.getState();
     const result = await actions.handleSaveChanges({ partiallySave: false });
     if (result) {

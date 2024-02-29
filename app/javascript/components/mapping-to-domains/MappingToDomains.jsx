@@ -148,7 +148,7 @@ const MappingToDomains = (props) => {
           ) : (
             <>
               {/* LEFT SIDE */}
-              <div className="col-lg-6 mh-100 p-lg-5 pt-5" style={{ overflowY: 'scroll' }}>
+              <div className="col-lg-7 col-6 mh-100 p-lg-5 pt-5" style={{ overflowY: 'scroll' }}>
                 <div className="border-bottom">
                   <h6 className="subtitle">2. Add the properties to the proper domain</h6>
                   <h1>Mapping {mapping.name}</h1>
@@ -179,7 +179,7 @@ const MappingToDomains = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className="mt-5">
+                <div className="mt-4">
                   {/* DOMAINS */}
                   <DomainCard
                     domain={domain}
@@ -196,7 +196,7 @@ const MappingToDomains = (props) => {
               {/* RIGHT SIDE */}
 
               <div
-                className="bg-col-secondary col-lg-6 mh-100 p-lg-5 pt-5"
+                className="bg-col-secondary col-lg-5 col-6 mh-100 p-lg-5 pt-5"
                 style={{ overflowY: 'scroll' }}
               >
                 <div className="row">
@@ -241,7 +241,7 @@ const MappingToDomains = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className="mt-5">
+                <div className="mt-4">
                   <AlertNotice
                     cssClass="bg-col-primary col-background"
                     title={
@@ -250,7 +250,7 @@ const MappingToDomains = (props) => {
                       Pluralize('property', terms.length) +
                       ' have been uploaded'
                     }
-                    message="Drag the individual properties below to the matching domains on the left to begin mapping your specification"
+                    message="Now you can drag and drop them to the matching domain on the left individually or click on several/select all and drag them as a group to begin maping your specification."
                   />
 
                   <>

@@ -20,7 +20,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { AppContextProvider } from '../contexts/AppContext';
 
 import '../styles/application.scss';
-import '../../assets/stylesheets/application';
 
 const store = createStore(
   allReducers,
