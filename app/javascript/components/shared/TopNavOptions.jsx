@@ -1,10 +1,10 @@
-import React from 'react';
+import {} from 'react';
 import { Link } from 'react-router-dom';
 import Stepper from './../mapping/Stepper';
 
 const TopNavOptions = (props) => {
   return (
-    <React.Fragment>
+    <>
       <ul className="navbar-nav mr-auto">
         {props.viewMappings && (
           <li className="nav-item selected-item mt-0 ml-0 ml-lg-3 mr-0 mr-lg-3">
@@ -41,7 +41,7 @@ const TopNavOptions = (props) => {
       ) : (
         ''
       )}
-    </React.Fragment>
+    </>
   );
 };
 

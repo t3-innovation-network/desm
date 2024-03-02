@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrentConfigurationProfile,
@@ -99,7 +99,7 @@ const SchemaFilesWrapper = () => {
   }, [currentCP, currentDSOIndex]);
 
   return (
-    <Fragment>
+    <>
       {confirmationVisible && (
         <ConfirmDialog
           onRequestClose={() => setConfirmationVisible(false)}
@@ -126,7 +126,7 @@ const SchemaFilesWrapper = () => {
           text={`This DSO did not specify any schema files information yet. You can add a schema file by clicking on the "+" button`}
         />
       )}
-    </Fragment>
+    </>
   );
 };
 

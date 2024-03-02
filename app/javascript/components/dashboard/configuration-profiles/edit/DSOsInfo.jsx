@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrentConfigurationProfile,
@@ -93,7 +93,7 @@ const DSOsInfo = () => {
   };
 
   return (
-    <Fragment>
+    <>
       {confirmationVisible && (
         <ConfirmDialog
           onRequestClose={() => setConfirmationVisible(false)}
@@ -126,7 +126,7 @@ const DSOsInfo = () => {
           }
         </div>
       )}
-    </Fragment>
+    </>
   );
 };
 

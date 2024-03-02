@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import { Component } from 'react';
 import AlertNotice from '../shared/AlertNotice';
 import Loader from '../shared/Loader';
 import ProgressReportBar from '../shared/ProgressReportBar';
@@ -125,7 +125,7 @@ export default class PropertyCard extends Component {
     const { currentMappingWeight, errors, loading, maxMappingWeight } = this.state;
 
     return (
-      <Fragment>
+      <>
         {/* ERRORS */}
         {errors.length ? (
           <AlertNotice message={errors} onClose={() => this.setState({ errors: [] })} />
@@ -160,7 +160,7 @@ export default class PropertyCard extends Component {
             )}
           </div>
         </div>
-      </Fragment>
+      </>
     );
   }
 }

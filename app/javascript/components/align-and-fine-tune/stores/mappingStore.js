@@ -1,5 +1,5 @@
 import { action, computed, thunk } from 'easy-peasy';
-import { isEmpty, isString, remove, sortBy } from 'lodash';
+import { isEmpty, isString, remove, sortBy, uniqBy } from 'lodash';
 import { toastr as toast } from 'react-redux-toastr';
 import { baseModel, nextId } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
@@ -233,13 +233,14 @@ export const mappingStore = (initialData = {}) => ({
     state.addingSynthetic = false;
   }),
   // After the user drags a mapping term to the spine, we need to mark it as mapped
-  afterDropTerm: action((state, { spineTerm }) => {
+  afterDropTerm: action((state, { spineTerm, items }) => {
     state.loading = true;
     try {
       let alignment = state.alignments.find((alg) => alg.spineTermId === spineTerm.id);
-      let selectedTerms = state.mappingSelectedTerms.filter((term) => term.selected);
+      const ids = items.map((item) => item.id);
+      let selectedTerms = state.mappingSelectedTerms.filter((term) => ids.includes(term.id));
       // Set the selected terms as mapped for the mapping terms dropped on
-      alignment.mappedTerms = selectedTerms;
+      alignment.mappedTerms = uniqBy(alignment.mappedTerms.concat(selectedTerms), 'id');
       alignment.changed = true;
 
       // Manage synthetic name (valid only when the spine term is synthetic)
@@ -254,6 +255,10 @@ export const mappingStore = (initialData = {}) => ({
     } finally {
       state.loading = false;
     }
+  }),
+  clearTermsSelection: action((state) => {
+    // Deselect terms
+    state.mappingSelectedTerms.forEach((term) => (term.selected = false));
   }),
   /**
    * Get the alignment to its previous state
@@ -270,7 +275,7 @@ export const mappingStore = (initialData = {}) => ({
    * predicate and mapped terms.
    * @param {Object} mappedTerm The mapped term that's going to be detached from the mapping term
    */
-  handleRevertMapping: action((state, { termId, mappedTerm, organization }) => {
+  handleRevertMapping: action((state, { termId, mappedTerm, organization, origin }) => {
     let alignment = state.alignments.find((alg) => alg.spineTermId === termId);
     alignment.changed = true;
     alignment.previousMappedTerms = [...alignment.mappedTerms];
@@ -282,10 +287,7 @@ export const mappingStore = (initialData = {}) => ({
       alignment.previousPredicateId = alignment.predicateId;
       alignment.predicateId = null;
       // If it's a synthetic alignment, and we added it, let's remove it
-      if (
-        alignment.synthetic &&
-        alignment.origin.toLowerCase() === organization.name.toLowerCase()
-      ) {
+      if (alignment.synthetic && origin?.toLowerCase() === organization.name.toLowerCase()) {
         state.alignmentToRemove = alignment;
         state.confirmingRemoveAlignment = true;
       }
@@ -407,7 +409,7 @@ export const mappingStore = (initialData = {}) => ({
         let message = state.noPartiallyMappedTerms
           ? 'Changes saved!'
           : 'Changes saved except highlighted partially mapped terms. Review them with "Hide Mapped Elements" filter on';
-        toast.success(message);
+        state.noPartiallyMappedTerms ? toast.success(message) : toast.warning(message);
       }
     } else {
       actions.setError(response.error);

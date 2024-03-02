@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import DashboardContainer from './DashboardContainer';
 import AlertNotice from '../shared/AlertNotice';
 import { Link } from 'react-router-dom';

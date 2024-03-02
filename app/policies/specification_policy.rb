@@ -5,21 +5,12 @@
 #   specifications.
 ###
 class SpecificationPolicy < ApplicationPolicy
-  def initialize(user, record)
-    super(user, record)
-    @user = user || @current_user
-    @record = record
-
-    # Signed in users
-    raise Pundit::NotAuthorizedError unless user.present?
-  end
-
   ###
   # @description: Determines if the user can create an instance of this resource
   # @return [TrueClass]
   ###
   def index?
     # Signed in users
-    @user.present?
+    signed_in?
   end
 end

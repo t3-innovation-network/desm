@@ -1,11 +1,3 @@
-import React from 'react';
-
-/**
- * Props
- * @param {Object} change
- * @param {Array} predicates
- * @param {Object} spineTerm
- */
 const ChangeDetails = (props) => {
   /**
    * Elements from props

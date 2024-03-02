@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   unsetFiles,
@@ -235,7 +235,7 @@ const MappingPreview = (props) => {
 
   return (
     <div className="col-lg-6 p-lg-5 pt-5 bg-col-secondary">
-      <React.Fragment>
+      <>
         {processingFile ? (
           <Loader
             message={
@@ -252,7 +252,7 @@ const MappingPreview = (props) => {
           />
         ) : (
           submitted && (
-            <React.Fragment>
+            <>
               <div className="card mb-5">
                 <div className="card-header">
                   <div className="row">
@@ -308,10 +308,10 @@ const MappingPreview = (props) => {
               ) : (
                 <SpecsPreviewTabs disabled={addingVocabulary} propertiesCount={propertiesCount} />
               )}
-            </React.Fragment>
+            </>
           )
         )}
-      </React.Fragment>
+      </>
     </div>
   );
 };

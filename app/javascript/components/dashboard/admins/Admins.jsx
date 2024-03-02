@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { toastr as toast } from 'react-redux-toastr';
 import DashboardContainer from '../DashboardContainer';

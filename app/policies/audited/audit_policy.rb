@@ -6,22 +6,13 @@
 ###
 module Audited
   class AuditPolicy < ApplicationPolicy
-    def initialize(user, record)
-      super(user, record)
-      @user = user || @current_user
-      @record = record
-
-      # Signed in users
-      raise Pundit::NotAuthorizedError unless user.present?
-    end
-
     ###
     # @description: Determines if the user can see this resource's list
     # @return [TrueClass]
     ###
     def index?
       # Signed in users
-      @user.present?
+      signed_in?
     end
   end
 end

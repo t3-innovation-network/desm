@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useRef, useMemo } from 'react';
+import { useContext, useEffect, useRef, useMemo } from 'react';
 import { compact } from 'lodash';
 import TermCard from '../mapping-to-domains/TermCard';
 import AlertNotice from '../shared/AlertNotice';
@@ -51,8 +51,8 @@ const AlignAndFineTune = (props) => {
     actions.selectPredicate({ spineTerm, predicate });
 
   // Action to perform after a mapping term is dropped
-  const afterDropTerm = (spineTerm) => {
-    actions.afterDropTerm({ spineTerm });
+  const afterDropTerm = (spineTerm, items) => {
+    actions.afterDropTerm({ spineTerm, items });
     leftColumnRef.current?.scroll(0, state.scrollTop);
   };
   /**
@@ -144,7 +144,12 @@ const AlignAndFineTune = (props) => {
             onPredicateSelected={onPredicateSelected}
             onUpdateAlignmentComment={actions.updateAlignmentComment}
             onRevertMapping={(mappedTerm) =>
-              actions.handleRevertMapping({ termId: term.id, mappedTerm, organization })
+              actions.handleRevertMapping({
+                termId: term.id,
+                mappedTerm,
+                organization,
+                origin: mapping.origin,
+              })
             }
           />
         );
@@ -219,22 +224,22 @@ const AlignAndFineTune = (props) => {
     </div>
   );
 
-  const renderFilteredTermsFor = (terms, options = { disableClick: false }) =>
-    compact(
-      terms.map((term) => {
-        return hideMappedSelectedTerms && state.selectedTermIsMapped(term) ? null : (
-          <TermCard
-            key={term.id}
-            term={term}
-            onClick={onSelectedTermClick}
-            editEnabled={false}
-            isMapped={state.selectedTermIsMapped}
-            alwaysEnabled={true}
-            disableClick={options.disableClick}
-          />
-        );
-      })
-    );
+  const filteredTermsFor = (terms) => {
+    if (!hideMappedSelectedTerms) return terms;
+    return terms.filter((term) => !state.selectedTermIsMapped(term));
+  };
+
+  const renderTermCard = (term, options = { disableClick: false }) => (
+    <TermCard
+      key={term.id}
+      term={term}
+      onClick={onSelectedTermClick}
+      editEnabled={false}
+      isMapped={state.selectedTermIsMapped}
+      alwaysEnabled={true}
+      disableClick={options.disableClick}
+    />
+  );
 
   const renderRightSide = () => (
     <div className="bg-col-secondary col-lg-4 mh-100 p-lg-5 pt-5" style={{ overflowY: 'scroll' }}>
@@ -248,6 +253,7 @@ const AlignAndFineTune = (props) => {
         mappedSelectedTerms={mappedSelectedTerms}
         mappingSelectedTermsInputValue={mappingSelectedTermsInputValue}
         filterMappingSelectedTermsOnChange={actions.filterMappingSelectedTermsOnChange}
+        clearTermsSelection={actions.clearTermsSelection}
       />
 
       {/* MAPPING TERMS LIST */}
@@ -267,21 +273,28 @@ const AlignAndFineTune = (props) => {
         }
       />
 
-      <Fragment>
+      <>
         {/* SELECTED TERMS */}
         <Draggable
-          items={state.selectedAlignments}
           itemType={DraggableItemTypes.PROPERTIES_SET}
+          items={state.selectedAlignments}
           afterDrop={afterDropTerm}
         >
-          {renderFilteredTermsFor(state.filteredMappingSelectedTerms, { disableClick: false })}
+          {filteredTermsFor(state.filteredMappingSelectedTerms).map((term) => renderTermCard(term))}
         </Draggable>
         {/* NOT SELECTED TERMS */}
-        {renderFilteredTermsFor(state.filteredMappingNotSelectedTerms, {
-          disableClick: addingSynthetic && state.selectedAlignments.length > 0,
-        })}
+        {filteredTermsFor(state.filteredMappingNotSelectedTerms).map((term) => (
+          <Draggable
+            key={term.id}
+            items={[term]}
+            itemType={DraggableItemTypes.PROPERTIES_SET}
+            afterDrop={afterDropTerm}
+          >
+            {renderTermCard(term)}
+          </Draggable>
+        ))}
         {/* END NOT SELECTED TERMS */}
-      </Fragment>
+      </>
     </div>
   );
 
@@ -295,13 +308,13 @@ const AlignAndFineTune = (props) => {
         {state.loading ? (
           <Loader />
         ) : (
-          <React.Fragment>
+          <>
             {confirmDialog()}
             {/* LEFT SIDE */}
             {renderLeftSide()}
             {/* RIGHT SIDE */}
             {renderRightSide()}
-          </React.Fragment>
+          </>
         )}
       </div>
     </div>

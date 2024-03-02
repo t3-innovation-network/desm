@@ -5,22 +5,12 @@
 #   organization records.
 ###
 class OrganizationPolicy < ApplicationPolicy
-  def initialize(user, record)
-    super(user, record)
-    @user = user || @current_user
-    @record = record
-    @admin_role_name = Desm::ADMIN_ROLE_NAME.downcase.to_sym
-
-    # Signed in users
-    raise Pundit::NotAuthorizedError unless user.present?
-  end
-
   ###
   # @description: Determines if the user can see this resource
   # @return [TrueClass]
   ###
   def show?
-    @user.role?(@admin_role_name)
+    signed_in? && admin_role?
   end
 
   ###
@@ -28,7 +18,7 @@ class OrganizationPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def create?
-    @user.role?(@admin_role_name)
+    signed_in? && admin_role?
   end
 
   ###
@@ -36,7 +26,7 @@ class OrganizationPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def update?
-    @user.role?(@admin_role_name)
+    signed_in? && admin_role?
   end
 
   ###
@@ -44,6 +34,6 @@ class OrganizationPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def destroy?
-    @user.role?(@admin_role_name)
+    signed_in? && admin_role?
   end
 end

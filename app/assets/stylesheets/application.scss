@@ -1,10 +1,11 @@
-@import 'colors';
+@import 'utils/bem';
+@import 'base/colors';
+@import 'utils/utilities';
+@import 'components/drag-n-drop';
 @import 'customradio';
-@import 'drag-n-drop';
 @import 'forms';
 @import 'navbar';
 @import 'stepper';
-@import 'utilities';
 
 /* General */
 
@@ -307,7 +308,7 @@ button[disabled] {
 }
 
 .border-warning {
-  border: 1px solid $warning-color !important;
+  border: 2px solid $warning-color !important;
 }
 
 .dashboard-active-tab {
@@ -320,7 +321,7 @@ button[disabled] {
 }
 
 .term-card {
-  min-height: 5.5rem;
+  min-height: 3rem;
 }
 
 /* Mobile */

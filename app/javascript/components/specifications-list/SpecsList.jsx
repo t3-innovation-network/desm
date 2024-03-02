@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import {} from 'react';
 import TopNav from '../shared/TopNav';
 import { Link } from 'react-router-dom';
 import fetchMappings from '../../services/fetchMappings';
@@ -373,7 +373,7 @@ export default class SpecsList extends Component {
             {loading ? (
               <Loader />
             ) : (
-              <Fragment>
+              <>
                 <ConfirmDialog
                   onRequestClose={() => this.setState({ confirmingRemove: false })}
                   onConfirm={() => this.handleRemoveMapping()}
@@ -430,7 +430,7 @@ export default class SpecsList extends Component {
                     </div>
                   )}
                 </div>
-              </Fragment>
+              </>
             )}
           </div>
         </div>

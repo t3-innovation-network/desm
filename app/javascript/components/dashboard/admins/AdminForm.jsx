@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import createAdmin from '../../../services/createAdmin';
 import updateAdmin from '../../../services/updateAdmin';
 import AlertNotice from '../../shared/AlertNotice';

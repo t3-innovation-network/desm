@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import fetchConfigurationProfile from '../../../../services/fetchConfigurationProfile';
 import AlertNotice from '../../../shared/AlertNotice';
@@ -134,7 +134,7 @@ const CPCardHeader = () => {
   }, []);
 
   return (
-    <Fragment>
+    <>
       <div className="col-4">
         <h3 className="float-left">{configurationProfile.name}</h3>
       </div>
@@ -150,7 +150,7 @@ const CPCardHeader = () => {
           {_.capitalize(configurationProfile.state)}
         </p>
       </div>
-    </Fragment>
+    </>
   );
 };
 
@@ -176,7 +176,7 @@ const PrevNextButtons = () => {
   const dispatch = useDispatch();
 
   return (
-    <Fragment>
+    <>
       {currentStep !== 1 && currentStep !== 4 && (
         <button
           className="btn btn-dark mr-3"
@@ -199,7 +199,7 @@ const PrevNextButtons = () => {
           Next
         </button>
       )}
-    </Fragment>
+    </>
   );
 };
 

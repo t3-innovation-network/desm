@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import {} from 'react';
 import moment from 'moment';
 import noDataImg from './../../../../assets/images/no-data-found.png';
 
@@ -131,7 +131,7 @@ export const NoDataFound = (props) => {
   const { text } = props;
 
   return (
-    <Fragment>
+    <>
       <div className="d-flex align-items-center justify-content-center h-100 w-100">
         <img src={noDataImg} alt="No data found" />
       </div>
@@ -139,7 +139,7 @@ export const NoDataFound = (props) => {
         <h4>Couldn&apos;t find anything here!</h4>
         <p>{text}</p>
       </div>
-    </Fragment>
+    </>
   );
 };
 
