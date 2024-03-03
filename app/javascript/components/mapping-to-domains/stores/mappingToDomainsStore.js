@@ -1,6 +1,5 @@
 import { action, computed, thunk } from 'easy-peasy';
 import { remove } from 'lodash';
-import { toastr as toast } from 'react-redux-toastr';
 import { baseModel } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
 import deleteMappingSelectedTerm from '../../../services/deleteMappingSelectedTerm';
@@ -10,6 +9,7 @@ import fetchSpecificationTerms from '../../../services/fetchSpecificationTerms';
 import updateMapping from '../../../services/updateMapping';
 import updateMappingSelectedTerms from '../../../services/updateMappingSelectedTerms';
 import { filterTerms } from '../../align-and-fine-tune/stores/mappingStore';
+import { showSuccess } from '../../../helpers/Messages';
 
 export const defaultState = {
   // status
@@ -144,7 +144,7 @@ export const mappingToDomainsStore = (initialData = {}) => ({
 
     if (state.withoutErrors(response)) {
       actions.revertTerm({ termId });
-      toast.success('Changes saved!');
+      showSuccess('Changes saved!');
     } else {
       actions.setError(response.error);
       return false;
@@ -163,7 +163,7 @@ export const mappingToDomainsStore = (initialData = {}) => ({
     if (state.withoutErrors(response)) {
       actions.setChangesPerformed(0);
       actions.setTermsMappingPersistent();
-      if (params.partiallySave) toast.success('Changes saved!');
+      if (params.partiallySave) showSuccess('Changes saved!');
     } else {
       actions.setError(response.error);
       return false;

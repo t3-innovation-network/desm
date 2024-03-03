@@ -1,11 +1,11 @@
 import { Component } from 'react';
 import DashboardContainer from '../DashboardContainer';
 import createOrganization from '../../../services/createOrganization';
-import { toastr as toast } from 'react-redux-toastr';
 import AlertNotice from '../../shared/AlertNotice';
 import { Link } from 'react-router-dom';
 import { faBuilding, faHome } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { showSuccess } from '../../../helpers/Messages';
 
 export default class CreateOrganization extends Component {
   state = {
@@ -57,7 +57,7 @@ export default class CreateOrganization extends Component {
     }
 
     if (response.success) {
-      toast.success('Organization ' + organization.name + ' was successfully created');
+      showSuccess('Organization ' + organization.name + ' was successfully created');
       this.props.history.push('/dashboard/organizations');
       return;
     }

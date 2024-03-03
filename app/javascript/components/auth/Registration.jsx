@@ -4,11 +4,11 @@ import fetchOrganizations from '../../services/fetchOrganizations';
 import fetchRoles from '../../services/fetchRoles';
 import AlertNotice from '../shared/AlertNotice';
 import createUser from '../../services/createUser';
-import { toastr as toast } from 'react-redux-toastr';
 import { Link } from 'react-router-dom';
 import Loader from '../shared/Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faHome } from '@fortawesome/free-solid-svg-icons';
+import { showSuccess } from '../../helpers/Messages';
 
 class Registration extends Component {
   state = {
@@ -104,7 +104,7 @@ class Registration extends Component {
           errors: response.error,
         });
       }
-      toast.success('User ' + fullname + ' was successfully created');
+      showSuccess('User ' + fullname + ' was successfully created');
       this.props.history.push('/dashboard/users');
     });
 

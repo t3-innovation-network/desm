@@ -6,11 +6,11 @@ import AlertNotice from '../../shared/AlertNotice';
 import fetchUser from '../../../services/fetchUser';
 import deleteUser from '../../../services/deleteUser';
 import updateUser from '../../../services/updateUser';
-import { toastr as toast } from 'react-redux-toastr';
 import { Link } from 'react-router-dom';
 import Loader from '../../shared/Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faTrash, faHome } from '@fortawesome/free-solid-svg-icons';
+import { showInfo, showSuccess } from '../../../helpers/Messages';
 
 export default class EditUser extends Component {
   state = {
@@ -67,7 +67,7 @@ export default class EditUser extends Component {
           return;
         }
 
-        toast.info('User successfully removed');
+        showInfo('User successfully removed');
         this.props.history.push('/dashboard/users');
       })
       .catch((error) => {});
@@ -144,7 +144,7 @@ export default class EditUser extends Component {
         });
         return;
       }
-      toast.success('User ' + fullname + ' (' + user_id + ') was successfully updated');
+      showSuccess('User ' + fullname + ' (' + user_id + ') was successfully updated');
       this.props.history.push('/dashboard/users');
     });
 

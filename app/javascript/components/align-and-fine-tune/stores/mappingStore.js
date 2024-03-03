@@ -1,6 +1,5 @@
 import { action, computed, thunk } from 'easy-peasy';
 import { isEmpty, isString, remove, sortBy, uniqBy } from 'lodash';
-import { toastr as toast } from 'react-redux-toastr';
 import { baseModel, nextId } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
 import fetchAlignments from '../../../services/fetchAlignments';
@@ -12,6 +11,7 @@ import fetchSpineTerms from '../../../services/fetchSpineTerms';
 import deleteAlignment from '../../../services/deleteAlignment';
 import saveAlignments from '../../../services/saveAlignments';
 import updateMapping from '../../../services/updateMapping';
+import { showSuccess, showWarning } from '../../../helpers/Messages';
 
 export const defaultState = {
   // status
@@ -375,7 +375,7 @@ export const mappingStore = (initialData = {}) => ({
     if (state.withoutErrors(response)) {
       actions.removeAlignment();
       // Communicate the operation result to the user
-      toast.success('Synthetic alignment successfully removed');
+      showSuccess('Synthetic alignment successfully removed');
     } else {
       actions.setError(response.error);
     }
@@ -395,7 +395,7 @@ export const mappingStore = (initialData = {}) => ({
     if (isEmpty(data)) {
       actions.setLoading(false);
       if (params.partiallySave) {
-        toast.warning('No changes/data to save');
+        showWarning('No changes/data to save');
       }
       return true;
     }
@@ -409,7 +409,7 @@ export const mappingStore = (initialData = {}) => ({
         let message = state.noPartiallyMappedTerms
           ? 'Changes saved!'
           : 'Changes saved except highlighted partially mapped terms. Review them with "Hide Mapped Elements" filter on';
-        state.noPartiallyMappedTerms ? toast.success(message) : toast.warning(message);
+        state.noPartiallyMappedTerms ? showSuccess(message) : showWarning(message);
       }
     } else {
       actions.setError(response.error);

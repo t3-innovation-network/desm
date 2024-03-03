@@ -16,7 +16,7 @@ import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { downloadFile } from '../../../../helpers/Export';
 import fetchMappingExportProfile from '../../../../services/fetchMappingExportProfile';
 import _ from 'lodash';
-import { toastr as toast } from 'react-redux-toastr';
+import { showError } from '../../../../helpers/Messages';
 
 const AbstractClasses = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
@@ -233,7 +233,7 @@ const AbstractClasses = () => {
 const AbstractClassesTable = ({ abstractClassesLabels }) => {
   const anyError = (response) => {
     if (response.error) {
-      toast.error(response.error);
+      showError(response.error);
     }
 
     return !_.isUndefined(response.error);

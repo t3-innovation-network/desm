@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import deleteSpecification from '../../services/deleteSpecification';
 import fetchSpineSpecifications from '../../services/fetchSpineSpecifications';
 import { Link } from 'react-router-dom';
-import { toastr as toast } from 'react-redux-toastr';
 import ConfirmDialog from '../shared/ConfirmDialog';
 import AlertNotice from '../shared/AlertNotice';
 import Loader from '../shared/Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { showSuccess } from '../../helpers/Messages';
 
 /**
  * @description A list of spine specifications from the user or all the users of the organization
@@ -80,7 +80,7 @@ const SpineSpecsList = (props) => {
     let response = await deleteSpecification(spineIdToRemove);
 
     if (!anyError(response, errorsWhileRemoving, setErrorsWhileRemoving)) {
-      toast.success('Spine removed');
+      showSuccess('Spine removed');
 
       /// Update the UI
       setSpines(spines.filter((spine) => spine.id !== spineIdToRemove));

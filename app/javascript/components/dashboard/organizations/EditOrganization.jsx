@@ -4,10 +4,10 @@ import fetchOrganization from '../../../services/fetchOrganization';
 import AlertNotice from '../../shared/AlertNotice';
 import deleteOrganization from '../../../services/deleteOrganization';
 import updateOrganization from '../../../services/updateOrganization';
-import { toastr as toast } from 'react-redux-toastr';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBuilding, faTrash, faHome } from '@fortawesome/free-solid-svg-icons';
+import { showInfo, showSuccess } from '../../../helpers/Messages';
 
 export default class EditOrganization extends Component {
   state = {
@@ -58,7 +58,7 @@ export default class EditOrganization extends Component {
         });
         return;
       }
-      toast.info('Organization successfully removed');
+      showInfo('Organization successfully removed');
       this.props.history.push('/dashboard/organizations');
     });
   }
@@ -103,7 +103,7 @@ export default class EditOrganization extends Component {
         });
         return;
       }
-      toast.success(
+      showSuccess(
         'Organization ' + organization.name + ' (' + organization.id + ') was successfully updated'
       );
       this.props.history.push('/dashboard/organizations');

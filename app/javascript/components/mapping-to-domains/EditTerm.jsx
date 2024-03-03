@@ -5,7 +5,6 @@ import updateTerm from '../../services/updateTerm';
 import Loader from '../shared/Loader';
 import ModalStyles from '../shared/ModalStyles';
 import UploadVocabulary from './UploadVocabulary';
-import { toastr as toast } from 'react-redux-toastr';
 import deleteTerm from '../../services/deleteTerm';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import fetchVocabularies from '../../services/fetchVocabularies';
@@ -18,6 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import extractVocabularies from '../../services/extractVocabularies';
 import _ from 'lodash';
+import { showInfo, showSuccess } from '../../helpers/Messages';
 
 export default class EditTerm extends Component {
   /**
@@ -139,7 +139,7 @@ export default class EditTerm extends Component {
         return;
       }
       this.props.onRequestClose();
-      toast.success('Changes Saved to  ' + this.state.term.name);
+      showSuccess('Changes Saved to  ' + this.state.term.name);
     });
   };
 
@@ -153,7 +153,7 @@ export default class EditTerm extends Component {
       }
       this.props.onRemoveTerm(this.state.term);
       this.props.onRequestClose();
-      toast.info('Term removed: ' + this.state.term.name);
+      showInfo('Term removed: ' + this.state.term.name);
     });
   };
 

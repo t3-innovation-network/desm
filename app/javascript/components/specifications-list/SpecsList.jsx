@@ -7,7 +7,6 @@ import TopNavOptions from '../shared/TopNavOptions';
 import SpineSpecsList from './SpineSpecsList';
 import _ from 'lodash';
 import ConfirmDialog from '../shared/ConfirmDialog';
-import { toastr as toast } from 'react-redux-toastr';
 import deleteMapping from '../../services/deleteMapping';
 import fetchMappingToExport from '../../services/fetchMappingToExport';
 import { downloadFile } from '../../helpers/Export';
@@ -23,6 +22,7 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { AppContext } from '../../contexts/AppContext';
+import { showSuccess } from '../../helpers/Messages';
 
 export default class SpecsList extends Component {
   static contextType = AppContext;
@@ -139,7 +139,7 @@ export default class SpecsList extends Component {
     let response = await deleteMapping(mappingIdToRemove);
 
     if (!this.anyError(response, errorsWhileRemoving)) {
-      toast.success('Mapping removed');
+      showSuccess('Mapping removed');
 
       this.setState({
         confirmingRemove: false,
@@ -191,7 +191,7 @@ export default class SpecsList extends Component {
       );
 
       /// Notify the user
-      toast.success('Status changed!');
+      showSuccess('Status changed!');
     }
 
     this.setState({ loading: false });
@@ -231,7 +231,7 @@ export default class SpecsList extends Component {
       );
 
       /// Notify the user
-      toast.success('Status changed!');
+      showSuccess('Status changed!');
     }
 
     this.setState({ loading: false });

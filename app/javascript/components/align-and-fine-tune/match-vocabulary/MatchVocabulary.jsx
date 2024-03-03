@@ -9,9 +9,9 @@ import ModalStyles from '../../shared/ModalStyles';
 import HeaderContent from './HeaderContent';
 import MappingConceptsList from './MappingConceptsList';
 import SpineConceptRow from './SpineConceptRow';
-import { toastr as toast } from 'react-redux-toastr';
 import createSyntheticVocabularyConcept from '../../../services/createSyntheticVocabularyConcept';
 import Pluralize from 'pluralize';
+import { showSuccess } from '../../../helpers/Messages';
 
 /**
  * Props
@@ -270,7 +270,7 @@ export default class MatchVocabulary extends Component {
     this.saveChangedAlignments();
     this.saveSyntheticAlignments();
 
-    toast.success('The vocabulary changes were successfully saved!');
+    showSuccess('The vocabulary changes were successfully saved!');
     onRequestClose();
   };
 

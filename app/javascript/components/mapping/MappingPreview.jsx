@@ -16,7 +16,6 @@ import {
 } from '../../actions/mappingform';
 import Loader from './../shared/Loader';
 import createSpec from '../../services/createSpec';
-import { toastr as toast } from 'react-redux-toastr';
 import createMapping from '../../services/createMapping';
 import { setVocabularies, unsetVocabularies } from '../../actions/vocabularies';
 import createVocabulary from '../../services/createVocabulary';
@@ -24,6 +23,7 @@ import { vocabName } from '../../helpers/Vocabularies';
 import UploadVocabulary from '../mapping-to-domains/UploadVocabulary';
 import Pluralize from 'pluralize';
 import extractVocabularies from '../../services/extractVocabularies';
+import { showError, showSuccess } from '../../helpers/Messages';
 
 const MappingPreview = (props) => {
   /**
@@ -146,7 +146,7 @@ const MappingPreview = (props) => {
     try {
       return vocabName(vocab['@graph']);
     } catch (error) {
-      toast.error(error);
+      showError(error);
       return '';
     }
   };
@@ -206,7 +206,7 @@ const MappingPreview = (props) => {
     );
     setCreatingVocabularies(false);
 
-    if (cantSaved) toast.success(cantSaved + ' vocabularies processed.');
+    if (cantSaved) showSuccess(cantSaved + ' vocabularies processed.');
   };
 
   /**
@@ -225,7 +225,7 @@ const MappingPreview = (props) => {
     dispatch(stopProcessingFile());
 
     if (response.error) {
-      toast.error(response.error);
+      showError(response.error);
       return;
     }
 

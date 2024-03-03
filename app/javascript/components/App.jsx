@@ -7,8 +7,9 @@ import { useDispatch } from 'react-redux';
 import Routes from './Routes';
 import Loader from './shared/Loader';
 import ReduxToastr from 'react-redux-toastr';
-import { toastr as toast } from 'react-redux-toastr';
 import { AppContext } from '../contexts/AppContext';
+import { showInfo } from '../helpers/Messages';
+import { TOASTR_OPTIONS } from '../helpers/Constants';
 
 const App = () => {
   const { setLoggedIn } = useContext(AppContext);
@@ -22,7 +23,7 @@ const App = () => {
     dispatch(doLogin());
     dispatch(setUser(data));
     setLoggedIn(true);
-    toast.info('Signed In');
+    showInfo('Signed In');
   };
 
   const checkLoginStatusAPI = async () => {
@@ -59,7 +60,14 @@ const App = () => {
         <AlertNotice message={errors} onClose={() => setErrors(null)} />
       ) : (
         <>
-          <ReduxToastr position="top-center" className="desm-toast" />
+          <ReduxToastr
+            position="top-center"
+            className="desm-toast"
+            removeOnHover={false}
+            removeOnHoverTimeOut={0}
+            timeOut={TOASTR_OPTIONS.default.timeOut}
+            preventDuplicates
+          />
           <Routes handleLogin={handleLogin} />
         </>
       )}

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import EditAlignment from './EditAlignment';
-import { toastr as toast } from 'react-redux-toastr';
 import Collapsible from '../shared/Collapsible';
 import MatchVocabulary from './match-vocabulary/MatchVocabulary';
 import DropZone from '../shared/DropZone';
@@ -10,6 +9,7 @@ import VocabularyLabel from './match-vocabulary/VocabularyLabel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { noMatchPredicate } from './stores/mappingStore';
+import { showSuccess } from '../../helpers/Messages';
 
 /**
  * Props:
@@ -167,7 +167,7 @@ const SpineTermRow = (props) => {
    */
   const handleOnPredicateUpdated = (result) => {
     if (result.saved) {
-      toast.success('Changes saved!');
+      showSuccess('Changes saved!');
 
       setPredicate(result.predicate.name);
       props.onPredicateSelected(term, result.predicate);
@@ -182,7 +182,7 @@ const SpineTermRow = (props) => {
    */
   const handleOnCommentUpdated = (result) => {
     if (result.saved) {
-      toast.success('Changes saved!');
+      showSuccess('Changes saved!');
 
       // Update the mapping term in state (if there's a comment, we need to
       // redraw in order to let the orange dot to appear)

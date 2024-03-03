@@ -2,12 +2,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toastr as toast } from 'react-redux-toastr';
 import { setUser } from '../../actions/sessions';
 import updateUser from '../../services/updateUser';
 import AlertNotice from '../shared/AlertNotice';
 import TopNav from '../shared/TopNav';
 import TopNavOptions from '../shared/TopNavOptions';
+import { showInfo } from '../../helpers/Messages';
 
 const EditProfile = ({ history }) => {
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const EditProfile = ({ history }) => {
 
     dispatch(setUser(response.user));
     history.push('/');
-    toast.info('Profile changes saved!');
+    showInfo('Profile changes saved!');
   };
 
   return (

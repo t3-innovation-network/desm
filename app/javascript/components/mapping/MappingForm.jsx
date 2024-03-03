@@ -13,7 +13,6 @@ import {
 } from '../../actions/mappingform';
 import fetchDomains from '../../services/fetchDomains';
 import fetchMergedFile from '../../services/fetchMergedFile';
-import { toastr as toast } from 'react-redux-toastr';
 import MultipleDomainsModal from './MultipleDomainsModal';
 import checkDomainsInFile from '../../services/checkDomainsInFile';
 import filterSpecification from '../../services/filterSpecification';
@@ -22,6 +21,7 @@ import { setVocabularies } from '../../actions/vocabularies';
 import { validURL } from '../../helpers/URL';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { showError } from '../../helpers/Messages';
 
 const MappingForm = () => {
   /**
@@ -235,7 +235,7 @@ const MappingForm = () => {
 
     // Check the form validity
     if (mappingFormErrors.length) {
-      toast.error('Please correct the errors first');
+      showError('Please correct the errors first');
       event.preventDefault();
       return;
     }

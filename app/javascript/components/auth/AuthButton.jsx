@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { doLogout, unsetUser } from '../../actions/sessions';
 import signOut from '../../services/signOut';
-import { toastr as toast } from 'react-redux-toastr';
 import { AppContext } from '../../contexts/AppContext';
+import { showInfo, showError } from '../../helpers/Messages';
 
 const AuthButton = () => {
   const { setLoggedIn } = useContext(AppContext);
@@ -15,14 +15,14 @@ const AuthButton = () => {
     const { error } = await signOut();
 
     if (error) {
-      toast.error(error);
+      showError(error);
       return;
     }
 
     dispatch(doLogout());
     dispatch(unsetUser());
     setLoggedIn(false);
-    toast.info('Signed Out');
+    showInfo('Signed Out');
   };
 
   /// Show "Sign Out" if the user is already signed in
