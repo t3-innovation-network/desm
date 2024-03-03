@@ -219,7 +219,7 @@ const EditSpecification = (props) => {
                 </div>
               </div>
 
-              <div className="pr-5 mt-5">
+              <div className="pr-5 mt-4">
                 <AlertNotice
                   cssClass="bg-col-primary col-background"
                   title={

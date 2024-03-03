@@ -74,7 +74,7 @@ class Term < ApplicationRecord
   end
 
   def max_mapping_weight
-    mapping_predicates.max_weight * configuration_profile.standards_organizations.count
+    configuration_profile.standards_organizations.count * mapping_predicates&.max_weight.to_f
   end
 
   ###

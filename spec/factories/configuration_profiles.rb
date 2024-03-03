@@ -39,5 +39,10 @@ FactoryBot.define do
     description { Faker::Lorem.sentence }
     json_abstract_classes { json_fixture("desmAbstractClasses.json") }
     json_mapping_predicates { json_fixture("desmMappingPredicates.json") }
+
+    trait :basic do
+      json_abstract_classes { {} }
+      json_mapping_predicates { {} }
+    end
   end
 end

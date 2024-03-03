@@ -42,9 +42,7 @@ const AlignAndFineTune = (props) => {
   );
 
   // Mark the term as "selected"
-  const onSelectedTermClick = (clickedTerm) => {
-    if (!clickedTerm.mappedTo) actions.markMappingTermSelected(clickedTerm);
-  };
+  const onSelectedTermClick = (clickedTerm) => actions.markMappingTermSelected(clickedTerm);
 
   // Link the predicate to the corresponding mapping term
   const onPredicateSelected = (spineTerm, predicate) =>
@@ -137,7 +135,6 @@ const AlignAndFineTune = (props) => {
             term={term}
             alignment={state.alignmentForSpineTerm(term.id)}
             predicates={predicates}
-            selectedAlignments={state.selectedAlignments}
             mappedTermsToSpineTerm={state.mappedTermsToSpineTerm}
             origin={mapping.origin}
             spineOrigin={mapping.spine_origin}
@@ -177,7 +174,7 @@ const AlignAndFineTune = (props) => {
         noMatchPredicateId={state.noMatchPredicateId}
         alignments={alignments}
       />
-      <div className="mt-5">
+      <div className="mt-4">
         {/* CHANGELOG */}
         {state.dateMapped && (
           <MappingChangeLog
@@ -213,9 +210,9 @@ const AlignAndFineTune = (props) => {
       )}
 
       <div className="row mb-2">
-        <h4 className="col-5">Spine Term</h4>
-        <h4 className="col-3">Mapping Predicate</h4>
-        <h4 className="col-4">Mapped Term</h4>
+        <h4 className="col-5 fs-5">Spine Term</h4>
+        <h4 className="col-3 fs-5">Mapping Predicate</h4>
+        <h4 className="col-4 fs-5">Mapped Term</h4>
       </div>
 
       {renderFilteredSpineTerms()}
@@ -259,17 +256,13 @@ const AlignAndFineTune = (props) => {
       {/* MAPPING TERMS LIST */}
 
       <AlertNotice
-        cssClass="bg-col-primary col-background mt-5"
-        title={
-          mappingSelectedTerms.length +
-          ' ' +
-          Pluralize('property', mappingSelectedTerms.length) +
-          ' have been selected from the original specification'
-        }
+        cssClass="bg-col-primary col-background mt-4"
+        title={`${mappingSelectedTerms.length} ${Pluralize(
+          'property',
+          mappingSelectedTerms.length
+        )} have been selected from ${mapping.specification.name}.`}
         message={
-          'The items below have been added to the ' +
-          _.capitalize(mapping.domain) +
-          ' domain. Now you can align them to the spine.'
+          'Now you can drag and drop them to map them individually a property in the spine or click on several and drag them to map them as a group.'
         }
       />
 

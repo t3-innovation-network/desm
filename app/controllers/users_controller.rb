@@ -3,7 +3,7 @@
 ###
 # @description: Place all the actions related to users
 ###
-class UsersController < ApplicationController
+class UsersController < API::BaseController
   before_action :authorize_with_policy
 
   ###

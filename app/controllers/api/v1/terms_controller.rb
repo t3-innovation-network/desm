@@ -12,16 +12,16 @@ module API
       # @description: All the terms from a specification
       ###
       def index
-        terms = Specification.find(params[:id]).terms
+        terms = Specification.find(params[:id]).terms.includes(:property, :vocabularies)
 
-        render json: terms, include: %i(property vocabularies)
+        render json: terms
       end
 
       ###
       # @description: Returns the term with id equal to the one passed in params
       ###
       def show
-        render json: @instance, include: %i(property vocabularies)
+        render json: @instance
       end
 
       ###
@@ -30,7 +30,7 @@ module API
       def update
         @instance.update(permitted_params)
 
-        render json: @instance, include: :property
+        render json: @instance
       end
 
       ###

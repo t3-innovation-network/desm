@@ -15,5 +15,9 @@ require "faker"
 FactoryBot.define do
   factory :role do
     name { Faker::Verb.base }
+
+    trait :admin do
+      name { DESM::ADMIN_ROLE_NAME.downcase.to_sym }
+    end
   end
 end

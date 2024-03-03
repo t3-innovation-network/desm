@@ -74,24 +74,24 @@ const TermCard = ({ term, editEnabled, disableClick, ...props }) => {
       {!disableClick && <FontAwesomeIcon className="mr-2" icon={faUpDownLeftRight} />}
       <strong>{term.name}</strong>
       {editEnabled && (
-        <button onClick={() => props.onEditClick(term)} className="btn">
+        <span onClick={() => props.onEditClick(term)} className="ml-3 cursor-pointer">
           <FontAwesomeIcon icon={faPencilAlt} />
-        </button>
+        </span>
       )}
     </div>
   );
 
-  const cardCls = classNames('term-card with-shadow draggable mb-2', {
+  const cardCls = classNames('term-card with-shadow mb-2', {
     'term-selected': term.selected,
+    draggable: !disableClick,
   });
-  const cardHeaderCls = classNames({ 'cursor-pointer': !disableClick || !term.selected });
+  const cardHeaderCls = classNames({ 'cursor-pointer': !disableClick && !term.selected });
 
   return props.isMapped(term) && !props.alwaysEnabled ? (
     disabledTermCard()
   ) : (
     <Collapsible
       expanded={props.expanded === undefined ? true : props.expanded}
-      bodyStyle={'pt-2'}
       cardStyle={cardCls}
       cardHeaderStyle={'no-color-header'}
       cardHeaderColStyle={cardHeaderCls}
@@ -99,8 +99,8 @@ const TermCard = ({ term, editEnabled, disableClick, ...props }) => {
       headerContent={props.headerContent || termHeaderContent()}
       bodyContent={
         <>
-          <h6 className="card-subtitle mb-2 text-muted">
-            Name: <strong>{term.sourceUri.split(/[/:]/).pop()}</strong>
+          <h6 className="card-subtitle text-muted">
+            Name: <strong>{term.title}</strong>
           </h6>
           <p className="card-text">{term.property.comment}</p>
           <p className="card-text">{'ID: ' + term.sourceUri}</p>
