@@ -18,6 +18,8 @@ import {
 } from '../../../../actions/configurationProfiles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { showSuccess } from '../../../../helpers/Messages';
+import useDidMountEffect from '../../../../helpers/useDidMountEffect';
 
 const EditConfigurationProfile = (props) => {
   const [loading, setLoading] = useState(true);
@@ -118,7 +120,7 @@ const CPCardHeader = () => {
 
   const timeoutId = useRef();
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     if (savingCP) {
       setShowChangesSaved(true);
 
@@ -126,6 +128,8 @@ const CPCardHeader = () => {
         setShowChangesSaved(false);
         timeoutId.current = undefined;
       }, 3000);
+    } else {
+      showSuccess('All changes saved');
     }
   }, [savingCP]);
 

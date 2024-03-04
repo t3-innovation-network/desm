@@ -40,6 +40,7 @@
 ###
 class Predicate < ApplicationRecord
   include Slugable
+  audited
 
   belongs_to :predicate_set
   validates :source_uri, presence: true, uniqueness: { scope: :predicate_set_id }

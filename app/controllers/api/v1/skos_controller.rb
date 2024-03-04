@@ -27,11 +27,15 @@ module API
       end
 
       def labels
-        parser = Parsers::Skos.new(file_content: @cp.send(params[:skos_method].to_sym))
+        response = FetchCpData.call(skos_method: params[:skos_method].to_sym, configuration_profile: @cp)
 
-        render json: {
-          concept_names: parser.concept_names
-        }
+        if response.success?
+          render json: {
+            concept_names: response.concept_names
+          }
+        else
+          render json: { error: response.error }, status: :unprocessable_entity
+        end
       end
 
       private

@@ -31,6 +31,8 @@
 ###
 class PredicateSet < ApplicationRecord
   include Slugable
+  audited
+
   validates :source_uri, presence: true
   validates :title, presence: true
 

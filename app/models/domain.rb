@@ -39,6 +39,7 @@
 ###
 class Domain < ApplicationRecord
   include Slugable
+  audited
 
   ALIAS_CLASSNAME = "AbstractClass"
   belongs_to :domain_set

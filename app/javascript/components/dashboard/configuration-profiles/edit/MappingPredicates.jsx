@@ -62,7 +62,7 @@ const MappingPredicates = () => {
       return;
     }
 
-    setJsonMappingPredicates(skosFile);
+    // setJsonMappingPredicates(skosFile);
     setUrlEditable(false);
     setLoading(false);
     saveChanges({ ...buildCpData(), jsonMappingPredicates: skosFile });

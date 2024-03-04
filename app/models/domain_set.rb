@@ -31,6 +31,8 @@
 ###
 class DomainSet < ApplicationRecord
   include Slugable
+  audited
+
   validates :source_uri, presence: true
   validates :title, presence: true
   has_one :configuration_profile

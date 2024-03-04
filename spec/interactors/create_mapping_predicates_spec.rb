@@ -6,10 +6,6 @@ RSpec.describe CreateMappingPredicates, type: :interactor do
   describe ".call" do
     let(:test_json_body) { json_fixture("desmMappingPredicates.json") }
 
-    after(:all) do
-      DatabaseCleaner.clean_with(:truncation)
-    end
-
     it "rejects creation if json body is not passed" do
       result = described_class.call
 

@@ -65,7 +65,7 @@ const AbstractClasses = () => {
       return;
     }
 
-    setJsonAbstractClasses(skosFile);
+    // setJsonAbstractClasses(skosFile);
     setUrlEditable(false);
     setLoading(false);
     saveChanges({ ...buildCpData(), jsonAbstractClasses: skosFile });
@@ -134,7 +134,7 @@ const AbstractClasses = () => {
             className="form-control input-lg"
             placeholder="The name of the skos file."
             value={name}
-            onChange={(e) => setName(event.target.value)}
+            onChange={(e) => setName(e.target.value)}
             onBlur={() => saveChanges()}
             autoFocus
           />
@@ -151,7 +151,7 @@ const AbstractClasses = () => {
             placeholder="The version of the skos file"
             maxLength={5}
             value={version}
-            onChange={(e) => setVersion(event.target.value)}
+            onChange={(e) => setVersion(e.target.value)}
             onBlur={() => saveChanges()}
           />
         </div>
@@ -165,7 +165,7 @@ const AbstractClasses = () => {
             className="form-control input-lg"
             placeholder="A description what the skos file represents."
             value={description}
-            onChange={(e) => setDescription(event.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
             rows={5}
             onBlur={() => saveChanges()}
           />

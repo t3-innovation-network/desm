@@ -6,10 +6,6 @@ RSpec.describe CreateAbstractClasses, type: :interactor do
   describe ".call" do
     let(:test_json_body) { json_fixture("desmAbstractClasses.json") }
 
-    after(:all) do
-      DatabaseCleaner.clean_with(:truncation)
-    end
-
     it "rejects creation if json body is not passed" do
       result = described_class.call
 

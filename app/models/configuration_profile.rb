@@ -39,6 +39,7 @@
 ###
 class ConfigurationProfile < ApplicationRecord
   include Slugable
+  audited
 
   belongs_to :abstract_classes, class_name: "DomainSet", foreign_key: :domain_set_id, optional: true
   belongs_to :mapping_predicates, class_name: "PredicateSet", foreign_key: :predicate_set_id, optional: true
@@ -61,6 +62,9 @@ class ConfigurationProfile < ApplicationRecord
   before_save :check_predicate_strongest_match, if: :predicate_strongest_match_changed?
   after_save :create_new_entities, if: :active?
   before_destroy :remove_orphan_organizations
+
+  after_update :update_abstract_classes, if: :saved_change_to_json_abstract_classes?
+  after_update :update_predicates, if: :saved_change_to_json_mapping_predicates?
 
   # The possible states
   # 0. "incomplete" It does not have a complete structure attribute.
@@ -185,5 +189,19 @@ class ConfigurationProfile < ApplicationRecord
 
       organization.destroy
     end
+  end
+
+  def update_abstract_classes
+    return if abstract_classes.nil? || json_abstract_classes.nil?
+
+    interactor = UpdateAbstractClasses.call(domain_set: abstract_classes, json_body: json_abstract_classes)
+    raise interactor.error unless interactor.success?
+  end
+
+  def update_predicates
+    return if mapping_predicates.nil? || json_mapping_predicates.nil?
+
+    interactor = UpdateMappingPredicates.call(predicate_set: mapping_predicates, json_body: json_mapping_predicates)
+    raise interactor.error unless interactor.success?
   end
 end

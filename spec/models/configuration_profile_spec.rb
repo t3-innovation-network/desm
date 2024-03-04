@@ -396,4 +396,26 @@ describe ConfigurationProfile do
       expect { configuration_profile2.destroy }.to(change(Organization, :count).by(-1))
     end
   end
+
+  context "when callbacks are triggered" do
+    context "when predicates are updated" do
+      let(:configuration_profile) { create(:configuration_profile, :with_mapping_predicates, predicates_count: 0) }
+
+      it "triggers the update_predicates callback" do
+        expect(UpdateMappingPredicates).to receive(:call).and_return(double(success?: true))
+        expect(UpdateAbstractClasses).not_to receive(:call)
+        configuration_profile.update!(json_mapping_predicates: [{ "prefLabel" => "test" }])
+      end
+    end
+
+    context "when abstract classes are updated" do
+      let(:configuration_profile) { create(:configuration_profile, :with_abstract_classes, abstract_classes_count: 0) }
+
+      it "triggers the update_abstract_classes callback" do
+        expect(UpdateAbstractClasses).to receive(:call).and_return(double(success?: true))
+        expect(UpdateMappingPredicates).not_to receive(:call)
+        configuration_profile.update!(json_abstract_classes: [{ "prefLabel" => "test" }])
+      end
+    end
+  end
 end
