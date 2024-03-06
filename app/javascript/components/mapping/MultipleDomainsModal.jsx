@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import Modal from 'react-modal';
 import HoverableText from '../shared/HoverableText';
 import ModalStyles from '../shared/ModalStyles';

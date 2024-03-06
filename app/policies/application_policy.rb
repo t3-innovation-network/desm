@@ -14,6 +14,9 @@ class ApplicationPolicy
   def initialize(user, record)
     @user = user
     @record = record
+
+    # Signed in users
+    raise Pundit::NotAuthorizedError unless user.present?
   end
 
   ###
@@ -67,5 +70,15 @@ class ApplicationPolicy
     def resolve
       scope.all
     end
+  end
+
+  private
+
+  def admin_role?
+    @user.user.super_admin?
+  end
+
+  def signed_in?
+    @user.user.present?
   end
 end

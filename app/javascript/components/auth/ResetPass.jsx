@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TopNav from '../shared/TopNav';
 import resetPassword from '../../services/resetPassword';
 import AlertNotice from '../shared/AlertNotice';
 import TopNavOptions from '../shared/TopNavOptions';
 import { Link } from 'react-router-dom';
-import { toastr as toast } from 'react-redux-toastr';
 import queryString from 'query-string';
 import Loader from './../shared/Loader';
 import { encode } from '../../helpers/Encoder';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faKey, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { showSuccess } from '../../helpers/Messages';
 
 const ResetPass = (props) => {
   /**
@@ -60,7 +60,7 @@ const ResetPass = (props) => {
       setWorking(false);
 
       /// Notify the user
-      toast.success('Your password was successfully updated! Please try signing in now.');
+      showSuccess('Your password was successfully updated! Please try signing in now.');
 
       /// Redirect the user to the sign in page
       props.history.push('/sign-in');
@@ -84,9 +84,9 @@ const ResetPass = (props) => {
   return (
     <div className="container-fluid">
       <TopNav centerContent={navCenterOptions} />
-      <div className="row mt-5">
+      <div className="row mt-4">
         <div className="col-lg-6 mx-auto">
-          {errors && <AlertNotice message={errors} />}
+          {errors && <AlertNotice message={errors} onClose={() => setErrors('')} />}
 
           {_.isEmpty(token) ? (
             <AlertNotice message={'No token provided'} />

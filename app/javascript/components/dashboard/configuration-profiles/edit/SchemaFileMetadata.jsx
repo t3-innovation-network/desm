@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrentConfigurationProfile,
@@ -95,7 +95,7 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
   }, [abstractClass]);
 
   return (
-    <Fragment>
+    <>
       <div className="mt-5">
         <label htmlFor="filename">
           File Name
@@ -209,7 +209,7 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
           select one so each schema file can be related to an abstract class.
         </p>
       )}
-    </Fragment>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import FileInfo from '../mapping/FileInfo';
 import { validVocabulary, vocabName, countConcepts } from '../../helpers/Vocabularies';
 import AlertNotice from '../shared/AlertNotice';
@@ -80,7 +80,7 @@ const UploadVocabulary = (props) => {
    * File content to be displayed after
    * file upload is complete
    *
-   * @returns {React.Fragment}
+   * @returns {React.}
    */
   const FileData = () => {
     return file != null ? (
@@ -309,8 +309,8 @@ const UploadVocabulary = (props) => {
    * Render
    */
   return (
-    <Fragment>
-      {errors.length ? <AlertNotice message={errors} /> : ''}
+    <>
+      {errors.length ? <AlertNotice message={errors} onClose={() => setErrors([])} /> : ''}
       <div className="card">
         <div className="card-header">
           <div className="row">
@@ -365,7 +365,7 @@ const UploadVocabulary = (props) => {
           </form>
         </div>
       </div>
-    </Fragment>
+    </>
   );
 };
 

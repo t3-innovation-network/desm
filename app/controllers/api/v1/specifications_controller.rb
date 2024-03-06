@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class SpecificationsController < ApplicationController
+    class SpecificationsController < BaseController
       ###
       # @description: Create a specification with its terms. Store it from an already
       #   filtered JSON object

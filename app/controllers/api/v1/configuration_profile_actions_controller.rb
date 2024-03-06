@@ -4,7 +4,7 @@ class InvalidConfigurationProfileAction < StandardError; end
 
 module API
   module V1
-    class ConfigurationProfileActionsController < ApplicationController
+    class ConfigurationProfileActionsController < BaseController
       before_action :with_instance, only: :call_action
 
       def call_action

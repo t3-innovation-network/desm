@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import importCP from '../../../services/importCP';
 import AlertNotice from '../../shared/AlertNotice';
@@ -56,7 +56,7 @@ const UploadConfigurationProfileForm = () => {
     <div className="col">
       {error ? (
         <div className="mt-3">
-          <AlertNotice message={error} />
+          <AlertNotice message={error} onClose={() => setError(null)} />
         </div>
       ) : (
         ''

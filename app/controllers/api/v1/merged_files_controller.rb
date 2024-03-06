@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class MergedFilesController < ApplicationController
+    class MergedFilesController < BaseController
       before_action :with_instance
 
       ###

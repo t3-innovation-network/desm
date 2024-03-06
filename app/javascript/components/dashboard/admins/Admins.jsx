@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import { toastr as toast } from 'react-redux-toastr';
 import DashboardContainer from '../DashboardContainer';
 import deleteAdmin from '../../../services/deleteAdmin';
 import fetchAdmins from '../../../services/fetchAdmins';
 import ModalStyles from '../../shared/ModalStyles';
 import AdminForm from './AdminForm';
+import { showError, showInfo } from '../../../helpers/Messages';
 
 const Admins = () => {
   Modal.setAppElement('body');
@@ -18,12 +18,12 @@ const Admins = () => {
       const { error } = await deleteAdmin(admin.id);
 
       if (error) {
-        toast.error(error);
+        showError(error);
         return;
       }
 
       setAdmins((admins) => admins.filter((a) => a.id != admin.id));
-      toast.info('Admin user removed!');
+      showInfo('Admin user removed!');
     }
   };
 
@@ -32,10 +32,10 @@ const Admins = () => {
       const index = admins.findIndex((a) => a.id === toBeEdited.id);
       admins[index] = admin;
       setAdmins(admins);
-      toast.info('Changes saved!');
+      showInfo('Changes saved!');
     } else {
       setAdmins([admin, ...admins]);
-      toast.info('New admin user added!');
+      showInfo('New admin user added!');
     }
 
     setToBeEdited(undefined);

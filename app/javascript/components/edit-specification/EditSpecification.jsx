@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import fetchSpine from '../../services/fetchSpine';
 import fetchSpineTerms from '../../services/fetchSpineTerms';
@@ -172,7 +172,7 @@ const EditSpecification = (props) => {
   }, []);
 
   return (
-    <Fragment>
+    <>
       <EditTerm
         modalIsOpen={editingTerm}
         onRequestClose={() => {
@@ -219,7 +219,7 @@ const EditSpecification = (props) => {
                 </div>
               </div>
 
-              <div className="pr-5 mt-5">
+              <div className="pr-5 mt-4">
                 <AlertNotice
                   cssClass="bg-col-primary col-background"
                   title={
@@ -240,7 +240,6 @@ const EditSpecification = (props) => {
                         isMapped={() => false}
                         editEnabled={true}
                         onEditClick={onEditTermClick}
-                        origin={term.organization.name}
                         disableClick={true}
                       />
                     );
@@ -251,7 +250,7 @@ const EditSpecification = (props) => {
           )}
         </div>
       </div>
-    </Fragment>
+    </>
   );
 };
 

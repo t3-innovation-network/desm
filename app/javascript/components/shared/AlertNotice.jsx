@@ -1,4 +1,4 @@
-import React from 'react';
+import { isArray, isEmpty } from 'lodash';
 
 /**
  * @description Renders an Alert box with a title and a message
@@ -16,31 +16,33 @@ const AlertNotice = (props) => {
    */
   const { cssClass, title, message, onClose } = props;
 
+  if (isEmpty(message)) return null;
+
+  const renderError = () => {
+    if (isArray(message) && message.length > 1) {
+      return (
+        <ul>
+          {message.map((msg, i) => (
+            <li key={i}>{msg}</li>
+          ))}
+        </ul>
+      );
+    } else {
+      return <p>{isArray(message) ? message[0] : message}</p>;
+    }
+  };
+
   return (
     <div className={'alert alert-dismissible ' + (cssClass ? cssClass : 'alert-danger')}>
       <h4>
         <strong>{title ? title : 'Attention!'}</strong>
       </h4>
-      {_.isArray(message) ? (
-        message.map((msg, i) => {
-          return (
-            <ul key={i}>
-              <li>{msg}</li>
-            </ul>
-          );
-        })
-      ) : (
-        <p>{message}</p>
+      {renderError()}
+      {onClose && (
+        <button type="button" className="close" aria-label="Close" onClick={onClose}>
+          <span aria-hidden="true">&times;</span>
+        </button>
       )}
-      <button
-        type="button"
-        className="close"
-        data-dismiss={!onClose && 'alert'}
-        aria-label="Close"
-        onClick={onClose}
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
     </div>
   );
 };

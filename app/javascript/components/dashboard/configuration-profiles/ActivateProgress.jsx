@@ -1,5 +1,4 @@
 import Modal from 'react-modal';
-import React from 'react';
 import { SlideInDown } from '../../shared/Animations';
 import { CenteredRoundedCard } from './utils';
 import Loader from '../../shared/Loader';

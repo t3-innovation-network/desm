@@ -16,6 +16,10 @@ class SaveAlignments
         end
       end
     end
+  rescue ActiveRecord::RecordInvalid => e
+    context.fail!(error: e.record.errors.full_messages.join(". "))
+  rescue ArgumentError => e
+    context.fail!(error: e.message)
   end
 
   private

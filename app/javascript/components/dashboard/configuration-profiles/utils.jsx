@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import {} from 'react';
 import moment from 'moment';
 import noDataImg from './../../../../assets/images/no-data-found.png';
 
@@ -79,8 +79,6 @@ export const SmallRemovableTab = ({
         textOverflow: 'ellipsis',
         maxHeight: '31px',
       }}
-      data-toggle="tooltip"
-      data-placement="bottom"
       title={tooltipMsg}
       onClick={tabClickHandler}
     >
@@ -94,8 +92,6 @@ export const SmallRemovableTab = ({
         right: '5px',
         maxHeight: '31px',
       }}
-      data-toggle="tooltip"
-      data-placement="bottom"
       title="Click to remove this item"
       onClick={(event) => {
         event.stopPropagation();
@@ -122,8 +118,6 @@ export const AddTabBtn = (props) => {
   return (
     <span
       className="p-2 text-center border rounded bg-dashboard-background-highlight col-background font-weight-bold cursor-pointer"
-      data-toggle="tooltip"
-      data-placement="top"
       title={tooltipMsg || 'Add new tab'}
       onClick={onClickHandler}
       style={{ maxWidth: '50px', fontSize: 'large' }}
@@ -137,7 +131,7 @@ export const NoDataFound = (props) => {
   const { text } = props;
 
   return (
-    <Fragment>
+    <>
       <div className="d-flex align-items-center justify-content-center h-100 w-100">
         <img src={noDataImg} alt="No data found" />
       </div>
@@ -145,7 +139,7 @@ export const NoDataFound = (props) => {
         <h4>Couldn&apos;t find anything here!</h4>
         <p>{text}</p>
       </div>
-    </Fragment>
+    </>
   );
 };
 
@@ -196,8 +190,6 @@ export const ToggleBtn = (props) => {
         textOverflow: 'ellipsis',
         maxHeight: '31px',
       }}
-      data-toggle="tooltip"
-      data-placement="bottom"
       title="Upload a File"
       onClick={onClick}
     >

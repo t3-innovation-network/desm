@@ -27,5 +27,17 @@ FactoryBot.define do
     configuration_profile_user
     name { Faker::Name.unique.first_name }
     domain
+
+    trait :with_terms do
+      transient do
+        terms_count { 1 }
+      end
+
+      after(:create) do |spine, evaluator|
+        terms = create_list(:term, evaluator.terms_count,
+                            configuration_profile_user: spine.configuration_profile_user)
+        spine.terms << terms
+      end
+    end
   end
 end

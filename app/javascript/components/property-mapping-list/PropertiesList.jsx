@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import AlertNotice from '../shared/AlertNotice';
 import fetchAlignmentsForSpine from '../../services/fetchAlignmentsForSpine';
 import fetchDomain from '../../services/fetchDomain';
@@ -112,12 +112,8 @@ export default class PropertiesList extends Component {
    * @param {HttpResponse} response
    */
   anyError(response) {
-    const { errors } = this.state;
-
     if (response.error) {
-      let tempErrors = errors;
-      tempErrors.push(response.error);
-      this.setState({ errors: tempErrors });
+      this.setState({ errors: [...this.state.errors, response.error] });
     }
     /// It will return a truthy value (depending no the existence
     /// of the error on the response object)
@@ -253,7 +249,7 @@ export default class PropertiesList extends Component {
       <Loader />
     ) : errors.length ? (
       /* ERRORS */
-      <AlertNotice message={errors} />
+      <AlertNotice message={errors} onClose={() => this.setState({ errors: [] })} />
     ) : spineExists ? (
       this.filteredProperties().map((term) => {
         return (

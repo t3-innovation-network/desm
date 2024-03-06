@@ -1,4 +1,3 @@
-import React from 'react';
 import mappingProcess from '../../../assets/images/mapping-process.png';
 
 const RightSideHome = () => (

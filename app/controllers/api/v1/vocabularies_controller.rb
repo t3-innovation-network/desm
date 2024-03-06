@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class VocabulariesController < ApplicationController
+    class VocabulariesController < BaseController
       before_action :authorize_with_policy
 
       ###

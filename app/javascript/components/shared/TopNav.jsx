@@ -1,4 +1,4 @@
-import React from 'react';
+import {} from 'react';
 import { Link } from 'react-router-dom';
 import AuthButton from '../auth/AuthButton';
 import DashboardBtn from './DashboardBtn';
@@ -8,7 +8,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 const TopNav = (props) => {
   return (
-    <React.Fragment>
+    <>
       <nav className="navbar navbar-with-border with-shadow navbar-expand-lg pr-3">
         <div className="col-sm-6 col-md-3 col-lg-2">
           <div className="navbar-header">
@@ -58,7 +58,7 @@ const TopNav = (props) => {
           </div>
         </div>
       </nav>
-    </React.Fragment>
+    </>
   );
 };
 

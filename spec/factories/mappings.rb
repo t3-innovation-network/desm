@@ -41,5 +41,17 @@ FactoryBot.define do
         configuration_profile_user:
       )
     end
+
+    trait :with_selected_terms do
+      transient do
+        selected_terms_count { 1 }
+      end
+
+      after(:create) do |mapping, evaluator|
+        terms = create_list(:term, evaluator.selected_terms_count,
+                            configuration_profile_user: mapping.configuration_profile_user)
+        mapping.selected_terms << terms
+      end
+    end
   end
 end

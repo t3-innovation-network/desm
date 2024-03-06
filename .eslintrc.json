@@ -4,12 +4,12 @@
     "es2021": true
   },
   "globals": {
-    "$": false,
     "_": false
   },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
     "prettier"
   ],
   "overrides": [

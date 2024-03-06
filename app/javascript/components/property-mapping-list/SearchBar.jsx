@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { iterableSelectableOptions } from '../../helpers/Iterables';
 import ExpandableOptions from '../shared/ExpandableOptions';
 import { alignmentSortOptions, spineSortOptions } from './SortOptions';
@@ -111,7 +111,7 @@ export default class SearchBar extends Component {
     } = this.state;
 
     return (
-      <div className="row mt-5">
+      <div className="row mt-4">
         <div className="col-3">
           <hr className="bottom-border-white" />
           <div className="form-group input-group-has-icon">

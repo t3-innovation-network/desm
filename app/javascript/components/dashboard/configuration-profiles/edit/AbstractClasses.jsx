@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import updateCP from '../../../../services/updateCP';
 import {
@@ -16,7 +16,7 @@ import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { downloadFile } from '../../../../helpers/Export';
 import fetchMappingExportProfile from '../../../../services/fetchMappingExportProfile';
 import _ from 'lodash';
-import { toastr as toast } from 'react-redux-toastr';
+import { showError } from '../../../../helpers/Messages';
 
 const AbstractClasses = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
@@ -194,8 +194,6 @@ const AbstractClasses = () => {
               className="btn btn-dark ml-2"
               onClick={handleFetchUrl}
               disabled={!origin}
-              data-toggle="tooltip"
-              data-placement="bottom"
               title="Fetch the concepts"
             >
               {loading ? <Loader noPadding smallSpinner /> : 'Fetch'}
@@ -207,8 +205,6 @@ const AbstractClasses = () => {
             <button
               className="btn btn-dark ml-auto"
               onClick={() => setUrlEditable(true)}
-              data-toggle="tooltip"
-              data-placement="bottom"
               title="Edit the origin Url"
             >
               Edit
@@ -237,7 +233,7 @@ const AbstractClasses = () => {
 const AbstractClassesTable = ({ abstractClassesLabels }) => {
   const anyError = (response) => {
     if (response.error) {
-      toast.error(response.error);
+      showError(response.error);
     }
 
     return !_.isUndefined(response.error);
@@ -275,8 +271,6 @@ const AbstractClassesTable = ({ abstractClassesLabels }) => {
                   <button
                     className="btn btn-sm btn-dark ml-2"
                     onClick={() => handleGetMappingExportProfile(concept['label'])}
-                    data-toggle="tooltip"
-                    data-placement="top"
                     title="Export corresponding mapping export profile for this abstract class"
                   >
                     <FontAwesomeIcon icon={faDownload} />

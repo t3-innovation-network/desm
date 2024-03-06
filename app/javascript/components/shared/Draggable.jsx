@@ -1,5 +1,5 @@
-import React from 'react';
 import { useDrag } from 'react-dnd';
+import classNames from 'classnames';
 
 /**
  * This class will hold a list of items that can be dragged and the dropped
@@ -27,17 +27,15 @@ const Draggable = (props) => {
      * The DropZone element can be configured to accept specific
      * type of elements
      */
-    item: {
-      items: items,
-      type: itemType,
-    },
+    type: itemType,
+    item: { count: items.length },
     end: (item, monitor) => {
       /**
        * The element where it was dropped in
        */
       const itemDropped = monitor.getDropResult();
       if (item && itemDropped && afterDrop) {
-        afterDrop(itemDropped);
+        afterDrop(itemDropped, items);
       }
     },
     collect: (monitor) => ({
@@ -48,8 +46,10 @@ const Draggable = (props) => {
   /**
    * Only make it draggable when the selected items are more than 1
    */
+
+  const dragCls = classNames({ 'dnd--dragging': isDragging });
   return (
-    <div ref={items.length ? drag : null} className={isDragging ? ' is-dragging' : ''}>
+    <div ref={drag} className={dragCls}>
       {children}
     </div>
   );

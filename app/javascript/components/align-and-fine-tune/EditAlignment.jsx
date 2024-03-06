@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import updateAlignment from '../../services/updateAlignment';
 import AlertNotice from '../shared/AlertNotice';
@@ -92,7 +92,7 @@ const EditAlignment = (props) => {
           </a>
         </div>
         <div className="card-body">
-          {error && <AlertNotice message={error} />}
+          {error && <AlertNotice message={error} onClose={() => setError(null)} />}
 
           <div className="row">
             <div className="col-4">

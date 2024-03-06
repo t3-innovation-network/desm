@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { Fragment } from 'react';
+import { Component } from 'react';
 import Collapsible from '../../shared/Collapsible';
 
 /**
@@ -43,13 +42,13 @@ class ConceptCard extends Component {
         observeOutside={false}
         handleOnClick={this.handleClick}
         bodyContent={
-          <Fragment>
+          <>
             <p>{concept.definition}</p>
             <p>
               Origin:
               <span className="col-primary">{' ' + origin}</span>
             </p>
-          </Fragment>
+          </>
         }
       />
     );

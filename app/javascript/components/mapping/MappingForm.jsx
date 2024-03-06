@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import FileInfo from './FileInfo';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFiles, setFilteredFile, setMergedFileId, setSpecToPreview } from '../../actions/files';
@@ -13,7 +13,6 @@ import {
 } from '../../actions/mappingform';
 import fetchDomains from '../../services/fetchDomains';
 import fetchMergedFile from '../../services/fetchMergedFile';
-import { toastr as toast } from 'react-redux-toastr';
 import MultipleDomainsModal from './MultipleDomainsModal';
 import checkDomainsInFile from '../../services/checkDomainsInFile';
 import filterSpecification from '../../services/filterSpecification';
@@ -22,6 +21,7 @@ import { setVocabularies } from '../../actions/vocabularies';
 import { validURL } from '../../helpers/URL';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { showError } from '../../helpers/Messages';
 
 const MappingForm = () => {
   /**
@@ -235,7 +235,7 @@ const MappingForm = () => {
 
     // Check the form validity
     if (mappingFormErrors.length) {
-      toast.error('Please correct the errors first');
+      showError('Please correct the errors first');
       event.preventDefault();
       return;
     }
@@ -308,10 +308,10 @@ const MappingForm = () => {
     }
 
     return (
-      <React.Fragment>
+      <>
         <label>{files ? files.length : 0} files attached</label>
         {fileCards}
-      </React.Fragment>
+      </>
     );
   };
 
@@ -340,7 +340,7 @@ const MappingForm = () => {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <MultipleDomainsModal
         domains={filteredDomainsInFile}
         inputValue={inputValue}
@@ -479,8 +479,6 @@ const MappingForm = () => {
                 <section>
                   <button
                     className="btn bg-col-primary col-background with-shadow floating-spec-btn mt-3"
-                    data-placement="top"
-                    data-toggle="tooltip"
                     disabled={submitted}
                     title="Import the specification"
                     type="submit"
@@ -495,7 +493,7 @@ const MappingForm = () => {
           </form>
         </section>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

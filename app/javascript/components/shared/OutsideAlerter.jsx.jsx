@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { createRef, Component } from 'react';
 import PropTypes from 'prop-types';
 
 /**
@@ -8,7 +8,7 @@ export default class OutsideAlerter extends Component {
   constructor() {
     super();
 
-    this.wrapperRef = React.createRef();
+    this.wrapperRef = createRef();
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.handleEscPressed = this.handleEscPressed.bind(this);
   }

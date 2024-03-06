@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import DashboardContainer from '../dashboard/DashboardContainer';
 import fetchOrganizations from '../../services/fetchOrganizations';
 import fetchRoles from '../../services/fetchRoles';
 import AlertNotice from '../shared/AlertNotice';
 import createUser from '../../services/createUser';
-import { toastr as toast } from 'react-redux-toastr';
 import { Link } from 'react-router-dom';
 import Loader from '../shared/Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faHome } from '@fortawesome/free-solid-svg-icons';
+import { showSuccess } from '../../helpers/Messages';
 
 class Registration extends Component {
   state = {
@@ -104,7 +104,7 @@ class Registration extends Component {
           errors: response.error,
         });
       }
-      toast.success('User ' + fullname + ' was successfully created');
+      showSuccess('User ' + fullname + ' was successfully created');
       this.props.history.push('/dashboard/users');
     });
 
@@ -124,9 +124,9 @@ class Registration extends Component {
     } = this.state;
 
     return (
-      <React.Fragment>
+      <>
         <DashboardContainer>
-          {errors && <AlertNotice message={errors} />}
+          {errors && <AlertNotice message={errors} onClose={() => this.setState({ errors: '' })} />}
           {this.dashboardPath()}
 
           {loading ? (
@@ -224,7 +224,7 @@ class Registration extends Component {
             </div>
           )}
         </DashboardContainer>
-      </React.Fragment>
+      </>
     );
   }
 }

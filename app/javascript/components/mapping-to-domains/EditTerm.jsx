@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import Modal from 'react-modal';
 import fetchTerm from '../../services/fetchTerm';
 import updateTerm from '../../services/updateTerm';
 import Loader from '../shared/Loader';
 import ModalStyles from '../shared/ModalStyles';
 import UploadVocabulary from './UploadVocabulary';
-import { toastr as toast } from 'react-redux-toastr';
 import deleteTerm from '../../services/deleteTerm';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import fetchVocabularies from '../../services/fetchVocabularies';
@@ -18,6 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import extractVocabularies from '../../services/extractVocabularies';
 import _ from 'lodash';
+import { showInfo, showSuccess } from '../../helpers/Messages';
 
 export default class EditTerm extends Component {
   /**
@@ -139,7 +139,7 @@ export default class EditTerm extends Component {
         return;
       }
       this.props.onRequestClose();
-      toast.success('Changes Saved to  ' + this.state.term.name);
+      showSuccess('Changes Saved to  ' + this.state.term.name);
     });
   };
 
@@ -153,7 +153,7 @@ export default class EditTerm extends Component {
       }
       this.props.onRemoveTerm(this.state.term);
       this.props.onRequestClose();
-      toast.info('Term removed: ' + this.state.term.name);
+      showInfo('Term removed: ' + this.state.term.name);
     });
   };
 
@@ -279,11 +279,22 @@ export default class EditTerm extends Component {
           </div>
 
           <div className="card-body scrollbar has-scrollbar">
-            {error ? <AlertNotice message={error} /> : ''}
+            {error ? (
+              <AlertNotice
+                message={error}
+                onClose={() =>
+                  this.setState({
+                    error: null,
+                  })
+                }
+              />
+            ) : (
+              ''
+            )}
             {loading ? (
               <Loader />
             ) : (
-              <React.Fragment>
+              <>
                 <div className="row">
                   {/* LEFT COLUMN */}
                   <div className={(uploadingVocabulary ? 'disabled-container ' : '') + 'col-6'}>
@@ -472,7 +483,7 @@ export default class EditTerm extends Component {
                         }
                       />
                     ) : (
-                      <React.Fragment>
+                      <>
                         <div style={{ height: '78%' }}>
                           <label>
                             <strong>Raw</strong>
@@ -483,7 +494,7 @@ export default class EditTerm extends Component {
                             disabled={uploadingVocabulary}
                           />
                         </div>
-                      </React.Fragment>
+                      </>
                     )}
                   </div>
                 </div>
@@ -491,7 +502,7 @@ export default class EditTerm extends Component {
                 <div className="row ">
                   <div className="col">
                     {!uploadingVocabulary && (
-                      <React.Fragment>
+                      <>
                         <button
                           className="btn btn-outline-secondary ml-2 float-right"
                           onClick={this.handleRemoveTerm}
@@ -501,11 +512,11 @@ export default class EditTerm extends Component {
                         <button className="btn btn-dark float-right" onClick={this.handleSaveTerm}>
                           Save and Exit
                         </button>
-                      </React.Fragment>
+                      </>
                     )}
                   </div>
                 </div>
-              </React.Fragment>
+              </>
             )}
           </div>
         </div>

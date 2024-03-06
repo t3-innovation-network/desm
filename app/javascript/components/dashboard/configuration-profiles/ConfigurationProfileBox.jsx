@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import { Component } from 'react';
 import Loader from './../../shared/Loader';
 import EllipsisOptions from '../../shared/EllipsisOptions';
 import ConfirmDialog from '../../shared/ConfirmDialog';
@@ -179,7 +179,7 @@ export default class ConfigurationProfileBox extends Component {
     } = this.state;
 
     return (
-      <Fragment>
+      <>
         {confirmationVisible && (
           <ConfirmDialog
             onRequestClose={() => this.setState({ confirmationVisible: false })}
@@ -216,7 +216,7 @@ export default class ConfigurationProfileBox extends Component {
             />
           </CPBoxContainer>
         )}
-      </Fragment>
+      </>
     );
   }
 }
