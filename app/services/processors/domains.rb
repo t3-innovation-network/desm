@@ -36,9 +36,12 @@ module Processors
     #   create/update domains and domain sets into/at the db.
     ###
     def update
-      create_or_update_domain_set
-      create_or_update_domains
-      clear_unused_domains
+      Domain.transaction do
+        check_validity!
+        create_or_update_domain_set
+        create_or_update_domains
+        clear_unused_domains
+      end
 
       @domain_set
     end
@@ -46,10 +49,33 @@ module Processors
     private
 
     ###
+    # @description: Check if any previous predicates are in use and not in current set
+    ###
+    def check_validity!
+      return if @domain_set.nil?
+
+      ids = @domain_set.domains.ids
+      @concept_nodes.each do |node|
+        parser = Parsers::JsonLd::Node.new(node)
+        next unless (domain = @domain_set.domains.find_by(source_uri: parser.read!("id"))).present?
+
+        ids.delete(domain.id)
+      end
+      return if ids.blank?
+
+      conflicts = @domain_set.domains.where(id: ids).includes(:spine).select(&:spine?)
+      return if conflicts.blank?
+
+      message = conflicts.map { |d| "#{d.pref_label} (#{d.source_uri})" }.join(", ")
+      raise ArgumentError,
+            I18n.t("errors.config.domain.destroy", count: conflicts.size, message:)
+    end
+
+    ###
     # @description: Remove domains that are not in current json file and doesn't have a spine
     ###
     def clear_unused_domains
-      @domain_set.domains.where.not(id: @domains_ids).includes(:spine).select { |d| d.spine.nil? }.each(&:destroy)
+      @domain_set.domains.where.not(id: @domains_ids).each(&:destroy)
     end
 
     ###
@@ -74,8 +100,8 @@ module Processors
     # @description: Process a given set of domains
     ###
     def create_or_update_domains
-      @concept_nodes.each do |domain|
-        parser = Parsers::JsonLd::Node.new(domain)
+      @concept_nodes.each do |node|
+        parser = Parsers::JsonLd::Node.new(node)
 
         domain = @domain_set.domains.find_or_initialize_by(source_uri: parser.read!("id"))
         domain.definition = parser.read!("definition")

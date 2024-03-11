@@ -20,7 +20,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (strongest_match_id => predicates.id)
+#  fk_rails_...  (strongest_match_id => predicates.id) ON DELETE => restrict
 #
 FactoryBot.define do
   factory :predicate_set do

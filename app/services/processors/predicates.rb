@@ -42,20 +42,49 @@ module Processors
     # @return [PredicateSet]
     ###
     def update
-      create_or_update_predicate_set
-      create_or_update_predicates
-      clear_unused_predicates
-
+      PredicateSet.transaction do
+        check_validity!
+        create_or_update_predicate_set
+        create_or_update_predicates
+        clear_unused_predicates
+      end
       @predicate_set
     end
 
     private
 
+    ###
+    # @description: Check if any previous predicates are in use and not in current set
+    ###
+    def check_validity! # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+      return if @predicate_set.nil?
+
+      ids = @predicate_set.predicates.ids
+      ids << @predicate_set.strongest_match_id if @predicate_set.strongest_match_id.present?
+      @concept_nodes.each do |node|
+        parser = Parsers::JsonLd::Node.new(node)
+        # The concept scheme is processed, let's start with the proper predicates
+        next unless valid_predicate(parser)
+        next unless (predicate = @predicate_set.predicates.find_by(source_uri: parser.read!("id"))).present?
+
+        ids.delete(predicate.id)
+      end
+      return if ids.blank?
+
+      with_mappings = Alignment.where(predicate_id: ids).pluck(:predicate_id)
+      if @predicate_set.strongest_match_id.present? && ids.include?(@predicate_set.strongest_match_id)
+        with_mappings << @predicate_set.strongest_match_id
+      end
+      conflicts = @predicate_set.predicates.where(id: with_mappings).map { |p| "#{p.pref_label} (#{p.source_uri})" }
+      return if conflicts.blank?
+
+      raise ArgumentError,
+            I18n.t("errors.config.predicate.destroy", count: conflicts.size, message: conflicts.join(", "))
+    end
+
     def clear_unused_predicates
-      @predicates_ids << @predicate_set.strongest_match_id if @predicate_set.strongest_match_id.present?
       unused_predicates_ids = @predicate_set.predicates.ids - @predicates_ids
-      with_mappings = Alignment.where(predicate_id: unused_predicates_ids).pluck(:predicate_id)
-      @predicate_set.predicates.where(id: unused_predicates_ids - with_mappings).destroy_all
+      @predicate_set.predicates.where(id: unused_predicates_ids).destroy_all
     end
 
     ###
@@ -79,8 +108,8 @@ module Processors
     # @description: Process a given set of predicates
     ###
     def create_or_update_predicates
-      @concept_nodes.each do |predicate|
-        parser = Parsers::JsonLd::Node.new(predicate)
+      @concept_nodes.each do |node|
+        parser = Parsers::JsonLd::Node.new(node)
 
         # The concept scheme is processed, let's start with the proper predicates
         next unless valid_predicate(parser)
@@ -106,8 +135,11 @@ module Processors
     end
 
     def assign_strongest_match
-      predicate = @predicate_set.predicates.find_by(source_uri: @strongest_match)
-      predicate ||= @predicate_set.predicates.first
+      predicate = if @strongest_match.present?
+                    @predicate_set.predicates.find_by!(source_uri: @strongest_match)
+                  else
+                    @predicate_set.predicates.first
+                  end
       @predicate_set.update!(strongest_match: predicate)
     end
   end

@@ -22,6 +22,7 @@
 #
 #  fk_rails_...  (domain_set_id => domain_sets.id) ON DELETE => cascade
 #
+
 ###
 # @description: Represents a Concept, which is a domain from a Concept Scheme
 #   (also refered to as 'domain set'.

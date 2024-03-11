@@ -9,6 +9,10 @@ export const showError = (message) => {
   toastr.error(message, TOASTR_OPTIONS.error);
 };
 
+export const showFlashError = (message) => {
+  toastr.error(message, TOASTR_OPTIONS.default);
+};
+
 export const showInfo = (message) => {
   toastr.info(message, TOASTR_OPTIONS.default);
 };

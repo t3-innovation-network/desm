@@ -20,6 +20,7 @@
 #
 #  index_users_on_email  (email) UNIQUE
 #
+
 ###
 # @description: Represents a user of this application
 ###

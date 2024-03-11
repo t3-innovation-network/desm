@@ -27,6 +27,7 @@
 #  fk_rails_...  (predicate_id => predicates.id)
 #  fk_rails_...  (vocabulary_id => vocabularies.id)
 #
+
 ###
 # @description: Represents a mapping term, which is each of terms resulting of a merge between 2 specifications. It's
 # also called an "Alignment".

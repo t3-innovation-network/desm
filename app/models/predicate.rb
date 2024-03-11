@@ -24,6 +24,7 @@
 #
 #  fk_rails_...  (predicate_set_id => predicate_sets.id) ON DELETE => cascade
 #
+
 ###
 # @description: Represents a Predicate, which is a way to identify the nature / quality
 # of the mapping between the spine term and mapped term.

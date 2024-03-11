@@ -1,4 +1,5 @@
 import { isArray, isEmpty } from 'lodash';
+import { useEffect, useRef } from 'react';
 
 /**
  * @description Renders an Alert box with a title and a message
@@ -14,7 +15,13 @@ const AlertNotice = (props) => {
   /**
    * Elements from props
    */
-  const { cssClass, title, message, onClose } = props;
+  const { cssClass, title, message, onClose, withScroll = false } = props;
+  const myRef = useRef(null);
+  useEffect(() => {
+    if (withScroll && !isEmpty(message) && myRef.current) {
+      myRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [message]);
 
   if (isEmpty(message)) return null;
 
@@ -33,7 +40,10 @@ const AlertNotice = (props) => {
   };
 
   return (
-    <div className={'alert alert-dismissible ' + (cssClass ? cssClass : 'alert-danger')}>
+    <div
+      ref={myRef}
+      className={'alert alert-dismissible ' + (cssClass ? cssClass : 'alert-danger')}
+    >
       <h4>
         <strong>{title ? title : 'Attention!'}</strong>
       </h4>

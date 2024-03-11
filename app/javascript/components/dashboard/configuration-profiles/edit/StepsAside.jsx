@@ -36,7 +36,7 @@ const StepsAside = () => {
                 step.number === currentStep
                   ? 'bg-dashboard-background-highlight col-background'
                   : 'border-color-dashboard col-dashboard-highlight'
-              } p-3 text-center`}
+              } d-inline-flex justify-content-center align-items-center`}
               style={{ maxWidth: '50px', height: '50px' }}
               onClick={() => dispatch(setStep(step.number))}
             >

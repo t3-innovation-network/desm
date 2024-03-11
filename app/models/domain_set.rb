@@ -17,6 +17,7 @@
 #
 #  index_domain_sets_on_source_uri  (source_uri)
 #
+
 ###
 # @description: Represents a Concept Scheme, which is a set of domains
 #   (or concepts) to map to.

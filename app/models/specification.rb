@@ -25,6 +25,7 @@
 #  fk_rails_...  (configuration_profile_user_id => configuration_profile_users.id) ON DELETE => cascade
 #  fk_rails_...  (domain_id => domains.id)
 #
+
 ###
 # @description: Represents a specification uploaded by a user in
 #   its original state, after the preview, but in an active record

@@ -417,5 +417,17 @@ describe ConfigurationProfile do
         configuration_profile.update!(json_abstract_classes: [{ "prefLabel" => "test" }])
       end
     end
+
+    context "when predicate strongest match is updated" do
+      let(:configuration_profile) { create(:configuration_profile, :with_mapping_predicates, predicates_count: 1) }
+      let(:source_uri) { "http://desmsolutions.org/concepts/identical" }
+
+      it "triggers the update_predicate_strongest_match callback" do
+        predicate = create(:predicate, predicate_set: configuration_profile.mapping_predicates, source_uri:)
+        configuration_profile.update!(predicate_strongest_match: source_uri)
+        expect(configuration_profile.predicate_strongest_match).to eq(source_uri)
+        expect(configuration_profile.mapping_predicates.strongest_match_id).to eq(predicate.id)
+      end
+    end
   end
 end

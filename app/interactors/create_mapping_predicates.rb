@@ -13,6 +13,6 @@ class CreateMappingPredicates
     context.predicate_set = processor.create
   rescue StandardError => e
     Rails.logger.error(e.inspect)
-    context.fail!(error: e.inspect)
+    context.fail!(error: e.message)
   end
 end
