@@ -29,6 +29,7 @@
 #
 #  fk_rails_...  (term_id => terms.id) ON DELETE => cascade
 #
+
 ###
 # @description: Represents a property of a term in a specification
 #   uploaded by a user

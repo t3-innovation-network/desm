@@ -26,6 +26,7 @@
 #  fk_rails_...  (configuration_profile_user_id => configuration_profile_users.id) ON DELETE => cascade
 #  fk_rails_...  (specification_id => specifications.id)
 #
+
 ###
 # @description: Represents a mapping, which is the concept of the merge
 #   between 2 specifications.

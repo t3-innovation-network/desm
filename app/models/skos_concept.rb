@@ -12,6 +12,7 @@
 #
 #  index_skos_concepts_on_uri  (uri) UNIQUE
 #
+
 ###
 # @description: Represents an skos concept, which is an element composing a vocabulary
 #   This is a representation of a node inside a vocabualry graph

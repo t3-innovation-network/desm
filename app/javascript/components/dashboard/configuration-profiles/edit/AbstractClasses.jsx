@@ -17,19 +17,29 @@ import { downloadFile } from '../../../../helpers/Export';
 import fetchMappingExportProfile from '../../../../services/fetchMappingExportProfile';
 import _ from 'lodash';
 import { showError } from '../../../../helpers/Messages';
+import useDidMountEffect from '../../../../helpers/useDidMountEffect';
 
 const AbstractClasses = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
   const dispatch = useDispatch();
 
-  const [name, setName] = useState('');
-  const [version, setVersion] = useState('');
-  const [description, setDescription] = useState('');
-  const [origin, setOrigin] = useState('');
+  const [name, setName] = useState(configurationProfile.structure.abstractClasses?.name || '');
+  const [version, setVersion] = useState(
+    configurationProfile.structure.abstractClasses?.version || ''
+  );
+  const [description, setDescription] = useState(
+    configurationProfile.structure.abstractClasses?.description || ''
+  );
+  const [origin, setOrigin] = useState(
+    configurationProfile.structure.abstractClasses?.origin || ''
+  );
   const [jsonAbstractClasses, setJsonAbstractClasses] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [urlEditable, setUrlEditable] = useState(!origin);
+  const [urlEditable, setUrlEditable] = useState(
+    !configurationProfile.structure.abstractClasses?.origin
+  );
   const [abstractClassesLabels, setAbstractClassesLabels] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
   const buildCpData = () => ({
     ...configurationProfile,
@@ -65,7 +75,7 @@ const AbstractClasses = () => {
       return;
     }
 
-    setJsonAbstractClasses(skosFile);
+    // setJsonAbstractClasses(skosFile);
     setUrlEditable(false);
     setLoading(false);
     saveChanges({ ...buildCpData(), jsonAbstractClasses: skosFile });
@@ -90,7 +100,9 @@ const AbstractClasses = () => {
 
     if (response.error) {
       dispatch(setEditCPErrors(response.error));
-      dispatch(setSavingCP(false));
+      dispatch(setSavingCP(null));
+      // need to revert to previous values
+      setRefresh(!refresh);
       return;
     }
 
@@ -98,7 +110,7 @@ const AbstractClasses = () => {
     dispatch(setSavingCP(false));
   };
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     const { abstractClasses } = configurationProfile.structure;
 
     if (!abstractClasses) return;
@@ -109,7 +121,7 @@ const AbstractClasses = () => {
     setOrigin(origin || '');
     setUrlEditable(!origin);
     setVersion(version || '');
-  }, [configurationProfile.structure.abstractClasses]);
+  }, [configurationProfile.structure.abstractClasses, refresh]);
 
   useEffect(() => {
     const { jsonAbstractClasses } = configurationProfile;
@@ -134,7 +146,7 @@ const AbstractClasses = () => {
             className="form-control input-lg"
             placeholder="The name of the skos file."
             value={name}
-            onChange={(e) => setName(event.target.value)}
+            onChange={(e) => setName(e.target.value)}
             onBlur={() => saveChanges()}
             autoFocus
           />
@@ -151,7 +163,7 @@ const AbstractClasses = () => {
             placeholder="The version of the skos file"
             maxLength={5}
             value={version}
-            onChange={(e) => setVersion(event.target.value)}
+            onChange={(e) => setVersion(e.target.value)}
             onBlur={() => saveChanges()}
           />
         </div>
@@ -165,7 +177,7 @@ const AbstractClasses = () => {
             className="form-control input-lg"
             placeholder="A description what the skos file represents."
             value={description}
-            onChange={(e) => setDescription(event.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
             rows={5}
             onBlur={() => saveChanges()}
           />

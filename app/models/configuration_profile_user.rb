@@ -20,6 +20,7 @@
 #  fk_rails_...  (organization_id => organizations.id) ON DELETE => cascade
 #  fk_rails_...  (user_id => users.id) ON DELETE => cascade
 #
+
 ###
 # @description: A join model connecting users to configuration profiles (via organization)
 ###

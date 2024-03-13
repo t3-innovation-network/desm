@@ -20,8 +20,9 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (strongest_match_id => predicates.id)
+#  fk_rails_...  (strongest_match_id => predicates.id) ON DELETE => restrict
 #
+
 ###
 # @description: Represents a Concept Scheme, with is a set of predicates
 #   (in form of skos concepts) to map to.
@@ -31,6 +32,8 @@
 ###
 class PredicateSet < ApplicationRecord
   include Slugable
+  audited
+
   validates :source_uri, presence: true
   validates :title, presence: true
 

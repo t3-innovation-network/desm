@@ -1,0 +1,149 @@
+{
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "dcterms": "http://purl.org/dc/terms/",
+    "desm": "https://desmsolutions.org/ns/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "Concept": { "@id": "skos:Concept" },
+    "ConceptScheme": { "@id": "skos:ConceptScheme" },
+    "created": { "@id": "dcterms:created", "@type": "xsd:date" },
+    "creator": { "@id": "dcterms:creator", "@container": "@language" },
+    "description": { "@id": "dcterms:description", "@container": "@language" },
+    "definition": { "@id": "skos:definition", "@container": "@language" },
+    "hasTopConcept": { "@id": "skos:hasTopConcept", "@type": "@id" },
+    "inScheme": { "@id": "skos:inScheme", "@type": "@id" },
+    "prefLabel": { "@id": "skos:prefLabel", "@container": "@language" },
+    "title": { "@id": "dcterms:title", "@container": "@language" },
+    "weight": { "@id": "desm:weight", "@type": "xsd:integer" }
+  },
+  "@graph": [
+    {
+      "id": "http://desmsolutions.org/concepts/desmMappingPredicates",
+      "type": "skos:ConceptScheme",
+      "title": { "en-us": "DESM TEST Schema Map Tuning Predicates" },
+      "description": {
+        "en-us": "TEST. This concept scheme identifies the mapping predicates used in the T3 project to cross-walk (map) SDO's specifications used in expressing data in the education-to-employment context."
+      },
+      "creator": {
+        "en-us": "T3 Innovation Network (Pilot Project 1: T3 Phase II)"
+      },
+      "created": "2020-01-07",
+      "hasTopConcept": [
+        "http://desmsolutions.org/concepts/concept",
+        "http://desmsolutions.org/concepts/reworded",
+        "http://desmsolutions.org/concepts/identical",
+        "http://desmsolutions.org/concepts/similar",
+        "http://desmsolutions.org/concepts/notApplicable",
+        "http://desmsolutions.org/concepts/aggregated",
+        "http://desmsolutions.org/concepts/noMatch",
+        "http://desmsolutions.org/concepts/issue",
+        "http://desmsolutions.org/concepts/disaggregated",
+        "http://desmsolutions.org/concepts/test"
+      ]
+    },
+    {
+      "id": "http://desmsolutions.org/concepts/identical",
+      "type": "skos:Concept",
+      "prefLabel": { "en-us": "Identical" },
+      "definition": {
+        "en-us": "UPDATED. The definition is identical in wording and intent. This does not consider the extent for how the property is used."
+      },
+      "weight": 5,
+      "inScheme": "http://desmsolutions.org/concepts/desmMappingPredicates"
+    },
+    {
+      "id": "http://desmsolutions.org/concepts/reworded",
+      "type": "skos:Concept",
+      "prefLabel": { "en-us": "Reworded" },
+      "definition": {
+        "en-us": "The definition is identical in intent, with wording differences."
+      },
+      "weight": 5,
+      "inScheme": "http://desmsolutions.org/concepts/desmMappingPredicates"
+    },
+    {
+      "id": "http://desmsolutions.org/concepts/similar",
+      "type": "skos:Concept",
+      "prefLabel": { "en-us": "Similar" },
+      "definition": {
+        "en-us": "The definition is similar in intent, but with wording differences."
+      },
+      "weight": 4,
+      "inScheme": "http://desmsolutions.org/concepts/desmMappingPredicates"
+    },
+    {
+      "id": "http://desmsolutions.org/concepts/aggregated",
+      "type": "skos:Concept",
+      "prefLabel": { "en-us": "Aggregated" },
+      "definition": {
+        "en-us": "Single property in the spine maps to multiple properties in the specification being mapped."
+      },
+      "weight": 3,
+      "inScheme": "http://desmsolutions.org/concepts/desmMappingPredicates"
+    },
+    {
+      "id": "http://desmsolutions.org/concepts/disaggregated",
+      "type": "skos:Concept",
+      "prefLabel": { "en-us": "Disaggregated" },
+      "definition": {
+        "en-us": "Multiple properties in the spine, map to the property in the specification being mapped."
+      },
+      "weight": 3,
+      "inScheme": "http://desmsolutions.org/concepts/desmMappingPredicates"
+    },
+    {
+      "id": "http://desmsolutions.org/concepts/concept",
+      "type": "skos:Concept",
+      "prefLabel": { "en-us": "Concept" },
+      "definition": {
+        "en-us": "The definition is related only at a conceptual level, with differences in the intention."
+      },
+      "weight": 2,
+      "inScheme": "http://desmsolutions.org/concepts/desmMappingPredicates"
+    },
+    {
+      "id": "http://desmsolutions.org/concepts/noMatch",
+      "type": "skos:Concept",
+      "prefLabel": { "en-us": "No Match" },
+      "definition": {
+        "en-us": "There's no property to match to the property of a class in the spine."
+      },
+      "weight": 0,
+      "inScheme": "http://desmsolutions.org/concepts/desmMappingPredicates"
+    },
+    {
+      "id": "http://desmsolutions.org/concepts/notApplicable",
+      "type": "skos:Concept",
+      "prefLabel": { "en-us": "Not Applicable" },
+      "definition": {
+        "en-us": "The specification does not include the class with properties in the context of this mapping."
+      },
+      "weight": 0,
+      "inScheme": "http://desmsolutions.org/concepts/desmMappingPredicates"
+    },
+    {
+      "id": "http://desmsolutions.org/concepts/concepts/issue",
+      "type": "skos:Concept",
+      "prefLabel": { "en-us": "Issue" },
+      "weight": 1,
+      "definition": {
+        "en-us": "Annotation to explain alignment where necessary to clarify or to interpret the mapping."
+      },
+      "inScheme": "http://desmsolutions.org/concepts/desmMappingPredicates"
+    },
+    {
+      "id": "http://desmsolutions.org/concepts/concepts/test",
+      "type": "skos:Concept",
+      "prefLabel": { "en-us": "Test" },
+      "weight": 1,
+      "definition": {
+        "en-us": "Annotation to TEST."
+      },
+      "inScheme": "http://desmsolutions.org/concepts/desmMappingPredicates"
+    }
+  ]
+}

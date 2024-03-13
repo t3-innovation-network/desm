@@ -20,6 +20,7 @@
 #  fk_rails_...  (role_id => roles.id)
 #  fk_rails_...  (user_id => users.id)
 #
+
 ###
 # @description: Represents an intermediate relation between a user
 #   and its many possible roles

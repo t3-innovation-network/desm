@@ -23,6 +23,7 @@
 #
 #  fk_rails_...  (administrator_id => users.id)
 #
+
 ###
 # @description: Represents an organization in the application
 ###

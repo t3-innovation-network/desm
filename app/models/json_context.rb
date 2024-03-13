@@ -14,6 +14,7 @@
 #
 #  index_json_contexts_on_uri  (uri) UNIQUE
 #
+
 # Caches JSON contexts referenced in schemas
 class JsonContext < ApplicationRecord
   def self.fetch(uri)

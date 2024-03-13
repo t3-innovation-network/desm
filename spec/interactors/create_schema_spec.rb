@@ -9,10 +9,6 @@ RSpec.describe CreateSchema, type: :interactor do
     let(:user) { create(:configuration_profile_user) }
     let(:domain) { create(:domain) }
 
-    after(:all) do
-      DatabaseCleaner.clean_with(:truncation)
-    end
-
     it "rejects creation if not enough information is provided" do
       result = described_class.call
       expect(result.error).to eq("domain_id must be present")

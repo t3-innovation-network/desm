@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_28_183001) do
+ActiveRecord::Schema.define(version: 2024_03_10_200715) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -374,7 +374,7 @@ ActiveRecord::Schema.define(version: 2022_10_28_183001) do
   add_foreign_key "mappings", "configuration_profile_users", on_delete: :cascade
   add_foreign_key "mappings", "specifications"
   add_foreign_key "organizations", "users", column: "administrator_id"
-  add_foreign_key "predicate_sets", "predicates", column: "strongest_match_id"
+  add_foreign_key "predicate_sets", "predicates", column: "strongest_match_id", on_delete: :restrict
   add_foreign_key "predicates", "predicate_sets", on_delete: :cascade
   add_foreign_key "properties", "terms", on_delete: :cascade
   add_foreign_key "specifications", "configuration_profile_users", on_delete: :cascade

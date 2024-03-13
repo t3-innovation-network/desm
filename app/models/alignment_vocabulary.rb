@@ -18,6 +18,7 @@
 #
 #  fk_rails_...  (alignment_id => alignments.id) ON DELETE => cascade
 #
+
 ###
 # @description: Represents a mapping between 2 vocabularies
 # - Each vocabulary mapping have 1 to many concepts. --- [vocabulary mapping] 1------>* [vocabulary concept],

@@ -22,6 +22,7 @@
 #
 #  fk_rails_...  (configuration_profile_user_id => configuration_profile_users.id) ON DELETE => cascade
 #
+
 ###
 # @description: Represents a node of a specification
 ###
