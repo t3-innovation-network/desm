@@ -40,11 +40,27 @@ RSpec.describe Parsers::Skos do
   end
 
   describe ".valid_skos" do
-    it "returns true for a valid skos file" do
-      parser = described_class.new(file_content:)
-      result = parser.valid_skos?
+    context "with multiple nodes" do
+      it "returns true for a valid skos file" do
+        parser = described_class.new(file_content:)
+        result = parser.valid_skos?
 
-      expect(result).to be_truthy
+        expect(result).to be_truthy
+      end
+    end
+
+    context "with a single node" do
+      let(:file_content) { Converters::Turtle.convert(file) }
+      let(:file) do
+        Rack::Test::UploadedFile.new(file_fixture("singleAbstractClass.ttl"))
+      end
+
+      it "returns true for a valid skos file" do
+        parser = described_class.new(file_content:)
+        result = parser.valid_skos?
+
+        expect(result).to be_truthy
+      end
     end
 
     it "returns false for an invalid file" do
