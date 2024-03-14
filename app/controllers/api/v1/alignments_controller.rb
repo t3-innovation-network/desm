@@ -15,6 +15,7 @@ module API
       def index
         terms = Alignment
                   .joins(mapping: :configuration_profile)
+                  .includes(:predicate, mapped_terms: :organization)
                   .where(
                     configuration_profiles: { id: current_configuration_profile },
                     mappings: { spine_id: params[:spine_id], status: :mapped }
@@ -22,7 +23,7 @@ module API
                   .where.not(predicate_id: nil)
                   .order(:spine_term_id, :uri)
 
-        render json: terms, include: [:predicate, { mapped_terms: { include: %i(organization property) } }]
+        render json: terms
       end
 
       def create
@@ -35,7 +36,9 @@ module API
 
         interactor = SaveAlignments.call(alignments: alignments_params, mapping:)
         if interactor.success?
-          head :ok
+          adds = ActiveModel::Serializer::CollectionSerializer.new(interactor.adds,
+                                                                   each_serializer: AlignmentSerializer)
+          render json: { adds: }, status: :created
         else
           render json: { error: interactor.error }, status: :unprocessable_entity
         end

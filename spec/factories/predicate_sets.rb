@@ -28,5 +28,14 @@ FactoryBot.define do
     source_uri { Faker::Internet.url }
     description { Faker::Lorem.sentence }
     creator { Faker::App.author }
+
+    transient do
+      predicate_count { 0 }
+    end
+
+    after(:create) do |predicate_set, evaluator|
+      create_list(:predicate, evaluator.predicate_count, predicate_set:) \
+        if evaluator.predicate_count.positive?
+    end
   end
 end
