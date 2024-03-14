@@ -66,6 +66,8 @@ class Term < ApplicationRecord
 
   after_create :assign_property, unless: proc { property.present? }
 
+  before_destroy :check_if_alignments_exist
+
   ###
   # @description: Include additional information about the specification in
   #   json responses. This overrides the ApplicationRecord as_json method.
@@ -103,5 +105,14 @@ class Term < ApplicationRecord
       selected_range: range&.first,
       subproperty_of: parser.read!("subproperty")
     )
+  end
+
+  def check_if_alignments_exist
+    return if alignments.none?
+
+    mappings = Mapping.where(id: alignments.pluck(:"alignments.mapping_id").uniq).pluck(:title).sort
+
+    raise "Cannot remove a term with existing alignments. " \
+          "Please remove corresponding alignments from #{mappings.join(', ')} mappings before removing the term."
   end
 end

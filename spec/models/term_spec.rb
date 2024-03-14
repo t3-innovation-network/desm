@@ -30,4 +30,19 @@ describe Term do
     is_expected.to validate_presence_of(:raw)
     is_expected.to have_and_belong_to_many(:specifications)
   end
+
+  describe "#destroy" do
+    it "raises an error if the term has alignments" do
+      term = create(:term)
+      create(:alignment, spine_term: term)
+
+      expect { term.destroy }.to raise_error(RuntimeError)
+    end
+
+    it "destroys the term if it has no alignments" do
+      term = create(:term)
+
+      expect { term.destroy }.to change { Term.count }.by(-1)
+    end
+  end
 end

@@ -1,5 +1,6 @@
-import { camelizeKeys } from 'humps';
+import { camelizeKeys, decamelizeKeys } from 'humps';
 import apiService, { processMessage } from './apiService';
+import { chain, pickBy, identity, isNil } from 'lodash';
 /**
  * Manages the api requests
  *
@@ -26,10 +27,11 @@ import apiService, { processMessage } from './apiService';
  */
 const apiRequest = async (props) => {
   validateParams(props);
+  const queryParams = queryString(props.queryParams || {});
 
   // Do the request
   const response = await apiService({
-    url: props.url,
+    url: `${props.url}${queryParams ? `?${queryParams}` : ''}`,
     method: props.method,
     data: props.payload,
     options: props.options,
@@ -69,6 +71,17 @@ const validateParams = (props) => {
   if (!_.has(props, 'method')) {
     throw 'Method not provided';
   }
+};
+
+const queryString = (params) => {
+  const esc = encodeURIComponent;
+  const queryParams = pickBy(params, identity);
+
+  return chain(decamelizeKeys(queryParams))
+    .map((v, k) => (isNil(v) ? null : `${esc(k)}=${esc(v)}`))
+    .filter()
+    .value()
+    .join('&');
 };
 
 export default apiRequest;

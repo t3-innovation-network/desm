@@ -138,7 +138,7 @@ export default class EditTerm extends Component {
         this.setState({ error: response.error });
         return;
       }
-      this.props.onRequestClose();
+      this.closeRequested();
       showSuccess('Changes Saved to  ' + this.state.term.name);
     });
   };
@@ -150,9 +150,10 @@ export default class EditTerm extends Component {
     deleteTerm(this.state.term.id).then((response) => {
       if (response.error) {
         this.setState({ error: response.error });
+        return;
       }
       this.props.onRemoveTerm(this.state.term);
-      this.props.onRequestClose();
+      this.closeRequested();
       showInfo('Term removed: ' + this.state.term.name);
     });
   };
@@ -202,7 +203,7 @@ export default class EditTerm extends Component {
    */
   fetchTermFromApi = () => {
     if (this.props.termId) {
-      fetchTerm(this.props.termId).then((response) => {
+      fetchTerm(this.props.termId, { withMapping: true }).then((response) => {
         if (response.error) {
           this.setState({ error: response.error });
           return;
@@ -220,6 +221,7 @@ export default class EditTerm extends Component {
    */
   closeRequested = () => {
     this.setState({ loading: true });
+    this.setState({ error: null });
     this.props.onRequestClose();
   };
 
@@ -250,7 +252,7 @@ export default class EditTerm extends Component {
     /**
      * Elements from props
      */
-    const { modalIsOpen, onRequestClose } = this.props;
+    const { modalIsOpen } = this.props;
 
     return (
       <Modal
@@ -271,7 +273,7 @@ export default class EditTerm extends Component {
                 </h4>
               </div>
               <div className="col-6">
-                <a className="float-right cursor-pointer" onClick={onRequestClose}>
+                <a className="float-right cursor-pointer" onClick={this.closeRequested}>
                   <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
                 </a>
               </div>
