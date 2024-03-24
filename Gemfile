@@ -20,7 +20,7 @@ gem "rack-cors", require: "rack/cors"
 ###
 # REST OF THE DEPENDENCIES
 
-gem "active_model_serializers", "~> 0.10.0"
+gem "active_model_serializers", "~> 0.10"
 
 # Audit changes
 gem "audited", "~> 4.9"

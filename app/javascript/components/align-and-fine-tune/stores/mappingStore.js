@@ -65,9 +65,16 @@ export const defaultState = {
   scrollTop: 0,
 };
 
+// returns whether the predicate is a "no match" predicate
 export const noMatchPredicate = (predicate) =>
   (isString(predicate) && predicate.toLowerCase().includes('no match')) ||
-  predicate?.source_uri?.toLowerCase()?.includes('nomatch');
+  predicate?.source_uri?.toLowerCase()?.includes('nomatch') ||
+  predicate?.name?.toLowerCase()?.includes('no match');
+
+// returns whether the alignment is completed (with no match predicate or with full or no mapping) or not
+export const completedAlignment = (noMatchPredicateId, alignment) =>
+  noMatchPredicateId === alignment.predicateId ||
+  Boolean(alignment.mappedTerms.length) == Boolean(alignment.predicateId);
 
 export const filterTerms = (terms, inputValue, options = { pickSelected: false }) => {
   const searchValue = inputValue.toLowerCase();
@@ -123,10 +130,9 @@ export const mappingStore = (initialData = {}) => ({
   ),
   // Alignments that are ready to be saved
   completeAlignments: computed((state) =>
-    state.alignments.filter((a) => {
-      return state.noMatchPredicateId === a.predicateId || (a.predicateId && a.mappedTerms.length);
-    })
+    state.alignments.filter((a) => completedAlignment(state.noMatchPredicateId, a))
   ),
+
   noMatchPredicateId: computed(
     (state) => state.predicates.find((p) => noMatchPredicate(p))?.id || -1
   ),
@@ -136,12 +142,7 @@ export const mappingStore = (initialData = {}) => ({
    */
   noPartiallyMappedTerms: computed((state) => state.partiallyMappedTerms.length === 0),
   partiallyMappedTerms: computed((state) =>
-    state.alignments.filter((a) => {
-      return !(
-        state.noMatchPredicateId === a.predicateId ||
-        Boolean(a.mappedTerms.length) == Boolean(a.predicateId)
-      );
-    })
+    state.alignments.filter((a) => !completedAlignment(state.noMatchPredicateId, a))
   ),
   /**
    * The already mapped terms. To use in progress bar.
@@ -202,6 +203,7 @@ export const mappingStore = (initialData = {}) => ({
     try {
       const strongestMatchPredicate = state.predicates.find((p) => p.strongest_match);
       const syntheticTermId = nextId(state.spineTerms);
+      const syntheticAlignmentId = nextId(state.alignments);
       state.spineTerms.push({
         id: syntheticTermId,
         name: '',
@@ -212,6 +214,7 @@ export const mappingStore = (initialData = {}) => ({
       });
       state.alignments.push({
         synthetic: true,
+        syntheticId: syntheticAlignmentId,
         mappedTerms: [],
         spineTermId: syntheticTermId,
         predicateId: strongestMatchPredicate?.id,
@@ -227,7 +230,9 @@ export const mappingStore = (initialData = {}) => ({
    * Cancel adding a synthetic term to the spine
    */
   handleCancelSynthetic: action((state) => {
-    remove(state.alignments, (al) => al.synthetic);
+    // we have synthetic alignments both persisted and not persisted and need to remove only not persisted
+    remove(state.alignments, (al) => al.synthetic && !al.persisted);
+    // we have synthetic terms and they are not persisted (they come from handleAddSynthetic), so we need to remove them
     remove(state.spineTerms, (st) => st.synthetic);
     state.changesPerformed--;
     state.addingSynthetic = false;
@@ -264,9 +269,8 @@ export const mappingStore = (initialData = {}) => ({
    * Get the alignment to its previous state
    */
   handleCancelRemoveAlignment: action((state) => {
-    state.alignmentToRemove.predicateId = state.alignmentToRemove.previousPredicateId;
-    state.alignmentToRemove.mappedTerms = state.alignmentToRemove.previousMappedTerms;
     state.confirmingRemoveAlignment = false;
+    state.alignmentToRemove = null;
   }),
   /**
    * Mark the term not mapped.
@@ -278,18 +282,24 @@ export const mappingStore = (initialData = {}) => ({
   handleRevertMapping: action((state, { termId, mappedTerm, organization, origin }) => {
     let alignment = state.alignments.find((alg) => alg.spineTermId === termId);
     alignment.changed = true;
-    alignment.previousMappedTerms = [...alignment.mappedTerms];
-    remove(alignment.mappedTerms, (mTerm) => mTerm.id === mappedTerm.id);
+    const mappedTermsLength = alignment.mappedTerms.length;
+    const isSynthetic =
+      alignment.synthetic && origin?.toLowerCase() === organization.name.toLowerCase();
 
-    // If there's no mapped terms after removing the selected one (this was the last mapped
-    // term, and we removed it) remove the predicate
-    if (isEmpty(alignment.mappedTerms)) {
-      alignment.previousPredicateId = alignment.predicateId;
-      alignment.predicateId = null;
+    // if mappedTermsLength > 1 or it isn't synthetic, just remove the mapped term
+    if (mappedTermsLength > 1 || !isSynthetic) {
+      remove(alignment.mappedTerms, (mTerm) => mTerm.id === mappedTerm.id);
+    }
+
+    // If there will be no mapped terms after removing the selected one remove the predicate for not synthetic alignments
+    // and show confirmation dialog for synthetic alignments
+    if (mappedTermsLength === 1) {
       // If it's a synthetic alignment, and we added it, let's remove it
-      if (alignment.synthetic && origin?.toLowerCase() === organization.name.toLowerCase()) {
+      if (isSynthetic) {
         state.alignmentToRemove = alignment;
         state.confirmingRemoveAlignment = true;
+      } else {
+        alignment.predicateId = null;
       }
     }
 
@@ -317,10 +327,17 @@ export const mappingStore = (initialData = {}) => ({
     state.spineTermsInputValue = event.target.value;
   }),
   removeAlignment: action((state) => {
-    remove(state.alignments, (mt) => mt.id === state.alignmentToRemove.id);
+    remove(
+      state.alignments,
+      (mt) =>
+        (mt.id && mt.id === state.alignmentToRemove.id) ||
+        (mt.syntheticId && mt.syntheticId === state.alignmentToRemove.syntheticId)
+    );
     remove(state.spineTerms, (sTerm) => sTerm.id === state.alignmentToRemove.spineTermId);
     // Close the modal confirmation window
     state.confirmingRemoveAlignment = false;
+    // If it's the last synthetic alignment that is not saved, let's update addingSynthetic status
+    if (!state.alignments.some((a) => a.synthetic && !a.persisted)) state.addingSynthetic = false;
     state.alignmentToRemove = null;
     // If this is the only change, it's not right to count it as a change to save, since it's already
     // performed against the service, so it does not represent a change to perform.
@@ -332,16 +349,41 @@ export const mappingStore = (initialData = {}) => ({
    * @param {Object} spineTerm
    * @param {Object} predicate
    */
-  selectPredicate: action((state, { spineTerm, predicate }) => {
+  selectPredicate: action((state, { spineTerm, predicate, noMatchPredicateId }) => {
     let selectedAlignment = state.alignments.find((alg) => alg.spineTermId === spineTerm.id);
     selectedAlignment.predicateId = predicate.id;
     selectedAlignment.changed = true;
+    // Remove all mapped terms if the predicate is "No Match"
+    if (predicate.id === noMatchPredicateId) {
+      selectedAlignment.mappedTerms = [];
+    }
     // Warn to save changes
     state.changesPerformed++;
   }),
   updateAlignmentComment: action((state, { id, comment }) => {
     let alignment = state.alignments.find((alg) => alg.id === id);
     alignment.comment = comment;
+  }),
+  // updated alignment changes after save
+  updateAlignmentsChanges: action((state, { adds }) => {
+    // remove not persisted alignments that are completed
+    const completedAlignments = remove(
+      state.alignments,
+      (a) => !a.persisted && completedAlignment(state.noMatchPredicateId, a)
+    );
+    // remove corresponding spine terms
+    const spineTermIds = completedAlignments.map((a) => a.spineTermId);
+    remove(state.spineTerms, (st) => spineTermIds.includes(st.id));
+    // add created alignments
+    state.alignments.push(...adds.map((a) => ({ ...a, persisted: true })));
+  }),
+  // update spine terms by replacing with new terms except the synthetic ones that are not saved
+  updateSpineTerms: action((state, terms) => {
+    let syntheticTermIds = state.alignments
+      .filter((a) => a.synthetic && !a.persisted)
+      .map((a) => a.spineTermId);
+    let syntheticTerms = state.spineTerms.filter((term) => syntheticTermIds.includes(term.id));
+    state.spineTerms = terms.concat(syntheticTerms);
   }),
 
   // async actions
@@ -371,7 +413,9 @@ export const mappingStore = (initialData = {}) => ({
     const state = h.getState();
     if (!state.alignmentToRemove) return;
 
-    let response = await deleteAlignment(state.alignmentToRemove.id);
+    let response = state.alignmentToRemove.id
+      ? await deleteAlignment(state.alignmentToRemove.id)
+      : { success: true };
     if (state.withoutErrors(response)) {
       actions.removeAlignment();
       // Communicate the operation result to the user
@@ -406,6 +450,9 @@ export const mappingStore = (initialData = {}) => ({
     if (state.withoutErrors(response)) {
       actions.setChangesPerformed(0);
       if (params.partiallySave) {
+        // TODO: maybe we need to sync all data here, currently we sync only the changes we've sent to backend
+        actions.updateAlignmentsChanges({ adds: response.adds || [] });
+        await actions.refetchDataFromAPI({ withSynthetic: !isEmpty(response.adds) });
         let message = state.noPartiallyMappedTerms
           ? 'Changes saved!'
           : 'Changes saved except highlighted partially mapped terms. Review them with "Hide Mapped Elements" filter on';
@@ -456,9 +503,9 @@ export const mappingStore = (initialData = {}) => ({
     const state = h.getState();
     let response = await fetchAlignments(mappingId);
     if (state.withoutErrors(response)) {
-      let alignmentsList = response.alignments;
-      alignmentsList.forEach((alignment) => (alignment.persisted = true));
-      actions.setAlignments(alignmentsList);
+      actions.setAlignments(
+        response.alignments.map((alignment) => ({ ...alignment, persisted: true }))
+      );
     } else {
       actions.addError(response.error);
     }
@@ -471,7 +518,7 @@ export const mappingStore = (initialData = {}) => ({
     const state = h.getState();
     let response = await fetchSpineTerms(spineId);
     if (state.withoutErrors(response)) {
-      actions.setSpineTerms(response.terms);
+      actions.updateSpineTerms(response.terms);
     } else {
       actions.addError(response.error);
     }
@@ -528,9 +575,19 @@ export const mappingStore = (initialData = {}) => ({
       // Get the spine terms
       await actions.handleFetchSpineTerms({ spineId: response.mapping.spine_id });
       // Get the audits
-      await actions.handleFetchMappingChanges(response.mapping);
+      await actions.handleFetchMappingChanges();
     }
     // Get the predicates
     await actions.handleFetchPredicates();
+  }),
+  // refetch data after save
+  refetchDataFromAPI: thunk(async (actions, { withSynthetic = false }, h) => {
+    const state = h.getState();
+    // Get the spine terms in case of synthetic terms were updated
+    if (withSynthetic) {
+      await actions.handleFetchSpineTerms({ spineId: state.mapping.spine_id });
+    }
+    // Get the audits
+    await actions.handleFetchMappingChanges();
   }),
 });

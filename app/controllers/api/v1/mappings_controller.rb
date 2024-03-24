@@ -65,8 +65,7 @@ module API
       #   to the one passed in params
       ###
       def show_terms
-        render json: @instance.alignments.includes(:mapped_terms).order(:uri),
-               include: { mapped_terms: { include: %i(property vocabularies) } }
+        render json: @instance.alignments.includes(:mapped_terms, :predicate).order(:uri)
       end
 
       ###

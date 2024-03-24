@@ -9,6 +9,7 @@ const saveAlignments = async (mappingId, data, params) => {
       alignments: decamelizeKeys(data),
       params: decamelizeKeys(params),
     },
+    camelizeKeys: true,
   });
 };
 

@@ -46,7 +46,7 @@ const AlignAndFineTune = (props) => {
 
   // Link the predicate to the corresponding mapping term
   const onPredicateSelected = (spineTerm, predicate) =>
-    actions.selectPredicate({ spineTerm, predicate });
+    actions.selectPredicate({ spineTerm, predicate, noMatchPredicateId: state.noMatchPredicateId });
 
   // Action to perform after a mapping term is dropped
   const afterDropTerm = (spineTerm, items) => {
