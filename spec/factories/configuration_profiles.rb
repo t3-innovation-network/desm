@@ -45,6 +45,12 @@ FactoryBot.define do
       predicates_count { 1 }
     end
 
+    ConfigurationProfile.states.each_key do |state|
+      trait state do
+        state { state }
+      end
+    end
+
     trait :basic do
       json_abstract_classes { {} }
       json_mapping_predicates { {} }

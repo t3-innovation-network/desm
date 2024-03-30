@@ -25,8 +25,11 @@ module API
       #   end up wasting memory in an unnecessary list of audits.
       ###
       def validate
-        raise "No class_name provided. We need it in order to return audits." unless params[:class_name].present?
-        raise "No instance ids provided" unless params[:instance_ids].present?
+        unless params[:class_name].present?
+          raise ArgumentError,
+                "No class_name provided. We need it in order to return audits."
+        end
+        raise ArgumentError, "No instance ids provided" unless params[:instance_ids].present?
 
         instantiate_params
       end

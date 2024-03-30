@@ -45,7 +45,7 @@ class ConfigurationProfile < ApplicationRecord
   belongs_to :abstract_classes, class_name: "DomainSet", foreign_key: :domain_set_id, optional: true
   belongs_to :mapping_predicates, class_name: "PredicateSet", foreign_key: :predicate_set_id, optional: true
   belongs_to :administrator, class_name: "User", foreign_key: :administrator_id, optional: true
-  has_many :configuration_profile_users
+  has_many :configuration_profile_users, dependent: :destroy
   has_and_belongs_to_many :standards_organizations, class_name: "Organization"
   has_many :domains, through: :abstract_classes
   has_many :mappings, through: :configuration_profile_users
@@ -62,10 +62,10 @@ class ConfigurationProfile < ApplicationRecord
   before_save :check_structure, if: :will_save_change_to_structure?
   # TODO: check if we really need that check
   before_save :check_predicate_strongest_match, if: :will_save_change_to_predicate_strongest_match?
-  after_save :create_new_entities, if: :active?
   before_destroy :remove_orphan_organizations
 
   after_update :update_abstract_classes, if: :saved_change_to_json_abstract_classes?
+  after_update :update_organizations, if: -> { active? && saved_change_to_structure? }
   after_update :update_predicates, if: :saved_change_to_json_mapping_predicates?
   after_update :update_predicat_set, if: :saved_change_to_predicate_strongest_match?
 
@@ -178,12 +178,9 @@ class ConfigurationProfile < ApplicationRecord
 
   private
 
-  def create_new_entities
-    structure.fetch("standards_organizations", []).each do |dso_data|
-      CreateDso.call(dso_data.merge(configuration_profile: self))
-    rescue StandardError
-      nil
-    end
+  def update_organizations
+    interactor = UpdateDsos.call(configuration_profile: self)
+    raise ArgumentError, interactor.error unless interactor.success?
   end
 
   def remove_orphan_organizations
@@ -198,14 +195,14 @@ class ConfigurationProfile < ApplicationRecord
     return if abstract_classes.nil? || json_abstract_classes.nil?
 
     interactor = UpdateAbstractClasses.call(domain_set: abstract_classes, json_body: json_abstract_classes)
-    raise interactor.error unless interactor.success?
+    raise ArgumentError, interactor.error unless interactor.success?
   end
 
   def update_predicates
     return if mapping_predicates.nil? || json_mapping_predicates.nil?
 
     interactor = UpdateMappingPredicates.call(predicate_set: mapping_predicates, json_body: json_mapping_predicates)
-    raise interactor.error unless interactor.success?
+    raise ArgumentError, interactor.error unless interactor.success?
   end
 
   def update_predicat_set

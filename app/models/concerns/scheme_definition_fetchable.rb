@@ -17,7 +17,7 @@ module SchemeDefinitionFetchable
 
     file = temp_file(uri)
     converter = Parsers::FormatConverter.find_converter(file)
-    raise "Converter not found for schema: `#{uri}`" unless converter
+    raise ArgumentError, "Converter not found for schema: `#{uri}`" unless converter
 
     converter.convert(file)
   end
@@ -30,7 +30,7 @@ module SchemeDefinitionFetchable
     # Try resolving with an http request
     JsonContext.fetch(@context)
   rescue JSON::ParserError
-    raise "Failed to resolve context. Make sure `#{@context}` responds with JSON"
+    raise ArgumentError, "Failed to resolve context. Make sure `#{@context}` responds with JSON"
   end
 
   private

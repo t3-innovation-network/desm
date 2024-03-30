@@ -16,7 +16,7 @@ module API
         when "complete"
           ConfigurationProfile.complete_schema
         else
-          raise "Invalid schema name"
+          raise ArgumentError, "Invalid schema name"
         end
       end
 

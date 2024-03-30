@@ -16,7 +16,7 @@ module API
         end
 
         @instance.send(action)
-        render json: @instance.reload, include: [standards_organizations: { include: :users }]
+        render json: @instance.reload, with_organizations: true
       end
 
       private

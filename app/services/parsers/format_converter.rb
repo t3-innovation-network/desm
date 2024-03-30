@@ -31,7 +31,7 @@ module Parsers
 
       converter.convert(file)
     rescue => e
-      raise "Failed to convert #{File.basename(file.path)} to JSON-LD: #{e.message}"
+      raise StandardError, "Failed to convert #{File.basename(file.path)} to JSON-LD: #{e.message}"
     end
 
     def self.find_converter(file)
