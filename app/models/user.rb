@@ -41,6 +41,10 @@ class User < ApplicationRecord
 
   validates :fullname, presence: true
   validates :email, presence: true, uniqueness: true
+  # validate phone based on the Desm::PHONE_RE regex
+  validates :phone,
+            format: { with: Desm::PHONE_RE, message: I18n.t("ui.config.user.phone_format") },
+            allow_blank: true
 
   after_create :send_welcome_email, unless: :skip_sending_welcome_email
   after_save :update_configuration_profiles

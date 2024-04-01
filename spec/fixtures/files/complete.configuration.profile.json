@@ -13,23 +13,23 @@
       "dsoAdministrator": {
         "fullname": "CredReg Admin",
         "email": "admin@credreg.com",
-        "phone": "(123) 321-1234"
+        "phone": "123 321-1234"
       },
       "dsoAgents": [
         {
           "fullname": "Mapper N1",
           "email": "mapper1@credreg.com",
-          "phone": "(123) 321-1235"
+          "phone": "123 321-1235"
         },
         {
           "fullname": "Mapper N2",
           "email": "mapper2@credreg.com",
-          "phone": "(123) 321-1236"
+          "phone": "123 321-1236"
         },
         {
           "fullname": "Mapper N3",
           "email": "mapper3@credreg.com",
-          "phone": "(123) 321-1237"
+          "phone": "123 321-1237"
         }
       ],
       "associatedSchemas": [
