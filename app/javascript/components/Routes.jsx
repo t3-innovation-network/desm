@@ -1,3 +1,4 @@
+import AgentsIndex from './dashboard/agents/AgentsIndex';
 import UsersIndex from './dashboard/users/UsersIndex';
 import EditUser from './dashboard/users/EditUser';
 import Registration from './auth/Registration';
@@ -120,6 +121,13 @@ const Routes = (props) => {
           path="/dashboard/configuration-profiles/:id"
           allowedRoles={onlySuperAdmin}
           component={EditConfigurationProfile}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/dashboard/agents"
+          component={AgentsIndex}
+          allowedRoles={onlySuperAdmin}
         />
 
         <ProtectedRoute

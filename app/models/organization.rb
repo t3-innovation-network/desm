@@ -28,6 +28,7 @@
 # @description: Represents an organization in the application
 ###
 class Organization < ApplicationRecord
+  include PgSearch::Model
   include Slugable
 
   belongs_to :administrator, class_name: :User, foreign_key: "administrator_id", optional: true
@@ -40,6 +41,8 @@ class Organization < ApplicationRecord
   has_and_belongs_to_many :configuration_profiles
 
   validates :email, presence: true
+
+  pg_search_scope :search_by_name, against: :name, using: { tsearch: { prefix: true } }
 
   ###
   # @description: Returns the JSON-LD representation of the organization

@@ -147,6 +147,7 @@ GEM
     faker (3.2.3)
       i18n (>= 1.8.11, < 2)
     ffi (1.16.3)
+    glob (0.4.1)
     globalid (1.1.0)
       activesupport (>= 5.0)
     haml (6.3.0)
@@ -166,6 +167,9 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
+    i18n-js (4.2.3)
+      glob (>= 0.4.0)
+      i18n
     iniparse (1.5.0)
     interactor (3.1.2)
     interactor-rails (2.2.1)
@@ -288,6 +292,9 @@ GEM
       ast (~> 2.4.1)
       racc
     pg (1.5.4)
+    pg_search (2.3.6)
+      activerecord (>= 5.2)
+      activesupport (>= 5.2)
     psych (5.1.2)
       stringio
     public_suffix (5.0.4)
@@ -600,6 +607,7 @@ DEPENDENCIES
   faker
   htmlbeautifier
   httparty
+  i18n-js (~> 4.2)
   interactor-rails (~> 2.0)
   json-schema
   json_schema_tools (~> 0.6)
@@ -612,6 +620,7 @@ DEPENDENCIES
   open_uri_redirections (~> 0.2)
   overcommit
   pg (>= 0.18, < 2.0)
+  pg_search (~> 2.3)
   puma (~> 4.1)
   pundit
   rack-cors
