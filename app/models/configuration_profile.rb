@@ -42,6 +42,8 @@ class ConfigurationProfile < ApplicationRecord
   include Slugable
   audited
 
+  attr_accessor :skip_update_organizations
+
   belongs_to :abstract_classes, class_name: "DomainSet", foreign_key: :domain_set_id, optional: true
   belongs_to :mapping_predicates, class_name: "PredicateSet", foreign_key: :predicate_set_id, optional: true
   belongs_to :administrator, class_name: "User", foreign_key: :administrator_id, optional: true
@@ -65,7 +67,7 @@ class ConfigurationProfile < ApplicationRecord
   before_destroy :remove_orphan_organizations
 
   after_update :update_abstract_classes, if: :saved_change_to_json_abstract_classes?
-  after_update :update_organizations, if: -> { active? && saved_change_to_structure? }
+  after_update :update_organizations, if: -> { active? && saved_change_to_structure? && !skip_update_organizations }
   after_update :update_predicates, if: :saved_change_to_json_mapping_predicates?
   after_update :update_predicat_set, if: :saved_change_to_predicate_strongest_match?
 
