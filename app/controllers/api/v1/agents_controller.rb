@@ -17,7 +17,7 @@ module API
         render json: {
           organizations: serialize_filters_for(policy_scope(Organization)),
           configuration_profiles: serialize_filters_for(policy_scope(ConfigurationProfile).activated),
-          states: ConfigurationProfile.states_for_select[-2..]
+          states: ConfigurationProfile.activated_states_for_select
         }
       end
 

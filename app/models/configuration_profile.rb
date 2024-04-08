@@ -108,8 +108,12 @@ class ConfigurationProfile < ApplicationRecord
     )
   end
 
-  def self.states_for_select
-    ConfigurationProfile.states.keys.map { |state| { id: state, name: state.humanize } }
+  def self.activated_states_for_select
+    ConfigurationProfile.states_for_select(%w(active deactivated))
+  end
+
+  def self.states_for_select(data = ConfigurationProfile.states.keys)
+    data.map { |state| { id: state, name: state.humanize } }
   end
 
   def self.validate_structure(struct, type = "valid")
