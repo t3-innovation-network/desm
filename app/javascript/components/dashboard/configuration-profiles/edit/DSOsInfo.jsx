@@ -45,10 +45,8 @@ const DSOsInfo = () => {
         associatedSchemas: [],
       },
     ];
-    // update idx as newIdx in case of success, otherwise keep the same idx
-    save(localCP)
-      .then(() => dispatch(setCurrentDSOIndex(newIdx)))
-      .catch(() => {});
+    dispatch(setCurrentConfigurationProfile(localCP));
+    dispatch(setCurrentDSOIndex(newIdx));
   };
 
   const dsoTabs = () => {
