@@ -5,22 +5,13 @@
 #   organization records.
 ###
 class MappingPolicy < ApplicationPolicy
-  def initialize(user, record)
-    super(user, record)
-    @user = user || @current_user
-    @record = record
-
-    # Signed in users
-    raise Pundit::NotAuthorizedError unless user.present?
-  end
-
   ###
   # @description: Determines if the user has access to the index for this resource
   # @return [TrueClass]
   ###
   def index?
     # Signed in users
-    @user.present?
+    signed_in?
   end
 
   ###
@@ -29,7 +20,7 @@ class MappingPolicy < ApplicationPolicy
   ###
   def export?
     # Signed in users
-    @user.present?
+    signed_in?
   end
 
   ###
@@ -38,7 +29,7 @@ class MappingPolicy < ApplicationPolicy
   ###
   def show?
     # Signed in users
-    @user.present?
+    signed_in?
   end
 
   ###
@@ -47,7 +38,7 @@ class MappingPolicy < ApplicationPolicy
   ###
   def show_terms?
     # Signed in users
-    @user.present?
+    signed_in?
   end
 
   ###
@@ -56,7 +47,7 @@ class MappingPolicy < ApplicationPolicy
   ###
   def show_selected_terms?
     # Signed in users
-    @user.present?
+    signed_in?
   end
 
   ###
@@ -64,7 +55,7 @@ class MappingPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def create?
-    @user.present?
+    signed_in?
   end
 
   ###
@@ -72,7 +63,7 @@ class MappingPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def create_selected_terms?
-    @user.present?
+    signed_in?
   end
 
   ###
@@ -80,7 +71,7 @@ class MappingPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def destroy?
-    @user.present?
+    signed_in?
   end
 
   ###
@@ -88,6 +79,14 @@ class MappingPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def update?
-    @user.present?
+    signed_in?
+  end
+
+  class Scope < ApplicationPolicy::Scope
+    def resolve
+      return scope.all if user.user.super_admin?
+
+      user.configuration_profile&.mappings || user.user.mappings
+    end
   end
 end

@@ -20,12 +20,9 @@ RSpec.describe CreateCpStructure, type: :interactor do
         Role.create!(name: "dso admin")
         Role.create!(name: "mapper")
         @cp = create(:configuration_profile)
-        complete_structure = Rails.root.join("spec", "fixtures", "complete.configuration.profile.json")
-        valid_json_abstract_classes = JSON.parse(File.read(Rails.root.join("concepts", "desmAbstractClasses.json")))
-        valid_json_mapping_predicates =
-          JSON.parse(
-            File.read(Rails.root.join("concepts", "desmMappingPredicates.json"))
-          )
+        complete_structure = file_fixture("complete.configuration.profile.json")
+        valid_json_abstract_classes = json_fixture("desmAbstractClasses.json")
+        valid_json_mapping_predicates = json_fixture("desmMappingPredicates.json")
         @cp.structure = JSON.parse(File.read(complete_structure))
         @cp.json_abstract_classes = valid_json_abstract_classes
         @cp.json_mapping_predicates = valid_json_mapping_predicates

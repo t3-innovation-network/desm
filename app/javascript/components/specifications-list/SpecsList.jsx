@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import {} from 'react';
 import TopNav from '../shared/TopNav';
 import { Link } from 'react-router-dom';
 import fetchMappings from '../../services/fetchMappings';
@@ -7,7 +7,6 @@ import TopNavOptions from '../shared/TopNavOptions';
 import SpineSpecsList from './SpineSpecsList';
 import _ from 'lodash';
 import ConfirmDialog from '../shared/ConfirmDialog';
-import { toastr as toast } from 'react-redux-toastr';
 import deleteMapping from '../../services/deleteMapping';
 import fetchMappingToExport from '../../services/fetchMappingToExport';
 import { downloadFile } from '../../helpers/Export';
@@ -23,6 +22,7 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { AppContext } from '../../contexts/AppContext';
+import { showSuccess } from '../../helpers/Messages';
 
 export default class SpecsList extends Component {
   static contextType = AppContext;
@@ -139,7 +139,7 @@ export default class SpecsList extends Component {
     let response = await deleteMapping(mappingIdToRemove);
 
     if (!this.anyError(response, errorsWhileRemoving)) {
-      toast.success('Mapping removed');
+      showSuccess('Mapping removed');
 
       this.setState({
         confirmingRemove: false,
@@ -191,7 +191,7 @@ export default class SpecsList extends Component {
       );
 
       /// Notify the user
-      toast.success('Status changed!');
+      showSuccess('Status changed!');
     }
 
     this.setState({ loading: false });
@@ -231,7 +231,7 @@ export default class SpecsList extends Component {
       );
 
       /// Notify the user
-      toast.success('Status changed!');
+      showSuccess('Status changed!');
     }
 
     this.setState({ loading: false });
@@ -280,8 +280,6 @@ export default class SpecsList extends Component {
                   <button
                     className="btn btn-sm btn-dark ml-2"
                     onClick={() => this.handleMarkToInProgress(mapping.id)}
-                    data-toggle="tooltip"
-                    data-placement="top"
                     title="Mark this mapping back to 'in progress'"
                   >
                     <FontAwesomeIcon icon={faUndo} />
@@ -290,8 +288,6 @@ export default class SpecsList extends Component {
                   <Link
                     to={'/mappings/' + mapping.id + '/align'}
                     className="btn btn-sm btn-dark ml-2"
-                    data-toggle="tooltip"
-                    data-placement="top"
                     title="Edit this mapping"
                   >
                     <FontAwesomeIcon icon={faPencilAlt} />
@@ -302,8 +298,6 @@ export default class SpecsList extends Component {
               <Link
                 to={`/mappings-list?abstractClass=${mapping.domain}`}
                 className="btn btn-sm btn-dark ml-2"
-                data-toggle="tooltip"
-                data-placement="top"
                 title="View this mapping"
               >
                 <FontAwesomeIcon icon={faEye} />
@@ -312,8 +306,6 @@ export default class SpecsList extends Component {
               <button
                 className="btn btn-sm btn-dark ml-2"
                 onClick={() => this.handleExportMapping(mapping)}
-                data-toggle="tooltip"
-                data-placement="top"
                 title="Export this mapping"
               >
                 <FontAwesomeIcon icon={faDownload} />
@@ -326,8 +318,6 @@ export default class SpecsList extends Component {
                     <button
                       className="btn btn-sm btn-dark ml-2"
                       onClick={() => this.handleMarkToUploaded(mapping.id)}
-                      data-toggle="tooltip"
-                      data-placement="top"
                       title="Mark this mapping back to 'uploaded'"
                     >
                       <FontAwesomeIcon icon={faUndo} />
@@ -345,8 +335,6 @@ export default class SpecsList extends Component {
                         '/mappings/' + mapping.id + '/align'
                   }
                   className="btn btn-sm ml-2 bg-col-primary col-background"
-                  data-toggle="tooltip"
-                  data-placement="top"
                   title="Resume, continue mapping"
                 >
                   <FontAwesomeIcon icon={faLayerGroup} />
@@ -359,8 +347,6 @@ export default class SpecsList extends Component {
             <button
               onClick={() => this.handleConfirmRemove(mapping.id)}
               className="btn btn-sm btn-dark ml-2"
-              data-toggle="tooltip"
-              data-placement="top"
               title="Remove this mapping"
             >
               <FontAwesomeIcon icon={faTrash} />
@@ -387,7 +373,7 @@ export default class SpecsList extends Component {
             {loading ? (
               <Loader />
             ) : (
-              <Fragment>
+              <>
                 <ConfirmDialog
                   onRequestClose={() => this.setState({ confirmingRemove: false })}
                   onConfirm={() => this.handleRemoveMapping()}
@@ -444,7 +430,7 @@ export default class SpecsList extends Component {
                     </div>
                   )}
                 </div>
-              </Fragment>
+              </>
             )}
           </div>
         </div>

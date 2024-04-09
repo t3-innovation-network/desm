@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useLocalStore } from 'easy-peasy';
 import Modal from 'react-modal';
 import updateAlignment from '../../services/updateAlignment';
 import AlertNotice from '../shared/AlertNotice';
@@ -6,6 +6,8 @@ import ModalStyles from '../shared/ModalStyles';
 import PredicateOptions from '../shared/PredicateOptions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { editAlignmentStore } from './stores/editAlignmentStore';
+import useDidMountEffect from '../../helpers/useDidMountEffect';
 
 const EditAlignment = (props) => {
   Modal.setAppElement('body');
@@ -22,17 +24,16 @@ const EditAlignment = (props) => {
     spineTerm,
   } = props;
 
-  const [currentMode, setCurrentMode] = useState(mode);
-  const [commentChanged, setCommentChanged] = useState(false);
-  const [predicateChanged, setPredicateChanged] = useState(false);
-  const [error, setError] = useState(null);
-  const [comment, setComment] = useState(alignment?.comment);
-  const [selectedPredicate, setSelectedPredicate] = useState(predicate);
+  const [state, actions] = useLocalStore(() =>
+    editAlignmentStore({
+      comment: alignment?.comment,
+      selectedPredicate: predicate,
+      currentMode: mode,
+    })
+  );
+  const { comment, commentChanged, currentMode, predicateChanged, selectedPredicate } = state;
 
-  const handleCommentChange = (e) => {
-    setCommentChanged(true);
-    setComment(e.target.value);
-  };
+  const handleCommentChange = (e) => actions.handleCommentChange(e.target.value);
 
   const handleSaveComment = async () => {
     let response = await updateAlignment({
@@ -41,28 +42,23 @@ const EditAlignment = (props) => {
     });
 
     if (response.error) {
-      setError(response.error);
+      actions.setError(response.error);
       return;
     }
 
     onCommentUpdated({ saved: true, comment: comment });
   };
 
-  const handlePredicateSelected = (predicate) => {
-    setPredicateChanged(true);
-    setSelectedPredicate(predicate);
-  };
-
   const handleSaveAlignment = async () => {
-    let response = await updateAlignment({
-      id: alignment.id,
-      predicateId: selectedPredicate.id,
-    });
+    // let response = await updateAlignment({
+    //   id: alignment.id,
+    //   predicateId: selectedPredicate.id,
+    // });
 
-    if (response.error) {
-      setError(response.error);
-      return;
-    }
+    // if (response.error) {
+    //   actions.setError(response.error);
+    //   return;
+    // }
 
     onPredicateUpdated({
       saved: true,
@@ -71,9 +67,9 @@ const EditAlignment = (props) => {
     });
   };
 
-  useEffect(() => {
-    setCurrentMode(mode);
-  }, [mode]);
+  useDidMountEffect(() => {
+    if (modalIsOpen) actions.setCurrentMode(mode);
+  }, [modalIsOpen]);
 
   return (
     <Modal
@@ -92,8 +88,7 @@ const EditAlignment = (props) => {
           </a>
         </div>
         <div className="card-body">
-          {error && <AlertNotice message={error} />}
-
+          {state.hasErrors && <AlertNotice message={state.errors} onClose={actions.clearErrors} />}
           <div className="row">
             <div className="col-4">
               <div className="card">
@@ -108,19 +103,21 @@ const EditAlignment = (props) => {
               ) : (
                 <PredicateOptions
                   predicates={predicates}
-                  onPredicateSelected={(predicate) => handlePredicateSelected(predicate)}
+                  onPredicateSelected={actions.handlePredicateSelected}
                   predicate={predicate.pref_label}
                 />
               )}
             </div>
             <div className="col-4">
-              {alignment.mappedTerms.map((mTerm) => {
-                return (
-                  <div key={mTerm.id} className="card mb-3">
-                    <div className="card-header">{mTerm.name}</div>
-                  </div>
-                );
-              })}
+              {state.selectedNoMatchPredicate
+                ? null
+                : alignment.mappedTerms.map((mTerm) => {
+                    return (
+                      <div key={mTerm.id} className="card mb-3">
+                        <div className="card-header">{mTerm.name}</div>
+                      </div>
+                    );
+                  })}
             </div>
           </div>
 
@@ -154,20 +151,20 @@ const EditAlignment = (props) => {
                   onClick={handleSaveAlignment}
                   disabled={!predicateChanged}
                 >
-                  Save
+                  Change Predicate
                 </button>
               )}
               {currentMode === 'comment' ? (
                 <a
                   className="btn col-primary cursor-pointer mt-3"
-                  onClick={() => setCurrentMode('edit')}
+                  onClick={() => actions.setCurrentMode('edit')}
                 >
                   Edit
                 </a>
               ) : (
                 <a
                   className="btn col-primary cursor-pointer mt-3"
-                  onClick={() => setCurrentMode('comment')}
+                  onClick={() => actions.setCurrentMode('comment')}
                 >
                   Comment
                 </a>

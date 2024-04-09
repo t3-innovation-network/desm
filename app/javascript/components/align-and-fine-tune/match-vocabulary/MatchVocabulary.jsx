@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import { Component } from 'react';
 import Modal from 'react-modal';
 import fetchAlignmentVocabulary from '../../../services/fetchAlignmentVocabulary';
 import fetchVocabularyConcepts from '../../../services/fetchVocabularyConcepts';
@@ -9,9 +9,9 @@ import ModalStyles from '../../shared/ModalStyles';
 import HeaderContent from './HeaderContent';
 import MappingConceptsList from './MappingConceptsList';
 import SpineConceptRow from './SpineConceptRow';
-import { toastr as toast } from 'react-redux-toastr';
 import createSyntheticVocabularyConcept from '../../../services/createSyntheticVocabularyConcept';
 import Pluralize from 'pluralize';
+import { showSuccess } from '../../../helpers/Messages';
 
 /**
  * Props
@@ -194,12 +194,8 @@ export default class MatchVocabulary extends Component {
    * @param {HttpResponse} response
    */
   anyError(response) {
-    const { errors } = this.state;
-
     if (response.error) {
-      let tempErrors = errors;
-      tempErrors.push(response.error);
-      this.setState({ errors: tempErrors });
+      this.setState({ errors: [...this.state.errors, response.error] });
     }
     /// It will return a truthy value (depending no the existence
     /// of the errors on the response object)
@@ -274,7 +270,7 @@ export default class MatchVocabulary extends Component {
     this.saveChangedAlignments();
     this.saveSyntheticAlignments();
 
-    toast.success('The vocabulary changes were successfully saved!');
+    showSuccess('The vocabulary changes were successfully saved!');
     onRequestClose();
   };
 
@@ -336,7 +332,6 @@ export default class MatchVocabulary extends Component {
    * Use the API to get the information and update the internal status
    */
   handleFetchDataFromAPI = async () => {
-    const { errors } = this.state;
     this.setState({ loading: true });
 
     await this.fetchDataFromAPI();
@@ -388,8 +383,6 @@ export default class MatchVocabulary extends Component {
               <button
                 className="btn btn-dark"
                 onClick={this.addSyntheticConceptRow}
-                data-toggle="tooltip"
-                data-placement="top"
                 title="Use this button to add new elements to the spine"
               >
                 + Add Synthetic
@@ -428,12 +421,16 @@ export default class MatchVocabulary extends Component {
             </div>
             <div className="card-body">
               {/* Manage to show the errors, if any */}
-              {errors.length ? <AlertNotice message={errors} /> : ''}
+              {errors.length ? (
+                <AlertNotice message={errors} onClose={() => this.setState({ errors: [] })} />
+              ) : (
+                ''
+              )}
 
               {loading ? (
                 <Loader />
               ) : (
-                <Fragment>
+                <>
                   <Title />
 
                   <div className="row">
@@ -477,7 +474,7 @@ export default class MatchVocabulary extends Component {
                       />
                     </div>
                   </div>
-                </Fragment>
+                </>
               )}
             </div>
           </div>

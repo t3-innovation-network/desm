@@ -1,4 +1,3 @@
-import React from 'react';
 import coffeeWait from '../../../assets/images/coffee-wait.gif';
 
 /**

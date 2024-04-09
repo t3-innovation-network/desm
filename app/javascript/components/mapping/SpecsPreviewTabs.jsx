@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -51,7 +51,7 @@ const SpecsPreviewTabs = (props) => {
   const renderSpec = (spec) => JSON.stringify({ '@graph': spec['@graph'] }, null, 2);
 
   return (
-    <React.Fragment>
+    <>
       <Tabs
         className={'mt-3' + (disabled ? ' disabled-container' : '')}
         defaultFocus={true}
@@ -96,8 +96,6 @@ const SpecsPreviewTabs = (props) => {
                     onClick={() => {
                       handleRemoveVocabulary(i);
                     }}
-                    data-toggle="tooltip"
-                    data-placement="top"
                     title="Remove this vocabulary"
                     disabled={disabled}
                   >
@@ -114,7 +112,7 @@ const SpecsPreviewTabs = (props) => {
           );
         })}
       </Tabs>
-    </React.Fragment>
+    </>
   );
 };
 

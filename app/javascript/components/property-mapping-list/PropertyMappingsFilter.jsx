@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import { Component } from 'react';
 import HoverableLabel from '../shared/HoverableLabel';
 
 /**
@@ -121,7 +121,7 @@ export default class PropertyMappingsFilter extends Component {
     const { organizations, selectedSpineOrganizations, onSpineOrganizationSelected } = this.props;
 
     return (
-      <Fragment>
+      <>
         <label
           className="col-primary cursor-pointer non-selectable mb-3"
           onClick={() => {
@@ -150,7 +150,7 @@ export default class PropertyMappingsFilter extends Component {
             </div>
           );
         })}
-      </Fragment>
+      </>
     );
   };
 
@@ -165,7 +165,7 @@ export default class PropertyMappingsFilter extends Component {
     } = this.props;
 
     return (
-      <Fragment>
+      <>
         <label
           className="col-primary cursor-pointer non-selectable mb-3"
           onClick={() => {
@@ -197,7 +197,7 @@ export default class PropertyMappingsFilter extends Component {
             </div>
           );
         })}
-      </Fragment>
+      </>
     );
   };
 
@@ -208,7 +208,7 @@ export default class PropertyMappingsFilter extends Component {
     const { predicates, selectedPredicates, onPredicateSelected } = this.props;
 
     return (
-      <Fragment>
+      <>
         <label
           className="col-primary cursor-pointer non-selectable mb-3"
           onClick={() => {
@@ -238,7 +238,7 @@ export default class PropertyMappingsFilter extends Component {
             </div>
           );
         })}
-      </Fragment>
+      </>
     );
   };
 

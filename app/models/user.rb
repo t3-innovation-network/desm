@@ -20,6 +20,7 @@
 #
 #  index_users_on_email  (email) UNIQUE
 #
+
 ###
 # @description: Represents a user of this application
 ###
@@ -49,9 +50,9 @@ class User < ApplicationRecord
   end
 
   def assign_role(role_id)
-    return false if Role.find(role_id) && !Assignment.where(user_id: id, role_id: role_id)
+    return false if Role.find(role_id) && !Assignment.where(user_id: id, role_id:)
 
-    true if Assignment.create!(user_id: id, role_id: role_id)
+    true if Assignment.create!(user_id: id, role_id:)
   end
 
   def available_domains
@@ -98,7 +99,7 @@ class User < ApplicationRecord
   end
 
   def super_admin?
-    role?(:"super admin")
+    role?(Desm::ADMIN_ROLE_NAME.downcase.to_sym)
   end
 
   def update_role(role_id)

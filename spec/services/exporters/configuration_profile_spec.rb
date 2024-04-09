@@ -13,7 +13,7 @@ RSpec.describe Exporters::ConfigurationProfile do
   let(:predicate_set) { predicate.predicate_set }
   let(:role) { create(:role, name: "mapper") }
   let(:specification) { create(:specification, selected_domains_from_file: [term.source_uri]) }
-  let(:spine) { create(:spine, configuration_profile_user: profile_user, domain: domain, terms: [term]) }
+  let(:spine) { create(:spine, configuration_profile_user: profile_user, domain:, terms: [term]) }
   let(:term) { create(:term, configuration_profile_user: profile_user, vocabularies: [vocabulary]) }
   let(:user) { create(:user, roles: [role]) }
   let(:vocabulary) { create(:vocabulary, concepts: [concept]) }
@@ -183,8 +183,8 @@ RSpec.describe Exporters::ConfigurationProfile do
       :mapping,
       configuration_profile_user: profile_user,
       selected_terms: [term],
-      spine: spine,
-      specification: specification
+      spine:,
+      specification:
     )
   end
 
@@ -193,8 +193,8 @@ RSpec.describe Exporters::ConfigurationProfile do
       :configuration_profile_user,
       configuration_profile: profile,
       lead_mapper: [false, true].sample,
-      organization: organization,
-      user: user
+      organization:,
+      user:
     )
   end
 
@@ -203,18 +203,18 @@ RSpec.describe Exporters::ConfigurationProfile do
 
     alignment.update!(
       mapped_terms: [term],
-      predicate: predicate,
+      predicate:,
       synthetic: [false, true].sample
     )
 
     create(
       :alignment_vocabulary,
-      alignment: alignment,
+      alignment:,
       concepts: [
         build(
           :alignment_vocabulary_concept,
           mapped_concepts: [concept],
-          predicate: predicate,
+          predicate:,
           spine_concept: concept
         )
       ]

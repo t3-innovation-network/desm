@@ -1,5 +1,4 @@
-import React from 'react';
-import { Fragment } from 'react';
+import {} from 'react';
 import Collapsible from '../../shared/Collapsible';
 
 /**
@@ -15,13 +14,13 @@ const SimpleConceptCard = ({ concept, origin }) => (
     cardStyle={'with-shadow mb-2'}
     observeOutside={false}
     bodyContent={
-      <Fragment>
+      <>
         <p>{_.isObject(concept.definition) ? concept.definition.en : concept.definition}</p>
         <p>
           Origin:
           <span className="col-primary">{' ' + origin}</span>
         </p>
-      </Fragment>
+      </>
     }
   />
 );

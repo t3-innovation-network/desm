@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import fetchDomains from '../../services/fetchDomains';
 import fetchOrganizations from '../../services/fetchOrganizations';
 import fetchPredicates from '../../services/fetchPredicates';
@@ -244,7 +244,11 @@ export default class PropertyMappingList extends Component {
       <div className="container-fluid">
         <TopNav centerContent={this.navCenterOptions} />
         {/* ERRORS */}
-        {errors.length ? <AlertNotice message={errors} /> : ''}
+        {errors.length ? (
+          <AlertNotice message={errors} onClose={() => this.setState({ errors: [] })} />
+        ) : (
+          ''
+        )}
 
         <div className="row">
           <div className="col p-lg-5 pt-5">

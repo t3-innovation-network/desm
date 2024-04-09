@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class SpineSpecificationsController < ApplicationController
+    class SpineSpecificationsController < BaseController
       ###
       # @description: Returns a filtered list of specifications for an organization
       ###

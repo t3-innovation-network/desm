@@ -20,6 +20,7 @@
 #
 #  fk_rails_...  (configuration_profile_id => configuration_profiles.id) ON DELETE => cascade
 #
+
 ###
 # @description: Represents a vocabulary to be used in a term for
 #   a specification.

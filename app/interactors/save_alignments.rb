@@ -3,8 +3,12 @@
 class SaveAlignments
   include Interactor
 
-  delegate :mapping, to: :context
+  delegate :mapping, :adds, to: :context
   delegate :spine, to: :mapping
+
+  before do
+    context.adds = []
+  end
 
   def call
     Alignment.transaction do
@@ -16,6 +20,10 @@ class SaveAlignments
         end
       end
     end
+  rescue ActiveRecord::RecordInvalid => e
+    context.fail!(error: e.record.errors.full_messages.join(". "))
+  rescue ArgumentError => e
+    context.fail!(error: e.message)
   end
 
   private
@@ -32,13 +40,18 @@ class SaveAlignments
     comment = "Alignment for a synthetic property added to the spine. " \
               "Synthetic uri: #{uri}"
 
-    spine.terms << term
+    begin
+      spine.terms << term
+    rescue ActiveRecord::RecordNotUnique => e
+      Rails.logger.error(e.inspect)
+      context.fail!(error: I18n.t("errors.synthetic.spine_term_not_uniq", term: term.name))
+    end
 
-    mapping.alignments.create!(
-      comment: comment,
+    context.adds << mapping.alignments.create!(
+      comment:,
       spine_term: term,
       synthetic: true,
-      uri: uri,
+      uri:,
       **params.slice(:mapped_term_ids, :predicate_id)
     )
 

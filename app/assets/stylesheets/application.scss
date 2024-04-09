@@ -1,4 +1,12 @@
-@import 'colors';
+@import 'utils/bem';
+@import 'base/colors';
+@import 'utils/utilities';
+@import 'components/card';
+@import 'components/drag-n-drop';
+@import 'customradio';
+@import 'forms';
+@import 'navbar';
+@import 'stepper';
 
 /* General */
 
@@ -79,6 +87,10 @@ a:hover {
 .hover-col-primary:hover {
   background-color: $primary-color;
   color: $foreground-color;
+
+  .text-muted {
+    color: $foreground-color !important;
+  }
 }
 
 .underlined {
@@ -253,6 +265,9 @@ a:hover {
 }
 
 /* Others */
+button[disabled] {
+  pointer-events: auto;
+}
 
 .desm-tooltip {
   color: $primary-color;
@@ -293,6 +308,10 @@ a:hover {
   border: 2px solid $dashboard-background-color;
 }
 
+.border-warning {
+  border: 2px solid $warning-color !important;
+}
+
 .dashboard-active-tab {
   border-top: 2px solid $dashboard-background-color-highlight;
 }
@@ -303,7 +322,7 @@ a:hover {
 }
 
 .term-card {
-  min-height: 5.5rem;
+  min-height: 3rem;
 }
 
 /* Mobile */

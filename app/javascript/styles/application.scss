@@ -1,0 +1,10 @@
+// redefine bootstrap variables
+@import 'themes/settings';
+
+// packages assets
+@import '~bootstrap/scss/bootstrap';
+@import 'codemirror/lib/codemirror.css';
+@import 'react-redux-toastr/src/styles/index';
+
+// app assets
+@import '../../assets/stylesheets/application';

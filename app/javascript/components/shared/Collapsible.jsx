@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { FadeIn } from './Animations.jsx';
 import OutsideAlerter from './OutsideAlerter.jsx';
 

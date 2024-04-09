@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class DomainsController < ApplicationController
+    class DomainsController < BaseController
       before_action :with_instance, only: :show
 
       ###

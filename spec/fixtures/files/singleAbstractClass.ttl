@@ -1,0 +1,14 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://desm.org/concepts/competence> a skos:Concept ;
+    skos:inScheme <http://desm.org/concepts/mappingClasses> ;
+    skos:prefLabel "Competence"@en-us .
+
+<http://desm.org/concepts/mappingClasses> a skos:ConceptScheme ;
+    dcterms:created "2023-06-23"^^xsd:date ;
+    dcterms:creator <https://people.pjjk.net/phil> ;
+    dcterms:description "This concept scheme identifies one abstract mapping classes, which is fine."@en-us ;
+    dcterms:title "DESM test Abstract Mapping Classes"@en-us ;
+    skos:hasTopConcept <http://desm.org/concepts/competence> .

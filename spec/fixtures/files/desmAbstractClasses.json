@@ -1,0 +1,96 @@
+{
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "dcterms": "http://purl.org/dc/terms/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#" ,
+    "Concept": {"@id": "skos:Concept"},
+    "ConceptScheme": {"@id": "skos:ConceptScheme"},
+    "created": {"@id": "dcterms:created", "@type": "xsd:date"},
+    "creator": {"@id": "dcterms:creator", "@container": "@language"},
+    "description": {"@id": "dcterms:description", "@container": "@language"},
+    "hasTopConcept": {"@id": "skos:hasTopConcept", "@type": "@id"},
+    "inScheme": {"@id": "skos:inScheme", "@type": "@id"},
+    "prefLabel": {"@id": "skos:prefLabel", "@container": "@language"},
+    "title": {"@id": "dcterms:title", "@container": "@language"}
+  },
+  "@graph": [
+     {
+      "id": "http://desm.org/concepts/mappingClasses",
+      "type": "skos:ConceptScheme",
+      "title": {"en-us": "DESM Schema of Abstract Mapping Classes"},
+      "description": { "en-us": "This concept scheme identifies the abstract mapping classes used in 2019-2020 to create the T3 DESM schema crosswalks of specifications relevant to the education to work ecosystem."},
+      "creator": {"en-us": "T3 Innovation Network (Pilot Project 1: T3 Phase II)"},
+      "created": "2020-01-07",
+      "hasTopConcept": [
+        "http://desm.org/concepts/person",
+        "http://desm.org/concepts/organization",
+        "http://desm.org/concepts/course",
+        "http://desm.org/concepts/credential",
+        "http://desm.org/concepts/employment",
+        "http://desm.org/concepts/competency",
+        "http://desm.org/concepts/programOfStudy",
+        "http://desm.org/concepts/earnings"
+      ]
+    },
+    {
+      "id": "http://desm.org/concepts/concepts/person",
+      "type": "skos:Concept",
+      "prefLabel": {"en-us": "Person"},
+      "definition": {"en-us": "A human being regarded as an individual."},
+      "inScheme": "http://desm.org/concepts/mappingClasses"
+    },
+    {
+      "id": "http://desm.org/concepts/organization",
+      "type": "skos:Concept",
+      "prefLabel": {"en-us": "Organization"},
+      "definition": {"en-us": "An organized body of people with a particular purpose."},
+      "inScheme": "http://desm.org/concepts/mappingClasses"
+    },
+    {
+      "id": "http://desm.org/concepts/course",
+      "type": "skos:Concept",
+      "prefLabel": {"en-us": "Course"},
+      "definition": {"en-us": "A sequence of one or more educational events which aims to build knowledge, competence or ability of learners."},
+      "inScheme": "http://desm.org/concepts/mappingClasses"
+    },
+    {
+      "id": "http://desm.org/concepts/credential",
+      "type": "skos:Concept",
+      "prefLabel": {"en-us": "Credential"},
+      "definition": {"en-us": "A qualification, achievement, personal quality, or aspect of a person's background, typically when used to indicate that they are suitable for something."},
+      "inScheme": "http://desm.org/concepts/mappingClasses"
+    },
+    {
+      "id": "http://desm.org/concepts/employment",
+      "type": "skos:Concept",
+      "prefLabel": {"en-us": "Employment"},
+      "definition": {"en-us": "The condition of a person having paid work"},
+      "inScheme": "http://desm.org/concepts/mappingClasses"
+    },
+    {
+      "id": "http://desm.org/concepts/competency",
+      "type": "skos:Concept",
+      "prefLabel": {"en-us": "Competency"},
+      "definition": {"en-us": "The ability of a person to do something successfully or efficiently."},
+      "inScheme": "http://desm.org/concepts/mappingClasses"
+    },
+    {
+      "id": "http://desm.org/concepts/programOfStudy",
+      "type": "skos:Concept",
+      "prefLabel": {"en-us": "Program of Study"},
+      "definition": {"en-us": "A program of study means any course or grouping of courses prerequisite to or indicative of a degree."},
+      "inScheme": "http://desm.org/concepts/mappingClasses"
+    },
+    {
+      "id": "http://desm.org/concepts/earnings",
+      "type": "skos:Concept",
+      "prefLabel": {"en-us": "Earnings"},
+      "definition": {"en-us": "Aggregate data on the earnings of persons."},
+      "inScheme": "http://desm.org/concepts/mappingClasses"
+    }
+  ]
+}

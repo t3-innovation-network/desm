@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrentConfigurationProfile,
@@ -101,7 +101,7 @@ const ConceptSchemesWrapper = ({ schemaFileIdx }) => {
   }, [currentCP, currentDSOIndex, schemaFileIdx]);
 
   return (
-    <Fragment>
+    <>
       {confirmationVisible && (
         <ConfirmDialog
           onRequestClose={() => setConfirmationVisible(false)}
@@ -126,7 +126,7 @@ const ConceptSchemesWrapper = ({ schemaFileIdx }) => {
           text={`The Schema File ${schemaFile.name} does not have any concept scheme files declared yet. You can add one by clicking on the "+" button`}
         />
       )}
-    </Fragment>
+    </>
   );
 };
 

@@ -1,12 +1,14 @@
-import React from 'react';
 import { useDrop } from 'react-dnd';
 import Pluralize from 'pluralize';
+import { isEmpty } from 'lodash';
+import classNames from 'classnames';
 
 /**
  * Props:
  * @param {Object} droppedItem The element that's going to be dropped
  * @param {Integer} selectedCount The number of elements being dragged
- * @param {Style} textStyle CSS styles for the text inside
+ * @param {Style} style CSS styles for the box
+ * @param {String} CSS class for the box
  * @param {ItemType} acceptedItemType The type of item that this box accepts
  * @param {String} placeholder The text that is going to appear by default
  */
@@ -16,36 +18,35 @@ const DropZone = ({
   droppedItem,
   placeholder,
   selectedCount,
-  textStyle,
+  cls,
   style,
 }) => {
   /**
    * Draggable configuration
    */
-  const [{ canDrop, isOver }, drop] = useDrop({
+  const [{ canDrop, isOver, item }, drop] = useDrop({
     accept: acceptedItemType,
     drop: () => droppedItem,
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
+      item: monitor.getItem(),
     }),
   });
 
   const content = () => {
-    let status = '';
+    const status = isActive ? `Add ${Pluralize('Record', item?.count || selectedCount, true)}` : '';
+    const statusCls = classNames('text-center', { 'dnd__status--active': isActive });
 
-    if (isActive) {
-      status = `Add ${Pluralize('Record', selectedCount, true)}`;
-    } else if (!children) {
-      status = placeholder;
-    }
-
-    return status ? (
+    return isEmpty(children) ? (
       <div className="align-items-center d-flex justify-content-center py-5" style={{ flex: 1 }}>
-        {status}
+        <span className={statusCls}>{status || placeholder}</span>
       </div>
     ) : (
-      <div className="pb-0 pt-2 px-2">{children}</div>
+      <div className="pb-0 pt-2 px-2">
+        {status && <p className={statusCls}>{status}</p>}
+        {children}
+      </div>
     );
   };
 
@@ -53,9 +54,10 @@ const DropZone = ({
    * Whether there's something being dragged
    */
   const isActive = canDrop && isOver;
+  const dropCls = classNames({ 'dnd--active': isActive, 'border-dotted': !isActive });
 
   return (
-    <div className={`card ${isActive ? 'dnd-active' : 'border-dotted'}`} ref={drop} style={style}>
+    <div className={`card ${dropCls} ${cls}`} ref={drop} style={style}>
       {content()}
     </div>
   );

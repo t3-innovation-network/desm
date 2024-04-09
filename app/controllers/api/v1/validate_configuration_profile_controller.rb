@@ -2,7 +2,7 @@
 
 module API
   module V1
-    class ValidateConfigurationProfileController < ApplicationController
+    class ValidateConfigurationProfileController < BaseController
       def validate
         structure_param = JSON.parse(permitted_params[:structure]).to_h
         validation_result = ConfigurationProfile.validate_structure(structure_param)

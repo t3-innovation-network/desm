@@ -109,7 +109,7 @@ module Converters
     def build_object_resources(pointer, data)
       key = File.basename(pointer, ".*")
       already_processed = domain_class_cache.key?(key)
-      domain_class = fetch_domain_class(key, data: data)
+      domain_class = fetch_domain_class(key, data:)
 
       unless already_processed
         definitions = data.fetch("definitions", [])
@@ -133,7 +133,7 @@ module Converters
     def build_property(name, payload, domain_class)
       return if IGNORED_PROPERTIES.include?(name)
 
-      concept_scheme = fetch_concept_scheme(name, payload: payload)
+      concept_scheme = fetch_concept_scheme(name, payload:)
       range = concept_scheme ? "skos:Concept" : derive_range(payload)
 
       property = {

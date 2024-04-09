@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Stepper = ({ stepperStep }) => (
   <div className="row indicator">
     <div

@@ -34,8 +34,8 @@ class Spine < ApplicationRecord
 
   def to_json_ld
     {
-      name: name,
-      uri: uri,
+      name:,
+      uri:,
       domain: domain.uri,
       terms: terms.map(&:uri).sort
     }

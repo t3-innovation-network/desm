@@ -20,16 +20,13 @@ gem "rack-cors", require: "rack/cors"
 ###
 # REST OF THE DEPENDENCIES
 
+gem "active_model_serializers", "~> 0.10"
+
 # Audit changes
 gem "audited", "~> 4.9"
 
-gem "autoprefixer-rails"
-
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.2", require: false
-
-# Load env variables in dev & test modes
-gem "dotenv-rails", "~> 2.7", groups: %i[development test]
 
 # For http requests
 gem "httparty"
@@ -37,7 +34,7 @@ gem "httparty"
 gem "interactor-rails", "~> 2.0"
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem "jbuilder", "~> 2.7"
+# gem "jbuilder", "~> 2.7"
 
 gem "json_schema_tools", "~> 0.6"
 
@@ -69,9 +66,6 @@ gem "pundit"
 # Centralize access to tasks
 gem "rake"
 
-# Get react support on rails
-gem "react-rails"
-
 # A Ruby client library for Redis
 gem "redis"
 
@@ -100,17 +94,19 @@ group :development, :test do
   gem "database_cleaner"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri mingw x64_mingw]
+  # Load env variables in dev & test modes
+  gem "dotenv-rails", "~> 2.7"
   gem "factory_bot_rails"
   gem "faker"
-  gem "rspec-rails", "~> 4.0.1"
+  gem "rspec-rails"
   # Use rubocop to ensure our code is clean
   gem "rubocop", "~> 1.60", require: false
   # Disable rubocop for specs for now, too many offenses
   # gem "rubocop-rspec", require: false
   gem "shoulda-matchers"
   gem "traceroute"
-  gem "vcr", "~> 6.0"
-  gem "webmock", "~> 3.13"
+  gem "vcr", "~> 6.2"
+  gem "webmock", "~> 3.23"
 end
 
 group :development do

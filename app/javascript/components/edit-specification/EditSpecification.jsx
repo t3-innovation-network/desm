@@ -1,7 +1,5 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import fetchSpine from '../../services/fetchSpine';
-import fetchSpineTerms from '../../services/fetchSpineTerms';
+import { useContext, useEffect } from 'react';
+import { useLocalStore } from 'easy-peasy';
 import EditTerm from '../mapping-to-domains/EditTerm';
 import TermCard from '../mapping-to-domains/TermCard';
 import AlertNotice from '../shared/AlertNotice';
@@ -12,52 +10,15 @@ import Pluralize from 'pluralize';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AppContext } from '../../contexts/AppContext';
+import { specificationStore } from './stores/specificationStore';
 
 const EditSpecification = (props) => {
   const { organization } = useContext(AppContext);
+  const [state, actions] = useLocalStore(() => specificationStore());
+  const { editingTerm, domain, terms, termToEdit, termsInputValue } = state;
 
-  /**
-   * Error message to present on the UI
-   */
-  const [errors, setErrors] = useState([]);
-
-  /**
-   * Whether the page is loading results or not
-   */
-  const [loading, setLoading] = useState(true);
-
-  /**
-   * The logged in user
-   */
-  const user = useSelector((state) => state.user);
-
-  /**
-   * Declare and have an initial state for the domain
-   */
-  const [domain, setDomain] = useState({});
-
-  /**
-   * The terms of the spine
-   */
-  const [terms, setTerms] = useState([]);
-
-  /**
-   * The value of the input that the user is typing in the search box
-   * to filter the list of terms
-   */
-  const [termsInputValue, setTermsInputValue] = useState('');
-
-  /**
-   * Whether we are editing a term or not. Useful to show/hide the
-   * modal window to edit a term
-   */
-  const [editingTerm, setEditingTerm] = useState(false);
-
-  /**
-   * The term to be edited. Active when the user clicks the pencil
-   * icon on a term
-   */
-  const [termToEdit, setTermToEdit] = useState({ property: {} });
+  // Manage to change values from inputs in the state
+  const filterTermsOnChange = (event) => actions.setTermsInputValue(event.target.value);
 
   /**
    * Configure the options to see at the center of the top navigation bar
@@ -67,127 +28,37 @@ const EditSpecification = (props) => {
   };
 
   /**
-   * Manage to change values from inputs in the state
-   *
-   * @param {Event} event
-   */
-  const filterTermsOnChange = (event) => {
-    setTermsInputValue(event.target.value);
-  };
-
-  /**
-   * The terms that includes the string typed by the user in the search box.
-   */
-  const filteredTerms = () =>
-    terms
-      .filter((term) => {
-        return term.name.toLowerCase().includes(termsInputValue.toLowerCase());
-      })
-      .sort((a, b) => (a.name > b.name ? 1 : -1));
-
-  /**
-   * Handles to view the modal window that allows to edit a term
-   *
-   * @param {Object} term
-   */
-  const onEditTermClick = (term) => {
-    setEditingTerm(true);
-    setTermToEdit(term);
-  };
-
-  /**
-   * Actions on term removed. The term was removed using another component,
-   * so in this one, it's still visible, we need to change that to also
-   * don't show it.
-   *
-   * @param {Object} removedTerm
-   */
-  const termRemoved = (removedTerm) => {
-    const tempTerms = terms.filter((term) => term.id !== removedTerm.id);
-    setTerms(tempTerms);
-  };
-
-  /**
-   * Handle showing the errors on screen, if any
-   *
-   * @param {HttpResponse} response
-   */
-  function anyError(response) {
-    if (response.error) {
-      let tempErrors = errors;
-      tempErrors.push(response.error);
-      setErrors([]);
-      setErrors(tempErrors);
-    }
-    /// It will return a truthy value (depending no the existence
-    /// of the errors on the response object)
-    return !_.isUndefined(response.error);
-  }
-
-  /**
-   * Get the specification
-   */
-  const handleFetchSpine = async (spineId) => {
-    let response = await fetchSpine(spineId);
-    if (!anyError(response)) {
-      // Set the domain on state
-      setDomain(response.spine.domain);
-    }
-  };
-
-  /**
-   * Get the specification terms
-   */
-  const handleFetchSpineTerms = async (spineId) => {
-    let response = await fetchSpineTerms(spineId);
-    if (!anyError(response)) {
-      // Set the spine terms on state
-      setTerms(response.terms);
-    }
-  };
-
-  /**
-   * Get the data from the service
-   */
-  const fetchDataFromAPI = async () => {
-    // Get the specification
-    await handleFetchSpine(props.match.params.id);
-    // Get the terms
-    await handleFetchSpineTerms(props.match.params.id);
-  };
-
-  /**
    * Use effect with an emtpy array as second parameter, will trigger the 'fetchDataFromAPI'
    * action at the 'mounted' event of this functional component (It's not actually mounted,
    * but it mimics the same action).
    */
   useEffect(() => {
-    if (loading) {
-      fetchDataFromAPI().then(() => {
-        if (_.isEmpty(errors)) {
-          setLoading(false);
-        }
-      });
-    }
+    actions.fetchDataFromAPI({ spineId: props.match.params.id }).then(() => {
+      if (!state.hasErrors) {
+        actions.setLoading(false);
+      }
+    });
   }, []);
 
   return (
-    <Fragment>
+    <>
       <EditTerm
         modalIsOpen={editingTerm}
-        onRequestClose={() => {
-          setEditingTerm(false);
-        }}
-        onRemoveTerm={termRemoved}
+        onRequestClose={() => actions.setEditingTerm(false)}
+        onRemoveTerm={actions.onRemoveTerm}
         termId={termToEdit.id}
       />
       <div className="container-fluid">
         <TopNav centerContent={navCenterOptions} />
 
-        {errors.length ? <AlertNotice message={errors} /> : ''}
+        {state.hasErrors ? (
+          <AlertNotice message={state.errors} onClose={actions.clearErrors} />
+        ) : (
+          ''
+        )}
 
         <div className="row">
-          {loading ? (
+          {state.loading ? (
             <Loader />
           ) : (
             <div className="col p-lg-5 pt-5 bg-col-secondary">
@@ -219,7 +90,7 @@ const EditSpecification = (props) => {
                 </div>
               </div>
 
-              <div className="pr-5 mt-5">
+              <div className="pr-5 mt-4">
                 <AlertNotice
                   cssClass="bg-col-primary col-background"
                   title={
@@ -231,7 +102,7 @@ const EditSpecification = (props) => {
                   message="You can edit each term of your specification until you are confident with names, vocabularies, uri's and more."
                 />
                 <div className="has-scrollbar scrollbar pr-5">
-                  {filteredTerms().map((term) => {
+                  {state.filteredTerms.map((term) => {
                     return (
                       <TermCard
                         key={term.id}
@@ -239,8 +110,7 @@ const EditSpecification = (props) => {
                         onClick={() => {}}
                         isMapped={() => false}
                         editEnabled={true}
-                        onEditClick={onEditTermClick}
-                        origin={term.organization.name}
+                        onEditClick={actions.onEditTermClick}
                         disableClick={true}
                       />
                     );
@@ -251,7 +121,7 @@ const EditSpecification = (props) => {
           )}
         </div>
       </div>
-    </Fragment>
+    </>
   );
 };
 

@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class AlignmentSyntheticConceptsController < ApplicationController
+    class AlignmentSyntheticConceptsController < BaseController
       before_action :validate_mapped_concepts, only: [:create]
       after_action :set_mapped_concepts, only: [:create]
 

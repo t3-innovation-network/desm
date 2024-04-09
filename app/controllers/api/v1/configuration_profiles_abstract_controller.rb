@@ -2,7 +2,7 @@
 
 module API
   module V1
-    class ConfigurationProfilesAbstractController < ApplicationController
+    class ConfigurationProfilesAbstractController < BaseController
       DEFAULT_CP_NAME = "DESM CP - #{DateTime.now.rfc3339}".freeze
       VALID_PARAMS_LIST = [
         :created_at,

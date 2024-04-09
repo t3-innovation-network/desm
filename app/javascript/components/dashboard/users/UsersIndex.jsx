@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import DashboardContainer from '../DashboardContainer';
 import { Link } from 'react-router-dom';
 import fetchUsers from '../../../services/fetchUsers';
@@ -53,7 +53,16 @@ export default class UsersIndex extends Component {
   render() {
     return (
       <DashboardContainer>
-        {this.state.errors && <AlertNotice message={this.state.errors} />}
+        {this.state.errors && (
+          <AlertNotice
+            message={this.state.errors}
+            onClose={() =>
+              this.setState({
+                errors: '',
+              })
+            }
+          />
+        )}
         {this.dashboardPath()}
 
         <div className="card mt-5">

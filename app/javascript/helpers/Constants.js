@@ -15,3 +15,14 @@ export const APP_DOMAIN = process.env.APP_DOMAIN; // eslint-disable-line no-unde
  */
 // TODO: check if it'll work the same way if to move from webpacker
 export const PRIVATE_KEY = process.env.PRIVATE_KEY; // eslint-disable-line no-undef
+
+export const TOASTR_OPTIONS = {
+  default: {
+    timeOut: 5000,
+  },
+  error: {
+    removeOnHover: false,
+    removeOnHoverTimeOut: 0,
+    timeOut: 0,
+  },
+};

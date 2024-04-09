@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrentConfigurationProfile,
@@ -75,7 +75,7 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
   }, [conceptSchemeIdx, currentDSOIndex, schemaFileIdx]);
 
   return (
-    <Fragment>
+    <>
       <div className="mt-5">
         <label htmlFor="filename">
           File Name
@@ -156,7 +156,7 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
           XML
         </small>
       </div>
-    </Fragment>
+    </>
   );
 };
 

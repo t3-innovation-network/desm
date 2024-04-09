@@ -9,11 +9,10 @@ class CreateMappingPredicates
   end
 
   def call
-    processor = Processors::Predicates.new(context.json_body, context.strongest_match)
-
+    processor = Processors::Predicates.new(context.json_body, strongest_match: context.strongest_match)
     context.predicate_set = processor.create
   rescue StandardError => e
     Rails.logger.error(e.inspect)
-    context.fail!(error: e.inspect)
+    context.fail!(error: e.message)
   end
 end

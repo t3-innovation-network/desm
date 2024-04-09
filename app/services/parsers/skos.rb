@@ -10,7 +10,7 @@ module Parsers
       @context = args.fetch(:context, {})
       @graph = args.fetch(:graph, {})
       file_content = args.fetch(:file_content, nil)
-      super(file_content: file_content) if file_content
+      super(file_content:) if file_content
     end
 
     def valid_skos?
@@ -75,7 +75,8 @@ module Parsers
         node = Parsers::JsonLd::Node.new(concept)
         {
           uri: node.read!("id"),
-          label: node.read!("label")
+          label: node.read!("label"),
+          definition: node.read!("definition") || node.read!("description") || node.read!("comment")
         }
       end
 
@@ -105,7 +106,7 @@ module Parsers
     def concept_node_hash
       @concept_node_hash ||= begin
         concept_nodes = @graph.select do |node|
-          Array(Parsers::JsonLd::Node.new(node).read!("type")).any? do |type|
+          Array.wrap(Parsers::JsonLd::Node.new(node).read!("type")).any? do |type|
             type.downcase.include?("concept") && !type.downcase.include?("conceptscheme")
           end
         end
@@ -134,10 +135,10 @@ module Parsers
     ###
     def child_concepts_uris(concept_scheme_node)
       parser = Parsers::JsonLd::Node.new(concept_scheme_node)
-      child_nodes = Array(parser.read!("hasConcept"))
+      child_nodes = Array.wrap(parser.read!("hasConcept"))
 
       # Some specification may not use "hasConcept", but "hasTopConcept"
-      child_nodes = Array(parser.read!("hasTopConcept")) if child_nodes.all?(&:empty?)
+      child_nodes = Array.wrap(parser.read!("hasTopConcept")) if child_nodes.all?(&:empty?)
 
       raise "No concept nodes found for Vocabulary #{parser.read!('id')}" if child_nodes.all?(&:empty?)
 

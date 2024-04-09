@@ -30,5 +30,11 @@ FactoryBot.define do
     definition { Faker::Lorem.sentence }
     source_uri { Faker::Lorem.sentence }
     domain_set
+
+    trait :with_spine do
+      after(:create) do |domain|
+        create(:spine, domain:)
+      end
+    end
   end
 end

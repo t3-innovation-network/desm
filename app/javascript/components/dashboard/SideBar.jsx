@@ -1,4 +1,4 @@
-import React from 'react';
+import {} from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faCogs, faUser } from '@fortawesome/free-solid-svg-icons';
@@ -13,9 +13,9 @@ const SideBar = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <aside className="p-0 col-background">
-        <nav className="navbar navbar-expand bg-dashboard-background flex-md-column flex-row mt-5 align-items-start no-sides-padding">
+        <nav className="navbar navbar-expand bg-dashboard-background flex-md-column flex-row mt-4 align-items-start no-sides-padding">
           <div className="collapse navbar-collapse w-100">
             <ul className="flex-md-column flex-row navbar-nav w-100 justify-content-between">
               <li className="nav-item">
@@ -61,7 +61,7 @@ const SideBar = () => {
           </div>
         </nav>
       </aside>
-    </React.Fragment>
+    </>
   );
 };
 export default SideBar;

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import updateCP from '../../../../services/updateCP';
 import {
@@ -11,20 +11,32 @@ import { validURL } from '../../../../helpers/URL';
 import fetchSkosFile from '../../../../services/fetchSkosFile';
 import Loader from '../../../shared/Loader';
 import fetchCPSkosLabels from '../../../../services/fetchCpSkosLabels';
+import useDidMountEffect from '../../../../helpers/useDidMountEffect';
 
 const MappingPredicates = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
   const dispatch = useDispatch();
 
-  const [name, setName] = useState('');
-  const [version, setVersion] = useState('');
-  const [description, setDescription] = useState('');
-  const [origin, setOrigin] = useState('');
+  const [name, setName] = useState(configurationProfile.structure.mappingPredicates?.name || '');
+  const [version, setVersion] = useState(
+    configurationProfile.structure.mappingPredicates?.version || ''
+  );
+  const [description, setDescription] = useState(
+    configurationProfile.structure.mappingPredicates?.description || ''
+  );
+  const [origin, setOrigin] = useState(
+    configurationProfile.structure.mappingPredicates?.origin || ''
+  );
   const [jsonMappingPredicates, setJsonMappingPredicates] = useState([]);
-  const [predicateStrongestMatch, setPredicateStrongestMatch] = useState('');
+  const [predicateStrongestMatch, setPredicateStrongestMatch] = useState(
+    configurationProfile.predicateStrongestMatch
+  );
   const [loading, setLoading] = useState(false);
-  const [urlEditable, setUrlEditable] = useState(true);
+  const [urlEditable, setUrlEditable] = useState(
+    !configurationProfile.structure.mappingPredicates?.origin
+  );
   const [predicateLabels, setPredicateLabels] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
   const buildCpData = () => ({
     ...configurationProfile,
@@ -58,11 +70,9 @@ const MappingPredicates = () => {
     if (error || !valid) {
       dispatch(setEditCPErrors(error || 'Invalid Skos File'));
       setLoading(false);
-      setOrigin('');
       return;
     }
 
-    setJsonMappingPredicates(skosFile);
     setUrlEditable(false);
     setLoading(false);
     saveChanges({ ...buildCpData(), jsonMappingPredicates: skosFile });
@@ -93,7 +103,9 @@ const MappingPredicates = () => {
 
     if (response.error) {
       dispatch(setEditCPErrors(response.error));
-      dispatch(setSavingCP(false));
+      dispatch(setSavingCP(null));
+      // need to revert to previous values
+      setRefresh(!refresh);
       return;
     }
 
@@ -101,7 +113,7 @@ const MappingPredicates = () => {
     dispatch(setSavingCP(false));
   };
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     const { mappingPredicates } = configurationProfile.structure;
 
     if (!mappingPredicates) return;
@@ -112,7 +124,7 @@ const MappingPredicates = () => {
     setOrigin(origin || '');
     setUrlEditable(!origin);
     setVersion(version || '');
-  }, [configurationProfile.structure.mappingPredicates]);
+  }, [configurationProfile.structure.mappingPredicates, refresh]);
 
   useEffect(() => {
     setJsonMappingPredicates(configurationProfile.jsonMappingPredicates);
@@ -122,7 +134,7 @@ const MappingPredicates = () => {
     }
   }, [configurationProfile.jsonMappingPredicates]);
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     setPredicateStrongestMatch(configurationProfile.predicateStrongestMatch);
   }, [configurationProfile.predicateStrongestMatch]);
 
@@ -200,8 +212,6 @@ const MappingPredicates = () => {
               className="btn btn-dark ml-2"
               onClick={handleFetchUrl}
               disabled={!origin}
-              data-toggle="tooltip"
-              data-placement="bottom"
               title="Fetch the concepts"
             >
               {loading ? <Loader noPadding smallSpinner /> : 'Fetch'}
@@ -213,8 +223,6 @@ const MappingPredicates = () => {
             <button
               className="btn btn-dark ml-auto"
               onClick={() => setUrlEditable(true)}
-              data-toggle="tooltip"
-              data-placement="bottom"
               title="Edit the origin Url"
             >
               Edit

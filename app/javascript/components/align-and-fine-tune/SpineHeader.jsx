@@ -1,4 +1,3 @@
-import React from 'react';
 import ProgressReportBar from '../shared/ProgressReportBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -24,6 +23,7 @@ const SpineHeader = (props) => {
     filterSpineTermsOnChange,
     handleAddSynthetic,
     alignments,
+    noMatchPredicateId,
   } = props;
 
   return (
@@ -63,7 +63,13 @@ const SpineHeader = (props) => {
         >
           <ProgressReportBar
             maxValue={alignments.length}
-            currentValue={alignments.filter((alignment) => alignment.mappedTerms.length).length}
+            currentValue={
+              alignments.filter(
+                (alignment) =>
+                  alignment.predicateId &&
+                  (alignment.predicateId === noMatchPredicateId || alignment.mappedTerms.length)
+              ).length
+            }
             messageReport="Mapped"
             cssClass="bg-col-on-primary"
           />
@@ -87,8 +93,6 @@ const SpineHeader = (props) => {
           <button
             className="btn btn-block btn-dark"
             onClick={handleAddSynthetic}
-            data-toggle="tooltip"
-            data-placement="top"
             title="Use this button to add new elements to the spine"
           >
             + Add Synthetic

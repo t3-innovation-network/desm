@@ -1,4 +1,3 @@
-import React from 'react';
 import TopNav from '../shared/TopNav';
 import { Link } from 'react-router-dom';
 

@@ -27,5 +27,11 @@ FactoryBot.define do
     fullname { Faker::Name.name }
     email { Faker::Internet.email }
     password { Faker::Internet.password(min_length: 10, max_length: 20, mix_case: true, special_characters: true) }
+
+    trait :admin do
+      after(:create) do |user|
+        user.roles << Role.find_or_create_by!(name: Desm::ADMIN_ROLE_NAME)
+      end
+    end
   end
 end

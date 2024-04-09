@@ -23,7 +23,7 @@ module Processors
     def create
       name = "#{@user.fullname} - #{@organization.name || 'Default'} - #{@specification.domain.pref_label}"
       Mapping.create!(
-        name: name,
+        name:,
         title: name,
         configuration_profile_user: @configuration_profile_user,
         specification: @specification,

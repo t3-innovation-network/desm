@@ -35,16 +35,8 @@ require "rails_helper"
 
 describe ConfigurationProfile do
   before(:all) do
-    @complete_structure = JSON.parse(
-      File.read(
-        Rails.root.join("spec", "fixtures", "complete.configuration.profile.json")
-      )
-    )
-    @valid_structure_with_invalid_email = JSON.parse(
-      File.read(
-        Rails.root.join("spec", "fixtures", "valid.configuration.profile.with.invalid.email.json")
-      )
-    )
+    @complete_structure = json_fixture("complete.configuration.profile.json")
+    @valid_structure_with_invalid_email = json_fixture("valid.configuration.profile.with.invalid.email.json")
   end
 
   context "predicates strongest match" do
@@ -374,12 +366,12 @@ describe ConfigurationProfile do
     end
     let!(:specification) { create(:specification, configuration_profile_user: configuration_profile_user1) }
     let!(:mapping) do
-      create(:mapping, configuration_profile_user: configuration_profile_user1, specification: specification)
+      create(:mapping, configuration_profile_user: configuration_profile_user1, specification:)
     end
 
     before do
       mapping.spine.terms = create_list(:term, 10)
-      10.times { |i| create(:alignment, mapping: mapping, spine_term: mapping.spine.terms[i]) }
+      10.times { |i| create(:alignment, mapping:, spine_term: mapping.spine.terms[i]) }
 
       organization = create(:organization)
       configuration_profile1.standards_organizations << organization
@@ -402,6 +394,40 @@ describe ConfigurationProfile do
       expect { specification.reload }.to raise_error(ActiveRecord::RecordNotFound)
 
       expect { configuration_profile2.destroy }.to(change(Organization, :count).by(-1))
+    end
+  end
+
+  context "when callbacks are triggered" do
+    context "when predicates are updated" do
+      let(:configuration_profile) { create(:configuration_profile, :with_mapping_predicates, predicates_count: 0) }
+
+      it "triggers the update_predicates callback" do
+        expect(UpdateMappingPredicates).to receive(:call).and_return(double(success?: true))
+        expect(UpdateAbstractClasses).not_to receive(:call)
+        configuration_profile.update!(json_mapping_predicates: [{ "prefLabel" => "test" }])
+      end
+    end
+
+    context "when abstract classes are updated" do
+      let(:configuration_profile) { create(:configuration_profile, :with_abstract_classes, abstract_classes_count: 0) }
+
+      it "triggers the update_abstract_classes callback" do
+        expect(UpdateAbstractClasses).to receive(:call).and_return(double(success?: true))
+        expect(UpdateMappingPredicates).not_to receive(:call)
+        configuration_profile.update!(json_abstract_classes: [{ "prefLabel" => "test" }])
+      end
+    end
+
+    context "when predicate strongest match is updated" do
+      let(:configuration_profile) { create(:configuration_profile, :with_mapping_predicates, predicates_count: 1) }
+      let(:source_uri) { "http://desmsolutions.org/concepts/identical" }
+
+      it "triggers the update_predicate_strongest_match callback" do
+        predicate = create(:predicate, predicate_set: configuration_profile.mapping_predicates, source_uri:)
+        configuration_profile.update!(predicate_strongest_match: source_uri)
+        expect(configuration_profile.predicate_strongest_match).to eq(source_uri)
+        expect(configuration_profile.mapping_predicates.strongest_match_id).to eq(predicate.id)
+      end
     end
   end
 end

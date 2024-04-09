@@ -7,10 +7,6 @@ RSpec.describe CreateDso, type: :interactor do
     let(:admin) { build(:user) }
     let(:cp) { create(:configuration_profile) }
 
-    after(:all) do
-      DatabaseCleaner.clean_with(:truncation)
-    end
-
     it "rejects creation if not enough information is provided" do
       result = described_class.call({ administrator: admin })
       expect(result.error).to eq("configuration profile must be present")

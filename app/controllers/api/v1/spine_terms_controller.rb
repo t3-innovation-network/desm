@@ -5,14 +5,15 @@
 ###
 module API
   module V1
-    class SpineTermsController < ApplicationController
+    class SpineTermsController < BaseController
       before_action :validate_mapped_terms, only: [:create]
       after_action :set_mapped_terms, only: [:create]
 
       def index
-        terms = Spine.find(params[:id]).terms
+        terms = Spine.find(params[:id]).terms.includes(:organization, :property, :vocabularies, :configuration_profile,
+                                                       :mapping_predicates)
 
-        render json: terms, include: %i(organization property vocabularies)
+        render json: terms, spine: true
       end
 
       ###
