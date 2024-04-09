@@ -42,6 +42,12 @@ FactoryBot.define do
       )
     end
 
+    Mapping.statuses.each_key do |status|
+      trait status do
+        status { status }
+      end
+    end
+
     trait :with_selected_terms do
       transient do
         selected_terms_count { 1 }

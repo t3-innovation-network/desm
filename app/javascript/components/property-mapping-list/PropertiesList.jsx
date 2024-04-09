@@ -96,7 +96,7 @@ export default class PropertiesList extends Component {
             /// It matches the selected alignment organizations
             property.alignments.some((alignment) =>
               alignment.mappedTerms.some((mTerm) =>
-                this.selectedAlignmentOrganizationIds().includes(mTerm.organizationId)
+                this.selectedAlignmentOrganizationIds().includes(mTerm.organization?.id)
               )
             ) &&
             /// It matches the selected spine organizations

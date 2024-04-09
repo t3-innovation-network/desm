@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_11_132038) do
+ActiveRecord::Schema.define(version: 2024_04_08_093222) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -357,7 +357,7 @@ ActiveRecord::Schema.define(version: 2024_03_11_132038) do
   add_foreign_key "alignment_vocabulary_concepts", "predicates"
   add_foreign_key "alignments", "mappings", on_delete: :cascade
   add_foreign_key "alignments", "predicates"
-  add_foreign_key "alignments", "terms", column: "spine_term_id", on_delete: :restrict
+  add_foreign_key "alignments", "terms", column: "spine_term_id", on_delete: :cascade
   add_foreign_key "alignments", "vocabularies"
   add_foreign_key "assignments", "roles"
   add_foreign_key "assignments", "users"

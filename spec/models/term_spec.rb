@@ -32,11 +32,19 @@ describe Term do
   end
 
   describe "#destroy" do
-    it "raises an error if the term has alignments" do
+    it "raises an error if the term has completed alignments" do
+      term = create(:term)
+      predicate = create(:predicate, :nomatch)
+      create(:alignment, spine_term: term, predicate:)
+
+      expect { term.destroy }.to raise_error(RuntimeError)
+    end
+
+    it "destroys the term if it doesn't have completed alignments" do
       term = create(:term)
       create(:alignment, spine_term: term)
 
-      expect { term.destroy }.to raise_error(RuntimeError)
+      expect { term.destroy }.to change { Term.count }.by(-1)
     end
 
     it "destroys the term if it has no alignments" do

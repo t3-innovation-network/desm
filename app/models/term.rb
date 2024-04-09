@@ -109,8 +109,9 @@ class Term < ApplicationRecord
 
   def check_if_alignments_exist
     return if alignments.none?
+    return if (alignments_completed = alignments.includes(:predicate).select(&:completed?)).blank?
 
-    mappings = Mapping.where(id: alignments.pluck(:"alignments.mapping_id").uniq).pluck(:title).sort
+    mappings = alignments_completed.map { |a| a.mapping.title }.uniq.sort
 
     raise "Cannot remove a term with existing alignments. " \
           "Please remove corresponding alignments from #{mappings.join(', ')} mappings before removing the term."

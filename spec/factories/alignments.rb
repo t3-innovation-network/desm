@@ -25,7 +25,7 @@
 #
 #  fk_rails_...  (mapping_id => mappings.id) ON DELETE => cascade
 #  fk_rails_...  (predicate_id => predicates.id)
-#  fk_rails_...  (spine_term_id => terms.id) ON DELETE => restrict
+#  fk_rails_...  (spine_term_id => terms.id) ON DELETE => cascade
 #  fk_rails_...  (vocabulary_id => vocabularies.id)
 #
 require "faker"
