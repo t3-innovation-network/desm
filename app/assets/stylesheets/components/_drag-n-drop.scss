@@ -1,11 +1,20 @@
-@import './colors';
-
 /* Drag and Drop Classes */
 
-.dnd-active {
-  border: solid 3px $primary-color !important;
-  color: $primary-color;
-  font-weight: bold;
+.dnd {
+  @include m(active) {
+    border: solid 3px $primary-color !important;
+  }
+
+  @include e(status) {
+    @include m(active) {
+      color: $primary-color;
+      font-weight: bold;
+    }
+  }
+
+  @include m(dragging) {
+    opacity: 0.4;
+  }
 }
 
 .domain-drag-box {
@@ -24,10 +33,6 @@
 
 .not-draggable {
   cursor: not-allowed;
-}
-
-.is-dragging {
-  opacity: 0.4;
 }
 
 .terms-progress {

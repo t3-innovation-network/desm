@@ -38,8 +38,26 @@ FactoryBot.define do
     specification do
       create(
         :specification,
-        configuration_profile_user: configuration_profile_user
+        configuration_profile_user:
       )
+    end
+
+    Mapping.statuses.each_key do |status|
+      trait status do
+        status { status }
+      end
+    end
+
+    trait :with_selected_terms do
+      transient do
+        selected_terms_count { 1 }
+      end
+
+      after(:create) do |mapping, evaluator|
+        terms = create_list(:term, evaluator.selected_terms_count,
+                            configuration_profile_user: mapping.configuration_profile_user)
+        mapping.selected_terms << terms
+      end
     end
   end
 end

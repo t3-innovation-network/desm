@@ -1,5 +1,6 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { isNull } from 'lodash';
 import fetchConfigurationProfile from '../../../../services/fetchConfigurationProfile';
 import AlertNotice from '../../../shared/AlertNotice';
 import Loader from '../../../shared/Loader';
@@ -18,6 +19,8 @@ import {
 } from '../../../../actions/configurationProfiles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { showSuccess } from '../../../../helpers/Messages';
+import useDidMountEffect from '../../../../helpers/useDidMountEffect';
 
 const EditConfigurationProfile = (props) => {
   const [loading, setLoading] = useState(true);
@@ -78,8 +81,16 @@ const EditConfigurationProfile = (props) => {
         <Loader />
       ) : (
         <div className="col mt-5">
-          {errors && <AlertNotice message={errors} />}
           <div className="row cp-container justify-content-center h-100">
+            <div className="col-12">
+              {errors && (
+                <AlertNotice
+                  message={errors}
+                  withScroll={true}
+                  onClose={() => dispatch(setEditCPErrors(null))}
+                />
+              )}
+            </div>
             <div className="col-3">
               <div className="row justify-content-center h-100">
                 <div className="col">
@@ -113,10 +124,11 @@ const CPCardHeader = () => {
   const configurationProfile = useSelector((state) => state.currentCP);
   const savingCP = useSelector((state) => state.savingCP);
   const [showChangesSaved, setShowChangesSaved] = useState(false);
+  const dispatch = useDispatch();
 
   const timeoutId = useRef();
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     if (savingCP) {
       setShowChangesSaved(true);
 
@@ -124,6 +136,11 @@ const CPCardHeader = () => {
         setShowChangesSaved(false);
         timeoutId.current = undefined;
       }, 3000);
+    } else {
+      if (!isNull(savingCP)) {
+        dispatch(setEditCPErrors(null));
+        showSuccess('All changes saved');
+      }
     }
   }, [savingCP]);
 
@@ -132,14 +149,18 @@ const CPCardHeader = () => {
   }, []);
 
   return (
-    <Fragment>
+    <>
       <div className="col-4">
         <h3 className="float-left">{configurationProfile.name}</h3>
       </div>
       <div className="col-4">
         {showChangesSaved && (
           <p className="text-center col-on-primary-light">
-            {savingCP ? 'Saving ...' : 'All changes saved'}
+            {savingCP
+              ? 'Saving ...'
+              : isNull(savingCP)
+              ? 'Changes were not saved'
+              : 'All changes saved'}
           </p>
         )}
       </div>
@@ -148,7 +169,7 @@ const CPCardHeader = () => {
           {_.capitalize(configurationProfile.state)}
         </p>
       </div>
-    </Fragment>
+    </>
   );
 };
 
@@ -174,7 +195,7 @@ const PrevNextButtons = () => {
   const dispatch = useDispatch();
 
   return (
-    <Fragment>
+    <>
       {currentStep !== 1 && currentStep !== 4 && (
         <button
           className="btn btn-dark mr-3"
@@ -197,7 +218,7 @@ const PrevNextButtons = () => {
           Next
         </button>
       )}
-    </Fragment>
+    </>
   );
 };
 

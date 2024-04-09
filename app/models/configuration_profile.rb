@@ -31,6 +31,7 @@
 #  fk_rails_...  (domain_set_id => domain_sets.id)
 #  fk_rails_...  (predicate_set_id => predicate_sets.id)
 #
+
 ###
 # @description: The Data Ecosystem Schema Mapper tool (DESM) has been designed to accommodate the crosswalking of
 #   1-to-n data standards that have been serialized using XML schema, JSON schema, or RDF Schema.  A single instance
@@ -39,6 +40,7 @@
 ###
 class ConfigurationProfile < ApplicationRecord
   include Slugable
+  audited
 
   belongs_to :abstract_classes, class_name: "DomainSet", foreign_key: :domain_set_id, optional: true
   belongs_to :mapping_predicates, class_name: "PredicateSet", foreign_key: :predicate_set_id, optional: true
@@ -57,10 +59,15 @@ class ConfigurationProfile < ApplicationRecord
   has_many :alignments, through: :mappings
 
   after_initialize :setup_schema_validators
-  before_save :check_structure, if: :structure_changed?
-  before_save :check_predicate_strongest_match, if: :predicate_strongest_match_changed?
+  before_save :check_structure, if: :will_save_change_to_structure?
+  # TODO: check if we really need that check
+  before_save :check_predicate_strongest_match, if: :will_save_change_to_predicate_strongest_match?
   after_save :create_new_entities, if: :active?
   before_destroy :remove_orphan_organizations
+
+  after_update :update_abstract_classes, if: :saved_change_to_json_abstract_classes?
+  after_update :update_predicates, if: :saved_change_to_json_mapping_predicates?
+  after_update :update_predicat_set, if: :saved_change_to_predicate_strongest_match?
 
   # The possible states
   # 0. "incomplete" It does not have a complete structure attribute.
@@ -185,5 +192,26 @@ class ConfigurationProfile < ApplicationRecord
 
       organization.destroy
     end
+  end
+
+  def update_abstract_classes
+    return if abstract_classes.nil? || json_abstract_classes.nil?
+
+    interactor = UpdateAbstractClasses.call(domain_set: abstract_classes, json_body: json_abstract_classes)
+    raise interactor.error unless interactor.success?
+  end
+
+  def update_predicates
+    return if mapping_predicates.nil? || json_mapping_predicates.nil?
+
+    interactor = UpdateMappingPredicates.call(predicate_set: mapping_predicates, json_body: json_mapping_predicates)
+    raise interactor.error unless interactor.success?
+  end
+
+  def update_predicat_set
+    return if mapping_predicates.nil? || predicate_strongest_match.blank?
+
+    strongest_match = mapping_predicates.predicates.find_by!(source_uri: predicate_strongest_match)
+    mapping_predicates.update(strongest_match:)
   end
 end

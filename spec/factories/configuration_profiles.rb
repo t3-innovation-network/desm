@@ -37,7 +37,33 @@ FactoryBot.define do
   factory :configuration_profile do
     name { Faker::Name.unique.first_name }
     description { Faker::Lorem.sentence }
-    json_abstract_classes { JSON.parse(File.read(Rails.root.join("concepts", "desmAbstractClasses.json"))) }
-    json_mapping_predicates { JSON.parse(File.read(Rails.root.join("concepts", "desmMappingPredicates.json"))) }
+    json_abstract_classes { json_fixture("desmAbstractClasses.json") }
+    json_mapping_predicates { json_fixture("desmMappingPredicates.json") }
+
+    transient do
+      abstract_classes_count { 1 }
+      predicates_count { 1 }
+    end
+
+    trait :basic do
+      json_abstract_classes { {} }
+      json_mapping_predicates { {} }
+    end
+
+    trait :with_abstract_classes do
+      association :abstract_classes, factory: :domain_set
+
+      after(:create) do |configuration_profile, evaluator|
+        create_list(:domain, evaluator.abstract_classes_count, domain_set: configuration_profile.abstract_classes)
+      end
+    end
+
+    trait :with_mapping_predicates do
+      association :mapping_predicates, factory: :predicate_set
+
+      after(:create) do |configuration_profile, evaluator|
+        create_list(:predicate, evaluator.predicates_count, predicate_set: configuration_profile.mapping_predicates)
+      end
+    end
   end
 end

@@ -1,5 +1,4 @@
-import React from 'react';
-import { Fragment } from 'react';
+import {} from 'react';
 import { Component } from 'react';
 import { FadeIn, SlideInDown } from './Animations.jsx';
 import OutsideAlerter from './OutsideAlerter.jsx';
@@ -37,7 +36,7 @@ class EllipsisOptions extends Component {
     return (
       <OutsideAlerter onOutsideAlert={() => this.handleShrink()}>
         {expanded ? (
-          <Fragment>
+          <>
             <button className="btn float-right" disabled={disabled}>
               <FontAwesomeIcon icon={faEllipsisV} />
             </button>
@@ -56,7 +55,7 @@ class EllipsisOptions extends Component {
                 })}
               </div>
             </SlideInDown>
-          </Fragment>
+          </>
         ) : (
           <FadeIn>
             <button className="btn float-right" onClick={() => this.setState({ expanded: true })}>

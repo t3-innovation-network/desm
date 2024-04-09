@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SlideInDown } from './Animations.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';

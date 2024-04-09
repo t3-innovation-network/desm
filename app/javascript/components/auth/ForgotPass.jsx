@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import TopNav from '../shared/TopNav';
 import forgotPassword from '../../services/forgotPassword';
 import AlertNotice from '../shared/AlertNotice';
@@ -79,9 +79,11 @@ class ForgotPass extends Component {
     return (
       <div className="container-fluid">
         <TopNav centerContent={this.navCenterOptions} />
-        <div className="row mt-5">
+        <div className="row mt-4">
           <div className="col-lg-6 mx-auto">
-            {errors && <AlertNotice message={errors} />}
+            {errors && (
+              <AlertNotice message={errors} onClose={() => this.setState({ errors: '' })} />
+            )}
 
             <div className="card">
               <div className="card-header">

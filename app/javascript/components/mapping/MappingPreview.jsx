@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   unsetFiles,
@@ -16,7 +16,6 @@ import {
 } from '../../actions/mappingform';
 import Loader from './../shared/Loader';
 import createSpec from '../../services/createSpec';
-import { toastr as toast } from 'react-redux-toastr';
 import createMapping from '../../services/createMapping';
 import { setVocabularies, unsetVocabularies } from '../../actions/vocabularies';
 import createVocabulary from '../../services/createVocabulary';
@@ -24,6 +23,7 @@ import { vocabName } from '../../helpers/Vocabularies';
 import UploadVocabulary from '../mapping-to-domains/UploadVocabulary';
 import Pluralize from 'pluralize';
 import extractVocabularies from '../../services/extractVocabularies';
+import { showError, showSuccess } from '../../helpers/Messages';
 
 const MappingPreview = (props) => {
   /**
@@ -109,7 +109,8 @@ const MappingPreview = (props) => {
     dispatch(unsetFilteredFile());
 
     /// Reset the file uploader
-    $('#file-uploader').val('');
+    let fileUploader = document.getElementById('file-uploader');
+    if (fileUploader) fileUploader.value = '';
   };
 
   /**
@@ -145,7 +146,7 @@ const MappingPreview = (props) => {
     try {
       return vocabName(vocab['@graph']);
     } catch (error) {
-      toast.error(error);
+      showError(error);
       return '';
     }
   };
@@ -205,7 +206,7 @@ const MappingPreview = (props) => {
     );
     setCreatingVocabularies(false);
 
-    if (cantSaved) toast.success(cantSaved + ' vocabularies processed.');
+    if (cantSaved) showSuccess(cantSaved + ' vocabularies processed.');
   };
 
   /**
@@ -224,7 +225,7 @@ const MappingPreview = (props) => {
     dispatch(stopProcessingFile());
 
     if (response.error) {
-      toast.error(response.error);
+      showError(response.error);
       return;
     }
 
@@ -234,7 +235,7 @@ const MappingPreview = (props) => {
 
   return (
     <div className="col-lg-6 p-lg-5 pt-5 bg-col-secondary">
-      <React.Fragment>
+      <>
         {processingFile ? (
           <Loader
             message={
@@ -251,7 +252,7 @@ const MappingPreview = (props) => {
           />
         ) : (
           submitted && (
-            <React.Fragment>
+            <>
               <div className="card mb-5">
                 <div className="card-header">
                   <div className="row">
@@ -266,8 +267,6 @@ const MappingPreview = (props) => {
                         className="btn bg-col-primary col-background ml-2"
                         disabled={creatingSpec || !filteredFile || !propertiesCount}
                         onClick={handleLooksGood}
-                        data-toggle="tooltip"
-                        data-placement="bottom"
                         title={
                           !propertiesCount
                             ? 'No properties were found in the uploaded file/s. Please review it an try again'
@@ -284,8 +283,6 @@ const MappingPreview = (props) => {
                 <div className="col">
                   <label
                     className="col-primary cursor-pointer float-right"
-                    data-toggle="tooltip"
-                    data-placement="top"
                     title="Add a new vocabulary"
                     onClick={() => setAddingVocabulary(true)}
                   >
@@ -311,10 +308,10 @@ const MappingPreview = (props) => {
               ) : (
                 <SpecsPreviewTabs disabled={addingVocabulary} propertiesCount={propertiesCount} />
               )}
-            </React.Fragment>
+            </>
           )
         )}
-      </React.Fragment>
+      </>
     </div>
   );
 };

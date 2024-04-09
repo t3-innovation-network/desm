@@ -8,9 +8,7 @@ RSpec.describe Converters::Ceds do
     let(:result) { described_class.convert(file) }
 
     let(:file) do
-      Rack::Test::UploadedFile.new(
-        Rails.root.join("spec", "fixtures", "ceds.csv")
-      )
+      Rack::Test::UploadedFile.new(file_fixture("ceds.csv"))
     end
 
     it "converts CEDS to JSON-LD" do

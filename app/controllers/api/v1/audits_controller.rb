@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class AuditsController < ApplicationController
+    class AuditsController < BaseController
       before_action :authorize_with_policy
       before_action :validate, only: :index
 

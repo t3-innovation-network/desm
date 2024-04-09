@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class AlignmentVocabularyConceptsController < ApplicationController
+    class AlignmentVocabularyConceptsController < BaseController
       before_action :authorize_with_policy
 
       ###

@@ -1,4 +1,3 @@
-import React from 'react';
 import TopNav from '../shared/TopNav';
 import SideBar from '../dashboard/SideBar';
 import TopNavOptions from '../shared/TopNavOptions';

@@ -34,7 +34,7 @@ module Recoverable
   # @param [NamedRoute] path
   ###
   def handle(message, http_code = :internal_server_error)
-    render json: { message: message }, status: http_code
+    render json: { message: }, status: http_code
   end
 
   ###

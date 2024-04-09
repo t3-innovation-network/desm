@@ -22,6 +22,7 @@
 #
 #  fk_rails_...  (domain_set_id => domain_sets.id) ON DELETE => cascade
 #
+
 ###
 # @description: Represents a Concept, which is a domain from a Concept Scheme
 #   (also refered to as 'domain set'.
@@ -39,6 +40,7 @@
 ###
 class Domain < ApplicationRecord
   include Slugable
+  audited
 
   ALIAS_CLASSNAME = "AbstractClass"
   belongs_to :domain_set
@@ -63,10 +65,10 @@ class Domain < ApplicationRecord
 
   def to_json_ld
     json = {
-      uri: uri,
-      source_uri: source_uri,
-      pref_label: pref_label,
-      definition: definition
+      uri:,
+      source_uri:,
+      pref_label:,
+      definition:
     }
     json[:spine] = spine.uri if spine?
 

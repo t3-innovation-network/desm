@@ -9,6 +9,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+
 ###
 # @description: Represents a file content in json-ld format that contains both a graph
 #   of terms and a context.

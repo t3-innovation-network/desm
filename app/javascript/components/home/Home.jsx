@@ -1,4 +1,3 @@
-import React from 'react';
 import TopNav from '../shared/TopNav';
 import LeftSideHome from './LeftCol';
 import RightSideHome from './RightCol';

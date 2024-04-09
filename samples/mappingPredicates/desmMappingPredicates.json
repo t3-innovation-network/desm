@@ -13,6 +13,7 @@
     "created": { "@id": "dcterms:created", "@type": "xsd:date" },
     "creator": { "@id": "dcterms:creator", "@container": "@language" },
     "description": { "@id": "dcterms:description", "@container": "@language" },
+    "definition": { "@id": "skos:definition", "@container": "@language" },
     "hasTopConcept": { "@id": "skos:hasTopConcept", "@type": "@id" },
     "inScheme": { "@id": "skos:inScheme", "@type": "@id" },
     "prefLabel": { "@id": "skos:prefLabel", "@container": "@language" },

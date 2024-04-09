@@ -282,7 +282,7 @@ module Processors
 
       return term if term.persisted?
 
-      term.update!(name: name, slug: name, raw: node)
+      term.update!(name:, slug: name, raw: node)
       term
     end
   end

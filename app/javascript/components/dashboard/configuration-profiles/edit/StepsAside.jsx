@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import {} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStep } from '../../../../actions/configurationProfiles';
 
@@ -26,7 +26,7 @@ const StepsAside = () => {
   const currentStep = useSelector((state) => state.cpStep);
 
   return (
-    <Fragment>
+    <>
       {steps.map((step) => {
         return (
           <div className="row justify-content-center cp-step-row" key={step.number}>
@@ -36,7 +36,7 @@ const StepsAside = () => {
                 step.number === currentStep
                   ? 'bg-dashboard-background-highlight col-background'
                   : 'border-color-dashboard col-dashboard-highlight'
-              } p-3 text-center`}
+              } d-inline-flex justify-content-center align-items-center`}
               style={{ maxWidth: '50px', height: '50px' }}
               onClick={() => dispatch(setStep(step.number))}
             >
@@ -45,7 +45,7 @@ const StepsAside = () => {
           </div>
         );
       })}
-    </Fragment>
+    </>
   );
 };
 

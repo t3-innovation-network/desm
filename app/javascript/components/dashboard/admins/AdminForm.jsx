@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import createAdmin from '../../../services/createAdmin';
 import updateAdmin from '../../../services/updateAdmin';
 import AlertNotice from '../../shared/AlertNotice';
@@ -39,7 +39,7 @@ const AdminForm = ({ record, onCancel, onSave }) => {
 
       <div className="card-body">
         <form onSubmit={handleSubmit}>
-          {error && <AlertNotice message={error} />}
+          {error && <AlertNotice message={error} onClose={() => setError(null)} />}
 
           <div className="form-group">
             <label htmlFor="fullname">Full Name</label>

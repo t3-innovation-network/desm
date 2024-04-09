@@ -14,10 +14,11 @@
 #
 #  index_json_contexts_on_uri  (uri) UNIQUE
 #
+
 # Caches JSON contexts referenced in schemas
 class JsonContext < ApplicationRecord
   def self.fetch(uri)
-    context = find_or_initialize_by(uri: uri)
+    context = find_or_initialize_by(uri:)
     return context.payload if context.persisted?
 
     parsed_response = HTTParty.get(uri).parsed_response

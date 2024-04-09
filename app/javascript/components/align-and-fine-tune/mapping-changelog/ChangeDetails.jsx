@@ -1,11 +1,3 @@
-import React from 'react';
-
-/**
- * Props
- * @param {Object} change
- * @param {Array} predicates
- * @param {Object} spineTerm
- */
 const ChangeDetails = (props) => {
   /**
    * Elements from props
@@ -63,7 +55,7 @@ const ChangeDetails = (props) => {
     changeRows.push(
       <div className="row" key={changeRows.length}>
         <p>
-          For <strong>{spineTerm.name + ', '}</strong>
+          For <strong>{`${spineTerm?.name || 'Unknown Spine'}, `}</strong>
           {' ' + printProperty(property)}
           {
             /// We are fetching only audits with action: "update". It implies that the auditable

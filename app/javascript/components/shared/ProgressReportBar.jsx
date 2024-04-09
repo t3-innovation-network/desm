@@ -1,4 +1,4 @@
-import React from 'react';
+import {} from 'react';
 
 /**
  * Draws a progress bar with values the user provides. It can print a message too.
@@ -17,7 +17,7 @@ const ProgressReportBar = (props) => {
   const { currentValue, maxValue, messageReport, percentageMode, cssClass } = props;
 
   return (
-    <React.Fragment>
+    <>
       <div className="progress terms-progress">
         <div
           className={'progress-bar' + (cssClass ? ' ' + cssClass : '')}
@@ -40,7 +40,7 @@ const ProgressReportBar = (props) => {
           {'/' + maxValue + (messageReport ? ' ' + messageReport : '')}
         </h5>
       )}
-    </React.Fragment>
+    </>
   );
 };
 

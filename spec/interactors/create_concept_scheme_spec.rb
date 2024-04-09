@@ -4,11 +4,7 @@ require "rails_helper"
 
 RSpec.describe CreateConceptScheme, type: :interactor do
   describe ".call" do
-    let(:test_uri) { Rails.root.join("spec", "fixtures", "DisabilityLevelCodeList.json") }
-
-    after(:all) do
-      DatabaseCleaner.clean_with(:truncation)
-    end
+    let(:test_uri) { file_fixture("DisabilityLevelCodeList.json") }
 
     it "rejects creation if uri is not passed" do
       result = described_class.call

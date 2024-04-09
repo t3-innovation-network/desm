@@ -4,11 +4,7 @@ require "rails_helper"
 
 RSpec.describe CreateMappingPredicates, type: :interactor do
   describe ".call" do
-    let(:test_json_body) { JSON.parse(File.read(Rails.root.join("concepts", "desmMappingPredicates.json"))) }
-
-    after(:all) do
-      DatabaseCleaner.clean_with(:truncation)
-    end
+    let(:test_json_body) { json_fixture("desmMappingPredicates.json") }
 
     it "rejects creation if json body is not passed" do
       result = described_class.call
@@ -26,8 +22,10 @@ RSpec.describe CreateMappingPredicates, type: :interactor do
     end
 
     it "Assigns the strongest match if it's specified" do
-      result = described_class.call({ json_body: test_json_body, strongest_match: "Identical" })
+      result = described_class.call({ json_body: test_json_body,
+                                      strongest_match: "http://desmsolutions.org/concepts/identical" })
 
+      expect(result.success?).to be_truthy
       expect(result.predicate_set.strongest_match).not_to be_nil
       expect(result.predicate_set.strongest_match.name).to eql("Identical")
     end

@@ -5,22 +5,13 @@
 #   vocabulary records.
 ###
 class VocabularyPolicy < ApplicationPolicy
-  def initialize(user, record)
-    super(user, record)
-    @user = user || @current_user
-    @record = record
-
-    # Signed in users
-    raise Pundit::NotAuthorizedError unless user.present?
-  end
-
   ###
   # @description: Determines if the user can see this resource list
   # @return [TrueClass]
   ###
   def index?
     # Signed in users
-    @user.present?
+    signed_in?
   end
 
   ###
@@ -28,7 +19,7 @@ class VocabularyPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def create?
-    @user.present?
+    signed_in?
   end
 
   ###
@@ -36,7 +27,7 @@ class VocabularyPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def show?
-    @user.present?
+    signed_in?
   end
 
   ###
@@ -44,10 +35,10 @@ class VocabularyPolicy < ApplicationPolicy
   # @return [TrueClass]
   ###
   def flat?
-    @user.present?
+    signed_in?
   end
 
   def extract?
-    @user.present?
+    signed_in?
   end
 end

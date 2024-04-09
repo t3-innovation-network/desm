@@ -2,7 +2,7 @@
 
 module API
   module V1
-    class AdminsController < ApplicationController
+    class AdminsController < BaseController
       before_action :authorize!
       before_action :load_admin, only: %i(update destroy)
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import fetchAudits from '../../../services/fetchAudits';
 import Collapsible from '../../shared/Collapsible';
 import ChangeDetails from './ChangeDetails';
@@ -47,7 +47,7 @@ const MappingChangeLog = (props) => {
   const spineTermForAlignment = (alignmentId) => {
     let alignment = alignments.find((alignment) => alignment.id === alignmentId);
 
-    return spineTerms.find((sTerm) => sTerm.id === alignment.spine_term_id);
+    return spineTerms.find((sTerm) => sTerm.id === alignment.spineTermId);
   };
 
   /**

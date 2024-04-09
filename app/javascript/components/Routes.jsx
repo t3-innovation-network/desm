@@ -1,4 +1,3 @@
-import React from 'react';
 import UsersIndex from './dashboard/users/UsersIndex';
 import EditUser from './dashboard/users/EditUser';
 import Registration from './auth/Registration';

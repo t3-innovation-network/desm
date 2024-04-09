@@ -5,7 +5,7 @@
 ###
 module API
   module V1
-    class RolesController < ApplicationController
+    class RolesController < BaseController
       ###
       # @description: Lists all the organizations
       ###

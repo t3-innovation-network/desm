@@ -4,14 +4,10 @@ require "rails_helper"
 
 RSpec.describe CreateSchema, type: :interactor do
   describe ".call" do
-    let(:spec) { Rails.root.join("spec", "fixtures", "credreg.json") }
+    let(:spec) { file_fixture("credreg.json") }
     let(:org) { create(:organization) }
     let(:user) { create(:configuration_profile_user) }
     let(:domain) { create(:domain) }
-
-    after(:all) do
-      DatabaseCleaner.clean_with(:truncation)
-    end
 
     it "rejects creation if not enough information is provided" do
       result = described_class.call

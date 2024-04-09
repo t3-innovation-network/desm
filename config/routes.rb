@@ -135,7 +135,7 @@ Rails.application.routes.draw do
   post 'password/forgot', to: 'passwords#forgot'
   post 'password/reset', to: 'passwords#reset'
 
-  namespace :api do
+  namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :alignments, only: [:destroy, :index, :update]
       resources :alignment_vocabulary_concepts, only: [:update]
@@ -164,16 +164,16 @@ Rails.application.routes.draw do
 
       # Mapping selected terms
       post 'mappings/:id/selected_terms' => 'mapping_selected_terms#create'
-      get 'mappings/:id/selected_terms' => 'mapping_selected_terms#show'
+      get 'mappings/:id/selected_terms' => 'mapping_selected_terms#show', as: :mapping_selected_terms
       get 'mappings/:id/export' => 'mappings#export'
       delete 'mappings/:id/selected_terms' => 'mapping_selected_terms#destroy'
 
       get 'alignments/:id/vocabulary' => 'alignment_vocabularies#show'
-      get 'mappings/:id/terms' => 'mappings#show_terms'
+      get 'mappings/:id/terms' => 'mappings#show_terms', as: :mapping_terms
       post 'mappings/:mapping_id/alignments' => 'alignments#create'
       post 'merged_files/:id/classes' => 'merged_files#classes'
       post 'merged_files/:id/filter' => 'merged_files#filter'
-      get 'specifications/:id/terms' => 'terms#index'
+      get 'specifications/:id/terms' => 'terms#index', as: :specification_terms
       get 'vocabularies/:id/flat' => 'vocabularies#flat'
       post 'configuration_profiles/:id/action' => 'configuration_profile_actions#call_action'
       get 'configuration_profile_schema' => 'configuration_profile_schemas#show'
@@ -182,7 +182,7 @@ Rails.application.routes.draw do
       post 'skos/fetch' => 'skos#fetch'
       get 'skos/labels' => 'skos#labels'
 
-      get 'spines/:id/terms' => 'spine_terms#index'
+      get 'spines/:id/terms' => 'spine_terms#index', as: :spine_terms_list
     end
   end
 

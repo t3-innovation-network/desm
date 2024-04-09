@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import { Component } from 'react';
 import ConfirmDialog from '../../shared/ConfirmDialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -39,7 +39,7 @@ class NewConfigurationProfile extends Component {
   render() {
     const { confirmationMsg, confirmationVisible } = this.state;
     return (
-      <Fragment>
+      <>
         {confirmationVisible && (
           <ConfirmDialog
             onRequestClose={() => this.setState({ confirmationVisible: false })}
@@ -65,7 +65,7 @@ class NewConfigurationProfile extends Component {
         >
           <BoxBody options={this.state.options} onOptionSelected={this.handleOptionSelected} />
         </CPBoxContainer>
-      </Fragment>
+      </>
     );
   }
 }

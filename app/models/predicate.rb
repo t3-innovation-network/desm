@@ -24,6 +24,7 @@
 #
 #  fk_rails_...  (predicate_set_id => predicate_sets.id) ON DELETE => cascade
 #
+
 ###
 # @description: Represents a Predicate, which is a way to identify the nature / quality
 # of the mapping between the spine term and mapped term.
@@ -40,6 +41,7 @@
 ###
 class Predicate < ApplicationRecord
   include Slugable
+  audited
 
   belongs_to :predicate_set
   validates :source_uri, presence: true, uniqueness: { scope: :predicate_set_id }
@@ -121,26 +123,14 @@ class Predicate < ApplicationRecord
 
   def to_json_ld
     {
-      color: color,
-      definition: definition,
-      pref_label: pref_label,
-      slug: slug,
-      source_uri: source_uri,
-      uri: uri,
-      weight: weight
+      color:,
+      definition:,
+      pref_label:,
+      slug:,
+      source_uri:,
+      uri:,
+      weight:
     }
-  end
-
-  ###
-  # @description: Include additional information about the specification in
-  #   json responses. This overrides the ApplicationRecord as_json method.
-  ###
-  def as_json(options = {})
-    super(
-      options.merge(methods: %i(uri))
-    ).merge(
-      strongest_match: predicate_set.strongest_match_id == id
-    )
   end
 
   private

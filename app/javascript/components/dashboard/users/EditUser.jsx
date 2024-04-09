@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import DashboardContainer from '../DashboardContainer';
 import fetchOrganizations from '../../../services/fetchOrganizations';
 import fetchRoles from '../../../services/fetchRoles';
@@ -6,11 +6,11 @@ import AlertNotice from '../../shared/AlertNotice';
 import fetchUser from '../../../services/fetchUser';
 import deleteUser from '../../../services/deleteUser';
 import updateUser from '../../../services/updateUser';
-import { toastr as toast } from 'react-redux-toastr';
 import { Link } from 'react-router-dom';
 import Loader from '../../shared/Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faTrash, faHome } from '@fortawesome/free-solid-svg-icons';
+import { showInfo, showSuccess } from '../../../helpers/Messages';
 
 export default class EditUser extends Component {
   state = {
@@ -67,7 +67,7 @@ export default class EditUser extends Component {
           return;
         }
 
-        toast.info('User successfully removed');
+        showInfo('User successfully removed');
         this.props.history.push('/dashboard/users');
       })
       .catch((error) => {});
@@ -144,7 +144,7 @@ export default class EditUser extends Component {
         });
         return;
       }
-      toast.success('User ' + fullname + ' (' + user_id + ') was successfully updated');
+      showSuccess('User ' + fullname + ' (' + user_id + ') was successfully updated');
       this.props.history.push('/dashboard/users');
     });
 
@@ -165,7 +165,16 @@ export default class EditUser extends Component {
 
     return (
       <DashboardContainer>
-        {errors && <AlertNotice message={errors} />}
+        {errors && (
+          <AlertNotice
+            message={errors}
+            onClose={() =>
+              this.setState({
+                errors: '',
+              })
+            }
+          />
+        )}
         {this.dashboardPath()}
         {loading ? (
           <Loader />
@@ -176,8 +185,6 @@ export default class EditUser extends Component {
               <span className="pl-2 subtitle">User {fullname}</span>
               <button
                 className="btn btn-dark float-right"
-                data-toggle="tooltip"
-                data-placement="bottom"
                 title="Delete this user"
                 onClick={() => {
                   this.deleteUserAPI();
@@ -187,7 +194,7 @@ export default class EditUser extends Component {
               </button>
             </div>
             <div className="card-body">
-              <React.Fragment>
+              <>
                 <div className="mandatory-fields-notice">
                   <small className="form-text text-muted">
                     Fields with <span className="text-danger">*</span> are mandatory!
@@ -276,7 +283,7 @@ export default class EditUser extends Component {
                     Send
                   </button>
                 </form>
-              </React.Fragment>
+              </>
             </div>
           </div>
         )}

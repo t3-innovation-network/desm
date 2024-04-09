@@ -19,6 +19,7 @@
 #  fk_rails_...  (alignment_vocabulary_id => alignment_vocabularies.id) ON DELETE => cascade
 #  fk_rails_...  (predicate_id => predicates.id)
 #
+
 ###
 # @description: Represents a concept of a mapping between 2 vocabularies
 # - Each vocabulary mapping have 1 to many concepts.

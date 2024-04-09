@@ -10,5 +10,18 @@ en:
     auth:
       unauthorized_access: "Unauthorized access."
       invalid_credentials: "Invalid email or password. Please try again."
+    config:
+      domain:
+        destroy:
+          one: "Can't delete abstract class %{message} from previous scheme as it is in use. Changes were not applied."
+          other: "Can't delete abstract classes %{message} from previous scheme as they are in use. Changes were not applied."
+      predicate:
+        destroy:
+          one: "Can't delete predicate %{message} from previous sheme as it is in use. Changes were not applied."
+          other: "Can't delete predicates %{message} from previous sheme as they are in use. Changes were not applied."
     specs:
       invalid_specification: "Invalid specification. Please validate the uploaded file. It has to be a valid JSON-LD, XML, RDF, or CSV file.s"
+    synthetic:
+      spine_term_not_uniq: "Can't create syntetic property as term %{term} already exists in the spine. Changes were not applied."
+  pundit:
+    default: You are not authorized to perform this action.

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import { Component } from 'react';
 import AlertNotice from '../shared/AlertNotice';
 import Loader from '../shared/Loader';
 import ProgressReportBar from '../shared/ProgressReportBar';
@@ -80,12 +80,8 @@ export default class PropertyCard extends Component {
    * @param {HttpResponse} response
    */
   anyError(response) {
-    const { errors } = this.state;
-
     if (response.error) {
-      let tempErrors = errors;
-      tempErrors.push(response.error);
-      this.setState({ errors: tempErrors });
+      this.setState({ errors: [...this.state.errors, response.error] });
     }
     /// It will return a truthy value (depending no the existence
     /// of the error on the response object)
@@ -129,9 +125,11 @@ export default class PropertyCard extends Component {
     const { currentMappingWeight, errors, loading, maxMappingWeight } = this.state;
 
     return (
-      <Fragment>
+      <>
         {/* ERRORS */}
-        {errors.length ? <AlertNotice message={errors} /> : null}
+        {errors.length ? (
+          <AlertNotice message={errors} onClose={() => this.setState({ errors: [] })} />
+        ) : null}
 
         <div className="card borderless bg-col-secondary h-100">
           <div className="card-header desm-rounded bottom-borderless bg-col-secondary">
@@ -162,7 +160,7 @@ export default class PropertyCard extends Component {
             )}
           </div>
         </div>
-      </Fragment>
+      </>
     );
   }
 }

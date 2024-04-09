@@ -34,5 +34,9 @@ FactoryBot.define do
     pref_label { Faker::Lorem.word }
     source_uri { Faker::Internet.url }
     weight { 3.50 }
+
+    trait :nomatch do
+      source_uri { "http://example.com/nomatch" }
+    end
   end
 end

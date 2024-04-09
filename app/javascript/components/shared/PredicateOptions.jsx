@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ExpandableOptions from './ExpandableOptions';
 
 /**
@@ -12,7 +12,7 @@ const PredicateOptions = (props) => {
   /**
    * Elements from props
    */
-  const { predicates } = props;
+  const { predicates, cls = '' } = props;
 
   /**
    * The current selected predicate
@@ -28,6 +28,7 @@ const PredicateOptions = (props) => {
       return {
         name: predicate.pref_label,
         id: predicate.id,
+        description: predicate.definition,
       };
     });
   };
@@ -47,7 +48,7 @@ const PredicateOptions = (props) => {
       options={predicatesAsOptions()}
       onClose={(predicate) => handlePredicateSelected(predicate)}
       selectedOption={predicate}
-      cardCssClass={'with-shadow'}
+      cardCssClass={`with-shadow ${cls}`}
     />
   );
 };

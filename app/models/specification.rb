@@ -25,6 +25,7 @@
 #  fk_rails_...  (configuration_profile_user_id => configuration_profile_users.id) ON DELETE => cascade
 #  fk_rails_...  (domain_id => domains.id)
 #
+
 ###
 # @description: Represents a specification uploaded by a user in
 #   its original state, after the preview, but in an active record
@@ -71,8 +72,8 @@ class Specification < ApplicationRecord
   ###
   def spine!
     Spine.create!(
-      configuration_profile_user: configuration_profile_user,
-      domain: domain,
+      configuration_profile_user:,
+      domain:,
       name: domain.name
     )
   end
@@ -87,10 +88,10 @@ class Specification < ApplicationRecord
 
   def to_json_ld
     {
-      name: name,
-      uri: uri,
-      version: version,
-      use_case: use_case,
+      name:,
+      uri:,
+      version:,
+      use_case:,
       domain: domain.uri,
       terms: terms.map(&:source_uri).sort
     }

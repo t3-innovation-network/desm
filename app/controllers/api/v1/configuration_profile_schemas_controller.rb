@@ -2,7 +2,7 @@
 
 module API
   module V1
-    class ConfigurationProfileSchemasController < ApplicationController
+    class ConfigurationProfileSchemasController < BaseController
       def show
         render json: determine_schema
       end
