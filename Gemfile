@@ -21,6 +21,7 @@ gem "rack-cors", require: "rack/cors"
 # REST OF THE DEPENDENCIES
 
 gem "active_model_serializers", "~> 0.10"
+gem "airbrake"
 
 # Audit changes
 gem "audited", "~> 4.9"
