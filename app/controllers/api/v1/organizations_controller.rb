@@ -19,8 +19,7 @@ module API
             Organization.all
           end
 
-        render json: organizations.order(name: :asc).includes(:users), with_users: true,
-               configuration_profile: current_configuration_profile
+        render json: organizations.order(name: :asc)
       end
 
       ###

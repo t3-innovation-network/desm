@@ -146,7 +146,7 @@ export default class PropertyCard extends Component {
             <p>{term.organization?.name}</p>
 
             <small className="mt-3 col-on-primary-light">Schema</small>
-            <p>{term.property.scheme}</p>
+            <p>{term.alignments.map((a) => a.schemaName).join(', ')}</p>
 
             {loading ? (
               <Loader />

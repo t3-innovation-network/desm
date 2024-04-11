@@ -13,17 +13,15 @@ module API
       #   values detailed in filter method
       ###
       def index
-        terms = Alignment
-                  .joins(mapping: :configuration_profile)
-                  .includes(:predicate, mapped_terms: :organization)
+        terms = current_configuration_profile.alignments
+                  .includes(:predicate, mapping: :specification, mapped_terms: :organization)
                   .where(
-                    configuration_profiles: { id: current_configuration_profile },
                     mappings: { spine_id: params[:spine_id], status: :mapped }
                   )
                   .where.not(predicate_id: nil)
                   .order(:spine_term_id, :uri)
 
-        render json: terms
+        render json: terms, with_schema_name: true
       end
 
       def create
