@@ -7,7 +7,7 @@ import { AppContext } from '../../contexts/AppContext';
 import { showInfo, showError } from '../../helpers/Messages';
 
 const AuthButton = () => {
-  const { setLoggedIn } = useContext(AppContext);
+  const { setLoggedIn, setCurrentConfigurationProfile } = useContext(AppContext);
   const isLoggedIn = useSelector((state) => state.loggedIn);
   const dispatch = useDispatch();
 
@@ -21,6 +21,7 @@ const AuthButton = () => {
 
     dispatch(doLogout());
     dispatch(unsetUser());
+    setCurrentConfigurationProfile(null);
     setLoggedIn(false);
     showInfo('Signed Out');
   };
