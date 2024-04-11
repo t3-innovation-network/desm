@@ -1,16 +1,14 @@
 import {} from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faCogs, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faCogs, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { pageRoutes } from 'services/pageRoutes';
+import { i18n } from 'utils/i18n';
 
 const SideBar = () => {
-  const navLinks = {
-    dashboard: '/dashboard',
-    users: '/dashboard/users',
-    organizations: '/dashboard/organizations',
-    configuration_profiles: '/dashboard/configuration-profiles',
-    admins: '/dashboard/admins',
-  };
+  const cssNavClass = (path) =>
+    window.location.pathname === path ? 'selected-dashboard-option ' : '';
+  const cssNavBase = 'nav-link cursor-pointer col-background pl-3';
 
   return (
     <>
@@ -20,12 +18,8 @@ const SideBar = () => {
             <ul className="flex-md-column flex-row navbar-nav w-100 justify-content-between">
               <li className="nav-item">
                 <Link
-                  to={navLinks.dashboard}
-                  className={`${
-                    window.location.pathname === navLinks.dashboard
-                      ? 'selected-dashboard-option '
-                      : ''
-                  }nav-link cursor-pointer col-background pl-3`}
+                  to={pageRoutes.dashboard()}
+                  className={`${cssNavClass(pageRoutes.dashboard())} ${cssNavBase}`}
                 >
                   <FontAwesomeIcon fixedWidth icon={faCog} aria-hidden="true" />
                   <span className="pl-2">Dashboard</span>
@@ -34,10 +28,8 @@ const SideBar = () => {
 
               <li className="nav-item">
                 <Link
-                  to={navLinks.admins}
-                  className={`${
-                    window.location.pathname === navLinks.admins ? 'selected-dashboard-option ' : ''
-                  }nav-link cursor-pointer col-background pl-3`}
+                  to={pageRoutes.admins()}
+                  className={`${cssNavClass(pageRoutes.admins())} ${cssNavBase}`}
                 >
                   <FontAwesomeIcon fixedWidth icon={faUser} aria-hidden="true" />
                   <span className="pl-2">Admin Users</span>
@@ -46,12 +38,18 @@ const SideBar = () => {
 
               <li className="nav-item">
                 <Link
-                  to={navLinks.configuration_profiles}
-                  className={`${
-                    window.location.pathname === navLinks.configuration_profiles
-                      ? 'selected-dashboard-option '
-                      : ''
-                  }nav-link cursor-pointer col-background pl-3`}
+                  to={pageRoutes.agents()}
+                  className={`${cssNavClass(pageRoutes.agents())} ${cssNavBase}`}
+                >
+                  <FontAwesomeIcon fixedWidth icon={faUsers} aria-hidden="true" />
+                  <span className="pl-2">{i18n.t('ui.dashboard.nav.agents')}</span>
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Link
+                  to={pageRoutes.configurationProfiles()}
+                  className={`${cssNavClass(pageRoutes.configurationProfiles())} ${cssNavBase}`}
                 >
                   <FontAwesomeIcon fixedWidth icon={faCogs} aria-hidden="true" />
                   <span className="pl-2">Configuration Profiles</span>

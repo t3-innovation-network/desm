@@ -5,3 +5,14 @@
 p.card-text {
   margin-bottom: $card-spacer-y;
 }
+
+.card {
+  @include m(link) {
+    cursor: pointer;
+
+    &:hover {
+      background-color: $dashboard-background-color-highlight2 !important;
+      text-decoration: none;
+    }
+  }
+}

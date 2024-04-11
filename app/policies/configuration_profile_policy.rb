@@ -2,7 +2,7 @@
 
 ###
 # @description: Represents the ability that a user has to access
-#   organization records.
+#   configuration profiles records.
 ###
-class OrganizationPolicy < AdminAccessPolicy
+class ConfigurationProfilePolicy < AdminAccessPolicy
 end

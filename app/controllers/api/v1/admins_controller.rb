@@ -3,7 +3,7 @@
 module API
   module V1
     class AdminsController < BaseController
-      before_action :authorize!
+      include AuthAdmin
       before_action :load_admin, only: %i(update destroy)
 
       def index
@@ -35,11 +35,7 @@ module API
       end
 
       def admin_role
-        Role.find_by!(name: "super admin")
-      end
-
-      def authorize!
-        raise Pundit::NotAuthorizedError unless current_user&.super_admin?
+        Role.find_by!(name: Desm::ADMIN_ROLE_NAME.downcase)
       end
 
       def load_admin

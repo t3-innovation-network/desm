@@ -2,7 +2,7 @@
 
 ###
 # @description: Represents the ability that a user has to access
-#   organization records.
+#   agents records.
 ###
-class OrganizationPolicy < AdminAccessPolicy
+class AgentPolicy < AdminAccessPolicy
 end

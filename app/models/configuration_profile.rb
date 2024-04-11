@@ -39,6 +39,7 @@
 #   defined in a Schema Mapping Profile (Configuration Profile) used to configure the instance of the DESM tool.
 ###
 class ConfigurationProfile < ApplicationRecord
+  include PgSearch::Model
   include Slugable
   audited
 
@@ -81,6 +82,10 @@ class ConfigurationProfile < ApplicationRecord
   #   will not trigger the structure creation again.
   enum state: { incomplete: 0, complete: 1, active: 2, deactivated: 3 }
 
+  pg_search_scope :search_by_name, against: :name, using: { tsearch: { prefix: true } }
+
+  scope :activated, -> { where(state: %i(active deactivated)) }
+
   COMPLETE_SCHEMA = Rails.root.join("ns", "complete.configurationProfile.schema.json")
   VALID_SCHEMA = Rails.root.join("ns", "valid.configurationProfile.schema.json")
 
@@ -105,6 +110,14 @@ class ConfigurationProfile < ApplicationRecord
     )
   end
 
+  def self.activated_states_for_select
+    ConfigurationProfile.states_for_select(%w(active deactivated))
+  end
+
+  def self.states_for_select(data = ConfigurationProfile.states.keys)
+    data.map { |state| { id: state, name: state.humanize } }
+  end
+
   def self.validate_structure(struct, type = "valid")
     struct = struct.deep_transform_keys { |key| key.to_s.camelize(:lower) }
     JSON::Validator.fully_validate(
@@ -115,6 +128,10 @@ class ConfigurationProfile < ApplicationRecord
 
   def activate!
     state_handler.activate!
+  end
+
+  def activated?
+    active? || deactived?
   end
 
   def check_structure

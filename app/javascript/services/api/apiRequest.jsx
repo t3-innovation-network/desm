@@ -1,6 +1,6 @@
 import { camelizeKeys, decamelizeKeys } from 'humps';
 import apiService, { processMessage } from './apiService';
-import { chain, pickBy, identity, isNil } from 'lodash';
+import { chain, pickBy, identity, isArray, isEmpty, isNil } from 'lodash';
 /**
  * Manages the api requests
  *
@@ -78,7 +78,14 @@ const queryString = (params) => {
   const queryParams = pickBy(params, identity);
 
   return chain(decamelizeKeys(queryParams))
-    .map((v, k) => (isNil(v) ? null : `${esc(k)}=${esc(v)}`))
+    .map((v, k) => {
+      if (isNil(v)) return null;
+      if (isArray(v)) {
+        if (isEmpty(v)) return null;
+        return v.map((p) => `${esc(k)}[]=${esc(p)}`).join('&');
+      }
+      return `${esc(k)}=${esc(v)}`;
+    })
     .filter()
     .value()
     .join('&');
