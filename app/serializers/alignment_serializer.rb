@@ -6,6 +6,10 @@ class AlignmentSerializer < ApplicationSerializer
   attribute :name do
     object.uri
   end
+  attribute :schema_name, if: -> { params[:with_schema_name] } do
+    schema = object.mapping.specification
+    "#{schema.name}#{schema.version.present? ? " (#{schema.version})" : ''}"
+  end
 
   # pass the params to the serializer
   def mapped_terms

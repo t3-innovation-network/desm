@@ -158,7 +158,7 @@ class AlignmentCard extends Component {
               <h5>{alignment.origin}</h5>
 
               <small className="mt-3 col-on-primary-light">Schema</small>
-              <h5>{alignment.mappedTerms[0].property.scheme}</h5>
+              <h5>{alignment.schemaName}</h5>
             </div>
             <div className="col-2">
               <small className="mt-3 col-on-primary-light">Element/Property</small>
