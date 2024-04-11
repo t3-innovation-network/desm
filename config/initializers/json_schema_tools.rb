@@ -8,7 +8,7 @@ module SchemaTools
 
       if json_pointer[/#/]
         # hash-symbol syntax pointing to a property of a schema. client.json#properties
-        raise "invalid json pointer: #{json_pointer}" unless json_pointer =~ /^(.*)#(.*)/
+        raise ArgumentError, "invalid json pointer: #{json_pointer}" unless json_pointer =~ /^(.*)#(.*)/
         uri, pointer = json_pointer.match(/^(.*)#(.*)/).captures
       else
         uri = json_pointer
@@ -17,7 +17,7 @@ module SchemaTools
       schema =
         if uri.present?
           uri = URI.parse(uri)
-          raise "must currently be a relative uri: #{json_pointer}" if uri.absolute?
+          raise ArgumentError, "must currently be a relative uri: #{json_pointer}" if uri.absolute?
           # TODO use local tools instance or base path from global SchemaTools.schema_path
           base_dir = relative_to ? relative_to.absolute_dir : SchemaTools.schema_path
           path = find_local_file_path(base_dir, uri.path, relative_to)

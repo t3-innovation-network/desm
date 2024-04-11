@@ -11,7 +11,7 @@ RSpec.describe Exporters::ConfigurationProfile do
   let(:organization) { create(:organization) }
   let(:predicate) { create(:predicate) }
   let(:predicate_set) { predicate.predicate_set }
-  let(:role) { create(:role, name: "mapper") }
+  let(:role) { create(:role, name: Desm::MAPPER_ROLE_NAME) }
   let(:specification) { create(:specification, selected_domains_from_file: [term.source_uri]) }
   let(:spine) { create(:spine, configuration_profile_user: profile_user, domain:, terms: [term]) }
   let(:term) { create(:term, configuration_profile_user: profile_user, vocabularies: [vocabulary]) }

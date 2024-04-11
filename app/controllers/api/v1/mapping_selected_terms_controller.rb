@@ -60,7 +60,8 @@ module API
       # @description: Validates that mapping terms are passed in params
       ###
       def validate_mapping_terms
-        raise "Mapping terms were not provided" unless params[:term_ids].present? && params[:term_ids].length.positive?
+        raise ArgumentError, "Mapping terms were not provided" \
+          unless params[:term_ids].present? && params[:term_ids].length.positive?
       end
     end
   end

@@ -3,6 +3,7 @@
 @import 'utils/utilities';
 @import 'components/card';
 @import 'components/drag-n-drop';
+@import 'components/icon';
 @import 'customradio';
 @import 'forms';
 @import 'navbar';
@@ -238,7 +239,7 @@ a:hover {
 }
 
 .fit-content-height {
-  min-height: 'fit-content';
+  min-height: fit-content;
 }
 
 .centered-width {

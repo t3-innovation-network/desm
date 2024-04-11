@@ -90,7 +90,7 @@ module API
       # @description: Find the specification with the id passed in params
       ###
       def instantiate_specification
-        raise "Specification id not provided" unless params[:specification_id].present?
+        raise ArgumentError, "Specification id not provided" unless params[:specification_id].present?
 
         @specification = Specification.find(params[:specification_id])
       end
@@ -108,7 +108,7 @@ module API
 
         @instance ||= current_organization.mappings.find(params[:id])
       rescue ActiveRecord::RecordNotFound
-        raise "Couldn't find mapping"
+        raise ArgumentError, "Couldn't find mapping"
       end
     end
   end

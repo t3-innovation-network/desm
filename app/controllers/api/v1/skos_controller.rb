@@ -44,7 +44,7 @@ module API
         params.permit(:configuration_profile_id, :skos_method)
         return if %w(json_mapping_predicates json_abstract_classes).include?(params[:skos_method])
 
-        raise "skos method should be one of: 'json_mapping_predicates', 'json_abstract_classes"
+        raise ArgumentError, "skos method should be one of: 'json_mapping_predicates', 'json_abstract_classes"
       end
 
       def instantiate_cp
@@ -52,8 +52,8 @@ module API
       end
 
       def check_skos_method
-        raise "skos_method missing" unless params[:skos_method].present?
-        raise "#{params[:skos_method].humanize} is empty" if @cp.send(params[:skos_method].to_sym).nil?
+        raise ArgumentError, "skos_method missing" unless params[:skos_method].present?
+        raise ArgumentError, "#{params[:skos_method].humanize} is empty" if @cp.send(params[:skos_method].to_sym).nil?
       end
     end
   end

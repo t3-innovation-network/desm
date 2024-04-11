@@ -57,7 +57,7 @@ class CreateCpStructure
 
   def generate_dsos_data
     @structure[:standards_organizations].each do |dso_data|
-      result = CreateDso.call(dso_data.merge(configuration_profile: @cp))
+      result = CreateOrUpdateDso.call(dso_data.merge(configuration_profile: @cp))
       raise DSOCreationError, "DSOCreationError: #{result.error}" if result.error?
 
       create_dso_schemas(result.dso, dso_data[:associated_schemas])

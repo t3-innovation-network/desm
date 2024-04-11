@@ -32,12 +32,19 @@ class Organization < ApplicationRecord
 
   belongs_to :administrator, class_name: :User, foreign_key: "administrator_id", optional: true
   has_many :agents, ->(o) { where.not(id: o.administrator_id) }, class_name: "User", dependent: :destroy
-  has_many :configuration_profile_users
+  has_many :configuration_profile_users, dependent: :destroy
   has_many :terms, through: :configuration_profile_users
   has_many :spines, through: :configuration_profile_users
   has_many :users, through: :configuration_profile_users
   has_many :mappings, through: :configuration_profile_users
   has_and_belongs_to_many :configuration_profiles
+
+  validates :email, presence: true
+
+  ###
+  # @description: Returns the JSON-LD representation of the organization
+  # @return [Hash]
+  ###
 
   def to_json_ld
     {

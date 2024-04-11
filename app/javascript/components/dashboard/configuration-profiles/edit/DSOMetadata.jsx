@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { cloneDeep, pickBy } from 'lodash';
 import {
   setCurrentConfigurationProfile,
   setEditCPErrors,
@@ -8,7 +9,7 @@ import {
 import { validURL } from '../../../../helpers/URL';
 import updateCP from '../../../../services/updateCP';
 
-const DSOMetaData = ({ dsoData }) => {
+const DSOMetaData = ({ dsoData = {} }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [description, setDescription] = useState('');
@@ -42,7 +43,7 @@ const DSOMetaData = ({ dsoData }) => {
     updateCP(configurationProfile.id, buildDsoData()).then((response) => {
       if (response.error) {
         dispatch(setEditCPErrors(response.error));
-        dispatch(setSavingCP(false));
+        dispatch(setSavingCP(null));
         return;
       }
 
@@ -52,18 +53,21 @@ const DSOMetaData = ({ dsoData }) => {
   };
 
   const buildDsoData = () => {
-    let localCP = configurationProfile;
+    let localCP = cloneDeep(configurationProfile);
     const organization = localCP.structure.standardsOrganizations[currentDSOIndex];
 
     localCP.structure.standardsOrganizations[currentDSOIndex] = {
       ...organization,
-      ..._.pickBy({
-        description,
-        email,
-        homepageUrl,
-        name,
-        standardsPage,
-      }),
+      ...pickBy(
+        {
+          description,
+          email,
+          homepageUrl,
+          name,
+          standardsPage,
+        },
+        () => true
+      ),
     };
 
     return localCP;

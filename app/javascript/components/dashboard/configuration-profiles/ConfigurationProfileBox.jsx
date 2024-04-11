@@ -198,13 +198,7 @@ export default class ConfigurationProfileBox extends Component {
             sideBoxClass={`bg-dashboard-background ${
               configurationProfile.state === 'deactivated' || processing ? 'disabled-container' : ''
             }`}
-            icon={
-              <FontAwesomeIcon
-                icon={faCogs}
-                className="fa-3x"
-                style={{ transform: 'translateY(20%) translateX(-5%)' }}
-              />
-            }
+            icon={<FontAwesomeIcon icon={faCogs} className="fa-3x" />}
             linkTo={`/dashboard/configuration-profiles/${configurationProfile.id}`}
           >
             <CardBody

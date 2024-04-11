@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { cloneDeep } from 'lodash';
 import {
   setCurrentConfigurationProfile,
   setCurrentDSOIndex,
@@ -34,7 +35,7 @@ const DSOsInfo = () => {
   const confirmationMsg = `Please confirm if you really want to remove the DSO ${dsos[idxToRemove]?.name}`;
 
   const addDso = () => {
-    let localCP = currentCP;
+    let localCP = cloneDeep(currentCP);
     let newIdx = localCP.structure.standardsOrganizations?.length || 0;
     localCP.structure.standardsOrganizations = [
       ...dsos,
@@ -44,10 +45,8 @@ const DSOsInfo = () => {
         associatedSchemas: [],
       },
     ];
-
     dispatch(setCurrentConfigurationProfile(localCP));
     dispatch(setCurrentDSOIndex(newIdx));
-    save();
   };
 
   const dsoTabs = () => {
@@ -69,26 +68,28 @@ const DSOsInfo = () => {
 
   const handleRemoveDSO = () => {
     setConfirmationVisible(false);
-    let localCP = currentCP;
+    // clone currentCP and remove the DSO
+    let localCP = cloneDeep(currentCP);
     localCP.structure.standardsOrganizations.splice(idxToRemove, 1);
-
-    dispatch(setCurrentConfigurationProfile(localCP));
-    save();
+    // update idx as 0 in case of success, otherwise keep the same idx
+    save(localCP)
+      .then(() => dispatch(setCurrentDSOIndex(0)))
+      .catch(() => {});
   };
 
-  const save = () => {
+  const save = (data) => {
     dispatch(setSavingCP(true));
-    dispatch(setCurrentDSOIndex(0));
 
-    updateCP(currentCP.id, currentCP).then((response) => {
+    return updateCP(currentCP.id, data).then((response) => {
       if (response.error) {
         dispatch(setEditCPErrors(response.error));
-        dispatch(setSavingCP(false));
-        return;
+        setSavingCP(null);
+        return Promise.reject(false);
       }
 
       dispatch(setCurrentConfigurationProfile(response.configurationProfile));
-      dispatch(setSavingCP(false));
+      setSavingCP(false);
+      return Promise.resolve(true);
     });
   };
 

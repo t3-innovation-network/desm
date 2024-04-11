@@ -31,19 +31,17 @@ module API
       def destroy
         @instance.remove!
 
-        render json: {
-          success: true
-        }
+        render json: { success: true }
       end
 
       def show
-        render json: @instance, include: [standards_organizations: { include: :users }]
+        render json: @instance, with_organizations: true
       end
 
       def update
         @instance.update(permitted_params)
 
-        render json: @instance, include: [standards_organizations: { include: :users }]
+        render json: @instance, with_organizations: true
       end
 
       def set_current

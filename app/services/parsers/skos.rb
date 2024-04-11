@@ -140,7 +140,7 @@ module Parsers
       # Some specification may not use "hasConcept", but "hasTopConcept"
       child_nodes = Array.wrap(parser.read!("hasTopConcept")) if child_nodes.all?(&:empty?)
 
-      raise "No concept nodes found for Vocabulary #{parser.read!('id')}" if child_nodes.all?(&:empty?)
+      raise ArgumentError, "No concept nodes found for Vocabulary #{parser.read!('id')}" if child_nodes.all?(&:empty?)
 
       process_node_uris(child_nodes)
     end

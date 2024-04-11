@@ -46,12 +46,15 @@ const AbstractClasses = () => {
     jsonAbstractClasses,
     structure: {
       ...configurationProfile.structure,
-      abstractClasses: _.pickBy({
-        description,
-        name,
-        origin,
-        version,
-      }),
+      abstractClasses: _.pickBy(
+        {
+          description,
+          name,
+          origin,
+          version,
+        },
+        () => true
+      ),
     },
   });
 
