@@ -51,6 +51,8 @@ const Agents = () => {
   useEffect(() => {
     const dsoAgentsLength = initAgentsData();
     setCurrentAgentIndex(dsoAgentsLength ? 0 : -1);
+    // need to refresh the data to be sure that agent data is updated even if tab index is the same
+    setRefresh(!refresh);
   }, [currentDSOIndex]);
 
   useEffect(() => initAgentData(), [currentAgentIndex, currentDSOIndex, refresh]);
@@ -116,6 +118,8 @@ const Agents = () => {
       .then((data) => {
         const dsoAgentsLength = initAgentsData(data);
         setCurrentAgentIndex(dsoAgentsLength ? 0 : -1);
+        // need to refresh the data to be sure that agent data is updated even if tab index is the same
+        setRefresh(!refresh);
       })
       .catch(() => {});
   };
