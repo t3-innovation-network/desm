@@ -216,7 +216,13 @@ const Agents = () => {
                 setPhone(event.target.value);
               }}
               onBlur={saveChanges}
+              aria-describedby="phoneHelpBlock"
             />
+            <small id="phoneHelpBlock" className="form-text text-muted">
+              Phone number should be at least 6 characters long and can contain digits, spaces, or
+              hyphens, optionally starting with a plus sign. Examples: +1234567890, 123-456-789, 123
+              456 7890
+            </small>
           </div>
         </div>
 

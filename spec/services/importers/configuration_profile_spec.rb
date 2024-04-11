@@ -52,7 +52,7 @@ RSpec.describe Importers::ConfigurationProfile do
   let(:user_fullname) { Faker::Name.name }
   let(:user_github_handle) { Faker::Lorem.word }
   let(:user_lead_mapper) { [false, true].sample }
-  let(:user_phone) { Faker::PhoneNumber.phone_number }
+  let(:user_phone) { Faker::PhoneNumber.cell_phone_in_e164 }
   let(:user_role_name) { Faker::Lorem.word }
   let(:vocabulary_content) { Faker::Json.shallow_json(width: 3) }
   let(:vocabulary_context) { Faker::Json.shallow_json(width: 3) }
