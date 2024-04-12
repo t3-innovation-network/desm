@@ -10,6 +10,9 @@ class AlignmentSerializer < ApplicationSerializer
     schema = object.mapping.specification
     "#{schema.name}#{schema.version.present? ? " (#{schema.version})" : ''}"
   end
+  attribute :selected_domains, if: -> { params[:with_schema_name] } do
+    object.mapping.specification.selected_domains_from_file
+  end
 
   # pass the params to the serializer
   def mapped_terms

@@ -153,7 +153,11 @@ export default class PropertiesList extends Component {
       const { alignments } = response;
       const groupedAlignments = _.groupBy(alignments, 'spineTermId');
 
-      spineTerms.forEach((term) => (term.alignments = groupedAlignments[term.id] || []));
+      spineTerms.forEach((term) => {
+        term.alignments = groupedAlignments[term.id] || [];
+        term.alignmentScore =
+          term.maxMappingWeight > 0 ? (term.currentMappingWeight * 100) / term.maxMappingWeight : 0;
+      });
     }
 
     return spineTerms;
@@ -163,7 +167,7 @@ export default class PropertiesList extends Component {
    * Use the service to get all the available properties of a spine specification
    */
   handleFetchProperties = async (spineId) => {
-    let response = await fetchSpineTerms(spineId);
+    let response = await fetchSpineTerms(spineId, { withWeights: true });
 
     if (!this.anyError(response)) {
       const properties = await this.decoratePropertiesWithAlignments(spineId, response.terms);
@@ -236,11 +240,8 @@ export default class PropertiesList extends Component {
      * Elements from props
      */
     const {
-      predicates,
-      organizations,
       selectedAlignmentOrderOption,
       selectedAlignmentOrganizations,
-      selectedDomain,
       selectedPredicates,
       selectedSpineOrganizations,
     } = this.props;
@@ -255,13 +256,7 @@ export default class PropertiesList extends Component {
         return (
           <div className="row mt-3" key={term.id}>
             <div className="col-4 pb-3">
-              <PropertyCard
-                organizations={organizations}
-                predicates={predicates}
-                selectedDomain={selectedDomain}
-                term={term}
-                onAlignmentScoreFetched={(score) => this.handleAlignmentScoreFetched(term, score)}
-              />
+              <PropertyCard term={term} />
             </div>
             <div className="col-8">
               <PropertyAlignments

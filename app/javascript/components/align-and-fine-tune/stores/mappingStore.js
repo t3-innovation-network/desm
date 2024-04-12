@@ -516,7 +516,7 @@ export const mappingStore = (initialData = {}) => ({
    */
   handleFetchSpineTerms: thunk(async (actions, { spineId }, h) => {
     const state = h.getState();
-    let response = await fetchSpineTerms(spineId);
+    let response = await fetchSpineTerms(spineId, { withOrganization: true });
     if (state.withoutErrors(response)) {
       actions.updateSpineTerms(response.terms);
     } else {
