@@ -1,0 +1,183 @@
+[
+  {
+    "@id": "http://purl.org/dcx/lrmi-vocabs/educationalUse/instruction",
+    "@type": [
+      "http://www.w3.org/2004/02/skos/core#Concept"
+    ],
+    "http://purl.org/dc/terms/source": [
+      {
+        "@language": "en-US",
+        "@value": "Based on Common Education Data Standards (CEDS): https://ceds.ed.gov/element/001002#CurriculumInstruction"
+      },
+      {
+        "@language": "de",
+        "@value": "Basierend auf den Common Education Data Standards (CEDS): https://ceds.ed.gov/element/001002#CurriculumInstruction"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en-US",
+        "@value": "Primary purpose of the resource is to support the instructional process, student learning, or to provide information about the curriculum."
+      },
+      {
+        "@language": "de",
+        "@value": "Hauptzweck der Ressource ist die Unterstützung des Unterrichtsprozesses, das Lernen der Schüler*innen oder die Bereitstellung von Informationen über den Lehrplan."
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#inScheme": [
+      {
+        "@id": "http://purl.org/dcx/lrmi-vocabs/educationalUse/"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#prefLabel": [
+      {
+        "@language": "en-US",
+        "@value": "instruction"
+      },
+      {
+        "@language": "de",
+        "@value": "Anleitung"
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.org/dcx/lrmi-vocabs/educationalUse/assessment",
+    "@type": [
+      "http://www.w3.org/2004/02/skos/core#Concept"
+    ],
+    "http://purl.org/dc/terms/source": [
+      {
+        "@language": "en-US",
+        "@value": "Based on Common Education Data Standards (CEDS): https://ceds.ed.gov/element/001002#Assessment"
+      },
+      {
+        "@language": "de",
+        "@value": "Basierend auf den Common Education Data Standards (CEDS): https://ceds.ed.gov/element/001002#Assessment"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en-US",
+        "@value": "Primary purpose of the resource is to evaluate learning, before, during, or after instruction occurs."
+      },
+      {
+        "@language": "de",
+        "@value": "Der Hauptzweck der Ressource besteht darin, das Lernen vor, während oder nach dem Unterricht zu bewerten."
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#inScheme": [
+      {
+        "@id": "http://purl.org/dcx/lrmi-vocabs/educationalUse/"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#prefLabel": [
+      {
+        "@language": "en-US",
+        "@value": "assessment"
+      },
+      {
+        "@language": "de",
+        "@value": "Bewertung"
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.org/dcx/lrmi-vocabs/educationalUse/",
+    "@type": [
+      "http://www.w3.org/2004/02/skos/core#ConceptScheme"
+    ],
+    "http://dublincore.org/elements/1.1/creator": [
+      {
+        "@language": "en-US",
+        "@value": "LRMI Task Group (DCMI)"
+      },
+      {
+        "@language": "de",
+        "@value": "LRMI Task Group (DCMI)"
+      }
+    ],
+    "http://dublincore.org/elements/1.1/title": [
+      {
+        "@language": "en-US",
+        "@value": "LRMI Educational Use vocabulary"
+      },
+      {
+        "@language": "de",
+        "@value": "LRMI Vokabular der  Bildungszwecke"
+      }
+    ],
+    "http://purl.org/dc/terms/created": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2017-03-01"
+      }
+    ],
+    "http://purl.org/dc/terms/description": [
+      {
+        "@language": "en-US",
+        "@value": "A concept scheme that enumerates the educational uses of a learning resource."
+      },
+      {
+        "@language": "de",
+        "@value": "Ein kontrolliertes Vokabular, das die pädagogische Nutzung einer Lernressource beschreibt."
+      }
+    ],
+    "http://purl.org/dc/terms/license": [
+      {
+        "@id": "http://creativecommons.org/licenses/by/4.0/"
+      }
+    ],
+    "http://purl.org/dc/terms/modified": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2022-10-18"
+      }
+    ],
+    "http://purl.org/vocab/vann/changes": [
+      {
+        "@value": "https://www.dublincore.org/specifications/lrmi/concept_schemes/release-history/"
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.org/dcx/lrmi-vocabs/educationalUse/professionalSupport",
+    "@type": [
+      "http://www.w3.org/2004/02/skos/core#Concept"
+    ],
+    "http://purl.org/dc/terms/source": [
+      {
+        "@language": "en-US",
+        "@value": "Based on Common Education Data Standards (CEDS): https://ceds.ed.gov/element/001002#ProfessionalDevelopment"
+      },
+      {
+        "@language": "de",
+        "@value": "Basierend auf den Common Education Data Standards (CEDS): https://ceds.ed.gov/element/001002#ProfessionalDevelopment"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en-US",
+        "@value": "Primary purpose of the resource is to provide instruction for a teacher or other education professional including professional development."
+      },
+      {
+        "@language": "de",
+        "@value": "Hauptzweck der Ressource ist die Bereitstellung einer Anleitung für Lehrer*innen oder einer anderen pädagogischen Fachkraft, einschließlich der beruflichen Weiterbildung."
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#inScheme": [
+      {
+        "@id": "http://purl.org/dcx/lrmi-vocabs/educationalUse/"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#prefLabel": [
+      {
+        "@language": "en-US",
+        "@value": "professional support"
+      },
+      {
+        "@language": "de",
+        "@value": "professionelle Unterstützung"
+      }
+    ]
+  }
+]
