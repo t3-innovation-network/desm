@@ -12,9 +12,9 @@ export const propertyClassesForSpineTerm = (term) => {
   return intersection(selectedDomains, termClasses);
 };
 
-export const propertyClassesForAlignment = (alignment) => {
+export const propertyClassesForAlignmentTerm = (alignment, term) => {
   const selectedDomains = alignment.selectedDomains || [];
-  const termClasses = uniq(flatMap(alignment.mappedTerms, (t) => t.property.domain || []));
+  const termClasses = term.property.domain || [];
   return intersection(selectedDomains, termClasses);
 };
 
