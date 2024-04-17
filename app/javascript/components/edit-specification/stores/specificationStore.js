@@ -63,10 +63,11 @@ export const specificationStore = (initialData = {}) => ({
     return response;
   }),
   // Fetch initial data
-  fetchDataFromAPI: thunk(async (actions, { spineId }) => {
+  fetchDataFromAPI: thunk(async (actions, { spineId }, h) => {
     // Get the specification
     await actions.handleFetchSpine({ spineId });
     // Get the terms
     await actions.handleFetchSpineTerms({ spineId });
+    if (!h.getState().hasErrors) actions.setLoading(false);
   }),
 });

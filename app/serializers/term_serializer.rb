@@ -11,7 +11,7 @@ class TermSerializer < ApplicationSerializer
   end
 
   attribute :current_mapping_weight, if: -> { params[:spine] } do
-    object.alignments.where.not(predicate_id: nil).joins(:predicate).sum("predicates.weight")
+    object.alignments.joins(:predicate).sum("predicates.weight")
   end
 
   attribute :title do

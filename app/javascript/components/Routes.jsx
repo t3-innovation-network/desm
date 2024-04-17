@@ -7,10 +7,11 @@ import EditOrganization from './dashboard/organizations/EditOrganization';
 import CreateOrganization from './dashboard/organizations/CreateOrganization';
 import Home from './home/Home';
 import SignIn from './auth/SignIn';
+import RouteWithTitle from './auth/RouteWithTitle';
 import ProtectedRoute from './auth/ProtectedRoute';
 import Mapping from './mapping/Mapping';
 import MainDashboard from './dashboard/MainDashboard';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import SpecsList from './specifications-list/SpecsList';
 import AlignAndFineTune from './align-and-fine-tune/AlignAndFineTune';
 import MappingToDomains from './mapping-to-domains/MappingToDomains';
@@ -37,29 +38,31 @@ const Routes = (props) => {
   return (
     <Router>
       <Switch>
-        <Route exact path={'/'} component={Home} />
+        <RouteWithTitle exact path={'/'} component={Home} />
 
-        <Route
+        <RouteWithTitle
           exact
           path={'/sign-in'}
+          pageType="sign-in"
           render={(props) => <SignIn {...props} handleLogin={handleLogin} />}
         />
 
-        <Route
+        <RouteWithTitle
           exact
           path={'/forgot-password'}
           render={(props) => <ForgotPass {...props} handleLogin={handleLogin} />}
         />
 
-        <Route
+        <RouteWithTitle
           exact
           path={'/reset-password'}
           render={(props) => <ResetPass {...props} handleLogin={handleLogin} />}
         />
 
-        <Route
+        <RouteWithTitle
           exact
           path={'/mappings-list'}
+          pageType="mappings-list"
           render={(props) => <PropertyMappingList {...props} handleLogin={handleLogin} />}
         />
 

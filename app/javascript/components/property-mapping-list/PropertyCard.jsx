@@ -1,5 +1,5 @@
 import ProgressReportBar from '../shared/ProgressReportBar';
-import { propertyClassesForSpineTerm } from './stores/propertiesListStore';
+import { propertyClassesForSpineTerm } from './stores/propertyMappingListStore';
 
 /**
  * Props:
@@ -10,20 +10,20 @@ const PropertyCard = ({ term }) => {
   return (
     <div className="card borderless bg-col-secondary h-100">
       <div className="card-header desm-rounded bottom-borderless bg-col-secondary">
-        <small className="mt-3 col-on-primary-light">Element/Property</small>
-        <h3>{term.name}</h3>
+        <small className="mt-1 col-on-primary-light">Element/Property</small>
+        <h3 className="mb-1">{term.name}</h3>
 
-        <small className="mt-3 col-on-primary-light">Class/Type</small>
-        <ul className="list-unstyled">{propertyClasses}</ul>
+        <small className="mt-1 col-on-primary-light">Class/Type</small>
+        <ul className="list-unstyled mb-1">{propertyClasses}</ul>
 
-        <small className="mt-3 col-on-primary-light">Definition</small>
-        <p>{term.property.comment}</p>
+        <small className="mt-1 col-on-primary-light">Definition</small>
+        <p className="mb-1">{term.property.comment}</p>
 
-        <small className="mt-3 col-on-primary-light">Organization</small>
-        <p>{term.organization?.name}</p>
+        <small className="mt-1 col-on-primary-light">Organization</small>
+        <p className="mb-1">{term.organization?.name}</p>
 
-        <small className="mt-3 col-on-primary-light">Schema</small>
-        <p>{term.alignments.map((a) => a.schemaName).join(', ')}</p>
+        <small className="mt-1 col-on-primary-light">Schema</small>
+        <p className="mb-1">{term.alignments.map((a) => a.schemaName).join(', ')}</p>
 
         <ProgressReportBar
           currentValue={term.currentMappingWeight}

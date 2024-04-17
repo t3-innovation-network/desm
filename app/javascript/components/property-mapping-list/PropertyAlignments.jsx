@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
-import { implementAlignmentSort } from './SortOptions';
-import { propertyClassesForAlignmentTerm } from './stores/propertiesListStore';
+import { flatMap } from 'lodash';
+import { implementAlignmentSort, implementAlignmentTermsSort } from './SortOptions';
+import { propertyClassesForAlignmentTerm } from './stores/propertyMappingListStore';
 
 /**
  * @description A list of alignments with information like predicate, comment, and more.
@@ -8,34 +9,25 @@ import { propertyClassesForAlignmentTerm } from './stores/propertiesListStore';
  *
  * Props:
  * @param {Object} spineTerm The term of the spine to look for alignments
- * @param {Array} selectedPredicates The list of predicates selected by the user in the filter
+ * @param {Array} selectedPredicateIds The list of predicates selected by the user in the filter
  * @param {String} selectedAlignmentOrderOption The option selected by the user to order the list of alignments
- * @param {Array} selectedAlignmentOrganizations The list of organizations that made alignments, selected by the user
+ * @param {Array} selectedAlignmentOrganizationIds The list of organizations that made alignments, selected by the user
  *   in the filter.
- * @param {Array} selectedSpineOrganizations The list of organizations that has properties with alignments, selected
+ * @param {Array} selectedSpineOrganizationIds The list of organizations that has properties with alignments, selected
  *   by the user in the filter. This refers to the origin of the property. Initially, a spine specification will have
  *   all its properties with the same organization. When a synthetic property is created, it will keep the organization
  *   of origin.
  */
 const PropertyAlignments = (props) => {
+  const {
+    selectedPredicateIds,
+    selectedAlignmentOrganizationIds,
+    selectedSpineOrganizationIds,
+  } = props;
   const alignments = props.spineTerm.alignments;
 
   // TODO: this need to be moved to top level store
-  const selectedPredicateIds = useMemo(
-    () => props.selectedPredicates.map((predicate) => predicate.id),
-    [props.selectedPredicates]
-  );
-  const selectedAlignmentOrganizationIds = useMemo(
-    () => props.selectedAlignmentOrganizations.map((org) => org.id),
-    [props.selectedAlignmentOrganizations]
-  );
-  const selectedSpineOrganizationIds = useMemo(
-    () => props.selectedSpineOrganizations.map((org) => org.id),
-    [props.selectedSpineOrganizations]
-  );
-
-  // TODO: this need to be moved to top level store
-  const filteredAlignments = useMemo(() => {
+  const filteredMappedTerms = useMemo(() => {
     let filteredAl = alignments.filter(
       (alignment) =>
         /// It matches the selected predicates
@@ -47,7 +39,19 @@ const PropertyAlignments = (props) => {
         /// It matches the selected alignment organizations
         selectedSpineOrganizationIds.includes(props.spineTerm.organization.id)
     );
-    return implementAlignmentSort(filteredAl, props.selectedAlignmentOrderOption);
+    filteredAl = implementAlignmentSort(filteredAl, props.selectedAlignmentOrderOption);
+    let filteredMappedTerms = flatMap(filteredAl, (alignment) =>
+      alignment.mappedTerms.map((mTerm) =>
+        selectedAlignmentOrganizationIds.includes(mTerm.organization.id)
+          ? {
+              ...mTerm,
+              alignment,
+              selectedClasses: propertyClassesForAlignmentTerm(alignment, mTerm),
+            }
+          : null
+      )
+    );
+    return implementAlignmentTermsSort(filteredMappedTerms, props.selectedAlignmentOrderOption);
   }, [
     alignments,
     selectedPredicateIds,
@@ -56,17 +60,14 @@ const PropertyAlignments = (props) => {
     props.selectedAlignmentOrderOption,
   ]);
 
-  return filteredAlignments.map((alignment) => {
-    const filteredMappedTerms = alignment.mappedTerms.filter((mTerm) =>
-      selectedAlignmentOrganizationIds.includes(mTerm.organization.id)
-    );
-
-    return filteredMappedTerms.length
-      ? filteredMappedTerms.map((mTerm) => (
-          <AlignmentCard alignment={alignment} key={mTerm.id} term={mTerm} />
-        ))
-      : null;
-  });
+  return filteredMappedTerms.map((mTerm, idx) => (
+    <AlignmentCard
+      alignment={mTerm.alignment}
+      key={mTerm.id}
+      term={mTerm}
+      isLast={idx === filteredMappedTerms.length - 1}
+    />
+  ));
 };
 
 /**
@@ -74,36 +75,32 @@ const PropertyAlignments = (props) => {
  * @param {Object} alignment
  */
 
-const AlignmentCard = ({ alignment, term }) => {
+const AlignmentCard = ({ alignment, term, isLast = false }) => {
   const [showingAlignmentComment, setShowingAlignmentComment] = useState(false);
 
-  const alignmentTermClasses = propertyClassesForAlignmentTerm(alignment, term).map((c) => (
-    <li key={c}>{c}</li>
-  ));
+  const alignmentTermClasses = term.selectedClasses.map((c) => <li key={c}>{c}</li>);
 
   return (
-    <div className="card borderless mb-3">
+    <div className={`card borderless ${isLast ? '' : 'mb-3'}`}>
       <div className="card-header desm-rounded bottom-borderless bg-col-secondary">
         <div className="row">
           <div className="col-2">
-            <small className="mt-3 col-on-primary-light">Organization</small>
-            <h5>{alignment.origin}</h5>
+            <small className="mt-1 col-on-primary-light">Organization</small>
+            <p className="mb-1">{alignment.origin}</p>
 
-            <small className="mt-3 col-on-primary-light">Schema</small>
-            <h5>{alignment.schemaName}</h5>
+            <small className="mt-1 col-on-primary-light">Schema</small>
+            <p className="mb-1">{alignment.schemaName}</p>
           </div>
-          <div className="col-2">
-            <small className="mt-3 col-on-primary-light">Element/Property</small>
-            <h5>{term.name}</h5>
+          <div className="col-2 px-1">
+            <small className="mt-1 col-on-primary-light">Element/Property</small>
+            <p className="mb-1">{term.name}</p>
 
-            <small className="mt-3 col-on-primary-light">Class/Type</small>
-            <h5>
-              <ul className="list-unstyled">{alignmentTermClasses}</ul>
-            </h5>
+            <small className="mt-1 col-on-primary-light">Class/Type</small>
+            <ul className="list-unstyled mb-1">{alignmentTermClasses}</ul>
           </div>
-          <div className="col-6">
-            <small className="mt-3 col-on-primary-light">Definition</small>
-            <h5>{term.property.comment}</h5>
+          <div className="col-6 pe-1">
+            <small className="mt-1 col-on-primary-light">Definition</small>
+            <p className="mb-1">{term.property.comment}</p>
           </div>
           <div className="col-2">
             <div className="card borderless">
@@ -119,7 +116,7 @@ const AlignmentCard = ({ alignment, term }) => {
             </div>
             {alignment.comment && (
               <label
-                className="non-selectable float-right mt-3 col-primary cursor-pointer"
+                className="non-selectable float-right mt-1 col-primary cursor-pointer"
                 onClick={() => setShowingAlignmentComment(!showingAlignmentComment)}
               >
                 {showingAlignmentComment ? 'Hide Alignment Notes' : 'Alignment Notes'}

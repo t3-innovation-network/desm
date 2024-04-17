@@ -14,6 +14,7 @@ const fetchDomains = async () => {
           id: domain.id,
           uri: domain.uri,
           name: domain.pref_label,
+          definition: domain.definition,
           spine: domain['spine?'],
           spineId: domain.spine?.id,
         };

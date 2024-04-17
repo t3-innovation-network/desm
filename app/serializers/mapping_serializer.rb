@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class MappingSerializer < ApplicationSerializer
-  attributes :description, :domain, :mapped_terms, :origin, :slug, :specification_id, :spine_id, :status, :title
+  attributes :description, :domain, :mapped_at, :mapped_terms, :origin, :slug, :specification_id, :spine_id, :status,
+             :title
   attributes :uploaded?, :mapped?, :in_progress?
   belongs_to :specification do
     { id: object.specification.id, name: object.specification.name,
