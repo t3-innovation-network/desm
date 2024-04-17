@@ -18,6 +18,8 @@ export const defaultState = {
   mappedTermMatching: null,
   // The predicate option selected
   predicateOption: null,
+  // The predicate option definition
+  predicateDefinition: null,
 };
 
 export const spineTermRowStore = (initialData = {}) => ({
