@@ -13,19 +13,25 @@ module API
       end
 
       def index
-        fields = ["configuration_profiles.*"]
-
-        configuration_profiles =
+        scope =
           if current_user && !current_user.super_admin?
-            current_user
-              .configuration_profile_users
-              .joins(:configuration_profile, :organization)
-              .select(*fields, :lead_mapper, "organizations.id organization_id, organizations.id AS organization")
+            current_user.configuration_profiles
           else
-            ConfigurationProfile.select(*fields)
+            ConfigurationProfile.all
           end
 
-        render json: configuration_profiles.order(:name)
+        render json: scope.order(:name)
+      end
+
+      def index_shared_mappings
+        render json: ConfigurationProfile.active.with_shared_mappings.order(:name), with_shared_mappings: true,
+               shared_mappings: true
+      end
+
+      def index_for_user
+        render json: current_user.configuration_profile_users.includes(:configuration_profile, :organization)
+                       .where(configuration_profiles: { state: :active })
+                       .order("configuration_profiles.name"), with_shared_mappings: true
       end
 
       def destroy

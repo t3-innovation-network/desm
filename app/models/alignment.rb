@@ -99,6 +99,8 @@ class Alignment < ApplicationRecord
   ###
   before_destroy :remove_spine_term, if: :synthetic
 
+  scope :mapped_for_spine, ->(spine_id) { joins(:mapping).where(mappings: { status: :mapped, spine_id: }) }
+
   ###
   # METHODS
   ###

@@ -68,10 +68,20 @@ const PropertyMappingList = (props) => {
       ) : null}
 
       <div className="row">
+        {!context.currentConfigurationProfile?.withSharedMappings && (
+          <div className="col col-12 pt-2">
+            <AlertNotice
+              withTitle={false}
+              message={i18n.t('ui.view_mapping.no_mappings.current_profile')}
+              cssClass="alert-warning"
+            />
+          </div>
+        )}
         <div className="col p-lg-5 pt-5">
-          {!context.loggedIn && <ConfigurationProfileSelect />}
-
-          {context.currentConfigurationProfile &&
+          {!context.loggedIn && (
+            <ConfigurationProfileSelect requestType="indexWithSharedMappings" />
+          )}
+          {context.currentConfigurationProfile?.withSharedMappings &&
             (state.loading ? (
               <Loader />
             ) : (

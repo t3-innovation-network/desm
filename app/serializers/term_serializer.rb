@@ -10,8 +10,8 @@ class TermSerializer < ApplicationSerializer
     object.max_mapping_weight
   end
 
-  attribute :current_mapping_weight, if: -> { params[:spine] } do
-    object.alignments.joins(:predicate).sum("predicates.weight")
+  attribute :current_mapping_weight, if: -> { params[:spine] && params[:spine_id] } do
+    object.alignments.mapped_for_spine(params[:spine_id]).joins(:predicate).sum("predicates.weight")
   end
 
   attribute :title do
