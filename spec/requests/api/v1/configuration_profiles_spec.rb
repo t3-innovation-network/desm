@@ -36,14 +36,7 @@ describe "API::V1::ConfigurationProfiles", type: :request do
         get api_v1_configuration_profiles_path
       end
 
-      it "returns user configuration profiles" do
-        expect(response).to have_http_status(:ok)
-        data = json_parse(response.body)
-        expect(data.size).to eq 1
-        expect(data[0][:id]).to eq configuration_profile.id
-        expect(data[0][:name]).to eq configuration_profile.name
-        expect(data[0][:with_shared_mappings]).to be_falsey
-      end
+      it_behaves_like "api authorization error"
     end
   end
 

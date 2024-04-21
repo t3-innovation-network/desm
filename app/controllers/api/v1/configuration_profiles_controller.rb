@@ -3,7 +3,8 @@
 module API
   module V1
     class ConfigurationProfilesController < API::V1::ConfigurationProfilesAbstractController
-      before_action :with_instance, only: %i(destroy show update set_current)
+      before_action :authorize_with_policy_class, only: %i(create index index_shared_mappings index_for_user)
+      before_action :authorize_with_policy, only: %i(destroy show update set_current)
 
       def create
         cp = ConfigurationProfile.create!(creation_params)
@@ -13,14 +14,7 @@ module API
       end
 
       def index
-        scope =
-          if current_user && !current_user.super_admin?
-            current_user.configuration_profiles
-          else
-            ConfigurationProfile.all
-          end
-
-        render json: scope.order(:name)
+        render json: policy_scope(ConfigurationProfile).order(:name)
       end
 
       def index_shared_mappings
@@ -67,12 +61,24 @@ module API
 
       private
 
+      def authorize_with_policy_class
+        authorize ConfigurationProfile
+      end
+
+      def authorize_with_policy
+        authorize(with_instance)
+      end
+
       def creation_params
         permitted_params.merge({ name: DEFAULT_CP_NAME, administrator: @current_user })
       end
 
       def permitted_params
         params.require(:configuration_profile).permit(VALID_PARAMS_LIST)
+      end
+
+      def with_instance
+        @instance = policy_scope(ConfigurationProfile).find(params[:id])
       end
     end
   end
