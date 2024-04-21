@@ -5,8 +5,10 @@
 ###
 module Resources
   class AbstractClassesController < ApplicationController
+    include Decodable
+
     def show
-      domain = Domain.find_by_slug!(params[:slug])
+      domain = Domain.find_by_slug!(decoded_slug)
 
       render json: domain.to_json_ld
     end

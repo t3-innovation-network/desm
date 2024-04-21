@@ -8,6 +8,11 @@ module Slugable
     validates :name, presence: true
   end
 
+  # decode uri safe slug and replace spaces with '+' to match the uri_safe method
+  def self.decode_safe_uri(str)
+    URI.decode_www_form_component(str).gsub(" ", "+")
+  end
+
   def generate_slug
     self.slug = uri_safe(name)
   end

@@ -16,6 +16,7 @@
 # Indexes
 #
 #  index_domains_on_domain_set_id                 (domain_set_id)
+#  index_domains_on_domain_set_id_and_pref_label  (domain_set_id,pref_label) UNIQUE
 #  index_domains_on_domain_set_id_and_source_uri  (domain_set_id,source_uri) UNIQUE
 #
 # Foreign Keys
@@ -58,9 +59,11 @@ describe Domain do
                   source_uri: "http://desm.testing/api/v1/resources/terms/description")
   end
 
-  it "validates presence" do
+  it "validates presence and uniquiness" do
     is_expected.to validate_presence_of(:source_uri)
     is_expected.to validate_presence_of(:pref_label)
+    is_expected.to validate_uniqueness_of(:source_uri).scoped_to(:domain_set_id)
+    is_expected.to validate_uniqueness_of(:pref_label).scoped_to(:domain_set_id)
   end
 
   it "generates a spine when the first specification gets linked" do

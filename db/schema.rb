@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_08_093222) do
+ActiveRecord::Schema.define(version: 2024_04_20_160653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -118,6 +118,7 @@ ActiveRecord::Schema.define(version: 2024_04_08_093222) do
     t.string "predicate_strongest_match"
     t.index ["administrator_id"], name: "index_configuration_profiles_on_administrator_id"
     t.index ["domain_set_id"], name: "index_configuration_profiles_on_domain_set_id"
+    t.index ["name"], name: "index_configuration_profiles_on_name", unique: true
     t.index ["predicate_set_id"], name: "index_configuration_profiles_on_predicate_set_id"
   end
 
@@ -146,6 +147,7 @@ ActiveRecord::Schema.define(version: 2024_04_08_093222) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "slug"
+    t.index ["domain_set_id", "pref_label"], name: "index_domains_on_domain_set_id_and_pref_label", unique: true
     t.index ["domain_set_id", "source_uri"], name: "index_domains_on_domain_set_id_and_source_uri", unique: true
     t.index ["domain_set_id"], name: "index_domains_on_domain_set_id"
   end
@@ -222,6 +224,7 @@ ActiveRecord::Schema.define(version: 2024_04_08_093222) do
     t.string "color"
     t.bigint "predicate_set_id"
     t.string "slug"
+    t.index ["predicate_set_id", "pref_label"], name: "index_predicates_on_predicate_set_id_and_pref_label", unique: true
     t.index ["predicate_set_id", "source_uri"], name: "index_predicates_on_predicate_set_id_and_source_uri", unique: true
     t.index ["predicate_set_id"], name: "index_predicates_on_predicate_set_id"
   end

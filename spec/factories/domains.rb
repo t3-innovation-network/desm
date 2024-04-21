@@ -16,6 +16,7 @@
 # Indexes
 #
 #  index_domains_on_domain_set_id                 (domain_set_id)
+#  index_domains_on_domain_set_id_and_pref_label  (domain_set_id,pref_label) UNIQUE
 #  index_domains_on_domain_set_id_and_source_uri  (domain_set_id,source_uri) UNIQUE
 #
 # Foreign Keys

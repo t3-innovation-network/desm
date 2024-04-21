@@ -23,6 +23,7 @@
 #
 #  index_configuration_profiles_on_administrator_id  (administrator_id)
 #  index_configuration_profiles_on_domain_set_id     (domain_set_id)
+#  index_configuration_profiles_on_name              (name) UNIQUE
 #  index_configuration_profiles_on_predicate_set_id  (predicate_set_id)
 #
 # Foreign Keys
@@ -60,6 +61,8 @@ class ConfigurationProfile < ApplicationRecord
   has_many :vocabularies
   has_many :concepts, through: :vocabularies
   has_many :alignments, through: :mappings
+
+  validates :name, uniqueness: true
 
   after_initialize :setup_schema_validators
   before_save :check_structure, if: :will_save_change_to_structure?

@@ -23,6 +23,7 @@
 #
 #  index_configuration_profiles_on_administrator_id  (administrator_id)
 #  index_configuration_profiles_on_domain_set_id     (domain_set_id)
+#  index_configuration_profiles_on_name              (name) UNIQUE
 #  index_configuration_profiles_on_predicate_set_id  (predicate_set_id)
 #
 # Foreign Keys
@@ -34,6 +35,10 @@
 require "rails_helper"
 
 describe ConfigurationProfile do
+  describe "uniqueness validations" do
+    include_examples "slugable validation", :configuration_profile
+  end
+
   before(:all) do
     @complete_structure = json_fixture("complete.configuration.profile.json")
     @valid_structure_with_invalid_email = json_fixture("valid.configuration.profile.with.invalid.email.json")

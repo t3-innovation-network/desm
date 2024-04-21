@@ -5,6 +5,8 @@
 ###
 module Resources
   class SpecificationsController < ApplicationController
+    include Decodable
+
     def index
       list = Specification.all.map(&:uri)
 
@@ -12,7 +14,7 @@ module Resources
     end
 
     def show
-      spec = Specification.find_by_slug!(params[:slug])
+      spec = Specification.find_by_slug!(decoded_slug)
 
       render json: spec.to_json_ld
     end
