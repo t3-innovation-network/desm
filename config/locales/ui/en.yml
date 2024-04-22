@@ -24,3 +24,21 @@ en:
           configuration_profile: Filter Agents for Profile(s)
           state: Filter Agents for Profile's State
           search: Search Agents
+    view_mapping:
+      subtitle: Synthetic Spine Property Mapping By Abstract Class
+      select_abstract_class: "Select Abstract Class:"
+      mapping:
+        zero: No shared mappings found for this abstract class and configuration profile.
+        one: "Shared mapping:"
+        other: "Shared mappings:"
+    pages:
+      default:
+        title: DESM
+        description: Data Ecosystem Schema Mapper Tool supports pairwise, semantic mapping of schema terms and their definitions using a synthetic spine agnostic to data models and formats. Resultant mappings are intended to help data standards organizations, developers, decision makers, and others have a clear understanding of how schemas map and provide useful visual and data outputs of completed mappings.
+      sign_in:
+        title: DESM - Sign In
+        description: Sign in to access the Data Ecosystem Schema Mapper Tool.
+      mappings_list:
+        title: DESM - Shared mappings
+        description: View shared mappings in the Data Ecosystem Schema Mapper Tool.
+

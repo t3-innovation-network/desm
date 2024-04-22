@@ -204,7 +204,7 @@ export const mappingToDomainsStore = (initialData = {}) => ({
     return response;
   }),
   // Fetch initial data
-  fetchDataFromAPI: thunk(async (actions, { mappingId }) => {
+  fetchDataFromAPI: thunk(async (actions, { mappingId }, h) => {
     // Get the mapping
     const response = await actions.handleFetchMapping({ mappingId });
     if (response.mapping) {
@@ -217,5 +217,6 @@ export const mappingToDomainsStore = (initialData = {}) => ({
         specificationId: response.mapping.specification_id,
       });
     }
+    if (!h.getState().hasErrors) actions.setLoading(false);
   }),
 });
