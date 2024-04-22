@@ -18,6 +18,7 @@
 # Indexes
 #
 #  index_predicates_on_predicate_set_id                 (predicate_set_id)
+#  index_predicates_on_predicate_set_id_and_pref_label  (predicate_set_id,pref_label) UNIQUE
 #  index_predicates_on_predicate_set_id_and_source_uri  (predicate_set_id,source_uri) UNIQUE
 #
 # Foreign Keys

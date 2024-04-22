@@ -34,7 +34,7 @@ module API
       def validate_mapped_concepts
         return if mapped_concepts.present?
 
-        raise "No mapped concepts provided for the new synthetic concept"
+        raise ArgumentError, "No mapped concepts provided for the new synthetic concept"
       end
 
       ###

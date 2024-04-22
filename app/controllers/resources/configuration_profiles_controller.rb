@@ -5,6 +5,8 @@
 ###
 module Resources
   class ConfigurationProfilesController < ApplicationController
+    include Decodable
+
     def index
       list = ConfigurationProfile.all.map(&:uri).sort
 
@@ -12,7 +14,7 @@ module Resources
     end
 
     def show
-      cp = ConfigurationProfile.find_by_slug!(params[:slug])
+      cp = ConfigurationProfile.find_by_slug!(decoded_slug)
 
       render json: cp.structure
     end

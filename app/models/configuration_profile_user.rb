@@ -32,5 +32,17 @@ class ConfigurationProfileUser < ApplicationRecord
   has_many :specifications
   has_many :spines
   has_many :terms
-  has_many :vocabularies
+  has_many :vocabularies, through: :configuration_profile
+
+  before_destroy :check_if_mappings_exist
+
+  scope :for_configuration_profile, ->(cp) { where(configuration_profile: cp) }
+
+  private
+
+  def check_if_mappings_exist
+    return if mappings.none?
+
+    raise I18n.t("errors.config.configuration_profile_user.destroy", count: 1, message: user.fullname)
+  end
 end

@@ -1,8 +1,8 @@
 import apiRequest from './api/apiRequest';
 
-const fetchMappingExportProfile = async (domainSlug) => {
+const fetchMappingExportProfile = async (cpId, domainSlug) => {
   return await apiRequest({
-    url: `/resources/mapping_export_profile?slug=${domainSlug}`,
+    url: `/resources/configuration-profiles/${cpId}/mapping_export_profile/${domainSlug}`,
     method: 'get',
     successResponse: 'mappingExportProfile',
   });

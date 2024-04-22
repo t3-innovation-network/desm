@@ -23,6 +23,7 @@
 #
 #  index_configuration_profiles_on_administrator_id  (administrator_id)
 #  index_configuration_profiles_on_domain_set_id     (domain_set_id)
+#  index_configuration_profiles_on_name              (name) UNIQUE
 #  index_configuration_profiles_on_predicate_set_id  (predicate_set_id)
 #
 # Foreign Keys
@@ -43,6 +44,12 @@ FactoryBot.define do
     transient do
       abstract_classes_count { 1 }
       predicates_count { 1 }
+    end
+
+    ConfigurationProfile.states.each_key do |state|
+      trait state do
+        state { state }
+      end
     end
 
     trait :basic do

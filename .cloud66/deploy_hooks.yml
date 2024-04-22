@@ -1,0 +1,13 @@
+default: &default
+  after_bundle:
+    - command: cd $STACK_PATH && bundle exec i18n export --require ./config/i18n_export.rb
+      target: rails
+      execute: true
+      run_on: all_servers
+      apply_during: all
+
+production:
+  <<: *default
+
+staging:
+  <<: *default

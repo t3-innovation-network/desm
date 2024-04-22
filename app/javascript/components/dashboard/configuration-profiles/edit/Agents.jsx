@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { cloneDeep, pickBy } from 'lodash';
 import {
   setCurrentConfigurationProfile,
   setEditCPErrors,
@@ -22,20 +23,47 @@ const Agents = () => {
   const [githubHandle, setGithubHandle] = useState('');
   const [leadMapper, setLeadMapper] = useState(false);
   const [confirmationVisible, setConfirmationVisible] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const confirmationMsg = `Please confirm if you really want to remove agent ${fullname}`;
   const dispatch = useDispatch();
 
+  const initAgentsData = (cp = null) => {
+    const dsos = (cp ? cp.structure.standardsOrganizations : getDsos()) || [];
+    const dsoAgents = dsos[currentDSOIndex]?.dsoAgents || [];
+    setAgentsData(dsoAgents);
+    return dsoAgents.length;
+  };
+
+  const initAgentData = () => {
+    if (currentAgentIndex < 0) return;
+
+    const agent = agentsData[currentAgentIndex];
+
+    if (agent) {
+      setFullname(agent.fullname);
+      setEmail(agent.email);
+      setLeadMapper((leadMapperRef.current = Boolean(agent.leadMapper)));
+      setPhone(agent.phone);
+      setGithubHandle(agent.githubHandle);
+    }
+  };
+
+  useEffect(() => {
+    const dsoAgentsLength = initAgentsData();
+    setCurrentAgentIndex(dsoAgentsLength ? 0 : -1);
+    // need to refresh the data to be sure that agent data is updated even if tab index is the same
+    setRefresh(!refresh);
+  }, [currentDSOIndex]);
+
+  useEffect(() => initAgentData(), [currentAgentIndex, currentDSOIndex, refresh]);
+
   const addAgent = () => {
-    let localCP = currentCP;
     setAgentsData([
       ...agentsData,
       {
         fullname: `Mapper N${agentsData.length + 1}`,
       },
     ]);
-
-    localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents = agentsData;
-
     setCurrentAgentIndex(agentsData.length);
   };
 
@@ -59,59 +87,58 @@ const Agents = () => {
 
   const buildCpData = () => {
     const leadMapper = leadMapperRef.current;
-    const localCP = currentCP;
+    const localCP = cloneDeep(currentCP);
 
-    localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents[
-      currentAgentIndex
-    ] = _.pickBy({ email, fullname, githubHandle, phone, leadMapper });
+    localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents[currentAgentIndex] = pickBy(
+      { email, fullname, githubHandle, phone, leadMapper },
+      () => true
+    );
 
     return localCP;
   };
 
   const saveChanges = () => {
-    dispatch(setSavingCP(true));
-
-    updateCP(currentCP.id, buildCpData()).then((response) => {
-      if (response.error) {
-        dispatch(setEditCPErrors(response.error));
-        dispatch(setSavingCP(false));
-        return;
-      }
-
-      dispatch(setCurrentConfigurationProfile(response.configurationProfile));
-      dispatch(setSavingCP(false));
-    });
-
-    updateAgentsData();
+    save(buildCpData())
+      .then((data) => {
+        const dsoAgentsLength = initAgentsData(data);
+        if (currentAgentIndex > dsoAgentsLength - 1) setCurrentAgentIndex(dsoAgentsLength ? 0 : -1);
+      })
+      .catch(() => {});
   };
 
   const handleRemoveAgent = () => {
     setConfirmationVisible(false);
-    let localCP = currentCP;
+    let localCP = cloneDeep(currentCP);
     localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents.splice(
       currentAgentIndex,
       1
     );
-    let newAgentsData = localCP.structure.standardsOrganizations[currentDSOIndex].dsoAgents;
 
-    setAgentsData(newAgentsData);
-    setCurrentAgentIndex(newAgentsData.length - 1);
-    dispatch(setCurrentConfigurationProfile(localCP));
-    save();
+    save(localCP, { withRefresh: true })
+      .then((data) => {
+        const dsoAgentsLength = initAgentsData(data);
+        setCurrentAgentIndex(dsoAgentsLength ? 0 : -1);
+        // need to refresh the data to be sure that agent data is updated even if tab index is the same
+        setRefresh(!refresh);
+      })
+      .catch(() => {});
   };
 
-  const save = () => {
+  const save = (data, options = { withRefresh: false }) => {
     dispatch(setSavingCP(true));
 
-    updateCP(currentCP.id, currentCP).then((response) => {
+    return updateCP(currentCP.id, data).then((response) => {
       if (response.error) {
         dispatch(setEditCPErrors(response.error));
-        dispatch(setSavingCP(false));
-        return;
+        dispatch(setSavingCP(null));
+        // need to revert the changes
+        if (options.withRefresh) setRefresh(!refresh);
+        return Promise.reject(false);
       }
 
       dispatch(setCurrentConfigurationProfile(response.configurationProfile));
       dispatch(setSavingCP(false));
+      return Promise.resolve(response.configurationProfile);
     });
   };
 
@@ -193,7 +220,13 @@ const Agents = () => {
                 setPhone(event.target.value);
               }}
               onBlur={saveChanges}
+              aria-describedby="phoneHelpBlock"
             />
+            <small id="phoneHelpBlock" className="form-text text-muted">
+              Phone number should be at least 6 characters long and can contain digits, spaces, or
+              hyphens, optionally starting with a plus sign. Examples: +1234567890, 123-456-789, 123
+              456 7890
+            </small>
           </div>
         </div>
 
@@ -217,43 +250,6 @@ const Agents = () => {
       </div>
     );
   };
-
-  const updateAgentsData = () => {
-    let data = agentsData;
-    const leadMapper = leadMapperRef.current;
-
-    data[currentAgentIndex] = _.pickBy({
-      email,
-      fullname,
-      githubHandle,
-      phone,
-      leadMapper,
-    });
-
-    setAgentsData(data);
-  };
-
-  useEffect(() => {
-    const dsoAgents = getDsos()[currentDSOIndex]?.dsoAgents || [];
-    setAgentsData(dsoAgents);
-    setCurrentAgentIndex(dsoAgents.length ? 0 : -1);
-  }, [currentDSOIndex]);
-
-  useEffect(() => {
-    if (currentAgentIndex < 0) {
-      return;
-    }
-
-    const agent = agentsData[currentAgentIndex];
-
-    if (agent) {
-      setFullname(agent.fullname);
-      setEmail(agent.email);
-      setLeadMapper((leadMapperRef.current = Boolean(agent.leadMapper)));
-      setPhone(agent.phone);
-      setGithubHandle(agent.githubHandle);
-    }
-  }, [currentAgentIndex, currentDSOIndex]);
 
   return (
     <div className="col">

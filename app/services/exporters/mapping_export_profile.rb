@@ -10,7 +10,7 @@ module Exporters
     end
 
     def export
-      raise "This abstract class does not have a spine" if @domain.spine.nil?
+      raise ArgumentError, "This abstract class does not have a spine" if @domain.spine.nil?
 
       {
         "@configurationProfile": configuration_profile,

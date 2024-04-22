@@ -1,0 +1,26 @@
+en:
+  ui:
+    config:
+      user:
+        phone_format: "should be at least 6 characters long and can contain digits, spaces, or hyphens, optionally starting with a plus sign. Examples: +1234567890, 123-456-789, 123 456 7890"
+    filters:
+      show: Show Filters
+      hide: Hide Filters
+      deselect_all: Deselect All
+      hide_all: Hide All
+      show_all: Show All
+    dashboard:
+      nav:
+        agents: Agents
+      agents:
+        table:
+          name: Name
+          email: Email
+          phone: Phone
+          organization: DSO(s)
+          configuration_profile: Profile(s)
+        filters:
+          organization: Filter Agents for DSO(s)
+          configuration_profile: Filter Agents for Profile(s)
+          state: Filter Agents for Profile's State
+          search: Search Agents

@@ -16,6 +16,7 @@
 # Indexes
 #
 #  index_domains_on_domain_set_id                 (domain_set_id)
+#  index_domains_on_domain_set_id_and_pref_label  (domain_set_id,pref_label) UNIQUE
 #  index_domains_on_domain_set_id_and_source_uri  (domain_set_id,source_uri) UNIQUE
 #
 # Foreign Keys
@@ -47,7 +48,7 @@ class Domain < ApplicationRecord
   has_one :spine, dependent: :destroy
   has_one :configuration_profile, through: :domain_set
   validates :source_uri, presence: true, uniqueness: { scope: :domain_set_id }
-  validates :pref_label, presence: true
+  validates :pref_label, presence: true, uniqueness: { scope: :domain_set_id }
   alias_attribute :name, :pref_label
 
   ###

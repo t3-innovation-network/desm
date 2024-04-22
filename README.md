@@ -44,6 +44,15 @@ gem install foreman
 foreman start -f Procfile.local --env ./.env.development
 ```
 
+## Customization
+
+### Adjust the text on the Homepage
+
+In order to update the text on the homepage, you have to adjust the file contents inside of the `RightCol.jsx` file located in the following directory: `/main/app/javascript/components/home/`
+- In order to see the updates, the system has to be redeployed
+- Don't break the syntax of the currently set-up structure
+
+
 ## Collaborate
 
 > Please create an issue or a pull request. There's a GitHub Actions linting and testing workflow that will validate quality.

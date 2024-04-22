@@ -48,3 +48,6 @@ yarn-debug.log*
 # simplecov reports
 coverage
 
+# Ignore translation files
+app/javascript/translations/locales.json
+

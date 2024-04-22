@@ -23,11 +23,14 @@ const CPMetaData = () => {
       createdAt,
       description,
       name,
-      structure: _.pickBy({
-        ...configurationProfile.structure,
-        description,
-        name,
-      }),
+      structure: _.pickBy(
+        {
+          ...configurationProfile.structure,
+          description,
+          name,
+        },
+        () => true
+      ),
       updatedAt,
     });
 

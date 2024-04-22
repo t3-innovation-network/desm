@@ -32,6 +32,7 @@ gem "bootsnap", ">= 1.4.2", require: false
 # For http requests
 gem "httparty"
 
+gem "i18n-js", "~> 4.2"
 gem "interactor-rails", "~> 2.0"
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -57,6 +58,7 @@ gem "open_uri_redirections", "~> 0.2"
 
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
+gem "pg_search", "~> 2.3"
 
 # Use Puma as the app server
 gem "puma", "~> 4.1"

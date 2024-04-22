@@ -6,6 +6,7 @@
 #
 #  id                            :bigint           not null, primary key
 #  description                   :text
+#  mapped_at                     :datetime
 #  name                          :string
 #  slug                          :string
 #  status                        :integer          default("uploaded")

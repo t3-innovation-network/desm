@@ -19,7 +19,7 @@ const DSOInfoWrapper = () => {
       <div
         className={`col-1 rounded-circle cursor-pointer ${
           index === currentTab ? activeTabClass : inactiveTabClass
-        } p-1 text-center`}
+        } d-inline-flex justify-content-center align-items-center`}
         style={tabStyle}
         onClick={() => setCurrentTab(index)}
       >
@@ -37,7 +37,7 @@ const DSOInfoWrapper = () => {
   );
 
   const renderTab = () => {
-    const dsoMetaData = <DSOMetaData dsoData={getDsos()[currentDsoIndex]} />;
+    const dsoMetaData = <DSOMetaData dsoData={getDsos()[currentDsoIndex] || {}} />;
 
     switch (currentTab) {
       case 0:

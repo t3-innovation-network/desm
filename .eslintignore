@@ -2,3 +2,4 @@
 app/javascript/channels/*.js
 app/javascript/packs/*.js
 app/javascript/packs/*.jsx
+config/webpack/*.js
