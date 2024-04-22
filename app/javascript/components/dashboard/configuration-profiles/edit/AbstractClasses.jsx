@@ -233,7 +233,10 @@ const AbstractClasses = () => {
       </div>
 
       {configurationProfile.state === 'active' && abstractClassesLabels.length > 0 ? (
-        <AbstractClassesTable abstractClassesLabels={abstractClassesLabels} />
+        <AbstractClassesTable
+          abstractClassesLabels={abstractClassesLabels}
+          cpId={configurationProfile.id}
+        />
       ) : (
         <ul>
           {abstractClassesLabels.map((acl) => {
@@ -245,7 +248,7 @@ const AbstractClasses = () => {
   );
 };
 
-const AbstractClassesTable = ({ abstractClassesLabels }) => {
+const AbstractClassesTable = ({ abstractClassesLabels, cpId }) => {
   const anyError = (response) => {
     if (response.error) {
       showError(response.error);
@@ -261,7 +264,7 @@ const AbstractClassesTable = ({ abstractClassesLabels }) => {
    * @param {String} uri
    */
   const handleGetMappingExportProfile = async (uri) => {
-    let response = await fetchMappingExportProfile(uri);
+    let response = await fetchMappingExportProfile(cpId, uri);
 
     if (!anyError(response)) {
       downloadFile(response.mappingExportProfile);

@@ -5,6 +5,8 @@
 ###
 module Resources
   class PredicateSetsController < ApplicationController
+    include Decodable
+
     def index
       list = PredicateSet.all.map do |ps|
         {
@@ -17,7 +19,7 @@ module Resources
     end
 
     def show
-      set = PredicateSet.find_by_slug!(params[:slug])
+      set = PredicateSet.find_by_slug!(decoded_slug)
 
       render json: set.to_json_ld
     end
