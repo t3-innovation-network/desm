@@ -98,25 +98,28 @@ const AlignmentCard = ({ alignment, term, isLast = false }) => {
             <small className="mt-1 col-on-primary-light">Class/Type</small>
             <ul className="list-unstyled mb-1">{alignmentTermClasses}</ul>
           </div>
-          <div className="col-6 pe-1">
+          <div className="col-6">
             <small className="mt-1 col-on-primary-light">Definition</small>
             <p className="mb-1">{term.property.comment}</p>
           </div>
-          <div className="col-2">
-            <div className="card borderless">
-              <div
-                className="card-hader text-center desm-rounded p-3"
-                style={{
-                  backgroundColor: alignment.predicate.color || 'unset',
-                  color: alignment.predicate.color ? 'White' : 'DarkSlateGrey',
-                }}
-              >
-                <strong>{alignment.predicate ? alignment.predicate.prefLabel : ''}</strong>
-              </div>
+          <div className="col-2 ps-1">
+            <div
+              className="text-center desm-rounded p-3"
+              style={{
+                backgroundColor: alignment.predicate.color || 'unset',
+                color: alignment.predicate.color ? 'White' : 'DarkSlateGrey',
+              }}
+            >
+              <strong>{alignment.predicate ? alignment.predicate.prefLabel : ''}</strong>
             </div>
+            {alignment.predicate?.definition && (
+              <div className="lh-1 mt-1">
+                <small>{alignment.predicate.definition}</small>
+              </div>
+            )}
             {alignment.comment && (
               <label
-                className="non-selectable float-right mt-1 col-primary cursor-pointer"
+                className="non-selectable float-right mt-1 mb-0 col-primary cursor-pointer"
                 onClick={() => setShowingAlignmentComment(!showingAlignmentComment)}
               >
                 {showingAlignmentComment ? 'Hide Alignment Notes' : 'Alignment Notes'}

@@ -50,16 +50,6 @@ const EditAlignment = (props) => {
   };
 
   const handleSaveAlignment = async () => {
-    // let response = await updateAlignment({
-    //   id: alignment.id,
-    //   predicateId: selectedPredicate.id,
-    // });
-
-    // if (response.error) {
-    //   actions.setError(response.error);
-    //   return;
-    // }
-
     onPredicateUpdated({
       saved: true,
       term: alignment,

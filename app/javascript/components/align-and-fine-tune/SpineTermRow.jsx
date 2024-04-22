@@ -48,13 +48,24 @@ const SpineTermRow = (props) => {
   const [state, actions] = useLocalStore(() =>
     spineTermRowStore({
       predicateOption: findPredicate()?.pref_label,
+      predicateDefinition: findPredicate()?.definition,
       mappedTermMatching: mappedTermsToSpineTerm(term)[0],
     })
   );
-  const { predicateOption, mappedTermMatching, editing, matchingVocab, editMode } = state;
+  const {
+    predicateOption,
+    predicateDefinition,
+    mappedTermMatching,
+    editing,
+    matchingVocab,
+    editMode,
+  } = state;
 
   useEffect(() => {
-    if (!alignment.predicateId) actions.setPredicateOption(null);
+    if (!alignment.predicateId) {
+      actions.setPredicateOption(null);
+      actions.setPredicateDefinition(null);
+    }
   }, [alignment.predicateId]);
 
   /**
@@ -106,6 +117,7 @@ const SpineTermRow = (props) => {
    */
   const handlePredicateSelected = (term, predicate) => {
     actions.setPredicateOption(predicate.name);
+    actions.setPredicateDefinition(predicate.definition);
     props.onPredicateSelected(term, predicate);
   };
 
@@ -118,6 +130,7 @@ const SpineTermRow = (props) => {
     if (result.saved) {
       // showSuccess('Changes saved!');
       actions.setPredicateOption(result.predicate.name);
+      actions.setPredicateDefinition(result.predicate.description);
       props.onPredicateSelected(term, result.predicate);
     }
     actions.setEditing(false);
@@ -225,6 +238,11 @@ const SpineTermRow = (props) => {
               cls={clsPredicate}
               predicate={predicateOption}
             />
+          )}
+          {predicateDefinition && (
+            <div className="lh-1 mt-2">
+              <small>{predicateDefinition}</small>
+            </div>
           )}
         </div>
 
