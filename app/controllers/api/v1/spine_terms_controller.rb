@@ -10,10 +10,13 @@ module API
       after_action :set_mapped_terms, only: [:create]
 
       def index
-        terms = Spine.find(params[:id]).terms.includes(:organization, :property, :vocabularies, :configuration_profile,
-                                                       :mapping_predicates)
+        includes = %i(property vocabularies)
+        includes += %i(organization mapping_predicates) if params[:with_weights].present?
+        includes += %i(organization) if params[:with_organization].present?
+        terms = Spine.find(params[:id]).terms.includes(includes)
 
-        render json: terms, spine: true
+        render json: terms, spine: params[:with_weights].present?,
+               with_organization: params[:with_organization].present?
       end
 
       ###

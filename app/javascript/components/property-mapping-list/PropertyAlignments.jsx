@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import Loader from '../shared/Loader';
 import { implementAlignmentSort } from './SortOptions';
+import { propertyClassesForAlignment } from './stores/propertiesListStore';
 
 /**
  * @description A list of alignments with information like predicate, comment, and more.
@@ -148,6 +149,9 @@ class AlignmentCard extends Component {
      * Elements from state
      */
     const { showingAlignmentComment } = this.state;
+    const alignmentClasses = propertyClassesForAlignment(alignment).map((c) => (
+      <li key={c}>{c}</li>
+    ));
 
     return (
       <div className="card borderless mb-3">
@@ -165,7 +169,9 @@ class AlignmentCard extends Component {
               <h5>{this.printMappedTermProperty('name')}</h5>
 
               <small className="mt-3 col-on-primary-light">Class/Type</small>
-              <h5>{alignment.mappedTerms[0].property.selectedDomain}</h5>
+              <h5>
+                <ul className="list-unstyled">{alignmentClasses}</ul>
+              </h5>
             </div>
             <div className="col-6">
               <small className="mt-3 col-on-primary-light">Definition</small>
