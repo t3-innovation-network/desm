@@ -1,7 +1,6 @@
-import { Component } from 'react';
-import Loader from '../shared/Loader';
+import { useMemo, useState } from 'react';
 import { implementAlignmentSort } from './SortOptions';
-import { propertyClassesForAlignment } from './stores/propertiesListStore';
+import { propertyClassesForAlignmentTerm } from './stores/propertiesListStore';
 
 /**
  * @description A list of alignments with information like predicate, comment, and more.
@@ -18,206 +17,132 @@ import { propertyClassesForAlignment } from './stores/propertiesListStore';
  *   all its properties with the same organization. When a synthetic property is created, it will keep the organization
  *   of origin.
  */
-export default class PropertyAlignments extends Component {
-  /**
-   * Representation of the state of this component
-   */
-  state = {
-    /**
-     * List of alignments being shown
-     */
-    alignments: this.props.spineTerm.alignments,
-    /**
-     * Representation of an errors on this page process
-     */
-    errors: [],
-    /**
-     * Whether the page is loading results or not
-     */
-    loading: true,
-  };
+const PropertyAlignments = (props) => {
+  const alignments = props.spineTerm.alignments;
 
-  /**
-   * The list of ids for the selected predicates
-   */
-  selectedPredicateIds = () => this.props.selectedPredicates.map((predicate) => predicate.id);
+  // TODO: this need to be moved to top level store
+  const selectedPredicateIds = useMemo(
+    () => props.selectedPredicates.map((predicate) => predicate.id),
+    [props.selectedPredicates]
+  );
+  const selectedAlignmentOrganizationIds = useMemo(
+    () => props.selectedAlignmentOrganizations.map((org) => org.id),
+    [props.selectedAlignmentOrganizations]
+  );
+  const selectedSpineOrganizationIds = useMemo(
+    () => props.selectedSpineOrganizations.map((org) => org.id),
+    [props.selectedSpineOrganizations]
+  );
 
-  /**
-   * The list of ids for the selected alignment organizations
-   */
-  selectedAlignmentOrganizationIds = () =>
-    this.props.selectedAlignmentOrganizations.map((org) => org.id);
-
-  /**
-   * The list of ids for the selected spine organizations
-   */
-  selectedSpineOrganizationIds = () => this.props.selectedSpineOrganizations.map((org) => org.id);
-
-  /**
-   * The list of alignments filtered using the values in the filters bar
-   */
-  filteredAlignments = () => {
-    const { spineTerm, selectedAlignmentOrderOption } = this.props;
-    const { alignments } = this.state;
-
+  // TODO: this need to be moved to top level store
+  const filteredAlignments = useMemo(() => {
     let filteredAl = alignments.filter(
       (alignment) =>
         /// It matches the selected predicates
-        this.selectedPredicateIds().includes(alignment.predicateId) &&
+        selectedPredicateIds.includes(alignment.predicateId) &&
         /// It matches the selected alignment organizations
         alignment.mappedTerms.some((mTerm) =>
-          this.selectedAlignmentOrganizationIds().includes(mTerm.organization.id)
+          selectedAlignmentOrganizationIds.includes(mTerm.organization.id)
         ) &&
         /// It matches the selected alignment organizations
-        this.selectedSpineOrganizationIds().includes(spineTerm.organization.id)
+        selectedSpineOrganizationIds.includes(props.spineTerm.organization.id)
+    );
+    return implementAlignmentSort(filteredAl, props.selectedAlignmentOrderOption);
+  }, [
+    alignments,
+    selectedPredicateIds,
+    selectedAlignmentOrganizationIds,
+    selectedSpineOrganizationIds,
+    props.selectedAlignmentOrderOption,
+  ]);
+
+  return filteredAlignments.map((alignment) => {
+    const filteredMappedTerms = alignment.mappedTerms.filter((mTerm) =>
+      selectedAlignmentOrganizationIds.includes(mTerm.organization.id)
     );
 
-    return implementAlignmentSort(filteredAl, selectedAlignmentOrderOption);
-  };
-
-  render() {
-    /**
-     * Elements from props
-     */
-    const { loading } = this.props;
-
-    return loading ? (
-      <Loader />
-    ) : (
-      this.filteredAlignments().map((alignment) => {
-        return alignment.mappedTerms.length ? (
-          <AlignmentCard alignment={alignment} key={alignment.id} />
-        ) : (
-          ''
-        );
-      })
-    );
-  }
-}
+    return filteredMappedTerms.length
+      ? filteredMappedTerms.map((mTerm) => (
+          <AlignmentCard alignment={alignment} key={mTerm.id} term={mTerm} />
+        ))
+      : null;
+  });
+};
 
 /**
  * Props:
  * @param {Object} alignment
  */
-class AlignmentCard extends Component {
-  state = {
-    /**
-     * Whether we are rendering the alignment comment
-     */
-    showingAlignmentComment: false,
-  };
 
-  /**
-   * Since there could be more than only 1 term mapped to a spine term,
-   * this method will merge the desired property among all the mapped terms.
-   *
-   * It's usually only 1, but there may be cases when more than 1 term is mapped
-   * to a spine term.
-   *
-   * @param {String} propertyName The name of the property to look after
-   */
-  printMappedTermProperty = (propertyName) => {
-    const { alignment } = this.props;
+const AlignmentCard = ({ alignment, term }) => {
+  const [showingAlignmentComment, setShowingAlignmentComment] = useState(false);
 
-    return alignment.mappedTerms.reduce((a, b) => a + (b[propertyName] + ', '), '').slice(0, -2);
-  };
+  const alignmentTermClasses = propertyClassesForAlignmentTerm(alignment, term).map((c) => (
+    <li key={c}>{c}</li>
+  ));
 
-  /**
-   * Since there could be more than only 1 term mapped to a spine term,
-   * this method will merge the desired property among all the mapped term
-   * properties. It is, the property attributes of each mapped term.
-   *
-   * It's usually only 1, but there may be cases when more than 1 term is mapped
-   * to a spine term.
-   *
-   * @param {String} propertyName The name of the property to look after
-   */
-  printMappedProperty = (propertyName) => {
-    const { alignment } = this.props;
+  return (
+    <div className="card borderless mb-3">
+      <div className="card-header desm-rounded bottom-borderless bg-col-secondary">
+        <div className="row">
+          <div className="col-2">
+            <small className="mt-3 col-on-primary-light">Organization</small>
+            <h5>{alignment.origin}</h5>
 
-    return alignment.mappedTerms
-      .reduce((a, b) => a + (b.property[propertyName] + ', '), '')
-      .slice(0, -2);
-  };
+            <small className="mt-3 col-on-primary-light">Schema</small>
+            <h5>{alignment.schemaName}</h5>
+          </div>
+          <div className="col-2">
+            <small className="mt-3 col-on-primary-light">Element/Property</small>
+            <h5>{term.name}</h5>
 
-  render() {
-    /**
-     * Elements from props
-     */
-    const { alignment } = this.props;
-    /**
-     * Elements from state
-     */
-    const { showingAlignmentComment } = this.state;
-    const alignmentClasses = propertyClassesForAlignment(alignment).map((c) => (
-      <li key={c}>{c}</li>
-    ));
+            <small className="mt-3 col-on-primary-light">Class/Type</small>
+            <h5>
+              <ul className="list-unstyled">{alignmentTermClasses}</ul>
+            </h5>
+          </div>
+          <div className="col-6">
+            <small className="mt-3 col-on-primary-light">Definition</small>
+            <h5>{term.property.comment}</h5>
+          </div>
+          <div className="col-2">
+            <div className="card borderless">
+              <div
+                className="card-hader text-center desm-rounded p-3"
+                style={{
+                  backgroundColor: alignment.predicate.color || 'unset',
+                  color: alignment.predicate.color ? 'White' : 'DarkSlateGrey',
+                }}
+              >
+                <strong>{alignment.predicate ? alignment.predicate.prefLabel : ''}</strong>
+              </div>
+            </div>
+            {alignment.comment && (
+              <label
+                className="non-selectable float-right mt-3 col-primary cursor-pointer"
+                onClick={() => setShowingAlignmentComment(!showingAlignmentComment)}
+              >
+                {showingAlignmentComment ? 'Hide Alignment Notes' : 'Alignment Notes'}
+              </label>
+            )}
+          </div>
+        </div>
 
-    return (
-      <div className="card borderless mb-3">
-        <div className="card-header desm-rounded bottom-borderless bg-col-secondary">
+        {showingAlignmentComment && (
           <div className="row">
-            <div className="col-2">
-              <small className="mt-3 col-on-primary-light">Organization</small>
-              <h5>{alignment.origin}</h5>
-
-              <small className="mt-3 col-on-primary-light">Schema</small>
-              <h5>{alignment.schemaName}</h5>
-            </div>
-            <div className="col-2">
-              <small className="mt-3 col-on-primary-light">Element/Property</small>
-              <h5>{this.printMappedTermProperty('name')}</h5>
-
-              <small className="mt-3 col-on-primary-light">Class/Type</small>
-              <h5>
-                <ul className="list-unstyled">{alignmentClasses}</ul>
-              </h5>
-            </div>
-            <div className="col-6">
-              <small className="mt-3 col-on-primary-light">Definition</small>
-              <h5>{this.printMappedProperty('comment')}</h5>
-            </div>
-            <div className="col-2">
+            <div className="col">
               <div className="card borderless">
-                <div
-                  className="card-hader text-center desm-rounded p-3"
-                  style={{
-                    backgroundColor: alignment.predicate.color || 'unset',
-                    color: alignment.predicate.color ? 'White' : 'DarkSlateGrey',
-                  }}
-                >
-                  <strong>{alignment.predicate ? alignment.predicate.prefLabel : ''}</strong>
+                <div className="card-body">
+                  <h6 className="col-on-primary">Alignment Note</h6>
+                  {alignment.comment}
                 </div>
               </div>
-              {alignment.comment && (
-                <label
-                  className="non-selectable float-right mt-3 col-primary cursor-pointer"
-                  onClick={() =>
-                    this.setState({
-                      showingAlignmentComment: !showingAlignmentComment,
-                    })
-                  }
-                >
-                  {showingAlignmentComment ? 'Hide Alignment Notes' : 'Alignment Notes'}
-                </label>
-              )}
             </div>
           </div>
-
-          {showingAlignmentComment && (
-            <div className="row">
-              <div className="col">
-                <div className="card borderless">
-                  <div className="card-body">
-                    <h6 className="col-on-primary">Alingment Note</h6>
-                    {alignment.comment}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+        )}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default PropertyAlignments;
