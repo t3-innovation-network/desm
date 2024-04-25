@@ -4,7 +4,7 @@ import fetchConfigurationProfiles from '../../services/fetchConfigurationProfile
 import setConfigurationProfile from '../../services/setConfigurationProfile';
 import Loader from '../shared/Loader';
 
-const ConfigurationProfileSelect = ({ onChange, requestType }) => {
+const ConfigurationProfileSelect = ({ onChange, onSubmit, requestType }) => {
   const {
     currentConfigurationProfile,
     setCurrentConfigurationProfile,
@@ -30,6 +30,12 @@ const ConfigurationProfileSelect = ({ onChange, requestType }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // if onSubmit is passed, call it and return, usually it's passed when we don't want to change the current configuration profile
+    // globally but just want to use it for a specific action
+    if (onSubmit) {
+      onSubmit(selectedConfigurationProfile);
+      return;
+    }
     setSubmitting(true);
 
     const configurationProfile = configurationProfiles.find(

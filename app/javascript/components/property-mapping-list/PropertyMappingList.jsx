@@ -17,8 +17,15 @@ import { propertyMappingListStore } from './stores/propertyMappingListStore';
 
 const PropertyMappingList = (props) => {
   const context = useContext(AppContext);
-  const [state, actions] = useLocalStore(() => propertyMappingListStore());
+  const [state, actions] = useLocalStore(() =>
+    propertyMappingListStore({
+      configurationProfile: context.currentConfigurationProfile?.withSharedMappings
+        ? context.currentConfigurationProfile
+        : null,
+    })
+  );
   const {
+    configurationProfile,
     domains,
     organizations,
     predicates,
@@ -50,11 +57,11 @@ const PropertyMappingList = (props) => {
     }
   };
 
-  useEffect(() => loadData(), [context.currentConfigurationProfile]);
+  useEffect(() => loadData(), [configurationProfile]);
   useDidMountEffect(() => handleSelectedDomain(), [domains]);
 
   const loadData = async () => {
-    if (!context.currentConfigurationProfile) {
+    if (!configurationProfile) {
       return;
     }
     await actions.fetchDataFromAPI();
@@ -68,27 +75,31 @@ const PropertyMappingList = (props) => {
       ) : null}
 
       <div className="row">
-        {!context.currentConfigurationProfile?.withSharedMappings && (
-          <div className="col col-12 pt-2">
-            <AlertNotice
-              withTitle={false}
-              message={i18n.t('ui.view_mapping.no_mappings.current_profile')}
-              cssClass="alert-warning"
-            />
-          </div>
-        )}
         <div className="col p-lg-5 pt-5">
-          {!context.loggedIn && (
-            <ConfigurationProfileSelect requestType="indexWithSharedMappings" />
-          )}
-          {context.currentConfigurationProfile?.withSharedMappings &&
+          {!configurationProfile &&
+            context.currentConfigurationProfile &&
+            !context.currentConfigurationProfile.withSharedMappings && (
+              <div className="w-100">
+                <AlertNotice
+                  withTitle={false}
+                  message={i18n.t('ui.view_mapping.no_mappings.current_profile', {
+                    name: context.currentConfigurationProfile.name,
+                  })}
+                  cssClass="alert-warning"
+                />
+              </div>
+            )}
+          <ConfigurationProfileSelect
+            onSubmit={actions.setConfigurationProfile}
+            requestType="indexWithSharedMappings"
+          />
+          {configurationProfile?.withSharedMappings &&
             (state.loading ? (
               <Loader />
             ) : (
               <>
                 <h1>
-                  <strong>{context.currentConfigurationProfile.name}</strong>:{' '}
-                  {i18n.t('ui.view_mapping.subtitle')}
+                  <strong>{configurationProfile.name}</strong>: {i18n.t('ui.view_mapping.subtitle')}
                 </h1>
                 <label className="my-0">{i18n.t('ui.view_mapping.select_abstract_class')}</label>
                 <DesmTabs
@@ -126,6 +137,7 @@ const PropertyMappingList = (props) => {
                     <PropertiesList
                       hideSpineTermsWithNoAlignments={hideSpineTermsWithNoAlignments}
                       inputValue={propertiesInputValue}
+                      configurationProfile={configurationProfile}
                       domains={domains}
                       organizations={organizations}
                       predicates={predicates}

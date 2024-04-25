@@ -27,6 +27,8 @@ export const defaultState = {
   selectedSpineOrderOption: spineSortOptions.OVERALL_ALIGNMENT_SCORE,
 
   // data
+  // configuration profile used on this page
+  configurationProfile: null,
   // The list of available domains
   domains: [],
   // The available list of organizations
@@ -70,9 +72,9 @@ export const propertyMappingListStore = (initialData = {}) => ({
 
   // thunks
   // Use the service to get all the available domains
-  handleFetchDomains: thunk(async (actions, _params = {}, h) => {
+  handleFetchDomains: thunk(async (actions, params = {}, h) => {
     const state = h.getState();
-    const response = await fetchDomains();
+    const response = await fetchDomains(params);
     if (state.withoutErrors(response)) {
       actions.setDomains(response.domains);
       actions.setSelectedDomain(response.domains[0]);
@@ -82,9 +84,9 @@ export const propertyMappingListStore = (initialData = {}) => ({
     return response;
   }),
   // Use the service to get all the available organizations
-  handleFetchOrganizations: thunk(async (actions, _params = {}, h) => {
+  handleFetchOrganizations: thunk(async (actions, params = {}, h) => {
     const state = h.getState();
-    const response = await fetchOrganizations();
+    const response = await fetchOrganizations(params);
     if (state.withoutErrors(response)) {
       actions.setAllOrganizations(response.organizations);
     } else {
@@ -93,9 +95,9 @@ export const propertyMappingListStore = (initialData = {}) => ({
     return response;
   }),
   // Use the service to get all the available predicates
-  handleFetchPredicates: thunk(async (actions, _params = {}, h) => {
+  handleFetchPredicates: thunk(async (actions, params = {}, h) => {
     const state = h.getState();
-    const response = await fetchPredicates();
+    const response = await fetchPredicates(params);
     if (state.withoutErrors(response)) {
       actions.setAllPredicates(response.predicates);
     } else {
@@ -106,10 +108,14 @@ export const propertyMappingListStore = (initialData = {}) => ({
   // Fetch all the necessary data from the API
   fetchDataFromAPI: thunk(async (actions, _params = {}, h) => {
     actions.setLoading(true);
+    const state = h.getState();
+    const queryParams = {
+      configurationProfileId: state.configurationProfile?.id,
+    };
     await Promise.all([
-      actions.handleFetchDomains(),
-      actions.handleFetchOrganizations(),
-      actions.handleFetchPredicates(),
+      actions.handleFetchDomains(queryParams),
+      actions.handleFetchOrganizations(queryParams),
+      actions.handleFetchPredicates(queryParams),
     ]);
     if (!h.getState().hasErrors) actions.setLoading(false);
   }),
