@@ -2,7 +2,7 @@ import { flatMap, intersection, uniq } from 'lodash';
 import { baseModel } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
 import { alignmentSortOptions, spineSortOptions } from '../SortOptions';
-import { action, thunk } from 'easy-peasy';
+import { action, computed, thunk } from 'easy-peasy';
 import fetchDomains from 'services/fetchDomains';
 import fetchOrganizations from 'services/fetchOrganizations';
 import fetchPredicates from 'services/fetchPredicates';
@@ -25,10 +25,15 @@ export const defaultState = {
   selectedAlignmentOrderOption: alignmentSortOptions.ORGANIZATION,
   // The order the user wants to see the spine terms
   selectedSpineOrderOption: spineSortOptions.OVERALL_ALIGNMENT_SCORE,
+  // Values based on url query params (abstractClass - selected domain name, cp - configuration profile id)
+  abstractClass: null,
+  cp: null,
 
   // data
   // configuration profile used on this page
   configurationProfile: null,
+  // if selected configuration profile is without shared mappings
+  withoutSharedMappings: false,
   // The list of available domains
   domains: [],
   // The available list of organizations
@@ -58,6 +63,10 @@ export const propertyMappingListStore = (initialData = {}) => ({
   ...easyStateSetters(defaultState, initialData),
 
   // computed
+  selectedConfigurationProfileId: computed((state) => (configurationProfile) => {
+    if (state.configurationProfile) return null;
+    return state.cp ? parseInt(state.cp) : configurationProfile?.id;
+  }),
 
   // actions
   setAllOrganizations: action((state, organizations) => {
@@ -69,6 +78,19 @@ export const propertyMappingListStore = (initialData = {}) => ({
     state.predicates = predicates;
     state.selectedPredicates = predicates;
   }),
+  updateSelectedDomain: action((state, selectedDomain) => {
+    state.selectedDomain = selectedDomain;
+    state.abstractClass = null;
+  }),
+  updateSelectedConfigurationProfile: action((state, configurationProfile) => {
+    state.configurationProfile = configurationProfile;
+    if (configurationProfile) {
+      state.cp = null;
+      state.withoutSharedMappings = false;
+    } else {
+      state.withoutSharedMappings = true;
+    }
+  }),
 
   // thunks
   // Use the service to get all the available domains
@@ -77,7 +99,6 @@ export const propertyMappingListStore = (initialData = {}) => ({
     const response = await fetchDomains(params);
     if (state.withoutErrors(response)) {
       actions.setDomains(response.domains);
-      actions.setSelectedDomain(response.domains[0]);
     } else {
       actions.addError(response.error);
     }
