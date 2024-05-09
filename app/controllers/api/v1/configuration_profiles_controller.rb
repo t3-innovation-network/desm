@@ -3,7 +3,7 @@
 module API
   module V1
     class ConfigurationProfilesController < API::V1::ConfigurationProfilesAbstractController
-      before_action :authorize_with_policy_class, only: %i(create index index_shared_mappings index_for_user)
+      before_action :authorize_with_policy_class, only: %i(create index index_for_user)
       before_action :authorize_with_policy, only: %i(destroy show update set_current)
 
       def create

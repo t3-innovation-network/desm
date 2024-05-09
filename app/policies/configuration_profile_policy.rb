@@ -21,6 +21,10 @@ class ConfigurationProfilePolicy < AdminAccessPolicy
     signed_in?
   end
 
+  def set_current?
+    signed_in?
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       return scope.all if user.user.super_admin?

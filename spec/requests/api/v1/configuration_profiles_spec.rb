@@ -83,7 +83,6 @@ describe "API::V1::ConfigurationProfiles", type: :request do
     include_context "configuration profiles with and without mappings"
 
     before do
-      stub_authentication_for(user, configuration_profile:)
       get index_shared_mappings_api_v1_configuration_profiles_path
     end
 

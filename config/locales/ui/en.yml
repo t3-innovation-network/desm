@@ -26,7 +26,7 @@ en:
           search: Search Agents
     view_mapping:
       no_mappings:
-        current_profile: No shared mappings found for the current configuration profile.
+        current_profile: No shared mappings found for the current configuration profile %{name}.
         all: There are no shared mappings.
       subtitle: Synthetic Spine Property Mapping By Abstract Class
       select_abstract_class: "Select Abstract Class:"

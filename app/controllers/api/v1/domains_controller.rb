@@ -6,6 +6,7 @@
 module API
   module V1
     class DomainsController < BaseController
+      include ConfigurationProfileQueryable
       before_action :with_instance, only: :show
 
       ###

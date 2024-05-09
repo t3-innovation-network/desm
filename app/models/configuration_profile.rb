@@ -199,6 +199,10 @@ class ConfigurationProfile < ApplicationRecord
     public_send(persisted? ? :update_column : :update_attribute, :state, new_state)
   end
 
+  def with_shared_mappings?
+    active? && mappings.mapped.any?
+  end
+
   private
 
   def update_organizations

@@ -1,10 +1,11 @@
 import apiRequest from './api/apiRequest';
 
-const fetchDomains = async () => {
+const fetchDomains = async (queryParams = {}) => {
   const response = await apiRequest({
     url: '/api/v1/domains',
     method: 'get',
     successResponse: 'domains',
+    queryParams,
   });
 
   if (!response.error) {
