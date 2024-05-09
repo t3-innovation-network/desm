@@ -1,13 +1,15 @@
 import { Component } from 'react';
+import { compact, flatMap, sortBy, uniqBy } from 'lodash';
 import AlertNotice from '../shared/AlertNotice';
 import fetchAlignmentsForSpine from '../../services/fetchAlignmentsForSpine';
-import fetchDomain from '../../services/fetchDomain';
 import fetchSpineTerms from '../../services/fetchSpineTerms';
 import Loader from '../shared/Loader';
 import NoSpineAlert from './NoSpineAlert';
 import PropertyAlignments from './PropertyAlignments';
 import PropertyCard from './PropertyCard';
 import { implementSpineSort } from './SortOptions';
+import { i18n } from 'utils/i18n';
+import { dateLongFormat } from 'utils/dateFormatting';
 
 /**
  * @description: The list of properties with its alignments. Contains all the information about the property
@@ -58,6 +60,7 @@ export default class PropertiesList extends Component {
     return alignments.some((alignment) => !_.isEmpty(alignment.mappedTerms));
   };
 
+  // TODO: this need to be moved to top level store
   /**
    * The list of ids for the selected predicates
    */
@@ -121,25 +124,6 @@ export default class PropertiesList extends Component {
   }
 
   /**
-   * Use the service to fetch information about the selected domain
-   */
-  handleFetchDomain = async () => {
-    const { selectedDomain } = this.props;
-
-    let response = await fetchDomain(selectedDomain.id);
-
-    if (!this.anyError(response)) {
-      if (!response.domain['spine?']) {
-        this.setState({ spineExists: false });
-        return false;
-      }
-
-      this.setState({ spineExists: true });
-      return response;
-    }
-  };
-
-  /**
    * Handles to inlcude the alignments inside each property object.
    * This way we have the control onto show or hide the spine terms with no
    * alignments.
@@ -153,7 +137,11 @@ export default class PropertiesList extends Component {
       const { alignments } = response;
       const groupedAlignments = _.groupBy(alignments, 'spineTermId');
 
-      spineTerms.forEach((term) => (term.alignments = groupedAlignments[term.id] || []));
+      spineTerms.forEach((term) => {
+        term.alignments = groupedAlignments[term.id] || [];
+        term.alignmentScore =
+          term.maxMappingWeight > 0 ? (term.currentMappingWeight * 100) / term.maxMappingWeight : 0;
+      });
     }
 
     return spineTerms;
@@ -163,7 +151,7 @@ export default class PropertiesList extends Component {
    * Use the service to get all the available properties of a spine specification
    */
   handleFetchProperties = async (spineId) => {
-    let response = await fetchSpineTerms(spineId);
+    let response = await fetchSpineTerms(spineId, { withWeights: true });
 
     if (!this.anyError(response)) {
       const properties = await this.decoratePropertiesWithAlignments(spineId, response.terms);
@@ -176,10 +164,11 @@ export default class PropertiesList extends Component {
    * Fetch all the necessary data from the API
    */
   handleFetchDataFromAPI = async () => {
-    let response = await this.handleFetchDomain();
+    const { selectedDomain } = this.props;
+    this.setState({ spineExists: selectedDomain.spine });
 
-    if (!this.anyError(response) && this.state.spineExists) {
-      await this.handleFetchProperties(response.domain.spine.id);
+    if (selectedDomain.spine) {
+      await this.handleFetchProperties(selectedDomain.spineId);
     }
   };
 
@@ -235,15 +224,54 @@ export default class PropertiesList extends Component {
     /**
      * Elements from props
      */
-    const {
-      predicates,
-      organizations,
-      selectedAlignmentOrderOption,
-      selectedAlignmentOrganizations,
-      selectedDomain,
-      selectedPredicates,
-      selectedSpineOrganizations,
-    } = this.props;
+    const { selectedAlignmentOrderOption } = this.props;
+
+    const filteredPropertiesList = () =>
+      this.filteredProperties().map((term) => {
+        return (
+          <div className="row mt-4" key={term.id}>
+            <div className="col-4">
+              <PropertyCard term={term} />
+            </div>
+            <div className="col-8">
+              <PropertyAlignments
+                selectedAlignmentOrderOption={selectedAlignmentOrderOption}
+                selectedAlignmentOrganizationIds={this.selectedAlignmentOrganizationIds()}
+                selectedPredicateIds={this.selectedPredicateIds()}
+                selectedSpineOrganizationIds={this.selectedSpineOrganizationIds()}
+                spineTerm={term}
+              />
+            </div>
+          </div>
+        );
+      });
+
+    const filteredMappingsList = () => {
+      const mappings = sortBy(
+        uniqBy(
+          compact(
+            flatMap(this.filteredProperties(), (term) => term.alignments.map((a) => a.mapping))
+          ),
+          'id'
+        ),
+        'title'
+      );
+      return (
+        <>
+          <h5 className="mb-0 mt-3">
+            {i18n.t('ui.view_mapping.mapping', { count: mappings.length })}
+          </h5>
+          <ul className="list-unstyled mb-0">
+            {mappings.map((mapping) => (
+              <li key={mapping.id}>
+                <span className="fw-bold">{mapping.title}</span> updated at{' '}
+                {dateLongFormat(mapping.mappedAt)}.{mapping.description}
+              </li>
+            ))}
+          </ul>
+        </>
+      );
+    };
 
     return loading ? (
       <Loader />
@@ -251,30 +279,10 @@ export default class PropertiesList extends Component {
       /* ERRORS */
       <AlertNotice message={errors} onClose={() => this.setState({ errors: [] })} />
     ) : spineExists ? (
-      this.filteredProperties().map((term) => {
-        return (
-          <div className="row mt-3" key={term.id}>
-            <div className="col-4 pb-3">
-              <PropertyCard
-                organizations={organizations}
-                predicates={predicates}
-                selectedDomain={selectedDomain}
-                term={term}
-                onAlignmentScoreFetched={(score) => this.handleAlignmentScoreFetched(term, score)}
-              />
-            </div>
-            <div className="col-8">
-              <PropertyAlignments
-                selectedAlignmentOrderOption={selectedAlignmentOrderOption}
-                selectedAlignmentOrganizations={selectedAlignmentOrganizations}
-                selectedPredicates={selectedPredicates}
-                selectedSpineOrganizations={selectedSpineOrganizations}
-                spineTerm={term}
-              />
-            </div>
-          </div>
-        );
-      })
+      <>
+        {filteredMappingsList()}
+        {filteredPropertiesList()}
+      </>
     ) : (
       <NoSpineAlert />
     );

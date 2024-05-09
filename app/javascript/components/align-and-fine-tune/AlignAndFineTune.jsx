@@ -107,11 +107,7 @@ const AlignAndFineTune = (props) => {
    * it mimics the same action).
    */
   useEffect(() => {
-    actions.fetchDataFromAPI({ mappingId: props.match.params.id }).then(() => {
-      if (!state.hasErrors) {
-        actions.setLoading(false);
-      }
-    });
+    actions.fetchDataFromAPI({ mappingId: props.match.params.id });
   }, []);
 
   const confirmDialog = () => (
@@ -176,13 +172,13 @@ const AlignAndFineTune = (props) => {
       />
       <div className="mt-4">
         {/* CHANGELOG */}
-        {state.dateMapped && (
+        {mapping.mapped_at && (
           <MappingChangeLog
             predicates={predicates}
             mapping={mapping}
             spineTerms={spineTerms}
             alignments={alignments}
-            dateMapped={state.dateMapped}
+            dateMapped={mapping.mapped_at}
           />
         )}
 

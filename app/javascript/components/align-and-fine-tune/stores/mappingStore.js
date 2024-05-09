@@ -3,7 +3,6 @@ import { isEmpty, isString, remove, sortBy, uniqBy } from 'lodash';
 import { baseModel, nextId } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
 import fetchAlignments from '../../../services/fetchAlignments';
-import fetchAudits from '../../../services/fetchAudits';
 import fetchMapping from '../../../services/fetchMapping';
 import fetchMappingSelectedTerms from '../../../services/fetchMappingSelectedTerms';
 import fetchPredicates from '../../../services/fetchPredicates';
@@ -37,8 +36,6 @@ export const defaultState = {
   alignments: [],
   // Represents the alignment that's going to be removed if the user confirms that action
   alignmentToRemove: null,
-  // The date the mapping was marked as "mapped", which is "completed".
-  dateMapped: null,
   // Declare and have an initial state for the mapping
   mapping: {},
   // The terms of the mapping (The selected ones from the uploaded specification)
@@ -516,7 +513,7 @@ export const mappingStore = (initialData = {}) => ({
    */
   handleFetchSpineTerms: thunk(async (actions, { spineId }, h) => {
     const state = h.getState();
-    let response = await fetchSpineTerms(spineId);
+    let response = await fetchSpineTerms(spineId, { withOrganization: true });
     if (state.withoutErrors(response)) {
       actions.updateSpineTerms(response.terms);
     } else {
@@ -537,34 +534,8 @@ export const mappingStore = (initialData = {}) => ({
     }
   }),
 
-  /**
-   * Fetch changes from the api service. This is only used to get the exact date
-   * when the mapping changed from "in-progress" to "mapped".
-   */
-  handleFetchMappingChanges: thunk(async (actions, _params = {}, h) => {
-    const state = h.getState();
-    if (state.mapping.status === 'mapped') {
-      let response = await fetchAudits({
-        className: 'Mapping',
-        instanceIds: state.mapping.id,
-        auditAction: 'update',
-      });
-
-      if (state.withoutErrors(response)) {
-        let statusChangedAudit = response.audits.find(
-          (audit) => audit.audited_changes['status'].toString() === '1,2'
-        );
-
-        if (statusChangedAudit) {
-          actions.setDateMapped(statusChangedAudit.created_at);
-        }
-      } else {
-        actions.addError(response.error);
-      }
-    }
-  }),
   // fetch initial data
-  fetchDataFromAPI: thunk(async (actions, { mappingId }) => {
+  fetchDataFromAPI: thunk(async (actions, { mappingId }, h) => {
     // Get the mapping
     let response = await actions.handleFetchMapping({ mappingId });
     // Get the mapping terms
@@ -574,11 +545,10 @@ export const mappingStore = (initialData = {}) => ({
     if (response.mapping) {
       // Get the spine terms
       await actions.handleFetchSpineTerms({ spineId: response.mapping.spine_id });
-      // Get the audits
-      await actions.handleFetchMappingChanges();
     }
     // Get the predicates
     await actions.handleFetchPredicates();
+    if (!h.getState().hasErrors) actions.setLoading(false);
   }),
   // refetch data after save
   refetchDataFromAPI: thunk(async (actions, { withSynthetic = false }, h) => {
@@ -587,7 +557,5 @@ export const mappingStore = (initialData = {}) => ({
     if (withSynthetic) {
       await actions.handleFetchSpineTerms({ spineId: state.mapping.spine_id });
     }
-    // Get the audits
-    await actions.handleFetchMappingChanges();
   }),
 });

@@ -3,12 +3,20 @@
 class AlignmentSerializer < ApplicationSerializer
   attributes :comment, :mapping_id, :origin, :predicate_id, :spine_term_id, :synthetic, :uri, :vocabulary_id
   attributes :mapped_terms, :predicate
+  attribute :mapping, if: -> { params[:with_schema_name] } do
+    { id: object.mapping.id, title: object.mapping.title, description: object.mapping.description,
+      updated_at: object.mapping.updated_at, created_at: object.mapping.created_at,
+      mapped_at: object.mapping.mapped_at }
+  end
   attribute :name do
     object.uri
   end
   attribute :schema_name, if: -> { params[:with_schema_name] } do
     schema = object.mapping.specification
     "#{schema.name}#{schema.version.present? ? " (#{schema.version})" : ''}"
+  end
+  attribute :selected_domains, if: -> { params[:with_schema_name] } do
+    object.mapping.specification.selected_domains_from_file
   end
 
   # pass the params to the serializer

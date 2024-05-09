@@ -6,6 +6,7 @@
 #
 #  id                            :bigint           not null, primary key
 #  description                   :text
+#  mapped_at                     :datetime
 #  name                          :string
 #  slug                          :string
 #  status                        :integer          default("uploaded")
@@ -98,6 +99,7 @@ class Mapping < ApplicationRecord
   # @description: Every mapping should have the same number of terms as the associated spine terms
   ###
   after_create :generate_alignments
+  before_update :update_mapped_at, if: -> { mapped? || status_changed?(to: Mapping.statuses[:mapped]) }
 
   ###
   # METHODS
@@ -215,5 +217,11 @@ class Mapping < ApplicationRecord
 
     spine.term_ids = ids
     generate_alignments(first_upload: true)
+  end
+
+  private
+
+  def update_mapped_at
+    self.mapped_at = Time.zone.now
   end
 end

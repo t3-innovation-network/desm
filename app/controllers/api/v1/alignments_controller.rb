@@ -14,7 +14,7 @@ module API
       ###
       def index
         terms = current_configuration_profile.alignments
-                  .includes(:predicate, mapping: :specification, mapped_terms: :organization)
+                  .includes(:predicate, mapping: :specification, mapped_terms: %i(organization property vocabularies))
                   .where(
                     mappings: { spine_id: params[:spine_id], status: :mapped }
                   )

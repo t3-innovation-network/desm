@@ -24,7 +24,7 @@ gem "active_model_serializers", "~> 0.10"
 gem "airbrake"
 
 # Audit changes
-gem "audited", "~> 4.9"
+gem "audited", "~> 5.6"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.2", require: false
@@ -130,6 +130,7 @@ end
 
 group :test do
   gem "simplecov", require: false
+  gem "timecop"
 
   # profiling, check https://test-prof.evilmartians.io/
   gem "ruby-prof", ">= 0.17.0", require: false

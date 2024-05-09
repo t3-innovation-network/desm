@@ -97,24 +97,10 @@ export const implementAlignmentSort = (properties, sortOption) => {
     case alignmentSortOptions.ORGANIZATION:
       return properties.sort((a, b) => (a.origin > b.origin ? 1 : -1));
     /**
-     * Sort by selected domain class of the property. This field can be edited in the edit term screen.
-     */
-    case alignmentSortOptions.CLASS_TYPE:
-      return properties.sort((a, b) =>
-        a.mappedTerms[0].property.selectedDomain > b.mappedTerms[0].property.selectedDomain ? 1 : -1
-      );
-    /**
      * Sort by the alignment weight.
      */
     case alignmentSortOptions.ALIGNMENT_SCORE:
       return properties.sort((a, b) => (a.predicate.weight > b.predicate.weight ? 1 : -1));
-    /**
-     * Sort by the property name.
-     */
-    case alignmentSortOptions.PROPERTY:
-      return properties.sort((a, b) =>
-        a.mappedTerms[0].property.name > b.mappedTerms[0].property.name ? 1 : -1
-      );
     /**
      * Sort bringing those alignments that has comments first.
      */
@@ -122,5 +108,22 @@ export const implementAlignmentSort = (properties, sortOption) => {
       return properties.sort((a, b) => (a.comment < b.comment ? 1 : -1));
     default:
       return properties;
+  }
+};
+
+export const implementAlignmentTermsSort = (terms, sortOption) => {
+  switch (sortOption) {
+    /**
+     * Sort by selected domain class of the property. This field can be edited in the edit term screen.
+     */
+    case alignmentSortOptions.CLASS_TYPE:
+      return terms.sort((a, b) => (a.selectedClasses[0] > b.selectedClasses[0] ? 1 : -1));
+    /**
+     * Sort by the property name.
+     */
+    case alignmentSortOptions.PROPERTY:
+      return terms.sort((a, b) => (a.property.name > b.property.name ? 1 : -1));
+    default:
+      return terms;
   }
 };
