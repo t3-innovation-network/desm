@@ -30,7 +30,7 @@ const DesmTabs = ({ values, selectedId, onTabClick }) => {
           );
         })}
       </div>
-      {selectedValue.definition && (
+      {selectedValue?.definition && (
         <div className="w-100">
           <small>{selectedValue.definition}</small>
         </div>

@@ -23,6 +23,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { AppContext } from '../../contexts/AppContext';
 import { showSuccess } from '../../helpers/Messages';
+import { pageRoutes } from '../../services/pageRoutes';
 
 export default class SpecsList extends Component {
   static contextType = AppContext;
@@ -296,7 +297,10 @@ export default class SpecsList extends Component {
               )}
 
               <Link
-                to={`/mappings-list?abstractClass=${mapping.domain}`}
+                to={pageRoutes.mappingsList(
+                  this.context.currentConfigurationProfile.id,
+                  mapping.domain
+                )}
                 className="btn btn-sm btn-dark ml-2"
                 title="View this mapping"
               >
