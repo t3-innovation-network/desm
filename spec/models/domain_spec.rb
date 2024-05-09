@@ -59,7 +59,11 @@ describe Domain do
                   source_uri: "http://desm.testing/api/v1/resources/terms/description")
   end
 
-  it "validates presence and uniquiness" do
+  after(:all) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  it "validates presence and uniqueness" do
     is_expected.to validate_presence_of(:source_uri)
     is_expected.to validate_presence_of(:pref_label)
     is_expected.to validate_uniqueness_of(:source_uri).scoped_to(:domain_set_id)

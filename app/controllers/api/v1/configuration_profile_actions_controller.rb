@@ -22,7 +22,7 @@ module API
       private
 
       def with_instance
-        @instance = ConfigurationProfile.find(params[:id])
+        @instance = policy_scope(ConfigurationProfile).find(params[:id])
       end
 
       def permitted_actions

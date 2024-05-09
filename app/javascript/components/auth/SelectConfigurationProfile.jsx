@@ -6,7 +6,7 @@ const SelectConfigurationProfile = ({ history }) => (
     <TopNav centerContent={() => null} />
     <div className="row mt-4">
       <div className="col-lg-6 mx-auto">
-        <ConfigurationProfileSelect onChange={() => history.push('/')} />
+        <ConfigurationProfileSelect requestType="indexForUser" onChange={() => history.push('/')} />
       </div>
     </div>
   </div>

@@ -103,7 +103,7 @@ export default class PropertiesList extends Component {
               )
             ) &&
             /// It matches the selected spine organizations
-            this.selectedSpineOrganizationIds().includes(property.organizationId)))
+            this.selectedSpineOrganizationIds().includes(property.organization?.id)))
     );
 
     return implementSpineSort(filteredProps, selectedSpineOrderOption);

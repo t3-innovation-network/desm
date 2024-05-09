@@ -4,7 +4,7 @@ import fetchConfigurationProfiles from '../../services/fetchConfigurationProfile
 import setConfigurationProfile from '../../services/setConfigurationProfile';
 import Loader from '../shared/Loader';
 
-const ConfigurationProfileSelect = ({ onChange }) => {
+const ConfigurationProfileSelect = ({ onChange, requestType }) => {
   const {
     currentConfigurationProfile,
     setCurrentConfigurationProfile,
@@ -55,7 +55,7 @@ const ConfigurationProfileSelect = ({ onChange }) => {
 
   useEffect(() => {
     (async () => {
-      const { configurationProfiles } = await fetchConfigurationProfiles();
+      const { configurationProfiles } = await fetchConfigurationProfiles(requestType);
       setConfigurationProfiles(configurationProfiles);
       setLoading(false);
     })();
