@@ -11,6 +11,8 @@ export const currentConfigurationProfileReducer = (state = {}, action) => {
   switch (action.type) {
     case 'SET_CURRENT_CP':
       return action.payload;
+    case ('UNSET_USER', 'SIGN_OUT'):
+      return null;
     default:
       return state;
   }

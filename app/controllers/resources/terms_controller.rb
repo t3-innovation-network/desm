@@ -5,8 +5,10 @@
 ###
 module Resources
   class TermsController < ApplicationController
+    include Decodable
+
     def show
-      term = Term.find_by_slug!(params[:slug])
+      term = Term.find_by_slug!(decoded_slug)
 
       render json: term.raw
     end

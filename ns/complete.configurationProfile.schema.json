@@ -27,14 +27,12 @@
         },
         "phone": {
           "type": "string",
-          "title": "The american format phone number of the agent",
-          "pattern": "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$",
+          "title": "The international/domestic format phone number of the agent",
+          "pattern": "^\\+?[0-9 -]{6,18}$",
           "examples": [
-            "123-456-7890",
-            "(123) 456-7890",
-            "123 456 7890",
-            "123.456.7890",
-            "+91 (123) 456-7890"
+            "+1234567890",
+            "123-456-789",
+            "123 456 7890"
           ]
         },
         "githubHandle": {

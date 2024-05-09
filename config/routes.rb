@@ -137,10 +137,14 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
+      resources :agents, only: :index do
+        get :filters, on: :collection
+      end
       resources :alignments, only: [:destroy, :index, :update]
       resources :alignment_vocabulary_concepts, only: [:update]
       resources :alignment_synthetic_concepts, only: [:create]
       resources :audits, only: [:index]
+      resources :dashboard, only: [:index]
       resources :domains, only: [:index, :show]
       resources :mappings, only: [:create, :destroy, :show, :index, :update]
       resources :merged_files, only: [:create, :show]
@@ -186,13 +190,14 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :resources do
-    get 'mapping_export_profile' => 'mapping_export_profile#show'
+  namespace :resources, defaults: { format: :json } do
+    resources :configuration_profiles, path: 'configuration-profiles', only: %i[index] do
+      get '/:slug' => 'configuration_profiles#show', on: :collection
+      resources :mapping_export_profile, only: %i[show], param: :slug
+    end
     get 'abstract-classes/:slug' => 'abstract_classes#show'
     get 'abstract-class-sets' => 'abstract_class_sets#index'
     get 'abstract-class-sets/:slug' => 'abstract_class_sets#show'
-    get 'configuration-profiles' => 'configuration_profiles#index'
-    get 'configuration-profiles/:slug' => 'configuration_profiles#show'
     get 'abstract-classes/:slug' => 'domains#show'
     get 'organizations' => 'organizations#index'
     get 'organizations/:slug' => 'organizations#show'

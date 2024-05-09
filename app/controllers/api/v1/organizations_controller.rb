@@ -19,8 +19,7 @@ module API
             Organization.all
           end
 
-        render json: organizations.order(name: :asc).includes(:users),
-               include: :users
+        render json: organizations.order(name: :asc)
       end
 
       ###

@@ -12,6 +12,9 @@ module API
       # @description: Lists all the domains
       ###
       def index
+        raise Pundit::NotAuthorizedError, "configuration profile need to be chosen" \
+         unless current_configuration_profile.present?
+
         render json: current_configuration_profile.domains.includes(:spine)
       end
 

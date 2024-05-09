@@ -23,6 +23,7 @@
 #
 #  index_configuration_profiles_on_administrator_id  (administrator_id)
 #  index_configuration_profiles_on_domain_set_id     (domain_set_id)
+#  index_configuration_profiles_on_name              (name) UNIQUE
 #  index_configuration_profiles_on_predicate_set_id  (predicate_set_id)
 #
 # Foreign Keys
@@ -34,6 +35,10 @@
 require "rails_helper"
 
 describe ConfigurationProfile do
+  describe "uniqueness validations" do
+    include_examples "slugable validation", :configuration_profile
+  end
+
   before(:all) do
     @complete_structure = json_fixture("complete.configuration.profile.json")
     @valid_structure_with_invalid_email = json_fixture("valid.configuration.profile.with.invalid.email.json")
@@ -110,7 +115,7 @@ describe ConfigurationProfile do
   context "when it is completed" do
     before(:all) do
       Role.create!(name: "dso admin")
-      Role.create!(name: "mapper")
+      Role.create!(name: Desm::MAPPER_ROLE_NAME)
       Role.create!(name: "profile admin")
 
       @cp = create(:configuration_profile)
@@ -156,7 +161,7 @@ describe ConfigurationProfile do
   context "when it is active" do
     before(:all) do
       Role.create!(name: "dso admin")
-      Role.create!(name: "mapper")
+      Role.create!(name: Desm::MAPPER_ROLE_NAME)
       Role.create!(name: "profile admin")
 
       @cp = create(:configuration_profile)
@@ -205,7 +210,7 @@ describe ConfigurationProfile do
   context "when it is deactivated" do
     before(:all) do
       Role.create!(name: "dso admin")
-      Role.create!(name: "mapper")
+      Role.create!(name: Desm::MAPPER_ROLE_NAME)
       Role.create!(name: "profile admin")
 
       @cp = create(:configuration_profile)
@@ -322,7 +327,7 @@ describe ConfigurationProfile do
   context "when it has to be removed" do
     before(:all) do
       Role.create!(name: "dso admin")
-      Role.create!(name: "mapper")
+      Role.create!(name: Desm::MAPPER_ROLE_NAME)
       Role.create!(name: "profile admin")
 
       @cp = create(:configuration_profile)
@@ -365,14 +370,8 @@ describe ConfigurationProfile do
       create(:configuration_profile_user, configuration_profile: configuration_profile2, user: user2)
     end
     let!(:specification) { create(:specification, configuration_profile_user: configuration_profile_user1) }
-    let!(:mapping) do
-      create(:mapping, configuration_profile_user: configuration_profile_user1, specification:)
-    end
 
     before do
-      mapping.spine.terms = create_list(:term, 10)
-      10.times { |i| create(:alignment, mapping:, spine_term: mapping.spine.terms[i]) }
-
       organization = create(:organization)
       configuration_profile1.standards_organizations << organization
       configuration_profile2.standards_organizations << organization
@@ -381,16 +380,13 @@ describe ConfigurationProfile do
     it "doesn't leave orphan organizations" do
       expect do
         configuration_profile1.destroy
-      end.to(change(Alignment, :count).by(-10)
-      .and(change(Organization, :count).by(0))
-      .and(change(ConfigurationProfileUser, :count).by(-1))
-      .and(change(Mapping, :count).by(-1))
-      .and(change(Specification, :count).by(-1))
-      .and(change(Spine, :count).by(-1))
-      .and(change(User, :count).by(0)))
+      end.to(change(Organization, :count).by(0)
+        .and(change(ConfigurationProfileUser, :count).by(-1))
+        .and(change(Specification, :count).by(-1))
+        .and(change(Spine, :count).by(-1))
+        .and(change(User, :count).by(0)))
 
       expect { configuration_profile1.reload }.to raise_error(ActiveRecord::RecordNotFound)
-      expect { mapping.reload }.to raise_error(ActiveRecord::RecordNotFound)
       expect { specification.reload }.to raise_error(ActiveRecord::RecordNotFound)
 
       expect { configuration_profile2.destroy }.to(change(Organization, :count).by(-1))
@@ -398,6 +394,16 @@ describe ConfigurationProfile do
   end
 
   context "when callbacks are triggered" do
+    context "when structure is updated" do
+      let(:configuration_profile) { create(:configuration_profile, :active) }
+
+      it "triggers the generate_structure callback and organizations update" do
+        expect(configuration_profile).to receive(:check_structure).and_return(true)
+        expect(UpdateDsos).to receive(:call).and_return(double(success?: true))
+        configuration_profile.update!(structure: { name: "test" })
+      end
+    end
+
     context "when predicates are updated" do
       let(:configuration_profile) { create(:configuration_profile, :with_mapping_predicates, predicates_count: 0) }
 

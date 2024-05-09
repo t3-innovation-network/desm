@@ -32,13 +32,13 @@ const ConfirmDialog = (props) => {
       isOpen={visible}
       onRequestClose={onRequestClose}
       contentLabel="Please Confirm"
-      className={'fit-content-height m-5'}
+      className={'fit-content-height centered-width'}
       style={{ marginLeft: '50%', marginRight: '50%' }}
       shouldCloseOnEsc={false}
       shouldCloseOnOverlayClick={false}
     >
       <SlideInDown>
-        <div className="card centered-width" style={{ maxHeight: '45rem' }}>
+        <div className="card" style={{ maxHeight: '45rem' }}>
           <div className="card-header">
             <div className="row">
               <div className="col-10">

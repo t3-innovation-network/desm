@@ -23,6 +23,7 @@
 #
 #  index_configuration_profiles_on_administrator_id  (administrator_id)
 #  index_configuration_profiles_on_domain_set_id     (domain_set_id)
+#  index_configuration_profiles_on_name              (name) UNIQUE
 #  index_configuration_profiles_on_predicate_set_id  (predicate_set_id)
 #
 # Foreign Keys
@@ -39,13 +40,16 @@
 #   defined in a Schema Mapping Profile (Configuration Profile) used to configure the instance of the DESM tool.
 ###
 class ConfigurationProfile < ApplicationRecord
+  include PgSearch::Model
   include Slugable
   audited
+
+  attr_accessor :skip_update_organizations
 
   belongs_to :abstract_classes, class_name: "DomainSet", foreign_key: :domain_set_id, optional: true
   belongs_to :mapping_predicates, class_name: "PredicateSet", foreign_key: :predicate_set_id, optional: true
   belongs_to :administrator, class_name: "User", foreign_key: :administrator_id, optional: true
-  has_many :configuration_profile_users
+  has_many :configuration_profile_users, dependent: :destroy
   has_and_belongs_to_many :standards_organizations, class_name: "Organization"
   has_many :domains, through: :abstract_classes
   has_many :mappings, through: :configuration_profile_users
@@ -58,14 +62,16 @@ class ConfigurationProfile < ApplicationRecord
   has_many :concepts, through: :vocabularies
   has_many :alignments, through: :mappings
 
+  validates :name, uniqueness: true
+
   after_initialize :setup_schema_validators
   before_save :check_structure, if: :will_save_change_to_structure?
   # TODO: check if we really need that check
   before_save :check_predicate_strongest_match, if: :will_save_change_to_predicate_strongest_match?
-  after_save :create_new_entities, if: :active?
   before_destroy :remove_orphan_organizations
 
   after_update :update_abstract_classes, if: :saved_change_to_json_abstract_classes?
+  after_update :update_organizations, if: -> { active? && saved_change_to_structure? && !skip_update_organizations }
   after_update :update_predicates, if: :saved_change_to_json_mapping_predicates?
   after_update :update_predicat_set, if: :saved_change_to_predicate_strongest_match?
 
@@ -78,6 +84,10 @@ class ConfigurationProfile < ApplicationRecord
   # 3. "deactivated" Can not be operated unless it's for removal or export. It can only be activated again, which
   #   will not trigger the structure creation again.
   enum state: { incomplete: 0, complete: 1, active: 2, deactivated: 3 }
+
+  pg_search_scope :search_by_name, against: :name, using: { tsearch: { prefix: true } }
+
+  scope :activated, -> { where(state: %i(active deactivated)) }
 
   COMPLETE_SCHEMA = Rails.root.join("ns", "complete.configurationProfile.schema.json")
   VALID_SCHEMA = Rails.root.join("ns", "valid.configurationProfile.schema.json")
@@ -103,6 +113,14 @@ class ConfigurationProfile < ApplicationRecord
     )
   end
 
+  def self.activated_states_for_select
+    ConfigurationProfile.states_for_select(%w(active deactivated))
+  end
+
+  def self.states_for_select(data = ConfigurationProfile.states.keys)
+    data.map { |state| { id: state, name: state.humanize } }
+  end
+
   def self.validate_structure(struct, type = "valid")
     struct = struct.deep_transform_keys { |key| key.to_s.camelize(:lower) }
     JSON::Validator.fully_validate(
@@ -113,6 +131,10 @@ class ConfigurationProfile < ApplicationRecord
 
   def activate!
     state_handler.activate!
+  end
+
+  def activated?
+    active? || deactived?
   end
 
   def check_structure
@@ -178,12 +200,9 @@ class ConfigurationProfile < ApplicationRecord
 
   private
 
-  def create_new_entities
-    structure.fetch("standards_organizations", []).each do |dso_data|
-      CreateDso.call(dso_data.merge(configuration_profile: self))
-    rescue StandardError
-      nil
-    end
+  def update_organizations
+    interactor = UpdateDsos.call(configuration_profile: self)
+    raise ArgumentError, interactor.error unless interactor.success?
   end
 
   def remove_orphan_organizations
@@ -198,14 +217,14 @@ class ConfigurationProfile < ApplicationRecord
     return if abstract_classes.nil? || json_abstract_classes.nil?
 
     interactor = UpdateAbstractClasses.call(domain_set: abstract_classes, json_body: json_abstract_classes)
-    raise interactor.error unless interactor.success?
+    raise ArgumentError, interactor.error unless interactor.success?
   end
 
   def update_predicates
     return if mapping_predicates.nil? || json_mapping_predicates.nil?
 
     interactor = UpdateMappingPredicates.call(predicate_set: mapping_predicates, json_body: json_mapping_predicates)
-    raise interactor.error unless interactor.success?
+    raise ArgumentError, interactor.error unless interactor.success?
   end
 
   def update_predicat_set

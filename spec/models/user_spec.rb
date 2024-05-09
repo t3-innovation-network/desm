@@ -23,38 +23,56 @@
 require "rails_helper"
 
 RSpec.describe User do
-  let!(:user) { build(:user) }
+  context "valiadations" do
+    it "is not valid" do
+      user = build(:user, email: nil)
+      expect(user).not_to be_valid
+      user = build(:user, fullname: nil)
+      expect(user).not_to be_valid
+      user = build(:user, phone: "123")
+      expect(user).not_to be_valid
+    end
 
-  it "validates and has associations", :aggregate_failures do
-    is_expected.to validate_presence_of(:fullname)
-    expect(subject).to have_many(:assignments)
-    expect(subject).to have_many(:roles).through(:assignments)
+    it "is valid" do
+      user = build(:user, phone: "123 321-1235")
+      expect(user).to be_valid
+    end
   end
 
-  it "is an admin if we configure it that way" do
-    admin_role_name = Desm::ADMIN_ROLE_NAME
+  context "with valid attributes" do
+    let!(:user) { build(:user) }
 
-    user.roles << Role.create!(name: admin_role_name)
+    it "validates and has associations", :aggregate_failures do
+      is_expected.to validate_presence_of(:fullname)
+      expect(subject).to have_many(:assignments)
+      expect(subject).to have_many(:roles).through(:assignments)
+    end
 
-    expect(user.role?(admin_role_name.downcase.to_sym)).to be(true)
-  end
+    it "is an admin if we configure it that way" do
+      admin_role_name = Desm::ADMIN_ROLE_NAME
 
-  it "can not be created without an organization" do
-    password = Faker::Internet.password(min_length: 10, max_length: 20, mix_case: true, special_characters: true)
-    admin = described_class.create!(
-      fullname: "test",
-      email: "test@test.com",
-      password:,
-      skip_validating_organization: true
-    )
+      user.roles << Role.create!(name: admin_role_name)
 
-    expect(admin).not_to be_nil
-    expect do
-      described_class.create!(
+      expect(user.role?(admin_role_name.downcase.to_sym)).to be(true)
+    end
+
+    it "can not be created without an organization" do
+      password = Faker::Internet.password(min_length: 10, max_length: 20, mix_case: true, special_characters: true)
+      admin = described_class.create!(
         fullname: "test",
         email: "test@test.com",
-        password:
+        password:,
+        skip_validating_organization: true
       )
-    end.to raise_error ActiveRecord::RecordInvalid
+
+      expect(admin).not_to be_nil
+      expect do
+        described_class.create!(
+          fullname: "test",
+          email: "test@test.com",
+          password:
+        )
+      end.to raise_error ActiveRecord::RecordInvalid
+    end
   end
 end

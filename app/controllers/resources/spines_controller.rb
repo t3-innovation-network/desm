@@ -5,6 +5,8 @@
 ###
 module Resources
   class SpinesController < ApplicationController
+    include Decodable
+
     def index
       list = Spine.all.map(&:uri)
 
@@ -12,7 +14,7 @@ module Resources
     end
 
     def show
-      spec = Spine.find_by_slug!(params[:slug])
+      spec = Spine.find_by_slug!(decoded_slug)
 
       render json: spec.to_json_ld
     end

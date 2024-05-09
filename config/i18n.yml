@@ -1,0 +1,5 @@
+---
+translations:
+  - file: app/javascript/translations/locales.json
+    patterns:
+      - "*.ui.*"

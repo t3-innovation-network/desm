@@ -34,5 +34,10 @@ module App
 
     # Load all locales files organized in folders and subfolders
     config.i18n.load_path += Dir[Rails.root.join("config", "locales", "**", "*.{rb,yml}")]
+
+    config.autoload_paths += [
+      Rails.root.join("app", "interacotrs", "concerns"),
+      Rails.root.join("lib", "utils"),
+    ]
   end
 end

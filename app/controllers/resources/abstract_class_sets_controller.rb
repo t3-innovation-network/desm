@@ -5,6 +5,8 @@
 ###
 module Resources
   class AbstractClassSetsController < ApplicationController
+    include Decodable
+
     def index
       list = DomainSet.all.map do |ds|
         {
@@ -17,7 +19,7 @@ module Resources
     end
 
     def show
-      set = DomainSet.find_by_slug!(params[:slug])
+      set = DomainSet.find_by_slug!(decoded_slug)
 
       render json: set.to_json_ld
     end

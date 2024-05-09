@@ -18,7 +18,7 @@ RSpec.describe CreateCpStructure, type: :interactor do
       before(:all) do
         Role.create!(name: "profile admin")
         Role.create!(name: "dso admin")
-        Role.create!(name: "mapper")
+        Role.create!(name: Desm::MAPPER_ROLE_NAME)
         @cp = create(:configuration_profile)
         complete_structure = file_fixture("complete.configuration.profile.json")
         valid_json_abstract_classes = json_fixture("desmAbstractClasses.json")

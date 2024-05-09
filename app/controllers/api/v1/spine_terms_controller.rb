@@ -45,7 +45,8 @@ module API
       # @description: Ensure we have the mapped terms in order to add the new synthetic term to the spine
       ###
       def validate_mapped_terms
-        raise "No mapped terms provided for synthetic" unless params[:synthetic][:alignment][:mapped_terms].present?
+        raise ArgumentError, "No mapped terms provided for synthetic" \
+          unless params[:synthetic][:alignment][:mapped_terms].present?
       end
 
       ###

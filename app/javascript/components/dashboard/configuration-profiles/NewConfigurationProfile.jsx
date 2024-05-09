@@ -51,13 +51,7 @@ class NewConfigurationProfile extends Component {
           </ConfirmDialog>
         )}
         <CPBoxContainer
-          icon={
-            <FontAwesomeIcon
-              icon={faPlus}
-              className="fa-3x"
-              style={{ transform: 'translateY(20%) translateX(-5%)' }}
-            />
-          }
+          icon={<FontAwesomeIcon icon={faPlus} className="fa-3x" />}
           sideBoxClass="bg-dashboard-background-highlight col-background"
           action={() => {
             this.setState({ confirmationVisible: true });

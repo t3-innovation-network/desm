@@ -2,7 +2,7 @@
 
 ###
 # @description: Represents the ability that a user has to access
-#   term records.
+#   audited records.
 ###
 module Audited
   class AuditPolicy < ApplicationPolicy

@@ -11,10 +11,24 @@ en:
       unauthorized_access: "Unauthorized access."
       invalid_credentials: "Invalid email or password. Please try again."
     config:
+      configuration_profile_user:
+        destroy:
+          one: "Can't delete agent %{message} as there are some mappings done by that agent. Changes were not applied, please remove the mappings first."
+          other: "Can't delete agents %{message} as there are some mappings done by those agents. Changes were not applied, please remove the mappings first."
+        update:
+          one: "Email %{message} is already in use for this organization. Changes were not applied."
+          other: "Emails %{message} are already in use for this organization. Changes were not applied."
       domain:
         destroy:
           one: "Can't delete abstract class %{message} from previous scheme as it is in use. Changes were not applied."
           other: "Can't delete abstract classes %{message} from previous scheme as they are in use. Changes were not applied."
+      organization:
+        destroy:
+          one: "Can't delete organization %{message} as it has mappings or/and agents. Changes were not applied, please remove the mappings and agents first."
+          other: "Can't delete organizations %{message} as they have mappings or/and agents. Changes were not applied, please remove the mappings and agents first."
+        update:
+          one: "Organization name %{message} is already in use for this configuration profile. Changes were not applied."
+          other: "Organization name %{message} are already in use for this configuration profile. Changes were not applied."
       predicate:
         destroy:
           one: "Can't delete predicate %{message} from previous sheme as it is in use. Changes were not applied."

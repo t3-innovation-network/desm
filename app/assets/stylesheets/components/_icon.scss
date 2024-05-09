@@ -1,0 +1,6 @@
+.icon {
+  @include m(btn) {
+    margin-right: -$spacer * 0.25;
+    margin-top: -$spacer * 0.25;
+  }
+}

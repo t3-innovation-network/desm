@@ -42,7 +42,7 @@ class PasswordsController < ApplicationController
   #   to reset the password.
   ###
   def validate_email
-    raise "Email not present" unless permitted_params[:email].present?
+    raise ArgumentError, "Email not present" unless permitted_params[:email].present?
 
     @user = User.find_by_email!(permitted_params[:email])
   end
@@ -51,7 +51,7 @@ class PasswordsController < ApplicationController
   # @description: Validates the presence of the passowrd bofore calculating its strength
   ###
   def validate_password
-    raise "Password not provided" unless permitted_params[:password].present?
+    raise ArgumentError, "Password not provided" unless permitted_params[:password].present?
 
     decoded = decode(permitted_params[:password])
 
@@ -63,11 +63,11 @@ class PasswordsController < ApplicationController
   #  its validity.
   ###
   def validate_token
-    raise "Token not present" unless permitted_params[:token].present?
+    raise ArgumentError, "Token not present" unless permitted_params[:token].present?
 
     @user = User.find_by!(reset_password_token: permitted_params[:token])
 
-    raise "Link not valid or expired. Try generating a new link." unless @user.password_token_valid?
+    raise ArgumentError, "Link not valid or expired. Try generating a new link." unless @user.password_token_valid?
   end
 
   ###

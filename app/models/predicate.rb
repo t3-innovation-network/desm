@@ -18,6 +18,7 @@
 # Indexes
 #
 #  index_predicates_on_predicate_set_id                 (predicate_set_id)
+#  index_predicates_on_predicate_set_id_and_pref_label  (predicate_set_id,pref_label) UNIQUE
 #  index_predicates_on_predicate_set_id_and_source_uri  (predicate_set_id,source_uri) UNIQUE
 #
 # Foreign Keys
@@ -45,10 +46,11 @@ class Predicate < ApplicationRecord
 
   belongs_to :predicate_set
   validates :source_uri, presence: true, uniqueness: { scope: :predicate_set_id }
-  validates :pref_label, presence: true
+  validates :pref_label, presence: true, uniqueness: { scope: :predicate_set_id }
   before_create :assign_color, unless: :color?
   before_save :default_values
   alias_attribute :name, :pref_label
+  has_one :configuration_profile, through: :predicate_set
 
   MAX_ALLOWED_WEIGHT = 5
   MIN_ALLOWED_WEIGHT = 0

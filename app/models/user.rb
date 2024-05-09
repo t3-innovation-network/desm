@@ -25,6 +25,7 @@
 # @description: Represents a user of this application
 ###
 class User < ApplicationRecord
+  include PgSearch::Model
   include Tokenable
 
   attr_accessor :skip_sending_welcome_email, :skip_validating_organization
@@ -41,9 +42,42 @@ class User < ApplicationRecord
 
   validates :fullname, presence: true
   validates :email, presence: true, uniqueness: true
+  # validate phone based on the Desm::PHONE_RE regex
+  validates :phone,
+            format: { with: Desm::PHONE_RE, message: I18n.t("ui.config.user.phone_format") },
+            allow_blank: true
 
   after_create :send_welcome_email, unless: :skip_sending_welcome_email
   after_save :update_configuration_profiles
+
+  pg_search_scope :search_by_agents,
+                  against: %i(fullname email),
+                  associated_against: {
+                    configuration_profiles: :name,
+                    organizations: :name
+                  },
+                  using: {
+                    tsearch: { prefix: true }
+                  }
+
+  # scope :with_configuration_profiles, -> { where(id: ConfigurationProfileUser.pluck(:user_id)) }
+  scope :with_configuration_profiles, -> { joins(:configuration_profile_users) }
+  # filter by organization ids
+  scope :for_organizations, ->(ids) { joins(:organizations).where(organizations: { id: ids }) }
+  # filter by configuration profile ids
+  scope :for_configuration_profiles, lambda { |ids|
+    joins(:configuration_profiles)
+      .where(configuration_profiles: { id: ids })
+  }
+  # filter by configuration profile states
+  scope :for_configuration_profile_states, lambda { |states|
+    joins(:configuration_profiles).where(configuration_profiles: { state: states })
+  }
+
+  def self.search_with_configuration_profiles(query)
+    joins(configuration_profiles: :configuration_profile_users)
+      .merge(ConfigurationProfile.search_by_name(query))
+  end
 
   def as_json(options = {})
     super(options.merge(methods: %i(roles)))
