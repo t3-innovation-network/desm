@@ -125,7 +125,7 @@ export const specsListStore = (initialData = {}) => ({
     const state = h.getState();
     actions.setMappingIdLoading(params.id);
     try {
-      const response = await fetchMappingToExport(params.id);
+      const response = await fetchMappingToExport(params.mapping, params.format);
       if (state.withoutErrors(response)) return response;
       actions.setError(response.error);
       return null;

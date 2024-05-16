@@ -17,6 +17,7 @@ import {
   faDownload,
   faLayerGroup,
   faTrash,
+  faFileCsv,
 } from '@fortawesome/free-solid-svg-icons';
 import { AppContext } from '../../contexts/AppContext';
 import { pageRoutes } from '../../services/pageRoutes';
@@ -45,12 +46,25 @@ const SpecsList = (_props) => {
    *
    * @param {Integer} mappingId
    */
-  const handleExportMapping = async (mapping) => {
-    const response = await actions.fetchMappingToExport({ id: mapping.id });
+  const handleExportMapping = async (mapping, format) => {
+    const response = await actions.fetchMappingToExport({ mapping, format });
 
-    if (response) {
-      downloadFile(response.exportedMapping, `${mapping.name}.json`);
+    if (!response) {
+      return;
     }
+
+    let contentType = 'text/plain';
+
+    switch (format) {
+      case 'csv':
+        contentType = 'text/csv';
+        break;
+      case 'jsonld':
+        contentType = 'application/json';
+        break;
+    }
+
+    downloadFile(response.exportedMapping, `${mapping.name}.${format}`, contentType);
   };
 
   // Configure the options to see at the center of the top navigation bar
@@ -104,11 +118,20 @@ const SpecsList = (_props) => {
 
               <button
                 className="btn btn-sm btn-dark ml-2"
-                onClick={() => handleExportMapping(mapping)}
-                title="Export this mapping"
                 disabled={state.isDisabled}
+                onClick={() => handleExportMapping(mapping, 'jsonld')}
+                title="Export as JSON-LD"
               >
                 <FontAwesomeIcon icon={faDownload} />
+              </button>
+
+              <button
+                className="btn btn-sm btn-dark ml-2"
+                disabled={state.isDisabled}
+                onClick={() => handleExportMapping(mapping, 'csv')}
+                title="Export as CSV"
+              >
+                <FontAwesomeIcon icon={faFileCsv} />
               </button>
             </>
           ) : (
