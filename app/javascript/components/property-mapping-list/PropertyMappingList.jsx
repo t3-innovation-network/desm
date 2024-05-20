@@ -13,6 +13,7 @@ import { i18n } from 'utils/i18n';
 import { propertyMappingListStore } from './stores/propertyMappingListStore';
 import { camelizeLocationSearch, updateWithRouter } from 'helpers/queryString';
 import { isEmpty } from 'lodash';
+import ExportMappings from '../shared/ExportMappings';
 
 const PropertyMappingList = (props) => {
   const [state, actions] = useLocalStore(() => {
@@ -117,6 +118,9 @@ const PropertyMappingList = (props) => {
                 <h1>
                   <strong>{configurationProfile.name}</strong>: {i18n.t('ui.view_mapping.subtitle')}
                 </h1>
+                <div className="mb-3">
+                  <ExportMappings configurationProfile={configurationProfile} domains={domains} />
+                </div>
                 <label className="my-0">{i18n.t('ui.view_mapping.select_abstract_class')}</label>
                 <DesmTabs
                   onTabClick={(id) => updateSelectedDomain(id)}

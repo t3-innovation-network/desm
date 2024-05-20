@@ -33,5 +33,11 @@ FactoryBot.define do
         user.roles << Role.find_or_create_by!(name: Desm::ADMIN_ROLE_NAME)
       end
     end
+
+    trait :mapper do
+      after(:create) do |user|
+        user.roles << Role.find_or_create_by!(name: Desm::MAPPER_ROLE_NAME)
+      end
+    end
   end
 end

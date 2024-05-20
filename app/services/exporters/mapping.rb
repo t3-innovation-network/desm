@@ -11,14 +11,12 @@ module Exporters
       @mapping = mapping
     end
 
-    # rubocop:disable Naming/MemoizedInstanceVariableName
-    def to_csv
+    def csv
       @csv ||= CSV.new(mapping).export
     end
 
-    def to_jsonld
+    def jsonld
       @jsonld ||= JSONLD.new(mapping).export
     end
-    # rubocop:enable Naming/MemoizedInstanceVariableName
   end
 end

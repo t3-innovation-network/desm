@@ -7,7 +7,6 @@ import TopNavOptions from '../shared/TopNavOptions';
 import SpineSpecsList from './SpineSpecsList';
 import { startCase, toLower } from 'lodash';
 import ConfirmDialog from '../shared/ConfirmDialog';
-import { downloadFile } from '../../helpers/Export';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUndo,
@@ -18,6 +17,7 @@ import {
   faLayerGroup,
   faTrash,
   faFileCsv,
+  faFileArrowDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { AppContext } from '../../contexts/AppContext';
 import { pageRoutes } from '../../services/pageRoutes';
@@ -40,32 +40,6 @@ const SpecsList = (_props) => {
   // Mark a 'uploaded' mapping back to 'ready to upload'
   const handleMarkToReady = (mappingId) =>
     actions.handleUpdateMappingStatus({ mappingId, status: 'ready_to_upload' });
-  /**
-   * Manages to request the mapping in JSON-LD version to export as
-   * a JSON file
-   *
-   * @param {Integer} mappingId
-   */
-  const handleExportMapping = async (mapping, format) => {
-    const response = await actions.fetchMappingToExport({ mapping, format });
-
-    if (!response) {
-      return;
-    }
-
-    let contentType = 'text/plain';
-
-    switch (format) {
-      case 'csv':
-        contentType = 'text/csv';
-        break;
-      case 'jsonld':
-        contentType = 'application/json';
-        break;
-    }
-
-    downloadFile(response.exportedMapping, `${mapping.name}.${format}`, contentType);
-  };
 
   // Configure the options to see at the center of the top navigation bar
   const navCenterOptions = () => <TopNavOptions viewMappings={true} mapSpecification={true} />;
@@ -81,7 +55,7 @@ const SpecsList = (_props) => {
   );
 
   const renderMapping = (mapping) => {
-    const fromSameOrg = mapping.organization.id === organization.id;
+    const fromSameOrg = mapping.organization.id === organization?.id;
 
     return (
       <tr key={mapping.id}>
@@ -119,7 +93,7 @@ const SpecsList = (_props) => {
               <button
                 className="btn btn-sm btn-dark ml-2"
                 disabled={state.isDisabled}
-                onClick={() => handleExportMapping(mapping, 'jsonld')}
+                onClick={() => actions.downloadExportedMappings({ format: 'jsonld', mapping })}
                 title="Export as JSON-LD"
               >
                 <FontAwesomeIcon icon={faDownload} />
@@ -128,7 +102,16 @@ const SpecsList = (_props) => {
               <button
                 className="btn btn-sm btn-dark ml-2"
                 disabled={state.isDisabled}
-                onClick={() => handleExportMapping(mapping, 'csv')}
+                onClick={() => actions.downloadExportedMappings({ format: 'ttl', mapping })}
+                title="Export as Turtle"
+              >
+                <FontAwesomeIcon icon={faFileArrowDown} />
+              </button>
+
+              <button
+                className="btn btn-sm btn-dark ml-2"
+                disabled={state.isDisabled}
+                onClick={() => actions.downloadExportedMappings({ format: 'csv', mapping })}
                 title="Export as CSV"
               >
                 <FontAwesomeIcon icon={faFileCsv} />
@@ -178,77 +161,78 @@ const SpecsList = (_props) => {
     );
   };
 
+  const renderTable = () => {
+    if (loading) {
+      return <Loader />;
+    }
+
+    return (
+      <>
+        <ConfirmDialog
+          onRequestClose={actions.cancelRemove}
+          onConfirm={actions.handleRemoveMapping}
+          visible={state.confirmingRemove}
+        >
+          <h2 className="text-center">You are removing a specification</h2>
+          <h5 className="mt-3 text-center">Please confirm this action.</h5>
+        </ConfirmDialog>
+
+        <div className="table-responsive">
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">Specification Name</th>
+                <th scope="col">Version</th>
+                <th scope="col">Mapped</th>
+                <th scope="col">Status</th>
+                <th scope="col">Author</th>
+                <th scope="col">
+                  <select
+                    className="form-control"
+                    value={filter}
+                    onChange={(e) => actions.setFilter(e.target.value)}
+                  >
+                    {FILTER_OPTIONS.map((option) => (
+                      <option key={option.key} value={option.key}>
+                        {option.value}
+                      </option>
+                    ))}
+                  </select>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <SpineSpecsList filter={filter} spines={state.spines} />
+              {mappings.length > 0 ? mappings.map(renderMapping) : <tr />}
+            </tbody>
+          </table>
+
+          <hr className="rounded-divider" />
+
+          {mappings.length === 0 && (
+            <div className="card text-center">
+              <div className="card-header bg-col-on-primary-highlight">
+                <p>All the specifications you and your team map will be visible here</p>
+              </div>
+              <div className="card-body bg-col-on-primary-highlight">
+                <Link to="/new-mapping" className="btn bg-col-primary col-background">
+                  Map a specification
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+      </>
+    );
+  };
+
   return (
     <div className="container-fluid">
       <TopNav centerContent={navCenterOptions} />
       <div className="row">
         <div className="col p-lg-5 pt-5">
           <h1>My Specifications</h1>
-          <p>
-            Current configuration profile: <mark>{currentConfigurationProfile.name}</mark>
-          </p>
-          {loading ? (
-            <Loader />
-          ) : (
-            <>
-              <ConfirmDialog
-                onRequestClose={actions.cancelRemove}
-                onConfirm={actions.handleRemoveMapping}
-                visible={state.confirmingRemove}
-              >
-                <h2 className="text-center">You are removing a specification</h2>
-                <h5 className="mt-3 text-center">Please confirm this action.</h5>
-              </ConfirmDialog>
-
-              <div className="table-responsive">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Specification Name</th>
-                      <th scope="col">Version</th>
-                      <th scope="col">Mapped</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">Author</th>
-                      <th scope="col">
-                        <select
-                          className="form-control"
-                          value={filter}
-                          onChange={(e) => actions.setFilter(e.target.value)}
-                        >
-                          {FILTER_OPTIONS.map(function (option) {
-                            return (
-                              <option key={option.key} value={option.key}>
-                                {option.value}
-                              </option>
-                            );
-                          })}
-                        </select>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <SpineSpecsList filter={filter} />
-                    {mappings.length > 0 ? mappings.map(renderMapping) : <tr />}
-                  </tbody>
-                </table>
-
-                <hr className="rounded-divider" />
-
-                {mappings.length === 0 && (
-                  <div className="card text-center">
-                    <div className="card-header bg-col-on-primary-highlight">
-                      <p>All the specifications you and your team map will be visible here</p>
-                    </div>
-                    <div className="card-body bg-col-on-primary-highlight">
-                      <Link to="/new-mapping" className="btn bg-col-primary col-background">
-                        Map a specification
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
+          {renderTable()}
         </div>
       </div>
     </div>

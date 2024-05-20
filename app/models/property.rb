@@ -45,8 +45,8 @@ class Property < ApplicationRecord
   ###
   # @description: Returns the property's compact domains
   ###
-  def compact_domains
-    @compact_domains ||= Array.wrap(domain).map { Utils.compact_uri(_1) }.compact
+  def compact_domains(non_rdf: true)
+    @compact_domains ||= Array.wrap(domain).map { Utils.compact_uri(_1, non_rdf:) }.compact
   end
 
   ###
