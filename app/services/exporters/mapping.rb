@@ -22,7 +22,38 @@ module Exporters
       rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
       rdfs: "http://www.w3.org/2000/01/rdf-schema#",
       sdo: "http://schema.org/",
-      xsd: "http://www.w3.org/2001/XMLSchema#"
+      xsd: "http://www.w3.org/2001/XMLSchema#",
+      skos: "http://www.w3.org/2004/02/skos/core#",
+      "desm:inTermMapping": {
+        "@type": "@id"
+      },
+      "desm:mapper": {
+        "@type": "@id"
+      },
+      "desm:isClassMappingOf": {
+        "@type": "@id"
+      },
+      "desm:mappingPredicateType": {
+        "@type": "@id"
+      },
+      "skos:inScheme": {
+        "@type": "@id"
+      },
+      "dct:isPartOf": {
+        "@type": "@id"
+      },
+      "desm:AbstractClass": {
+        "@type": "@id"
+      },
+      "desm:hasProperty": {
+        "@type": "@id"
+      },
+      "dct:creator": {
+        "@type": "@id"
+      },
+      "desm:homepage": {
+        "@type": "@id"
+      }
     }.freeze
 
     ###
