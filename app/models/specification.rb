@@ -91,7 +91,6 @@ class Specification < ApplicationRecord
       name:,
       uri:,
       version:,
-      use_case:,
       domain: domain.uri,
       terms: terms.map(&:source_uri).sort
     }
