@@ -1,0 +1,116 @@
+{
+  "@context": {
+    "dc": "http://dublincore.org/elements/1.1/",
+    "dct": "http://purl.org/dc/terms/",
+    "edUse": "http://purl.org/dcx/lrmi-vocabs/educationalUse/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "vann": "http://purl.org/vocab/vann/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc:creator": {
+      "@container": "@language"
+    },
+    "dc:title": {
+      "@container": "@language"
+    },
+    "dct:created": {
+      "@type": "xsd:date"
+    },
+    "dct:description": {
+      "@container": "@language"
+    },
+    "dct:license": {
+      "@type": "@id"
+    },
+    "dct:modified": {
+      "@type": "xsd:date"
+    },
+    "dct:source": {
+      "@container": "@language"
+    },
+    "skos:definition": {
+      "@container": "@language"
+    },
+    "skos:inScheme": {
+      "@type": "@id"
+    },
+    "skos:prefLabel": {
+      "@container": "@language"
+    },
+    "http://purl.org/vocab/vann/changes": {
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "http://purl.org/dcx/lrmi-vocabs/educationalUse/",
+      "@type": "skos:ConceptScheme",
+      "dc:creator": {
+        "en-us": "LRMI Task Group (DCMI)",
+        "de": "LRMI Task Group (DCMI)"
+      },
+      "dc:title": {
+        "en-us": "LRMI Educational Use vocabulary",
+        "de": "LRMI Vokabular der  Bildungszwecke"
+      },
+      "dct:created": "2017-03-01",
+      "dct:description": {
+        "en-us": "A concept scheme that enumerates the educational uses of a learning resource.",
+        "de": "Ein kontrolliertes Vokabular, das die pädagogische Nutzung einer Lernressource beschreibt."
+      },
+      "dct:license": "http://creativecommons.org/licenses/by/4.0/",
+      "dct:modified": "2022-10-18",
+      "vann:changes": "https://www.dublincore.org/specifications/lrmi/concept_schemes/release-history/"
+    },
+    {
+      "@id": "edUse:instruction",
+      "@type": "skos:Concept",
+      "dct:source": {
+        "en-us": "Based on Common Education Data Standards (CEDS): https://ceds.ed.gov/element/001002#CurriculumInstruction",
+        "de": "Basierend auf den Common Education Data Standards (CEDS): https://ceds.ed.gov/element/001002#CurriculumInstruction"
+      },
+      "skos:definition": {
+        "en-us": "Primary purpose of the resource is to support the instructional process, student learning, or to provide information about the curriculum.",
+        "de": "Hauptzweck der Ressource ist die Unterstützung des Unterrichtsprozesses, das Lernen der Schüler*innen oder die Bereitstellung von Informationen über den Lehrplan."
+      },
+      "skos:inScheme": "http://purl.org/dcx/lrmi-vocabs/educationalUse/",
+      "skos:prefLabel": {
+        "en-us": "instruction",
+        "de": "Anleitung"
+      }
+    },
+    {
+      "@id": "edUse:professionalSupport",
+      "@type": "skos:Concept",
+      "dct:source": {
+        "en-us": "Based on Common Education Data Standards (CEDS): https://ceds.ed.gov/element/001002#ProfessionalDevelopment",
+        "de": "Basierend auf den Common Education Data Standards (CEDS): https://ceds.ed.gov/element/001002#ProfessionalDevelopment"
+      },
+      "skos:definition": {
+        "en-us": "Primary purpose of the resource is to provide instruction for a teacher or other education professional including professional development.",
+        "de": "Hauptzweck der Ressource ist die Bereitstellung einer Anleitung für Lehrer*innen oder einer anderen pädagogischen Fachkraft, einschließlich der beruflichen Weiterbildung."
+      },
+      "skos:inScheme": "http://purl.org/dcx/lrmi-vocabs/educationalUse/",
+      "skos:prefLabel": {
+        "en-us": "professional support",
+        "de": "professionelle Unterstützung"
+      }
+    },
+    {
+      "@id": "edUse:assessment",
+      "@type": "skos:Concept",
+      "dct:source": {
+        "en-us": "Based on Common Education Data Standards (CEDS): https://ceds.ed.gov/element/001002#Assessment",
+        "de": "Basierend auf den Common Education Data Standards (CEDS): https://ceds.ed.gov/element/001002#Assessment"
+      },
+      "skos:definition": {
+        "en-us": "Primary purpose of the resource is to evaluate learning, before, during, or after instruction occurs.",
+        "de": "Der Hauptzweck der Ressource besteht darin, das Lernen vor, während oder nach dem Unterricht zu bewerten."
+      },
+      "skos:inScheme": "http://purl.org/dcx/lrmi-vocabs/educationalUse/",
+      "skos:prefLabel": {
+        "en-us": "assessment",
+        "de": "Bewertung"
+      }
+    }
+  ]
+}

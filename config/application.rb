@@ -39,5 +39,8 @@ module App
       Rails.root.join("app", "interacotrs", "concerns"),
       Rails.root.join("lib", "utils"),
     ]
+
+    # need this for audited
+    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone]
   end
 end

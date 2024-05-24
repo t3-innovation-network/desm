@@ -57,11 +57,7 @@ const MappingToDomains = (props) => {
    * but it mimics the same action).
    */
   useEffect(() => {
-    actions.fetchDataFromAPI({ mappingId: props.match.params.id }).then(() => {
-      if (!state.hasErrors) {
-        actions.setLoading(false);
-      }
-    });
+    actions.fetchDataFromAPI({ mappingId: props.match.params.id });
   }, []);
 
   /**

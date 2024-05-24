@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useLocalStore } from 'easy-peasy';
 import { Link } from 'react-router-dom';
 import useDebounce from 'helpers/useDebounce';
@@ -15,11 +15,6 @@ const AgentsIndex = (_props = {}) => {
   const store = useLocalStore(() => agentsStore());
   const [state, actions] = store;
   const searchInput = useDebounce(state.searchInput);
-  const searchParams = useMemo(() => state.filterParams, [
-    state.configurationProfileIds,
-    state.organizationIds,
-    state.configurationProfileIds,
-  ]);
 
   // fetch data on start and refetch when searchInput/other filters changes
   useEffect(() => actions.fetchDataFromAPI(), []);

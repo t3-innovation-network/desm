@@ -179,6 +179,7 @@ ActiveRecord::Schema.define(version: 2024_04_20_160653) do
     t.integer "status", default: 0
     t.string "slug"
     t.bigint "configuration_profile_user_id", null: false
+    t.datetime "mapped_at"
     t.index ["configuration_profile_user_id"], name: "index_mappings_on_configuration_profile_user_id"
     t.index ["specification_id"], name: "index_mappings_on_specification_id"
   end

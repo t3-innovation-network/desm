@@ -33,11 +33,7 @@ const EditSpecification = (props) => {
    * but it mimics the same action).
    */
   useEffect(() => {
-    actions.fetchDataFromAPI({ spineId: props.match.params.id }).then(() => {
-      if (!state.hasErrors) {
-        actions.setLoading(false);
-      }
-    });
+    actions.fetchDataFromAPI({ spineId: props.match.params.id });
   }, []);
 
   return (

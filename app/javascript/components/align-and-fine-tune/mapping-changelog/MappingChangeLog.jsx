@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import fetchAudits from '../../../services/fetchAudits';
 import Collapsible from '../../shared/Collapsible';
 import ChangeDetails from './ChangeDetails';
-import Moment from 'moment';
+import { dateTimeLongFormat } from '../../../utils/dateFormatting';
 
 /**
  * @description Renders a card with information about the changes in the mapping provided
@@ -70,7 +70,7 @@ const MappingChangeLog = (props) => {
             <li key={i}>
               <div className="ml-3">
                 <div className="row">
-                  <strong>{Moment(change.created_at).format('MMMM Do YYYY, h:mm:ss a')}</strong>
+                  <strong>{dateTimeLongFormat(change.created_at)}</strong>
                 </div>
                 <ChangeDetails
                   spineTerm={spineTermForAlignment(change.auditable_id)}

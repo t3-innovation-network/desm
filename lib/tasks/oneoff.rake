@@ -51,4 +51,23 @@ namespace :oneoff do
       puts "Configuration Profile #{cp.id}, #{cp.name} updated"
     end
   end
+
+  desc "One-off task: set mapped_at for all mappings based on audits"
+  task set_mapped_at_for_mappings: :environment do
+    data = Audited::Audit.where(auditable_type: "Mapping", action: "update",
+                                auditable_id: Mapping.mapped.ids).select do |a|
+                                  a.audited_changes["status"] == [1, 2]
+                                end
+    # get the latest status change for each mapping
+    data = data.group_by(&:auditable_id).transform_values do |audits|
+      audits.max_by(&:created_at)
+    end
+    data.each_value do |audit|
+      audit.auditable.update_column(:mapped_at, audit.created_at)
+    end
+    # if there are mapped mappings without audits set mapped at as last updated at
+    Mapping.mapped.where(mapped_at: nil).each do |mapping|
+      mapping.update_column(:mapped_at, mapping.updated_at)
+    end
+  end
 end
