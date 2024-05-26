@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { compact, flatMap } from 'lodash';
 import { implementAlignmentSort, implementAlignmentTermsSort } from './SortOptions';
-import { propertyClassesForAlignmentTerm } from './stores/propertyMappingListStore';
+import { propertyClassForSpineTerm } from './stores/propertyMappingListStore';
 
 /**
  * @description A list of alignments with information like predicate, comment, and more.
@@ -47,7 +47,7 @@ const PropertyAlignments = (props) => {
             ? {
                 ...mTerm,
                 alignment,
-                selectedClasses: propertyClassesForAlignmentTerm(alignment, mTerm),
+                selectedClass: propertyClassForSpineTerm(mTerm),
               }
             : null
         )
@@ -80,8 +80,6 @@ const PropertyAlignments = (props) => {
 const AlignmentCard = ({ alignment, term, isLast = false }) => {
   const [showingAlignmentComment, setShowingAlignmentComment] = useState(false);
 
-  const alignmentTermClasses = term.selectedClasses.map((c) => <li key={c}>{c}</li>);
-
   return (
     <div className={`card borderless ${isLast ? '' : 'mb-3'}`}>
       <div className="card-header desm-rounded bottom-borderless bg-col-secondary">
@@ -98,7 +96,7 @@ const AlignmentCard = ({ alignment, term, isLast = false }) => {
             <p className="mb-1">{term.name}</p>
 
             <small className="mt-1 col-on-primary-light">Class/Type</small>
-            <ul className="list-unstyled mb-1">{alignmentTermClasses}</ul>
+            <p className="mb-1">{term.selectedClass}</p>
           </div>
           <div className="col-6">
             <small className="mt-1 col-on-primary-light">Definition</small>
