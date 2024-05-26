@@ -43,15 +43,8 @@ export const defaultState = {
   propertiesInputValue: '',
 };
 
-export const propertyClassForSpineTerm = (term) => {
-  const { selectedDomain } = term.property;
-
-  if ((selectedDomain ?? '').startsWith('http')) {
-    return null;
-  }
-
-  return selectedDomain;
-};
+export const propertyClassesForSpineTerm = (term) =>
+  (term.property.domain ?? []).filter((u) => !u.startsWith('http'));
 
 export const propertyMappingListStore = (initialData = {}) => ({
   ...baseModel(initialData),

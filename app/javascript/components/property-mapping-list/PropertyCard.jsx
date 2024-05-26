@@ -1,11 +1,12 @@
 import ProgressReportBar from '../shared/ProgressReportBar';
-import { propertyClassForSpineTerm } from './stores/propertyMappingListStore';
+import { propertyClassesForSpineTerm } from './stores/propertyMappingListStore';
 
 /**
  * Props:
  * @param {Object} term
  */
 const PropertyCard = ({ term }) => {
+  const propertyClasses = propertyClassesForSpineTerm(term).map((c) => <li key={c}>{c}</li>);
   return (
     <div className="card borderless bg-col-secondary h-100">
       <div className="card-header desm-rounded bottom-borderless bg-col-secondary">
@@ -13,7 +14,7 @@ const PropertyCard = ({ term }) => {
         <h3 className="mb-1">{term.name}</h3>
 
         <small className="mt-1 col-on-primary-light">Class/Type</small>
-        <p className="mb-1">{propertyClassForSpineTerm(term)}</p>
+        <ul className="list-unstyled mb-1">{propertyClasses}</ul>
 
         <small className="mt-1 col-on-primary-light">Definition</small>
         <p className="mb-1">{term.property.comment}</p>
