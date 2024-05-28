@@ -36,4 +36,8 @@
 ###
 class Property < ApplicationRecord
   belongs_to :term
+
+  def compact_domains
+    @compact_domains ||= Array.wrap(domain).map { Utils.compact_uri(_1) }.compact
+  end
 end

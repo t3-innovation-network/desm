@@ -43,9 +43,6 @@ export const defaultState = {
   propertiesInputValue: '',
 };
 
-export const propertyClassesForSpineTerm = (term) =>
-  (term.property.domain ?? []).filter((u) => !u.startsWith('http'));
-
 export const propertyMappingListStore = (initialData = {}) => ({
   ...baseModel(initialData),
   ...easyStateSetters(defaultState, initialData),
