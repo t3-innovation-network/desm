@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ConfigurationProfileUserSerializer < ApplicationSerializer
-  attributes :description, :slug, :state
+  attributes :description, :slug, :state, :lead_mapper
   delegate :id, :name, :created_at, :updated_at, to: :configuration_profile
   delegate :description, :slug, :state, to: :configuration_profile
 
