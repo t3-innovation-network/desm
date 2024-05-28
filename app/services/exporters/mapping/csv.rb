@@ -67,16 +67,27 @@ module Exporters
 
         def values
           [
+            # Spine term name
             spine_term.label,
-            spine_term.comment,
-            spine_term.selected_range,
+            # Spine term definition
+            spine_term.comments.join("\n"),
+            # Spine term class/type
+            spine_term.compact_domains.join(", "),
+            # Spine term organization+schema
             [organization.name, specification.name].compact.join("+"),
+            # Mapping predicate label
             predicate&.name,
+            # Mapping predicate definition
             predicate&.definition,
+            # Mapped term name
             mapped_term&.label,
-            mapped_term&.comment,
-            mapped_term&.selected_range,
+            # Mapped term definition
+            mapped_term&.comments&.join("\n"),
+            # Mapped term class type
+            mapped_term&.compact_domains&.join(", "),
+            # Comments
             alignment.comment,
+            # Transformation notes
             nil
           ]
         end

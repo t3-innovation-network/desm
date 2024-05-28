@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TermSerializer < ApplicationSerializer
-  attributes :compact_domains, :raw, :source_uri, :slug, :uri
+  attributes :comments, :compact_domains, :raw, :source_uri, :slug, :uri
   has_one :property
   has_many :vocabularies, serializer: PreviewSerializer
   has_one :organization, if: -> { params[:spine] || params[:with_organization] }, serializer: PreviewSerializer
@@ -17,11 +17,5 @@ class TermSerializer < ApplicationSerializer
 
   attribute :title do
     object.source_uri.to_s.split(":").last.presence || object.name
-  end
-
-  attribute :comments do
-    node = Parsers::JsonLd::Node.new(object.raw.slice("rdfs:comment"))
-    sanitizer = Rails::Html::FullSanitizer.new
-    node.read_as_language_map("comment").map { sanitizer.sanitize(_1) }
   end
 end
