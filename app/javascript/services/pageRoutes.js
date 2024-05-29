@@ -12,4 +12,5 @@ export const pageRoutes = {
     `/mappings-list${cp ? `?cp=${cp}` : ''}${
       abstractClass ? `${cp ? '&' : '?'}abstractClass=${abstractClass}` : ''
     }`,
+  mappingPropertiesList: (mappingId) => `/mappings/${mappingId}/properties`,
 };

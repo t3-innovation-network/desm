@@ -36,11 +36,21 @@
 ###
 class Property < ApplicationRecord
   belongs_to :term
+  before_update :update_term, if: -> { label_changed? || source_uri_changed? }
 
   ###
   # @description: Returns the property's compact domains
   ###
   def compact_domains
     @compact_domains ||= Array.wrap(domain).map { Utils.compact_uri(_1) }.compact
+  end
+
+  private
+
+  def update_term
+    return if term.name == label && term.source_uri == source_uri
+
+    term.update!(name: label, source_uri:)
+    self.uri = term.uri
   end
 end

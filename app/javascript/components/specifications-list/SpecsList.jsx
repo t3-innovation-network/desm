@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUndo,
   faPencilAlt,
+  faFilePen,
   faEye,
   faDownload,
   faLayerGroup,
@@ -346,7 +347,15 @@ export default class SpecsList extends Component {
               )}
             </>
           )}
-
+          {fromSameOrg && (
+            <Link
+              to={pageRoutes.mappingPropertiesList(mapping.id)}
+              className="btn btn-sm btn-dark ml-2"
+              title="Edit mapping's properties. You can edit each property here."
+            >
+              <FontAwesomeIcon icon={faFilePen} />
+            </Link>
+          )}
           {fromSameOrg && (
             <button
               onClick={() => this.handleConfirmRemove(mapping.id)}

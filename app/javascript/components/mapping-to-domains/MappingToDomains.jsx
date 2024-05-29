@@ -131,6 +131,7 @@ const MappingToDomains = (props) => {
         modalIsOpen={editingTerm}
         onRequestClose={() => actions.setEditingTerm(false)}
         onRemoveTerm={actions.onRemoveTerm}
+        onUpdateTerm={actions.onUpdateTerm}
         termId={termToEdit.id}
       />
       <div className="container-fluid d-flex flex-column h-100">

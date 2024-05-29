@@ -34,6 +34,19 @@ en:
         zero: No shared mappings found for this abstract class and configuration profile.
         one: "Shared mapping:"
         other: "Shared mappings:"
+    properties_list:
+      notice:
+        mapping:
+          zero: No mapping properties found for this mapping.
+          one: "1 property recognized for this mapping"
+          other: "%{count} properties recognized for this mapping"
+        spine:
+          zero: No spine properties found for this spine.
+          one: "1 property recognized for this spine"
+          other: "%{count} properties recognized for this spine"
+        message:
+          mapping: You can edit each term of your specification until you are confident with names, vocabularies, uri's and more.
+          spine: You can edit each term of your specification until you are confident with names, vocabularies, uri's and more.
     pages:
       default:
         title: DESM
@@ -44,4 +57,16 @@ en:
       mappings_list:
         title: DESM - Shared mappings
         description: View shared mappings in the Data Ecosystem Schema Mapper Tool.
+      mappings:
+        title: DESM - Specifications
+        description: View/Update mappings in the Data Ecosystem Schema Mapper Tool.
+      mapping_to_domains:
+        title: DESM - Map to Domains
+        description: Map to Domains in the Data Ecosystem Schema Mapper Tool.
+      spine_properties:
+        title: DESM - Spine Properties
+        description: View/Edit spine properties in the Data Ecosystem Schema Mapper Tool.
+      mapping_properties:
+        title: DESM - Mapping Properties
+        description: View/Edit mapping properties in the Data Ecosystem Schema Mapper Tool.
 

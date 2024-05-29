@@ -16,6 +16,7 @@ import SpecsList from './specifications-list/SpecsList';
 import AlignAndFineTune from './align-and-fine-tune/AlignAndFineTune';
 import MappingToDomains from './mapping-to-domains/MappingToDomains';
 import EditSpecification from './edit-specification/EditSpecification';
+import EditMappingProperties from './edit-specification/EditMappingProperties';
 import PropertyMappingList from './property-mapping-list/PropertyMappingList';
 import ForgotPass from './auth/ForgotPass';
 import ResetPass from './auth/ResetPass';
@@ -66,12 +67,19 @@ const Routes = (props) => {
           render={(props) => <PropertyMappingList {...props} handleLogin={handleLogin} />}
         />
 
-        <ProtectedRoute exact path="/mappings" allowedRoles={onlyMappers} component={SpecsList} />
+        <ProtectedRoute
+          exact
+          path="/mappings"
+          allowedRoles={onlyMappers}
+          pageType="mappings"
+          component={SpecsList}
+        />
 
         <ProtectedRoute
           exact
           path="/specifications/:id"
           allowedRoles={allRoles}
+          pageType="spine-properties"
           component={EditSpecification}
         />
 
@@ -81,6 +89,7 @@ const Routes = (props) => {
           exact
           path="/mappings/:id"
           allowedRoles={onlyMappers}
+          pageType="mapping-to-domains"
           component={MappingToDomains}
         />
 
@@ -89,6 +98,14 @@ const Routes = (props) => {
           path="/mappings/:id/align"
           allowedRoles={onlyMappers}
           component={AlignAndFineTune}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/mappings/:id/properties"
+          allowedRoles={onlyMappers}
+          pageType="mapping-properties"
+          component={EditMappingProperties}
         />
 
         <ProtectedRoute

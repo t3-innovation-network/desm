@@ -138,6 +138,7 @@ export default class EditTerm extends Component {
         this.setState({ error: response.error });
         return;
       }
+      if (this.props.onUpdateTerm) this.props.onUpdateTerm(response);
       this.closeRequested();
       showSuccess('Changes Saved to  ' + this.state.term.name);
     });
