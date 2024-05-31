@@ -1,0 +1,8 @@
+<% if impersonation_mode? %>
+  <div class="alert alert-danger d-flex justify-content-between fw-bold sticky-top">
+    <span>
+      🎭 Impersonating <%= current_user.fullname %> <%= current_organization ? "@ #{current_organization.name}" : "" %> &lt;<%= current_user.email %>&gt;
+    </span>
+    <%= link_to 'Stop Impersonating', stop_impersonating_path, class: 'btn btn-danger btn-sm' %>
+  </div>
+<% end %>
