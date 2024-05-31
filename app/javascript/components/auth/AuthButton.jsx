@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { doLogout, unsetUser } from '../../actions/sessions';
 import signOut from '../../services/signOut';
 import { AppContext } from '../../contexts/AppContext';
-import { showInfo, showError } from '../../helpers/Messages';
+import { showError } from '../../helpers/Messages';
 
 const AuthButton = () => {
   const { setLoggedIn, setCurrentConfigurationProfile } = useContext(AppContext);
@@ -23,7 +23,9 @@ const AuthButton = () => {
     dispatch(unsetUser());
     setCurrentConfigurationProfile(null);
     setLoggedIn(false);
-    showInfo('Signed Out');
+
+    // Reload the whole app
+    window.location = '/';
   };
 
   /// Show "Sign Out" if the user is already signed in

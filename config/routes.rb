@@ -132,6 +132,8 @@ Rails.application.routes.draw do
   resources :registrations, only: [:create]
   delete :logout, to: 'sessions#logout'
   get :session_status, to: 'sessions#session_status'
+  get 'agents/:agent_id/impersonate', to: 'impersonations#start'
+  get :stop_impersonating, to: 'impersonations#stop'
   post 'password/forgot', to: 'passwords#forgot'
   post 'password/reset', to: 'passwords#reset'
 
