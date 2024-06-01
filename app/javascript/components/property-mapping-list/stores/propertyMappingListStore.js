@@ -1,3 +1,4 @@
+import { flatMap, intersection } from 'lodash';
 import { baseModel } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
 import { alignmentSortOptions, spineSortOptions } from '../SortOptions';
@@ -42,6 +43,15 @@ export const defaultState = {
   // The value from the input in the searchbar, to filter properties
   propertiesInputValue: '',
 };
+
+export const propertyClassesForSpineTerm = (term) =>
+  intersection(
+    term.compactDomains,
+    flatMap(term.alignments, (a) => a.compactDomains)
+  );
+
+export const propertyClassesForAlignmentTerm = (alignment, term) =>
+  intersection(term.compactDomains, alignment.compactDomains);
 
 export const propertyMappingListStore = (initialData = {}) => ({
   ...baseModel(initialData),

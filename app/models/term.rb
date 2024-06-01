@@ -68,6 +68,8 @@ class Term < ApplicationRecord
 
   before_destroy :check_if_alignments_exist
 
+  delegate :compact_domains, to: :property
+
   ###
   # @description: Include additional information about the specification in
   #   json responses. This overrides the ApplicationRecord as_json method.

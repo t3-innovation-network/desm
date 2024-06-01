@@ -1,12 +1,12 @@
 import ProgressReportBar from '../shared/ProgressReportBar';
+import { propertyClassesForSpineTerm } from './stores/propertyMappingListStore';
 
 /**
  * Props:
  * @param {Object} term
  */
 const PropertyCard = ({ term }) => {
-  const propertyClasses = term.property.compactDomains.map((c) => <li key={c}>{c}</li>);
-
+  const propertyClasses = propertyClassesForSpineTerm(term).map((c) => <li key={c}>{c}</li>);
   return (
     <div className="card borderless bg-col-secondary h-100">
       <div className="card-header desm-rounded bottom-borderless bg-col-secondary">

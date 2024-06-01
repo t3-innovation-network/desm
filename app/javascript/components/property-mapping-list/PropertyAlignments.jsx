@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { compact, flatMap } from 'lodash';
 import { implementAlignmentSort, implementAlignmentTermsSort } from './SortOptions';
+import { propertyClassesForAlignmentTerm } from './stores/propertyMappingListStore';
 
 /**
  * @description A list of alignments with information like predicate, comment, and more.
@@ -46,7 +47,7 @@ const PropertyAlignments = (props) => {
             ? {
                 ...mTerm,
                 alignment,
-                selectedClasses: mTerm.property.compactDomains,
+                selectedClasses: propertyClassesForAlignmentTerm(alignment, mTerm),
               }
             : null
         )
