@@ -159,7 +159,11 @@ Rails.application.routes.draw do
 
       resources :configuration_profiles, except: %i[new edit] do
         get :set_current, on: :member
-        post :import, on: :collection
+        collection do
+          post :import
+          get :index_shared_mappings
+          get :index_for_user
+        end
       end
 
       resources :vocabularies, only: [:index, :create, :show] do

@@ -3,7 +3,8 @@
 module API
   module V1
     class ConfigurationProfilesController < API::V1::ConfigurationProfilesAbstractController
-      before_action :with_instance, only: %i(destroy show update set_current)
+      before_action :authorize_with_policy_class, only: %i(create index index_for_user)
+      before_action :authorize_with_policy, only: %i(destroy show update set_current)
 
       def create
         cp = ConfigurationProfile.create!(creation_params)
@@ -13,19 +14,18 @@ module API
       end
 
       def index
-        fields = ["configuration_profiles.*"]
+        render json: policy_scope(ConfigurationProfile).order(:name)
+      end
 
-        configuration_profiles =
-          if current_user && !current_user.super_admin?
-            current_user
-              .configuration_profile_users
-              .joins(:configuration_profile, :organization)
-              .select(*fields, :lead_mapper, "organizations.id organization_id, organizations.id AS organization")
-          else
-            ConfigurationProfile.select(*fields)
-          end
+      def index_shared_mappings
+        render json: ConfigurationProfile.active.with_shared_mappings.order(:name), with_shared_mappings: true,
+               shared_mappings: true
+      end
 
-        render json: configuration_profiles.order(:name)
+      def index_for_user
+        render json: current_user.configuration_profile_users.includes(:configuration_profile, :organization)
+                       .where(configuration_profiles: { state: :active })
+                       .order("configuration_profiles.name"), with_shared_mappings: true
       end
 
       def destroy
@@ -61,12 +61,24 @@ module API
 
       private
 
+      def authorize_with_policy_class
+        authorize ConfigurationProfile
+      end
+
+      def authorize_with_policy
+        authorize(with_instance)
+      end
+
       def creation_params
         permitted_params.merge({ name: DEFAULT_CP_NAME, administrator: @current_user })
       end
 
       def permitted_params
         params.require(:configuration_profile).permit(VALID_PARAMS_LIST)
+      end
+
+      def with_instance
+        @instance = policy_scope(ConfigurationProfile).find(params[:id])
       end
     end
   end

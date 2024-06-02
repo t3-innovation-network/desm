@@ -1,11 +1,12 @@
 import apiRequest from './api/apiRequest';
 
-const fetchOrganizations = async () => {
+const fetchOrganizations = async (queryParams = {}) => {
   return await apiRequest({
     url: '/api/v1/organizations',
     method: 'get',
     defaultResponse: [],
     successResponse: 'organizations',
+    queryParams,
   });
 };
 

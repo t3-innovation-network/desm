@@ -6,6 +6,7 @@
 module API
   module V1
     class SpineTermsController < BaseController
+      include ConfigurationProfileQueryable
       before_action :validate_mapped_terms, only: [:create]
       after_action :set_mapped_terms, only: [:create]
 
@@ -15,7 +16,7 @@ module API
         includes += %i(organization) if params[:with_organization].present?
         terms = Spine.find(params[:id]).terms.includes(includes)
 
-        render json: terms, spine: params[:with_weights].present?,
+        render json: terms, spine: params[:with_weights].present?, spine_id: params[:id],
                with_organization: params[:with_organization].present?
       end
 

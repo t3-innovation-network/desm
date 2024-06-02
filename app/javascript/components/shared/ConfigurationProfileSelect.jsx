@@ -1,10 +1,21 @@
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../contexts/AppContext';
+import AlertNotice from './AlertNotice';
 import fetchConfigurationProfiles from '../../services/fetchConfigurationProfiles';
 import setConfigurationProfile from '../../services/setConfigurationProfile';
 import Loader from '../shared/Loader';
+import { i18n } from 'utils/i18n';
 
-const ConfigurationProfileSelect = ({ onChange }) => {
+const ConfigurationProfileSelect = ({
+  onChange,
+  onSubmit,
+  requestType,
+  // selected configuration profile id
+  selectedConfigurationProfileId = null,
+  // flag to set or don't set the current configuration profile if no selectedConfigurationProfileId is passed
+  // in use at shared mappings page
+  withoutUserConfigurationProfile = false,
+}) => {
   const {
     currentConfigurationProfile,
     setCurrentConfigurationProfile,
@@ -17,7 +28,9 @@ const ConfigurationProfileSelect = ({ onChange }) => {
   const [submitting, setSubmitting] = useState(false);
 
   const [selectedConfigurationProfile, setSelectedConfigurationProfile] = useState(
-    currentConfigurationProfile
+    selectedConfigurationProfileId || withoutUserConfigurationProfile
+      ? null
+      : currentConfigurationProfile
   );
 
   const handleChange = (e) => {
@@ -30,6 +43,12 @@ const ConfigurationProfileSelect = ({ onChange }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // if onSubmit is passed, call it and return, usually it's passed when we don't want to change the current configuration profile
+    // globally but just want to use it for a specific action
+    if (onSubmit) {
+      onSubmit(selectedConfigurationProfile);
+      return;
+    }
     setSubmitting(true);
 
     const configurationProfile = configurationProfiles.find(
@@ -55,13 +74,20 @@ const ConfigurationProfileSelect = ({ onChange }) => {
 
   useEffect(() => {
     (async () => {
-      const { configurationProfiles } = await fetchConfigurationProfiles();
+      const { configurationProfiles } = await fetchConfigurationProfiles(requestType);
       setConfigurationProfiles(configurationProfiles);
+      if (configurationProfiles.length && selectedConfigurationProfileId && onSubmit) {
+        const selectedConfigurationProfile = configurationProfiles.find(
+          (p) => p.id === selectedConfigurationProfileId
+        );
+        setSelectedConfigurationProfile(selectedConfigurationProfile);
+        onSubmit(selectedConfigurationProfile);
+      }
       setLoading(false);
     })();
   }, []);
 
-  return (
+  return configurationProfiles.length || loading ? (
     <div className="card mb-3">
       <div className="card-header">Choose Configuration Profile</div>
       <div className="card-body">
@@ -88,6 +114,14 @@ const ConfigurationProfileSelect = ({ onChange }) => {
           </button>
         </form>
       </div>
+    </div>
+  ) : (
+    <div className="w-100">
+      <AlertNotice
+        withTitle={false}
+        message={i18n.t('ui.view_mapping.no_mappings.all')}
+        cssClass="alert-warning"
+      />
     </div>
   );
 };

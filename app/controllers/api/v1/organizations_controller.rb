@@ -6,6 +6,7 @@
 module API
   module V1
     class OrganizationsController < BaseController
+      include ConfigurationProfileQueryable
       before_action :authorize_with_policy, except: :index
 
       ###

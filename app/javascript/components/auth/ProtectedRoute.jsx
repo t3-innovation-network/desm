@@ -1,9 +1,7 @@
 import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Helmet } from 'react-helmet';
-import { snakeCase } from 'lodash';
+import MetaTags from './MetaTags';
 import { showError } from '../../helpers/Messages';
-import { i18n } from '../../utils/i18n';
 
 const ProtectedRoute = ({
   component: Component,
@@ -13,7 +11,6 @@ const ProtectedRoute = ({
 }) => {
   const isLoggedIn = useSelector((state) => state.loggedIn);
   const user = useSelector((state) => state.user);
-  const key = snakeCase(pageType);
 
   return (
     /// If we have a valid session
@@ -29,10 +26,7 @@ const ProtectedRoute = ({
           {...rest}
           render={(props) => (
             <>
-              <Helmet>
-                <title>{i18n.t(`ui.pages.${key}.title`)}</title>
-                <description>{i18n.t(`ui.pages.${key}.description`)}</description>
-              </Helmet>
+              <MetaTags pageType={pageType} />
               <Component
                 /// Destructure all the props passed to join with all the rest
                 {...rest}

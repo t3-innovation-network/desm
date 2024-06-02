@@ -17,6 +17,7 @@ import { dateLongFormat } from 'utils/dateFormatting';
  *
  * Props:
  * @param {Boolean} hideSpineTermsWithNoAlignments
+ * @param {Object} configurationProfile
  * @param {String} inputValue
  * @param {Array} organizations
  * @param {Object} selectedDomain
@@ -103,7 +104,7 @@ export default class PropertiesList extends Component {
               )
             ) &&
             /// It matches the selected spine organizations
-            this.selectedSpineOrganizationIds().includes(property.organizationId)))
+            this.selectedSpineOrganizationIds().includes(property.organization?.id)))
     );
 
     return implementSpineSort(filteredProps, selectedSpineOrderOption);
@@ -131,7 +132,10 @@ export default class PropertiesList extends Component {
    * @param {number} spineId
    */
   decoratePropertiesWithAlignments = async (spineId, spineTerms) => {
-    const response = await fetchAlignmentsForSpine(spineId);
+    const response = await fetchAlignmentsForSpine({
+      spineId,
+      configurationProfileId: this.props.configurationProfile?.id,
+    });
 
     if (!this.anyError(response)) {
       const { alignments } = response;
@@ -151,7 +155,10 @@ export default class PropertiesList extends Component {
    * Use the service to get all the available properties of a spine specification
    */
   handleFetchProperties = async (spineId) => {
-    let response = await fetchSpineTerms(spineId, { withWeights: true });
+    let response = await fetchSpineTerms(spineId, {
+      withWeights: true,
+      configurationProfileId: this.props.configurationProfile?.id,
+    });
 
     if (!this.anyError(response)) {
       const properties = await this.decoratePropertiesWithAlignments(spineId, response.terms);

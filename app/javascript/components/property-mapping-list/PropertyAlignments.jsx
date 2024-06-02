@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { flatMap } from 'lodash';
+import { compact, flatMap } from 'lodash';
 import { implementAlignmentSort, implementAlignmentTermsSort } from './SortOptions';
 import { propertyClassesForAlignmentTerm } from './stores/propertyMappingListStore';
 
@@ -40,15 +40,17 @@ const PropertyAlignments = (props) => {
         selectedSpineOrganizationIds.includes(props.spineTerm.organization.id)
     );
     filteredAl = implementAlignmentSort(filteredAl, props.selectedAlignmentOrderOption);
-    let filteredMappedTerms = flatMap(filteredAl, (alignment) =>
-      alignment.mappedTerms.map((mTerm) =>
-        selectedAlignmentOrganizationIds.includes(mTerm.organization.id)
-          ? {
-              ...mTerm,
-              alignment,
-              selectedClasses: propertyClassesForAlignmentTerm(alignment, mTerm),
-            }
-          : null
+    let filteredMappedTerms = compact(
+      flatMap(filteredAl, (alignment) =>
+        alignment.mappedTerms.map((mTerm) =>
+          selectedAlignmentOrganizationIds.includes(mTerm.organization.id)
+            ? {
+                ...mTerm,
+                alignment,
+                selectedClasses: propertyClassesForAlignmentTerm(alignment, mTerm),
+              }
+            : null
+        )
       )
     );
     return implementAlignmentTermsSort(filteredMappedTerms, props.selectedAlignmentOrderOption);
@@ -63,7 +65,7 @@ const PropertyAlignments = (props) => {
   return filteredMappedTerms.map((mTerm, idx) => (
     <AlignmentCard
       alignment={mTerm.alignment}
-      key={mTerm.id}
+      key={`${mTerm.alignment?.id}-${mTerm.id}`}
       term={mTerm}
       isLast={idx === filteredMappedTerms.length - 1}
     />
