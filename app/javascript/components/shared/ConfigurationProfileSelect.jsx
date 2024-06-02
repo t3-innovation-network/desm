@@ -10,7 +10,11 @@ const ConfigurationProfileSelect = ({
   onChange,
   onSubmit,
   requestType,
+  // selected configuration profile id
   selectedConfigurationProfileId = null,
+  // flag to set or don't set the current configuration profile if no selectedConfigurationProfileId is passed
+  // in use at shared mappings page
+  withoutUserConfigurationProfile = false,
 }) => {
   const {
     currentConfigurationProfile,
@@ -24,7 +28,9 @@ const ConfigurationProfileSelect = ({
   const [submitting, setSubmitting] = useState(false);
 
   const [selectedConfigurationProfile, setSelectedConfigurationProfile] = useState(
-    selectedConfigurationProfileId ? null : currentConfigurationProfile
+    selectedConfigurationProfileId || withoutUserConfigurationProfile
+      ? null
+      : currentConfigurationProfile
   );
 
   const handleChange = (e) => {

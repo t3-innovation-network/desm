@@ -1,17 +1,14 @@
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { AppContext } from 'contexts/AppContext';
 import { pageRoutes } from '../../services/pageRoutes';
 
 const LeftSideHome = () => {
-  const { currentConfigurationProfile } = useContext(AppContext);
   return (
     <div className="col-lg-4 p-lg-5 pt-5">
       <section>
         <h6 className="subtitle">View Specification</h6>
         <p>To see crosswalks currently in process.</p>
         <Link
-          to={pageRoutes.mappingsList(currentConfigurationProfile?.id)}
+          to={pageRoutes.mappingsList()}
           className="btn wide-btn btn-dark"
           title="See all the finished mappings to a specification (or a specific domain)"
         >

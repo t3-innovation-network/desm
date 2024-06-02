@@ -17,17 +17,6 @@ import { isEmpty } from 'lodash';
 
 const PropertyMappingList = (props) => {
   const context = useContext(AppContext);
-  // const [state, actions] = useLocalStore(() => {
-  //   const { cp } = camelizeLocationSearch(props);
-  //   const userConfigurationProfile = context.currentConfigurationProfile;
-  //   const withoutSharedMappings =
-  //     userConfigurationProfile &&
-  //     !userConfigurationProfile.withSharedMappings &&
-  //     (!cp || parseInt(cp) === userConfigurationProfile.id);
-  //   const configurationProfile = withoutSharedMappings ? null : userConfigurationProfile;
-
-  //   return propertyMappingListStore({ configurationProfile, withoutSharedMappings });
-  // });
   const [state, actions] = useLocalStore(() => {
     const { cp, abstractClass } = camelizeLocationSearch(props);
     return propertyMappingListStore({ cp, abstractClass });
@@ -107,9 +96,8 @@ const PropertyMappingList = (props) => {
           <ConfigurationProfileSelect
             onSubmit={updateSelectedConfigurationProfile}
             requestType="indexWithSharedMappings"
-            selectedConfigurationProfileId={state.selectedConfigurationProfileId(
-              context.configurationProfile
-            )}
+            selectedConfigurationProfileId={state.selectedConfigurationProfileId(null)}
+            withoutUserConfigurationProfile={true}
           />
           {configurationProfile?.withSharedMappings &&
             (state.loading ? (
