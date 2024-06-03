@@ -40,7 +40,6 @@ RSpec.describe Importers::ConfigurationProfile do
   let(:selected_domains_from_file) { [term_source_uri] }
   let(:specification_name) { Faker::Lorem.word }
   let(:specification_version) { "1" }
-  let(:specification_use_case) { Faker::Lorem.word }
   let(:state) { %w(incomplete complete active deactivated).sample }
   let(:structure) { JSON(Faker::Json.shallow_json) }
   let(:term_identifier) { Faker::Lorem.word }
@@ -119,7 +118,6 @@ RSpec.describe Importers::ConfigurationProfile do
                 "name" => specification_name,
                 "selected_domains_from_file" => selected_domains_from_file,
                 "version" => specification_version,
-                "use_case" => specification_use_case,
                 "domain" => domain_source_uri,
                 "terms" => [term_source_uri]
               },
@@ -274,7 +272,6 @@ RSpec.describe Importers::ConfigurationProfile do
     expect(specification.name).to eq(specification_name)
     expect(specification.selected_domains_from_file).to eq(selected_domains_from_file)
     expect(specification.version).to eq(specification_version)
-    expect(specification.use_case).to eq(specification_use_case)
     expect(specification.domain).to eq(domain)
     expect(specification.terms.count).to eq(1)
 

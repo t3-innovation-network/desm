@@ -57,7 +57,7 @@ module API
       # @return [ActionController::Parameters]
       ###
       def permitted_params
-        params.require(:specification).permit(:name, :scheme, :use_case, :uri, :version)
+        params.require(:specification).permit(:name, :scheme, :uri, :version)
       end
     end
   end

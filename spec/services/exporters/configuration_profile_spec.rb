@@ -109,7 +109,6 @@ RSpec.describe Exporters::ConfigurationProfile do
       "name" => specification.name,
       "selected_domains_from_file" => [term.source_uri],
       "version" => specification.version,
-      "use_case" => specification.use_case,
       "domain" => specification.domain.source_uri,
       "terms" => specification.terms.map(&:source_uri)
     }
