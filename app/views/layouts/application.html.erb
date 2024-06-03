@@ -17,6 +17,7 @@
     data-logged-in="<%= current_user.present? %>"
     data-organization="<%= current_organization&.to_json %>"
   >
+    <%= render "shared/impersonation_status" %>
     <%= yield %>
   </body>
 </html>

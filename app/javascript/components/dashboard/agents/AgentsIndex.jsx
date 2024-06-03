@@ -46,6 +46,9 @@ const AgentsIndex = (_props = {}) => {
         <td className="white-space-pre-line">
           <ul className="list-unstyled">{profiles}</ul>
         </td>
+        <td>
+          <a href={`/agents/${agent.id}/impersonate`}>Impersonate</a>
+        </td>
       </tr>
     );
   };
@@ -68,6 +71,7 @@ const AgentsIndex = (_props = {}) => {
                 <th scope="col">{i18n.t('ui.dashboard.agents.table.phone')}</th>
                 <th scope="col">{i18n.t('ui.dashboard.agents.table.organization')}</th>
                 <th scope="col">{i18n.t('ui.dashboard.agents.table.configuration_profile')}</th>
+                <th scope="col" />
               </tr>
             </thead>
             <tbody>{state.agents.map(buildTableRow)}</tbody>
