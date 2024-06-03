@@ -37,8 +37,6 @@ class SaveAlignments
   def create_synthetic(params)
     term = Term.find(params.fetch(:mapped_term_ids).first)
     uri = "#{term.uri}-synthetic"
-    comment = "Alignment for a synthetic property added to the spine. " \
-              "Synthetic uri: #{uri}"
 
     begin
       spine.terms << term
@@ -48,7 +46,6 @@ class SaveAlignments
     end
 
     context.adds << mapping.alignments.create!(
-      comment:,
       spine_term: term,
       synthetic: true,
       uri:,
