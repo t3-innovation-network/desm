@@ -18,7 +18,6 @@ import checkDomainsInFile from '../../services/checkDomainsInFile';
 import filterSpecification from '../../services/filterSpecification';
 import mergeFiles from '../../services/mergeFiles';
 import { setVocabularies } from '../../actions/vocabularies';
-import { validURL } from '../../helpers/URL';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { showError } from '../../helpers/Messages';
@@ -83,10 +82,6 @@ const MappingForm = () => {
    */
   const submitted = useSelector((state) => state.submitted);
   /**
-   * Use case for this specification
-   */
-  const [useCase, setUseCase] = useState('');
-  /**
    * Version of this specification
    */
   const [version, setVersion] = useState('');
@@ -116,18 +111,6 @@ const MappingForm = () => {
   };
 
   /**
-   * Validates the use case to be a valid URL after the user focuses
-   * out the "use case" input
-   */
-  const handleUseCaseBlur = () => {
-    if (!_.isEmpty(useCase) && !validURL(useCase)) {
-      dispatch(setMappingFormErrors(["'Use case' must be a valid URL"]));
-    } else {
-      dispatch(unsetMappingFormErrors());
-    }
-  };
-
-  /**
    * Set multiple domains flag to false
    */
   const unsetMultipleDomains = () => {
@@ -147,7 +130,6 @@ const MappingForm = () => {
     return {
       name: name,
       version: version,
-      useCase: useCase,
       domainId: selectedDomainId,
       /// Set the file name to send to the service. This will appear as "scheme" in all
       /// further properties created.
@@ -392,20 +374,6 @@ const MappingForm = () => {
                 onChange={(e) => setVersion(e.target.value)}
                 disabled={submitted}
               />
-            </div>
-            <div className="form-group">
-              <label htmlFor="useCase">Use Case</label>
-              <input
-                type="text"
-                className="form-control"
-                id="useCase"
-                name="useCase"
-                value={useCase}
-                onBlur={handleUseCaseBlur}
-                onChange={(e) => setUseCase(e.target.value)}
-                disabled={submitted}
-              />
-              <small className="form-text text-muted">It must be a valid URL</small>
             </div>
 
             <div className="form-group">

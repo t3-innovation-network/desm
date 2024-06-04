@@ -108,7 +108,7 @@ module Importers
             domain = domain_set.domains.find_by(source_uri: specification_data.fetch("domain"))
 
             specification = profile_user.specifications.create!(
-              **specification_data.slice(*%w(name selected_domains_from_file version use_case)),
+              **specification_data.slice(*%w(name selected_domains_from_file version)),
               domain:,
               terms: profile.terms.where(source_uri: specification_data.fetch("terms"))
             )

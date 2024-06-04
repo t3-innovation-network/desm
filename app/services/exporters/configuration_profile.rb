@@ -104,7 +104,7 @@ module Exporters
 
     def export_specification(specification)
       specification
-        .slice(*%w(name selected_domains_from_file version use_case))
+        .slice(*%w(name selected_domains_from_file version))
         .merge(
           "domain" => specification.domain.source_uri,
           "terms" => specification.terms.map(&:source_uri)
