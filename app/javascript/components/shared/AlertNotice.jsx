@@ -15,7 +15,7 @@ const AlertNotice = (props) => {
   /**
    * Elements from props
    */
-  const { cssClass, title, message, onClose, withScroll = false } = props;
+  const { cssClass, title, message, onClose, withScroll = false, withTitle = true } = props;
   const myRef = useRef(null);
   useEffect(() => {
     if (withScroll && !isEmpty(message) && myRef.current) {
@@ -28,14 +28,14 @@ const AlertNotice = (props) => {
   const renderError = () => {
     if (isArray(message) && message.length > 1) {
       return (
-        <ul>
+        <ul className="mb-0">
           {message.map((msg, i) => (
             <li key={i}>{msg}</li>
           ))}
         </ul>
       );
     } else {
-      return <p>{isArray(message) ? message[0] : message}</p>;
+      return <p className="mb-0">{isArray(message) ? message[0] : message}</p>;
     }
   };
 
@@ -44,9 +44,11 @@ const AlertNotice = (props) => {
       ref={myRef}
       className={'alert alert-dismissible ' + (cssClass ? cssClass : 'alert-danger')}
     >
-      <h4>
-        <strong>{title ? title : 'Attention!'}</strong>
-      </h4>
+      {withTitle && (
+        <h4>
+          <strong>{title ? title : 'Attention!'}</strong>
+        </h4>
+      )}
       {renderError()}
       {onClose && (
         <button type="button" className="close" aria-label="Close" onClick={onClose}>

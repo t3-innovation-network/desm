@@ -4,6 +4,8 @@ import HoverableText from '../shared/HoverableText';
 import ModalStyles from '../shared/ModalStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { partition } from 'lodash';
+import Pluralize from 'pluralize';
 
 /**
  * Props:
@@ -31,6 +33,8 @@ export default class MultipleDomainsModal extends Component {
    */
   selectedDomains = () => this.state.domainsList.filter((domain) => domain.selected);
 
+  allSelected = () => this.selectedDomains().length === this.props.domains.length;
+
   /**
    * Actions to execute when a domain is clicked
    *
@@ -56,6 +60,15 @@ export default class MultipleDomainsModal extends Component {
   };
 
   /**
+   * Selects all the domains if there are unselected among them. Otherwise, deselects all the domains.
+   */
+  handleToggleSelectAll = () => {
+    const { domainsList } = this.state;
+    const selected = !this.allSelected();
+    this.setState({ domainsList: domainsList.map((d) => ({ ...d, selected })) });
+  };
+
+  /**
    * Tasks when mounting this component
    */
   componentDidMount() {
@@ -69,15 +82,42 @@ export default class MultipleDomainsModal extends Component {
    */
   componentDidUpdate(prevProps) {
     if (this.props.domains !== prevProps.domains) {
-      this.setState({ domainsList: this.props.domains });
+      this.setState({ domainsList: this.props.domains.map((d) => ({ ...d, selected: false })) });
     }
+  }
+
+  renderDomain(domain, primaryContent, secondaryContent) {
+    const id = `chk-${domain.id}`;
+
+    return (
+      <div className="desm-radio-primary" key={domain.id}>
+        <input
+          id={id}
+          checked={domain.selected}
+          name="domain-options"
+          onChange={() => this.handleDomainClick(domain.id)}
+          tabIndex={0}
+          type="checkbox"
+        />
+        <HoverableText
+          forComponent={id}
+          primaryContent={primaryContent}
+          secondaryContent={secondaryContent}
+        />
+      </div>
+    );
   }
 
   render() {
     /**
      * Elements from props
      */
-    const { domains, inputValue, onFilterChange, modalIsOpen, onRequestClose } = this.props;
+    const { inputValue, onFilterChange, modalIsOpen, onRequestClose } = this.props;
+    // `rdfs:Resource` is a dummy domain assigned to properties without a real one
+    const [absentDomains, domains] = partition(
+      this.state.domainsList,
+      (d) => d.uri === 'rdfs:Resource'
+    );
 
     return (
       <Modal
@@ -104,16 +144,24 @@ export default class MultipleDomainsModal extends Component {
             </div>
 
             <div className="row">
-              <div className="col-10">
-                <label>{this.selectedDomains().length + ' domains selected'}</label>
-              </div>
-              <div className="col-2">
+              <div className="col-12">
+                <label className="float-left">
+                  {Pluralize('domain', this.selectedDomains().length, true)} selected
+                </label>
+
                 <button
-                  className="btn btn-block btn-dark"
+                  className="btn btn-dark float-right"
                   onClick={() => this.handleSubmit()}
                   disabled={!this.selectedDomains().length}
                 >
                   Done Selecting
+                </button>
+
+                <button
+                  className="btn btn-link float-right"
+                  onClick={() => this.handleToggleSelectAll()}
+                >
+                  {this.allSelected() ? 'Deselect' : 'Select'} All
                 </button>
               </div>
             </div>
@@ -138,22 +186,10 @@ export default class MultipleDomainsModal extends Component {
 
           <div className="card-body has-scrollbar scrollbar">
             <div className="desm-radio">
-              {domains.map((dom) => (
-                <div className="desm-radio-primary" key={'radio-' + dom.id}>
-                  <input
-                    id={'chk-' + dom.id}
-                    name="domain-options"
-                    onClick={() => this.handleDomainClick(dom.id)}
-                    tabIndex={0}
-                    type="checkbox"
-                  />
-                  <HoverableText
-                    forComponent={'chk-' + dom.id}
-                    primaryContent={dom.label}
-                    secondaryContent={dom.uri}
-                  />
-                </div>
-              ))}
+              {absentDomains.map((d) =>
+                this.renderDomain(d, 'None', 'properties with no domain declared')
+              )}
+              {domains.map((d) => this.renderDomain(d, d.label, d.uri))}
             </div>
           </div>
         </div>

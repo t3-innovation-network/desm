@@ -88,6 +88,7 @@ class ConfigurationProfile < ApplicationRecord
   pg_search_scope :search_by_name, against: :name, using: { tsearch: { prefix: true } }
 
   scope :activated, -> { where(state: %i(active deactivated)) }
+  scope :with_shared_mappings, -> { joins(:mappings).where(mappings: { status: Mapping.statuses[:mapped] }).distinct }
 
   COMPLETE_SCHEMA = Rails.root.join("ns", "complete.configurationProfile.schema.json")
   VALID_SCHEMA = Rails.root.join("ns", "valid.configurationProfile.schema.json")
@@ -196,6 +197,10 @@ class ConfigurationProfile < ApplicationRecord
 
   def transition_to!(new_state)
     public_send(persisted? ? :update_column : :update_attribute, :state, new_state)
+  end
+
+  def with_shared_mappings?
+    active? && mappings.mapped.any?
   end
 
   private

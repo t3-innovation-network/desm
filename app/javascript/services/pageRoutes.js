@@ -7,4 +7,9 @@ export const pageRoutes = {
   organizations: () => '/dashboard/organizations',
   configurationProfiles: () => '/dashboard/configuration-profiles',
   configurationProfile: (id) => `/dashboard/configuration-profiles/${id}`,
+  // mappings
+  mappingsList: (cp, abstractClass = null) =>
+    `/mappings-list${cp ? `?cp=${cp}` : ''}${
+      abstractClass ? `${cp ? '&' : '?'}abstractClass=${abstractClass}` : ''
+    }`,
 };

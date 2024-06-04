@@ -6,6 +6,8 @@
 module API
   module V1
     class PredicatesController < BaseController
+      include ConfigurationProfileQueryable
+
       ###
       # @description: Lists all the predicates
       ###

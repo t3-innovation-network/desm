@@ -12,8 +12,6 @@ module Converters
       skos: "http://www.w3.org/2004/02/skos/core#"
     }.freeze
 
-    DESM_NAMESPACE = URI("http://desmsolutions.org/ns/")
-
     attr_reader :concept_scheme_cache, :domain_class_cache, :resources, :spec_id
 
     ##
@@ -54,7 +52,7 @@ module Converters
     # @return [String]
     def build_desm_uri(value)
       normalized_value = value.squish.gsub(/\W+/, "_")
-      (DESM_NAMESPACE + "#{spec_id}/#{normalized_value}").to_s
+      (Desm::DESM_NAMESPACE + "#{spec_id}/#{normalized_value}").to_s
     end
 
     ##

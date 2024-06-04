@@ -29,7 +29,6 @@ module Processors
         configuration_profile_user: data[:configuration_profile_user],
         name: data[:name],
         version: data[:version],
-        use_case: data[:use_case],
         domain: Domain.find(data[:domain_id]),
         selected_domains_from_file: data[:selected_domains]
       )

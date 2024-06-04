@@ -63,6 +63,8 @@ class Alignment < ApplicationRecord
   ###
   has_and_belongs_to_many :mapped_terms, join_table: :alignment_mapped_terms, class_name: :Term
 
+  has_one :specification, through: :mapping
+
   has_one :spine, through: :mapping
 
   ###
@@ -98,6 +100,10 @@ class Alignment < ApplicationRecord
   #   will have a property with its name, and that's inconsistent.
   ###
   before_destroy :remove_spine_term, if: :synthetic
+
+  scope :mapped_for_spine, ->(spine_id) { joins(:mapping).where(mappings: { status: :mapped, spine_id: }) }
+
+  delegate :compact_domains, to: :specification
 
   ###
   # METHODS

@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_configuration_profile_user
   helper_method :current_organization
   helper_method :current_user
+  helper_method :impersonation_mode?
 
   # We manage our own security for sessions
   skip_before_action :verify_authenticity_token
@@ -97,5 +98,12 @@ class ApplicationController < ActionController::Base
         render json: { error: message }, status: :unauthorized
       end
     end
+  end
+
+  ###
+  # @description: Returns `true` if an admin is impersonating an agent
+  ###
+  def impersonation_mode?
+    session[:impostor_id].present?
   end
 end

@@ -8,17 +8,21 @@ import DesmTabs from '../shared/DesmTabs';
 import PropertiesList from './PropertiesList';
 import PropertyMappingsFilter from './PropertyMappingsFilter';
 import SearchBar from './SearchBar';
-import queryString from 'query-string';
 import ConfigurationProfileSelect from '../shared/ConfigurationProfileSelect';
 import { AppContext } from '../../contexts/AppContext';
-import useDidMountEffect from 'helpers/useDidMountEffect';
 import { i18n } from 'utils/i18n';
 import { propertyMappingListStore } from './stores/propertyMappingListStore';
+import { camelizeLocationSearch, updateWithRouter } from 'helpers/queryString';
+import { isEmpty } from 'lodash';
 
 const PropertyMappingList = (props) => {
   const context = useContext(AppContext);
-  const [state, actions] = useLocalStore(() => propertyMappingListStore());
+  const [state, actions] = useLocalStore(() => {
+    const { cp, abstractClass } = camelizeLocationSearch(props);
+    return propertyMappingListStore({ cp, abstractClass });
+  });
   const {
+    configurationProfile,
     domains,
     organizations,
     predicates,
@@ -31,30 +35,41 @@ const PropertyMappingList = (props) => {
     selectedSpineOrderOption,
     selectedSpineOrganizations,
   } = state;
+  const updateQueryString = updateWithRouter(props);
 
   const navCenterOptions = () => {
     return <TopNavOptions viewMappings={true} mapSpecification={true} />;
   };
 
-  const handleSelectedDomain = () => {
-    var selectedAbstractClassName = queryString.parse(props.location.search).abstractClass;
+  const handleSelectedData = () => {
+    if (isEmpty(domains)) return;
 
-    if (selectedAbstractClassName) {
-      let selectedAbstractClass = state.domains.find(
-        (d) => d.name.toLowerCase() == selectedAbstractClassName.toLowerCase()
-      );
+    let selectedAbstractClass = state.abstractClass
+      ? domains.find((d) => d.name.toLowerCase() == state.abstractClass.toLowerCase())
+      : domains[0];
+    selectedAbstractClass ||= domains[0];
+    actions.setSelectedDomain(selectedAbstractClass);
+    updateQueryString({ abstractClass: selectedAbstractClass?.name });
+  };
 
-      if (selectedAbstractClass) {
-        actions.setSelectedDomain(selectedAbstractClass);
-      }
+  useEffect(() => loadData(), [configurationProfile]);
+  useEffect(() => handleSelectedData(), [domains]);
+
+  const updateSelectedDomain = (id) => {
+    const selectedDomain = domains.find((domain) => domain.id == id);
+    actions.updateSelectedDomain(selectedDomain);
+    updateQueryString({ abstractClass: selectedDomain.name });
+  };
+
+  const updateSelectedConfigurationProfile = (configurationProfile) => {
+    actions.updateSelectedConfigurationProfile(configurationProfile);
+    if (configurationProfile) {
+      updateQueryString({ cp: configurationProfile.id });
     }
   };
 
-  useEffect(() => loadData(), [context.currentConfigurationProfile]);
-  useDidMountEffect(() => handleSelectedDomain(), [domains]);
-
   const loadData = async () => {
-    if (!context.currentConfigurationProfile) {
+    if (!configurationProfile) {
       return;
     }
     await actions.fetchDataFromAPI();
@@ -69,22 +84,32 @@ const PropertyMappingList = (props) => {
 
       <div className="row">
         <div className="col p-lg-5 pt-5">
-          {!context.loggedIn && <ConfigurationProfileSelect />}
-
-          {context.currentConfigurationProfile &&
+          {state.withoutSharedMappings && (
+            <div className="w-100">
+              <AlertNotice
+                withTitle={false}
+                message={i18n.t('ui.view_mapping.no_mappings.current_profile')}
+                cssClass="alert-warning"
+              />
+            </div>
+          )}
+          <ConfigurationProfileSelect
+            onSubmit={updateSelectedConfigurationProfile}
+            requestType="indexWithSharedMappings"
+            selectedConfigurationProfileId={state.selectedConfigurationProfileId(null)}
+            withoutUserConfigurationProfile={true}
+          />
+          {configurationProfile?.withSharedMappings &&
             (state.loading ? (
               <Loader />
             ) : (
               <>
                 <h1>
-                  <strong>{context.currentConfigurationProfile.name}</strong>:{' '}
-                  {i18n.t('ui.view_mapping.subtitle')}
+                  <strong>{configurationProfile.name}</strong>: {i18n.t('ui.view_mapping.subtitle')}
                 </h1>
                 <label className="my-0">{i18n.t('ui.view_mapping.select_abstract_class')}</label>
                 <DesmTabs
-                  onTabClick={(id) =>
-                    actions.setSelectedDomain(domains.find((domain) => domain.id == id))
-                  }
+                  onTabClick={(id) => updateSelectedDomain(id)}
                   selectedId={selectedDomain?.id}
                   values={domains}
                 />
@@ -116,6 +141,7 @@ const PropertyMappingList = (props) => {
                     <PropertiesList
                       hideSpineTermsWithNoAlignments={hideSpineTermsWithNoAlignments}
                       inputValue={propertiesInputValue}
+                      configurationProfile={configurationProfile}
                       domains={domains}
                       organizations={organizations}
                       predicates={predicates}
