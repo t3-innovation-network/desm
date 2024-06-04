@@ -96,5 +96,12 @@ class Specification < ApplicationRecord
     }
   end
 
+  ###
+  # @description: Returns the specification's compact domains
+  ###
+  def compact_domains
+    @compact_domains ||= Array.wrap(selected_domains_from_file).map { Utils.compact_uri(_1) }.compact
+  end
+
   scope :for_dso, ->(dso) { joins(:user).where(users: { id: dso.users }) }
 end

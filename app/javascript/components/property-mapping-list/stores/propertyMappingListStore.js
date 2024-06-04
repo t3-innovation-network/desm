@@ -1,4 +1,4 @@
-import { flatMap, intersection, uniq } from 'lodash';
+import { flatMap, intersection } from 'lodash';
 import { baseModel } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
 import { alignmentSortOptions, spineSortOptions } from '../SortOptions';
@@ -44,19 +44,14 @@ export const defaultState = {
   propertiesInputValue: '',
 };
 
-export const propertyClassesForSpineTerm = (term) => {
-  const selectedDomains = uniq(
-    flatMap(term.alignments, (alignment) => alignment.selectedDomains || [])
+export const propertyClassesForSpineTerm = (term) =>
+  intersection(
+    term.compactDomains,
+    flatMap(term.alignments, (a) => a.compactDomains)
   );
-  const termClasses = term.property.domain || [];
-  return intersection(selectedDomains, termClasses);
-};
 
-export const propertyClassesForAlignmentTerm = (alignment, term) => {
-  const selectedDomains = alignment.selectedDomains || [];
-  const termClasses = term.property.domain || [];
-  return intersection(selectedDomains, termClasses);
-};
+export const propertyClassesForAlignmentTerm = (alignment, term) =>
+  intersection(term.compactDomains, alignment.compactDomains);
 
 export const propertyMappingListStore = (initialData = {}) => ({
   ...baseModel(initialData),

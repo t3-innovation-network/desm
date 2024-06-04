@@ -37,6 +37,7 @@ module App
 
     config.autoload_paths += [
       Rails.root.join("app", "interacotrs", "concerns"),
+      Rails.root.join("app", "lib"),
       Rails.root.join("lib", "utils"),
     ]
 
