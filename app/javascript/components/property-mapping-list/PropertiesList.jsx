@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { compact, flatMap, sortBy, uniqBy } from 'lodash';
+import { flatMap, groupBy, sortBy, uniqBy } from 'lodash';
 import AlertNotice from '../shared/AlertNotice';
 import fetchAlignmentsForSpine from '../../services/fetchAlignmentsForSpine';
 import fetchSpineTerms from '../../services/fetchSpineTerms';
@@ -139,7 +139,7 @@ export default class PropertiesList extends Component {
 
     if (!this.anyError(response)) {
       const { alignments } = response;
-      const groupedAlignments = _.groupBy(alignments, 'spineTermId');
+      const groupedAlignments = groupBy(alignments, 'spineTermId');
 
       spineTerms.forEach((term) => {
         term.alignments = groupedAlignments[term.id] || [];
@@ -254,25 +254,34 @@ export default class PropertiesList extends Component {
       });
 
     const filteredMappingsList = () => {
-      const mappings = sortBy(
-        uniqBy(
-          compact(
-            flatMap(this.filteredProperties(), (term) => term.alignments.map((a) => a.mapping))
-          ),
-          'id'
-        ),
-        'title'
+      const mappings = uniqBy(
+        flatMap(this.filteredProperties(), (term) => term.alignments.map((a) => a.mapping)),
+        'id'
       );
+      const groupedMappings = {};
+
+      for (const mapping of mappings) {
+        const lastMapping = groupedMappings[mapping.organizationName];
+
+        if (!lastMapping || lastMapping.mappedAt < mapping.mappedAt) {
+          groupedMappings[mapping.organizationName] = mapping;
+        }
+      }
+
+      const lastMappings = sortBy(Object.values(groupedMappings), 'organizationName');
+
       return (
         <>
           <h5 className="mb-0 mt-3">
             {i18n.t('ui.view_mapping.mapping', { count: mappings.length })}
           </h5>
           <ul className="list-unstyled mb-0">
-            {mappings.map((mapping) => (
+            {lastMappings.map((mapping) => (
               <li key={mapping.id}>
-                <span className="fw-bold">{mapping.title}</span> updated at{' '}
-                {dateLongFormat(mapping.mappedAt)}.{mapping.description}
+                <span className="fw-bold">
+                  {mapping.organizationName} {mapping.version ? `(${mapping.version})` : ''}
+                </span>{' '}
+                updated on {dateLongFormat(mapping.mappedAt)}.{mapping.description}
               </li>
             ))}
           </ul>

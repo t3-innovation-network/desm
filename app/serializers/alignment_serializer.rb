@@ -7,7 +7,8 @@ class AlignmentSerializer < ApplicationSerializer
   attribute :mapping, if: -> { params[:with_schema_name] } do
     { id: object.mapping.id, title: object.mapping.title, description: object.mapping.description,
       updated_at: object.mapping.updated_at, created_at: object.mapping.created_at,
-      mapped_at: object.mapping.mapped_at }
+      mapped_at: object.mapping.mapped_at, organization_name: object.mapping.organization.name,
+      version: object.mapping.specification.version }
   end
   attribute :name do
     object.uri
