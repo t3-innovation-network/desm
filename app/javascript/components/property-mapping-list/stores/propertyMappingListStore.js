@@ -4,8 +4,8 @@ import { easyStateSetters } from '../../stores/easyState';
 import { alignmentSortOptions, spineSortOptions } from '../SortOptions';
 import { action, computed, thunk } from 'easy-peasy';
 import fetchDomains from 'services/fetchDomains';
-import fetchOrganizations from 'services/fetchOrganizations';
 import fetchPredicates from 'services/fetchPredicates';
+import fetchSpecifications from 'services/fetchSpecifications';
 
 export const defaultState = {
   // status
@@ -13,12 +13,12 @@ export const defaultState = {
   hideSpineTermsWithNoAlignments: false,
 
   // options
-  // The currently selected organizations to fetch alignments from
-  selectedAlignmentOrganizations: [],
+  // The currently selected specifications to fetch alignments from
+  selectedAlignmentSpecifications: [],
   // The currently selected domain
   selectedDomain: null,
-  // The organizations to show in the filter
-  selectedSpineOrganizations: [],
+  // The specifications to show in the filter
+  selectedSpineSpecifications: [],
   // The predicates the user selected to use in filter
   selectedPredicates: [],
   // The order the user wants to see the alignments to the spine terms
@@ -36,8 +36,8 @@ export const defaultState = {
   withoutSharedMappings: false,
   // The list of available domains
   domains: [],
-  // The available list of organizations
-  organizations: [],
+  // The available list of specifications
+  specifications: [],
   //  The complete list of available predicates
   predicates: [],
   // The value from the input in the searchbar, to filter properties
@@ -64,14 +64,14 @@ export const propertyMappingListStore = (initialData = {}) => ({
   }),
 
   // actions
-  setAllOrganizations: action((state, organizations) => {
-    state.organizations = organizations;
-    state.selectedSpineOrganizations = organizations;
-    state.selectedAlignmentOrganizations = organizations;
-  }),
   setAllPredicates: action((state, predicates) => {
     state.predicates = predicates;
     state.selectedPredicates = predicates;
+  }),
+  setSpecifications: action((state, specifications) => {
+    state.specifications = specifications;
+    state.selectedSpineSpecifications = specifications;
+    state.selectedAlignmentSpecifications = specifications;
   }),
   updateSelectedDomain: action((state, selectedDomain) => {
     state.selectedDomain = selectedDomain;
@@ -99,17 +99,6 @@ export const propertyMappingListStore = (initialData = {}) => ({
     }
     return response;
   }),
-  // Use the service to get all the available organizations
-  handleFetchOrganizations: thunk(async (actions, params = {}, h) => {
-    const state = h.getState();
-    const response = await fetchOrganizations(params);
-    if (state.withoutErrors(response)) {
-      actions.setAllOrganizations(response.organizations);
-    } else {
-      actions.addError(response.error);
-    }
-    return response;
-  }),
   // Use the service to get all the available predicates
   handleFetchPredicates: thunk(async (actions, params = {}, h) => {
     const state = h.getState();
@@ -130,9 +119,20 @@ export const propertyMappingListStore = (initialData = {}) => ({
     };
     await Promise.all([
       actions.handleFetchDomains(queryParams),
-      actions.handleFetchOrganizations(queryParams),
       actions.handleFetchPredicates(queryParams),
+      actions.handleFetchSpecifications(queryParams),
     ]);
     if (!h.getState().hasErrors) actions.setLoading(false);
+  }),
+  // Use the service to get all the available specifications
+  handleFetchSpecifications: thunk(async (actions, params = {}, h) => {
+    const state = h.getState();
+    const response = await fetchSpecifications(params);
+    if (state.withoutErrors(response)) {
+      actions.setSpecifications(response.specifications);
+    } else {
+      actions.addError(response.error);
+    }
+    return response;
   }),
 });

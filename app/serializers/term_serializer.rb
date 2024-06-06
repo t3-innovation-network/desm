@@ -5,6 +5,7 @@ class TermSerializer < ApplicationSerializer
   has_one :property
   has_many :vocabularies, serializer: PreviewSerializer
   has_one :organization, if: -> { params[:spine] || params[:with_organization] }, serializer: PreviewSerializer
+  has_many :specifications
 
   attribute :max_mapping_weight, if: -> { params[:spine] } do
     object.max_mapping_weight

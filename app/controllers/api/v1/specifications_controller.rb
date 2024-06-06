@@ -7,6 +7,20 @@ module API
   module V1
     class SpecificationsController < BaseController
       ###
+      # @description: Lists all the specifications
+      ###
+      def index
+        specifications =
+          if current_configuration_profile
+            current_configuration_profile.specifications
+          else
+            Specification.all
+          end
+
+        render json: specifications.order(name: :asc)
+      end
+
+      ###
       # @description: Create a specification with its terms. Store it from an already
       #   filtered JSON object
       ###
