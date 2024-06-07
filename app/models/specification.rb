@@ -53,6 +53,8 @@ class Specification < ApplicationRecord
   has_one :organization, through: :configuration_profile_user
   has_one :user, through: :configuration_profile_user
 
+  has_many :mappings
+
   ###
   # @description: If there's no specification for the user's company and the selected domain
   #   to map to, then it's the spine.
