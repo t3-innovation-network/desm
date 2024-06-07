@@ -116,6 +116,7 @@ export const propertyMappingListStore = (initialData = {}) => ({
     const state = h.getState();
     const queryParams = {
       configurationProfileId: state.configurationProfile?.id,
+      domain: state.abstractClass,
     };
     await Promise.all([
       actions.handleFetchDomains(queryParams),

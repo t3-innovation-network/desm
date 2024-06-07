@@ -6,6 +6,8 @@
 module API
   module V1
     class SpecificationsController < BaseController
+      include ConfigurationProfileQueryable
+
       ###
       # @description: Lists all the specifications
       ###
@@ -17,7 +19,11 @@ module API
             Specification.all
           end
 
-        render json: specifications.order(name: :asc)
+        if (domain = params[:domain]).present?
+          specifications = specifications.joins(:domain).where(domains: { pref_label: domain })
+        end
+
+        render json: specifications.joins(:mappings).where(mappings: { status: "mapped" }).distinct.order(name: :asc)
       end
 
       ###
