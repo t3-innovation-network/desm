@@ -3,15 +3,15 @@ import HoverableLabel from '../shared/HoverableLabel';
 
 /**
  * Props
- * @param {Array} organizations
- * @param {Function} onAlignmentOrganizationSelected
+ * @param {Array} specifications
+ * @param {Function} onAlignmentSpecificationSelected
  * @param {Function} onPredicateSelected
- * @param {Function} onSpineOrganizationSelected
+ * @param {Function} onSpineSpecificationSelected
  * @param {Array} predicates
- * @param {Array} selectedAlignmentOrganizations
+ * @param {Array} selectedAlignmentSpecifications
  * @param {String} selectedDomain
  * @param {Array} selectedPredicates
- * @param {Array} selectedSpineOrganizations
+ * @param {Array} selectedSpineSpecifications
  */
 export default class PropertyMappingsFilter extends Component {
   /**
@@ -38,55 +38,45 @@ export default class PropertyMappingsFilter extends Component {
   };
 
   /**
-   * Actions when a user selects an organization from the spine organizations filter
+   * Actions when a user selects an specification from the spine specifications filter
    *
-   * @param {Integer} orgId
+   * @param {Integer} specId
    */
-  handleSpineOrganizationSelected = (orgId) => {
-    const { onSpineOrganizationSelected, organizations, selectedSpineOrganizations } = this.props;
+  handleSpineOrganizationSelected = (specId) => {
+    const {
+      onSpineSpecificationSelected,
+      specifications,
+      selectedSpineSpecifications,
+    } = this.props;
 
-    let isSelected = selectedSpineOrganizations.some((sOrg) => sOrg.id == orgId);
+    const isSelected = selectedSpineSpecifications.some((s) => s.id == specId);
 
-    let tempSelectedSpineOrganizations;
-    if (isSelected) {
-      tempSelectedSpineOrganizations = selectedSpineOrganizations.filter((org) => org.id != orgId);
-    } else {
-      tempSelectedSpineOrganizations = [
-        ...selectedSpineOrganizations,
-        organizations.find((org) => org.id == orgId),
-      ];
-    }
+    const tempselectedSpineSpecifications = isSelected
+      ? selectedSpineSpecifications.filter((s) => s.id != specId)
+      : [...selectedSpineSpecifications, specifications.find((s) => s.id == specId)];
 
-    onSpineOrganizationSelected(tempSelectedSpineOrganizations);
+    onSpineSpecificationSelected(tempselectedSpineSpecifications);
   };
 
   /**
-   * Actions when a user selects an organization from the spine organizations filter
+   * Actions when a user selects an specification from the spine specifications filter
    *
-   * @param {Integer} orgId
+   * @param {Integer} specId
    */
-  handleAlignmentOrganizationSelected = (orgId) => {
+  handleAlignmentOrganizationSelected = (specId) => {
     const {
-      onAlignmentOrganizationSelected,
-      organizations,
-      selectedAlignmentOrganizations,
+      onAlignmentSpecificationSelected,
+      specifications,
+      selectedAlignmentSpecifications,
     } = this.props;
 
-    let isSelected = selectedAlignmentOrganizations.some((sOrg) => sOrg.id == orgId);
+    const isSelected = selectedAlignmentSpecifications.some((s) => s.id == specId);
 
-    let tempSelectedAlignmentOrganizations;
-    if (isSelected) {
-      tempSelectedAlignmentOrganizations = selectedAlignmentOrganizations.filter(
-        (org) => org.id != orgId
-      );
-    } else {
-      tempSelectedAlignmentOrganizations = [
-        ...selectedAlignmentOrganizations,
-        organizations.find((org) => org.id == orgId),
-      ];
-    }
+    const tempselectedAlignmentSpecifications = isSelected
+      ? selectedAlignmentSpecifications.filter((s) => s.id != specId)
+      : [...selectedAlignmentSpecifications, specifications.find((s) => s.id == specId)];
 
-    onAlignmentOrganizationSelected(tempSelectedAlignmentOrganizations);
+    onAlignmentSpecificationSelected(tempselectedAlignmentSpecifications);
   };
 
   /**
@@ -115,37 +105,44 @@ export default class PropertyMappingsFilter extends Component {
   };
 
   /**
-   * The options to select on organization to show spines
+   * The options to select on specification to show spines
    */
   SpineOrganizationOptions = () => {
-    const { organizations, selectedSpineOrganizations, onSpineOrganizationSelected } = this.props;
+    const {
+      specifications,
+      selectedSpineSpecifications,
+      onSpineSpecificationSelected,
+    } = this.props;
 
     return (
       <>
         <label
           className="col-primary cursor-pointer non-selectable mb-3"
           onClick={() => {
-            !selectedSpineOrganizations.length
-              ? onSpineOrganizationSelected(organizations)
-              : onSpineOrganizationSelected([]);
+            !selectedSpineSpecifications.length
+              ? onSpineSpecificationSelected(specifications)
+              : onSpineSpecificationSelected([]);
           }}
         >
-          {!selectedSpineOrganizations.length ? 'Show All' : 'Hide All'}
+          {!selectedSpineSpecifications.length ? 'Show All' : 'Hide All'}
         </label>
 
-        {organizations.map((org) => {
+        {specifications.map((spec) => {
           return (
-            <div className="custom-control custom-checkbox mb-3" key={org.id}>
+            <div className="custom-control custom-checkbox mb-3" key={spec.id}>
               <input
                 type="checkbox"
                 className="custom-control-input desm-custom-control-input"
-                id={'org-chk-' + org.id}
-                checked={selectedSpineOrganizations.some((sOrg) => sOrg.id === org.id)}
+                id={`spec-chk-${spec.id}`}
+                checked={selectedSpineSpecifications.some((sOrg) => sOrg.id === spec.id)}
                 onChange={(e) => this.handleSpineOrganizationSelected(e.target.value)}
-                value={org.id}
+                value={spec.id}
               />
-              <label className="custom-control-label cursor-pointer" htmlFor={'org-chk-' + org.id}>
-                {org.name}
+              <label
+                className="custom-control-label cursor-pointer"
+                htmlFor={`spec-chk-${spec.id}`}
+              >
+                {spec.name} {spec.version ? `(${spec.version})` : ''}
               </label>
             </div>
           );
@@ -155,13 +152,13 @@ export default class PropertyMappingsFilter extends Component {
   };
 
   /**
-   * The options to select on organization to show alignments
+   * The options to select on specification to show alignments
    */
   AlignmentOrganizationOptions = () => {
     const {
-      organizations,
-      selectedAlignmentOrganizations,
-      onAlignmentOrganizationSelected,
+      specifications,
+      selectedAlignmentSpecifications,
+      onAlignmentSpecificationSelected,
     } = this.props;
 
     return (
@@ -169,30 +166,30 @@ export default class PropertyMappingsFilter extends Component {
         <label
           className="col-primary cursor-pointer non-selectable mb-3"
           onClick={() => {
-            !selectedAlignmentOrganizations.length
-              ? onAlignmentOrganizationSelected(organizations)
-              : onAlignmentOrganizationSelected([]);
+            !selectedAlignmentSpecifications.length
+              ? onAlignmentSpecificationSelected(specifications)
+              : onAlignmentSpecificationSelected([]);
           }}
         >
-          {!selectedAlignmentOrganizations.length ? 'Show All' : 'Hide All'}
+          {!selectedAlignmentSpecifications.length ? 'Show All' : 'Hide All'}
         </label>
 
-        {organizations.map((org) => {
+        {specifications.map((spec) => {
           return (
-            <div className="custom-control custom-checkbox mb-3" key={org.id}>
+            <div className="custom-control custom-checkbox mb-3" key={spec.id}>
               <input
                 type="checkbox"
                 className="custom-control-input desm-custom-control-input"
-                id={'al-org-chk-' + org.id}
-                checked={selectedAlignmentOrganizations.some((sOrg) => sOrg.id === org.id)}
+                id={`al-spec-chk-${spec.id}`}
+                checked={selectedAlignmentSpecifications.some((s) => s.id === spec.id)}
                 onChange={(e) => this.handleAlignmentOrganizationSelected(e.target.value)}
-                value={org.id}
+                value={spec.id}
               />
               <label
                 className="custom-control-label cursor-pointer"
-                htmlFor={'al-org-chk-' + org.id}
+                htmlFor={`al-spec-chk-${spec.id}`}
               >
-                {org.name}
+                {spec.name} {spec.version ? `(${spec.version})` : ''}
               </label>
             </div>
           );

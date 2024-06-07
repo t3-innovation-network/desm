@@ -19,7 +19,7 @@ module API
                     :predicate,
                     :specification,
                     mapping: %i(configuration_profile_user organization),
-                    mapped_terms: %i(organization property vocabularies)
+                    mapped_terms: [:organization, :property, { specifications: { domain: :spine } }, :vocabularies]
                   )
                   .where(
                     mappings: { spine_id: params[:spine_id], status: :mapped }
