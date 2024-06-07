@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { compact, flatMap } from 'lodash';
+import { compact, flatMap, intersection } from 'lodash';
 import { implementAlignmentSort, implementAlignmentTermsSort } from './SortOptions';
 import { propertyClassesForAlignmentTerm } from './stores/propertyMappingListStore';
 
@@ -11,18 +11,18 @@ import { propertyClassesForAlignmentTerm } from './stores/propertyMappingListSto
  * @param {Object} spineTerm The term of the spine to look for alignments
  * @param {Array} selectedPredicateIds The list of predicates selected by the user in the filter
  * @param {String} selectedAlignmentOrderOption The option selected by the user to order the list of alignments
- * @param {Array} selectedAlignmentOrganizationIds The list of organizations that made alignments, selected by the user
+ * @param {Array} selectedAlignmentSpecificationsIds The list of specifications that made alignments, selected by the user
  *   in the filter.
- * @param {Array} selectedSpineOrganizationIds The list of organizations that has properties with alignments, selected
+ * @param {Array} selectedSpineSpecificationIds The list of specifications that has properties with alignments, selected
  *   by the user in the filter. This refers to the origin of the property. Initially, a spine specification will have
- *   all its properties with the same organization. When a synthetic property is created, it will keep the organization
+ *   all its properties with the same specification. When a synthetic property is created, it will keep the specification
  *   of origin.
  */
 const PropertyAlignments = (props) => {
   const {
     selectedPredicateIds,
-    selectedAlignmentOrganizationIds,
-    selectedSpineOrganizationIds,
+    selectedAlignmentSpecificationsIds,
+    selectedSpineSpecificationIds,
   } = props;
   const alignments = props.spineTerm.alignments;
 
@@ -32,18 +32,22 @@ const PropertyAlignments = (props) => {
       (alignment) =>
         /// It matches the selected predicates
         selectedPredicateIds.includes(alignment.predicateId) &&
-        /// It matches the selected alignment organizations
-        alignment.mappedTerms.some((mTerm) =>
-          selectedAlignmentOrganizationIds.includes(mTerm.organization.id)
-        ) &&
-        /// It matches the selected alignment organizations
-        selectedSpineOrganizationIds.includes(props.spineTerm.organization.id)
+        /// It matches the selected alignment specifications
+        selectedAlignmentSpecificationsIds.includes(alignment.mapping.specification.id) &&
+        /// It matches the selected alignment specifications
+        intersection(
+          selectedSpineSpecificationIds,
+          props.spineTerm.specifications.map((s) => s.id)
+        ).length
     );
     filteredAl = implementAlignmentSort(filteredAl, props.selectedAlignmentOrderOption);
     let filteredMappedTerms = compact(
       flatMap(filteredAl, (alignment) =>
         alignment.mappedTerms.map((mTerm) =>
-          selectedAlignmentOrganizationIds.includes(mTerm.organization.id)
+          intersection(
+            selectedAlignmentSpecificationsIds,
+            mTerm.specifications.map((s) => s.id)
+          ).length
             ? {
                 ...mTerm,
                 alignment,
@@ -57,8 +61,8 @@ const PropertyAlignments = (props) => {
   }, [
     alignments,
     selectedPredicateIds,
-    selectedAlignmentOrganizationIds,
-    selectedSpineOrganizationIds,
+    selectedAlignmentSpecificationsIds,
+    selectedSpineSpecificationIds,
     props.selectedAlignmentOrderOption,
   ]);
 

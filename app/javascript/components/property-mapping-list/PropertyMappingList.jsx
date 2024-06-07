@@ -24,16 +24,16 @@ const PropertyMappingList = (props) => {
   const {
     configurationProfile,
     domains,
-    organizations,
+    specifications,
     predicates,
     selectedDomain,
     hideSpineTermsWithNoAlignments,
     propertiesInputValue,
     selectedAlignmentOrderOption,
-    selectedAlignmentOrganizations,
+    selectedAlignmentSpecifications,
     selectedPredicates,
     selectedSpineOrderOption,
-    selectedSpineOrganizations,
+    selectedSpineSpecifications,
   } = state;
   const updateQueryString = updateWithRouter(props);
 
@@ -125,17 +125,17 @@ const PropertyMappingList = (props) => {
                 {selectedDomain && (
                   <>
                     <PropertyMappingsFilter
-                      organizations={organizations}
-                      onAlignmentOrganizationSelected={actions.setSelectedAlignmentOrganizations}
+                      specifications={specifications}
+                      onAlignmentSpecificationSelected={actions.setSelectedAlignmentSpecifications}
                       onPredicateSelected={actions.setSelectedPredicates}
-                      onSpineOrganizationSelected={actions.setSelectedSpineOrganizations}
+                      onSpineSpecificationSelected={actions.setSelectedSpineSpecifications}
                       predicates={predicates}
                       selectedAlignmentOrderOption={selectedAlignmentOrderOption}
-                      selectedAlignmentOrganizations={selectedAlignmentOrganizations}
+                      selectedAlignmentSpecifications={selectedAlignmentSpecifications}
                       selectedDomain={selectedDomain}
                       selectedPredicates={selectedPredicates}
                       selectedSpineOrderOption={selectedSpineOrderOption}
-                      selectedSpineOrganizations={selectedSpineOrganizations}
+                      selectedSpineSpecifications={selectedSpineSpecifications}
                     />
 
                     <PropertiesList
@@ -143,14 +143,14 @@ const PropertyMappingList = (props) => {
                       inputValue={propertiesInputValue}
                       configurationProfile={configurationProfile}
                       domains={domains}
-                      organizations={organizations}
+                      specifications={specifications}
                       predicates={predicates}
                       selectedAlignmentOrderOption={selectedAlignmentOrderOption}
-                      selectedAlignmentOrganizations={selectedAlignmentOrganizations}
+                      selectedAlignmentSpecifications={selectedAlignmentSpecifications}
                       selectedDomain={selectedDomain}
                       selectedPredicates={selectedPredicates}
                       selectedSpineOrderOption={selectedSpineOrderOption}
-                      selectedSpineOrganizations={selectedSpineOrganizations}
+                      selectedSpineSpecifications={selectedSpineSpecifications}
                     />
                   </>
                 )}
