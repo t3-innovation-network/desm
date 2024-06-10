@@ -283,7 +283,7 @@ export default class PropertiesList extends Component {
                 <span className="fw-bold">
                   {mapping.specification.name} {mapping.version ? `(${mapping.version})` : ''}
                 </span>{' '}
-                updated on {dateLongFormat(mapping.mappedAt)}.
+                updated on {dateLongFormat(mapping.updatedAt)}.
               </li>
             ))}
           </ul>
