@@ -19,11 +19,13 @@ module API
             Specification.all
           end
 
-        if (domain = params[:domain]).present?
-          specifications = specifications.joins(:domain).where(domains: { pref_label: domain })
+        specifications = specifications.joins(:mappings).where(mappings: { status: "mapped" }).includes(:domain)
+
+        if (domain_id = params[:domain_id]).present?
+          specifications.where!(domain_id:)
         end
 
-        render json: specifications.joins(:mappings).where(mappings: { status: "mapped" }).distinct.order(name: :asc)
+        render json: specifications.distinct.order(name: :asc)
       end
 
       ###
