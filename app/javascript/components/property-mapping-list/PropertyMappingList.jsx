@@ -54,6 +54,7 @@ const PropertyMappingList = (props) => {
 
   useEffect(() => loadData(), [configurationProfile]);
   useEffect(() => handleSelectedData(), [domains]);
+  useEffect(() => loadSpecifications(), [configurationProfile, selectedDomain]);
 
   const updateSelectedDomain = (id) => {
     const selectedDomain = domains.find((domain) => domain.id == id);
@@ -73,6 +74,17 @@ const PropertyMappingList = (props) => {
       return;
     }
     await actions.fetchDataFromAPI();
+  };
+
+  const loadSpecifications = async () => {
+    if (!configurationProfile || !selectedDomain) {
+      return;
+    }
+
+    actions.handleFetchSpecifications({
+      configurationProfileId: configurationProfile.id,
+      domainId: selectedDomain.id,
+    });
   };
 
   return (
