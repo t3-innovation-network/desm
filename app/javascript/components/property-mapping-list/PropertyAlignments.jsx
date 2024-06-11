@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { compact, flatMap, intersection } from 'lodash';
 import { implementAlignmentSort, implementAlignmentTermsSort } from './SortOptions';
 import { propertyClassesForAlignmentTerm } from './stores/propertyMappingListStore';
+import PropertyComments from './PropertyComments';
 
 /**
  * @description A list of alignments with information like predicate, comment, and more.
@@ -106,7 +107,7 @@ const AlignmentCard = ({ alignment, term, isLast = false }) => {
           </div>
           <div className="col-6">
             <small className="mt-1 col-on-primary-light">Definition</small>
-            <p className="mb-1">{term.property.comment}</p>
+            <div className="mb-1">{<PropertyComments term={term} />}</div>
           </div>
           <div className="col-2 ps-1">
             <div

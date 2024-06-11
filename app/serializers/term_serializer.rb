@@ -18,4 +18,10 @@ class TermSerializer < ApplicationSerializer
   attribute :title do
     object.source_uri.to_s.split(":").last.presence || object.name
   end
+
+  attribute :comments do
+    node = Parsers::JsonLd::Node.new(object.raw.slice("rdfs:comment"))
+    sanitizer = Rails::Html::FullSanitizer.new
+    node.read_as_language_map("comment").map { sanitizer.sanitize(_1) }
+  end
 end

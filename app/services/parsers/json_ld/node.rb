@@ -51,6 +51,15 @@ module Parsers
       end
 
       ###
+      # @description: Read a language map attribute from a node and return its content as an array
+      # @param [Array, Hash, String] attribute_name: The node to be evaluated
+      # @return [Array]
+      ###
+      def read_as_language_map(attribute_name)
+        parse_language_map_node(read!(attribute_name)).flatten.compact
+      end
+
+      ###
       # @description: See if the property is related to a given node by id (URI)
       # @param [String] uri The identifier of the original node to compare
       ###
@@ -200,6 +209,23 @@ module Parsers
       ###
       def valid_node_key?(node, key)
         node.is_a?(Hash) && (node.key?(key) || node.key?(key.downcase))
+      end
+
+      def parse_language_map_node(node)
+        values =
+          if node.is_a?(Array)
+            node
+          elsif node.is_a?(Hash)
+            if node.key?("@value")
+              [node.fetch("@value")]
+            else
+              node.values
+            end
+          else
+            return [node]
+          end
+
+        values.map { parse_language_map_node(_1) }
       end
     end
   end
