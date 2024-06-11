@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react';
+import { useEffect } from 'react';
 import { useLocalStore } from 'easy-peasy';
 import AlertNotice from '../shared/AlertNotice';
 import Loader from '../shared/Loader';
@@ -9,14 +9,12 @@ import PropertiesList from './PropertiesList';
 import PropertyMappingsFilter from './PropertyMappingsFilter';
 import SearchBar from './SearchBar';
 import ConfigurationProfileSelect from '../shared/ConfigurationProfileSelect';
-import { AppContext } from '../../contexts/AppContext';
 import { i18n } from 'utils/i18n';
 import { propertyMappingListStore } from './stores/propertyMappingListStore';
 import { camelizeLocationSearch, updateWithRouter } from 'helpers/queryString';
 import { isEmpty } from 'lodash';
 
 const PropertyMappingList = (props) => {
-  const context = useContext(AppContext);
   const [state, actions] = useLocalStore(() => {
     const { cp, abstractClass } = camelizeLocationSearch(props);
     return propertyMappingListStore({ cp, abstractClass });

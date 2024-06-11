@@ -35,6 +35,8 @@
 #   uploaded by a user
 ###
 class Property < ApplicationRecord
+  audited
+
   belongs_to :term
   before_update :update_term, if: -> { label_changed? || source_uri_changed? }
 

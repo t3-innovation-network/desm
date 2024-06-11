@@ -13,4 +13,16 @@ class SpecificationPolicy < ApplicationPolicy
     # Signed in users
     signed_in?
   end
+
+  def update?
+    signed_in?
+  end
+
+  class Scope < ApplicationPolicy::Scope
+    def resolve
+      return scope.all if user.user.super_admin?
+
+      user.configuration_profile&.specifications || user.user.specifications
+    end
+  end
 end

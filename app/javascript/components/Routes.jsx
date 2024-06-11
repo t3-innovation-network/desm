@@ -32,6 +32,11 @@ const adminRoleName = process.env.ADMIN_ROLE_NAME || 'Super Admin'; // eslint-di
 const allRoles = [adminRoleName, 'Mapper', 'DSO Admin', 'Profile Admin'];
 const onlySuperAdmin = [adminRoleName];
 const onlyMappers = ['Mapper'];
+export const MAPPING_PATH_BY_STATUS = {
+  ready_to_upload: 'upload',
+  uploaded: 'map',
+  in_progress: 'align',
+};
 
 const Routes = (props) => {
   const { handleLogin } = props;
@@ -83,11 +88,25 @@ const Routes = (props) => {
           component={EditSpecification}
         />
 
-        <ProtectedRoute exact path="/new-mapping" allowedRoles={onlyMappers} component={Mapping} />
+        <ProtectedRoute
+          exact
+          path="/new-mapping"
+          allowedRoles={onlyMappers}
+          pageType="mapping-new"
+          component={Mapping}
+        />
 
         <ProtectedRoute
           exact
-          path="/mappings/:id"
+          path={`/mappings/:id/${MAPPING_PATH_BY_STATUS['ready_to_upload']}`}
+          allowedRoles={onlyMappers}
+          pageType="mapping-ready-to-upload"
+          component={Mapping}
+        />
+
+        <ProtectedRoute
+          exact
+          path={`/mappings/:id/${MAPPING_PATH_BY_STATUS['uploaded']}`}
           allowedRoles={onlyMappers}
           pageType="mapping-to-domains"
           component={MappingToDomains}
@@ -95,8 +114,9 @@ const Routes = (props) => {
 
         <ProtectedRoute
           exact
-          path="/mappings/:id/align"
+          path={`/mappings/:id/${MAPPING_PATH_BY_STATUS['in_progress']}`}
           allowedRoles={onlyMappers}
+          pageType="mapping-align"
           component={AlignAndFineTune}
         />
 

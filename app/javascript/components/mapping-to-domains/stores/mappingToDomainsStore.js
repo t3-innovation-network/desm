@@ -115,7 +115,7 @@ export const mappingToDomainsStore = (initialData = {}) => ({
   handleDoneDomainMapping: thunk(async (actions, _params = {}, h) => {
     const state = h.getState();
     const result = await actions.handleSaveChanges({ partiallySave: false });
-    if (result) {
+    if (result && state.mapping.status === 'uploaded') {
       // Change the mapping satus to "in_progress" (with underscore, because it's
       // the name in the backend), so we say it's begun terms mapping phase
       let response = await updateMapping({
