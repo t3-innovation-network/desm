@@ -36,6 +36,10 @@ export const domainsStore = (initialData = {}) => ({
   ),
 
   // actions
+  resetData: action((state) => {
+    state.domainsList = [];
+    state.selectedFilteredDomains = [];
+  }),
   toggleSelectAll: action((state, selected) => {
     state.domainsList.forEach((d) => {
       d.selected = selected;

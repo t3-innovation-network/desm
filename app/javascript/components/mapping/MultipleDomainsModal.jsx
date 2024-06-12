@@ -27,6 +27,9 @@ const MultipleDomainsModal = (props) => {
   const [absentDomains, domains] = state.partitionDomains;
 
   useDidMountEffect(() => actions.updateDomains(props.domains), [props.domains]);
+  useDidMountEffect(() => {
+    if (!modalIsOpen) actions.resetData();
+  }, [modalIsOpen]);
 
   /**
    * Selects all the domains if there are unselected among them. Otherwise, deselects all the domains.
