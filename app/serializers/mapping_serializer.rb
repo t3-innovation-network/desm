@@ -2,11 +2,13 @@
 
 class MappingSerializer < ApplicationSerializer
   attributes :description, :domain, :mapped_at, :mapped_terms, :origin, :slug, :specification_id, :spine_id, :status,
-             :title, :updated_at
-  attributes :uploaded?, :mapped?, :in_progress?
+             :title
+  attributes :uploaded?, :mapped?, :in_progress?, :ready_to_upload?
   belongs_to :specification do
     { id: object.specification.id, name: object.specification.name,
       version: object.specification.version,
+      domain: { id: object.specification.domain_id, name: object.specification.domain&.pref_label,
+                spine: object.specification.domain&.spine? },
       user: { id: object.specification.user.id, fullname: object.specification.user.fullname } }
   end
   has_many :selected_terms, serializer: PreviewSerializer

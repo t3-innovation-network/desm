@@ -16,6 +16,7 @@ import {
 } from '../../actions/mappingform';
 import Loader from './../shared/Loader';
 import createSpec from '../../services/createSpec';
+import updateSpec from '../../services/updateSpec';
 import createMapping from '../../services/createMapping';
 import { setVocabularies, unsetVocabularies } from '../../actions/vocabularies';
 import createVocabulary from '../../services/createVocabulary';
@@ -24,8 +25,10 @@ import UploadVocabulary from '../mapping-to-domains/UploadVocabulary';
 import Pluralize from 'pluralize';
 import extractVocabularies from '../../services/extractVocabularies';
 import { showError, showSuccess } from '../../helpers/Messages';
+import { pageRoutes } from '../../services/pageRoutes';
 
 const MappingPreview = (props) => {
+  const { mapping } = props;
   /**
    * Flag to know whether we are adding a new vocabulary.
    */
@@ -121,7 +124,7 @@ const MappingPreview = (props) => {
 
     /// Send the specifications to the backend
     mappingFormData.content = JSON.stringify(filteredFile);
-    let response = await createSpec(mappingFormData);
+    let response = await (mapping?.id ? updateSpec(mappingFormData) : createSpec(mappingFormData));
 
     setCreatingSpec(false);
 
@@ -216,21 +219,25 @@ const MappingPreview = (props) => {
     let specResponse = await handleCreateSpecification();
     await handleCreateVocabularies();
 
-    // If it's not the spine, the user is uploading a specification to map,
-    // so let's create the mapping and (with the id returned) load the
-    // mapping page
-    dispatch(startProcessingFile());
+    let response;
+    // new mapping
+    if (!mapping?.id) {
+      // If it's not the spine, the user is uploading a specification to map,
+      // so let's create the mapping and (with the id returned) load the
+      // mapping page
+      dispatch(startProcessingFile());
 
-    const response = await createMapping(specResponse.id);
-    dispatch(stopProcessingFile());
+      response = await createMapping(specResponse.id);
+      dispatch(stopProcessingFile());
 
-    if (response.error) {
-      showError(response.error);
-      return;
+      if (response.error) {
+        showError(response.error);
+        return;
+      }
     }
 
     unsetFormValues();
-    props.redirect('/mappings/' + response.mapping.id);
+    props.redirect(pageRoutes.mappingUploaded(mapping?.id || response.mapping.id));
   };
 
   return (

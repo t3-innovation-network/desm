@@ -14,10 +14,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AppContext } from '../../contexts/AppContext';
 import { mappingToDomainsStore } from './stores/mappingToDomainsStore';
+import { pageRoutes } from '../../services/pageRoutes';
 
 const MappingToDomains = (props) => {
   const { organization } = useContext(AppContext);
-  const [state, actions] = useLocalStore(() => mappingToDomainsStore());
+  const [state, actions] = useLocalStore(() =>
+    mappingToDomainsStore({ mapping: { id: props.match.params.id || null } })
+  );
   const {
     editingTerm,
     changesPerformed,
@@ -45,7 +48,7 @@ const MappingToDomains = (props) => {
     const result = await actions.handleDoneDomainMapping();
     if (result) {
       // Redirect to 3rd step mapping ("Align and Fine Tune")
-      props.history.push('/mappings/' + mapping.id + '/align');
+      props.history.push(pageRoutes.mappingInProgress(mapping.id));
     }
   };
   // Toggle select all
@@ -70,6 +73,7 @@ const MappingToDomains = (props) => {
         mapSpecification={true}
         stepper={true}
         stepperStep={2}
+        mapping={state.mapping}
         customcontent={<SaveButtonOptions />}
       />
     );

@@ -24,6 +24,28 @@ en:
           configuration_profile: Filter Agents for Profile(s)
           state: Filter Agents for Profile's State
           search: Search Agents
+    mapping:
+      step:
+        new: Upload Specification
+        ready_to_upload: Reimport Specification
+        uploaded: Map to Domains
+        in_progress: Align and Fine Tune
+        mapped: Mapped
+    mapping_upload:
+      new:
+        step_1: 1. Upload Your Specification
+        form:
+          domain: Which domain are you uploading?
+      persisted:
+        step_1: 1. Upload More Properties for Your Specification
+        form:
+          domain: Domain
+    specifications:
+      mapping:
+        undo:
+          mapped: Mark this mapping back to 'in progress'
+          in_progress: Mark this mapping back to 'uploaded'
+          uploaded: Mark this mapping back to 'ready to upload'
     view_mapping:
       no_mappings:
         current_profile: No shared mappings found for requested configuration profile.
@@ -60,9 +82,18 @@ en:
       mappings:
         title: DESM - Specifications
         description: View/Update mappings in the Data Ecosystem Schema Mapper Tool.
+      mapping_new:
+        title: DESM - Upload Specification
+        description: Create a new mapping in the Data Ecosystem Schema Mapper Tool.
+      mapping_ready_to_upload:
+        title: DESM - Reimport Specification
+        description: Reimport specification in the Data Ecosystem Schema Mapper Tool.
       mapping_to_domains:
         title: DESM - Map to Domains
         description: Map to Domains in the Data Ecosystem Schema Mapper Tool.
+      mapping_align:
+        title: DESM - Align and Fine Tune
+        description: Align and Fine Tune mapping in the Data Ecosystem Schema Mapper Tool.
       spine_properties:
         title: DESM - Spine Properties
         description: View/Edit spine properties in the Data Ecosystem Schema Mapper Tool.

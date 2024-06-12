@@ -32,7 +32,9 @@ FactoryBot.define do
     color { Faker::Color.hex_color }
     definition { Faker::Lorem.sentence }
     predicate_set
-    pref_label { Faker::Lorem.word }
+    sequence :pref_label do |n|
+      "#{Faker::Lorem.word}-#{n}"
+    end
     source_uri { Faker::Internet.url }
     weight { 3.50 }
 
