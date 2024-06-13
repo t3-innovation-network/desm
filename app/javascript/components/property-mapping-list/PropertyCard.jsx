@@ -1,5 +1,6 @@
 import { first, sortBy } from 'lodash';
 import ProgressReportBar from '../shared/ProgressReportBar';
+import PropertyComments from './PropertyComments';
 
 /**
  * Props:
@@ -13,7 +14,7 @@ const PropertyCard = ({ term }) => {
         <h3 className="mb-1">{term.name}</h3>
 
         <small className="mt-1 col-on-primary-light">Definition</small>
-        <p className="mb-1">{term.property.comment}</p>
+        <div className="mb-1">{<PropertyComments term={term} />}</div>
 
         <small className="mt-1 col-on-primary-light">Origin</small>
         <p className="mb-1">{first(sortBy(term.alignments, 'id'))?.schemaName}</p>
