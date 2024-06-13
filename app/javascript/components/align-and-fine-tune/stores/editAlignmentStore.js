@@ -6,12 +6,10 @@ import { noMatchPredicate } from './mappingStore';
 export const defaultState = {
   // status
   commentChanged: false,
-  currentMode: null,
-  predicateChanged: false,
+  loading: false,
   // options
   // data
   comment: null,
-  selectedPredicate: null,
 };
 
 export const editAlignmentStore = (initialData = {}) => ({
@@ -19,16 +17,12 @@ export const editAlignmentStore = (initialData = {}) => ({
   ...easyStateSetters(defaultState, initialData),
 
   // computed
-  selectedNoMatchPredicate: computed((state) => noMatchPredicate(state.selectedPredicate)),
+  selectedNoMatchPredicate: computed((state, predicate) => noMatchPredicate(predicate)),
 
   // actions
   handleCommentChange: action((state, payload) => {
     state.commentChanged = true;
     state.comment = payload;
-  }),
-  handlePredicateSelected: action((state, payload) => {
-    state.predicateChanged = true;
-    state.selectedPredicate = payload;
   }),
   // thunks
 });
