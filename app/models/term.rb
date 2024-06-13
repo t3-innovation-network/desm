@@ -28,6 +28,7 @@
 ###
 class Term < ApplicationRecord
   include Slugable
+  audited
 
   belongs_to :configuration_profile_user
 

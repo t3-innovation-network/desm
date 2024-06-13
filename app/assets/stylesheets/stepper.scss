@@ -13,6 +13,30 @@
   top: 0.5vw;
 }
 
+.indicator-stepnum {
+  @include e(link) {
+    margin-left: -0.3vw;
+
+    &:hover {
+      color: $primary-color-light !important; // stylelint-disable-line
+    }
+  }
+
+  @include e(num) {
+    display: inline-block;
+
+    @include m(text) {
+      padding-top: 1px;
+    }
+
+    @include m(link) {
+      border: 1px solid $primary-color-light;
+      height: 1rem;
+      width: 1rem;
+    }
+  }
+}
+
 .indicator > .indicator-step .indicator-stepnum {
   color: $foreground-color;
   font-size: 12px;

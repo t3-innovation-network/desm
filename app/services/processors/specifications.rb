@@ -42,6 +42,27 @@ module Processors
     end
 
     ###
+    # @description: Create the specification with its terms
+    # @param [Hash] data The collection of data to create the specification
+    ###
+    def self.update(data, instance:)
+      @instance = instance
+
+      ActiveRecord::Base.transaction do
+        @instance.update!(
+          name: data[:name],
+          version: data[:version],
+          selected_domains_from_file: @instance.selected_domains_from_file.concat(data[:selected_domains]).uniq
+        )
+        new(data[:spec]).create_terms(@instance, data[:configuration_profile_user])
+        mapping = @instance.domain.spine.mappings.find(data[:mapping_id])
+        mapping.update!(status: Mapping.statuses["uploaded"]) if mapping.ready_to_upload?
+      end
+
+      @instance
+    end
+
+    ###
     # @description: Create each of the terms related to the specification
     # @param instance [Specification]
     ###

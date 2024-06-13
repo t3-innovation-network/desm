@@ -6,7 +6,7 @@ import ConfirmDialog from '../shared/ConfirmDialog';
 import AlertNotice from '../shared/AlertNotice';
 import Loader from '../shared/Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faFilePen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { showSuccess } from '../../helpers/Messages';
 
 /**
@@ -154,7 +154,7 @@ const SpineSpecsList = (props) => {
                   className="btn btn-sm btn-dark ml-2"
                   title="Edit the spine. You can edit each property here."
                 >
-                  <FontAwesomeIcon icon={faPencilAlt} />
+                  <FontAwesomeIcon icon={faFilePen} />
                 </Link>
                 <button
                   onClick={() => handleConfirmRemove(spine.id)}

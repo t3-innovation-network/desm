@@ -16,6 +16,7 @@ import SpecsList from './specifications-list/SpecsList';
 import AlignAndFineTune from './align-and-fine-tune/AlignAndFineTune';
 import MappingToDomains from './mapping-to-domains/MappingToDomains';
 import EditSpecification from './edit-specification/EditSpecification';
+import EditMappingProperties from './edit-specification/EditMappingProperties';
 import PropertyMappingList from './property-mapping-list/PropertyMappingList';
 import ForgotPass from './auth/ForgotPass';
 import ResetPass from './auth/ResetPass';
@@ -31,6 +32,11 @@ const adminRoleName = process.env.ADMIN_ROLE_NAME || 'Super Admin'; // eslint-di
 const allRoles = [adminRoleName, 'Mapper', 'DSO Admin', 'Profile Admin'];
 const onlySuperAdmin = [adminRoleName];
 const onlyMappers = ['Mapper'];
+export const MAPPING_PATH_BY_STATUS = {
+  ready_to_upload: 'upload',
+  uploaded: 'map',
+  in_progress: 'align',
+};
 
 const Routes = (props) => {
   const { handleLogin } = props;
@@ -66,29 +72,60 @@ const Routes = (props) => {
           render={(props) => <PropertyMappingList {...props} handleLogin={handleLogin} />}
         />
 
-        <ProtectedRoute exact path="/mappings" allowedRoles={onlyMappers} component={SpecsList} />
+        <ProtectedRoute
+          exact
+          path="/mappings"
+          allowedRoles={onlyMappers}
+          pageType="mappings"
+          component={SpecsList}
+        />
 
         <ProtectedRoute
           exact
           path="/specifications/:id"
           allowedRoles={allRoles}
+          pageType="spine-properties"
           component={EditSpecification}
         />
 
-        <ProtectedRoute exact path="/new-mapping" allowedRoles={onlyMappers} component={Mapping} />
+        <ProtectedRoute
+          exact
+          path="/new-mapping"
+          allowedRoles={onlyMappers}
+          pageType="mapping-new"
+          component={Mapping}
+        />
 
         <ProtectedRoute
           exact
-          path="/mappings/:id"
+          path={`/mappings/:id/${MAPPING_PATH_BY_STATUS['ready_to_upload']}`}
           allowedRoles={onlyMappers}
+          pageType="mapping-ready-to-upload"
+          component={Mapping}
+        />
+
+        <ProtectedRoute
+          exact
+          path={`/mappings/:id/${MAPPING_PATH_BY_STATUS['uploaded']}`}
+          allowedRoles={onlyMappers}
+          pageType="mapping-to-domains"
           component={MappingToDomains}
         />
 
         <ProtectedRoute
           exact
-          path="/mappings/:id/align"
+          path={`/mappings/:id/${MAPPING_PATH_BY_STATUS['in_progress']}`}
           allowedRoles={onlyMappers}
+          pageType="mapping-align"
           component={AlignAndFineTune}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/mappings/:id/properties"
+          allowedRoles={onlyMappers}
+          pageType="mapping-properties"
+          component={EditMappingProperties}
         />
 
         <ProtectedRoute
