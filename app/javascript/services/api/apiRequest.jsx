@@ -1,6 +1,18 @@
 import { camelizeKeys, decamelizeKeys } from 'humps';
 import apiService, { processMessage } from './apiService';
-import { chain, pickBy, identity, isArray, isEmpty, isNil } from 'lodash';
+import {
+  chain,
+  pickBy,
+  identity,
+  isArray,
+  isEmpty,
+  isNil,
+  isObject,
+  isString,
+  map,
+  mapValues,
+  trim,
+} from 'lodash';
 /**
  * Manages the api requests
  *
@@ -29,11 +41,14 @@ const apiRequest = async (props) => {
   validateParams(props);
   const queryParams = queryString(props.queryParams || {});
 
+  let data = decamelizeKeys(props.payload || {});
+  if (props.trimPayload) data = trimObject(data);
+
   // Do the request
   const response = await apiService({
     url: `${props.url}${queryParams ? `?${queryParams}` : ''}`,
     method: props.method,
-    data: props.payload,
+    data,
     options: props.options,
   })
     // Process the errors globally
@@ -89,6 +104,13 @@ const queryString = (params) => {
     .filter()
     .value()
     .join('&');
+};
+
+const trimObject = (obj) => {
+  if (isString(obj)) return trim(obj);
+  if (isArray(obj)) return map(obj, trimObject);
+  if (isObject(obj)) return mapValues(obj, trimObject);
+  return obj;
 };
 
 export default apiRequest;

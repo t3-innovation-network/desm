@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import updateCP from '../../../../services/updateCP';
@@ -17,22 +16,18 @@ const CPMetaData = () => {
   const [updatedAt, setUpdatedAt] = useState(formatDateForInput(configurationProfile.updatedAt));
   const dispatch = useDispatch();
 
-  const buildCpData = () =>
-    _.pickBy({
-      ...configurationProfile,
-      createdAt,
+  const buildCpData = () => ({
+    ...configurationProfile,
+    createdAt,
+    description,
+    name,
+    structure: {
+      ...configurationProfile.structure,
       description,
       name,
-      structure: _.pickBy(
-        {
-          ...configurationProfile.structure,
-          description,
-          name,
-        },
-        () => true
-      ),
-      updatedAt,
-    });
+    },
+    updatedAt,
+  });
 
   const handleBlur = () => {
     dispatch(setSavingCP(true));
