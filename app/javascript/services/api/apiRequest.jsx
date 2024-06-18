@@ -41,7 +41,7 @@ const apiRequest = async (props) => {
   validateParams(props);
   const queryParams = queryString(props.queryParams || {});
 
-  let data = decamelizeKeys(props.payload || {});
+  let data = props.formData ? props.payload : decamelizeKeys(props.payload || {});
   if (props.trimPayload) data = trimObject(data);
 
   // Do the request
