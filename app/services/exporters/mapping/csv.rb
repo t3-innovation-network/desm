@@ -7,12 +7,13 @@ module Exporters
         "Spine term name",
         "Spine term definition",
         "Spine term class/type",
-        "Spine term organization+schema",
+        "Spine term origin",
         "Mapping predicate label",
         "Mapping predicate definition",
         "Mapped term name",
         "Mapped term definition",
-        "Mapped term class type",
+        "Mapped term class/type",
+        "Mapped term origin",
         "Comments",
         "Transformation notes"
       ].freeze
@@ -35,8 +36,8 @@ module Exporters
           .alignments
           .includes(
             :predicate,
-            mapped_terms: :property,
-            spine_term: %i(organization property specifications)
+            mapped_terms: %i(property specifications),
+            spine_term: %i(property specifications)
           )
       end
 
@@ -53,16 +54,28 @@ module Exporters
           alignment.mapped_terms.first&.property
         end
 
+        def mapped_term_specification
+          alignment.mapped_terms.first&.specifications&.first
+        end
+
+        def mapped_term_specification_version
+          "(#{mapped_term_specification.version})" if mapped_term_specification&.version?
+        end
+
         def organization
           alignment.spine_term.organization
         end
 
-        def specification
+        def spine_term
+          alignment.spine_term.property
+        end
+
+        def spine_term_specification
           alignment.spine_term.specifications.first
         end
 
-        def spine_term
-          alignment.spine_term.property
+        def spine_term_specification_version
+          "(#{spine_term_specification.version})" if spine_term_specification.version?
         end
 
         def values
@@ -73,8 +86,8 @@ module Exporters
             spine_term.comments.join("\n"),
             # Spine term class/type
             spine_term.compact_domains.join(", "),
-            # Spine term organization+schema
-            [organization.name, specification.name].compact.join("+"),
+            # Spine term origin
+            [spine_term_specification.name, spine_term_specification_version].compact.join(" "),
             # Mapping predicate label
             predicate&.name,
             # Mapping predicate definition
@@ -83,8 +96,10 @@ module Exporters
             mapped_term&.label,
             # Mapped term definition
             mapped_term&.comments&.join("\n"),
-            # Mapped term class type
+            # Mapped term class/type
             mapped_term&.compact_domains&.join(", "),
+            # Mapped term origin
+            [mapped_term_specification&.name, mapped_term_specification_version].compact.join(" "),
             # Comments
             alignment.comment,
             # Transformation notes
