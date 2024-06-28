@@ -68,7 +68,7 @@
     dcterms:creator <http://people.pjjk.net/phil> ;
     dcterms:description "This concept scheme identifies the mapping predicates used by the DESM Pilot Project."@en-us ;
     dcterms:title "DESM Pilot Project Mapping Predicates"@en-us ;
-    skos:hasTopConcept         
+    skos:hasTopConcept
         <http://desmsolutions.org/concepts/concept> ,
         <http://desmsolutions.org/concepts/reworded> ,
         <http://desmsolutions.org/concepts/identical> ,
@@ -78,5 +78,5 @@
         <http://desmsolutions.org/concepts/noMatch> ,
         <http://desmsolutions.org/concepts/issue> ,
         <http://desmsolutions.org/concepts/disaggregated>,
-        <http://desmsolutions.org/concepts/transformed> 
+        <http://desmsolutions.org/concepts/transformed>
 .
