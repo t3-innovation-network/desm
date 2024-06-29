@@ -40,6 +40,8 @@ class Property < ApplicationRecord
   belongs_to :term
   before_update :update_term, if: -> { label_changed? || source_uri_changed? }
 
+  delegate :comments, to: :term
+
   ###
   # @description: Returns the property's compact domains
   ###

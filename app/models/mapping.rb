@@ -145,8 +145,7 @@ class Mapping < ApplicationRecord
   # @description: Exports the mapping into json-ld format
   ###
   def export
-    exporter = Exporters::Mapping.new(self)
-    exporter.export
+    Exporters::Mapping.new(self).to_jsonld
   end
 
   ###

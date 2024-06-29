@@ -33,7 +33,13 @@ module API
       #   mapping JSON-LD version.
       ###
       def export
-        render json: @instance.export
+        exporter = Exporters::Mapping.new(@instance)
+
+        if params[:format] == "csv"
+          render plain: exporter.to_csv, content_type: "text/csv"
+        else
+          render json: exporter.to_jsonld
+        end
       end
 
       ###
