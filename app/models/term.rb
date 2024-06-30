@@ -69,7 +69,7 @@ class Term < ApplicationRecord
 
   before_destroy :check_if_alignments_exist
 
-  delegate :compact_domains, to: :property
+  delegate :compact_domains, :compact_ranges, to: :property
 
   ###
   # @description: Include additional information about the specification in
