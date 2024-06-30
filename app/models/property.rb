@@ -49,6 +49,13 @@ class Property < ApplicationRecord
     @compact_domains ||= Array.wrap(domain).map { Utils.compact_uri(_1) }.compact
   end
 
+  ###
+  # @description: Returns the property's compact ranges
+  ###
+  def compact_ranges
+    @compact_ranges ||= Array.wrap(range).map { Utils.compact_uri(_1) }.compact
+  end
+
   private
 
   def update_term
