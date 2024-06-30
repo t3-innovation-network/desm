@@ -20,7 +20,10 @@ const CompleteStructureValidationErrors = () => {
     return (
       <ul className="list-unstyled">
         {map(section, (values, key) => {
-          const title = values[0].sections.length > 1 ? values[0].sections.join(' > ') : null;
+          const title =
+            values[0].sections.length >= 1 && values[0].path.length > 1
+              ? values[0].sections.join(' > ')
+              : null;
           const errors = values.map((value) => value.message).join(', ');
           return (
             <li key={key}>

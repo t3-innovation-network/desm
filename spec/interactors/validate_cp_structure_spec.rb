@@ -17,7 +17,7 @@ describe ValidateCpStructure, type: :interactor do
     context "with incomplete profile" do
       let(:configuration_profile) { create(:configuration_profile, :incomplete, structure:) }
       let(:structure) do
-        { "name" => "ewsDESM CP - 2023-02-17T17:53:01.247Z3",
+        { "name" => " ",
           "description" => nil,
           "abstract_classes" => { "name" => nil, "origin" => nil, "version" => nil, "description" => nil },
           "mapping_predicates" => {},
@@ -29,7 +29,7 @@ describe ValidateCpStructure, type: :interactor do
       end
 
       it "returns an array of error messages" do
-        expect(subject.messages.size).to eq 14
+        expect(subject.messages.size).to eq 12
         expect(subject.grouped_messages.keys).to match_array(%w(abstract_classes standards_organizations
                                                                 mapping_predicates general))
         org = subject.grouped_messages["standards_organizations"]

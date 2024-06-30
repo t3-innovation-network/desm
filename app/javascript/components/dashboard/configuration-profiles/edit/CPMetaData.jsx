@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useDidMountEffect from '../../../../helpers/useDidMountEffect';
 import updateCP from '../../../../services/updateCP';
 import {
   setCurrentConfigurationProfile,
@@ -14,7 +15,16 @@ const CPMetaData = () => {
   const [description, setDescription] = useState(configurationProfile.description);
   const [createdAt, setCreatedAt] = useState(formatDateForInput(configurationProfile.createdAt));
   const [updatedAt, setUpdatedAt] = useState(formatDateForInput(configurationProfile.updatedAt));
+  const [refresh, setRefresh] = useState(false);
   const dispatch = useDispatch();
+
+  useDidMountEffect(() => {
+    const { description, name, createdAt, updatedAt } = configurationProfile;
+    setDescription(description || '');
+    setName(name || '');
+    setCreatedAt(formatDateForInput(createdAt) || '');
+    setUpdatedAt(formatDateForInput(updatedAt));
+  }, [configurationProfile, refresh]);
 
   const buildCpData = () => ({
     ...configurationProfile,
@@ -35,7 +45,9 @@ const CPMetaData = () => {
     updateCP(configurationProfile.id, buildCpData()).then((response) => {
       if (response.error) {
         dispatch(setEditCPErrors(response.error));
-        dispatch(setSavingCP(false));
+        dispatch(setSavingCP(null));
+        // need to revert to previous values
+        setRefresh(!refresh);
         return;
       }
 

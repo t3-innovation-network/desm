@@ -143,7 +143,7 @@ class ConfigurationProfile < ApplicationRecord
     # strip string values from struct
     structure.deep_transform_values! do |value|
       if value.is_a?(String)
-        value.strip.present? ? value.strip : nil
+        value.strip.present? ? value.strip : ""
       else
         value
       end
