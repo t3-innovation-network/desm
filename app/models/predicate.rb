@@ -45,8 +45,10 @@ class Predicate < ApplicationRecord
   audited
 
   belongs_to :predicate_set
-  validates :source_uri, presence: true, uniqueness: { scope: :predicate_set_id }
-  validates :pref_label, presence: true, uniqueness: { scope: :predicate_set_id }
+  validates :source_uri, presence: true,
+                         uniqueness: { scope: :predicate_set_id, message: "%<value>s has already been taken." }
+  validates :pref_label, presence: true,
+                         uniqueness: { scope: :predicate_set_id, message: "%<value>s has already been taken." }
   before_create :assign_color, unless: :color?
   before_save :default_values
   alias_attribute :name, :pref_label
