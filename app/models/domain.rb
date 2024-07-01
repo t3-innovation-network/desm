@@ -47,8 +47,10 @@ class Domain < ApplicationRecord
   belongs_to :domain_set
   has_one :spine, dependent: :destroy
   has_one :configuration_profile, through: :domain_set
-  validates :source_uri, presence: true, uniqueness: { scope: :domain_set_id }
-  validates :pref_label, presence: true, uniqueness: { scope: :domain_set_id }
+  validates :source_uri, presence: true,
+                         uniqueness: { scope: :domain_set_id, message: "%<value>s has already been taken." }
+  validates :pref_label, presence: true,
+                         uniqueness: { scope: :domain_set_id, message: "%<value>s has already been taken." }
   alias_attribute :name, :pref_label
 
   ###

@@ -34,6 +34,8 @@ RSpec.describe Predicate do
     is_expected.to validate_presence_of(:source_uri)
     is_expected.to validate_presence_of(:pref_label)
     is_expected.to validate_uniqueness_of(:source_uri).scoped_to(:predicate_set_id)
+                     .with_message(match("has already been taken."))
     is_expected.to validate_uniqueness_of(:pref_label).scoped_to(:predicate_set_id)
+                     .with_message(match("has already been taken."))
   end
 end
