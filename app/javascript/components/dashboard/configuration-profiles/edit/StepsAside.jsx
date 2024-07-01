@@ -1,25 +1,28 @@
 import {} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStep } from '../../../../actions/configurationProfiles';
+import { i18n } from 'utils/i18n';
 
 const StepsAside = () => {
   const dispatch = useDispatch();
   const steps = [
     {
       number: 1,
-      description: 'General data about the configuration profile',
+      description: i18n.t('ui.dashboard.configuration_profiles.sidebar.base'),
     },
     {
       number: 2,
-      description: 'Select the mapping predicates',
+      description: i18n.t('ui.dashboard.configuration_profiles.sidebar.mapping_predicates.base'),
     },
     {
       number: 3,
-      description: 'Select the abstract classes',
+      description: i18n.t('ui.dashboard.configuration_profiles.sidebar.abstract_classes.base'),
     },
     {
       number: 4,
-      description: "DSO's information",
+      description: i18n.t(
+        'ui.dashboard.configuration_profiles.sidebar.standards_organizations.base'
+      ),
     },
   ];
 

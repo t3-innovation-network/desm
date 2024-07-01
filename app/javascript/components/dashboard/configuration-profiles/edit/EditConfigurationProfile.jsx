@@ -19,8 +19,9 @@ import {
 } from '../../../../actions/configurationProfiles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { showSuccess } from '../../../../helpers/Messages';
 import useDidMountEffect from '../../../../helpers/useDidMountEffect';
+import CompleteStructureValidationErrors from './CompleteStructureValidationErrors';
+import classNames from 'classnames';
 
 const EditConfigurationProfile = (props) => {
   const [loading, setLoading] = useState(true);
@@ -76,7 +77,6 @@ const EditConfigurationProfile = (props) => {
   return (
     <DashboardContainer>
       {dashboardPath()}
-
       {loading ? (
         <Loader />
       ) : (
@@ -139,7 +139,7 @@ const CPCardHeader = () => {
     } else {
       if (!isNull(savingCP)) {
         dispatch(setEditCPErrors(null));
-        showSuccess('All changes saved');
+        // showSuccess('All changes saved');
       }
     }
   }, [savingCP]);
@@ -148,6 +148,11 @@ const CPCardHeader = () => {
     return () => timeoutId.current && clearTimeout(timeoutId.current);
   }, []);
 
+  const clsMessage = classNames('text-center', {
+    'col-on-primary-light': savingCP,
+    'col-success': savingCP === false,
+    'text-danger': isNull(savingCP),
+  });
   return (
     <>
       <div className="col-4">
@@ -155,7 +160,7 @@ const CPCardHeader = () => {
       </div>
       <div className="col-4">
         {showChangesSaved && (
-          <p className="text-center col-on-primary-light">
+          <p className={clsMessage}>
             {savingCP
               ? 'Saving ...'
               : isNull(savingCP)
@@ -169,6 +174,7 @@ const CPCardHeader = () => {
           {_.capitalize(configurationProfile.state)}
         </p>
       </div>
+      <CompleteStructureValidationErrors />
     </>
   );
 };

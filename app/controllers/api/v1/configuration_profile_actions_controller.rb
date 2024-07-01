@@ -17,6 +17,15 @@ module API
 
         @instance.send(action)
         render json: @instance.reload, with_organizations: true
+      rescue CpState::NotYetReadyForTransition => e
+        message =
+          if @instance.incomplete?
+            ConfigurationProfile.validate_structure(@instance.structure, "complete")
+          else
+            e.message
+          end
+
+        render json: { message: }, status: :internal_server_error
       end
 
       private

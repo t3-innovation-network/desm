@@ -17,6 +17,7 @@ const mergeFiles = async (files) => {
         'Content-Type': 'multipart/form-data',
       },
     },
+    formData: true,
   });
   return response;
 };

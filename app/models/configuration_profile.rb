@@ -65,7 +65,7 @@ class ConfigurationProfile < ApplicationRecord
   validates :name, uniqueness: true
 
   after_initialize :setup_schema_validators
-  before_save :check_structure, if: :will_save_change_to_structure?
+  before_save :check_and_update_structure, if: :will_save_change_to_structure?
   # TODO: check if we really need that check
   before_save :check_predicate_strongest_match, if: :will_save_change_to_predicate_strongest_match?
   before_destroy :remove_orphan_organizations
@@ -122,11 +122,12 @@ class ConfigurationProfile < ApplicationRecord
     data.map { |state| { id: state, name: state.humanize } }
   end
 
-  def self.validate_structure(struct, type = "valid")
+  def self.validate_structure(struct, type = "valid", errors_as_objects: false)
     struct = struct.deep_transform_keys { |key| key.to_s.camelize(:lower) }
     JSON::Validator.fully_validate(
       type.eql?("valid") ? valid_schema : complete_schema,
-      struct
+      struct,
+      errors_as_objects:
     )
   end
 
@@ -138,12 +139,25 @@ class ConfigurationProfile < ApplicationRecord
     active? || deactived?
   end
 
-  def check_structure
+  def check_and_update_structure
+    # strip string values from struct
+    structure.deep_transform_values! do |value|
+      if value.is_a?(String)
+        value.strip.present? ? value.strip : ""
+      else
+        value
+      end
+    end
+
     if complete? && !structure_complete?
       incomplete!
     elsif incomplete? && structure_complete?
       complete!
     end
+  end
+
+  def complete_structure_validation_errors
+    self.class.validate_structure(structure, "complete", errors_as_objects: true)
   end
 
   def complete!
@@ -191,8 +205,7 @@ class ConfigurationProfile < ApplicationRecord
   end
 
   def structure_complete?
-    validation = self.class.validate_structure(structure, "complete")
-    validation.empty?
+    complete_structure_validation_errors.empty?
   end
 
   def transition_to!(new_state)
