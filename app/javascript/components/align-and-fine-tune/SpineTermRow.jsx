@@ -36,6 +36,7 @@ const SpineTermRow = (props) => {
     predicates,
     spineOrigin,
     term,
+    fullMode,
   } = props;
 
   const findPredicate = () =>
@@ -161,14 +162,30 @@ const SpineTermRow = (props) => {
                   </h6>
                 )}
                 <p className="card-text">{term.property.comment}</p>
-                <p className="card-text">
-                  Origin:{' '}
-                  <span className="col-primary">
-                    {term.synthetic ? origin : term.organization.name}
-                  </span>
-                </p>
+                {fullMode ? (
+                  <>
+                    <p className="card-text">
+                      Origin:{' '}
+                      <span className="col-primary">
+                        {term.synthetic ? origin : term.organization.name}
+                      </span>
+                    </p>
+                    {!term.synthetic ? (
+                      <>
+                        <p className="card-text">
+                          Domains:{' '}
+                          <span className="col-primary">{term.compactDomains.join(', ')}</span>
+                        </p>
+                        <p className="card-text">
+                          Ranges:{' '}
+                          <span className="col-primary">{term.compactRanges.join(', ')}</span>
+                        </p>
+                      </>
+                    ) : null}
 
-                {alignmentHasVocabulary() ? <VocabularyLabel term={term} /> : ''}
+                    {alignmentHasVocabulary() ? <VocabularyLabel term={term} /> : ''}
+                  </>
+                ) : null}
               </>
             }
           />
@@ -231,18 +248,28 @@ const SpineTermRow = (props) => {
                         </h6>
                       )}
                       <p className="card-text">{mTerm.property.comment}</p>
-                      <p className="card-text">
-                        ID:
-                        <span>{' ' + mTerm.sourceUri}</span>
-                      </p>
-                      {alignmentHasVocabulary() ? (
-                        <VocabularyLabel
-                          onVocabularyClick={actions.handleMatchVocabularyClick}
-                          term={mTerm}
-                        />
-                      ) : (
-                        ''
-                      )}
+                      {fullMode ? (
+                        <>
+                          <p className="card-text">
+                            ID:
+                            <span>{' ' + mTerm.sourceUri}</span>
+                          </p>
+                          <p className="card-text">
+                            Domains: <span>{mTerm.compactDomains}</span>
+                          </p>
+                          <p className="card-text">
+                            Ranges: <span>{mTerm.compactRanges}</span>
+                          </p>
+                          {alignmentHasVocabulary() ? (
+                            <VocabularyLabel
+                              onVocabularyClick={actions.handleMatchVocabularyClick}
+                              term={mTerm}
+                            />
+                          ) : (
+                            ''
+                          )}
+                        </>
+                      ) : null}
                     </>
                   }
                 />
