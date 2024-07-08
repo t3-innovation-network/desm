@@ -24,6 +24,35 @@ en:
           configuration_profile: Filter Agents for Profile(s)
           state: Filter Agents for Profile's State
           search: Search Agents
+      configuration_profiles:
+        errors:
+          incomplete: "The following issues prevent the configuration profile from being promoted to the \"Complete\":"
+        structure:
+          base: General Data
+          root: Required sections
+          path: Base
+          standards_organizations:
+            base: DSO's information
+            path: DSO
+            dso_agents:
+              base: DSO's agents
+              path: Agent
+          abstract_classes:
+            base: Abstract Classes
+            path: Abstract Classes
+          mapping_predicates:
+            base: Mapping Predicates
+            path: Mapping Predicates
+        sidebar:
+          base: General data about the configuration profile
+          standards_organizations:
+            base: DSO's information
+            dso_agents:
+              base: DSO's agents
+          abstract_classes:
+            base: Select the abstract classes
+          mapping_predicates:
+            base: Select the mapping predicates
     mapping:
       step:
         new: Upload Specification

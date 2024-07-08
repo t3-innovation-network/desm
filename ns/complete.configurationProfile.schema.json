@@ -10,6 +10,7 @@
       "properties": {
         "fullname": {
           "type": "string",
+          "minLength": 3,
           "maxLength": 120,
           "title": "The name for this agent to display in the profile. Desirable format: <first name><space><last name>.",
           "examples": [
@@ -26,9 +27,10 @@
           "maxLength": 127
         },
         "phone": {
-          "type": "string",
+          "type": ["string", "null"],
           "title": "The international/domestic format phone number of the agent",
           "pattern": "^\\+?[0-9 -]{6,18}$",
+          "default": "",
           "examples": [
             "+1234567890",
             "123-456-789",
@@ -36,8 +38,9 @@
           ]
         },
         "githubHandle": {
-          "type": "string",
-          "title": "The github username"
+          "type": ["string", "null"],
+          "title": "The github username",
+          "default": ""
         },
         "leadMapper": {
           "type": "boolean",
@@ -62,19 +65,23 @@
       "properties": {
         "name": {
           "type": "string",
-          "title": "The name of the schema file"
+          "title": "The name of the schema file",
+          "minLength": 3
         },
         "description": {
-          "type": "string",
-          "title": "A detailed description of the schema file. E.g. what it represents, which concepts should be expected it to contain."
+          "type": ["string", "null"],
+          "title": "A detailed description of the schema file. E.g. what it represents, which concepts should be expected it to contain.",
+          "default": ""
         },
         "encodingSchema": {
-          "type": "string",
-          "title": "The encodingSchema for this schema file"
+          "type": ["string", "null"],
+          "title": "The encodingSchema for this schema file",
+          "default": ""
         },
         "version": {
-          "type": "string",
-          "title": "The version of the schema file"
+          "type": ["string", "null"],
+          "title": "The version of the schema file",
+          "default": ""
         },
         "origin": {
           "$id": "#/properties/standardsOrganizations/items/anyOf/0/properties/associatedSchema/items/anyOf/0/properties/origin",
@@ -124,19 +131,23 @@
       "properties": {
         "name": {
           "type": "string",
-          "title": "The name of the skos file."
+          "title": "The name of the skos file.",
+          "minLength": 3
         },
         "version": {
-          "type": "string",
-          "title": "The version of the skos file"
+          "type": ["string", "null"],
+          "title": "The version of the skos file",
+          "default": ""
         },
         "description": {
-          "type": "string",
-          "title": "A description what the skos file represents."
+          "type": ["string", "null"],
+          "title": "A description what the skos file represents.",
+          "default": ""
         },
         "origin": {
           "type": "string",
           "title": "The URL where the file content is available",
+          "minLength": 3,
           "examples": [
             "https://example.url.for.skos.predicates.file1,https://example.url.for.skos.predicates.file2"
           ]
@@ -165,6 +176,7 @@
         "name": {
           "type": "string",
           "title": "The name of the organization",
+          "minLength": 3,
           "examples": [
             "Schema.org",
             "CTDL",
@@ -172,8 +184,9 @@
           ]
         },
         "description": {
-          "type": "string",
-          "title": "A description that provides consistent information about the standards organization"
+          "type": ["string", "null"],
+          "title": "A description that provides consistent information about the standards organization",
+          "default": ""
         },
         "homepageURL": {
           "$ref": "#/definitions/PlausibleUrl",
@@ -222,6 +235,7 @@
     "name": {
       "$id": "#/properties/name",
       "type": "string",
+      "minLength": 3,
       "title": "A name that denotes the purpose of this configuration profile. Preferably a single word",
       "examples": [
         "Medical",
@@ -230,7 +244,7 @@
     },
     "description": {
       "$id": "#/properties/description",
-      "type": "string",
+      "type": ["string", "null"],
       "title": "The description of the configuration profile",
       "description": "An explanation about the purpose of this configuration profile.",
       "default": "",
