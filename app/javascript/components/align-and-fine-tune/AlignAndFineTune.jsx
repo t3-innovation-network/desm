@@ -35,7 +35,6 @@ const AlignAndFineTune = (props) => {
     predicates,
     spineTerms,
     spineTermsInputValue,
-    fullMode,
   } = state;
 
   // All the terms that are already mapped
@@ -148,7 +147,6 @@ const AlignAndFineTune = (props) => {
                 origin: mapping.origin,
               })
             }
-            fullMode={fullMode}
           />
         );
       })
@@ -174,8 +172,6 @@ const AlignAndFineTune = (props) => {
         handleAddSynthetic={actions.handleAddSynthetic}
         noMatchPredicateId={state.noMatchPredicateId}
         alignments={alignments}
-        fullMode={fullMode}
-        setFullMode={actions.setFullMode}
       />
       <div className="mt-4">
         {/* CHANGELOG */}

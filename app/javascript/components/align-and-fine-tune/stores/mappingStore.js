@@ -26,8 +26,6 @@ export const defaultState = {
   hideMappedSelectedTerms: false,
   // Whether to hide mapped mapping terms or not
   hideMappedSpineTerms: false,
-  // Whether the property cards show all the information
-  fullMode: false,
 
   // data
   /**

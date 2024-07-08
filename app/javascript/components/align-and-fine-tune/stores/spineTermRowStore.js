@@ -18,6 +18,10 @@ export const defaultState = {
   predicateOption: null,
   // The predicate option definition
   predicateDefinition: null,
+  // Whether the spine term shows extra details
+  spineTermExpanded: false,
+  // Whether the mapped term shows extra details
+  mappedTermExpanded: false,
 };
 
 export const spineTermRowStore = (initialData = {}) => ({

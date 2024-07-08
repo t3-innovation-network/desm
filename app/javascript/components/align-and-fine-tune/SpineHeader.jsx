@@ -24,8 +24,6 @@ const SpineHeader = (props) => {
     handleAddSynthetic,
     alignments,
     noMatchPredicateId,
-    fullMode,
-    setFullMode,
   } = props;
 
   return (
@@ -53,18 +51,6 @@ const SpineHeader = (props) => {
             />
             <label className="custom-control-label cursor-pointer" htmlFor="hideSpineElms">
               Hide Mapped Elements
-            </label>
-          </div>
-          <div className="custom-control custom-checkbox mb-3">
-            <input
-              type="checkbox"
-              className="custom-control-input desm-custom-control-input cursor-pointer"
-              id="showTermInfo"
-              checked={fullMode}
-              onChange={() => setFullMode(!fullMode)}
-            />
-            <label className="custom-control-label cursor-pointer" htmlFor="showTermInfo">
-              Show Term Info
             </label>
           </div>
         </div>

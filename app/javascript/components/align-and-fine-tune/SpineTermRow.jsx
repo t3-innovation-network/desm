@@ -36,7 +36,6 @@ const SpineTermRow = (props) => {
     predicates,
     spineOrigin,
     term,
-    fullMode,
   } = props;
 
   const findPredicate = () =>
@@ -54,6 +53,8 @@ const SpineTermRow = (props) => {
     mappedTermMatching,
     editing,
     matchingVocab,
+    spineTermExpanded,
+    mappedTermExpanded,
   } = state;
 
   useEffect(() => {
@@ -162,8 +163,14 @@ const SpineTermRow = (props) => {
                   </h6>
                 )}
                 <p className="card-text">{term.property.comment}</p>
-                {fullMode ? (
-                  <>
+                <button
+                  className="btn btn-link p-0"
+                  onClick={() => actions.setSpineTermExpanded(!spineTermExpanded)}
+                >
+                  {spineTermExpanded ? 'Collapse' : 'Expand'}
+                </button>
+                {spineTermExpanded ? (
+                  <div className="mt-2">
                     <p className="card-text">
                       Origin:{' '}
                       <span className="col-primary">
@@ -184,7 +191,7 @@ const SpineTermRow = (props) => {
                     ) : null}
 
                     {alignmentHasVocabulary() ? <VocabularyLabel term={term} /> : ''}
-                  </>
+                  </div>
                 ) : null}
               </>
             }
@@ -248,12 +255,18 @@ const SpineTermRow = (props) => {
                         </h6>
                       )}
                       <p className="card-text">{mTerm.property.comment}</p>
-                      {fullMode ? (
-                        <>
-                          <p className="card-text">
-                            ID:
-                            <span>{' ' + mTerm.sourceUri}</span>
-                          </p>
+                      <p className="card-text">
+                        ID:
+                        <span>{' ' + mTerm.sourceUri}</span>
+                      </p>
+                      <button
+                        className="btn btn-link p-0"
+                        onClick={() => actions.setMappedTermExpanded(!mappedTermExpanded)}
+                      >
+                        {mappedTermExpanded ? 'Collapse' : 'Expand'}
+                      </button>
+                      {mappedTermExpanded ? (
+                        <div className="mt-2">
                           <p className="card-text">
                             Domains: <span>{mTerm.compactDomains}</span>
                           </p>
@@ -268,7 +281,7 @@ const SpineTermRow = (props) => {
                           ) : (
                             ''
                           )}
-                        </>
+                        </div>
                       ) : null}
                     </>
                   }
