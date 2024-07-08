@@ -24,6 +24,7 @@ import classNames from 'classnames';
 
 const TermCard = ({ term, editEnabled, disableClick, ...props }) => {
   const [reverting, setReverting] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   // callback to the parent component, don't mutate the term object
   const handleTermClick = () => props.onClick({ ...term, selected: !term.selected });
   // Manage to execute the revert action on this term using the function passesd in props
@@ -104,6 +105,19 @@ const TermCard = ({ term, editEnabled, disableClick, ...props }) => {
           </h6>
           <p className="card-text">{term.property.comment}</p>
           <p className="card-text">{'ID: ' + term.sourceUri}</p>
+          <button className="btn btn-link p-0" onClick={() => setExpanded(!expanded)}>
+            {expanded ? 'Collapse' : 'Expand'}
+          </button>
+          {expanded ? (
+            <div className="mt-2">
+              <p className="card-text">
+                Domains: <span>{term.compactDomains}</span>
+              </p>
+              <p className="card-text">
+                Ranges: <span>{term.compactRanges}</span>
+              </p>
+            </div>
+          ) : null}
         </>
       }
     />

@@ -268,10 +268,10 @@ const SpineTermRow = (props) => {
                       {mappedTermExpanded ? (
                         <div className="mt-2">
                           <p className="card-text">
-                            Domains: <span>{mTerm.compactDomains}</span>
+                            Domains: <span>{mTerm.compactDomains.join(', ')}</span>
                           </p>
                           <p className="card-text">
-                            Ranges: <span>{mTerm.compactRanges}</span>
+                            Ranges: <span>{mTerm.compactRanges.join(', ')}</span>
                           </p>
                           {alignmentHasVocabulary() ? (
                             <VocabularyLabel
