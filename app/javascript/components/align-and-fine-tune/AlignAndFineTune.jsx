@@ -137,6 +137,7 @@ const AlignAndFineTune = (props) => {
             mappedTermsToSpineTerm={state.mappedTermsToSpineTerm}
             origin={mapping.origin}
             spineOrigin={mapping.spine_origin}
+            compactDomains={mapping.specification.compact_domains}
             onPredicateSelected={onPredicateSelected}
             onUpdateAlignmentComment={actions.updateAlignmentComment}
             onRevertMapping={(mappedTerm) =>
@@ -234,6 +235,7 @@ const AlignAndFineTune = (props) => {
       isMapped={state.selectedTermIsMapped}
       alwaysEnabled={true}
       disableClick={options.disableClick}
+      compactDomains={mapping.specification.compact_domains}
     />
   );
 

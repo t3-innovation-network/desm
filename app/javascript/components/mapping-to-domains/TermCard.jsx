@@ -9,6 +9,7 @@ import {
   faUpDownLeftRight,
 } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
+import { intersection } from 'lodash';
 
 /**
  * @prop {Function} onClick Actions when the user clicks on it
@@ -20,6 +21,7 @@ import classNames from 'classnames';
  * @prop {Boolean} editEnabled Show/Hide the edit option
  * @prop {Function} onEditClick The logic to execute when the user click "edit"
  * @prop {Function} onRevertMapping The logic to execute when click on the option to revert a term from being mapped
+ * @prop {Array} compactDomains The compact versions of the domains selected during upload
  */
 
 const TermCard = ({ term, editEnabled, disableClick, ...props }) => {
@@ -111,7 +113,7 @@ const TermCard = ({ term, editEnabled, disableClick, ...props }) => {
           {expanded ? (
             <div className="mt-2">
               <p className="card-text">
-                Domains: <span>{term.compactDomains}</span>
+                Domains: <span>{intersection(props.compactDomains, term.compactDomains)}</span>
               </p>
               <p className="card-text">
                 Ranges: <span>{term.compactRanges}</span>

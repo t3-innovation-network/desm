@@ -9,7 +9,8 @@ class MappingSerializer < ApplicationSerializer
       version: object.specification.version,
       domain: { id: object.specification.domain_id, name: object.specification.domain&.pref_label,
                 spine: object.specification.domain&.spine? },
-      user: { id: object.specification.user.id, fullname: object.specification.user.fullname } }
+      user: { id: object.specification.user.id, fullname: object.specification.user.fullname },
+      compact_domains: object.specification.compact_domains || [] }
   end
   has_many :selected_terms, serializer: PreviewSerializer
   belongs_to :organization, serializer: PreviewSerializer

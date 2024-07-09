@@ -12,6 +12,7 @@ import { faCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { noMatchPredicate } from './stores/mappingStore';
 import { showSuccess } from '../../helpers/Messages';
 import { spineTermRowStore } from './stores/spineTermRowStore';
+import { intersection } from 'lodash';
 
 /**
  * Props:
@@ -32,6 +33,7 @@ const SpineTermRow = (props) => {
     onUpdateAlignmentComment,
     mappedTermsToSpineTerm,
     origin,
+    compactDomains,
     onRevertMapping,
     predicates,
     spineOrigin,
@@ -181,7 +183,9 @@ const SpineTermRow = (props) => {
                       <>
                         <p className="card-text">
                           Domains:{' '}
-                          <span className="col-primary">{term.compactDomains.join(', ')}</span>
+                          <span className="col-primary">
+                            {intersection(compactDomains, term.compactDomains).join(', ')}
+                          </span>
                         </p>
                         <p className="card-text">
                           Ranges:{' '}
@@ -268,7 +272,10 @@ const SpineTermRow = (props) => {
                       {mappedTermExpanded ? (
                         <div className="mt-2">
                           <p className="card-text">
-                            Domains: <span>{mTerm.compactDomains.join(', ')}</span>
+                            Domains:{' '}
+                            <span>
+                              {intersection(compactDomains, mTerm.compactDomains).join(', ')}
+                            </span>
                           </p>
                           <p className="card-text">
                             Ranges: <span>{mTerm.compactRanges.join(', ')}</span>
