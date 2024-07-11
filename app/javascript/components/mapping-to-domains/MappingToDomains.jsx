@@ -126,6 +126,7 @@ const MappingToDomains = (props) => {
       editEnabled={true}
       onEditClick={actions.onEditTermClick}
       onRevertMapping={handleRevertMapping}
+      compactDomains={mapping.compactDomains}
     />
   );
 

@@ -12,6 +12,7 @@ import { faCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { noMatchPredicate } from './stores/mappingStore';
 import { showSuccess } from '../../helpers/Messages';
 import { spineTermRowStore } from './stores/spineTermRowStore';
+import { intersection } from 'lodash';
 
 /**
  * Props:
@@ -32,6 +33,7 @@ const SpineTermRow = (props) => {
     onUpdateAlignmentComment,
     mappedTermsToSpineTerm,
     origin,
+    compactDomains,
     onRevertMapping,
     predicates,
     spineOrigin,
@@ -53,6 +55,8 @@ const SpineTermRow = (props) => {
     mappedTermMatching,
     editing,
     matchingVocab,
+    spineTermExpanded,
+    mappedTermExpanded,
   } = state;
 
   useEffect(() => {
@@ -161,14 +165,38 @@ const SpineTermRow = (props) => {
                   </h6>
                 )}
                 <p className="card-text">{term.property.comment}</p>
-                <p className="card-text">
-                  Origin:{' '}
-                  <span className="col-primary">
-                    {term.synthetic ? origin : term.organization.name}
-                  </span>
-                </p>
+                <button
+                  className="btn btn-link p-0"
+                  onClick={() => actions.setSpineTermExpanded(!spineTermExpanded)}
+                >
+                  {spineTermExpanded ? 'Collapse' : 'Expand'}
+                </button>
+                {spineTermExpanded ? (
+                  <div className="mt-2">
+                    <p className="card-text">
+                      Origin:{' '}
+                      <span className="col-primary">
+                        {term.synthetic ? origin : term.organization.name}
+                      </span>
+                    </p>
+                    {!term.synthetic ? (
+                      <>
+                        <p className="card-text">
+                          Domains:{' '}
+                          <span className="col-primary">
+                            {intersection(compactDomains, term.compactDomains).join(', ')}
+                          </span>
+                        </p>
+                        <p className="card-text">
+                          Ranges:{' '}
+                          <span className="col-primary">{term.compactRanges.join(', ')}</span>
+                        </p>
+                      </>
+                    ) : null}
 
-                {alignmentHasVocabulary() ? <VocabularyLabel term={term} /> : ''}
+                    {alignmentHasVocabulary() ? <VocabularyLabel term={term} /> : ''}
+                  </div>
+                ) : null}
               </>
             }
           />
@@ -235,14 +263,33 @@ const SpineTermRow = (props) => {
                         ID:
                         <span>{' ' + mTerm.sourceUri}</span>
                       </p>
-                      {alignmentHasVocabulary() ? (
-                        <VocabularyLabel
-                          onVocabularyClick={actions.handleMatchVocabularyClick}
-                          term={mTerm}
-                        />
-                      ) : (
-                        ''
-                      )}
+                      <button
+                        className="btn btn-link p-0"
+                        onClick={() => actions.setMappedTermExpanded(!mappedTermExpanded)}
+                      >
+                        {mappedTermExpanded ? 'Collapse' : 'Expand'}
+                      </button>
+                      {mappedTermExpanded ? (
+                        <div className="mt-2">
+                          <p className="card-text">
+                            Domains:{' '}
+                            <span>
+                              {intersection(compactDomains, mTerm.compactDomains).join(', ')}
+                            </span>
+                          </p>
+                          <p className="card-text">
+                            Ranges: <span>{mTerm.compactRanges.join(', ')}</span>
+                          </p>
+                          {alignmentHasVocabulary() ? (
+                            <VocabularyLabel
+                              onVocabularyClick={actions.handleMatchVocabularyClick}
+                              term={mTerm}
+                            />
+                          ) : (
+                            ''
+                          )}
+                        </div>
+                      ) : null}
                     </>
                   }
                 />
