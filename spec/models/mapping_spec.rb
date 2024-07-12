@@ -47,7 +47,7 @@ describe Mapping, type: :model do
   end
 
   describe "enums" do
-    it { should define_enum_for(:status).with_values(uploaded: 0, in_progress: 1, mapped: 2) }
+    it { should define_enum_for(:status).with_values(uploaded: 0, in_progress: 1, mapped: 2, ready_to_upload: 3) }
   end
 
   describe "methods" do
@@ -62,7 +62,7 @@ describe Mapping, type: :model do
     it "exports the mapping into json-ld format" do
       exporter = instance_double("Exporters::Mapping")
       allow(Exporters::Mapping).to receive(:new).with(mapping).and_return(exporter)
-      expect(exporter).to receive(:export)
+      expect(exporter).to receive(:jsonld)
       mapping.export
     end
 

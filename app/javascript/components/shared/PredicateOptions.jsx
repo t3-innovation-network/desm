@@ -12,7 +12,7 @@ const PredicateOptions = (props) => {
   /**
    * Elements from props
    */
-  const { predicates, cls = '' } = props;
+  const { predicates, cls = '', SelectedComponent } = props;
 
   /**
    * The current selected predicate
@@ -48,6 +48,7 @@ const PredicateOptions = (props) => {
       options={predicatesAsOptions()}
       onClose={(predicate) => handlePredicateSelected(predicate)}
       selectedOption={predicate}
+      SelectedComponent={SelectedComponent}
       cardCssClass={`with-shadow ${cls}`}
     />
   );

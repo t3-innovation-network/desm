@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import deleteSpecification from '../../services/deleteSpecification';
-import fetchSpineSpecifications from '../../services/fetchSpineSpecifications';
 import { Link } from 'react-router-dom';
 import ConfirmDialog from '../shared/ConfirmDialog';
 import AlertNotice from '../shared/AlertNotice';
 import Loader from '../shared/Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faFilePen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { showSuccess } from '../../helpers/Messages';
+import { useSelector } from 'react-redux';
+import { isMapper } from '../../helpers/Auth';
 
 /**
  * @description A list of spine specifications from the user or all the users of the organization
@@ -16,11 +17,10 @@ import { showSuccess } from '../../helpers/Messages';
  * @prop {String} filter The filter or the list of specifications. It can be either "all or "user",
  * this last meaning only those spine specifications belonging to the current user.
  */
-const SpineSpecsList = (props) => {
-  /**
-   * Elements from props
-   */
-  const { filter } = props;
+const SpineSpecsList = ({ loading, onRemove, spines }) => {
+  const user = useSelector((state) => state.user);
+  const userIsMapper = isMapper(user);
+
   /**
    * Controls displaying the removal confirmation dialog
    */
@@ -34,18 +34,10 @@ const SpineSpecsList = (props) => {
    */
   const [errorsWhileRemoving, setErrorsWhileRemoving] = useState([]);
   /**
-   * Whether the page is loading results or not
-   */
-  const [loading, setLoading] = useState(true);
-  /**
    * The identifier of the spine to be removed. Saved in state, because the id is in an iterator,
    * and the clicked handles confirmation, and the confirmation is outside the iterator.
    */
   const [spineIdToRemove, setSpineIdToRemove] = useState(null);
-  /**
-   * The collection of spine specifications
-   */
-  const [spines, setSpines] = useState([]);
 
   /**
    * Handle showing the errors on screen, if any
@@ -83,34 +75,10 @@ const SpineSpecsList = (props) => {
       showSuccess('Spine removed');
 
       /// Update the UI
-      setSpines(spines.filter((spine) => spine.id !== spineIdToRemove));
+      onRemove(spineIdToRemove);
       setConfirmingRemove(false);
     }
   };
-
-  /**
-   * Retrieve all the spine specification for this user or organization.
-   */
-  const handleFetchSpineSpecs = async () => {
-    let response = await fetchSpineSpecifications(filter);
-
-    if (!anyError(response, errors, setErrors)) {
-      setSpines(response.specifications);
-    }
-  };
-
-  /**
-   * Use effect with an empty array as second parameter, will trigger the 'handleFetchSpineSpecs'
-   * action at the 'mounted' event of this functional component (It's not actually mounted,
-   * but it mimics the same action).
-   */
-  useEffect(() => {
-    handleFetchSpineSpecs().then(() => {
-      if (!errors.length) {
-        setLoading(false);
-      }
-    });
-  }, []);
 
   return (
     <>
@@ -149,20 +117,24 @@ const SpineSpecsList = (props) => {
               <td />
               <td />
               <td>
-                <Link
-                  to={'/specifications/' + spine.id}
-                  className="btn btn-sm btn-dark ml-2"
-                  title="Edit the spine. You can edit each property here."
-                >
-                  <FontAwesomeIcon icon={faPencilAlt} />
-                </Link>
-                <button
-                  onClick={() => handleConfirmRemove(spine.id)}
-                  className="btn btn-sm btn-dark ml-2"
-                  title="Remove the spine"
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
+                {userIsMapper && (
+                  <>
+                    <Link
+                      to={'/specifications/' + spine.id}
+                      className="btn btn-sm btn-dark ml-2"
+                      title="Edit the spine. You can edit each property here."
+                    >
+                      <FontAwesomeIcon icon={faFilePen} />
+                    </Link>
+                    <button
+                      onClick={() => handleConfirmRemove(spine.id)}
+                      className="btn btn-sm btn-dark ml-2"
+                      title="Remove the spine"
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </>
+                )}
               </td>
             </tr>
           );

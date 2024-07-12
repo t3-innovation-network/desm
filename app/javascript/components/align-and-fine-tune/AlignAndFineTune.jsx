@@ -21,7 +21,9 @@ import { mappingStore } from './stores/mappingStore';
 const AlignAndFineTune = (props) => {
   const { leadMapper, organization } = useContext(AppContext);
   const leftColumnRef = useRef(null);
-  const [state, actions] = useLocalStore(() => mappingStore());
+  const [state, actions] = useLocalStore(() =>
+    mappingStore({ mapping: { id: props.match.params.id || null } })
+  );
   const {
     addingSynthetic,
     alignments,
@@ -96,6 +98,7 @@ const AlignAndFineTune = (props) => {
         mapSpecification={true}
         stepper={true}
         stepperStep={3}
+        mapping={state.mapping}
         customcontent={alignmentsOptions()}
       />
     );
@@ -134,6 +137,7 @@ const AlignAndFineTune = (props) => {
             mappedTermsToSpineTerm={state.mappedTermsToSpineTerm}
             origin={mapping.origin}
             spineOrigin={mapping.spine_origin}
+            compactDomains={mapping.specification.compact_domains}
             onPredicateSelected={onPredicateSelected}
             onUpdateAlignmentComment={actions.updateAlignmentComment}
             onRevertMapping={(mappedTerm) =>
@@ -231,6 +235,7 @@ const AlignAndFineTune = (props) => {
       isMapped={state.selectedTermIsMapped}
       alwaysEnabled={true}
       disableClick={options.disableClick}
+      compactDomains={mapping.specification.compact_domains}
     />
   );
 

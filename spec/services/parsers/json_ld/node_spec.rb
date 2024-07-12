@@ -26,6 +26,56 @@ RSpec.describe Parsers::JsonLd::Node do
     end
   end
 
+  describe "#read_as_language_map" do
+    let(:node) { { "rdfs:comment": comment } }
+    let(:parsed_comment) { described_class.new(node).read_as_language_map("comment") }
+
+    context "nothing" do
+      let(:comment) { nil }
+
+      it "returns an empty array" do
+        expect(parsed_comment).to eq([])
+      end
+    end
+
+    context "string" do
+      let(:comment) { "Comment" }
+
+      it "returns an array with a single element" do
+        expect(parsed_comment).to eq(["Comment"])
+      end
+    end
+
+    context "hash with language code keys" do
+      let(:comment) { { "en" => "Comment", "es" => "Comentario", "jp" => "意見" } }
+
+      it "returns an array of the hash's values" do
+        expect(parsed_comment).to eq(%w(Comment Comentario 意見))
+      end
+    end
+
+    context "hash with @value" do
+      let(:comment) { { "@language" => "ko", "@value" => "논평" } }
+
+      it "returns an array with the @value property" do
+        expect(parsed_comment).to eq(["논평"])
+      end
+    end
+
+    context "array of mixed content" do
+      let(:comment) do
+        [
+          "Комментарий",
+          { "@language" => "kk", "@value" => "Түсініктеме" }
+        ]
+      end
+
+      it "returns an array with the @value property" do
+        expect(parsed_comment).to eq(%w(Комментарий Түсініктеме))
+      end
+    end
+  end
+
   describe "rdfs_class_nodes returns the same node when it's explicitly an rdfs:Class" do
     subject { described_class.new(credential_registry_node) }
 

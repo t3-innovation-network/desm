@@ -7,6 +7,7 @@ module API
   module V1
     class SpecificationsController < BaseController
       include ConfigurationProfileQueryable
+      before_action :authorize_with_policy, only: :update
 
       ###
       # @description: Lists all the specifications
@@ -19,11 +20,13 @@ module API
             Specification.all
           end
 
-        if (domain = params[:domain]).present?
-          specifications = specifications.joins(:domain).where(domains: { pref_label: domain })
+        specifications = specifications.joins(:mappings).where(mappings: { status: "mapped" }).includes(:domain)
+
+        if (domain_id = params[:domain_id]).present?
+          specifications.where!(domain_id:)
         end
 
-        render json: specifications.joins(:mappings).where(mappings: { status: "mapped" }).distinct.order(name: :asc)
+        render json: specifications.distinct.order(name: :asc)
       end
 
       ###
@@ -56,7 +59,17 @@ module API
         }
       end
 
+      def update
+        spec = Processors::Specifications.update(valid_params, instance: @instance)
+
+        render json: spec
+      end
+
       private
+
+      def authorize_with_policy
+        authorize(instance)
+      end
 
       ###
       # @description: Clean the parameters with all needed for specifications creation
@@ -77,7 +90,11 @@ module API
       # @return [ActionController::Parameters]
       ###
       def permitted_params
-        params.require(:specification).permit(:name, :scheme, :uri, :version)
+        params.require(:specification).permit(:name, :scheme, :uri, :version, :mapping_id)
+      end
+
+      def instance
+        @instance ||= policy_scope(Specification).find(params[:id])
       end
     end
   end

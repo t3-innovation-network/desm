@@ -4,6 +4,9 @@ PreCommit:
   BundleCheck:
     enabled: true
 
+  CapitalizedSubject:
+    enabled: false
+
   ExecutePermissions:
     enabled: true
     exclude:

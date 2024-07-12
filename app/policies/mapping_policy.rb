@@ -15,15 +15,6 @@ class MappingPolicy < ApplicationPolicy
   end
 
   ###
-  # @description: Determines if the user can export this resource
-  # @return [TrueClass]
-  ###
-  def export?
-    # Signed in users
-    signed_in?
-  end
-
-  ###
   # @description: Determines if the user can see this resource
   # @return [TrueClass]
   ###

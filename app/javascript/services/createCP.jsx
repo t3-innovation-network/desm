@@ -10,6 +10,7 @@ const createCP = async (data) => {
         name: `DESM CP - ${new Date().toISOString()}`,
       },
     },
+    trimPayload: true,
   });
   return response;
 };

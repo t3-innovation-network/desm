@@ -12,11 +12,7 @@ import { faCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { noMatchPredicate } from './stores/mappingStore';
 import { showSuccess } from '../../helpers/Messages';
 import { spineTermRowStore } from './stores/spineTermRowStore';
-
-const ALIGNMENT_OPTIONS = [
-  { id: 1, name: 'Edit' },
-  { id: 2, name: 'Comment' },
-];
+import { intersection } from 'lodash';
 
 /**
  * Props:
@@ -37,6 +33,7 @@ const SpineTermRow = (props) => {
     onUpdateAlignmentComment,
     mappedTermsToSpineTerm,
     origin,
+    compactDomains,
     onRevertMapping,
     predicates,
     spineOrigin,
@@ -58,7 +55,8 @@ const SpineTermRow = (props) => {
     mappedTermMatching,
     editing,
     matchingVocab,
-    editMode,
+    spineTermExpanded,
+    mappedTermExpanded,
   } = state;
 
   useEffect(() => {
@@ -68,25 +66,6 @@ const SpineTermRow = (props) => {
     }
   }, [alignment.predicateId]);
 
-  /**
-   * Return the options for an alignment that is a alignment that has
-   * already a predicate selected.
-   */
-  const alignmentOptions = () => (
-    <>
-      {ALIGNMENT_OPTIONS.map((option) => {
-        return (
-          <div
-            key={option.id}
-            className="p-2 cursor-pointer hover-col-primary border-bottom"
-            onClick={() => actions.handlePredicateOptionSelected(option)}
-          >
-            {option.name}
-          </div>
-        );
-      })}
-    </>
-  );
   /**
    * Determines whether to show the vocabularies matching window or not.
    * It will depend on both the spine term having a vocabulary associated
@@ -99,13 +78,13 @@ const SpineTermRow = (props) => {
    * Manage to show a card when there's a predicate selected.
    * If there's a comment, show an orange dot.
    */
-  const predicateSelectedCard = () => {
+  const predicateSelectedCard = ({ selectedOption }) => {
     return (
       <>
         {alignment.comment && (
           <FontAwesomeIcon icon={faCircle} className="fa-xs col-success float-left comment-dot" />
         )}
-        <strong>{predicateOption}</strong>
+        <strong>{selectedOption}</strong>
       </>
     );
   };
@@ -117,23 +96,8 @@ const SpineTermRow = (props) => {
    */
   const handlePredicateSelected = (term, predicate) => {
     actions.setPredicateOption(predicate.name);
-    actions.setPredicateDefinition(predicate.definition);
+    actions.setPredicateDefinition(predicate.description);
     props.onPredicateSelected(term, predicate);
-  };
-
-  /**
-   * Actions to take when a predicate has been selected for a mapping term
-   *
-   * @param {Object} result
-   */
-  const handleOnPredicateUpdated = (result) => {
-    if (result.saved) {
-      // showSuccess('Changes saved!');
-      actions.setPredicateOption(result.predicate.name);
-      actions.setPredicateDefinition(result.predicate.description);
-      props.onPredicateSelected(term, result.predicate);
-    }
-    actions.setEditing(false);
   };
 
   /**
@@ -165,19 +129,14 @@ const SpineTermRow = (props) => {
 
   return (
     <>
-      {alignment.predicateId && (
-        <EditAlignment
-          modalIsOpen={editing}
-          onCommentUpdated={handleOnCommentUpdated}
-          onPredicateUpdated={handleOnPredicateUpdated}
-          predicates={predicates}
-          alignment={alignment}
-          spineTerm={term}
-          predicate={findPredicate()}
-          mode={editMode}
-          onRequestClose={onRequestEditClose}
-        />
-      )}
+      <EditAlignment
+        modalIsOpen={editing}
+        onCommentUpdated={handleOnCommentUpdated}
+        alignment={alignment}
+        spineTerm={term}
+        predicate={findPredicate()}
+        onRequestClose={onRequestEditClose}
+      />
 
       {alignmentHasVocabulary() ? (
         <MatchVocabulary
@@ -190,9 +149,7 @@ const SpineTermRow = (props) => {
           predicates={predicates}
           alignment={alignment}
         />
-      ) : (
-        ''
-      )}
+      ) : null}
       <div className="row mb-2" key={term.id}>
         <div className="col-5">
           <Collapsible
@@ -208,42 +165,62 @@ const SpineTermRow = (props) => {
                   </h6>
                 )}
                 <p className="card-text">{term.property.comment}</p>
-                <p className="card-text">
-                  Origin:{' '}
-                  <span className="col-primary">
-                    {term.synthetic ? origin : term.organization.name}
-                  </span>
-                </p>
+                <button
+                  className="btn btn-link p-0"
+                  onClick={() => actions.setSpineTermExpanded(!spineTermExpanded)}
+                >
+                  {spineTermExpanded ? 'Collapse' : 'Expand'}
+                </button>
+                {spineTermExpanded ? (
+                  <div className="mt-2">
+                    <p className="card-text">
+                      Origin:{' '}
+                      <span className="col-primary">
+                        {term.synthetic ? origin : term.organization.name}
+                      </span>
+                    </p>
+                    {!term.synthetic ? (
+                      <>
+                        <p className="card-text">
+                          Domains:{' '}
+                          <span className="col-primary">
+                            {intersection(compactDomains, term.compactDomains).join(', ')}
+                          </span>
+                        </p>
+                        <p className="card-text">
+                          Ranges:{' '}
+                          <span className="col-primary">{term.compactRanges.join(', ')}</span>
+                        </p>
+                      </>
+                    ) : null}
 
-                {alignmentHasVocabulary() ? <VocabularyLabel term={term} /> : ''}
+                    {alignmentHasVocabulary() ? <VocabularyLabel term={term} /> : ''}
+                  </div>
+                ) : null}
               </>
             }
           />
         </div>
 
         <div className="col-3">
-          {predicateOption && !term.synthetic ? (
-            <Collapsible
-              headerContent={predicateSelectedCard()}
-              bodyContent={alignmentOptions()}
-              cardStyle={`with-shadow mb-2 ${clsPredicate}`}
-              observeOutside={true}
-              bodyStyle={'p-0'}
-              cardHeaderStyle={'border-bottom'}
-            />
-          ) : (
-            <PredicateOptions
-              predicates={predicates}
-              onPredicateSelected={(predicate) => handlePredicateSelected(term, predicate)}
-              cls={clsPredicate}
-              predicate={predicateOption}
-            />
-          )}
+          <PredicateOptions
+            predicates={predicates}
+            onPredicateSelected={(predicate) => handlePredicateSelected(term, predicate)}
+            cls={clsPredicate}
+            SelectedComponent={predicateSelectedCard}
+            predicate={predicateOption}
+          />
           {predicateDefinition && (
             <div className="lh-1 mt-2">
               <small>{predicateDefinition}</small>
             </div>
           )}
+          <label
+            className="non-selectable float-right mt-1 mb-0 col-primary cursor-pointer"
+            onClick={() => actions.setEditing(true)}
+          >
+            {alignment?.comment ? 'Edit Comment' : 'Add Comment'}
+          </label>
         </div>
 
         <div className="col-4">
@@ -286,14 +263,33 @@ const SpineTermRow = (props) => {
                         ID:
                         <span>{' ' + mTerm.sourceUri}</span>
                       </p>
-                      {alignmentHasVocabulary() ? (
-                        <VocabularyLabel
-                          onVocabularyClick={actions.handleMatchVocabularyClick}
-                          term={mTerm}
-                        />
-                      ) : (
-                        ''
-                      )}
+                      <button
+                        className="btn btn-link p-0"
+                        onClick={() => actions.setMappedTermExpanded(!mappedTermExpanded)}
+                      >
+                        {mappedTermExpanded ? 'Collapse' : 'Expand'}
+                      </button>
+                      {mappedTermExpanded ? (
+                        <div className="mt-2">
+                          <p className="card-text">
+                            Domains:{' '}
+                            <span>
+                              {intersection(compactDomains, mTerm.compactDomains).join(', ')}
+                            </span>
+                          </p>
+                          <p className="card-text">
+                            Ranges: <span>{mTerm.compactRanges.join(', ')}</span>
+                          </p>
+                          {alignmentHasVocabulary() ? (
+                            <VocabularyLabel
+                              onVocabularyClick={actions.handleMatchVocabularyClick}
+                              term={mTerm}
+                            />
+                          ) : (
+                            ''
+                          )}
+                        </div>
+                      ) : null}
                     </>
                   }
                 />

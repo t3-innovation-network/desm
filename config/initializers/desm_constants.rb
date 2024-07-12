@@ -14,16 +14,24 @@ module Desm
   #   the prefixes an URIs are pre-existing constants.
   ###
   CONTEXT = {
+    asn: "http://purl.org/ASN/schema/core/",
+    ceasn: "https://purl.org/ctdlasn/terms/",
     ceds: "http://desmsolutions.org/ns/ceds/",
+    ceterms: "https://purl.org/ctdl/terms/",
     credReg: "http://desmsolutions.org/ns/credReg/",
+    dc: "http://purl.org/dc/elements/1.1/",
     dct: "http://purl.org/dc/terms/",
     dcterms: "http://purl.org/dc/terms/",
     desm: "http://desmsolutions.org/ns/",
+    foaf: "http://xmlns.com/foaf/0.1/",
+    owl: "http://www.w3.org/2002/07/owl#",
+    qdata: "https://credreg.net/qdata/terms/",
     rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     rdfs: "http://www.w3.org/2000/01/rdf-schema#",
+    schema: "https://schema.org/",
+    skos: "http://www.w3.org/2004/02/skos/core#",
     sdo: "http://schema.org/",
     xsd: "http://www.w3.org/2001/XMLSchema#",
-    skos: "http://www.w3.org/2004/02/skos/core#",
     "desm:inTermMapping": {
       "@type": "@id"
     },

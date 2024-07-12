@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react';
+import { useEffect } from 'react';
 import { useLocalStore } from 'easy-peasy';
 import AlertNotice from '../shared/AlertNotice';
 import Loader from '../shared/Loader';
@@ -9,14 +9,13 @@ import PropertiesList from './PropertiesList';
 import PropertyMappingsFilter from './PropertyMappingsFilter';
 import SearchBar from './SearchBar';
 import ConfigurationProfileSelect from '../shared/ConfigurationProfileSelect';
-import { AppContext } from '../../contexts/AppContext';
 import { i18n } from 'utils/i18n';
 import { propertyMappingListStore } from './stores/propertyMappingListStore';
 import { camelizeLocationSearch, updateWithRouter } from 'helpers/queryString';
 import { isEmpty } from 'lodash';
+import ExportMappings from '../shared/ExportMappings';
 
 const PropertyMappingList = (props) => {
-  const context = useContext(AppContext);
   const [state, actions] = useLocalStore(() => {
     const { cp, abstractClass } = camelizeLocationSearch(props);
     return propertyMappingListStore({ cp, abstractClass });
@@ -54,6 +53,7 @@ const PropertyMappingList = (props) => {
 
   useEffect(() => loadData(), [configurationProfile]);
   useEffect(() => handleSelectedData(), [domains]);
+  useEffect(() => loadSpecifications(), [configurationProfile, selectedDomain]);
 
   const updateSelectedDomain = (id) => {
     const selectedDomain = domains.find((domain) => domain.id == id);
@@ -73,6 +73,17 @@ const PropertyMappingList = (props) => {
       return;
     }
     await actions.fetchDataFromAPI();
+  };
+
+  const loadSpecifications = async () => {
+    if (!configurationProfile || !selectedDomain) {
+      return;
+    }
+
+    actions.handleFetchSpecifications({
+      configurationProfileId: configurationProfile.id,
+      domainId: selectedDomain.id,
+    });
   };
 
   return (
@@ -107,6 +118,9 @@ const PropertyMappingList = (props) => {
                 <h1>
                   <strong>{configurationProfile.name}</strong>: {i18n.t('ui.view_mapping.subtitle')}
                 </h1>
+                <div className="mb-3">
+                  <ExportMappings configurationProfile={configurationProfile} domains={domains} />
+                </div>
                 <label className="my-0">{i18n.t('ui.view_mapping.select_abstract_class')}</label>
                 <DesmTabs
                   onTabClick={(id) => updateSelectedDomain(id)}

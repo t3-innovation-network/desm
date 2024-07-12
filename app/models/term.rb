@@ -28,6 +28,7 @@
 ###
 class Term < ApplicationRecord
   include Slugable
+  audited
 
   belongs_to :configuration_profile_user
 
@@ -68,7 +69,7 @@ class Term < ApplicationRecord
 
   before_destroy :check_if_alignments_exist
 
-  delegate :compact_domains, to: :property
+  delegate :compact_domains, :compact_ranges, to: :property
 
   ###
   # @description: Include additional information about the specification in
@@ -117,5 +118,11 @@ class Term < ApplicationRecord
 
     raise "Cannot remove a term with existing alignments. " \
           "Please remove corresponding alignments from #{mappings.join(', ')} mappings before removing the term."
+  end
+
+  def comments
+    node = Parsers::JsonLd::Node.new(raw.slice("rdfs:comment"))
+    sanitizer = Rails::Html::FullSanitizer.new
+    node.read_as_language_map("comment").map { sanitizer.sanitize(_1) }
   end
 end

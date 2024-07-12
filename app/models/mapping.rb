@@ -84,12 +84,13 @@ class Mapping < ApplicationRecord
   ###
   validates :name, presence: true
   # The possible status of a mapping
-  # 1. "uploaded" It means that there's a specification uploaded but not
-  #    terms mapped
-  # 2. "in-progress" It means that the user is already mapping terms but
+  # 1. "ready-to-upload" It means that the mapping was created, uploaded and reverted back to re-import
+  # 2. "uploaded" It means that there's a specification uploaded but not
+  #    terms mapped, default status
+  # 3. "in-progress" It means that the user is already mapping terms but
   #    not yet finished mapping
-  # 3. "mapped" It means the terms are confirmed as mapped to the spine
-  enum status: { uploaded: 0, in_progress: 1, mapped: 2 }
+  # 4. "mapped" It means the terms are confirmed as mapped to the spine
+  enum status: { uploaded: 0, in_progress: 1, mapped: 2, ready_to_upload: 3 }
 
   ###
   # CALLBACKS
@@ -104,6 +105,8 @@ class Mapping < ApplicationRecord
   ###
   # METHODS
   ###
+
+  delegate :compact_domains, to: :specification
 
   ###
   # @description: Include additional information about the mapping in
@@ -144,8 +147,7 @@ class Mapping < ApplicationRecord
   # @description: Exports the mapping into json-ld format
   ###
   def export
-    exporter = Exporters::Mapping.new(self)
-    exporter.export
+    Exporters::Mapping.new(self).jsonld
   end
 
   ###
@@ -217,6 +219,16 @@ class Mapping < ApplicationRecord
 
     spine.term_ids = ids
     generate_alignments(first_upload: true)
+  end
+
+  def export_filename
+    [
+      configuration_profile.name,
+      domain,
+      specification.name,
+      specification.version || "",
+      updated_at.to_s.gsub(/[^\d]/, "")
+    ].map { _1.split.join("+") }.join("_").gsub(%r{[/,:*?"<>()|]}, "").gsub(/_+/, "_")
   end
 
   private
