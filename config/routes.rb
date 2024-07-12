@@ -172,10 +172,11 @@ Rails.application.routes.draw do
         post :extract, on: :collection
       end
 
+      resources :mapping_exports, only: :index, defaults: { format: "jsonld" }
+
       # Mapping selected terms
       post 'mappings/:id/selected_terms' => 'mapping_selected_terms#create'
       get 'mappings/:id/selected_terms' => 'mapping_selected_terms#show', as: :mapping_selected_terms
-      get 'mappings/:id/export' => 'mappings#export'
       delete 'mappings/:id/selected_terms' => 'mapping_selected_terms#destroy'
 
       get 'alignments/:id/vocabulary' => 'alignment_vocabularies#show'

@@ -6,43 +6,30 @@ module Exporters
     # @description: Manages to export a mapping to JSON-LD format to let the user download it.
     ###
     class JSONLD
-      ###
-      # CONSTANTS
-      ###
+      attr_reader :mapping
 
       ###
-      # @description: These are for established specs used in the mapping. This block will be the same for all mapping,
-      #   the prefixes an URIs are pre-existing constants.
+      # @description: Initializes this class with the mapping to export.
       ###
-      CONTEXT = {
-        ceds: "http://desmsolutions.org/ns/ceds/",
-        credReg: "http://desmsolutions.org/ns/credReg/",
-        dct: "http://purl.org/dc/terms/",
-        dcterms: "http://purl.org/dc/terms/",
-        desm: "http://desmsolutions.org/ns/",
-        rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-        rdfs: "http://www.w3.org/2000/01/rdf-schema#",
-        sdo: "http://schema.org/",
-        xsd: "http://www.w3.org/2001/XMLSchema#"
-      }.freeze
-
-      ###
-      # @description: Initializes this class with the instance to export.
-      ###
-      def initialize(instance)
-        @instance = instance
+      def initialize(mapping)
+        @mapping = mapping
       end
 
       ###
       # @description: Exports the mapping into json-ld format.
       ###
       def export
-        @data = {
-          "@context": CONTEXT,
-          "@graph": @instance.alignments.map do |alignment|
+        { "@context": Desm::CONTEXT, "@graph": graph }
+      end
+
+      def graph
+        @graph ||= begin
+          nodes = mapping.alignments.map do |alignment|
             term_nodes(alignment)
           end.flatten.unshift(main_node)
-        }
+
+          deep_clean(nodes)
+        end
       end
 
       ###
@@ -51,15 +38,15 @@ module Exporters
       ###
       def main_node
         {
-          "@id": "http://desmsolutions.org/TermMapping/#{@instance.id}",
+          "@id": "http://desmsolutions.org/TermMapping/#{mapping.id}",
           "@type": "desm:AbstractClassMapping",
-          "dcterms:created": @instance.created_at.strftime("%F"),
-          "dcterms:dateModified": @instance.updated_at.strftime("%F"),
-          "dcterms:title": @instance.title,
+          "dcterms:created": mapping.created_at.strftime("%F"),
+          "dcterms:dateModified": mapping.updated_at.strftime("%F"),
+          "dcterms:title": mapping.title,
           # @todo: Where to take this from
           "dcterms:description": "",
-          "desm:abstractClassMapped": { "@id": @instance.specification.domain.uri },
-          "dcterms:hasPart": @instance.alignments.map do |alignment|
+          "desm:abstractClassMapped": { "@id": mapping.specification.domain.uri },
+          "dcterms:hasPart": mapping.alignments.map do |alignment|
             { "@id": alignment.uri }
           end
         }
@@ -85,7 +72,7 @@ module Exporters
         {
           "@id": "http://desmsolutions.org/TermMapping/#{alignment.id}",
           "@type": "desm:TermMapping",
-          "dcterms:isPartOf": { "@id": "http://desmsolutions.org/TermMapping/#{@instance.id}" },
+          "dcterms:isPartOf": { "@id": "http://desmsolutions.org/TermMapping/#{mapping.id}" },
           "desm:comment": alignment.comment,
           "desm:mappedterm": alignment.mapped_terms.map do |mapped_term|
             { "@id": mapped_term.uri }
@@ -96,6 +83,24 @@ module Exporters
       end
 
       ###
+      # @description: Returns the compact versions of the term's domains
+      #   as well as its full non-RDF domains
+      ###
+      def domain_nodes(term)
+        mapping.compact_domains(non_rdf: false) & term.compact_domains(non_rdf: false)
+      end
+
+      ###
+      # @description: Parses the subproperty's value which is a stringified hash
+      #   as well as its full non-RDF domains
+      ###
+      def parse_subproperty_of(value)
+        YAML.load(value.gsub("=>", ": ")) if value
+      rescue StandardError
+        value
+      end
+
+      ###
       # @description: Defines the structure of a generic property term.
       ###
       def property_node(term)
@@ -103,13 +108,34 @@ module Exporters
           "@id": term.source_uri,
           "@type": "rdf:Property",
           "desm:sourceURI": { "@id": term.property.source_uri },
-          "rdfs:subPropertyOf": { "@id": term.property.subproperty_of },
+          "rdfs:subPropertyOf": parse_subproperty_of(term.property.subproperty_of),
           "desm:valueSpace": { "@id": term.property.value_space },
           "rdfs:label": term.property.label,
           "rdfs:comment": term.property.comment,
-          "rdfs:domain": { "@id": term.property.selected_domain },
-          "rdfs:range": { "@id": term.property.selected_range }
+          "desm:domainIncludes": domain_nodes(term),
+          "desm:rangeIncludes": term.compact_ranges
         }
+      end
+
+      private
+
+      ###
+      # @description: Recursively removes all blank values from an enumerable node
+      ###
+      def deep_clean(node)
+        case node
+        when Array
+          node.map { deep_clean(_1) }.select(&:presence)
+        when Hash
+          node.each_with_object({}) do |(key, value), clean_node|
+            clean_value = deep_clean(value)
+            next unless clean_value.presence
+
+            clean_node[key] = clean_value
+          end
+        else
+          node
+        end
       end
     end
   end

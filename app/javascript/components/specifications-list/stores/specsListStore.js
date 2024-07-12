@@ -4,9 +4,12 @@ import { easyStateSetters } from '../../stores/easyState';
 import { action, computed, thunk } from 'easy-peasy';
 import { showSuccess } from '../../../helpers/Messages';
 import deleteMapping from '../../../services/deleteMapping';
-import fetchMappingToExport from '../../../services/fetchMappingToExport';
+import downloadExportedMappings from '../../../services/downloadExportedMappings';
 import fetchMappings from '../../../services/fetchMappings';
 import updateMapping from '../../../services/updateMapping';
+import fetchSpineSpecifications from '../../../services/fetchSpineSpecifications';
+import { processMessage } from '../../../services/api/apiService';
+import { pick } from 'lodash';
 
 /**
  * The options object to use in the select component
@@ -48,6 +51,10 @@ export const defaultState = {
   mappingIdToRemove: null,
   // mapping that is being processed (removed/updated/exported)
   mappingIdLoading: null,
+  // the list of spines
+  spines: [],
+  // The ID of the currently selected configuration profile
+  configurationProfileId: null,
 };
 
 export const specsListStore = (initialData = {}) => ({
@@ -121,30 +128,44 @@ export const specsListStore = (initialData = {}) => ({
       actions.setMappingIdLoading(null);
     }
   }),
-  fetchMappingToExport: thunk(async (actions, params = {}, h) => {
+  downloadExportedMappings: thunk(async (actions, params = {}, h) => {
     const state = h.getState();
     actions.setMappingIdLoading(params.id);
+
     try {
-      const response = await fetchMappingToExport(params.mapping, params.format);
-      if (state.withoutErrors(response)) return response;
-      actions.setError(response.error);
-      return null;
+      await downloadExportedMappings(pick(params, ['domainIds', 'format', 'mapping']));
+    } catch (e) {
+      actions.setError(processMessage(e));
     } finally {
       actions.setMappingIdLoading(null);
     }
   }),
-  // Fetch all the necessary data from the API
-  fetchDataFromAPI: thunk(async (actions, _params = {}, h) => {
-    actions.setLoading(true);
+  fetchMappings: thunk(async (actions, _params = {}, h) => {
     const state = h.getState();
+
     const response = await fetchMappings(state.filter);
 
     if (state.withoutErrors(response)) {
       actions.setMappings(response.mappings);
-      actions.setLoading(false);
     } else {
       actions.setError(response.error);
     }
-    return response;
+  }),
+  fetchSpineSpecifications: thunk(async (actions, _params = {}, h) => {
+    const state = h.getState();
+
+    const response = await fetchSpineSpecifications(state.filter);
+
+    if (state.withoutErrors(response)) {
+      actions.setSpines(response.specifications);
+    } else {
+      actions.setError(response.error);
+    }
+  }),
+  // Fetch all the necessary data from the API
+  fetchDataFromAPI: thunk(async (actions, _params = {}, _h) => {
+    actions.setLoading(true);
+    Promise.all([actions.fetchMappings(), actions.fetchSpineSpecifications()]);
+    actions.setLoading(false);
   }),
 });

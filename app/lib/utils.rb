@@ -6,14 +6,20 @@ class Utils
   #
   # @param uri [String]
   # @param context [Hash]
+  # @param non_rdf
   # @return [String|nil]
   #   If the `uri` is a compact URI, returns it as is.
-  #   If the `uri` is a DESM URI, returns the value from which it was generated.
+  #   If the `uri` is a DESM URI and `non_rdf` is true,
+  #     returns the value from which it was generated,
+  #     otherwise returns the original value
   #   If the `uri` belongs to a namespace from the `context`, returns its compact version.
   #   Otherwise, returns `nil`.
-  def self.compact_uri(uri, context: Desm::CONTEXT)
+  def self.compact_uri(uri, context: Desm::CONTEXT, non_rdf: true)
     return uri unless uri.start_with?("http")
-    return URI(uri).path.split("/").last if uri.start_with?(Desm::DESM_NAMESPACE.to_s)
+
+    if uri.start_with?(Desm::DESM_NAMESPACE.to_s)
+      return non_rdf ? URI(uri).path.split("/").last : uri
+    end
 
     context.each do |prefix, namespace|
       next unless namespace.is_a?(String)

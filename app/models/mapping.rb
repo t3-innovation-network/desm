@@ -106,6 +106,8 @@ class Mapping < ApplicationRecord
   # METHODS
   ###
 
+  delegate :compact_domains, to: :specification
+
   ###
   # @description: Include additional information about the mapping in
   #   json responses. This overrides the ApplicationRecord as_json method.
@@ -145,7 +147,7 @@ class Mapping < ApplicationRecord
   # @description: Exports the mapping into json-ld format
   ###
   def export
-    Exporters::Mapping.new(self).to_jsonld
+    Exporters::Mapping.new(self).jsonld
   end
 
   ###
@@ -217,6 +219,16 @@ class Mapping < ApplicationRecord
 
     spine.term_ids = ids
     generate_alignments(first_upload: true)
+  end
+
+  def export_filename
+    [
+      configuration_profile.name,
+      domain,
+      specification.name,
+      specification.version || "",
+      updated_at.to_s.gsub(/[^\d]/, "")
+    ].map { _1.split.join("+") }.join("_").gsub(%r{[/,:*?"<>()|]}, "").gsub(/_+/, "_")
   end
 
   private

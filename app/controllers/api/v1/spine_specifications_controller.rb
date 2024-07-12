@@ -10,7 +10,7 @@ module API
       # @description: Returns a filtered list of specifications for an organization
       ###
       def index
-        render json: current_configuration_profile.spines
+        render json: current_configuration_profile.spines, include: %i(domain)
       end
 
       def show

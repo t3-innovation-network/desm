@@ -62,7 +62,7 @@ describe Mapping, type: :model do
     it "exports the mapping into json-ld format" do
       exporter = instance_double("Exporters::Mapping")
       allow(Exporters::Mapping).to receive(:new).with(mapping).and_return(exporter)
-      expect(exporter).to receive(:to_jsonld)
+      expect(exporter).to receive(:jsonld)
       mapping.export
     end
 

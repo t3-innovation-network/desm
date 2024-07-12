@@ -32,19 +32,13 @@ module Exporters
       end
 
       def alignments
-        mapping
-          .alignments
-          .includes(
-            :predicate,
-            mapped_terms: %i(property specifications),
-            spine_term: %i(property specifications)
-          )
+        mapping.alignments
       end
 
       class Row
         attr_reader :alignment
 
-        delegate :predicate, to: :alignment
+        delegate :mapping, :predicate, to: :alignment
 
         def initialize(alignment)
           @alignment = alignment
@@ -78,6 +72,13 @@ module Exporters
           "(#{spine_term_specification.version})" if spine_term_specification.version?
         end
 
+        def term_domains(term)
+          return unless term
+
+          domains = mapping.compact_domains(non_rdf: false) & term.compact_domains(non_rdf: false)
+          domains.join(" ")
+        end
+
         def values
           [
             # Spine term name
@@ -85,7 +86,7 @@ module Exporters
             # Spine term definition
             spine_term.comments.join("\n"),
             # Spine term class/type
-            spine_term.compact_domains.join(", "),
+            term_domains(spine_term),
             # Spine term origin
             [spine_term_specification.name, spine_term_specification_version].compact.join(" "),
             # Mapping predicate label
@@ -97,7 +98,7 @@ module Exporters
             # Mapped term definition
             mapped_term&.comments&.join("\n"),
             # Mapped term class/type
-            mapped_term&.compact_domains&.join(", "),
+            term_domains(mapped_term),
             # Mapped term origin
             [mapped_term_specification&.name, mapped_term_specification_version].compact.join(" "),
             # Comments

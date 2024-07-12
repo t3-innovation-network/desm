@@ -70,6 +70,7 @@ const apiRequest = async (props) => {
   if (props.successResponse) {
     responseData = {};
     responseData[props.successResponse] = response.data;
+    responseData.contentType = response.headers['content-type'];
   }
   return props.camelizeKeys ? camelizeKeys(responseData) : responseData;
 };
