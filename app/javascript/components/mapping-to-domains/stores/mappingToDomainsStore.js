@@ -81,6 +81,10 @@ export const mappingToDomainsStore = (initialData = {}) => ({
     state.editingTerm = true;
     state.termToEdit = term;
   }),
+  onUpdateTerm: action((state, updatedTerm) => {
+    let idx = state.terms.findIndex((t) => t.id === updatedTerm.id);
+    if (idx >= 0) state.terms[idx] = updatedTerm;
+  }),
   onRemoveTerm: action((state, term) => {
     remove(state.terms, (t) => t.id === term.id);
   }),
@@ -111,7 +115,7 @@ export const mappingToDomainsStore = (initialData = {}) => ({
   handleDoneDomainMapping: thunk(async (actions, _params = {}, h) => {
     const state = h.getState();
     const result = await actions.handleSaveChanges({ partiallySave: false });
-    if (result) {
+    if (result && state.mapping.status === 'uploaded') {
       // Change the mapping satus to "in_progress" (with underscore, because it's
       // the name in the backend), so we say it's begun terms mapping phase
       let response = await updateMapping({

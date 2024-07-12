@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TermSerializer < ApplicationSerializer
-  attributes :compact_domains, :raw, :source_uri, :slug, :uri
+  attributes :comments, :compact_domains, :compact_ranges, :raw, :source_uri, :slug, :uri
   has_one :property
   has_many :vocabularies, serializer: PreviewSerializer
   has_one :organization, if: -> { params[:spine] || params[:with_organization] }, serializer: PreviewSerializer

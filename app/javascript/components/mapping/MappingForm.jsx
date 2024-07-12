@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import FileInfo from './FileInfo';
 import { useSelector, useDispatch } from 'react-redux';
+import { useLocalStore } from 'easy-peasy';
 import { setFiles, setFilteredFile, setMergedFileId, setSpecToPreview } from '../../actions/files';
 import {
   doSubmit,
@@ -21,33 +22,14 @@ import { setVocabularies } from '../../actions/vocabularies';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { showError } from '../../helpers/Messages';
+import { initFromMapping, mappingFormStore } from './stores/mappingFormStore';
+import useDidMountEffect from '../../helpers/useDidMountEffect';
+import { i18n } from 'utils/i18n';
 
-const MappingForm = () => {
-  /**
-   * The list  of domains (from the skos file)
-   */
-  const [domains, setDomains] = useState([]);
-  /**
-   * Which domains were found in the uploaded file (the api parses
-   * the file to get to it)
-   */
-  const [domainsInFile, setDomainsInFile] = useState([]);
-  /**
-   * The files uploaded by the user
-   */
+const MappingForm = ({ mapping = null }) => {
+  const [state, actions] = useLocalStore(() => mappingFormStore(initFromMapping({}, mapping)));
+  // The files uploaded by the user
   const files = useSelector((state) => state.files);
-  /**
-   * The value of the input that the user is typing in the search box
-   * when there are many domains in the uploaded file
-   */
-  const [inputValue, setInputValue] = useState('');
-  /**
-   * The domains that includes the string typed by the user in the
-   * search box when there are many domains in the uploaded file
-   */
-  const filteredDomainsInFile = domainsInFile.filter((domain) => {
-    return domain.label.toLowerCase().includes(inputValue.toLowerCase());
-  });
   /**
    * The data to send when submitting in order to create the specification, vocabularies, and mapping if
    * necessary (if its the spine, no mapping will be created)
@@ -62,30 +44,20 @@ const MappingForm = () => {
    */
   const mergedFileId = useSelector((state) => state.mergedFileId);
   /**
-   * Whether there's more than one domain found in the uploaded file
-   */
-  const [multipleDomainsInFile, setMultipleDomainsInFile] = useState(false);
-  /**
-   * Name of the specification
-   */
-  const [name, setName] = useState('');
-  /**
    * Whether we are processing the file or not
    */
   const processingFile = useSelector((state) => state.processingFile);
   /**
-   * The selected domain to map to
-   */
-  const [selectedDomainId, setSelectedDomainId] = useState(null);
-  /**
    * Whether the form was submitted or not, in order to show the preview
    */
   const submitted = useSelector((state) => state.submitted);
-  /**
-   * Version of this specification
-   */
-  const [version, setVersion] = useState('');
   const dispatch = useDispatch();
+  const isNew = !mapping?.id;
+  const i18key = `ui.mapping_upload.${isNew ? 'new' : 'persisted'}`;
+
+  useDidMountEffect(() => {
+    if (mapping?.specification) actions.updateDataFromMapping(mapping);
+  }, [mapping?.specification?.id]);
 
   /**
    * Update the files in the redux store (main application state) when
@@ -116,21 +88,18 @@ const MappingForm = () => {
   const unsetMultipleDomains = () => {
     dispatch(stopProcessingFile());
     dispatch(doUnsubmit());
-    setMultipleDomainsInFile(false);
+    actions.setMultipleDomainsInFile(false);
   };
 
   /**
    * Manage to change values from inputs in the state
    */
-  const filterOnChange = (event) => {
-    setInputValue(event.target.value);
-  };
+  const filterOnChange = (event) => actions.setInputValue(event.target.value);
 
   const formData = () => {
     return {
-      name: name,
-      version: version,
-      domainId: selectedDomainId,
+      ...state.formData,
+      mappingId: mapping.id,
       /// Set the file name to send to the service. This will appear as "scheme" in all
       /// further properties created.
       scheme: files[0].name,
@@ -172,8 +141,8 @@ const MappingForm = () => {
       }
 
       if (response.domains.length > 1) {
-        setMultipleDomainsInFile(true);
-        setDomainsInFile(response.domains);
+        actions.setMultipleDomainsInFile(true);
+        actions.setDomainsInFile(response.domains);
         return;
       }
     }
@@ -262,7 +231,7 @@ const MappingForm = () => {
    */
   const onSelectDomainsFromFile = async (uris) => {
     dispatch(startProcessingFile());
-    setMultipleDomainsInFile(false);
+    actions.setMultipleDomainsInFile(false);
 
     mappingFormData.selectedDomains = uris;
     dispatch(setMappingFormData(mappingFormData));
@@ -304,7 +273,7 @@ const MappingForm = () => {
   const fillWithDomains = () => {
     fetchDomains().then((response) => {
       if (!anyError(response)) {
-        setDomains(response.domains);
+        actions.setDomains(response.domains);
       }
     });
   };
@@ -315,7 +284,7 @@ const MappingForm = () => {
    * but it mimics the same action).
    */
   useEffect(() => {
-    fillWithDomains();
+    if (isNew) fillWithDomains();
     dispatch(setFiles([]));
     dispatch(unsetMappingFormErrors());
     unsetMultipleDomains();
@@ -324,9 +293,9 @@ const MappingForm = () => {
   return (
     <>
       <MultipleDomainsModal
-        domains={filteredDomainsInFile}
-        inputValue={inputValue}
-        modalIsOpen={multipleDomainsInFile}
+        domains={state.filteredDomainsInFile}
+        inputValue={state.inputValue}
+        modalIsOpen={state.multipleDomainsInFile}
         onRequestClose={unsetMultipleDomains}
         onSubmit={onSelectDomainsFromFile}
         onFilterChange={filterOnChange}
@@ -344,7 +313,7 @@ const MappingForm = () => {
         </div>
 
         <section>
-          <h6 className="subtitle">1. Upload Your Specification</h6>
+          <h6 className="subtitle">{i18n.t(`${i18key}.step_1`)}</h6>
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
@@ -354,8 +323,8 @@ const MappingForm = () => {
                 name="name"
                 id="specification_name"
                 className="form-control"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={state.name}
+                onChange={(e) => actions.setName(e.target.value)}
                 required
                 disabled={submitted}
               />
@@ -370,43 +339,56 @@ const MappingForm = () => {
                 name="version"
                 id="version"
                 className="form-control"
-                value={version}
-                onChange={(e) => setVersion(e.target.value)}
+                value={state.version}
+                onChange={(e) => actions.setVersion(e.target.value)}
                 disabled={submitted}
               />
             </div>
 
             <div className="form-group">
-              <label>Which domain are you uploading?</label>
+              {isNew ? (
+                <>
+                  <label>{i18n.t(`${i18key}.form.domain`)}</label>
 
-              <div className="desm-radio">
-                {domains.map((domain) => (
-                  <div className="desm-radio-primary" key={domain.id}>
-                    <input
-                      disabled={submitted}
-                      id={domain.id}
-                      name="domain-options-form"
-                      onChange={(e) => setSelectedDomainId(e.target.value)}
-                      required
-                      type="radio"
-                      value={domain.id}
-                    />
-                    <label
-                      className={domain.spine ? 'text-success' : undefined}
-                      htmlFor={domain.id}
-                    >
-                      <strong>{domain.name}</strong>
-                    </label>
+                  <div className="desm-radio">
+                    {state.domains.map((domain) => (
+                      <div className="desm-radio-primary" key={domain.id}>
+                        <input
+                          disabled={submitted}
+                          id={domain.id}
+                          name="domain-options-form"
+                          onChange={(e) => actions.setSelectedDomainId(e.target.value)}
+                          required
+                          type="radio"
+                          value={domain.id}
+                        />
+                        <label
+                          className={domain.spine ? 'text-success' : undefined}
+                          htmlFor={domain.id}
+                        >
+                          <strong>{domain.name}</strong>
+                        </label>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
 
-              {_.isNull(selectedDomainId) &&
-                Boolean(files.length) &&
-                !submitted &&
-                !processingFile && (
-                  <span style={{ color: 'red' }}>Please select a domain from the list ☝️ </span>
-                )}
+                  {_.isNull(state.selectedDomainId) &&
+                    Boolean(files.length) &&
+                    !submitted &&
+                    !processingFile && (
+                      <span style={{ color: 'red' }}>Please select a domain from the list ☝️ </span>
+                    )}
+                </>
+              ) : (
+                <>
+                  <label>{i18n.t(`${i18key}.form.domain`)}</label>
+                  <input
+                    className={`form-control ${state.selectedDomain?.spine ? 'text-success' : ''}`}
+                    value={state.selectedDomain?.name || ''}
+                    readOnly
+                  />
+                </>
+              )}
 
               <small className="mb-3">
                 Domains in <span className="badge badge-success">green</span> have a spine already

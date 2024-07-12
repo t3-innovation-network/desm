@@ -9,7 +9,7 @@ describe "API::V1::ConfigurationProfiles", type: :request do
     let(:configuration_profile) { create(:configuration_profile, :basic) }
 
     context "when user is not authenticated" do
-      before { get api_v1_mappings_path }
+      before { get api_v1_configuration_profiles_path }
 
       it_behaves_like "api authorization error"
     end

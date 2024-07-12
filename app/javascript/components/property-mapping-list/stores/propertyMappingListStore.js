@@ -121,19 +121,23 @@ export const propertyMappingListStore = (initialData = {}) => ({
     await Promise.all([
       actions.handleFetchDomains(queryParams),
       actions.handleFetchPredicates(queryParams),
-      actions.handleFetchSpecifications(queryParams),
     ]);
     if (!h.getState().hasErrors) actions.setLoading(false);
   }),
   // Use the service to get all the available specifications
   handleFetchSpecifications: thunk(async (actions, params = {}, h) => {
+    actions.setLoading(true);
+
     const state = h.getState();
     const response = await fetchSpecifications(params);
+
     if (state.withoutErrors(response)) {
       actions.setSpecifications(response.specifications);
+      actions.setLoading(false);
     } else {
       actions.addError(response.error);
     }
+
     return response;
   }),
 });

@@ -39,9 +39,11 @@ module API
       end
 
       def update
-        @instance.update(permitted_params)
-
-        render json: @instance, with_organizations: true
+        if @instance.update(permitted_params)
+          render json: @instance, with_organizations: true
+        else
+          render json: { error: @instance.errors.full_messages.join("\\n") }, status: :unprocessable_entity
+        end
       end
 
       def set_current

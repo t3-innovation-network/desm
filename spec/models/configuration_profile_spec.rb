@@ -398,7 +398,7 @@ describe ConfigurationProfile do
       let(:configuration_profile) { create(:configuration_profile, :active) }
 
       it "triggers the generate_structure callback and organizations update" do
-        expect(configuration_profile).to receive(:check_structure).and_return(true)
+        expect(configuration_profile).to receive(:check_and_update_structure).and_return(true)
         expect(UpdateDsos).to receive(:call).and_return(double(success?: true))
         configuration_profile.update!(structure: { name: "test" })
       end

@@ -4,9 +4,7 @@ import { easyStateSetters } from '../../stores/easyState';
 
 export const defaultState = {
   // status
-  // The selected mode to open the edit window
-  editMode: 'comment',
-  // Whether we are editing the alignment or not. Set to true when
+  // Whether we are adding comment to the alignment or not. Set to true when
   // the user selects an option from the alignment dropdown after selecting a predicate
   editing: false,
   // Whether we are matching vocabulary for the alignment or not. Set to true when
@@ -20,6 +18,10 @@ export const defaultState = {
   predicateOption: null,
   // The predicate option definition
   predicateDefinition: null,
+  // Whether the spine term shows extra details
+  spineTermExpanded: false,
+  // Whether the mapped term shows extra details
+  mappedTermExpanded: false,
 };
 
 export const spineTermRowStore = (initialData = {}) => ({
@@ -33,9 +35,6 @@ export const spineTermRowStore = (initialData = {}) => ({
     state.matchingVocab = true;
     state.mappedTermMatching = payload;
   }),
-  handlePredicateOptionSelected: action((state, payload) => {
-    state.editing = true;
-    state.editMode = payload.name.toLowerCase();
-  }),
+
   // thunks
 });

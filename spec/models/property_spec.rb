@@ -33,4 +33,38 @@ require "rails_helper"
 
 describe Property do
   it { is_expected.to belong_to(:term) }
+
+  describe "#update_term" do
+    let(:property) { create(:property) }
+
+    context "when label is changed" do
+      it "updates the term name and property uri" do
+        new_label = "New Label"
+        expect do
+          property.update(label: new_label)
+        end.to change { property.term.name }.to(new_label)
+        expect(property.uri).to eq(property.term.uri)
+      end
+    end
+
+    context "when source_uri is changed" do
+      it "updates the property uri" do
+        new_source_uri = "https://example.com/new_source_uri"
+        expect do
+          property.update(source_uri: new_source_uri)
+        end.to change { property.term.source_uri }.to(new_source_uri)
+        expect(property.uri).to eq(property.term.uri)
+      end
+    end
+
+    context "when neither label nor source_uri is changed" do
+      it "does not update the term name or property uri" do
+        previous_uri = property.uri
+        expect do
+          property.update(comment: "New Comment")
+        end.not_to change { property.term }
+        expect(property.uri).to eq(previous_uri)
+      end
+    end
+  end
 end

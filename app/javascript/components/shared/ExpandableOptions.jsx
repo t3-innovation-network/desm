@@ -6,6 +6,7 @@ import OutsideAlerter from './OutsideAlerter.jsx';
  * Props:
  * @prop {Boolean} expanded
  * @prop {String} selectedOption
+ * @prop {Component} SelectedComponent
  * @prop {Function} onClose
  * @prop {Function} onExpand
  * @prop {Array} options
@@ -42,7 +43,7 @@ class ExpandableOptions extends Component {
 
   render() {
     const { expanded, selectedOption } = this.state;
-    const { cardCssClass, cardHeaderCssClass } = this.props;
+    const { cardCssClass, cardHeaderCssClass, SelectedComponent } = this.props;
 
     return (
       <OutsideAlerter onOutsideAlert={() => this.handleShrink()}>
@@ -79,7 +80,11 @@ class ExpandableOptions extends Component {
               >
                 <div className="row">
                   <div className="col-10">
-                    <strong>{selectedOption}</strong>
+                    {SelectedComponent ? (
+                      <SelectedComponent selectedOption={selectedOption} />
+                    ) : (
+                      <strong>{selectedOption}</strong>
+                    )}
                   </div>
                   <div className="col">
                     <span className="float-right">▼</span>

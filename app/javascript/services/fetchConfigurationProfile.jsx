@@ -5,6 +5,7 @@ const fetchConfigurationProfile = async (cpId) => {
     url: `/api/v1/configuration_profiles/${cpId}`,
     method: 'get',
     successResponse: 'configurationProfile',
+    camelizeKeys: true,
   });
 };
 

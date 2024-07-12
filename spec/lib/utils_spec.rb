@@ -11,8 +11,16 @@ RSpec.describe Utils do
     end
 
     context "full DESM URI" do
-      it "returns original value" do
-        expect(Utils.compact_uri("http://desmsolutions.org/ns/f401/Program")).to eq("Program")
+      context "with non-RDF" do
+        it "returns original value" do
+          expect(Utils.compact_uri("http://desmsolutions.org/ns/f401/Program")).to eq("Program")
+        end
+      end
+
+      context "without non-RDF" do
+        it "returns original value" do
+          expect(Utils.compact_uri("http://desmsolutions.org/ns/f401/Program", non_rdf: false)).to eq("http://desmsolutions.org/ns/f401/Program")
+        end
       end
     end
 
@@ -32,7 +40,7 @@ RSpec.describe Utils do
 
       context "not from context" do
         it "returns nothing" do
-          expect(Utils.compact_uri("http://xmlns.com/foaf/0.1/Person")).to eq(nil)
+          expect(Utils.compact_uri("http://example.org/Person")).to eq(nil)
         end
       end
     end

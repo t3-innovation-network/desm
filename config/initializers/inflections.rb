@@ -14,5 +14,7 @@
 ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym '3D'
   inflect.acronym 'API'
+  inflect.acronym 'CSV'
+  inflect.acronym 'JSONLD'
   inflect.acronym 'URI'
 end

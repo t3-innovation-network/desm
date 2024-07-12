@@ -1,11 +1,12 @@
-import { Component } from 'react';
+import { useLocalStore } from 'easy-peasy';
 import Modal from 'react-modal';
 import HoverableText from '../shared/HoverableText';
 import ModalStyles from '../shared/ModalStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { partition } from 'lodash';
 import Pluralize from 'pluralize';
+import { domainsStore } from './stores/domainsStore';
+import useDidMountEffect from '../../helpers/useDidMountEffect';
 
 /**
  * Props:
@@ -17,77 +18,34 @@ import Pluralize from 'pluralize';
  * @param {Function} onSubmit The actions to perform when the user submits the form with
  *   the selected domains
  */
-export default class MultipleDomainsModal extends Component {
-  /**
-   * Representation of the state of this component
-   */
-  state = {
-    /**
-     * The complete list of available domains.
-     */
-    domainsList: this.props.domains,
-  };
+const MultipleDomainsModal = (props) => {
+  Modal.setAppElement('body');
 
-  /**
-   * The list of selected domains. The ones the user selects
-   */
-  selectedDomains = () => this.state.domainsList.filter((domain) => domain.selected);
+  const { inputValue, onFilterChange, modalIsOpen, onRequestClose } = props;
+  const [state, actions] = useLocalStore(() => domainsStore({ domainsList: props.domains }));
+  // `rdfs:Resource` is a dummy domain assigned to properties without a real one
+  const [absentDomains, domains] = state.partitionDomains;
 
-  allSelected = () => this.selectedDomains().length === this.props.domains.length;
-
-  /**
-   * Actions to execute when a domain is clicked
-   *
-   * @param {Integer} domId
-   */
-  handleDomainClick = (domId) => {
-    const { domainsList } = this.state;
-
-    let dom = domainsList.find((d) => d.id == domId);
-    dom.selected = !dom.selected;
-
-    this.setState({ domainsList: domainsList });
-  };
-
-  /**
-   * Actions to take when submitting the selection of the domains. We manage here to pass
-   * over the selected domain ids as an array.
-   */
-  handleSubmit = () => {
-    const { onSubmit } = this.props;
-
-    onSubmit(this.selectedDomains().map((domain) => domain.uri));
-  };
+  useDidMountEffect(() => actions.updateDomains(props.domains), [props.domains]);
+  useDidMountEffect(() => {
+    if (!modalIsOpen) actions.resetData();
+  }, [modalIsOpen]);
 
   /**
    * Selects all the domains if there are unselected among them. Otherwise, deselects all the domains.
    */
-  handleToggleSelectAll = () => {
-    const { domainsList } = this.state;
-    const selected = !this.allSelected();
-    this.setState({ domainsList: domainsList.map((d) => ({ ...d, selected })) });
-  };
-
+  const handleToggleSelectAll = () => actions.toggleSelectAll(!state.allSelected);
   /**
-   * Tasks when mounting this component
+   * Actions to take when submitting the selection of the domains. We manage here to pass
+   * over the selected domain ids as an array.
    */
-  componentDidMount() {
-    Modal.setAppElement('body');
-  }
+  const handleSubmit = () => props.onSubmit(state.selectedDomainsUris);
 
-  /**
-   * Update the list of domains in the state
-   *
-   * @param {Array} prevProps
-   */
-  componentDidUpdate(prevProps) {
-    if (this.props.domains !== prevProps.domains) {
-      this.setState({ domainsList: this.props.domains.map((d) => ({ ...d, selected: false })) });
-    }
-  }
-
-  renderDomain(domain, primaryContent, secondaryContent) {
+  const renderDomain = (domain) => {
     const id = `chk-${domain.id}`;
+    const isRDFS = domain.uri === 'rdfs:Resource';
+    const primaryContent = isRDFS ? 'None' : domain.label;
+    const secondaryContent = isRDFS ? 'properties with no domain declared' : domain.uri;
 
     return (
       <div className="desm-radio-primary" key={domain.id}>
@@ -95,7 +53,7 @@ export default class MultipleDomainsModal extends Component {
           id={id}
           checked={domain.selected}
           name="domain-options"
-          onChange={() => this.handleDomainClick(domain.id)}
+          onChange={() => actions.toggleDomain(domain.id)}
           tabIndex={0}
           type="checkbox"
         />
@@ -106,94 +64,80 @@ export default class MultipleDomainsModal extends Component {
         />
       </div>
     );
-  }
+  };
 
-  render() {
-    /**
-     * Elements from props
-     */
-    const { inputValue, onFilterChange, modalIsOpen, onRequestClose } = this.props;
-    // `rdfs:Resource` is a dummy domain assigned to properties without a real one
-    const [absentDomains, domains] = partition(
-      this.state.domainsList,
-      (d) => d.uri === 'rdfs:Resource'
-    );
-
-    return (
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={onRequestClose}
-        contentLabel="Multiple Domains Found"
-        style={ModalStyles}
-        shouldCloseOnEsc={false}
-        shouldCloseOnOverlayClick={false}
-      >
-        <div className="card" style={{ maxHeight: '45rem' }}>
-          <div className="card-header">
-            <div className="row">
-              <div className="col-10">
-                <h5 className="col-primary">
-                  <strong>{domains.length}</strong> domains found
-                </h5>
-              </div>
-              <div className="col-2">
-                <a className="float-right cursor-pointer" onClick={onRequestClose}>
-                  <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
-                </a>
-              </div>
+  return (
+    <Modal
+      isOpen={modalIsOpen}
+      onRequestClose={onRequestClose}
+      contentLabel="Multiple Domains Found"
+      style={ModalStyles}
+      shouldCloseOnEsc={false}
+      shouldCloseOnOverlayClick={false}
+    >
+      <div className="card" style={{ maxHeight: '45rem' }}>
+        <div className="card-header">
+          <div className="row">
+            <div className="col-10">
+              <h5 className="col-primary">
+                <strong>{domains.length}</strong> {Pluralize('domain', domains.length)} found
+              </h5>
             </div>
-
-            <div className="row">
-              <div className="col-12">
-                <label className="float-left">
-                  {Pluralize('domain', this.selectedDomains().length, true)} selected
-                </label>
-
-                <button
-                  className="btn btn-dark float-right"
-                  onClick={() => this.handleSubmit()}
-                  disabled={!this.selectedDomains().length}
-                >
-                  Done Selecting
-                </button>
-
-                <button
-                  className="btn btn-link float-right"
-                  onClick={() => this.handleToggleSelectAll()}
-                >
-                  {this.allSelected() ? 'Deselect' : 'Select'} All
-                </button>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col">
-                <strong>Please select one or more domains from the list to begin mapping</strong>
-                <div className="form-group input-group-has-icon">
-                  <FontAwesomeIcon icon={faSearch} className="form-control-feedback" />
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Search by name"
-                    value={inputValue}
-                    onChange={onFilterChange}
-                    autoFocus
-                  />
-                </div>
-              </div>
+            <div className="col-2">
+              <a className="float-right cursor-pointer" onClick={onRequestClose}>
+                <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
+              </a>
             </div>
           </div>
 
-          <div className="card-body has-scrollbar scrollbar">
-            <div className="desm-radio">
-              {absentDomains.map((d) =>
-                this.renderDomain(d, 'None', 'properties with no domain declared')
-              )}
-              {domains.map((d) => this.renderDomain(d, d.label, d.uri))}
+          <div className="row">
+            <div className="col-12">
+              <label className="float-left">
+                {Pluralize('domain', state.selectedDomainsSize, true)} selected
+              </label>
+
+              <button
+                className="btn btn-dark float-right"
+                onClick={handleSubmit}
+                disabled={!state.selectedDomainsSize}
+              >
+                Done Selecting
+              </button>
+
+              <button className="btn btn-link float-right" onClick={handleToggleSelectAll}>
+                {state.allSelected ? 'Deselect' : 'Select'} All
+              </button>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <strong>Please select one or more domains from the list to begin mapping</strong>
+              <div className="form-group input-group-has-icon">
+                <FontAwesomeIcon icon={faSearch} className="form-control-feedback" />
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Search by name"
+                  value={inputValue}
+                  onChange={onFilterChange}
+                  autoFocus
+                />
+              </div>
             </div>
           </div>
         </div>
-      </Modal>
-    );
-  }
-}
+
+        <div className="card-body has-scrollbar scrollbar">
+          <div className="desm-radio">
+            {absentDomains.map((d) => renderDomain(d))}
+            {state.selectedFilteredDomains.map((d) => renderDomain(d))}
+            {domains.map((d) => renderDomain(d))}
+          </div>
+        </div>
+      </div>
+    </Modal>
+  );
+};
+
+export default MultipleDomainsModal;

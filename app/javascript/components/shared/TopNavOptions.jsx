@@ -30,7 +30,7 @@ const TopNavOptions = (props) => {
         )}
         {props.stepper && (
           <li>
-            <Stepper stepperStep={props.stepperStep} />
+            <Stepper stepperStep={props.stepperStep} mapping={props.mapping} />
           </li>
         )}
       </ul>

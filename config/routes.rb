@@ -153,7 +153,7 @@ Rails.application.routes.draw do
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :predicates, only: [:index]
       resources :roles, only: [:index]
-      resources :specifications, only: [:index, :create, :destroy, :show]
+      resources :specifications, only: [:index, :create, :destroy, :show, :update]
       resources :spine_terms, only: [:create]
       resources :terms, only: [:show, :update, :destroy]
       resources :spine_specifications, only: %i[index show]
@@ -172,10 +172,11 @@ Rails.application.routes.draw do
         post :extract, on: :collection
       end
 
+      resources :mapping_exports, only: :index, defaults: { format: "jsonld" }
+
       # Mapping selected terms
       post 'mappings/:id/selected_terms' => 'mapping_selected_terms#create'
       get 'mappings/:id/selected_terms' => 'mapping_selected_terms#show', as: :mapping_selected_terms
-      get 'mappings/:id/export' => 'mappings#export'
       delete 'mappings/:id/selected_terms' => 'mapping_selected_terms#destroy'
 
       get 'alignments/:id/vocabulary' => 'alignment_vocabularies#show'
