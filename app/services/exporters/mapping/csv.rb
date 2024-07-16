@@ -24,87 +24,102 @@ module Exporters
         @mapping = mapping
       end
 
-      def export
-        ::CSV.generate do |csv|
-          csv << HEADERS
-          alignments.map { csv << Row.new(_1).values }
+      class << self
+        def term_domains(mapping, property)
+          return unless property
+
+          mapping_domains = mapping.compact_domains(non_rdf: false)
+          property_domains = property.compact_domains(non_rdf: false)
+          (mapping_domains & property_domains).join(" ")
+        end
+
+        def term_origin(term)
+          specification = term.specifications.first
+          version = "(#{specification.version})" if specification.version?
+          [specification.name, version].compact.join(" ")
         end
       end
 
-      def alignments
-        mapping.alignments
+      def export
+        ::CSV.generate do |csv|
+          csv << HEADERS
+
+          mapping.alignments.map do |alignment|
+            Alignment.new(alignment).rows.each { csv << _1 }
+          end
+        end
       end
 
-      class Row
+      class Alignment
         attr_reader :alignment
 
-        delegate :mapping, :predicate, to: :alignment
+        delegate :mapping, :predicate, :spine_term, to: :alignment
 
         def initialize(alignment)
           @alignment = alignment
         end
 
-        def mapped_term
-          alignment.mapped_terms.first&.property
-        end
-
-        def mapped_term_specification
-          alignment.mapped_terms.first&.specifications&.first
-        end
-
-        def mapped_term_specification_version
-          "(#{mapped_term_specification.version})" if mapped_term_specification&.version?
+        def mapped_terms
+          # Passing a `nil` here if there are no mapped terms,
+          # so empty cells will be generated
+          alignment.mapped_terms.presence || [nil]
         end
 
         def organization
           alignment.spine_term.organization
         end
 
-        def spine_term
-          alignment.spine_term.property
+        def rows
+          mapped_terms.map do |mapped_term|
+            [
+              # Spine term name
+              spine_property.label,
+              # Spine term definition
+              spine_property.comments.join("\n"),
+              # Spine term class/type
+              CSV.term_domains(mapping, spine_property),
+              # Spine term origin
+              CSV.term_origin(spine_term),
+              # Mapping predicate label
+              predicate&.name,
+              # Mapping predicate definition
+              predicate&.definition,
+              *MappedTerm.new(mapping, mapped_term).values,
+              # Comments
+              alignment.comment,
+              # Transformation notes
+              nil
+            ]
+          end
         end
 
-        def spine_term_specification
-          alignment.spine_term.specifications.first
+        def spine_property
+          spine_term.property
         end
+      end
 
-        def spine_term_specification_version
-          "(#{spine_term_specification.version})" if spine_term_specification.version?
-        end
+      class MappedTerm
+        attr_reader :mapping, :term
 
-        def term_domains(term)
-          return unless term
+        delegate :property, to: :term
 
-          domains = mapping.compact_domains(non_rdf: false) & term.compact_domains(non_rdf: false)
-          domains.join(" ")
+        def initialize(mapping, term)
+          @mapping = mapping
+          @term = term
         end
 
         def values
+          return Array.new(4) unless term
+
           [
-            # Spine term name
-            spine_term.label,
-            # Spine term definition
-            spine_term.comments.join("\n"),
-            # Spine term class/type
-            term_domains(spine_term),
-            # Spine term origin
-            [spine_term_specification.name, spine_term_specification_version].compact.join(" "),
-            # Mapping predicate label
-            predicate&.name,
-            # Mapping predicate definition
-            predicate&.definition,
             # Mapped term name
-            mapped_term&.label,
+            property.label,
             # Mapped term definition
-            mapped_term&.comments&.join("\n"),
+            property.comments&.join("\n"),
             # Mapped term class/type
-            term_domains(mapped_term),
+            CSV.term_domains(mapping, property),
             # Mapped term origin
-            [mapped_term_specification&.name, mapped_term_specification_version].compact.join(" "),
-            # Comments
-            alignment.comment,
-            # Transformation notes
-            nil
+            CSV.term_origin(term)
           ]
         end
       end
