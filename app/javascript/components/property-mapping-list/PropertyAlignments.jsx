@@ -34,12 +34,7 @@ const PropertyAlignments = (props) => {
         /// It matches the selected predicates
         selectedPredicateIds.includes(alignment.predicateId) &&
         /// It matches the selected alignment specifications
-        selectedAlignmentSpecificationsIds.includes(alignment.mapping.specification.id) &&
-        /// It matches the selected alignment specifications
-        intersection(
-          selectedSpineSpecificationIds,
-          props.spineTerm.specifications.map((s) => s.id)
-        ).length
+        selectedAlignmentSpecificationsIds.includes(alignment.mapping.specification.id)
     );
     filteredAl = implementAlignmentSort(filteredAl, props.selectedAlignmentOrderOption);
     let filteredMappedTerms = compact(
