@@ -100,7 +100,7 @@ const AlignmentCard = ({ alignment, term, isLast = false }) => {
             <p className="mb-1">{alignment.schemaName}</p>
           </div>
           <div className="col-2 px-1">
-            <small className="mt-1 col-on-primary-light">Element/Property</small>
+            <small className="mt-1 col-on-primary-light">Property name</small>
             <p className="mb-1">{term.name}</p>
 
             <small className="mt-1 col-on-primary-light">Class/Type</small>

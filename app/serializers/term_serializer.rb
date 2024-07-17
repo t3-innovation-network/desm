@@ -18,4 +18,12 @@ class TermSerializer < ApplicationSerializer
   attribute :title do
     object.source_uri.to_s.split(":").last.presence || object.name
   end
+
+  attribute :schema_name do
+    schema = object.specifications.first
+
+    if schema
+      [schema.name, schema.version? ? "(#{schema.version})" : nil].join(" ")
+    end
+  end
 end
