@@ -16,6 +16,7 @@ const DropZone = ({
   acceptedItemType,
   children,
   droppedItem,
+  disabled,
   placeholder,
   selectedCount,
   cls,
@@ -26,10 +27,10 @@ const DropZone = ({
    */
   const [{ canDrop, isOver, item }, drop] = useDrop({
     accept: acceptedItemType,
-    drop: () => droppedItem,
+    drop: () => !disabled && droppedItem,
     collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
+      isOver: !disabled && monitor.isOver(),
+      canDrop: !disabled && monitor.canDrop(),
       item: monitor.getItem(),
     }),
   });
