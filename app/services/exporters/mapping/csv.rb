@@ -7,12 +7,14 @@ module Exporters
         "Spine term name",
         "Spine term definition",
         "Spine term class/type",
+        "Spine term range",
         "Spine term origin",
         "Mapping predicate label",
         "Mapping predicate definition",
         "Mapped term name",
         "Mapped term definition",
         "Mapped term class/type",
+        "Mapped term range",
         "Mapped term origin",
         "Comments",
         "Transformation notes"
@@ -78,6 +80,8 @@ module Exporters
               spine_property.comments.join("\n"),
               # Spine term class/type
               CSV.term_domains(mapping, spine_property),
+              # Spine term range
+              spine_property.compact_ranges.join(", "),
               # Spine term origin
               CSV.term_origin(spine_term),
               # Mapping predicate label
@@ -118,6 +122,8 @@ module Exporters
             property.comments&.join("\n"),
             # Mapped term class/type
             CSV.term_domains(mapping, property),
+            # Mapped term range
+            property.compact_ranges.join(", "),
             # Mapped term origin
             CSV.term_origin(term)
           ]
