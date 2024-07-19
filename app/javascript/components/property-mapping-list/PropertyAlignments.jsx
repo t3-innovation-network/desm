@@ -34,12 +34,7 @@ const PropertyAlignments = (props) => {
         /// It matches the selected predicates
         selectedPredicateIds.includes(alignment.predicateId) &&
         /// It matches the selected alignment specifications
-        selectedAlignmentSpecificationsIds.includes(alignment.mapping.specification.id) &&
-        /// It matches the selected alignment specifications
-        intersection(
-          selectedSpineSpecificationIds,
-          props.spineTerm.specifications.map((s) => s.id)
-        ).length
+        selectedAlignmentSpecificationsIds.includes(alignment.mapping.specification.id)
     );
     filteredAl = implementAlignmentSort(filteredAl, props.selectedAlignmentOrderOption);
     let filteredMappedTerms = compact(
@@ -100,7 +95,7 @@ const AlignmentCard = ({ alignment, term, isLast = false }) => {
             <p className="mb-1">{alignment.schemaName}</p>
           </div>
           <div className="col-2 px-1">
-            <small className="mt-1 col-on-primary-light">Element/Property</small>
+            <small className="mt-1 col-on-primary-light">Property name</small>
             <p className="mb-1">{term.name}</p>
 
             <small className="mt-1 col-on-primary-light">Class/Type</small>
