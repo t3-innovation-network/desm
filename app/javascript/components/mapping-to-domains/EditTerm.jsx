@@ -304,7 +304,7 @@ export default class EditTerm extends Component {
                     <div className="card">
                       <div className="card-body">
                         <h5>
-                          <strong>Element/Property</strong>
+                          <strong>Property name</strong>
                         </h5>
 
                         <div className="form-group row">

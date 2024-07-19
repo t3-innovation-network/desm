@@ -227,6 +227,7 @@ const SpineTermRow = (props) => {
           <DropZone
             acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
             droppedItem={{ id: term.id }}
+            disabled={noMatchPredicate(predicateOption)}
             cls={clsPredicate}
             placeholder="Drag a matching property here"
           >

@@ -69,7 +69,7 @@ module Processors
     def create_terms(instance, configuration_profile_user)
       filter_properties(instance.selected_domains_from_file).each do |node|
         term = create_one_term(node, configuration_profile_user)
-        next if term.nil?
+        next if term.nil? || instance.terms.include?(term)
 
         instance.terms << term
       end
