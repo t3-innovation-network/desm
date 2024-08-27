@@ -38,7 +38,7 @@ module Exporters
       ###
       def main_node
         {
-          "@id": "http://desmsolutions.org/TermMapping/#{mapping.id}",
+          "@id": mapping_uri,
           "@type": "desm:AbstractClassMapping",
           "dcterms:created": mapping.created_at.strftime("%F"),
           "dcterms:dateModified": mapping.updated_at.strftime("%F"),
@@ -70,9 +70,9 @@ module Exporters
       ###
       def alignment_node(alignment)
         {
-          "@id": "http://desmsolutions.org/TermMapping/#{alignment.id}",
+          "@id": alignment.uri,
           "@type": "desm:TermMapping",
-          "dcterms:isPartOf": { "@id": "http://desmsolutions.org/TermMapping/#{mapping.id}" },
+          "dcterms:isPartOf": { "@id": mapping_uri },
           "desm:comment": alignment.comment,
           "desm:mappedterm": alignment.mapped_terms.map do |mapped_term|
             { "@id": mapped_term.uri }
@@ -136,6 +136,10 @@ module Exporters
         else
           node
         end
+      end
+
+      def mapping_uri
+        "http://desmsolutions.org/TermMapping/#{mapping.id}"
       end
     end
   end
