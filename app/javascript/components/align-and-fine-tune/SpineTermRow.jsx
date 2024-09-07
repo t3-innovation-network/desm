@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocalStore } from 'easy-peasy';
+import AlignmentTransformation from './AlignmentTransformation';
 import EditAlignment from './EditAlignment';
 import Collapsible from '../shared/Collapsible';
 import MatchVocabulary from './match-vocabulary/MatchVocabulary';
@@ -31,6 +32,7 @@ const SpineTermRow = (props) => {
   const {
     alignment,
     onUpdateAlignmentComment,
+    onUpdateAlignmentTransformation,
     mappedTermsToSpineTerm,
     origin,
     compactDomains,
@@ -54,6 +56,7 @@ const SpineTermRow = (props) => {
     predicateDefinition,
     mappedTermMatching,
     editing,
+    transforming,
     matchingVocab,
     spineTermExpanded,
     mappedTermExpanded,
@@ -115,10 +118,22 @@ const SpineTermRow = (props) => {
     actions.setEditing(false);
   };
 
+  const handleOnTransformationUpdated = (result) => {
+    if (result.saved) {
+      showSuccess('Changes saved!');
+      // Update the mapping term in state (if there's a transformation, we need to
+      // redraw in order to let the orange dot to appear)
+      onUpdateAlignmentTransformation({ id: alignment.id, transformation: result.transformation });
+    }
+    actions.setTransforming(false);
+  };
+
   // Closes the modal window for editing the alignment and cancel editing the alignment
   const onRequestEditClose = () => actions.setEditing(false);
   // Closes the modal window for matching vocabularies
   const onRequestVocabsClose = () => actions.setMatchingVocab(false);
+  // Closes the modal window for transformation and cancel adding alignment transformation
+  const onRequestTransformationClose = () => actions.setTransforming(false);
 
   const mappedTerms = mappedTermsToSpineTerm(term);
   const withPredicate = predicateOption && !noMatchPredicate(predicateOption);
@@ -136,6 +151,12 @@ const SpineTermRow = (props) => {
         spineTerm={term}
         predicate={findPredicate()}
         onRequestClose={onRequestEditClose}
+      />
+      <AlignmentTransformation
+        isOpen={transforming}
+        onUpdate={handleOnTransformationUpdated}
+        alignment={alignment}
+        onClose={onRequestTransformationClose}
       />
 
       {alignmentHasVocabulary() ? (
@@ -165,6 +186,11 @@ const SpineTermRow = (props) => {
                   </h6>
                 )}
                 <p className="card-text">{term.property.comment}</p>
+                {alignment.transformation?.from && (
+                  <h6 className="card-subtitle">
+                    Data Transformation: {alignment.transformation.from}
+                  </h6>
+                )}
                 <button
                   className="btn btn-link p-0"
                   onClick={() => actions.setSpineTermExpanded(!spineTermExpanded)}
@@ -215,12 +241,24 @@ const SpineTermRow = (props) => {
               <small>{predicateDefinition}</small>
             </div>
           )}
-          <label
-            className="non-selectable float-right mt-1 mb-0 col-primary cursor-pointer"
-            onClick={() => actions.setEditing(true)}
-          >
-            {alignment?.comment ? 'Edit Comment' : 'Add Comment'}
-          </label>
+          <div className="w-100 mt-1 text-right">
+            <button
+              className="btn btn-link p-0 col-primary"
+              onClick={() => actions.setEditing(true)}
+            >
+              {alignment?.comment ? 'Edit Comment' : 'Add Comment'}
+            </button>
+          </div>
+          <div className="w-100 mt-1 text-right">
+            <label
+              className="btn btn-link p-0 col-primary"
+              onClick={() => actions.setTransforming(true)}
+            >
+              {alignment?.transformation?.to || alignment?.transformation?.from
+                ? 'Edit Transformation'
+                : 'Add Transformation'}
+            </label>
+          </div>
         </div>
 
         <div className="col-4">
@@ -264,6 +302,11 @@ const SpineTermRow = (props) => {
                         ID:
                         <span>{' ' + mTerm.sourceUri}</span>
                       </p>
+                      {alignment.transformation?.to && (
+                        <h6 className="card-subtitle">
+                          Data Transformation: {alignment.transformation.to}
+                        </h6>
+                      )}
                       <button
                         className="btn btn-link p-0"
                         onClick={() => actions.setMappedTermExpanded(!mappedTermExpanded)}

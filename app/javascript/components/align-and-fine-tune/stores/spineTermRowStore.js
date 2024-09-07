@@ -7,6 +7,8 @@ export const defaultState = {
   // Whether we are adding comment to the alignment or not. Set to true when
   // the user selects an option from the alignment dropdown after selecting a predicate
   editing: false,
+  // Whether tranformation modal is open or not
+  transforming: false,
   // Whether we are matching vocabulary for the alignment or not. Set to true when
   // the user clicks on the vocabulary link on the mapped term of this alignment
   matchingVocab: false,

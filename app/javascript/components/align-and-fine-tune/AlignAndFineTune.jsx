@@ -140,6 +140,7 @@ const AlignAndFineTune = (props) => {
             compactDomains={mapping.specification.compact_domains}
             onPredicateSelected={onPredicateSelected}
             onUpdateAlignmentComment={actions.updateAlignmentComment}
+            onUpdateAlignmentTransformation={actions.updateAlignmentTransformation}
             onRevertMapping={(mappedTerm) =>
               actions.handleRevertMapping({
                 termId: term.id,
