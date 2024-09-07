@@ -85,7 +85,7 @@ module API
       # @return [ActionController::Parameters]
       ###
       def permitted_params
-        params.require(:alignment).permit(:comment, :predicate_id)
+        params.require(:alignment).permit(:comment, :predicate_id, transformation: {})
       end
     end
   end

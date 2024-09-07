@@ -1,5 +1,7 @@
 en:
   ui:
+    buttons:
+      cancel: Cancel
     config:
       user:
         phone_format: "should be at least 6 characters long and can contain digits, spaces, or hyphens, optionally starting with a plus sign. Examples: +1234567890, 123-456-789, 123 456 7890"
@@ -60,6 +62,16 @@ en:
         uploaded: Map to Domains
         in_progress: Align and Fine Tune
         mapped: Mapped
+      transformation:
+        title: Transformation
+        form:
+          from:
+            label: Transform from Spine
+            placeholder: Enter transformation from spine
+          to:
+            label: Transform to Spine
+            placeholder: Enter transformation to spine
+          save: Save Transformation
     mapping_upload:
       new:
         step_1: 1. Upload Your Specification
