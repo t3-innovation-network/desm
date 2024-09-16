@@ -215,6 +215,7 @@ export const mappingStore = (initialData = {}) => ({
         mappedTerms: [],
         spineTermId: syntheticTermId,
         predicateId: strongestMatchPredicate?.id,
+        transformation: {},
         comment: null,
       });
       state.changesPerformed++;
@@ -360,6 +361,10 @@ export const mappingStore = (initialData = {}) => ({
   updateAlignmentComment: action((state, { id, comment }) => {
     let alignment = state.alignments.find((alg) => alg.id === id);
     alignment.comment = comment;
+  }),
+  updateAlignmentTransformation: action((state, { id, transformation }) => {
+    let alignment = state.alignments.find((alg) => alg.id === id);
+    alignment.transformation = transformation;
   }),
   // updated alignment changes after save
   updateAlignmentsChanges: action((state, { adds }) => {

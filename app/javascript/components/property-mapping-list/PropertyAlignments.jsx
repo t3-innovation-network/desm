@@ -107,6 +107,19 @@ const AlignmentCard = ({ alignment, term, isLast = false }) => {
           <div className="col-6">
             <small className="mt-1 col-on-primary-light">Definition</small>
             <div className="mb-1">{<PropertyComments term={term} />}</div>
+            {(alignment.transformation?.to || alignment.transformation?.from) && (
+              <>
+                <small className="mt-1 col-on-primary-light">Data Transformation</small>
+                <div className="mb-1">
+                  {alignment.transformation?.to ? (
+                    <p className="mb-0">To Spine: {alignment.transformation.to}</p>
+                  ) : null}
+                  {alignment.transformation?.from ? (
+                    <p className="mb-0">From Spine: {alignment.transformation.from}</p>
+                  ) : null}
+                </div>
+              </>
+            )}
           </div>
           <div className="col-2 ps-1">
             <div
