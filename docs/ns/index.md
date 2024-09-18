@@ -1,5 +1,5 @@
 Data Ecosystem Mapping Tool (DESM) terms defined in
-* [Turtle](desmTerms.ttl) 
+* [Turtle](desmTerms.ttl)
 * [JSON-LD](desmTerms.ttl)
 
 The Domain model is below:
