@@ -88,9 +88,10 @@ const AlignmentCard = ({ alignment, term, isLast = false }) => {
       <div className="card-header desm-rounded bottom-borderless bg-col-secondary">
         <div className="row">
           <div className="col-12 mb-1">
-            <span className="fw-bold fs-5">
-              {alignment.schemaName} {term.name}
-            </span>
+            <span className="fw-bold fs-5">Schema:&nbsp;</span>
+            <span className="fs-5">{alignment.schemaName}. </span>
+            <span className="fw-bold fs-5">Property:&nbsp;</span>
+            <span className="fs-5">{term.name}</span>
           </div>
           <div className="col-2">
             <div
