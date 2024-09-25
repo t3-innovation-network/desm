@@ -2,7 +2,7 @@
 
 class AlignmentSerializer < ApplicationSerializer
   attributes :comment, :compact_domains, :mapping_id, :origin, :predicate_id, :spine_term_id, :synthetic, :uri,
-             :vocabulary_id
+             :vocabulary_id, :transformation
   attributes :mapped_terms, :predicate
   attribute :mapping, if: -> { params[:with_schema_name] } do
     { id: object.mapping.id, title: object.mapping.title, description: object.mapping.description,

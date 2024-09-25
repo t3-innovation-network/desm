@@ -80,35 +80,20 @@ const PropertyAlignments = (props) => {
 const AlignmentCard = ({ alignment, term, isLast = false }) => {
   const [showingAlignmentComment, setShowingAlignmentComment] = useState(false);
 
-  const alignmentTermClasses = term.selectedClasses.map((c) => <li key={c}>{c}</li>);
-  const alignmentTermRanges = term.compactRanges.map((r) => <li key={r}>{r}</li>);
+  const alignmentTermClasses = term.selectedClasses.join(', ');
+  const alignmentTermRanges = term.compactRanges.join(', ');
 
   return (
     <div className={`card borderless ${isLast ? '' : 'mb-3'}`}>
       <div className="card-header desm-rounded bottom-borderless bg-col-secondary">
         <div className="row">
+          <div className="col-12 mb-1">
+            <span className="fw-bold fs-5">Schema:&nbsp;</span>
+            <span className="fs-5">{alignment.schemaName}. </span>
+            <span className="fw-bold fs-5">Property:&nbsp;</span>
+            <span className="fs-5">{term.name}</span>
+          </div>
           <div className="col-2">
-            <small className="mt-1 col-on-primary-light">Organization</small>
-            <p className="mb-1">{alignment.origin}</p>
-
-            <small className="mt-1 col-on-primary-light">Schema</small>
-            <p className="mb-1">{alignment.schemaName}</p>
-          </div>
-          <div className="col-2 px-1">
-            <small className="mt-1 col-on-primary-light">Property name</small>
-            <p className="mb-1">{term.name}</p>
-
-            <small className="mt-1 col-on-primary-light">Class/Type</small>
-            <ul className="list-unstyled mb-1">{alignmentTermClasses}</ul>
-
-            <small className="mt-1 col-on-primary-light">Ranges</small>
-            <ul className="list-unstyled mb-1">{alignmentTermRanges}</ul>
-          </div>
-          <div className="col-6">
-            <small className="mt-1 col-on-primary-light">Definition</small>
-            <div className="mb-1">{<PropertyComments term={term} />}</div>
-          </div>
-          <div className="col-2 ps-1">
             <div
               className="text-center desm-rounded p-3"
               style={{
@@ -123,6 +108,32 @@ const AlignmentCard = ({ alignment, term, isLast = false }) => {
                 <small>{alignment.predicate.definition}</small>
               </div>
             )}
+          </div>
+          <div className="col">
+            <p className="mb-2">
+              <span className="fw-bold">Definition:&nbsp;</span> {<PropertyComments term={term} />}
+            </p>
+            <p className="mb-2">
+              <span className="fw-bold">Relevant class(es):&nbsp;</span>
+              {alignmentTermClasses}
+            </p>
+            <p className="mb-2">
+              <span className="fw-bold">Expected value type:&nbsp;</span>
+              {alignmentTermRanges}
+            </p>
+            {(alignment.transformation?.to || alignment.transformation?.from) && (
+              <>
+                <div className="mb-2">
+                  <p className="fw-bold mb-0">Data Transformation:</p>
+                  {alignment.transformation?.to ? (
+                    <p className="mb-0">To Spine: {alignment.transformation.to}</p>
+                  ) : null}
+                  {alignment.transformation?.from ? (
+                    <p className="mb-0">From Spine: {alignment.transformation.from}</p>
+                  ) : null}
+                </div>
+              </>
+            )}
             {alignment.comment && (
               <label
                 className="non-selectable float-right mt-1 mb-0 col-primary cursor-pointer"
@@ -133,13 +144,12 @@ const AlignmentCard = ({ alignment, term, isLast = false }) => {
             )}
           </div>
         </div>
-
         {showingAlignmentComment && (
           <div className="row">
             <div className="col">
               <div className="card borderless">
                 <div className="card-body">
-                  <h6 className="col-on-primary">Alignment Note</h6>
+                  <h6>Alignment Note</h6>
                   {alignment.comment}
                 </div>
               </div>

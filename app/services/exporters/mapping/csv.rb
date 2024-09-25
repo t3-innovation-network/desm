@@ -37,6 +37,8 @@ module Exporters
 
         def term_origin(term)
           specification = term.specifications.first
+          return unless specification
+
           version = "(#{specification.version})" if specification.version?
           [specification.name, version].compact.join(" ")
         end
