@@ -4,16 +4,17 @@
 #
 # Table name: alignments
 #
-#  id            :bigint           not null, primary key
-#  comment       :text
-#  synthetic     :boolean          default(FALSE), not null
-#  uri           :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  mapping_id    :bigint           not null
-#  predicate_id  :bigint
-#  spine_term_id :integer
-#  vocabulary_id :bigint
+#  id             :bigint           not null, primary key
+#  comment        :text
+#  synthetic      :boolean          default(FALSE), not null
+#  transformation :jsonb
+#  uri            :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  mapping_id     :bigint           not null
+#  predicate_id   :bigint
+#  spine_term_id  :integer
+#  vocabulary_id  :bigint
 #
 # Indexes
 #

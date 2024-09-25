@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_20_160653) do
+ActiveRecord::Schema.define(version: 2024_09_06_105812) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 2024_04_20_160653) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "vocabulary_id"
     t.boolean "synthetic", default: false, null: false
+    t.jsonb "transformation", default: {}
     t.index ["mapping_id"], name: "index_alignments_on_mapping_id"
     t.index ["predicate_id"], name: "index_alignments_on_predicate_id"
     t.index ["vocabulary_id"], name: "index_alignments_on_vocabulary_id"
