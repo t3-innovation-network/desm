@@ -260,7 +260,7 @@ const MappingForm = ({ mapping = null }) => {
 
     return (
       <>
-        <label>{files ? files.length : 0} files attached</label>
+        <label className="form-label">{files ? files.length : 0} files attached</label>
         {fileCards}
       </>
     );
@@ -303,11 +303,12 @@ const MappingForm = ({ mapping = null }) => {
 
       <div
         className={
-          (submitted || processingFile ? 'disabled-container ' : ' ') + 'col-lg-6 p-lg-5 pt-5'
+          (submitted || processingFile ? 'disabled-container ' : ' ') +
+          'col-lg-6 p-lg-5 pt-5 position-relative'
         }
       >
         <div className="mandatory-fields-notice">
-          <small className="form-text text-muted">
+          <small className="form-text text-body-secondary">
             Fields with <span className="text-danger">*</span> are mandatory!
           </small>
         </div>
@@ -317,7 +318,9 @@ const MappingForm = ({ mapping = null }) => {
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="specification_name">Name of your specification</label>
+              <label className="form-label" htmlFor="specification_name">
+                Name of your specification
+              </label>
               <input
                 type="text"
                 name="name"
@@ -328,12 +331,14 @@ const MappingForm = ({ mapping = null }) => {
                 required
                 disabled={submitted}
               />
-              <small className="form-text text-muted">
+              <small className="form-text text-body-secondary">
                 This is the name you will see in your list of mappings
               </small>
             </div>
             <div className="form-group">
-              <label htmlFor="version">Version</label>
+              <label className="form-label" htmlFor="version">
+                Version
+              </label>
               <input
                 type="text"
                 name="version"
@@ -348,7 +353,7 @@ const MappingForm = ({ mapping = null }) => {
             <div className="form-group">
               {isNew ? (
                 <>
-                  <label>{i18n.t(`${i18key}.form.domain`)}</label>
+                  <label className="form-label">{i18n.t(`${i18key}.form.domain`)}</label>
 
                   <div className="desm-radio">
                     {state.domains.map((domain) => (
@@ -363,7 +368,7 @@ const MappingForm = ({ mapping = null }) => {
                           value={domain.id}
                         />
                         <label
-                          className={domain.spine ? 'text-success' : undefined}
+                          className={`form-label ${domain.spine ? 'text-success' : ''}`}
                           htmlFor={domain.id}
                         >
                           <strong>{domain.name}</strong>
@@ -381,7 +386,7 @@ const MappingForm = ({ mapping = null }) => {
                 </>
               ) : (
                 <>
-                  <label>{i18n.t(`${i18key}.form.domain`)}</label>
+                  <label className="form-label">{i18n.t(`${i18key}.form.domain`)}</label>
                   <input
                     className={`form-control ${state.selectedDomain?.spine ? 'text-success' : ''}`}
                     value={state.selectedDomain?.name || ''}
@@ -391,17 +396,15 @@ const MappingForm = ({ mapping = null }) => {
               )}
 
               <small className="mb-3">
-                Domains in <span className="badge badge-success">green</span> have a spine already
+                Domains in <span className="badge bg-success">green</span> have a spine already
                 uploaded
               </small>
             </div>
             <div className="form-group">
               <div className="input-group">
-                <div className="input-group-prepend">
-                  <span className="input-group-text" id="upload-help">
-                    Upload
-                  </span>
-                </div>
+                <span className="input-group-text" id="upload-help">
+                  Upload
+                </span>
                 <div className="custom-file">
                   <input
                     type="file"

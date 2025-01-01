@@ -48,13 +48,15 @@ const EditProfile = ({ history }) => {
           <div className="card">
             <div className="card-header">
               <FontAwesomeIcon icon={faUser} />
-              <span className="pl-2 subtitle">Edit profile information</span>
+              <span className="ps-2 subtitle">Edit profile information</span>
             </div>
 
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label htmlFor="fullname">Full Name</label>
+                  <label className="form-label" htmlFor="fullname">
+                    Full Name
+                  </label>
                   <input
                     className="form-control"
                     disabled={submitting}
@@ -65,7 +67,9 @@ const EditProfile = ({ history }) => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="email">E-mail</label>
+                  <label className="form-label" htmlFor="email">
+                    E-mail
+                  </label>
                   <input
                     className="form-control"
                     disabled={submitting}
@@ -77,7 +81,9 @@ const EditProfile = ({ history }) => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="github">GitHub Handle</label>
+                  <label className="form-label" htmlFor="github">
+                    GitHub Handle
+                  </label>
                   <input
                     className="form-control"
                     disabled={submitting}
@@ -88,7 +94,9 @@ const EditProfile = ({ history }) => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="phone">Phone Number</label>
+                  <label className="form-label" htmlFor="phone">
+                    Phone Number
+                  </label>
                   <input
                     className="form-control"
                     disabled={submitting}

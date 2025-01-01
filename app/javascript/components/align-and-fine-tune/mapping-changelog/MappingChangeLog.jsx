@@ -68,7 +68,7 @@ const MappingChangeLog = (props) => {
         {changes.map((change, i) => {
           return (
             <li key={i}>
-              <div className="ml-3">
+              <div className="ms-3">
                 <div className="row">
                   <strong>{dateTimeLongFormat(change.created_at)}</strong>
                 </div>

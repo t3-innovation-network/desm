@@ -112,7 +112,7 @@ const ConceptSchemesWrapper = ({ schemaFileIdx }) => {
           <h5 className="mt-3 text-center">{confirmationMsg}</h5>
         </ConfirmDialog>
       )}
-      <div className="mt-5 ml-3">
+      <div className="mt-5 ms-3">
         <TabGroup>
           {conceptSchemeBtns()} {<SmallAddTabBtn onClickHandler={handleAddConceptScheme} />}{' '}
         </TabGroup>

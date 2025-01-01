@@ -88,13 +88,13 @@ const EditProperties = (props) => {
                 </div>
               </div>
 
-              <div className="pr-5 mt-4">
+              <div className="pe-5 mt-4">
                 <AlertNotice
                   cssClass="bg-col-primary col-background"
                   title={i18n.t(`ui.properties_list.notice.${mode}`, { count: terms.length })}
                   message={i18n.t(`ui.properties_list.notice.message.${mode}`)}
                 />
-                <div className="has-scrollbar scrollbar pr-5">
+                <div className="has-scrollbar scrollbar pe-5">
                   {state.filteredTerms.map((term) => {
                     return (
                       <TermCard

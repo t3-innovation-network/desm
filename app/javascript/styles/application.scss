@@ -1,8 +1,24 @@
-// redefine bootstrap variables
-@import 'themes/settings';
+@charset "utf-8";
+
+/* stylelint-disable at-rule-empty-line-before */
+// base styles
+@import 'common-utils';
+@import 'common';
+
+@import 'rfs/scss';
+
+// bootstrap
+@import 'themes/settings'; // redefine bootstrap variables
+@import 'themes/bootstrap'; // bootstrap styles with custom settings
+@import 'themes/compatibility_4.x'; // compatibility with bootstrap 4.x
+
+// utilitie & helpers
+@import 'utils/utilities';
+
+// components
+@import 'components';
 
 // packages assets
-@import '~bootstrap/scss/bootstrap';
 @import 'codemirror/lib/codemirror.css';
 @import 'react-redux-toastr/src/styles/index';
 

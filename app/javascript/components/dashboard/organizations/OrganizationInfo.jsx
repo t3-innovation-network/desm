@@ -11,7 +11,7 @@ const OrganizationInfo = (props) => {
           className="card-header bg-dashboard-background col-background"
         >
           <FontAwesomeIcon icon={faBuilding} />
-          <span className="pl-2 subtitle">{props.organization.name}</span>
+          <span className="ps-2 subtitle">{props.organization.name}</span>
         </Link>
         <div className="card-body text-center">
           <h1>{props.organization.users.length}</h1>

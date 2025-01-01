@@ -121,7 +121,9 @@ const PropertyMappingList = (props) => {
                 <div className="mb-3">
                   <ExportMappings configurationProfile={configurationProfile} domains={domains} />
                 </div>
-                <label className="my-0">{i18n.t('ui.view_mapping.select_abstract_class')}</label>
+                <label className="form-label my-0">
+                  {i18n.t('ui.view_mapping.select_abstract_class')}
+                </label>
                 <DesmTabs
                   onTabClick={(id) => updateSelectedDomain(id)}
                   selectedId={selectedDomain?.id}

@@ -80,12 +80,12 @@ class SignIn extends Component {
             <div className="card">
               <div className="card-header">
                 <FontAwesomeIcon icon={faUsers} />
-                <span className="pl-2 subtitle">Sign In</span>
+                <span className="ps-2 subtitle">Sign In</span>
               </div>
               <div className="card-body">
                 <form className="mb-3" onSubmit={this.handleSubmit}>
                   <div className="form-group">
-                    <label>
+                    <label className="form-label">
                       Email
                       <span className="text-danger">*</span>
                     </label>
@@ -102,7 +102,7 @@ class SignIn extends Component {
                   </div>
 
                   <div className="form-group">
-                    <label>
+                    <label className="form-label">
                       Password
                       <span className="text-danger">*</span>
                     </label>

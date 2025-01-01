@@ -29,7 +29,7 @@ class Registration extends Component {
 
   dashboardPath = () => {
     return (
-      <div className="float-right">
+      <div className="float-end">
         <FontAwesomeIcon icon={faHome} />{' '}
         <span>
           <Link className="col-on-primary" to="/">
@@ -135,12 +135,12 @@ class Registration extends Component {
             <div className="card mt-5">
               <div className="card-header">
                 <FontAwesomeIcon icon={faUsers} />
-                <span className="pl-2 subtitle">Create User</span>
+                <span className="ps-2 subtitle">Create User</span>
               </div>
               <div className="card-body">
                 <form onSubmit={this.handleSubmit}>
                   <div className="form-group">
-                    <label>
+                    <label className="form-label">
                       Fullname
                       <span className="text-danger">*</span>
                     </label>
@@ -157,7 +157,7 @@ class Registration extends Component {
                   </div>
 
                   <div className="form-group">
-                    <label>
+                    <label className="form-label">
                       Email
                       <span className="text-danger">*</span>
                     </label>
@@ -173,7 +173,7 @@ class Registration extends Component {
                   </div>
 
                   <div className="form-group">
-                    <label>
+                    <label className="form-label">
                       Organization
                       <span className="text-danger">*</span>
                     </label>
@@ -195,7 +195,7 @@ class Registration extends Component {
                   </div>
 
                   <div className="form-group">
-                    <label>
+                    <label className="form-label">
                       Role
                       <span className="text-danger">*</span>
                     </label>

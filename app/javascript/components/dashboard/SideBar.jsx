@@ -8,7 +8,7 @@ import { i18n } from 'utils/i18n';
 const SideBar = () => {
   const cssNavClass = (path) =>
     window.location.pathname === path ? 'selected-dashboard-option ' : '';
-  const cssNavBase = 'nav-link cursor-pointer col-background pl-3';
+  const cssNavBase = 'nav-link cursor-pointer col-background ps-3';
 
   return (
     <>
@@ -22,7 +22,7 @@ const SideBar = () => {
                   className={`${cssNavClass(pageRoutes.dashboard())} ${cssNavBase}`}
                 >
                   <FontAwesomeIcon fixedWidth icon={faCog} aria-hidden="true" />
-                  <span className="pl-2">Dashboard</span>
+                  <span className="ps-2">Dashboard</span>
                 </Link>
               </li>
 
@@ -32,7 +32,7 @@ const SideBar = () => {
                   className={`${cssNavClass(pageRoutes.admins())} ${cssNavBase}`}
                 >
                   <FontAwesomeIcon fixedWidth icon={faUser} aria-hidden="true" />
-                  <span className="pl-2">Admin Users</span>
+                  <span className="ps-2">Admin Users</span>
                 </Link>
               </li>
 
@@ -42,7 +42,7 @@ const SideBar = () => {
                   className={`${cssNavClass(pageRoutes.agents())} ${cssNavBase}`}
                 >
                   <FontAwesomeIcon fixedWidth icon={faUsers} aria-hidden="true" />
-                  <span className="pl-2">{i18n.t('ui.dashboard.nav.agents')}</span>
+                  <span className="ps-2">{i18n.t('ui.dashboard.nav.agents')}</span>
                 </Link>
               </li>
 
@@ -52,7 +52,7 @@ const SideBar = () => {
                   className={`${cssNavClass(pageRoutes.configurationProfiles())} ${cssNavBase}`}
                 >
                   <FontAwesomeIcon fixedWidth icon={faCogs} aria-hidden="true" />
-                  <span className="pl-2">Configuration Profiles</span>
+                  <span className="ps-2">Configuration Profiles</span>
                 </Link>
               </li>
             </ul>

@@ -53,7 +53,7 @@ const EditAlignment = (props) => {
       <div className="card">
         <div className="card-header">
           <FontAwesomeIcon icon={faComment} className="col-primary" />
-          <a className="float-right cursor-pointer" onClick={onRequestClose}>
+          <a className="float-end cursor-pointer" onClick={onRequestClose}>
             <FontAwesomeIcon icon={faTimes} />
           </a>
         </div>
@@ -96,7 +96,7 @@ const EditAlignment = (props) => {
           <div className="row">
             <div className="col">
               <button
-                className="btn btn-dark mt-3 mr-3"
+                className="btn btn-dark mt-3 me-3"
                 onClick={handleSaveComment}
                 disabled={!commentChanged || state.loading}
               >

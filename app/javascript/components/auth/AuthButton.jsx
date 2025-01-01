@@ -32,7 +32,7 @@ const AuthButton = () => {
   if (isLoggedIn) {
     return (
       <button
-        className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark"
+        className="mt-0 mb-1 ms-0 ms-lg-3 me-0 btn btn-dark"
         onClick={handleLogoutClick}
         title="Terminate the session. Be sure you saved your changes"
       >
@@ -44,7 +44,7 @@ const AuthButton = () => {
   else if (window.location.href.indexOf('sign-in') === -1) {
     return (
       <>
-        <Link to={'/sign-in'} className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark">
+        <Link to={'/sign-in'} className="mt-0 mb-1 ms-0 ms-lg-3 me-0 btn btn-dark">
           Sign In
         </Link>
       </>

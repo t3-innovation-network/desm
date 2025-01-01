@@ -128,7 +128,7 @@ export default class SearchBar extends Component {
         </div>
 
         <div className="col-3">
-          <label>Sort Spine By</label>
+          <label className="form-label">Sort Spine By</label>
           <ExpandableOptions
             cardHeaderCssClass={'bottom-borderless'}
             onClose={(option) => this.handleSpineOrderOptionsChanged(option.name)}
@@ -138,7 +138,7 @@ export default class SearchBar extends Component {
         </div>
 
         <div className="col-3">
-          <label>Sort Aligned Items By</label>
+          <label className="form-label">Sort Aligned Items By</label>
           <ExpandableOptions
             cardHeaderCssClass={'bottom-borderless'}
             options={iterableSelectableOptions(_.values(alignmentSortOptions))}
@@ -149,15 +149,15 @@ export default class SearchBar extends Component {
 
         <div className="col-3">
           <hr className="bottom-border-white" />
-          <div className="custom-control custom-checkbox mt-3">
+          <div className="form-check mt-3">
             <input
               type="checkbox"
-              className="custom-control-input desm-custom-control-input"
+              className="form-check-input"
               id="hide-spine-elems"
               value={hideSpineTermsWithNoAlignments}
               onChange={() => this.handleHideSpineTermsWithNoAlignmentsChange()}
             />
-            <label className="custom-control-label" htmlFor="hide-spine-elems">
+            <label className="form-check-label" htmlFor="hide-spine-elems">
               Hide spine items with no results
             </label>
           </div>

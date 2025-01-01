@@ -6,8 +6,8 @@ const HeaderContent = (props) => {
       <div className="col-6">
         <h3>Match Controlled Vocabulary</h3>
       </div>
-      <div className="col-6 text-right">
-        <button className="btn btn-outline-secondary mr-2" onClick={onRequestClose}>
+      <div className="col-6 text-end">
+        <button className="btn btn-outline-secondary me-2" onClick={onRequestClose}>
           Cancel
         </button>
         <button className="btn btn-dark" onClick={onRequestSave} disabled={disableSave}>

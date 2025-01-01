@@ -379,7 +379,7 @@ export default class MatchVocabulary extends Component {
             </div>
           </div>
           <div className="col-4">
-            <div className="float-left">
+            <div className="float-start">
               <button
                 className="btn btn-dark"
                 onClick={this.addSyntheticConceptRow}
@@ -388,7 +388,7 @@ export default class MatchVocabulary extends Component {
                 + Add Synthetic
               </button>
             </div>
-            <div className="float-right">
+            <div className="float-end">
               {this.filteredMappingConcepts({ pickSelected: true }).length +
                 ' ' +
                 Pluralize('concept', this.filteredMappingConcepts({ pickSelected: true }).length) +

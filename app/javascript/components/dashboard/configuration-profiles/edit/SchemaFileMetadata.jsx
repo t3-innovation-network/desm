@@ -97,7 +97,7 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
   return (
     <>
       <div className="mt-5">
-        <label htmlFor="filename">
+        <label className="form-label" htmlFor="filename">
           File Name
           <span className="text-danger">*</span>
         </label>
@@ -118,7 +118,9 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="version">Version</label>
+        <label className="form-label" htmlFor="version">
+          Version
+        </label>
         <div className="input-group input-group">
           <input
             type="text"
@@ -135,7 +137,9 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="description">Description</label>
+        <label className="form-label" htmlFor="description">
+          Description
+        </label>
         <div className="input-group input-group">
           <textarea
             className="form-control input-lg"
@@ -152,9 +156,9 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="origin">
+        <label className="form-label" htmlFor="origin">
           Origin (URL)
-          <span className="ml-1 text-danger">*</span>
+          <span className="ms-1 text-danger">*</span>
         </label>
         <div className="input-group input-group">
           <input
@@ -172,7 +176,7 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
             required
           />
         </div>
-        <small className="col-on-primary-light font-italic">
+        <small className="col-on-primary-light fst-italic">
           Please be sure the content is in one of the following formats: CSV, JSON, JSONLD, RDF or
           XML
         </small>
@@ -180,7 +184,9 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
 
       {abstractClassesLabels.length > 0 ? (
         <div className="mt-5">
-          <label htmlFor="abstractClass">Associated Abstract Class</label>
+          <label className="form-label" htmlFor="abstractClass">
+            Associated Abstract Class
+          </label>
           <div className="input-group input-group">
             <select
               className="form-control cursor-pointer"

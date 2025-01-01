@@ -9,13 +9,13 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 const TopNav = (props) => {
   return (
     <>
-      <nav className="navbar navbar-with-border with-shadow navbar-expand-lg pr-3">
+      <nav className="navbar navbar-with-border with-shadow navbar-expand-lg pe-3">
         <div className="col-sm-6 col-md-3 col-lg-2">
           <div className="navbar-header">
             {/* BRAND BOX */}
 
             <div className="brand-box-container">
-              <Link to="/" className="navbar-brand nav-item brand-box" />
+              <Link to="/" className="navbar-brand nav-item brand-box d-inline-block" />
             </div>
           </div>
         </div>
@@ -40,7 +40,7 @@ const TopNav = (props) => {
 
             {/* SESSION INFO & ACTIONS */}
 
-            <ul className="navbar-nav ml-auto">
+            <ul className="navbar-nav ms-auto">
               <li className="nav-item">
                 <UserInfo />
               </li>

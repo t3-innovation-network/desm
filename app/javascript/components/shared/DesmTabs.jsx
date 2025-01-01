@@ -11,11 +11,11 @@ const DesmTabs = ({ values, selectedId, onTabClick }) => {
 
   return (
     <>
-      <div className="row mx-n2 h4 my-0">
+      <div className="d-flex gap-3 h4 my-0">
         {values.map((value) => {
-          const tabClasses = classNames('badge px-3 py-2 mx-2 mt-2', {
-            'badge-primary': selectedId === value.id,
-            'badge-secondary': selectedId !== value.id,
+          const tabClasses = classNames('badge px-3 py-2 mt-2', {
+            'bg-primary': selectedId === value.id,
+            'bg-secondary': selectedId !== value.id,
           });
           return (
             <span

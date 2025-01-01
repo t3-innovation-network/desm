@@ -13,3 +13,19 @@ $dashboard-background-color-light: #efefef;
 $dashboard-background-color-highlight: #2d9bf0;
 $dashboard-background-color-highlight2: #a9c9e9;
 $warning-color: #ffc107;
+
+// desm theme colors
+$desm-theme-colors: (
+  // theme color (derived from bootstrap)
+  primary: #0d6efd,
+  secondary: #6c757d,
+  // desm theme colors
+  desm-primary: #dc3545,
+  red: #dc3545,
+  success: #28a745,
+  gray-dark: #343a40,
+  // predicate colors
+  reworded: #28a745,
+  identical: #005600,
+  similar: #ffa500
+);

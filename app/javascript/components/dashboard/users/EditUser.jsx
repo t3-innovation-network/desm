@@ -33,7 +33,7 @@ export default class EditUser extends Component {
 
   dashboardPath = () => {
     return (
-      <div className="float-right">
+      <div className="float-end">
         <FontAwesomeIcon icon={faHome} />{' '}
         <span>
           <Link className="col-on-primary" to="/">
@@ -182,9 +182,9 @@ export default class EditUser extends Component {
           <div className="card mt-5">
             <div className="card-header">
               <FontAwesomeIcon icon={faUser} />
-              <span className="pl-2 subtitle">User {fullname}</span>
+              <span className="ps-2 subtitle">User {fullname}</span>
               <button
-                className="btn btn-dark float-right"
+                className="btn btn-dark float-end"
                 title="Delete this user"
                 onClick={() => {
                   this.deleteUserAPI();
@@ -196,14 +196,14 @@ export default class EditUser extends Component {
             <div className="card-body">
               <>
                 <div className="mandatory-fields-notice">
-                  <small className="form-text text-muted">
+                  <small className="form-text text-body-secondary">
                     Fields with <span className="text-danger">*</span> are mandatory!
                   </small>
                 </div>
 
                 <form onSubmit={this.handleSubmit}>
                   <div className="form-group">
-                    <label>
+                    <label className="form-label">
                       Fullname
                       <span className="text-danger">*</span>
                     </label>
@@ -220,7 +220,7 @@ export default class EditUser extends Component {
                   </div>
 
                   <div className="form-group">
-                    <label>
+                    <label className="form-label">
                       Email
                       <span className="text-danger">*</span>
                     </label>
@@ -236,7 +236,7 @@ export default class EditUser extends Component {
                   </div>
 
                   <div className="form-group">
-                    <label>
+                    <label className="form-label">
                       Organization
                       <span className="text-danger">*</span>
                     </label>
@@ -258,7 +258,7 @@ export default class EditUser extends Component {
                   </div>
 
                   <div className="form-group">
-                    <label>
+                    <label className="form-label">
                       Role
                       <span className="text-danger">*</span>
                     </label>

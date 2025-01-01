@@ -91,27 +91,33 @@ const ConfigurationProfileSelect = ({
     <div className="card mb-3">
       <div className="card-header">Choose Configuration Profile</div>
       <div className="card-body">
-        <form className="form-inline" onSubmit={handleSubmit}>
-          <label className="mr-2" htmlFor="currentConfigurationProfile">
-            Current configuration profile:
-          </label>
-          <select
-            className="form-control mr-2"
-            disabled={loading || submitting}
-            id="currentConfigurationProfile"
-            onChange={handleChange}
-            value={selectedConfigurationProfile?.id}
-          >
-            <option value="">{placeholderOptionText}</option>
-            {configurationProfiles.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
-              </option>
-            ))}
-          </select>
-          <button className="btn btn-primary" disabled={submitDisabled}>
-            {loading ? <Loader noPadding smallSpinner /> : 'Submit'}
-          </button>
+        <form className="row g-3 align-items-center" onSubmit={handleSubmit}>
+          <div className="col-auto">
+            <label className="col-form-label fw-normal" htmlFor="currentConfigurationProfile">
+              Current configuration profile:
+            </label>
+          </div>
+          <div className="col-auto">
+            <select
+              className="form-select"
+              disabled={loading || submitting}
+              id="currentConfigurationProfile"
+              onChange={handleChange}
+              value={selectedConfigurationProfile?.id}
+            >
+              <option value="">{placeholderOptionText}</option>
+              {configurationProfiles.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="col-auto">
+            <button className="btn btn-primary" disabled={submitDisabled}>
+              {loading ? <Loader noPadding smallSpinner /> : 'Submit'}
+            </button>
+          </div>
         </form>
       </div>
     </div>

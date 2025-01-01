@@ -5,9 +5,9 @@ import Stepper from './../mapping/Stepper';
 const TopNavOptions = (props) => {
   return (
     <>
-      <ul className="navbar-nav mr-auto">
+      <ul className="navbar-nav me-auto">
         {props.viewMappings && (
-          <li className="nav-item selected-item mt-0 ml-0 ml-lg-3 mr-0 mr-lg-3">
+          <li className="nav-item selected-item mt-0 ms-0 ms-lg-3 me-0 me-lg-3">
             <Link
               to="/mappings"
               className="nav-link nav-title-highlighted"
@@ -18,7 +18,7 @@ const TopNavOptions = (props) => {
           </li>
         )}
         {props.mapSpecification && (
-          <li className="mt-0 ml-0 ml-lg-3 mr-0 mr-lg-3">
+          <li className="mt-0 ms-0 ms-lg-3 me-0 me-lg-3">
             <Link
               to="/new-mapping"
               className="btn wide-btn btn-outline-secondary"
@@ -35,8 +35,8 @@ const TopNavOptions = (props) => {
         )}
       </ul>
       {props.customcontent ? (
-        <ul className="navbar-nav mr-auto">
-          <li className="mt-0 mb-2 ml-0 ml-lg-3 mr-0 mr-lg-3">{props.customcontent}</li>
+        <ul className="navbar-nav me-auto">
+          <li className="mt-0 mb-2 ms-0 ms-lg-3 me-0 me-lg-3">{props.customcontent}</li>
         </ul>
       ) : (
         ''

@@ -37,7 +37,7 @@ class EllipsisOptions extends Component {
       <OutsideAlerter onOutsideAlert={() => this.handleShrink()}>
         {expanded ? (
           <>
-            <button className="btn float-right p-1 icon--btn" disabled={disabled}>
+            <button className="btn float-end p-1 icon--btn" disabled={disabled}>
               <FontAwesomeIcon icon={faEllipsisV} />
             </button>
             <SlideInDown className="float-over" style={{ minWidth: 'max-content' }}>
@@ -59,7 +59,7 @@ class EllipsisOptions extends Component {
         ) : (
           <FadeIn>
             <button
-              className="btn float-right p-1 icon--btn"
+              className="btn float-end p-1 icon--btn"
               onClick={() => this.setState({ expanded: true })}
             >
               <FontAwesomeIcon icon={faEllipsisV} />

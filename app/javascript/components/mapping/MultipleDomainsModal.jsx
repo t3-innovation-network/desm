@@ -84,7 +84,7 @@ const MultipleDomainsModal = (props) => {
               </h5>
             </div>
             <div className="col-2">
-              <a className="float-right cursor-pointer" onClick={onRequestClose}>
+              <a className="float-end cursor-pointer" onClick={onRequestClose}>
                 <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
               </a>
             </div>
@@ -92,19 +92,19 @@ const MultipleDomainsModal = (props) => {
 
           <div className="row">
             <div className="col-12">
-              <label className="float-left">
+              <label className="form-label float-start">
                 {Pluralize('domain', state.selectedDomainsSize, true)} selected
               </label>
 
               <button
-                className="btn btn-dark float-right"
+                className="btn btn-dark float-end"
                 onClick={handleSubmit}
                 disabled={!state.selectedDomainsSize}
               >
                 Done Selecting
               </button>
 
-              <button className="btn btn-link float-right" onClick={handleToggleSelectAll}>
+              <button className="btn btn-link float-end" onClick={handleToggleSelectAll}>
                 {state.allSelected ? 'Deselect' : 'Select'} All
               </button>
             </div>
@@ -112,7 +112,9 @@ const MultipleDomainsModal = (props) => {
 
           <div className="row">
             <div className="col">
-              <strong>Please select one or more domains from the list to begin mapping</strong>
+              <label className="form-label">
+                <strong>Please select one or more domains from the list to begin mapping</strong>
+              </label>
               <div className="form-group input-group-has-icon">
                 <FontAwesomeIcon icon={faSearch} className="form-control-feedback" />
                 <input

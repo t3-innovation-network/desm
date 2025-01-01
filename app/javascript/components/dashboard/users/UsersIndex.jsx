@@ -18,7 +18,7 @@ export default class UsersIndex extends Component {
 
   dashboardPath = () => {
     return (
-      <div className="float-right">
+      <div className="float-end">
         <FontAwesomeIcon icon={faHome} />{' '}
         <span>
           <Link className="col-on-primary" to="/">
@@ -68,10 +68,10 @@ export default class UsersIndex extends Component {
         <div className="card mt-5">
           <div className="card-header">
             <FontAwesomeIcon icon={faUsers} />
-            <span className="pl-2 subtitle">Users</span>
-            <Link to="/dashboard/users/new" className="float-right btn btn-dark btn-sm">
+            <span className="ps-2 subtitle">Users</span>
+            <Link to="/dashboard/users/new" className="float-end btn btn-dark btn-sm">
               <FontAwesomeIcon icon={faPlusCircle} />
-              <span className="pl-2">Add User</span>
+              <span className="ps-2">Add User</span>
             </Link>
           </div>
           <div className="card-body">

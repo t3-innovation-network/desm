@@ -51,7 +51,7 @@ const AlertNotice = (props) => {
       )}
       {renderError()}
       {onClose && (
-        <button type="button" className="close" aria-label="Close" onClick={onClose}>
+        <button type="button" className="btn-close" aria-label="Close" onClick={onClose}>
           <span aria-hidden="true">&times;</span>
         </button>
       )}

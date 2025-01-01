@@ -13,7 +13,7 @@ const DashboardBtn = () => {
     user.roles[0].name.toLowerCase() == adminRoleName.toLowerCase()
   ) {
     return (
-      <Link to="/dashboard" className="mt-0 mb-1 ml-0 ml-lg-3 mr-0 btn btn-dark">
+      <Link to="/dashboard" className="mt-0 mb-1 ms-0 ms-lg-3 me-0 btn btn-dark">
         Dashboard
       </Link>
     );

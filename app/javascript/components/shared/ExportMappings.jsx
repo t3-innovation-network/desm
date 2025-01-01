@@ -32,8 +32,10 @@ const ExportMappings = ({ configurationProfile, domains, onError }) => {
 
   return (
     <form className="d-flex" onSubmit={handleSubmit}>
-      <label className="d-flex align-items-end mr-2">Export mappings from domains:</label>
-      <div className="flex-grow-1 mr-2">
+      <label className="form-label d-flex align-items-end me-2">
+        Export mappings from domains:
+      </label>
+      <div className="flex-grow-1 me-2">
         <MultiSelect
           disabled={downloading}
           labelledBy="Select domains"
@@ -42,9 +44,9 @@ const ExportMappings = ({ configurationProfile, domains, onError }) => {
           value={selectedDomains}
         />
       </div>
-      <label className="d-flex align-items-end mr-2">as</label>
+      <label className="form-label d-flex align-items-end me-2">as</label>
       <select
-        className="form-control mr-2 w-auto"
+        className="form-control me-2 w-auto"
         onChange={(e) => setSelectedFormat(e.target.value)}
         value={selectedFormat}
       >

@@ -192,7 +192,7 @@ const AlignAndFineTune = (props) => {
           <div className="row">
             <div className="col mb-3">
               <a
-                className="col-primary cursor-pointer float-right"
+                className="col-primary cursor-pointer float-end"
                 onClick={actions.handleCancelSynthetic}
               >
                 <strong>Cancel</strong>

@@ -136,7 +136,7 @@ const AlignmentCard = ({ alignment, term, isLast = false }) => {
             )}
             {alignment.comment && (
               <label
-                className="non-selectable float-right mt-1 mb-0 col-primary cursor-pointer"
+                className="non-selectable float-end mt-1 mb-0 col-primary cursor-pointer"
                 onClick={() => setShowingAlignmentComment(!showingAlignmentComment)}
               >
                 {showingAlignmentComment ? 'Hide Alignment Notes' : 'Alignment Notes'}

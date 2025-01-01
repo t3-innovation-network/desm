@@ -94,14 +94,14 @@ const ResetPass = (props) => {
             <div className="card">
               <div className="card-header">
                 <FontAwesomeIcon icon={faKey} />
-                <span className="pl-2 subtitle">Set up your password</span>
+                <span className="ps-2 subtitle">Set up your password</span>
                 <p>Please type a strong password below.</p>
               </div>
               <div className="card-body">
                 <PasswordStrengthInfo />
                 <form className="mb-3" onSubmit={handleSubmit}>
                   <div className="form-group">
-                    <label>
+                    <label className="form-label">
                       New Password
                       <span className="text-danger">*</span>
                     </label>
@@ -127,7 +127,7 @@ const ResetPass = (props) => {
                   </div>
 
                   <div className="form-group">
-                    <label>
+                    <label className="form-label">
                       Password Confirmation
                       <span className="text-danger">*</span>
                     </label>
@@ -173,7 +173,7 @@ const PasswordStrengthInfo = () => {
         <li>Include symbols</li>
         <li>{'Make its length as minimum ' + minPasswordLength}</li>
       </ul>
-      <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+      <button type="button" className="btn-close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>

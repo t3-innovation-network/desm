@@ -29,8 +29,8 @@ export default class PropertyMappingsFilter extends Component {
 
     return (
       <div className="mb-3" onClick={() => this.setState({ showFilters: !showFilters })}>
-        <button className="btn btn-dark mr-3">{showFilters ? '▲' : '▼'}</button>
-        <label className="cursor-pointer non-selectable">
+        <button className="btn btn-dark me-3">{showFilters ? '▲' : '▼'}</button>
+        <label className="form-label cursor-pointer non-selectable">
           {(showFilters ? 'Hide' : 'Show') + ' Filters'}
         </label>
       </div>
@@ -117,7 +117,7 @@ export default class PropertyMappingsFilter extends Component {
     return (
       <>
         <label
-          className="col-primary cursor-pointer non-selectable mb-3"
+          className="form-label col-primary cursor-pointer non-selectable mb-3"
           onClick={() => {
             !selectedSpineSpecifications.length
               ? onSpineSpecificationSelected(specifications)
@@ -129,19 +129,16 @@ export default class PropertyMappingsFilter extends Component {
 
         {specifications.map((spec) => {
           return (
-            <div className="custom-control custom-checkbox mb-3" key={spec.id}>
+            <div className="form-check mb-3" key={spec.id}>
               <input
                 type="checkbox"
-                className="custom-control-input desm-custom-control-input"
+                className="form-check-input"
                 id={`spec-chk-${spec.id}`}
                 checked={selectedSpineSpecifications.some((sOrg) => sOrg.id === spec.id)}
                 onChange={(e) => this.handleSpineOrganizationSelected(e.target.value)}
                 value={spec.id}
               />
-              <label
-                className="custom-control-label cursor-pointer"
-                htmlFor={`spec-chk-${spec.id}`}
-              >
+              <label className="form-check-label cursor-pointer" htmlFor={`spec-chk-${spec.id}`}>
                 {spec.name} {spec.version ? `(${spec.version})` : ''}
               </label>
             </div>
@@ -164,7 +161,7 @@ export default class PropertyMappingsFilter extends Component {
     return (
       <>
         <label
-          className="col-primary cursor-pointer non-selectable mb-3"
+          className="form-label col-primary cursor-pointer non-selectable mb-3"
           onClick={() => {
             !selectedAlignmentSpecifications.length
               ? onAlignmentSpecificationSelected(specifications)
@@ -176,19 +173,16 @@ export default class PropertyMappingsFilter extends Component {
 
         {specifications.map((spec) => {
           return (
-            <div className="custom-control custom-checkbox mb-3" key={spec.id}>
+            <div className="form-check mb-3" key={spec.id}>
               <input
                 type="checkbox"
-                className="custom-control-input desm-custom-control-input"
+                className="form-check-input"
                 id={`al-spec-chk-${spec.id}`}
                 checked={selectedAlignmentSpecifications.some((s) => s.id === spec.id)}
                 onChange={(e) => this.handleAlignmentOrganizationSelected(e.target.value)}
                 value={spec.id}
               />
-              <label
-                className="custom-control-label cursor-pointer"
-                htmlFor={`al-spec-chk-${spec.id}`}
-              >
+              <label className="form-check-label cursor-pointer" htmlFor={`al-spec-chk-${spec.id}`}>
                 {spec.name} {spec.version ? `(${spec.version})` : ''}
               </label>
             </div>
@@ -207,7 +201,7 @@ export default class PropertyMappingsFilter extends Component {
     return (
       <>
         <label
-          className="col-primary cursor-pointer non-selectable mb-3"
+          className="form-label col-primary cursor-pointer non-selectable mb-3"
           onClick={() => {
             !selectedPredicates.length ? onPredicateSelected(predicates) : onPredicateSelected([]);
           }}
@@ -217,17 +211,17 @@ export default class PropertyMappingsFilter extends Component {
 
         {predicates.map((predicate) => {
           return (
-            <div className="custom-control custom-checkbox mb-3" key={predicate.id}>
+            <div className="form-check mb-3" key={predicate.id}>
               <input
                 type="checkbox"
-                className="custom-control-input desm-custom-control-input"
+                className="form-check-input"
                 id={'pred-chk-' + predicate.id}
                 checked={selectedPredicates.some((sPredicate) => sPredicate.id === predicate.id)}
                 onChange={(e) => this.handlePredicateSelected(e.target.value)}
                 value={predicate.id}
               />
               <label
-                className="custom-control-label cursor-pointer"
+                className="form-check-label cursor-pointer"
                 htmlFor={'pred-chk-' + predicate.id}
               >
                 {predicate.pref_label}
@@ -258,7 +252,7 @@ export default class PropertyMappingsFilter extends Component {
             <div className="card-body">
               <strong>Synthetic Spine</strong>
               <div>
-                <label className="col-primary">
+                <label className="form-label col-primary">
                   <strong>{selectedDomain.name}</strong>
                 </label>
               </div>
@@ -268,7 +262,7 @@ export default class PropertyMappingsFilter extends Component {
         <div className="col-3 mt-3">
           <div className="card borderless">
             <div className="card-header bottom-borderless bg-col-secondary">
-              <label className="non-selectable">
+              <label className="form-label non-selectable">
                 <strong>Show Spine Specifications</strong>
               </label>
             </div>
@@ -280,7 +274,7 @@ export default class PropertyMappingsFilter extends Component {
         <div className="col-3 mt-3">
           <div className="card borderless">
             <div className="card-header bottom-borderless bg-col-secondary">
-              <label className="non-selectable">
+              <label className="form-label non-selectable">
                 <strong>Show Alignments Specifications</strong>
               </label>
             </div>
@@ -292,7 +286,7 @@ export default class PropertyMappingsFilter extends Component {
         <div className="col-3 mt-3">
           <div className="card borderless">
             <div className="card-header bottom-borderless bg-col-secondary">
-              <label className="non-selectable">
+              <label className="form-label non-selectable">
                 <strong>Show Alignments</strong>
               </label>
             </div>

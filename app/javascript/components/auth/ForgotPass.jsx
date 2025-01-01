@@ -88,7 +88,7 @@ class ForgotPass extends Component {
             <div className="card">
               <div className="card-header">
                 <FontAwesomeIcon icon={faKey} />
-                <span className="pl-2 subtitle">Reset Password</span>
+                <span className="ps-2 subtitle">Reset Password</span>
                 <p>
                   Please type your email, and we will send you an email with instructions on how to
                   reset your password.
@@ -97,7 +97,7 @@ class ForgotPass extends Component {
               <div className="card-body">
                 <form className="mb-3" onSubmit={this.handleSubmit}>
                   <div className="form-group">
-                    <label>
+                    <label className="form-label">
                       Email
                       <span className="text-danger">*</span>
                     </label>

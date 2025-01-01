@@ -26,6 +26,7 @@ class HoverableText extends Component {
 
     return (
       <label
+        className="form-label"
         onMouseEnter={() => this.setState({ hovering: true })}
         onMouseLeave={() => this.setState({ hovering: false })}
         htmlFor={forComponent}

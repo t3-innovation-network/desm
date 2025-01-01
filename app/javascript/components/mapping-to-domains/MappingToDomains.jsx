@@ -102,7 +102,7 @@ const MappingToDomains = (props) => {
       <>
         <DoneDomainMapping />
         <button
-          className="btn btn-dark ml-3"
+          className="btn btn-dark ms-3"
           onClick={handleSaveChanges}
           disabled={!changesPerformed || savingChanges}
         >
@@ -229,7 +229,7 @@ const MappingToDomains = (props) => {
                     </button>
                   </div>
                   <div className="col-6">
-                    <div className="form-check float-right">
+                    <div className="form-check float-end">
                       <input
                         className="form-check-input"
                         type="checkbox"

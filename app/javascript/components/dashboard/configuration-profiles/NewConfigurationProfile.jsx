@@ -68,7 +68,7 @@ const BoxBody = (props) => {
   const { options, onOptionSelected } = props;
   return (
     <div className="card-body">
-      <div className="row no-gutters">
+      <div className="row g-0">
         <div className="col-md-10">
           <h5>Add a Configuration Profile</h5>
         </div>
