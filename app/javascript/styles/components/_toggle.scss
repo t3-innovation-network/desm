@@ -1,0 +1,7 @@
+.desm-toggle {
+  transition: transform 0.3s ease;
+
+  @include m(collapsed) {
+    transform: rotate(180deg);
+  }
+}

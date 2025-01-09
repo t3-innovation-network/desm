@@ -11,6 +11,7 @@ export const defaultState = {
   // status
   // Flag to determine whether to show or not the spine terms with no mapped terms
   hideSpineTermsWithNoAlignments: false,
+  sidebarCollapsed: true,
 
   // options
   // The currently selected specifications to fetch alignments from
@@ -53,6 +54,8 @@ export const propertyClassesForSpineTerm = (term) =>
 export const propertyClassesForAlignmentTerm = (alignment, term) =>
   intersection(term.compactDomains, alignment.compactDomains);
 
+const ifFilterAppliedFor = (selectedItems, items) => selectedItems.length !== items.length;
+
 export const propertyMappingListStore = (initialData = {}) => ({
   ...baseModel(initialData),
   ...easyStateSetters(defaultState, initialData),
@@ -62,7 +65,14 @@ export const propertyMappingListStore = (initialData = {}) => ({
     if (state.configurationProfile) return null;
     return state.cp ? parseInt(state.cp) : configurationProfile?.id;
   }),
-
+  withSearchInput: computed((state) => state.propertiesInputValue.length > 0),
+  withFilters: computed(
+    (state) =>
+      state.hideSpineTermsWithNoAlignments ||
+      ifFilterAppliedFor(state.selectedSpineSpecifications, state.specifications) ||
+      ifFilterAppliedFor(state.selectedAlignmentSpecifications, state.specifications) ||
+      ifFilterAppliedFor(state.selectedPredicates, state.predicates)
+  ),
   // actions
   setAllPredicates: action((state, predicates) => {
     state.predicates = predicates;
@@ -72,6 +82,9 @@ export const propertyMappingListStore = (initialData = {}) => ({
     state.specifications = specifications;
     state.selectedSpineSpecifications = specifications;
     state.selectedAlignmentSpecifications = specifications;
+  }),
+  toggleSidebar: action((state) => {
+    state.sidebarCollapsed = !state.sidebarCollapsed;
   }),
   updateSelectedDomain: action((state, selectedDomain) => {
     state.selectedDomain = selectedDomain;

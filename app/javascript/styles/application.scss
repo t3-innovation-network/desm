@@ -1,11 +1,11 @@
 @charset "utf-8";
 
 /* stylelint-disable at-rule-empty-line-before */
+@import 'rfs/scss';
+
 // base styles
 @import 'common-utils';
 @import 'common';
-
-@import 'rfs/scss';
 
 // bootstrap
 @import 'themes/settings'; // redefine bootstrap variables
@@ -14,6 +14,9 @@
 
 // utilitie & helpers
 @import 'utils/utilities';
+
+// layout
+@import 'layout';
 
 // components
 @import 'components';

@@ -189,7 +189,7 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
           </label>
           <div className="input-group input-group">
             <select
-              className="form-control cursor-pointer"
+              className="form-select cursor-pointer"
               id="abstractClass"
               value={abstractClass}
               onChange={(e) => setAbstractClass(e.target.value)}

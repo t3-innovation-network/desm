@@ -24,6 +24,7 @@ $link-hover-decoration: underline;
 // $card-spacer-x: 1.25rem;
 $card-spacer-y: 0.5rem;
 $card-cap-padding-y: $card-spacer-y;
+$card-border-radius: rfs-value(8px);
 // $card-cap-padding-x: $card-spacer-x;
 
 // forms
@@ -33,3 +34,12 @@ $form-check-input-focus-border: rgba($primary-color, 0.5);
 $form-check-input-focus-box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.5);
 $form-check-input-checked-bg-color: $primary-color;
 $form-check-input-checked-border-color: $form-check-input-checked-bg-color;
+
+// tooltips
+$tooltip-color: $black;
+$tooltip-bg: $white;
+$tooltip-opacity: 1;
+
+.tooltip {
+  box-shadow: 1px 1px 4px 0px #00000040;
+}

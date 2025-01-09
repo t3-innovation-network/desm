@@ -13,7 +13,7 @@ const DesmTabs = ({ values, selectedId, onTabClick }) => {
     <>
       <div className="d-flex gap-3 h4 my-0">
         {values.map((value) => {
-          const tabClasses = classNames('badge px-3 py-2 mt-2', {
+          const tabClasses = classNames('badge px-3 py-2', {
             'bg-primary': selectedId === value.id,
             'bg-secondary': selectedId !== value.id,
           });

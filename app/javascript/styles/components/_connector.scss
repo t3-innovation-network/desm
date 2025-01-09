@@ -1,0 +1,9 @@
+.desm-connector {
+  @include m(mapping) {
+    border-bottom: 1px solid $card-border-color;
+    left: -$grid-gutter-width;
+    position: absolute;
+    top: 50%;
+    width: $grid-gutter-width;
+  }
+}

@@ -9,7 +9,7 @@ $desm-heading-typography: ();
     @include txt-element-base($typo);
   }
 
-  .u-sg-txt--#{$element} {
+  .u-txt--#{$element} {
     @include txt-element-base($typo);
 
     font-family: $headings-font-family;
@@ -27,10 +27,14 @@ $desm-element-typography: (
     font-size: 1rem,
     font-family: $desm-font-base,
   ),
+  predicate: (
+    font-size: rfs-value(15px),
+    font-weight: 600,
+  ),
 );
 
 @each $element, $typo in $desm-element-typography {
-  .u-desm-txt--#{$element} {
+  .u-txt--#{$element} {
     @include txt-element-base($typo);
   }
 }

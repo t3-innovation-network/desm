@@ -47,24 +47,26 @@ const Mapping = (props) => {
   };
 
   return (
-    <div className="container-fluid">
+    <>
       <TopNav centerContent={navCenterOptions} />
-      {state.hasErrors ? (
-        <AlertNotice message={state.errors} onClose={actions.clearErrors} />
-      ) : null}
-      {mappingFormErrors.length ? (
-        <AlertNotice
-          message={mappingFormErrors}
-          onClose={() => dispatch(unsetMappingFormErrors())}
-        />
-      ) : (
-        ''
-      )}
-      <div className="row">
-        <MappingForm mapping={state.mapping} />
-        <MappingPreview mapping={state.mapping} redirect={handleRedirect} />
+      <div className="container-fluid desm-content">
+        {state.hasErrors ? (
+          <AlertNotice message={state.errors} onClose={actions.clearErrors} />
+        ) : null}
+        {mappingFormErrors.length ? (
+          <AlertNotice
+            message={mappingFormErrors}
+            onClose={() => dispatch(unsetMappingFormErrors())}
+          />
+        ) : (
+          ''
+        )}
+        <div className="row">
+          <MappingForm mapping={state.mapping} />
+          <MappingPreview mapping={state.mapping} redirect={handleRedirect} />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

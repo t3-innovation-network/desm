@@ -188,7 +188,7 @@ const SpecsList = (_props) => {
                 <th scope="col">Author</th>
                 <th scope="col">
                   <select
-                    className="form-control"
+                    className="form-select"
                     value={filter}
                     onChange={(e) => actions.setFilter(e.target.value)}
                   >
@@ -227,15 +227,17 @@ const SpecsList = (_props) => {
   };
 
   return (
-    <div className="container-fluid">
+    <>
       <TopNav centerContent={navCenterOptions} />
-      <div className="row">
-        <div className="col p-lg-5 pt-5">
-          <h1>My Specifications</h1>
-          {renderTable()}
+      <div className="container-fluid desm-content">
+        <div className="row">
+          <div className="col p-lg-5 pt-5">
+            <h1>My Specifications</h1>
+            {renderTable()}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

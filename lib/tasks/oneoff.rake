@@ -70,4 +70,12 @@ namespace :oneoff do
       mapping.update_column(:mapped_at, mapping.updated_at)
     end
   end
+
+  desc "One-off task: update predicates color"
+  task update_predicates_color: :environment do
+    Predicate.find_each do |predicate|
+      predicate.assign_color
+      predicate.save!
+    end
+  end
 end

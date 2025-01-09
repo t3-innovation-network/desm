@@ -11,6 +11,10 @@ en:
       deselect_all: Deselect All
       hide_all: Hide All
       show_all: Show All
+    select:
+      configuration_profile:
+        placeholder: Choose Configuration Profile...
+        aria_label: Choose Configuration Profile
     dashboard:
       nav:
         agents: Agents
@@ -81,6 +85,9 @@ en:
         step_1: 1. Upload More Properties for Your Specification
         form:
           domain: Domain
+    notifications:
+      search: Search filter applied
+      filter: Filter applied
     specifications:
       mapping:
         undo:
@@ -97,6 +104,7 @@ en:
         zero: No shared mappings found for this abstract class and configuration profile.
         one: "Shared mapping:"
         other: "Shared mappings:"
+      legend: Legend
     properties_list:
       notice:
         mapping:

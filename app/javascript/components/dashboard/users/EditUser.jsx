@@ -242,7 +242,7 @@ export default class EditUser extends Component {
                     </label>
                     <select
                       name="organization_id"
-                      className="form-control"
+                      className="form-select"
                       required
                       value={organization_id}
                       onChange={this.handleOnChange}
@@ -264,7 +264,7 @@ export default class EditUser extends Component {
                     </label>
                     <select
                       name="role_id"
-                      className="form-control"
+                      className="form-select"
                       required
                       value={role_id}
                       onChange={this.handleOnChange}

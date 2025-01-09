@@ -5,3 +5,18 @@
 .white-space-pre-line {
   white-space: pre-line !important;
 }
+
+$align-directions: (top, bottom, left, right);
+$align-types: (padding, margin);
+
+@each $align-dir in $align-directions {
+  @each $align-type in $align-types {
+    .u-#{$align-type}-#{$align-dir}--gutter {
+      @if $align-type == padding {
+        padding-#{$align-dir}: $grid-gutter-width;
+      } @else {
+        margin-#{$align-dir}: $grid-gutter-width;
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+@use 'sass:map';
+
+.desm-tabs {
+  top: rfs-value(map.get($desm-nav-top, base) - 2px);
+}

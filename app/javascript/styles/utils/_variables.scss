@@ -1,2 +1,27 @@
 $desm-font-base: 'Proxima Nova Condensed Light', sans-serif;
 $desm-font-heading: 'Proxima Nova Condensed Light', sans-serif;
+$desm-font-icon: 'Material Symbols Outlined', sans-serif;
+
+// for images
+$desm-image-sizes: (
+  logo: (
+    xs: (
+      height: 35px,
+    ),
+  ),
+);
+
+// for top navigation
+$desm-nav-top: (
+  base: 60px,
+);
+
+// sidebar
+$desm-sidebar: (
+  expanded: (
+    width: 294px,
+  ),
+  collapsed: (
+    width: 65px,
+  ),
+);
