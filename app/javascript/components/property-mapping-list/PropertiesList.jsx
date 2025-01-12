@@ -48,6 +48,7 @@ const PropertiesList = (props) => {
   const [loading, setLoading] = useState(true);
   const [spineExists, setSpineExists] = useState(false);
   const [properties, setProperties] = useState([]);
+  const [showingConnectors, setShowingConnectors] = useState({});
   const [collapsedTerms, setCollapsedTerms] = useState([]);
 
   const selectedPredicateIds = selectedPredicates.map((predicate) => predicate.id);
@@ -64,6 +65,13 @@ const PropertiesList = (props) => {
     } else {
       setCollapsedTerms([...collapsedTerms, termId]);
     }
+  };
+
+  const onSetShowingConnectors = (termId, value) => {
+    setShowingConnectors((prev) => ({
+      ...prev,
+      [termId]: value,
+    }));
   };
 
   const filteredProperties = useMemo(() => {
@@ -135,41 +143,42 @@ const PropertiesList = (props) => {
   };
 
   const handleFetchDataFromAPI = async () => {
+    setLoading(true);
     setSpineExists(selectedDomain.spine);
 
     if (selectedDomain.spine) {
       await handleFetchProperties(selectedDomain.spineId);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
-    setLoading(true);
-    handleFetchDataFromAPI().then(() => {
-      setLoading(false);
-    });
-  }, [selectedDomain]);
+    handleFetchDataFromAPI();
+  }, [selectedDomain?.id]);
 
   const filteredPropertiesList = () =>
     filteredProperties.map((term) => {
       const collapsed = collapsedTerms.includes(term.id);
       return (
-        <div className="row u-margin-bottom--gutter" key={term.id}>
-          <div className="col-4">
+        <div className="desm-mapping-list row u-margin-bottom--gutter" key={term.id}>
+          <div className="col-lg-4 col-12">
             <PropertyCard
               term={term}
               collapsed={collapsed}
               onToggleTermCollapse={onToggleTermCollapse}
+              showingConnectors={(showingConnectors[term.id] || false) && !collapsed}
             />
           </div>
-          <div className="col-8">
+          <div className="col-lg-8 col-12">
             <Collapse in={!collapsed}>
-              <div>
+              <div className="desm-mapping-list__alignments">
                 <PropertyAlignments
                   selectedAlignmentOrderOption={selectedAlignmentOrderOption}
                   selectedAlignmentSpecificationsIds={selectedAlignmentSpecificationsIds}
                   selectedPredicateIds={selectedPredicateIds}
                   selectedSpineSpecificationIds={selectedSpineSpecificationIds}
                   spineTerm={term}
+                  onSetShowingConnectors={onSetShowingConnectors}
                 />
               </div>
             </Collapse>

@@ -55,7 +55,8 @@ module API
             current_configuration_profile_user.mappings
           end
 
-        render json: mappings.includes(:organization, :selected_terms, specification: %i(domain user)).order(:title)
+        render json: mappings.includes(:organization, :selected_terms, :spine,
+                                       specification: %i(domain user)).order(:title)
       end
 
       ###
@@ -71,7 +72,7 @@ module API
       #   to the one passed in params
       ###
       def show_terms
-        render json: @instance.alignments.includes(:mapped_terms, :predicate).order(:uri)
+        render json: @instance.alignments.includes(:mapped_terms, :predicate, :specification, :mapping).order(:uri)
       end
 
       ###

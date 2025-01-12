@@ -24,4 +24,10 @@ html {
       margin-left: map.get($desm-sidebar, expanded, width);
     }
   }
+
+  @include e(shared-mapping) {
+    min-height: calc(
+      100vh - rfs-value(map.get($desm-nav-top, base)) - rfs-value(map.get($desm-nav-bottom, base))
+    );
+  }
 }

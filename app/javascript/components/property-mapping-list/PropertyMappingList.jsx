@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useLocalStore } from 'easy-peasy';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import AlertNotice from '../shared/AlertNotice';
@@ -6,6 +6,8 @@ import Loader from '../shared/Loader';
 import TopNav from '../shared/TopNav';
 import TopNavOptions from '../shared/TopNavOptions';
 import DesmTabs from '../shared/DesmTabs';
+import BottomNav from './BottomNav';
+import InfoExportButtons from './InfoExportButtons';
 import PropertiesList from './PropertiesList';
 import Sidebar from './Sidebar';
 import ConfigurationProfileSelect from '../shared/ConfigurationProfileSelect';
@@ -37,9 +39,9 @@ const PropertyMappingList = (props) => {
     selectedPredicates,
     selectedSpineOrderOption,
     selectedSpineSpecifications,
+    showInfo,
+    showExport,
   } = state;
-  const [showInfo, setShowInfo] = useState(false);
-  const [showExport, setShowExport] = useState(false);
   const updateQueryString = updateWithRouter(props);
 
   const navCenterOptions = () => {
@@ -57,9 +59,9 @@ const PropertyMappingList = (props) => {
     updateQueryString({ abstractClass: selectedAbstractClass?.name });
   };
 
-  useEffect(() => loadData(), [configurationProfile]);
+  useEffect(() => loadData(), [configurationProfile?.id]);
   useEffect(() => handleSelectedData(), [domains]);
-  useEffect(() => loadSpecifications(), [configurationProfile, selectedDomain]);
+  useEffect(() => loadSpecifications(), [configurationProfile?.id, selectedDomain]);
 
   const updateSelectedDomain = (id) => {
     const selectedDomain = domains.find((domain) => domain.id == id);
@@ -92,7 +94,7 @@ const PropertyMappingList = (props) => {
     });
   };
 
-  const clsMainContent = classNames('w-auto desm-content', {
+  const clsMainContent = classNames('w-auto desm-content desm-content__shared-mapping', {
     'desm-content--collapsed': sidebarCollapsed && configurationProfile?.withSharedMappings,
     'desm-content--expanded': !sidebarCollapsed && configurationProfile?.withSharedMappings,
   });
@@ -127,34 +129,15 @@ const PropertyMappingList = (props) => {
                 selectedConfigurationProfileId={state.selectedConfigurationProfileId(null)}
                 withoutUserConfigurationProfile={true}
               >
-                {configurationProfile ? (
-                  <div className="col-auto d-flex gap-2">
-                    <button
-                      className="btn btn-light border-dark-subtle border pb-0"
-                      disabled={
-                        !configurationProfile?.withSharedMappings ||
-                        !selectedDomain ||
-                        state.loading
-                      }
-                      onClick={() => setShowInfo(!showInfo)}
-                    >
-                      <span className="desm-icon fs-3">info</span>
-                    </button>
-                    <button
-                      className="btn btn-light border-dark-subtle border pb-0"
-                      disabled={!configurationProfile?.withSharedMappings || state.loading}
-                      onClick={() => setShowExport(!showExport)}
-                    >
-                      <span className="desm-icon fs-3">download</span>
-                    </button>
-                  </div>
-                ) : null}
+                <Desktop>
+                  {configurationProfile ? <InfoExportButtons store={store} /> : null}
+                </Desktop>
               </ConfigurationProfileSelect>
               <Offcanvas
                 placement="start"
                 show={showExport}
-                onHide={() => setShowExport(false)}
-                aria-labelledby="Info"
+                onHide={() => actions.setShowExport(false)}
+                aria-labelledby="Export"
               >
                 <Offcanvas.Header closeButton />
                 <Offcanvas.Body>
@@ -165,7 +148,7 @@ const PropertyMappingList = (props) => {
           </div>
         </div>
         {configurationProfile?.withSharedMappings &&
-          (state.loading ? (
+          (state.loading && !selectedDomain ? (
             <Loader />
           ) : (
             <>
@@ -176,8 +159,8 @@ const PropertyMappingList = (props) => {
                   values={domains}
                 />
               </div>
-              {selectedDomain && (
-                <div className="container-fluid py-3">
+              {selectedDomain ? (
+                <div className="desm-mapping-list__wrapper container-fluid py-3 ">
                   <PropertiesList
                     hideSpineTermsWithNoAlignments={hideSpineTermsWithNoAlignments}
                     inputValue={propertiesInputValue}
@@ -192,22 +175,14 @@ const PropertyMappingList = (props) => {
                     selectedSpineOrderOption={selectedSpineOrderOption}
                     selectedSpineSpecifications={selectedSpineSpecifications}
                     showInfo={showInfo}
-                    setShowInfo={setShowInfo}
+                    setShowInfo={actions.setShowInfo}
                   />
                 </div>
-              )}
+              ) : null}
             </>
           ))}
       </div>
-      <TabletAndBelow>
-        <nav className="navbar sticky-bottom bg-body-tertiary">
-          <div className="container-fluid">
-            <a className="navbar-brand" href="#">
-              Fixed bottom
-            </a>
-          </div>
-        </nav>
-      </TabletAndBelow>
+      <TabletAndBelow>{configurationProfile ? <BottomNav store={store} /> : null}</TabletAndBelow>
     </>
   );
 };

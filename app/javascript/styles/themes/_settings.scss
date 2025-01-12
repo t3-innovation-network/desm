@@ -6,6 +6,9 @@
 $toastr-width: 450px;
 
 /* redefine bootstrap variables */
+// grid
+// $container-padding-x: 3rem;
+
 // theme colors
 $primary: map.get($desm-theme-colors, primary);
 $secondary: map.get($desm-theme-colors, secondary);

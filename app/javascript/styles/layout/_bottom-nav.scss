@@ -1,0 +1,5 @@
+@use 'sass:map';
+
+.desm-bottom-nav {
+  height: map.get($desm-nav-bottom, base);
+}

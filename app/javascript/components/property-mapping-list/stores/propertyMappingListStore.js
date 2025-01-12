@@ -12,6 +12,11 @@ export const defaultState = {
   // Flag to determine whether to show or not the spine terms with no mapped terms
   hideSpineTermsWithNoAlignments: false,
   sidebarCollapsed: true,
+  // Offcanvas state
+  showInfo: false,
+  showExport: false,
+  showSearch: false,
+  showFilters: false,
 
   // options
   // The currently selected specifications to fetch alignments from
@@ -61,14 +66,28 @@ export const propertyMappingListStore = (initialData = {}) => ({
   ...easyStateSetters(defaultState, initialData),
 
   // computed
+  isExportEnabled: computed(
+    (state) => state.configurationProfile?.withSharedMappings && !state.loading
+  ),
+  isInfoEnabled: computed(
+    (state) =>
+      state.configurationProfile?.withSharedMappings && state.selectedDomain && !state.loading
+  ),
+  isSearchEnabled: computed(
+    (state) => state.configurationProfile?.withSharedMappings && !state.loading
+  ),
+  isFiltersEnabled: computed(
+    (state) => state.configurationProfile?.withSharedMappings && !state.loading
+  ),
   selectedConfigurationProfileId: computed((state) => (configurationProfile) => {
     if (state.configurationProfile) return null;
     return state.cp ? parseInt(state.cp) : configurationProfile?.id;
   }),
-  withSearchInput: computed((state) => state.propertiesInputValue.length > 0),
+  withSearchInput: computed(
+    (state) => state.hideSpineTermsWithNoAlignments || state.propertiesInputValue.length > 0
+  ),
   withFilters: computed(
     (state) =>
-      state.hideSpineTermsWithNoAlignments ||
       ifFilterAppliedFor(state.selectedSpineSpecifications, state.specifications) ||
       ifFilterAppliedFor(state.selectedAlignmentSpecifications, state.specifications) ||
       ifFilterAppliedFor(state.selectedPredicates, state.predicates)

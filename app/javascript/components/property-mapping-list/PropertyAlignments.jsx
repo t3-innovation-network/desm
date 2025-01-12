@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { compact, flatMap, intersection, kebabCase } from 'lodash';
 import classNames from 'classnames';
 import { implementAlignmentSort, implementAlignmentTermsSort } from './SortOptions';
@@ -20,12 +20,14 @@ import Predicate from '../shared/Predicate';
  *   by the user in the filter. This refers to the origin of the property. Initially, a spine specification will have
  *   all its properties with the same specification. When a synthetic property is created, it will keep the specification
  *   of origin.
+ * @param {Function} onSetShowingConnectors A function to set the state of the showing connectors of the spine term
  */
 const PropertyAlignments = (props) => {
   const {
     selectedPredicateIds,
     selectedAlignmentSpecificationsIds,
     selectedSpineSpecificationIds,
+    onSetShowingConnectors,
   } = props;
   const alignments = props.spineTerm.alignments;
 
@@ -64,6 +66,10 @@ const PropertyAlignments = (props) => {
     props.selectedAlignmentOrderOption,
   ]);
 
+  useEffect(() => {
+    onSetShowingConnectors(props.spineTerm.id, filteredMappedTerms.length > 0);
+  }, [filteredMappedTerms.length > 0]);
+
   return filteredMappedTerms.map((mTerm, idx) => (
     <AlignmentCard
       alignment={mTerm.alignment}
@@ -88,6 +94,10 @@ const AlignmentCard = ({ alignment, term, isLast = false }) => {
     'card-header u-txt--predicate d-inline-flex align-items-center  px-2 py-1',
     `desm-predicate--${kebabCase(alignment.predicate.color || 'unset')}`
   );
+  const clsConnector = classNames('desm-connector--mapping-property-vertical d-lg-none', {
+    'h-full': !isLast,
+    'h-50': isLast,
+  });
 
   return (
     <div className={`card ${isLast ? '' : 'mb-3'} bg-bg-dark position-relative`}>
@@ -95,6 +105,7 @@ const AlignmentCard = ({ alignment, term, isLast = false }) => {
         <Predicate predicate={alignment.predicate} />
       </div>
       <div className="desm-connector--mapping"></div>
+      <div className={clsConnector}></div>
       <div className="card-body p-2">
         <p className="mb-2">
           <span className="desm-icon me-1 align-middle">account_tree</span>

@@ -16,6 +16,11 @@ $desm-nav-top: (
   base: 60px,
 );
 
+// for bottom navigation (sticky footer on mobile)
+$desm-nav-bottom: (
+  base: 66px,
+);
+
 // sidebar
 $desm-sidebar: (
   expanded: (
