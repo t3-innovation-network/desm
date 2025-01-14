@@ -54,7 +54,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-unused-imports": "^3.0.0",
-    "postcss": "^8.4.35",
+    "postcss": "^8.5.0",
     "prettier": "2.1.1",
     "stylelint": "^15.10.2",
     "stylelint-config-prettier": "^9.0.5",
@@ -71,7 +71,7 @@
     "lint": "yarn lint:js && yarn lint:scss",
     "lint:js": "prettier -c 'app/javascript/**/*.{js,jsx}' && eslint --ext .js --ext .jsx app/javascript",
     "lint:js:fix": "prettier -w 'app/javascript/**/*.{js,jsx}' && eslint --ext .js,.jsx app/javascript  --quiet --fix",
-    "lint:scss": "prettier -c 'app/assets/stylesheets/**/*.{css,scss}' && stylelint 'app/assets/stylesheets/**/*.{css,scss}' --quiet",
-    "lint:scss:fix": "prettier -w 'app/assets/stylesheets/**/*.{css,scss}' && stylelint 'app/assets/stylesheets/**/*.{css,scss}' --quiet --fix"
+    "lint:scss": "prettier -c 'app/javascript/styles/**/*.{css,scss}' && stylelint 'app/javascript/styles/**/*.{css,scss}' --quiet",
+    "lint:scss:fix": "prettier -w 'app/javascript/styles/**/*.{css,scss}' && stylelint 'app/javascript/styles/**/*.{css,scss}' --quiet --fix"
   }
 }

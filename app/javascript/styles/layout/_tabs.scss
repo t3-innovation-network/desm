@@ -4,7 +4,7 @@
   top: 0;
 
   @include media-breakpoint-up(lg) {
-    top: rfs-value(map.get($desm-nav-top, sm) - 2px);
+    top: rfs-value(map.get($desm-nav-top, base) - 2px);
   }
 
   /* Add this CSS to your stylesheet */
