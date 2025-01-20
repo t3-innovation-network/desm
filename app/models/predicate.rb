@@ -84,7 +84,7 @@ class Predicate < ApplicationRecord
     red: "Red",
     pink: "Pink",
     unset: "unset",
-    yellow: "#c3c300"
+    yellow: "yellow"
   }.freeze
 
   ###

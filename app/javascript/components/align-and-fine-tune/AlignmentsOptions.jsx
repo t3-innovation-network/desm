@@ -14,7 +14,7 @@ const AlignmentsOptions = (props) => {
   return (
     <>
       <button
-        className="btn btn-dark mr-2"
+        className="btn btn-dark me-2"
         onClick={handleSaveAlignments}
         disabled={!changesPerformed || loading}
         title={

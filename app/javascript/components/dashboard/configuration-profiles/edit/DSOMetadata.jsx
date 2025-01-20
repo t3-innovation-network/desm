@@ -76,7 +76,7 @@ const DSOMetaData = ({ dsoData = {} }) => {
   return (
     <div className="col">
       <div className="mt-5">
-        <label htmlFor="name">
+        <label className="form-label" htmlFor="name">
           DSO Name
           <span className="text-danger">*</span>
         </label>
@@ -97,9 +97,9 @@ const DSOMetaData = ({ dsoData = {} }) => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="email">
+        <label className="form-label" htmlFor="email">
           DSO Email
-          <span className="ml-1 text-danger">*</span>
+          <span className="ms-1 text-danger">*</span>
         </label>
         <div className="input-group input-group">
           <input
@@ -117,7 +117,9 @@ const DSOMetaData = ({ dsoData = {} }) => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="description">DSO Description</label>
+        <label className="form-label" htmlFor="description">
+          DSO Description
+        </label>
         <div className="input-group input-group">
           <textarea
             className="form-control input-lg"
@@ -134,7 +136,9 @@ const DSOMetaData = ({ dsoData = {} }) => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="homepageUrl">Homepage URL</label>
+        <label className="form-label" htmlFor="homepageUrl">
+          Homepage URL
+        </label>
         <div className="input-group input-group">
           <input
             type="text"
@@ -151,7 +155,9 @@ const DSOMetaData = ({ dsoData = {} }) => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="standardsPage">Standards Page</label>
+        <label className="form-label" htmlFor="standardsPage">
+          Standards Page
+        </label>
         <div className="input-group input-group">
           <input
             type="text"

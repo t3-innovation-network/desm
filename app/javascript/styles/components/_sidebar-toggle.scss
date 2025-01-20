@@ -1,0 +1,25 @@
+@use 'sass:math';
+@use 'sass:map';
+
+.desm-sidebar-toggle {
+  $desm-sidebar-toggle-size: 32px;
+  $desm-sidebar-toggle-top: 50px;
+
+  border-radius: 50%;
+  box-shadow: 0 2px 7px 0 #00000040;
+  cursor: pointer;
+  height: $desm-sidebar-toggle-size;
+  position: absolute;
+  right: math.div($desm-sidebar-toggle-size, -2); /* Position halfway out of the sidebar */
+  top: $desm-sidebar-toggle-top;
+  transition: transform 0.3s ease;
+  width: $desm-sidebar-toggle-size;
+
+  @include e(icon) {
+    font-size: $desm-sidebar-toggle-size;
+  }
+
+  @include m(expanded) {
+    transform: translateY(-50%) rotate(180deg);
+  }
+}

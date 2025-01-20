@@ -59,7 +59,7 @@ const TermCard = ({ term, editEnabled, disableClick, compactDomains, ...props })
             </div>
             <div className="col-7 non-selectable">{term.name}</div>
             <div className="col-4">
-              <div className="float-right">
+              <div className="float-end">
                 <FontAwesomeIcon icon={faCheck} />
               </div>
             </div>
@@ -74,10 +74,10 @@ const TermCard = ({ term, editEnabled, disableClick, compactDomains, ...props })
   // The content of the header (The component when it's shrinked)
   const termHeaderContent = () => (
     <div className={headerCls}>
-      {!disableClick && <FontAwesomeIcon className="mr-2" icon={faUpDownLeftRight} />}
+      {!disableClick && <FontAwesomeIcon className="me-2" icon={faUpDownLeftRight} />}
       <strong>{term.name}</strong>
       {editEnabled && (
-        <span onClick={() => props.onEditClick(term)} className="ml-3 cursor-pointer">
+        <span onClick={() => props.onEditClick(term)} className="ms-3 cursor-pointer">
           <FontAwesomeIcon icon={faPencilAlt} />
         </span>
       )}
@@ -102,7 +102,7 @@ const TermCard = ({ term, editEnabled, disableClick, compactDomains, ...props })
       headerContent={props.headerContent || termHeaderContent()}
       bodyContent={
         <>
-          <h6 className="card-subtitle text-muted">
+          <h6 className="card-subtitle text-body-secondary">
             Name: <strong>{term.title}</strong>
           </h6>
           <p className="card-text">{term.property.comment}</p>

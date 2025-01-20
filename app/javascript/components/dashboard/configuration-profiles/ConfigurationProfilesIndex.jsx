@@ -22,7 +22,7 @@ export default class ConfigurationProfilesIndex extends Component {
 
   dashboardPath = () => {
     return (
-      <div className="float-right">
+      <div className="float-end">
         <FontAwesomeIcon icon={faHome} />{' '}
         <span>
           <Link className="col-on-primary" to="/">
@@ -82,7 +82,7 @@ export default class ConfigurationProfilesIndex extends Component {
           {errors && (
             <AlertNotice message={errors} onClose={() => this.setState({ errors: null })} />
           )}
-          <div className="row h-50 ml-5">
+          <div className="row h-50 ms-5">
             {configurationProfiles.map((cp) => (
               <ConfigurationProfileBox
                 configurationProfile={camelizeKeys(cp)}

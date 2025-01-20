@@ -1,25 +1,6 @@
-@import 'utils/bem';
-@import 'base/colors';
-@import 'utils/utilities';
-@import 'components/card';
-@import 'components/drag-n-drop';
-@import 'components/icon';
-@import 'components/multiselect';
-@import 'customradio';
-@import 'forms';
-@import 'navbar';
-@import 'stepper';
-
 /* General */
 
-@font-face {
-  font-family: 'Proxima Nova Condensed Light';
-  src: url('../fonts/proxima-light/Proxima Nova Condensed Light.otf');
-}
-
 body {
-  font-family: 'Proxima Nova Condensed Light', sans-serif;
-
   &.waiting {
     cursor: wait;
   }
@@ -40,10 +21,6 @@ section {
 
 a:hover {
   color: $primary-color-light;
-}
-
-.cursor-pointer {
-  cursor: pointer;
 }
 
 .border-bottom {
@@ -90,13 +67,9 @@ a:hover {
   background-color: $primary-color;
   color: $foreground-color;
 
-  .text-muted {
+  .text-body-secondary {
     color: $foreground-color !important;
   }
-}
-
-.underlined {
-  text-decoration: underline;
 }
 
 /* Main view Styles */

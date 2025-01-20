@@ -1,0 +1,32 @@
+@use 'sass:map';
+
+.desm-tabs {
+  top: 0;
+
+  @include media-breakpoint-up(lg) {
+    top: rfs-value(map.get($desm-nav-top, base) - 2px);
+  }
+
+  /* Add this CSS to your stylesheet */
+  @include e(scroll-container) {
+    overflow-x: auto;
+    /* stylelint-disable-next-line order/properties-alphabetical-order */
+    -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+    white-space: nowrap;
+
+    &::-webkit-scrollbar {
+      display: none; /* Hide scrollbar for a cleaner look */
+    }
+  }
+
+  @include e(arrow) {
+    $desm-arrow-size: 24px;
+
+    height: $desm-arrow-size;
+    width: $desm-arrow-size;
+
+    > span {
+      line-height: $desm-arrow-size;
+    }
+  }
+}

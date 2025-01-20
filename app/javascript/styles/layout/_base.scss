@@ -1,0 +1,33 @@
+@use 'sass:map';
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+}
+
+.desm-content {
+  transition: width 0.3s ease;
+
+  @include media-breakpoint-up(lg) {
+    padding-top: rfs-value(map.get($desm-nav-top, base));
+  }
+
+  @include m(collapsed) {
+    @include media-breakpoint-up(lg) {
+      margin-left: map.get($desm-sidebar, collapsed, width);
+    }
+  }
+
+  @include m(expanded) {
+    @include media-breakpoint-up(lg) {
+      margin-left: map.get($desm-sidebar, expanded, width);
+    }
+  }
+
+  @include e(shared-mapping) {
+    min-height: calc(
+      100vh - rfs-value(map.get($desm-nav-top, base)) - rfs-value(map.get($desm-nav-bottom, base))
+    );
+  }
+}

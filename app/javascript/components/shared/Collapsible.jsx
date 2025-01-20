@@ -76,7 +76,7 @@ export default class Collapsible extends Component {
                   {headerContent}
                 </div>
                 <div className="col">
-                  <span className="cursor-pointer float-right" onClick={this.toggleShowBody}>
+                  <span className="cursor-pointer float-end" onClick={this.toggleShowBody}>
                     {showBody ? '▲' : '▼'}
                   </span>
                 </div>

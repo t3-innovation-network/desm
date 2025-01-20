@@ -1,0 +1,36 @@
+@use 'sass:map';
+
+.desm-predicate {
+  @each $predicate, $values in $desm-predicate-colors {
+    @include m(#{$predicate}) {
+      $predicate-color: map.get($values, text);
+
+      background-color: map.get($values, bg);
+      border-color: map.get($values, bg);
+      color: $predicate-color;
+
+      a {
+        color: $predicate-color;
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+          $hover-color: if(
+            color-contrast($predicate-color) == $color-contrast-light,
+            shade-color($predicate-color, $link-shade-percentage),
+            tint-color($predicate-color, $link-shade-percentage)
+          );
+
+          color: $hover-color;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  @include m(unset) {
+    background-color: unset;
+    border: 1px solid $gray-400;
+    color: $black;
+  }
+}

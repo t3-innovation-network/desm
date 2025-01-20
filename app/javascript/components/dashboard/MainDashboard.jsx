@@ -37,8 +37,8 @@ const MainDashboard = (_props = {}) => {
 
   const dashboardPath = () => {
     return (
-      <div className="float-right">
-        <FontAwesomeIcon icon={faHome} className="mr-2" />{' '}
+      <div className="float-end">
+        <FontAwesomeIcon icon={faHome} className="me-2" />{' '}
         <span>
           <Link className="col-on-primary" to="/">
             Home
@@ -53,7 +53,7 @@ const MainDashboard = (_props = {}) => {
     <DashboardContainer>
       {dashboardPath()}
       <div className="col col-md-10 mt-5">
-        <div className="row h-50 ml-5">
+        <div className="row h-50 ms-5">
           <div className="col-3 py-3">
             <div
               className="form-group"
@@ -70,7 +70,10 @@ const MainDashboard = (_props = {}) => {
                       required={true}
                       defaultChecked={opt.id === 'all'}
                     />
-                    <label className="ml-2 cursor-pointer" htmlFor={`filterOption-${opt.id}`}>
+                    <label
+                      className="form-label ms-2 cursor-pointer"
+                      htmlFor={`filterOption-${opt.id}`}
+                    >
                       {opt.name}
                     </label>
                   </div>

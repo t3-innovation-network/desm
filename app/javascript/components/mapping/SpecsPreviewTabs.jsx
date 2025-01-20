@@ -60,7 +60,7 @@ const SpecsPreviewTabs = (props) => {
       >
         <TabList>
           <Tab>
-            <input checked={selectedTab === 0} className="mr-2" readOnly type="radio" />
+            <input checked={selectedTab === 0} className="me-2" readOnly type="radio" />
             Spec {' - '}
             <strong className={propertiesCount < 1 ? 'col-primary' : ''}>
               {propertiesCount + ' '}
@@ -70,7 +70,7 @@ const SpecsPreviewTabs = (props) => {
 
           {vocabularies.map((content, i) => (
             <Tab key={i}>
-              <input checked={selectedTab === i + 1} className="mr-2" readOnly type="radio" />
+              <input checked={selectedTab === i + 1} className="me-2" readOnly type="radio" />
               {vocabName(content['@graph'])}
             </Tab>
           ))}
@@ -92,7 +92,7 @@ const SpecsPreviewTabs = (props) => {
               <div className="card mt-2 mb-2">
                 <div className="card-header">
                   <button
-                    className="btn float-right"
+                    className="btn float-end"
                     onClick={() => {
                       handleRemoveVocabulary(i);
                     }}

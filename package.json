@@ -6,10 +6,11 @@
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@popperjs/core": "^2.11.8",
     "@rails/webpacker": "5.4.4",
     "axios": "^0.21.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "bootstrap": "^4.5.0",
+    "bootstrap": "^5.3.3",
     "classnames": "^2.5.1",
     "codemirror": "^5.57.0",
     "easy-peasy": "^6.0.4",
@@ -26,6 +27,7 @@
     "query-string": "^6.13.7",
     "react": "^17.0.2",
     "react-animations": "^1.0.0",
+    "react-bootstrap": "^2.10.7",
     "react-codemirror2": "^7.2.1",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
@@ -35,14 +37,14 @@
     "react-multi-select-component": "^4.3.4",
     "react-redux": "^7.2.1",
     "react-redux-toastr": "^8.0.0",
+    "react-responsive": "^10.0.0",
     "react-router-dom": "^5.2.0",
     "react-tabs": "^3.1.1",
     "redux": "^4.0.5",
     "resolve-url-loader": "^5.0.0",
+    "rfs": "^10.0.0",
     "styled-components": "^5.2.0",
-    "validator": "^13.1.1",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12"
+    "validator": "^13.1.1"
   },
   "version": "0.1.0",
   "devDependencies": {
@@ -52,7 +54,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-unused-imports": "^3.0.0",
-    "postcss": "^8.4.35",
+    "postcss": "^8.5.0",
     "prettier": "2.1.1",
     "stylelint": "^15.10.2",
     "stylelint-config-prettier": "^9.0.5",
@@ -69,7 +71,7 @@
     "lint": "yarn lint:js && yarn lint:scss",
     "lint:js": "prettier -c 'app/javascript/**/*.{js,jsx}' && eslint --ext .js --ext .jsx app/javascript",
     "lint:js:fix": "prettier -w 'app/javascript/**/*.{js,jsx}' && eslint --ext .js,.jsx app/javascript  --quiet --fix",
-    "lint:scss": "prettier -c 'app/assets/stylesheets/**/*.{css,scss}' && stylelint 'app/assets/stylesheets/**/*.{css,scss}' --quiet",
-    "lint:scss:fix": "prettier -w 'app/assets/stylesheets/**/*.{css,scss}' && stylelint 'app/assets/stylesheets/**/*.{css,scss}' --quiet --fix"
+    "lint:scss": "prettier -c 'app/javascript/styles/**/*.{css,scss}' && stylelint 'app/javascript/styles/**/*.{css,scss}' --quiet",
+    "lint:scss:fix": "prettier -w 'app/javascript/styles/**/*.{css,scss}' && stylelint 'app/javascript/styles/**/*.{css,scss}' --quiet --fix"
   }
 }

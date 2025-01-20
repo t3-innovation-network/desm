@@ -77,7 +77,7 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
   return (
     <>
       <div className="mt-5">
-        <label htmlFor="filename">
+        <label className="form-label" htmlFor="filename">
           File Name
           <span className="text-danger">*</span>
         </label>
@@ -98,7 +98,9 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="version">Version</label>
+        <label className="form-label" htmlFor="version">
+          Version
+        </label>
         <div className="input-group input-group">
           <input
             type="text"
@@ -115,7 +117,9 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="description">Description</label>
+        <label className="form-label" htmlFor="description">
+          Description
+        </label>
         <div className="input-group input-group">
           <textarea
             className="form-control input-lg"
@@ -132,9 +136,9 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="origin">
+        <label className="form-label" htmlFor="origin">
           Origin (URL)
-          <span className="ml-1 text-danger">*</span>
+          <span className="ms-1 text-danger">*</span>
         </label>
         <div className="input-group input-group">
           <input
@@ -151,7 +155,7 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
             placeholder="https://example.com"
           />
         </div>
-        <small className="col-on-primary-light font-italic">
+        <small className="col-on-primary-light fst-italic">
           Please be sure the content is in one of the following formats: CSV, JSON, JSONLD, RDF or
           XML
         </small>

@@ -46,7 +46,7 @@ const ConfirmDialog = (props) => {
               </div>
               <div className="col-2">
                 <a
-                  className="float-right cursor-pointer"
+                  className="float-end cursor-pointer"
                   onClick={() => !waiting && onRequestClose()}
                 >
                   <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
@@ -61,14 +61,14 @@ const ConfirmDialog = (props) => {
             <div className="row">
               <div className="col">
                 <button
-                  className="btn btn-dark float-right ml-3"
+                  className="btn btn-dark float-end ms-3"
                   disabled={waiting}
                   onClick={handleConfirm}
                 >
                   {waiting ? <Loader noPadding smallSpinner /> : 'Confirm'}
                 </button>
                 <button
-                  className="btn btn-dark float-right ml-3"
+                  className="btn btn-dark float-end ms-3"
                   disabled={waiting}
                   onClick={onRequestClose}
                 >

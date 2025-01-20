@@ -121,14 +121,14 @@ const SpineSpecsList = ({ loading, onRemove, spines }) => {
                   <>
                     <Link
                       to={'/specifications/' + spine.id}
-                      className="btn btn-sm btn-dark ml-2"
+                      className="btn btn-sm btn-dark ms-2"
                       title="Edit the spine. You can edit each property here."
                     >
                       <FontAwesomeIcon icon={faFilePen} />
                     </Link>
                     <button
                       onClick={() => handleConfirmRemove(spine.id)}
-                      className="btn btn-sm btn-dark ml-2"
+                      className="btn btn-sm btn-dark ms-2"
                       title="Remove the spine"
                     >
                       <FontAwesomeIcon icon={faTrash} />

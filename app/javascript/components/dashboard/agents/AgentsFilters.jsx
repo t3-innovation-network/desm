@@ -16,16 +16,16 @@ const CheckboxFilter = ({ items, selectedItems, updateSelectedItem, setSelectedI
 
       {items.map((item) => {
         return (
-          <div className="custom-control custom-checkbox mb-3" key={item.id}>
+          <div className="form-check mb-3" key={item.id}>
             <input
               type="checkbox"
-              className="custom-control-input desm-custom-control-input"
+              className="form-check-input"
               id={htmlId(item.id)}
               checked={selectedItems.includes(item.id)}
               onChange={(e) => updateSelectedItem(e.target.value)}
               value={item.id}
             />
-            <label className="custom-control-label cursor-pointer" htmlFor={htmlId(item.id)}>
+            <label className="form-check-label cursor-pointer" htmlFor={htmlId(item.id)}>
               {item.name}
             </label>
           </div>
@@ -86,7 +86,7 @@ const AgentsFilters = ({ store }) => {
         <div className="col-3 mt-3">
           <div className="card borderless">
             <div className="card-header bottom-borderless bg-col-secondary">
-              <label className="non-selectable">
+              <label className="non-selectable form-label">
                 <strong>{i18n.t('ui.dashboard.agents.filters.organization')}</strong>
               </label>
             </div>
@@ -96,7 +96,7 @@ const AgentsFilters = ({ store }) => {
         <div className="col-3 mt-3">
           <div className="card borderless">
             <div className="card-header bottom-borderless bg-col-secondary">
-              <label className="non-selectable">
+              <label className="non-selectable form-label">
                 <strong>{i18n.t('ui.dashboard.agents.filters.configuration_profile')}</strong>
               </label>
             </div>
@@ -106,7 +106,7 @@ const AgentsFilters = ({ store }) => {
         <div className="col-3 mt-3">
           <div className="card borderless">
             <div className="card-header bottom-borderless bg-col-secondary">
-              <label className="non-selectable">
+              <label className="non-selectable form-label">
                 <strong>{i18n.t('ui.dashboard.agents.filters.state')}</strong>
               </label>
             </div>

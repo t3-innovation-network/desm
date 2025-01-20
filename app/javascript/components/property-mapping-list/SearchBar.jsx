@@ -1,9 +1,10 @@
-import { Component } from 'react';
-import { iterableSelectableOptions } from '../../helpers/Iterables';
-import ExpandableOptions from '../shared/ExpandableOptions';
+import { useState, useCallback } from 'react';
+import Form from 'react-bootstrap/Form';
+import { debounce, values } from 'lodash';
 import { alignmentSortOptions, spineSortOptions } from './SortOptions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { DEBOUNCED_SEARCH_DELAY } from '../../utils/constants';
 
 /**
  * @description A complete row with a search bar to filter properties
@@ -15,154 +16,102 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
  * @prop {String} selectedAlignmentOrderOption
  * @prop {String} selectedSpineOrderOption
  */
-export default class SearchBar extends Component {
-  /**
-   * Values in state
-   */
-  state = {
-    /**
-     * The typed characters in the searchbox
-     */
-    inputValue: '',
-    /**
-     * Flag to determine whether to show or not the spine terms with no mapped terms
-     */
-    hideSpineTermsWithNoAlignments: false,
-    /**
-     * The order the user wants to see the spine terms
-     */
-    selectedAlignmentOrderOption: this.props.selectedAlignmentOrderOption,
-    /**
-     * The order the user wants to see the spine terms
-     */
-    selectedSpineOrderOption: this.props.selectedSpineOrderOption,
-  };
+const SearchBar = (props) => {
+  const {
+    onAlignmentOrderChange,
+    onHideSpineTermsWithNoAlignmentsChange,
+    onSpineOrderChange,
+    onType,
+    hideSpineTermsWithNoAlignments,
+    propertiesInputValue,
+    selectedAlignmentOrderOption,
+    selectedSpineOrderOption,
+  } = props;
 
-  /**
-   * Actions when a character is typed in the searchbox
-   *
-   * @param {Event} event
-   */
-  handleOnType = (event) => {
-    const { onType } = this.props;
+  const [inputValue, setInputValue] = useState(propertiesInputValue);
+  const debouncedSearch = useCallback(
+    debounce((val) => handleSearch(val), DEBOUNCED_SEARCH_DELAY),
+    []
+  );
+
+  const handleOnType = (event) => {
     const val = event.target.value;
-
-    this.setState({ inputValue: val }, () => {
-      if (onType) {
-        onType(val);
-      }
-    });
+    setInputValue(val);
+    // debounce onType action
+    debouncedSearch(val);
   };
 
-  /**
-   * Handle to perform the necessary the actions when the user clicks on the checkbox to hide/show
-   * the spine terms with no mapped properties.
-   */
-  handleHideSpineTermsWithNoAlignmentsChange = () => {
-    const { hideSpineTermsWithNoAlignments } = this.state;
-    const { onHideSpineTermsWithNoAlignmentsChange } = this.props;
-
-    this.setState({
-      hideSpineTermsWithNoAlignments: !hideSpineTermsWithNoAlignments,
-    });
-
+  const handleHideSpineTermsWithNoAlignmentsChange = () => {
     onHideSpineTermsWithNoAlignmentsChange(!hideSpineTermsWithNoAlignments);
   };
 
-  /**
-   * Actions to perform when the user selects a different spine term order option
-   *
-   * @param {String} option
-   */
-  handleSpineOrderOptionsChanged = (option) => {
-    const { onSpineOrderChange } = this.props;
-
-    this.setState({ selectedSpineOrderOption: option });
-
-    if (onSpineOrderChange) {
-      onSpineOrderChange(option);
-    }
+  const handleSearch = (val) => {
+    onType(val);
   };
 
-  /**
-   * Actions to perform when the user selects a different alignment order option
-   *
-   * @param {String} option
-   */
-  handleAlignmentOrderOptionsChanged = (option) => {
-    const { onAlignmentOrderChange } = this.props;
+  const valuesToOptions = (data) =>
+    values(data).map((value) => (
+      <option key={value} value={value}>
+        {value}
+      </option>
+    ));
 
-    this.setState({ selectedAlignmentOrderOption: option });
-
-    if (onAlignmentOrderChange) {
-      onAlignmentOrderChange(option);
-    }
-  };
-
-  render() {
-    /**
-     * Elements from state
-     */
-    const {
-      inputValue,
-      hideSpineTermsWithNoAlignments,
-      selectedAlignmentOrderOption,
-      selectedSpineOrderOption,
-    } = this.state;
-
-    return (
-      <div className="row mt-4">
-        <div className="col-3">
-          <hr className="bottom-border-white" />
-          <div className="form-group input-group-has-icon">
-            <FontAwesomeIcon icon={faSearch} className="form-control-feedback" />
-            <input
-              type="text"
-              className="form-control form-control-lg"
-              placeholder="Search for an Element / Property"
-              value={inputValue}
-              onChange={this.handleOnType}
-              autoFocus
-            />
-          </div>
-        </div>
-
-        <div className="col-3">
-          <label>Sort Spine By</label>
-          <ExpandableOptions
-            cardHeaderCssClass={'bottom-borderless'}
-            onClose={(option) => this.handleSpineOrderOptionsChanged(option.name)}
-            options={iterableSelectableOptions(_.values(spineSortOptions))}
-            selectedOption={selectedSpineOrderOption}
+  return (
+    <div className="row">
+      <div className="col-12">
+        <div className="form-group input-group">
+          <input
+            type="search"
+            className="form-control"
+            placeholder="Search for an Element/Property"
+            value={inputValue}
+            onChange={handleOnType}
+            autoFocus
           />
-        </div>
-
-        <div className="col-3">
-          <label>Sort Aligned Items By</label>
-          <ExpandableOptions
-            cardHeaderCssClass={'bottom-borderless'}
-            options={iterableSelectableOptions(_.values(alignmentSortOptions))}
-            onClose={(option) => this.handleAlignmentOrderOptionsChanged(option.name)}
-            selectedOption={selectedAlignmentOrderOption}
-          />
-        </div>
-
-        <div className="col-3">
-          <hr className="bottom-border-white" />
-          <div className="custom-control custom-checkbox mt-3">
-            <input
-              type="checkbox"
-              className="custom-control-input desm-custom-control-input"
-              id="hide-spine-elems"
-              value={hideSpineTermsWithNoAlignments}
-              onChange={() => this.handleHideSpineTermsWithNoAlignmentsChange()}
-            />
-            <label className="custom-control-label" htmlFor="hide-spine-elems">
-              Hide spine items with no results
-            </label>
-          </div>
+          <span className="input-group-text">
+            <FontAwesomeIcon icon={faSearch} />
+          </span>
         </div>
       </div>
-    );
-  }
-}
+
+      <div className="col-12">
+        <label className="form-label">Sort Spine By</label>
+        <Form.Select
+          aria-label="Sort Spine By"
+          onChange={(e) => onSpineOrderChange(e.target.value)}
+          value={selectedSpineOrderOption}
+        >
+          {valuesToOptions(spineSortOptions)}
+        </Form.Select>
+      </div>
+
+      <div className="col-12 mt-3">
+        <label className="form-label">Sort Aligned Items By</label>
+        <Form.Select
+          aria-label="Sort Spine By"
+          onChange={(e) => onAlignmentOrderChange(e.target.value)}
+          value={selectedAlignmentOrderOption}
+        >
+          {valuesToOptions(alignmentSortOptions)}
+        </Form.Select>
+      </div>
+
+      <div className="col-12">
+        <div className="form-check mt-3">
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id="hide-spine-elems"
+            checked={hideSpineTermsWithNoAlignments}
+            onChange={handleHideSpineTermsWithNoAlignmentsChange}
+          />
+          <label className="form-check-label" htmlFor="hide-spine-elems">
+            Hide spine items with no results
+          </label>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SearchBar;

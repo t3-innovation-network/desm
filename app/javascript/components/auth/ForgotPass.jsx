@@ -77,54 +77,56 @@ class ForgotPass extends Component {
     const { email, errors, sending } = this.state;
 
     return (
-      <div className="container-fluid">
+      <>
         <TopNav centerContent={this.navCenterOptions} />
-        <div className="row mt-4">
-          <div className="col-lg-6 mx-auto">
-            {errors && (
-              <AlertNotice message={errors} onClose={() => this.setState({ errors: '' })} />
-            )}
+        <div className="container-fluid desm-content">
+          <div className="row mt-4">
+            <div className="col-lg-6 mx-auto">
+              {errors && (
+                <AlertNotice message={errors} onClose={() => this.setState({ errors: '' })} />
+              )}
 
-            <div className="card">
-              <div className="card-header">
-                <FontAwesomeIcon icon={faKey} />
-                <span className="pl-2 subtitle">Reset Password</span>
-                <p>
-                  Please type your email, and we will send you an email with instructions on how to
-                  reset your password.
-                </p>
-              </div>
-              <div className="card-body">
-                <form className="mb-3" onSubmit={this.handleSubmit}>
-                  <div className="form-group">
-                    <label>
-                      Email
-                      <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      name="email"
-                      placeholder="Enter your email"
-                      value={email}
-                      onChange={this.handleOnChange}
-                      required
-                      autoFocus
-                    />
-                  </div>
+              <div className="card">
+                <div className="card-header">
+                  <FontAwesomeIcon icon={faKey} />
+                  <span className="ps-2 subtitle">Reset Password</span>
+                  <p>
+                    Please type your email, and we will send you an email with instructions on how
+                    to reset your password.
+                  </p>
+                </div>
+                <div className="card-body">
+                  <form className="mb-3" onSubmit={this.handleSubmit}>
+                    <div className="form-group">
+                      <label className="form-label">
+                        Email
+                        <span className="text-danger">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        className="form-control"
+                        name="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={this.handleOnChange}
+                        required
+                        autoFocus
+                      />
+                    </div>
 
-                  <button type="submit" className="btn btn-dark">
-                    {sending ? <Loader noPadding={true} smallSpinner={true} /> : 'Send'}
-                  </button>
-                </form>
-                <Link className="col-primary" to={'/sign-in'}>
-                  Login
-                </Link>
+                    <button type="submit" className="btn btn-dark">
+                      {sending ? <Loader noPadding={true} smallSpinner={true} /> : 'Send'}
+                    </button>
+                  </form>
+                  <Link className="col-primary" to={'/sign-in'}>
+                    Login
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }

@@ -73,7 +73,7 @@ const Admins = () => {
                 <td>{a.email}</td>
                 <td>{a.fullname}</td>
                 <td>
-                  <button className="btn btn-sm btn-primary mr-3" onClick={() => setToBeEdited(a)}>
+                  <button className="btn btn-sm btn-primary me-3" onClick={() => setToBeEdited(a)}>
                     Edit
                   </button>
                   <button className="btn btn-sm btn-danger" onClick={() => handleDelete(a)}>

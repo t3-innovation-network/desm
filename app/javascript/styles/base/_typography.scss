@@ -1,0 +1,44 @@
+@use 'sass:math';
+@use 'sass:map';
+
+// typography for headings
+$desm-heading-typography: ();
+
+@each $element, $typo in $desm-heading-typography {
+  #{$element} {
+    @include txt-element-base($typo);
+  }
+
+  .u-txt--#{$element} {
+    @include txt-element-base($typo);
+
+    font-family: $headings-font-family;
+    font-size: map.get($headings, $element);
+
+    @if not map.has-key($typo, font-weight) {
+      font-weight: $headings-font-weight;
+    }
+  }
+}
+
+// typography map for elements
+$desm-element-typography: (
+  base: (
+    font-size: 1rem,
+    font-family: $desm-font-base,
+  ),
+  predicate: (
+    font-size: rfs-value(15px),
+    font-weight: 600,
+  ),
+);
+
+@each $element, $typo in $desm-element-typography {
+  .u-txt--#{$element} {
+    @include txt-element-base($typo);
+  }
+}
+
+body {
+  @include txt-element(base);
+}

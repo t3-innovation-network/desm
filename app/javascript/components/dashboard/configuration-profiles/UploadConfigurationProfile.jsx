@@ -23,7 +23,7 @@ const UploadZone = () => {
   const uploadForm = () => <UploadConfigurationProfileForm />;
 
   return (
-    <div className="col mr-3">
+    <div className="col me-3">
       <div className="row">{uploadForm()}</div>
     </div>
   );
@@ -45,7 +45,7 @@ class UploadConfigurationProfile extends Component {
 
   dashboardPath = () => {
     return (
-      <div className="float-right">
+      <div className="float-end">
         <FontAwesomeIcon icon={faHome} />{' '}
         <span>
           <Link className="col-on-primary" to="/">

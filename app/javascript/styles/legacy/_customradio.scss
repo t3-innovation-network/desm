@@ -96,25 +96,3 @@
   background-color: $on-primary;
   color: #fff;
 }
-
-/* CUSTOM CONTROLS */
-
-.desm-custom-control-input:focus ~ .custom-control-label::before {
-  border-color: $primary-color !important;
-  box-shadow: 0 0 0 0.2rem $primary-color-light !important;
-  opacity: 0.5;
-}
-
-.desm-custom-control-input:checked ~ .custom-control-label::before {
-  background-color: $primary-color !important;
-  border-color: $primary-color !important;
-}
-
-.desm-custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
-  border-color: $on-primary-light !important;
-}
-
-.desm-custom-control-input:not(:disabled):active ~ .custom-control-label::before {
-  background-color: $primary-color-highlight !important;
-  border-color: $primary-color-highlight !important;
-}

@@ -59,7 +59,7 @@ class ExpandableOptions extends Component {
                   >
                     {option.name}
                     {option.description && (
-                      <div className="text-muted lh-sm">
+                      <div className="text-body-secondary lh-sm">
                         <small>{option.description}</small>
                       </div>
                     )}
@@ -87,7 +87,7 @@ class ExpandableOptions extends Component {
                     )}
                   </div>
                   <div className="col">
-                    <span className="float-right">▼</span>
+                    <span className="float-end">▼</span>
                   </div>
                 </div>
               </div>

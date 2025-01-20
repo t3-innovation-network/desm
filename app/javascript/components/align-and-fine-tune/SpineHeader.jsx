@@ -41,15 +41,15 @@ const SpineHeader = (props) => {
           </div>
         </div>
         <div className="col-5">
-          <div className="custom-control custom-checkbox mb-3">
+          <div className="form-check mb-3">
             <input
               type="checkbox"
-              className="custom-control-input desm-custom-control-input cursor-pointer"
+              className="form-check-input cursor-pointer"
               id="hideSpineElms"
               checked={hideMappedSpineTerms}
               onChange={() => setHideMappedSpineTerms(!hideMappedSpineTerms)}
             />
-            <label className="custom-control-label cursor-pointer" htmlFor="hideSpineElms">
+            <label className="form-check-label cursor-pointer" htmlFor="hideSpineElms">
               Hide Mapped Elements
             </label>
           </div>
@@ -91,7 +91,7 @@ const SpineHeader = (props) => {
         <div className="col-5" />
         <div className="col-2">
           <button
-            className="btn btn-block btn-dark"
+            className="btn w-100 btn-dark"
             onClick={handleAddSynthetic}
             title="Use this button to add new elements to the spine"
           >

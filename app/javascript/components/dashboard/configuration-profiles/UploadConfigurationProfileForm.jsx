@@ -63,7 +63,7 @@ const UploadConfigurationProfileForm = () => {
       )}
 
       <div>
-        <label>
+        <label className="form-label">
           Configuration Profile Name
           <span className="text-danger">*</span>
         </label>
