@@ -5,9 +5,9 @@
 ###
 module Resources
   class MappingExportProfileController < BaseController
-    before_action :authorize_with_policy
     include Decodable
     include NestedInConfigurationProfile
+    before_action :authorize_with_policy
 
     def show
       domain = policy_scope(Domain).find_by_slug!(decoded_slug)

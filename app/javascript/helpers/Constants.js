@@ -10,11 +10,6 @@ export const MAX_MAPPING_WEIGHT_PER_ORGANIZATION = 5;
  */
 // TODO: check if it'll work the same way if to move from webpacker
 export const APP_DOMAIN = process.env.APP_DOMAIN; // eslint-disable-line no-undef
-/**
- * JWT variables to encode/decode secret values
- */
-// TODO: check if it'll work the same way if to move from webpacker
-export const PRIVATE_KEY = process.env.PRIVATE_KEY; // eslint-disable-line no-undef
 
 export const TOASTR_OPTIONS = {
   default: {

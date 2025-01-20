@@ -1,6 +1,6 @@
 import { camelCase } from 'lodash';
 import classNames from 'classnames';
-import { i18n } from 'utils/i18n';
+import { i18n } from '../../utils/i18n';
 import { pageRoutes } from '../../services/pageRoutes';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 

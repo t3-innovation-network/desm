@@ -3,9 +3,9 @@ import { baseModel } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
 import { alignmentSortOptions, spineSortOptions } from '../SortOptions';
 import { action, computed, thunk } from 'easy-peasy';
-import fetchDomains from 'services/fetchDomains';
-import fetchPredicates from 'services/fetchPredicates';
-import fetchSpecifications from 'services/fetchSpecifications';
+import fetchDomains from '../../../services/fetchDomains';
+import fetchPredicates from '../../../services/fetchPredicates';
+import fetchSpecifications from '../../../services/fetchSpecifications';
 
 export const defaultState = {
   // status

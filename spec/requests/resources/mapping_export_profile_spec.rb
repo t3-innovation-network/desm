@@ -37,7 +37,7 @@ describe "Resources::MappingExportProfile", type: :request do
       let(:domain_slug) { domain.slug }
 
       before do
-        stub_authentication_for(user)
+        stub_authentication_for(user, configuration_profile:)
       end
 
       context "when domain within configuration profile scope" do

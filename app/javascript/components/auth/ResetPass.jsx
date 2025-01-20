@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { isEmpty } from 'lodash';
 import TopNav from '../shared/TopNav';
 import resetPassword from '../../services/resetPassword';
 import AlertNotice from '../shared/AlertNotice';
@@ -6,7 +7,6 @@ import TopNavOptions from '../shared/TopNavOptions';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
 import Loader from './../shared/Loader';
-import { encode } from '../../helpers/Encoder';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faKey, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { showSuccess } from '../../helpers/Messages';
@@ -26,11 +26,7 @@ const ResetPass = (props) => {
    * Controls the password and password confirmation matches
    */
   const handlePasswordBlur = () => {
-    if (
-      !_.isEmpty(password) &&
-      !_.isEmpty(passwordConfirmation) &&
-      password != passwordConfirmation
-    ) {
+    if (!isEmpty(password) && !isEmpty(passwordConfirmation) && password != passwordConfirmation) {
       setErrors("Passwords don't match");
       return;
     }
@@ -47,7 +43,7 @@ const ResetPass = (props) => {
 
     setWorking(true);
 
-    resetPassword(encode({ password: password }), token).then((response) => {
+    resetPassword({ password: password }, token).then((response) => {
       /// Manage the errors
       if (response.error) {
         setErrors(response.error + '\n. We were not able to reset your password.');
@@ -89,7 +85,7 @@ const ResetPass = (props) => {
           <div className="col-lg-6 mx-auto">
             {errors && <AlertNotice message={errors} onClose={() => setErrors('')} />}
 
-            {_.isEmpty(token) ? (
+            {isEmpty(token) ? (
               <AlertNotice message={'No token provided'} />
             ) : (
               <div className="card">

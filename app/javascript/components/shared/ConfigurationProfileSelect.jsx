@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import AlertNotice from './AlertNotice';
 import fetchConfigurationProfiles from '../../services/fetchConfigurationProfiles';
 import setConfigurationProfile from '../../services/setConfigurationProfile';
-import { i18n } from 'utils/i18n';
+import { i18n } from '../../utils/i18n';
 
 const ConfigurationProfileSelect = ({
   onChange,
@@ -60,8 +60,8 @@ const ConfigurationProfileSelect = ({
   const placeholderOptionText = loading
     ? 'Loading…'
     : configurationProfiles.length
-    ? i18n.t('ui.select.configuration_profile.placeholder')
-    : 'No data';
+      ? i18n.t('ui.select.configuration_profile.placeholder')
+      : 'No data';
 
   const submitDisabled = !configurationProfiles.length || submitting;
 

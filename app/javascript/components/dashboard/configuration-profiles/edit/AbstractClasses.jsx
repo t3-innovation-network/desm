@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { isUndefined } from 'lodash';
 import updateCP from '../../../../services/updateCP';
 import {
   setCurrentConfigurationProfile,
@@ -15,7 +16,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { downloadFile } from '../../../../helpers/Export';
 import fetchMappingExportProfile from '../../../../services/fetchMappingExportProfile';
-import _ from 'lodash';
 import { showError } from '../../../../helpers/Messages';
 import useDidMountEffect from '../../../../helpers/useDidMountEffect';
 
@@ -255,7 +255,7 @@ const AbstractClassesTable = ({ abstractClassesLabels, cpId }) => {
       showError(response.error);
     }
 
-    return !_.isUndefined(response.error);
+    return !isUndefined(response.error);
   };
 
   /**

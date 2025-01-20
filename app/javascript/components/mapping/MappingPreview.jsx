@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { isUndefined } from 'lodash';
 import {
   unsetFiles,
   unsetFilteredFile,
@@ -88,7 +89,7 @@ const MappingPreview = (props) => {
       dispatch(setMappingFormErrors([response.error]));
     }
 
-    return !_.isUndefined(response.error);
+    return !isUndefined(response.error);
   };
 
   /**
@@ -200,7 +201,7 @@ const MappingPreview = (props) => {
 
         /// Do not continue if we didn't manage to get the vocabulary name, since this
         /// will generate an error in the backend.
-        if (vName === '' || _.isUndefined(vName)) return;
+        if (vName === '' || isUndefined(vName)) return;
 
         if (await handleSaveOneVocabulary(vName, vocab)) {
           cantSaved++;

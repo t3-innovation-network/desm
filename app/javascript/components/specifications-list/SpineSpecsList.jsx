@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { isUndefined } from 'lodash';
 import deleteSpecification from '../../services/deleteSpecification';
 import { Link } from 'react-router-dom';
 import ConfirmDialog from '../shared/ConfirmDialog';
@@ -52,7 +53,7 @@ const SpineSpecsList = ({ loading, onRemove, spines }) => {
     }
     /// It will return a truthy value (depending no the existence
     /// of the errors on the response object)
-    return !_.isUndefined(response.error);
+    return !isUndefined(response.error);
   }
 
   /**

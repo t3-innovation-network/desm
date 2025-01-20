@@ -22,8 +22,9 @@
 @import 'components';
 
 // packages assets
-@import 'codemirror/lib/codemirror.css';
+@import 'codemirror/lib/codemirror';
 @import 'react-redux-toastr/src/styles/index';
+@import 'react-tabs/style/react-tabs';
 
 // app assets
 @import 'legacy';

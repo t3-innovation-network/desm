@@ -2,6 +2,7 @@ import { camelizeKeys, decamelizeKeys } from 'humps';
 import apiService, { processMessage } from './apiService';
 import {
   chain,
+  has,
   pickBy,
   identity,
   isArray,
@@ -81,10 +82,10 @@ const apiRequest = async (props) => {
  * @param {Object} props
  */
 const validateParams = (props) => {
-  if (!_.has(props, 'url')) {
+  if (!has(props, 'url')) {
     throw 'Url not provided';
   }
-  if (!_.has(props, 'method')) {
+  if (!has(props, 'method')) {
     throw 'Method not provided';
   }
 };

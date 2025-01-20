@@ -11,15 +11,13 @@
 // require('channels');
 
 import { render } from 'react-dom';
-import App from '../components/App';
-import allReducers from '../reducers';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { AppContextProvider } from '../contexts/AppContext';
-
-import '../styles/application.scss';
+import App from './components/App';
+import allReducers from './reducers';
+import { AppContextProvider } from './contexts/AppContext';
 
 const store = createStore(
   allReducers,
@@ -27,7 +25,7 @@ const store = createStore(
 );
 
 document.addEventListener('DOMContentLoaded', () => {
-  const container = document.createElement('div');
+  let container = document.createElement('div');
   container.classList.add('vh-100');
 
   render(

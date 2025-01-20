@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
 import { setVocabularies } from '../../actions/vocabularies';
 import { vocabName } from '../../helpers/Vocabularies';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

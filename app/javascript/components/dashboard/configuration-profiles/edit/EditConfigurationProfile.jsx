@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { isNull } from 'lodash';
+import { isNull, capitalize } from 'lodash';
 import fetchConfigurationProfile from '../../../../services/fetchConfigurationProfile';
 import AlertNotice from '../../../shared/AlertNotice';
 import Loader from '../../../shared/Loader';
@@ -164,14 +164,14 @@ const CPCardHeader = () => {
             {savingCP
               ? 'Saving ...'
               : isNull(savingCP)
-              ? 'Changes were not saved'
-              : 'All changes saved'}
+                ? 'Changes were not saved'
+                : 'All changes saved'}
           </p>
         )}
       </div>
       <div className="col-4">
         <p className="float-end" style={stateStyle(configurationProfile.state)}>
-          {_.capitalize(configurationProfile.state)}
+          {capitalize(configurationProfile.state)}
         </p>
       </div>
       <CompleteStructureValidationErrors />

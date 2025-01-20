@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_09_06_105812) do
-
+ActiveRecord::Schema[7.2].define(version: 2025_01_19_154948) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
@@ -54,8 +53,8 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
     t.bigint "mapping_id", null: false
     t.bigint "predicate_id"
     t.integer "spine_term_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "vocabulary_id"
     t.boolean "synthetic", default: false, null: false
     t.jsonb "transformation", default: {}
@@ -67,8 +66,8 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
   create_table "assignments", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "role_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["role_id"], name: "index_assignments_on_role_id"
     t.index ["user_id"], name: "index_assignments_on_user_id"
   end
@@ -87,7 +86,7 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
     t.string "comment"
     t.string "remote_address"
     t.string "request_uuid"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.index ["associated_type", "associated_id"], name: "associated_index"
     t.index ["auditable_type", "auditable_id", "version"], name: "auditable_index"
     t.index ["created_at"], name: "index_audits_on_created_at"
@@ -111,8 +110,8 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
     t.bigint "domain_set_id"
     t.bigint "predicate_set_id"
     t.bigint "administrator_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "slug"
     t.jsonb "json_mapping_predicates"
     t.jsonb "json_abstract_classes"
@@ -134,8 +133,8 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
     t.string "source_uri", null: false
     t.text "description"
     t.string "creator"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "slug"
     t.index ["source_uri"], name: "index_domain_sets_on_source_uri"
   end
@@ -145,8 +144,8 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
     t.string "source_uri", null: false
     t.text "definition"
     t.bigint "domain_set_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "slug"
     t.index ["domain_set_id", "pref_label"], name: "index_domains_on_domain_set_id_and_pref_label", unique: true
     t.index ["domain_set_id", "source_uri"], name: "index_domains_on_domain_set_id_and_source_uri", unique: true
@@ -156,8 +155,8 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
   create_table "json_contexts", force: :cascade do |t|
     t.string "uri", null: false
     t.jsonb "payload", default: {}, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["uri"], name: "index_json_contexts_on_uri", unique: true
   end
 
@@ -175,26 +174,26 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
     t.text "description"
     t.bigint "specification_id", null: false
     t.integer "spine_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "status", default: 0
     t.string "slug"
     t.bigint "configuration_profile_user_id", null: false
-    t.datetime "mapped_at"
+    t.datetime "mapped_at", precision: nil
     t.index ["configuration_profile_user_id"], name: "index_mappings_on_configuration_profile_user_id"
     t.index ["specification_id"], name: "index_mappings_on_specification_id"
   end
 
   create_table "merged_files", force: :cascade do |t|
     t.jsonb "content", default: "{}", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "organizations", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "email", null: false
     t.bigint "administrator_id"
     t.text "description"
@@ -209,8 +208,8 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
     t.string "source_uri", null: false
     t.text "description"
     t.string "creator"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "slug"
     t.bigint "strongest_match_id"
     t.index ["strongest_match_id"], name: "index_predicate_sets_on_strongest_match_id"
@@ -220,8 +219,8 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
     t.string "pref_label"
     t.text "definition"
     t.string "source_uri"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.float "weight", default: 0.0, null: false
     t.string "color"
     t.bigint "predicate_set_id"
@@ -239,8 +238,8 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
     t.text "comment"
     t.jsonb "domain"
     t.jsonb "range"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "uri"
     t.string "path"
     t.string "selected_domain"
@@ -253,15 +252,15 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
   create_table "rdfs_class_nodes", force: :cascade do |t|
     t.string "uri"
     t.jsonb "definition"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["uri"], name: "index_rdfs_class_nodes_on_uri", unique: true
   end
 
   create_table "roles", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "skos_concepts", force: :cascade do |t|
@@ -281,8 +280,8 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
     t.string "version"
     t.string "use_case"
     t.bigint "domain_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.jsonb "selected_domains_from_file"
     t.string "slug"
     t.bigint "configuration_profile_user_id", null: false
@@ -314,8 +313,8 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
   create_table "terms", force: :cascade do |t|
     t.string "name"
     t.string "source_uri", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "slug"
     t.json "raw", null: false
     t.string "identifier"
@@ -333,11 +332,11 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
     t.string "email", null: false
     t.string "fullname", null: false
     t.string "password_digest"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "organization_id"
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
+    t.datetime "reset_password_sent_at", precision: nil
     t.string "phone"
     t.string "github_handle"
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -346,8 +345,8 @@ ActiveRecord::Schema.define(version: 2024_09_06_105812) do
   create_table "vocabularies", force: :cascade do |t|
     t.string "name", null: false
     t.jsonb "content", default: "{}", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.jsonb "context", default: {}, null: false
     t.bigint "configuration_profile_id", null: false
     t.index ["configuration_profile_id"], name: "index_vocabularies_on_configuration_profile_id"

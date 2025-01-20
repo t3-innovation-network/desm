@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { pickBy } from 'lodash';
 import {
   setCurrentConfigurationProfile,
   setEditCPErrors,
@@ -29,7 +30,7 @@ const SchemaFileMetadata = ({ schemaFileIdx }) => {
 
     const files = schemaFiles;
 
-    files[schemaFileIdx] = _.pickBy({
+    files[schemaFileIdx] = pickBy({
       name: fileName,
       associatedAbstractClass: abstractClass,
       description: description,

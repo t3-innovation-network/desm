@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { capitalize } from 'lodash';
 import Loader from './../../shared/Loader';
 import EllipsisOptions from '../../shared/EllipsisOptions';
 import ConfirmDialog from '../../shared/ConfirmDialog';
@@ -77,7 +78,7 @@ const CardBody = (props) => {
           </Link>
           {processing && <Loader noPadding={true} cssClass={'float-over'} />}
           <p className="card-text mb-0" style={stateStyle(configurationProfile.state)}>
-            {_.capitalize(configurationProfile.state)}
+            {capitalize(configurationProfile.state)}
           </p>
           <p className="card-text mb-0">{totalAgents() + ' agent(s)'}</p>
           <p className="card-text">

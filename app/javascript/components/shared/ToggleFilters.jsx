@@ -1,4 +1,4 @@
-import { i18n } from 'utils/i18n';
+import { i18n } from '../../utils/i18n';
 
 const ToggleFilters = ({ showFilters, toggleFilters }) => {
   return (

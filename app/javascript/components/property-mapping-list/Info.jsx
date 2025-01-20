@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { kebabCase } from 'lodash';
-import { i18n } from 'utils/i18n';
-import { dateLongFormat } from 'utils/dateFormatting';
+import { i18n } from '../../utils/i18n';
+import { dateLongFormat } from '../../utils/dateFormatting';
 import Predicate from '../shared/Predicate';
 
 const Info = ({ sharedMappings, predicates }) => {

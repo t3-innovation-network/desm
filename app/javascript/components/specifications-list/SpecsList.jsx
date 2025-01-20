@@ -22,7 +22,7 @@ import {
 import { AppContext } from '../../contexts/AppContext';
 import { pageRoutes } from '../../services/pageRoutes';
 import { FILTER_OPTIONS, specsListStore } from './stores/specsListStore';
-import { i18n } from 'utils/i18n';
+import { i18n } from '../../utils/i18n';
 
 const SpecsList = (_props) => {
   const { currentConfigurationProfile, organization } = useContext(AppContext);

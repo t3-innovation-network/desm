@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { uniqBy } from 'lodash';
 import { vocabName } from '../helpers/Vocabularies';
 
 /**
@@ -7,7 +7,7 @@ import { vocabName } from '../helpers/Vocabularies';
  * @returns {Array}
  */
 export const setVocabularies = (vocabularies) => {
-  const uniqueVocabularies = _.uniqBy(vocabularies, (v) => vocabName(v['@graph']));
+  const uniqueVocabularies = uniqBy(vocabularies, (v) => vocabName(v['@graph']));
 
   return {
     type: 'SET_VOCABULARIES',

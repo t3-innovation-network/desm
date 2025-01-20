@@ -15,6 +15,6 @@ class NormalizedParams < OpenStruct # rubocop:todo Style/OpenStructUse
       end
     end
 
-    super(params)
+    super
   end
 end

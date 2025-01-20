@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { isEmpty } from 'lodash';
 import FileInfo from '../mapping/FileInfo';
 import { validVocabulary, vocabName, countConcepts } from '../../helpers/Vocabularies';
 import AlertNotice from '../shared/AlertNotice';
@@ -152,7 +153,7 @@ const UploadVocabulary = (props) => {
     setErrors([]);
     let validity = validVocabulary(vocab);
 
-    if (!_.isEmpty(validity.errors)) {
+    if (!isEmpty(validity.errors)) {
       setErrors(validity.errors);
     }
 
@@ -347,7 +348,7 @@ const UploadVocabulary = (props) => {
 
             {uploadMode == uploadModes.FILE_UPLOAD && <FileData />}
 
-            {uploadMode == uploadModes.FETCH_BY_URL && !_.isEmpty(fetchedVocabulary) && (
+            {uploadMode == uploadModes.FETCH_BY_URL && !isEmpty(fetchedVocabulary) && (
               <FetchedVocabularyPreview />
             )}
 
@@ -356,7 +357,7 @@ const UploadVocabulary = (props) => {
                 <button
                   className="btn btn-dark float-end mt-3"
                   type="submit"
-                  disabled={!fileContent && _.isEmpty(fetchedVocabulary)}
+                  disabled={!fileContent && isEmpty(fetchedVocabulary)}
                 >
                   Upload
                 </button>

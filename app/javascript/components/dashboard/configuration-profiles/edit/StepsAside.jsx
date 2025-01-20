@@ -1,7 +1,7 @@
 import {} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStep } from '../../../../actions/configurationProfiles';
-import { i18n } from 'utils/i18n';
+import { i18n } from '../../../../utils/i18n';
 
 const StepsAside = () => {
   const dispatch = useDispatch();
