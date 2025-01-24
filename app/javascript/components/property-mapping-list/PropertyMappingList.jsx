@@ -59,9 +59,15 @@ const PropertyMappingList = (props) => {
     updateQueryString({ abstractClass: selectedAbstractClass?.name });
   };
 
-  useEffect(() => loadData(), [configurationProfile?.id]);
-  useEffect(() => handleSelectedData(), [domains]);
-  useEffect(() => loadSpecifications(), [configurationProfile?.id, selectedDomain]);
+  useEffect(() => {
+    loadData();
+  }, [configurationProfile?.id]);
+  useEffect(() => {
+    handleSelectedData();
+  }, [domains]);
+  useEffect(() => {
+    loadSpecifications();
+  }, [configurationProfile?.id, selectedDomain]);
 
   const updateSelectedDomain = (id) => {
     const selectedDomain = domains.find((domain) => domain.id == id);

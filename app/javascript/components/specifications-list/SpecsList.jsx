@@ -29,7 +29,9 @@ const SpecsList = (_props) => {
   const [state, actions] = useLocalStore(() => specsListStore());
   const { mappings, filter, loading } = state;
 
-  useEffect(() => actions.fetchDataFromAPI(), [filter]);
+  useEffect(() => {
+    actions.fetchDataFromAPI();
+  }, [filter]);
 
   // Mark a 'mapped' mapping back to 'in-progress'
   const handleMarkToInProgress = (mappingId) =>

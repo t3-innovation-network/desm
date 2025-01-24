@@ -10,7 +10,7 @@
 // require('@rails/activestorage').start();
 // require('channels');
 
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { DndProvider } from 'react-dnd';
@@ -25,17 +25,16 @@ const store = createStore(
 );
 
 document.addEventListener('DOMContentLoaded', () => {
-  let container = document.createElement('div');
+  let container = document.getElementById('app');
   container.classList.add('vh-100');
-
-  render(
+  const root = createRoot(container);
+  root.render(
     <Provider store={store}>
       <DndProvider backend={HTML5Backend}>
         <AppContextProvider>
           <App />
         </AppContextProvider>
       </DndProvider>
-    </Provider>,
-    document.body.appendChild(container)
+    </Provider>
   );
 });

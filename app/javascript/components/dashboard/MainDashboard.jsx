@@ -33,7 +33,9 @@ const InfoBox = (props) => {
 const MainDashboard = (_props = {}) => {
   const [state, actions] = useLocalStore(() => dashboardStore());
 
-  useEffect(() => actions.fetchData(), []);
+  useEffect(() => {
+    actions.fetchData();
+  }, []);
 
   const dashboardPath = () => {
     return (

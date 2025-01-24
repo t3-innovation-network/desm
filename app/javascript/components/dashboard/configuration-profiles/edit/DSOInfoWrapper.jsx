@@ -51,7 +51,9 @@ const DSOInfoWrapper = () => {
     }
   };
 
-  useEffect(() => setCurrentTab(0), [currentDsoIndex]);
+  useEffect(() => {
+    setCurrentTab(0);
+  }, [currentDsoIndex]);
 
   return (
     <>

@@ -50,7 +50,7 @@ const apiRequest = async (props) => {
     url: `${props.url}${queryParams ? `?${queryParams}` : ''}`,
     method: props.method,
     data,
-    options: props.options,
+    ...props.options,
   })
     // Process the errors globally
     // TODO: process authentication errors special way (logout the user, redirect to login page)

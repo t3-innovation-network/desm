@@ -26,7 +26,9 @@ const ConfirmDialog = (props) => {
     onConfirm();
   };
 
-  useEffect(() => setWaiting(false), [visible]);
+  useEffect(() => {
+    setWaiting(false);
+  }, [visible]);
 
   return (
     <Modal

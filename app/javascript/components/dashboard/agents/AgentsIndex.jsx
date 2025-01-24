@@ -17,7 +17,9 @@ const AgentsIndex = (_props = {}) => {
   const searchInput = useDebounce(state.searchInput);
 
   // fetch data on start and refetch when searchInput/other filters changes
-  useEffect(() => actions.fetchDataFromAPI(), []);
+  useEffect(() => {
+    actions.fetchDataFromAPI();
+  }, []);
   useDidMountEffect(
     () => actions.handleFetchAgents(state.filterParams),
     [
