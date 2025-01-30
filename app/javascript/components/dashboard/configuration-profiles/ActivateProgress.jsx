@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import { SlideInDown } from '../../shared/Animations';
+import Collapse from 'react-bootstrap/Collapse';
 import { CenteredRoundedCard } from './utils';
 import Loader from '../../shared/Loader';
 
@@ -80,7 +80,7 @@ const ActivateProgress = (props) => {
       shouldCloseOnEsc={false}
       shouldCloseOnOverlayClick={false}
     >
-      <SlideInDown>
+      <Collapse in={visible}>
         <div className="row justify-content-center mt-5">
           <CenteredRoundedCard
             title={data.title}
@@ -95,7 +95,7 @@ const ActivateProgress = (props) => {
             {renderSteps()}
           </CenteredRoundedCard>
         </div>
-      </SlideInDown>
+      </Collapse>
     </Modal>
   );
 };

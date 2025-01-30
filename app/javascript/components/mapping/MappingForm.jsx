@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { isNull, isUndefined } from 'lodash';
 import FileInfo from './FileInfo';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocalStore } from 'easy-peasy';
@@ -24,7 +25,7 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { showError } from '../../helpers/Messages';
 import { initFromMapping, mappingFormStore } from './stores/mappingFormStore';
 import useDidMountEffect from '../../helpers/useDidMountEffect';
-import { i18n } from 'utils/i18n';
+import { i18n } from '../../utils/i18n';
 
 const MappingForm = ({ mapping = null }) => {
   const [state, actions] = useLocalStore(() => mappingFormStore(initFromMapping({}, mapping)));
@@ -79,7 +80,7 @@ const MappingForm = ({ mapping = null }) => {
       dispatch(unsetMappingFormErrors());
     }
 
-    return !_.isUndefined(response.error);
+    return !isUndefined(response.error);
   };
 
   /**
@@ -377,7 +378,7 @@ const MappingForm = ({ mapping = null }) => {
                     ))}
                   </div>
 
-                  {_.isNull(state.selectedDomainId) &&
+                  {isNull(state.selectedDomainId) &&
                     Boolean(files.length) &&
                     !submitted &&
                     !processingFile && (

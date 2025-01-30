@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import Modal from 'react-modal';
+import { isArray, uniqBy } from 'lodash';
 import fetchTerm from '../../services/fetchTerm';
 import updateTerm from '../../services/updateTerm';
 import Loader from '../shared/Loader';
@@ -16,7 +17,6 @@ import { readNodeAttribute, vocabName } from './../../helpers/Vocabularies';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import extractVocabularies from '../../services/extractVocabularies';
-import _ from 'lodash';
 import { showInfo, showSuccess } from '../../helpers/Messages';
 
 export default class EditTerm extends Component {
@@ -54,7 +54,7 @@ export default class EditTerm extends Component {
    * @param {Array} domains
    */
   domainsAsOptions = (domains) => {
-    if (!_.isArray(domains)) {
+    if (!isArray(domains)) {
       domains = [domains];
     }
 
@@ -74,7 +74,7 @@ export default class EditTerm extends Component {
    * @param {Array} domains
    */
   rangeAsOptions = (range) => {
-    if (!_.isArray(range)) {
+    if (!isArray(range)) {
       range = [range];
     }
 
@@ -190,10 +190,10 @@ export default class EditTerm extends Component {
     const newVocabOptions = newVocabs.filter(Boolean).map((v) => ({ id: v.id, name: v.name }));
 
     this.setState({
-      vocabularies: _.uniqBy([...this.state.vocabularies, ...newVocabOptions], (v) => v.name),
+      vocabularies: uniqBy([...this.state.vocabularies, ...newVocabOptions], (v) => v.name),
     });
 
-    term.vocabularies = _.uniqBy([...term.vocabularies, ...newVocabOptions], (v) => v.name);
+    term.vocabularies = uniqBy([...term.vocabularies, ...newVocabOptions], (v) => v.name);
 
     this.setState({ term });
     document.body.classList.remove('waiting');

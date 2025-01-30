@@ -2,8 +2,8 @@ import { action, computed, thunk } from 'easy-peasy';
 import { pull } from 'lodash';
 import { baseModel } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
-import fetchAgents from 'services/fetchAgents';
-import fetchAgentsFilters from 'services/fetchAgentsFilters';
+import fetchAgents from '../../../services/fetchAgents';
+import fetchAgentsFilters from '../../../services/fetchAgentsFilters';
 
 export const defaultState = {
   // status

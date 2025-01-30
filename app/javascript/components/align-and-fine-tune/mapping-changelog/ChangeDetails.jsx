@@ -1,3 +1,5 @@
+import { capitalize, isArray } from 'lodash';
+
 const ChangeDetails = (props) => {
   /**
    * Elements from props
@@ -46,7 +48,7 @@ const ChangeDetails = (props) => {
       case 'spine_term_id':
         return 'Spine Term';
       default:
-        return _.capitalize(property);
+        return capitalize(property);
     }
   };
 
@@ -61,14 +63,14 @@ const ChangeDetails = (props) => {
             /// We are fetching only audits with action: "update". It implies that the auditable
             /// changes comes as an array, being the first index for the old value, and the second
             /// index, for the new value, like this: [old_value, new_value]
-            _.isArray(change.audited_changes[property])
+            isArray(change.audited_changes[property])
               ? ' was ' +
                 printChangeValue(property, change.audited_changes[property][0]) +
                 ' - changed to: '
               : ''
           }
           <strong>
-            {_.isArray(change.audited_changes[property])
+            {isArray(change.audited_changes[property])
               ? printChangeValue(property, change.audited_changes[property][1])
               : ''}
           </strong>

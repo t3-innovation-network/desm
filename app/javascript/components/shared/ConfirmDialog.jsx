@@ -1,9 +1,10 @@
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
-import { SlideInDown } from './Animations.jsx';
+import Collapse from 'react-bootstrap/Collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Loader from './Loader.jsx';
+import { Col } from 'react-bootstrap';
 
 /**
  * @prop {Function} onConfirm
@@ -25,7 +26,9 @@ const ConfirmDialog = (props) => {
     onConfirm();
   };
 
-  useEffect(() => setWaiting(false), [visible]);
+  useEffect(() => {
+    setWaiting(false);
+  }, [visible]);
 
   return (
     <Modal
@@ -37,7 +40,7 @@ const ConfirmDialog = (props) => {
       shouldCloseOnEsc={false}
       shouldCloseOnOverlayClick={false}
     >
-      <SlideInDown>
+      <Collapse in={visible}>
         <div className="card" style={{ maxHeight: '45rem' }}>
           <div className="card-header">
             <div className="row">
@@ -78,7 +81,7 @@ const ConfirmDialog = (props) => {
             </div>
           </div>
         </div>
-      </SlideInDown>
+      </Collapse>
     </Modal>
   );
 };

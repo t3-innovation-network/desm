@@ -1,6 +1,6 @@
-import HoverableLabel from 'components/shared/HoverableLabel';
-import ToggleFilters from 'components/shared/ToggleFilters';
-import { i18n } from 'utils/i18n';
+import HoverableLabel from '../../shared/HoverableLabel';
+import ToggleFilters from '../../shared/ToggleFilters';
+import { i18n } from '../../../utils/i18n';
 
 const CheckboxFilter = ({ items, selectedItems, updateSelectedItem, setSelectedItems, prefix }) => {
   const htmlId = (id) => `${prefix}-chk-${id}`;

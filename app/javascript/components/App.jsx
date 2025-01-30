@@ -60,7 +60,7 @@ const App = () => {
         <AlertNotice message={errors} onClose={() => setErrors(null)} />
       ) : (
         <>
-          <ReduxToastr
+          <ReduxToastr.default
             position="top-center"
             className="desm-toast"
             removeOnHover={false}

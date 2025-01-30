@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import { useLocalStore } from 'easy-peasy';
 import { Link } from 'react-router-dom';
-import useDebounce from 'helpers/useDebounce';
+import useDebounce from '../../../helpers/useDebounce';
 import { agentsStore } from '../stores/agentsStore';
-import useDidMountEffect from 'helpers/useDidMountEffect';
+import useDidMountEffect from '../../../helpers/useDidMountEffect';
 import AgentsFilters from './AgentsFilters';
 import SearchBar from './SearchBar';
 import DashboardContainer from '../DashboardContainer';
-import AlertNotice from 'components/shared/AlertNotice';
-import { pageRoutes } from 'services/pageRoutes';
-import { i18n } from 'utils/i18n';
+import AlertNotice from '../../../components/shared/AlertNotice';
+import { pageRoutes } from '../../../services/pageRoutes';
+import { i18n } from '../../../utils/i18n';
 
 const AgentsIndex = (_props = {}) => {
   const store = useLocalStore(() => agentsStore());
@@ -17,13 +17,18 @@ const AgentsIndex = (_props = {}) => {
   const searchInput = useDebounce(state.searchInput);
 
   // fetch data on start and refetch when searchInput/other filters changes
-  useEffect(() => actions.fetchDataFromAPI(), []);
-  useDidMountEffect(() => actions.handleFetchAgents(state.filterParams), [
-    searchInput,
-    state.selectedConfigurationProfiles,
-    state.selectedConfigurationProfileStates,
-    state.selectedOrganizations,
-  ]);
+  useEffect(() => {
+    actions.fetchDataFromAPI();
+  }, []);
+  useDidMountEffect(
+    () => actions.handleFetchAgents(state.filterParams),
+    [
+      searchInput,
+      state.selectedConfigurationProfiles,
+      state.selectedConfigurationProfileStates,
+      state.selectedOrganizations,
+    ]
+  );
 
   const profileData = (profile) => (
     <li key={profile.configurationProfile.id}>

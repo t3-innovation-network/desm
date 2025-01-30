@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { pickBy } from 'lodash';
 import {
   setCurrentConfigurationProfile,
   setEditCPErrors,
@@ -25,7 +26,7 @@ const ConceptSchemeMetadata = ({ schemaFileIdx, conceptSchemeIdx }) => {
 
     localCP.structure.standardsOrganizations[currentDSOIndex].associatedSchemas[
       schemaFileIdx
-    ].associatedConceptSchemes[conceptSchemeIdx] = _.pickBy({
+    ].associatedConceptSchemes[conceptSchemeIdx] = pickBy({
       description,
       name,
       origin,

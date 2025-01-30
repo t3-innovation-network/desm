@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { isEmpty } from 'lodash';
 import fetchAudits from '../../../services/fetchAudits';
 import Collapsible from '../../shared/Collapsible';
 import ChangeDetails from './ChangeDetails';
@@ -91,7 +92,7 @@ const MappingChangeLog = (props) => {
    *
    * Render taking care of having changes present.
    */
-  return !_.isEmpty(changes) ? (
+  return !isEmpty(changes) ? (
     <Collapsible
       cardStyle={'mb-3 alert-info'}
       cardHeaderStyle={'bottom-borderless'}

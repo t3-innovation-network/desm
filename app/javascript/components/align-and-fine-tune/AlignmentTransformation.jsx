@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLeftRight, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { transformationAlignmentStore } from './stores/transformationAlignmentStore';
 import useDidMountEffect from '../../helpers/useDidMountEffect';
-import { i18n } from 'utils/i18n';
+import { i18n } from '../../utils/i18n';
 
 const AlignmentTransformation = (props) => {
   Modal.setAppElement('body');

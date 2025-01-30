@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AppContext } from '../../contexts/AppContext';
 import { termsStore } from './stores/termsStore';
-import { i18n } from 'utils/i18n';
+import { i18n } from '../../utils/i18n';
 
 const EditProperties = (props) => {
   const { mode, HeaderComponent } = props;

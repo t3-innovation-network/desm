@@ -11,9 +11,9 @@ import InfoExportButtons from './InfoExportButtons';
 import PropertiesList from './PropertiesList';
 import Sidebar from './Sidebar';
 import ConfigurationProfileSelect from '../shared/ConfigurationProfileSelect';
-import { i18n } from 'utils/i18n';
+import { i18n } from '../../utils/i18n';
 import { propertyMappingListStore } from './stores/propertyMappingListStore';
-import { camelizeLocationSearch, updateWithRouter } from 'helpers/queryString';
+import { camelizeLocationSearch, updateWithRouter } from '../../helpers/queryString';
 import { isEmpty } from 'lodash';
 import ExportMappings from '../shared/ExportMappings';
 import { TabletAndBelow, Desktop } from '../../utils/mediaQuery';
@@ -59,9 +59,15 @@ const PropertyMappingList = (props) => {
     updateQueryString({ abstractClass: selectedAbstractClass?.name });
   };
 
-  useEffect(() => loadData(), [configurationProfile?.id]);
-  useEffect(() => handleSelectedData(), [domains]);
-  useEffect(() => loadSpecifications(), [configurationProfile?.id, selectedDomain]);
+  useEffect(() => {
+    loadData();
+  }, [configurationProfile?.id]);
+  useEffect(() => {
+    handleSelectedData();
+  }, [domains]);
+  useEffect(() => {
+    loadSpecifications();
+  }, [configurationProfile?.id, selectedDomain]);
 
   const updateSelectedDomain = (id) => {
     const selectedDomain = domains.find((domain) => domain.id == id);

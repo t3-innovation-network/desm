@@ -6,9 +6,9 @@
     <%= csp_meta_tag %>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta charset="utf-8">
-    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=account_tree,arrow_split,chevron_left,chevron_right,download,filter_alt,help,info,keyboard_arrow_up,menu,search">
+    <%= stylesheet_link_tag "application", media: "all" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module", defer: true %>
   </head>
   <body
     class="h-100"
@@ -19,5 +19,6 @@
   >
     <%= render "shared/impersonation_status" %>
     <%= yield %>
+    <div id="app"></div>
   </body>
 </html>

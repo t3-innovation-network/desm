@@ -2,6 +2,7 @@ import { camelizeKeys, decamelizeKeys } from 'humps';
 import apiService, { processMessage } from './apiService';
 import {
   chain,
+  has,
   pickBy,
   identity,
   isArray,
@@ -49,7 +50,7 @@ const apiRequest = async (props) => {
     url: `${props.url}${queryParams ? `?${queryParams}` : ''}`,
     method: props.method,
     data,
-    options: props.options,
+    ...props.options,
   })
     // Process the errors globally
     // TODO: process authentication errors special way (logout the user, redirect to login page)
@@ -81,10 +82,10 @@ const apiRequest = async (props) => {
  * @param {Object} props
  */
 const validateParams = (props) => {
-  if (!_.has(props, 'url')) {
+  if (!has(props, 'url')) {
     throw 'Url not provided';
   }
-  if (!_.has(props, 'method')) {
+  if (!has(props, 'method')) {
     throw 'Method not provided';
   }
 };

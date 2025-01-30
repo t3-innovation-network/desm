@@ -1,4 +1,4 @@
-import {} from 'react';
+import { isObject } from 'lodash';
 import Collapsible from '../../shared/Collapsible';
 
 /**
@@ -15,7 +15,7 @@ const SimpleConceptCard = ({ concept, origin }) => (
     observeOutside={false}
     bodyContent={
       <>
-        <p>{_.isObject(concept.definition) ? concept.definition.en : concept.definition}</p>
+        <p>{isObject(concept.definition) ? concept.definition.en : concept.definition}</p>
         <p>
           Origin:
           <span className="col-primary">{' ' + origin}</span>

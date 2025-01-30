@@ -53,9 +53,7 @@ class PasswordsController < ApplicationController
   def validate_password
     raise ArgumentError, "Password not provided" unless permitted_params[:password].present?
 
-    decoded = decode(permitted_params[:password])
-
-    @password = decoded[:password]
+    @password = permitted_params[:password]
   end
 
   ###

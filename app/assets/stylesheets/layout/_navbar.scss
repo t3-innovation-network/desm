@@ -2,7 +2,7 @@
 
 // Old styles, need to be updated
 .navbar-with-border {
-  border-bottom: solid 2px $primary-color;
+  border-bottom: 2px solid $primary-color;
 
   @include media-breakpoint-up(lg) {
     padding-bottom: 0 !important;

@@ -55,7 +55,9 @@ const Agents = () => {
     setRefresh(!refresh);
   }, [currentDSOIndex]);
 
-  useEffect(() => initAgentData(), [currentAgentIndex, currentDSOIndex, refresh]);
+  useEffect(() => {
+    initAgentData();
+  }, [currentAgentIndex, currentDSOIndex, refresh]);
 
   const addAgent = () => {
     setAgentsData([

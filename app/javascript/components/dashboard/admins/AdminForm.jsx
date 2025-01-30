@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { pickBy } from 'lodash';
 import createAdmin from '../../../services/createAdmin';
 import updateAdmin from '../../../services/updateAdmin';
 import AlertNotice from '../../shared/AlertNotice';
@@ -15,7 +16,7 @@ const AdminForm = ({ record, onCancel, onSave }) => {
     e.preventDefault();
     setSubmitting(true);
 
-    const data = _.pickBy({ email, fullname, password, passwordConfirmation });
+    const data = pickBy({ email, fullname, password, passwordConfirmation });
 
     const { admin, error } = await (record.id ? updateAdmin.bind(this, record.id) : createAdmin)(
       data

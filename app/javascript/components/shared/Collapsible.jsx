@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { FadeIn } from './Animations.jsx';
+import Fade from 'react-bootstrap/Fade';
 import OutsideAlerter from './OutsideAlerter.jsx';
 
 /**
@@ -65,7 +65,7 @@ export default class Collapsible extends Component {
 
     return (
       <OutsideAlerter onOutsideAlert={observeOutside ? () => this.hideBody() : () => {}}>
-        <FadeIn>
+        <Fade in={true}>
           <div className={'card' + (cardStyle ? ' ' + cardStyle : '')}>
             <div className={'card-header' + (cardHeaderStyle ? ' ' + cardHeaderStyle : '')}>
               <div className="row">
@@ -83,14 +83,14 @@ export default class Collapsible extends Component {
               </div>
             </div>
             {showBody && (
-              <FadeIn>
+              <Fade in={showBody}>
                 <div className={'card-body' + (bodyStyle ? ' ' + bodyStyle : '')}>
                   {bodyContent}
                 </div>
-              </FadeIn>
+              </Fade>
             )}
           </div>
-        </FadeIn>
+        </Fade>
       </OutsideAlerter>
     );
   }

@@ -1,7 +1,7 @@
 admin_user = User.first
-complete_structure = Rails.root.join("spec", "fixtures", "complete.configuration.profile.json")
-json_ac = Rails.root.join("concepts", "desmAbstractClasses.json")
-json_mp = Rails.root.join("concepts", "desmMappingPredicates.json")
+complete_structure = Rails.root.join("spec", "fixtures", "files", "complete.configuration.profile.json")
+json_ac = Rails.root.join("samples", "abstractClasses", "desmAbstractClasses.json")
+json_mp = Rails.root.join("samples", "mappingPredicates", "desmMappingPredicates.json")
 
 ConfigurationProfile.seed do |cp|
     cp.name = "Test Configuration Profile"

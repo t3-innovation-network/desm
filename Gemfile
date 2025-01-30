@@ -3,13 +3,18 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.2"
+ruby "3.3.7"
 
 ###
 # RUBY & RAILS
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "= 6.1.6.1"
-###
+gem "rails", "7.2.2"
+
+# The original asset pipeline for Rails [https://github.com/rails/propshaft]
+gem "propshaft", "~> 1.1"
+## Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
+gem "cssbundling-rails", "~> 1.4"
+gem "jsbundling-rails"
 
 ###
 # AUTHENTICATION TOOLS
@@ -24,7 +29,7 @@ gem "active_model_serializers", "~> 0.10"
 gem "airbrake"
 
 # Audit changes
-gem "audited", "~> 5.6"
+gem "audited", "~> 5.8"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.2", require: false
@@ -33,7 +38,7 @@ gem "bootsnap", ">= 1.4.2", require: false
 gem "httparty"
 
 gem "i18n-js", "~> 4.2"
-gem "interactor-rails", "~> 2.0"
+gem "interactor-rails", "~> 2.3"
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem "jbuilder", "~> 2.7"
@@ -46,22 +51,19 @@ gem "json-schema"
 gem "jwt"
 
 # Work with RDF data in various formats
-gem "linkeddata", "~> 3.1"
+gem "linkeddata", "~> 3.3"
 
 # Use mailgun servers for sending mails
 gem "mailgun_rails"
 
 gem "net-smtp", require: false
 
-# Allow redirections in URI.open
-gem "open_uri_redirections", "~> 0.2"
-
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
 gem "pg_search", "~> 2.3"
 
 # Use Puma as the app server
-gem "puma", "~> 4.1"
+gem "puma", ">= 5.0"
 
 # Manage authorization
 gem "pundit"
@@ -80,12 +82,6 @@ gem "seed-fu"
 # Validate the use of strong passwords
 gem "strong_password", "~> 0.0.8"
 
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem "turbolinks", "~> 5"
-
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem "webpacker", "~> 5.x"
-
 gem "mimemagic", github: "mimemagicrb/mimemagic", ref: "01f92d86d15d85cfd0f20dabd025dcbd36a8a60f"
 
 group :development, :test do
@@ -103,7 +99,8 @@ group :development, :test do
   gem "faker"
   gem "rspec-rails"
   # Use rubocop to ensure our code is clean
-  gem "rubocop", "~> 1.60", require: false
+  gem "rubocop", "~> 1.69", require: false
+  gem "rubocop-rails"
   # Disable rubocop for specs for now, too many offenses
   # gem "rubocop-rspec", require: false
   gem "shoulda-matchers"
@@ -116,15 +113,15 @@ group :development do
   gem "htmlbeautifier"
   gem "rails-erd"
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem "listen", "~> 3.2"
+  gem "listen", "~> 3.9"
   gem "overcommit"
   # Let's take advantage of rerun gem for hot-reload in development
   gem "rerun"
-  gem "solargraph"
-  gem "solargraph-rails"
+  gem "ruby-lsp"
+  gem "ruby-lsp-rails"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem "spring"
-  gem "spring-watcher-listen", "~> 2.0.0"
+  gem "spring-watcher-listen", "~> 2.1"
   gem "web-console", ">= 3.3.0"
 end
 

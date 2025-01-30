@@ -90,7 +90,8 @@ class Term < ApplicationRecord
   # @return [String]: the desm namespaced uri
   ###
   def desm_uri(domain = nil)
-    "desm-#{organization.name.downcase.strip}-#{domain&.pref_label&.downcase&.strip}:#{uri.split(':').last}"
+    pref_label = domain&.pref_label.to_s.downcase.strip
+    "desm-#{organization.name.downcase.strip}-#{pref_label}:#{uri.split(':').last}"
   end
 
   def assign_property

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { pickBy } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import updateCP from '../../../../services/updateCP';
@@ -44,7 +44,7 @@ const MappingPredicates = () => {
     predicateStrongestMatch,
     structure: {
       ...configurationProfile.structure,
-      mappingPredicates: _.pickBy({
+      mappingPredicates: pickBy({
         description,
         name,
         origin,

@@ -1,5 +1,6 @@
 import { Component } from 'react';
-import { SlideInDown, FadeIn } from './Animations.jsx';
+import Fade from 'react-bootstrap/Fade';
+import Collapse from 'react-bootstrap/Collapse';
 import OutsideAlerter from './OutsideAlerter.jsx';
 
 /**
@@ -48,7 +49,7 @@ class ExpandableOptions extends Component {
     return (
       <OutsideAlerter onOutsideAlert={() => this.handleShrink()}>
         {expanded ? (
-          <SlideInDown className="float-over">
+          <Collapse in={expanded} className="float-over">
             <div className={'card' + (cardCssClass ? ' ' + cardCssClass : '')}>
               {this.props.options.map((option) => {
                 return (
@@ -67,9 +68,9 @@ class ExpandableOptions extends Component {
                 );
               })}
             </div>
-          </SlideInDown>
+          </Collapse>
         ) : (
-          <FadeIn>
+          <Fade in={!expanded}>
             <div className={'card' + (cardCssClass ? ' ' + cardCssClass : '')}>
               <div
                 className={
@@ -92,7 +93,7 @@ class ExpandableOptions extends Component {
                 </div>
               </div>
             </div>
-          </FadeIn>
+          </Fade>
         )}
       </OutsideAlerter>
     );

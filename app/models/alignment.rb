@@ -119,7 +119,7 @@ class Alignment < ApplicationRecord
   end
 
   def completed?
-    return true if predicate&.source_uri&.downcase&.include?("nomatch")
+    return true if predicate&.source_uri.present? && predicate.source_uri.downcase.include?("nomatch")
     return true if predicate.present? && mapped_terms.exists?
 
     false

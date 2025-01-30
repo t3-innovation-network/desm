@@ -22,7 +22,7 @@ AllCops:
     - 'config/**/*'
     - 'config.ru'
   NewCops: enable
-  TargetRubyVersion: 3.2
+  TargetRubyVersion: 3.3
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented_relative_to_receiver
