@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import Modal from 'react-modal';
+import { isArray, uniqBy } from 'lodash';
 import fetchTerm from '../../services/fetchTerm';
 import updateTerm from '../../services/updateTerm';
 import Loader from '../shared/Loader';
@@ -16,7 +17,6 @@ import { readNodeAttribute, vocabName } from './../../helpers/Vocabularies';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import extractVocabularies from '../../services/extractVocabularies';
-import _ from 'lodash';
 import { showInfo, showSuccess } from '../../helpers/Messages';
 
 export default class EditTerm extends Component {
@@ -54,7 +54,7 @@ export default class EditTerm extends Component {
    * @param {Array} domains
    */
   domainsAsOptions = (domains) => {
-    if (!_.isArray(domains)) {
+    if (!isArray(domains)) {
       domains = [domains];
     }
 
@@ -74,7 +74,7 @@ export default class EditTerm extends Component {
    * @param {Array} domains
    */
   rangeAsOptions = (range) => {
-    if (!_.isArray(range)) {
+    if (!isArray(range)) {
       range = [range];
     }
 
@@ -190,10 +190,10 @@ export default class EditTerm extends Component {
     const newVocabOptions = newVocabs.filter(Boolean).map((v) => ({ id: v.id, name: v.name }));
 
     this.setState({
-      vocabularies: _.uniqBy([...this.state.vocabularies, ...newVocabOptions], (v) => v.name),
+      vocabularies: uniqBy([...this.state.vocabularies, ...newVocabOptions], (v) => v.name),
     });
 
-    term.vocabularies = _.uniqBy([...term.vocabularies, ...newVocabOptions], (v) => v.name);
+    term.vocabularies = uniqBy([...term.vocabularies, ...newVocabOptions], (v) => v.name);
 
     this.setState({ term });
     document.body.classList.remove('waiting');
@@ -274,7 +274,7 @@ export default class EditTerm extends Component {
                 </h4>
               </div>
               <div className="col-6">
-                <a className="float-right cursor-pointer" onClick={this.closeRequested}>
+                <a className="float-end cursor-pointer" onClick={this.closeRequested}>
                   <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
                 </a>
               </div>
@@ -309,7 +309,7 @@ export default class EditTerm extends Component {
 
                         <div className="form-group row">
                           <div className="col-3">
-                            <label>
+                            <label className="form-label">
                               <strong>Property URI</strong>
                             </label>
                           </div>
@@ -328,7 +328,7 @@ export default class EditTerm extends Component {
 
                         <div className="form-group row">
                           <div className="col-3">
-                            <label>
+                            <label className="form-label">
                               <strong>Source URI</strong>
                             </label>
                           </div>
@@ -347,7 +347,7 @@ export default class EditTerm extends Component {
 
                         <div className="form-group row">
                           <div className="col-3">
-                            <label>
+                            <label className="form-label">
                               <strong>Property label</strong>
                             </label>
                           </div>
@@ -366,7 +366,7 @@ export default class EditTerm extends Component {
 
                         <div className="form-group row">
                           <div className="col-3">
-                            <label>
+                            <label className="form-label">
                               <strong>Scheme</strong>
                             </label>
                           </div>
@@ -386,7 +386,7 @@ export default class EditTerm extends Component {
                     </div>
 
                     <div className="form-group">
-                      <label>Definition</label>
+                      <label className="form-label">Definition</label>
                       <textarea
                         className="form-control"
                         name="comment"
@@ -397,7 +397,7 @@ export default class EditTerm extends Component {
                     </div>
 
                     <div className="form-group">
-                      <label>Selected Domain</label>
+                      <label className="form-label">Selected Domain</label>
 
                       <ExpandableOptions
                         options={this.domainsAsOptions(term.property.domain)}
@@ -408,7 +408,7 @@ export default class EditTerm extends Component {
                     </div>
 
                     <div className="form-group">
-                      <label>Selected Range</label>
+                      <label className="form-label">Selected Range</label>
 
                       <ExpandableOptions
                         options={this.rangeAsOptions(term.property.range)}
@@ -419,7 +419,7 @@ export default class EditTerm extends Component {
                     </div>
 
                     <div className="form-group">
-                      <label>XPath/JSON Path (optional)</label>
+                      <label className="form-label">XPath/JSON Path (optional)</label>
                       <input
                         type="text"
                         className="form-control"
@@ -437,7 +437,7 @@ export default class EditTerm extends Component {
                   <div className="col-6">
                     {!uploadingVocabulary && (
                       <div className="form-group">
-                        <label>Vocabulary (optional)</label>
+                        <label className="form-label">Vocabulary (optional)</label>
                         <div className="card mb-2 has-scrollbar scrollbar desm-check-container-sm">
                           <div className="card-body">
                             <div className="desm-radio">
@@ -453,7 +453,9 @@ export default class EditTerm extends Component {
                                       checked={term.vocabularies.some((v) => v.id == vocab.id)}
                                       disabled={uploadingVocabulary}
                                     />
-                                    <label htmlFor={vocab.id}>{vocab.name}</label>
+                                    <label className="form-label" htmlFor={vocab.id}>
+                                      {vocab.name}
+                                    </label>
                                   </div>
                                 );
                               })}
@@ -465,7 +467,7 @@ export default class EditTerm extends Component {
                           <div className="col">
                             {!uploadingVocabulary && (
                               <a
-                                className="col-on-primary cursor-pointer float-right"
+                                className="col-on-primary cursor-pointer float-end"
                                 onClick={() => this.setState({ uploadingVocabulary: true })}
                               >
                                 Add Vocabulary
@@ -488,7 +490,7 @@ export default class EditTerm extends Component {
                     ) : (
                       <>
                         <div style={{ height: '78%' }}>
-                          <label>
+                          <label className="form-label">
                             <strong>Raw</strong>
                           </label>
                           <CodeMirror
@@ -507,12 +509,12 @@ export default class EditTerm extends Component {
                     {!uploadingVocabulary && (
                       <>
                         <button
-                          className="btn btn-outline-secondary ml-2 float-right"
+                          className="btn btn-outline-secondary ms-2 float-end"
                           onClick={this.handleRemoveTerm}
                         >
                           Remove Term
                         </button>
-                        <button className="btn btn-dark float-right" onClick={this.handleSaveTerm}>
+                        <button className="btn btn-dark float-end" onClick={this.handleSaveTerm}>
                           Save and Exit
                         </button>
                       </>

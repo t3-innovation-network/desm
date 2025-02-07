@@ -1,3 +1,5 @@
+import { sortBy } from 'lodash';
+
 /**
  * Options for sorting a collection of spine terms
  *
@@ -80,7 +82,7 @@ export const implementSpineSort = (properties, sortOption) => {
       return properties;
   }
 
-  return _.sortBy(properties, [iteratee, 'name']);
+  return sortBy(properties, [iteratee, 'name']);
 };
 
 /**

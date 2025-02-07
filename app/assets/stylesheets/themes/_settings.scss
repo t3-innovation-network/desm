@@ -1,0 +1,50 @@
+/* stylelint-disable */
+@use 'sass:math';
+@use 'sass:map';
+
+/* redefine toastr variables */
+$toastr-width: 450px;
+
+/* redefine bootstrap variables */
+$enable-deprecation-messages: false;
+
+// grid
+// $container-padding-x: 3rem;
+
+// theme colors
+$primary: map.get($desm-theme-colors, primary);
+$secondary: map.get($desm-theme-colors, secondary);
+$red: map.get($desm-theme-colors, red);
+$green: map.get($desm-theme-colors, success);
+
+// typography settings
+$font-family-base: $desm-font-base;
+$headings-font-family: $desm-font-heading;
+
+// links
+$link-decoration: none;
+$link-hover-decoration: underline;
+
+// cards
+// $card-spacer-x: 1.25rem;
+$card-spacer-y: 0.5rem;
+$card-cap-padding-y: $card-spacer-y;
+$card-border-radius: rfs-value(8px);
+// $card-cap-padding-x: $card-spacer-x;
+
+// forms
+// $form-label-font-weight: 600; // would be good to use this eventually, but not all labels need to be bolder now
+// checkboxes
+$form-check-input-focus-border: rgba($primary-color, 0.5);
+$form-check-input-focus-box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.5);
+$form-check-input-checked-bg-color: $primary-color;
+$form-check-input-checked-border-color: $form-check-input-checked-bg-color;
+
+// tooltips
+$tooltip-color: $black;
+$tooltip-bg: $white;
+$tooltip-opacity: 1;
+
+.tooltip {
+  box-shadow: 1px 1px 4px 0px #00000040;
+}

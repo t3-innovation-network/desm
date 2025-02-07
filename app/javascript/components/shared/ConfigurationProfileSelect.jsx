@@ -1,15 +1,16 @@
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../contexts/AppContext';
+import Form from 'react-bootstrap/Form';
 import AlertNotice from './AlertNotice';
 import fetchConfigurationProfiles from '../../services/fetchConfigurationProfiles';
 import setConfigurationProfile from '../../services/setConfigurationProfile';
-import Loader from '../shared/Loader';
-import { i18n } from 'utils/i18n';
+import { i18n } from '../../utils/i18n';
 
 const ConfigurationProfileSelect = ({
   onChange,
   onSubmit,
   requestType,
+  children,
   // selected configuration profile id
   selectedConfigurationProfileId = null,
   // flag to set or don't set the current configuration profile if no selectedConfigurationProfileId is passed
@@ -33,30 +34,23 @@ const ConfigurationProfileSelect = ({
       : currentConfigurationProfile
   );
 
-  const handleChange = (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const configurationProfile = configurationProfiles.find(
       (p) => p.id.toString() === e.target.value
     );
+    if (!configurationProfile) return;
 
     setSelectedConfigurationProfile(configurationProfile);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
     // if onSubmit is passed, call it and return, usually it's passed when we don't want to change the current configuration profile
     // globally but just want to use it for a specific action
     if (onSubmit) {
-      onSubmit(selectedConfigurationProfile);
+      onSubmit(configurationProfile);
       return;
     }
     setSubmitting(true);
-
-    const configurationProfile = configurationProfiles.find(
-      (p) => p.id === selectedConfigurationProfile.id
-    );
-
-    await setConfigurationProfile(selectedConfigurationProfile.id);
-    setCurrentConfigurationProfile(selectedConfigurationProfile);
+    await setConfigurationProfile(configurationProfile.id);
+    setCurrentConfigurationProfile(configurationProfile);
     setLeadMapper(configurationProfile.leadMapper);
     setOrganization(configurationProfile.organization);
     setSubmitting(false);
@@ -66,11 +60,10 @@ const ConfigurationProfileSelect = ({
   const placeholderOptionText = loading
     ? 'Loading…'
     : configurationProfiles.length
-    ? 'Choose…'
-    : 'No data';
+      ? i18n.t('ui.select.configuration_profile.placeholder')
+      : 'No data';
 
-  const submitDisabled =
-    !configurationProfiles.length || !selectedConfigurationProfile || submitting;
+  const submitDisabled = !configurationProfiles.length || submitting;
 
   useEffect(() => {
     (async () => {
@@ -88,32 +81,25 @@ const ConfigurationProfileSelect = ({
   }, []);
 
   return configurationProfiles.length || loading ? (
-    <div className="card mb-3">
-      <div className="card-header">Choose Configuration Profile</div>
-      <div className="card-body">
-        <form className="form-inline" onSubmit={handleSubmit}>
-          <label className="mr-2" htmlFor="currentConfigurationProfile">
-            Current configuration profile:
-          </label>
-          <select
-            className="form-control mr-2"
-            disabled={loading || submitting}
-            id="currentConfigurationProfile"
-            onChange={handleChange}
-            value={selectedConfigurationProfile?.id}
-          >
-            <option value="">{placeholderOptionText}</option>
-            {configurationProfiles.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
-              </option>
-            ))}
-          </select>
-          <button className="btn btn-primary" disabled={submitDisabled}>
-            {loading ? <Loader noPadding smallSpinner /> : 'Submit'}
-          </button>
-        </form>
+    <div className="row mb-3">
+      <div className="col-12 col-md-6 col-lg-4">
+        <Form.Select
+          aria-label={i18n.t('ui.select.configuration_profile.aria_label')}
+          disabled={loading || submitDisabled}
+          value={selectedConfigurationProfile?.id}
+          id="currentConfigurationProfile"
+          size="lg"
+          onChange={handleSubmit}
+        >
+          <option value="">{placeholderOptionText}</option>
+          {configurationProfiles.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.name}
+            </option>
+          ))}
+        </Form.Select>
       </div>
+      {children}
     </div>
   ) : (
     <div className="w-100">

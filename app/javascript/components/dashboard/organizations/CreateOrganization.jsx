@@ -18,7 +18,7 @@ export default class CreateOrganization extends Component {
 
   dashboardPath = () => {
     return (
-      <div className="float-right">
+      <div className="float-end">
         <FontAwesomeIcon icon={faHome} />{' '}
         <span>
           <Link className="col-on-primary" to="/">
@@ -94,12 +94,12 @@ export default class CreateOrganization extends Component {
           <div className="card mt-5">
             <div className="card-header">
               <FontAwesomeIcon icon={faBuilding} />
-              <span className="pl-2 subtitle">Create Organization</span>
+              <span className="ps-2 subtitle">Create Organization</span>
             </div>
             <div className="card-body">
               <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
-                  <label>
+                  <label className="form-label">
                     Name
                     <span className="text-danger">*</span>
                   </label>
@@ -116,7 +116,7 @@ export default class CreateOrganization extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label>
+                  <label className="form-label">
                     Email
                     <span className="text-danger">*</span>
                   </label>

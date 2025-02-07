@@ -1,6 +1,6 @@
 import { camelCase } from 'lodash';
 import classNames from 'classnames';
-import { i18n } from 'utils/i18n';
+import { i18n } from '../../utils/i18n';
 import { pageRoutes } from '../../services/pageRoutes';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
@@ -33,14 +33,14 @@ const Stepper = ({ stepperStep, mapping = null }) => {
             to={path}
             className="indicator-stepnum indicator-stepnum__link d-block cursor-pointer"
           >
-            <span className="indicator-stepnum__num indicator-stepnum__num--link rounded-circle text-center mr-1">
+            <span className="indicator-stepnum__num indicator-stepnum__num--link rounded-circle text-center me-1">
               {step}
             </span>
             {i18n.t(`ui.mapping.step.${label}`)}
           </Link>
         ) : (
           <div className="indicator-stepnum">
-            <span className="indicator-stepnum__num indicator-stepnum__num--text mr-1">
+            <span className="indicator-stepnum__num indicator-stepnum__num--text me-1">
               {step}.
             </span>
             {i18n.t(`ui.mapping.step.${label}`)}
@@ -54,7 +54,7 @@ const Stepper = ({ stepperStep, mapping = null }) => {
     );
   };
   return (
-    <div className="row indicator">
+    <div className="row indicator gx-0 row-cols-auto">
       {renderStep(1, mapping?.id ? 'ready_to_upload' : 'new')}
       {renderStep(2, 'uploaded')}
       {renderStep(3, 'in_progress')}

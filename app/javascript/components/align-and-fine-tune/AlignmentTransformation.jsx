@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLeftRight, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { transformationAlignmentStore } from './stores/transformationAlignmentStore';
 import useDidMountEffect from '../../helpers/useDidMountEffect';
-import { i18n } from 'utils/i18n';
+import { i18n } from '../../utils/i18n';
 
 const AlignmentTransformation = (props) => {
   Modal.setAppElement('body');
@@ -59,7 +59,7 @@ const AlignmentTransformation = (props) => {
       <div className="card">
         <div className="card-header">
           <FontAwesomeIcon icon={faLeftRight} className="col-primary" />
-          <a className="float-right cursor-pointer" onClick={onClose}>
+          <a className="float-end cursor-pointer" onClick={onClose}>
             <FontAwesomeIcon icon={faTimes} />
           </a>
         </div>
@@ -67,7 +67,9 @@ const AlignmentTransformation = (props) => {
           {state.hasErrors && <AlertNotice message={state.errors} onClose={actions.clearErrors} />}
           <div className="row">
             <div className="col col-12 form-group">
-              <label>{i18n.t('ui.mapping.transformation.form.to.label')}</label>
+              <label className="form-label">
+                {i18n.t('ui.mapping.transformation.form.to.label')}
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -78,7 +80,9 @@ const AlignmentTransformation = (props) => {
               />
             </div>
             <div className="col col-12 form-group">
-              <label>{i18n.t('ui.mapping.transformation.form.from.label')}</label>
+              <label className="form-label">
+                {i18n.t('ui.mapping.transformation.form.from.label')}
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -91,7 +95,7 @@ const AlignmentTransformation = (props) => {
           <div className="row">
             <div className="col">
               <button
-                className="btn btn-dark mt-3 mr-3"
+                className="btn btn-dark mt-3 me-3"
                 onClick={handleSave}
                 disabled={!withChanges || state.loading}
               >

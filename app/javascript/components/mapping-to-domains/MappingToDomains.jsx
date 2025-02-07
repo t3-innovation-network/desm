@@ -102,7 +102,7 @@ const MappingToDomains = (props) => {
       <>
         <DoneDomainMapping />
         <button
-          className="btn btn-dark ml-3"
+          className="btn btn-dark ms-3"
           onClick={handleSaveChanges}
           disabled={!changesPerformed || savingChanges}
         >
@@ -139,8 +139,8 @@ const MappingToDomains = (props) => {
         onUpdateTerm={actions.onUpdateTerm}
         termId={termToEdit.id}
       />
-      <div className="container-fluid d-flex flex-column h-100">
-        <TopNav centerContent={navCenterOptions} />
+      <TopNav centerContent={navCenterOptions} />
+      <div className="container-fluid d-flex flex-column h-100 desm-content">
         {state.hasErrors ? (
           <AlertNotice message={state.errors} onClose={actions.clearErrors} />
         ) : null}
@@ -229,7 +229,7 @@ const MappingToDomains = (props) => {
                     </button>
                   </div>
                   <div className="col-6">
-                    <div className="form-check float-right">
+                    <div className="form-check float-end">
                       <input
                         className="form-check-input"
                         type="checkbox"

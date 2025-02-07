@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { pickBy } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import updateCP from '../../../../services/updateCP';
@@ -44,7 +44,7 @@ const MappingPredicates = () => {
     predicateStrongestMatch,
     structure: {
       ...configurationProfile.structure,
-      mappingPredicates: _.pickBy({
+      mappingPredicates: pickBy({
         description,
         name,
         origin,
@@ -141,9 +141,9 @@ const MappingPredicates = () => {
   return (
     <div className="col">
       <div className="mt-5">
-        <label htmlFor="name">
+        <label className="form-label" htmlFor="name">
           File Name
-          <span className="ml-1 text-danger">*</span>
+          <span className="ms-1 text-danger">*</span>
         </label>
         <div className="input-group input-group">
           <input
@@ -160,7 +160,9 @@ const MappingPredicates = () => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="version">Version</label>
+        <label className="form-label" htmlFor="version">
+          Version
+        </label>
         <div className="input-group input-group">
           <input
             id="version"
@@ -176,7 +178,9 @@ const MappingPredicates = () => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="description">Description</label>
+        <label className="form-label" htmlFor="description">
+          Description
+        </label>
         <div className="input-group input-group">
           <textarea
             id="description"
@@ -191,9 +195,9 @@ const MappingPredicates = () => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="origin">
+        <label className="form-label" htmlFor="origin">
           Origin (URL)
-          <span className="ml-1 text-danger">*</span>
+          <span className="ms-1 text-danger">*</span>
         </label>
         {urlEditable ? (
           <div className="input-group input-group">
@@ -209,7 +213,7 @@ const MappingPredicates = () => {
               required
             />
             <button
-              className="btn btn-dark ml-2"
+              className="btn btn-dark ms-2"
               onClick={handleFetchUrl}
               disabled={!origin}
               title="Fetch the concepts"
@@ -221,7 +225,7 @@ const MappingPredicates = () => {
           <div className="input-group input-group">
             <label>{origin}</label>
             <button
-              className="btn btn-dark ml-auto"
+              className="btn btn-dark ms-auto"
               onClick={() => setUrlEditable(true)}
               title="Edit the origin Url"
             >
@@ -233,7 +237,7 @@ const MappingPredicates = () => {
 
       {predicateLabels.length > 0 && (
         <div>
-          <p className="mt-5 font-weight-bold">👇 Please, select the strongest match</p>
+          <p className="mt-5 fw-bold">👇 Please, select the strongest match</p>
           <div className="form-group">
             {predicateLabels.map((concept, index) => {
               const { label, uri } = concept;

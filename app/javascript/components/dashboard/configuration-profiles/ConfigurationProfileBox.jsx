@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { capitalize } from 'lodash';
 import Loader from './../../shared/Loader';
 import EllipsisOptions from '../../shared/EllipsisOptions';
 import ConfirmDialog from '../../shared/ConfirmDialog';
@@ -13,7 +14,7 @@ import { camelizeKeys } from 'humps';
 export const CPBoxContainer = ({ action, children, icon, linkTo, sideBoxClass }) => (
   <div className="col-12 col-lg-6 col-xl-4 mb-3">
     <div className="card h-100">
-      <div className="row h-100 no-gutters">
+      <div className="row h-100 g-0">
         <div
           className={
             'col-md-4 cursor-pointer d-flex justify-content-center align-items-center ' +
@@ -70,18 +71,18 @@ const CardBody = (props) => {
 
   return (
     <div className="card-body">
-      <div className="row no-gutters">
+      <div className="row g-0">
         <div className="col-md-10">
           <Link className="col-on-primary" to={linkTo} style={{ textDecoration: 'none' }}>
             <h5 className="card-title">{configurationProfile.name}</h5>
           </Link>
           {processing && <Loader noPadding={true} cssClass={'float-over'} />}
           <p className="card-text mb-0" style={stateStyle(configurationProfile.state)}>
-            {_.capitalize(configurationProfile.state)}
+            {capitalize(configurationProfile.state)}
           </p>
           <p className="card-text mb-0">{totalAgents() + ' agent(s)'}</p>
           <p className="card-text">
-            <small className="text-muted">
+            <small className="text-body-secondary">
               {new Date(configurationProfile.createdAt).toLocaleString('en-US')}
             </small>
           </p>

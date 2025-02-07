@@ -22,14 +22,16 @@ import {
 import { AppContext } from '../../contexts/AppContext';
 import { pageRoutes } from '../../services/pageRoutes';
 import { FILTER_OPTIONS, specsListStore } from './stores/specsListStore';
-import { i18n } from 'utils/i18n';
+import { i18n } from '../../utils/i18n';
 
 const SpecsList = (_props) => {
   const { currentConfigurationProfile, organization } = useContext(AppContext);
   const [state, actions] = useLocalStore(() => specsListStore());
   const { mappings, filter, loading } = state;
 
-  useEffect(() => actions.fetchDataFromAPI(), [filter]);
+  useEffect(() => {
+    actions.fetchDataFromAPI();
+  }, [filter]);
 
   // Mark a 'mapped' mapping back to 'in-progress'
   const handleMarkToInProgress = (mappingId) =>
@@ -45,7 +47,7 @@ const SpecsList = (_props) => {
   const navCenterOptions = () => <TopNavOptions viewMappings={true} mapSpecification={true} />;
   const renderUndo = (mapping, fn) => (
     <button
-      className="btn btn-sm btn-dark ml-2"
+      className="btn btn-sm btn-dark ms-2"
       onClick={() => fn(mapping.id)}
       title={i18n.t(`ui.specifications.mapping.undo.${mapping.status}`)}
       disabled={state.isDisabled}
@@ -74,7 +76,7 @@ const SpecsList = (_props) => {
                   {renderUndo(mapping, handleMarkToInProgress)}
                   <Link
                     to={pageRoutes.mappingInProgress(mapping.id)}
-                    className="btn btn-sm btn-dark ml-2"
+                    className="btn btn-sm btn-dark ms-2"
                     title="Edit this mapping"
                   >
                     <FontAwesomeIcon icon={faPencilAlt} />
@@ -84,14 +86,14 @@ const SpecsList = (_props) => {
 
               <Link
                 to={pageRoutes.mappingsList(currentConfigurationProfile.id, mapping.domain)}
-                className="btn btn-sm btn-dark ml-2"
+                className="btn btn-sm btn-dark ms-2"
                 title="View this mapping"
               >
                 <FontAwesomeIcon icon={faEye} />
               </Link>
 
               <button
-                className="btn btn-sm btn-dark ml-2"
+                className="btn btn-sm btn-dark ms-2"
                 disabled={state.isDisabled}
                 onClick={() => actions.downloadExportedMappings({ format: 'jsonld', mapping })}
                 title="Export as JSON-LD"
@@ -100,7 +102,7 @@ const SpecsList = (_props) => {
               </button>
 
               <button
-                className="btn btn-sm btn-dark ml-2"
+                className="btn btn-sm btn-dark ms-2"
                 disabled={state.isDisabled}
                 onClick={() => actions.downloadExportedMappings({ format: 'ttl', mapping })}
                 title="Export as Turtle"
@@ -109,7 +111,7 @@ const SpecsList = (_props) => {
               </button>
 
               <button
-                className="btn btn-sm btn-dark ml-2"
+                className="btn btn-sm btn-dark ms-2"
                 disabled={state.isDisabled}
                 onClick={() => actions.downloadExportedMappings({ format: 'csv', mapping })}
                 title="Export as CSV"
@@ -129,7 +131,7 @@ const SpecsList = (_props) => {
               {fromSameOrg && (
                 <Link
                   to={pageRoutes.mappingByStatus(mapping.id, mapping.status)}
-                  className="btn btn-sm ml-2 bg-col-primary col-background"
+                  className="btn btn-sm ms-2 bg-col-primary col-background"
                   title="Resume, continue mapping"
                 >
                   <FontAwesomeIcon icon={faLayerGroup} />
@@ -140,7 +142,7 @@ const SpecsList = (_props) => {
           {fromSameOrg && (
             <Link
               to={pageRoutes.mappingPropertiesList(mapping.id)}
-              className="btn btn-sm btn-dark ml-2"
+              className="btn btn-sm btn-dark ms-2"
               title="Edit mapping's properties. You can edit each property here."
             >
               <FontAwesomeIcon icon={faFilePen} />
@@ -149,7 +151,7 @@ const SpecsList = (_props) => {
           {fromSameOrg && (
             <button
               onClick={() => actions.confirmRemove(mapping.id)}
-              className="btn btn-sm btn-dark ml-2"
+              className="btn btn-sm btn-dark ms-2"
               title="Remove this mapping"
               disabled={state.isDisabled}
             >
@@ -188,7 +190,7 @@ const SpecsList = (_props) => {
                 <th scope="col">Author</th>
                 <th scope="col">
                   <select
-                    className="form-control"
+                    className="form-select"
                     value={filter}
                     onChange={(e) => actions.setFilter(e.target.value)}
                   >
@@ -227,15 +229,17 @@ const SpecsList = (_props) => {
   };
 
   return (
-    <div className="container-fluid">
+    <>
       <TopNav centerContent={navCenterOptions} />
-      <div className="row">
-        <div className="col p-lg-5 pt-5">
-          <h1>My Specifications</h1>
-          {renderTable()}
+      <div className="container-fluid desm-content">
+        <div className="row">
+          <div className="col p-lg-5 pt-5">
+            <h1>My Specifications</h1>
+            {renderTable()}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

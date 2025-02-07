@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { isUndefined } from 'lodash';
 import {
   unsetFiles,
   unsetFilteredFile,
@@ -88,7 +89,7 @@ const MappingPreview = (props) => {
       dispatch(setMappingFormErrors([response.error]));
     }
 
-    return !_.isUndefined(response.error);
+    return !isUndefined(response.error);
   };
 
   /**
@@ -200,7 +201,7 @@ const MappingPreview = (props) => {
 
         /// Do not continue if we didn't manage to get the vocabulary name, since this
         /// will generate an error in the backend.
-        if (vName === '' || _.isUndefined(vName)) return;
+        if (vName === '' || isUndefined(vName)) return;
 
         if (await handleSaveOneVocabulary(vName, vocab)) {
           cantSaved++;
@@ -266,12 +267,12 @@ const MappingPreview = (props) => {
                     <div className="col-6 align-self-center">
                       <strong>Preview your upload</strong>
                     </div>
-                    <div className="col-6 text-right">
+                    <div className="col-6 text-end">
                       <button className="btn btn-dark" onClick={unsetFormValues}>
                         Re-import
                       </button>
                       <button
-                        className="btn bg-col-primary col-background ml-2"
+                        className="btn bg-col-primary col-background ms-2"
                         disabled={creatingSpec || !filteredFile || !propertiesCount}
                         onClick={handleLooksGood}
                         title={
@@ -289,7 +290,7 @@ const MappingPreview = (props) => {
               <div className="row mb-3">
                 <div className="col">
                   <label
-                    className="col-primary cursor-pointer float-right"
+                    className="col-primary cursor-pointer float-end"
                     title="Add a new vocabulary"
                     onClick={() => setAddingVocabulary(true)}
                   >

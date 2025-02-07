@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { isString, isEmpty, isNull, isObject, isArray } from 'lodash';
 
 /**
  * Generate a name for the vocabulary
@@ -47,7 +47,7 @@ export const graphMainNode = (graph) => {
  */
 export const validVocabulary = (vocab) => {
   /// Ensure we deal with a JSON (object, not string)
-  if (_.isString(vocab)) vocab = JSON.parse(vocab);
+  if (isString(vocab)) vocab = JSON.parse(vocab);
 
   let errors = [];
 
@@ -84,7 +84,7 @@ export const validVocabulary = (vocab) => {
  * @param {Object} vocab
  */
 export const countConcepts = (vocab) => {
-  if (_.isEmpty(vocab)) {
+  if (isEmpty(vocab)) {
     return [];
   }
 
@@ -122,16 +122,16 @@ export const countConcepts = (vocab) => {
  * @param {String} attr
  */
 export const readNodeAttribute = (node, attr) => {
-  if (_.isNull(node)) return '';
+  if (isNull(node)) return '';
 
   /// Return straight if the node itself is a String
-  if (_.isString(node)) return node;
+  if (isString(node)) return node;
 
   let key = findNodeKey(node, attr);
   if (!key) return;
 
   /// Return straight if the attribute is a String
-  if (_.isString(node[key])) return node[key];
+  if (isString(node[key])) return node[key];
 
   /// We are reading an attribute that's not a String. It contains one more
   /// levels of nesting.  It can be the i18n management:
@@ -139,7 +139,7 @@ export const readNodeAttribute = (node, attr) => {
   ///
   /// So our solution is to read the its attributes by using recursion, until one gives
   /// us a string, firstly prioritizing "@value" and "@id"
-  if (_.isObject(node[key])) {
+  if (isObject(node[key])) {
     /// If we recognize the "@value" key, we can return that
     if (node[key]['@value']) return readNodeAttribute(node[key], '@value');
     /// If we recognize the "@id" key, we can return that
@@ -152,9 +152,9 @@ export const readNodeAttribute = (node, attr) => {
 
   /// If it's an array, return the first element assuming it's a string. If it
   /// is not a string, just return an empty string.
-  if (_.isArray(node[key])) {
+  if (isArray(node[key])) {
     var [firstNode] = node[key];
-    return _.isString(firstNode) ? firstNode : '';
+    return isString(firstNode) ? firstNode : '';
   }
 };
 
@@ -167,7 +167,7 @@ export const readNodeAttribute = (node, attr) => {
 const findNodeKey = (node, attr) => {
   var objectKeys = Object.keys(node).filter((k) => k.includes(attr));
 
-  return !_.isEmpty(objectKeys) ? objectKeys[0] : null;
+  return !isEmpty(objectKeys) ? objectKeys[0] : null;
 };
 
 /**
@@ -179,5 +179,5 @@ const findNodeKey = (node, attr) => {
 const nodeTypes = (node) => {
   let type = node['type'] || node['@type'];
 
-  return _.isArray(type) ? type : [type];
+  return isArray(type) ? type : [type];
 };

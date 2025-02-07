@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { isUndefined } from 'lodash';
 import updateCP from '../../../../services/updateCP';
 import {
   setCurrentConfigurationProfile,
@@ -15,7 +16,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { downloadFile } from '../../../../helpers/Export';
 import fetchMappingExportProfile from '../../../../services/fetchMappingExportProfile';
-import _ from 'lodash';
 import { showError } from '../../../../helpers/Messages';
 import useDidMountEffect from '../../../../helpers/useDidMountEffect';
 
@@ -135,9 +135,9 @@ const AbstractClasses = () => {
   return (
     <div className="col">
       <div className="mt-5">
-        <label htmlFor="name">
+        <label className="form-label" htmlFor="name">
           File Name
-          <span className="ml-1 text-danger">*</span>
+          <span className="ms-1 text-danger">*</span>
         </label>
         <div className="input-group input-group">
           <input
@@ -154,7 +154,9 @@ const AbstractClasses = () => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="version">Version</label>
+        <label className="form-label" htmlFor="version">
+          Version
+        </label>
         <div className="input-group input-group">
           <input
             id="version"
@@ -170,7 +172,9 @@ const AbstractClasses = () => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="description">Description</label>
+        <label className="form-label" htmlFor="description">
+          Description
+        </label>
         <div className="input-group input-group">
           <textarea
             id="description"
@@ -185,9 +189,9 @@ const AbstractClasses = () => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="origin">
+        <label className="form-label" htmlFor="origin">
           Origin (URL)
-          <span className="ml-1 text-danger">*</span>
+          <span className="ms-1 text-danger">*</span>
         </label>
         {urlEditable ? (
           <div className="input-group input-group">
@@ -203,7 +207,7 @@ const AbstractClasses = () => {
               required
             />
             <button
-              className="btn btn-dark ml-2"
+              className="btn btn-dark ms-2"
               onClick={handleFetchUrl}
               disabled={!origin}
               title="Fetch the concepts"
@@ -213,9 +217,9 @@ const AbstractClasses = () => {
           </div>
         ) : (
           <div className="input-group input-group">
-            <label>{origin}</label>
+            <label className="form-label">{origin}</label>
             <button
-              className="btn btn-dark ml-auto"
+              className="btn btn-dark ms-auto"
               onClick={() => setUrlEditable(true)}
               title="Edit the origin Url"
             >
@@ -223,7 +227,7 @@ const AbstractClasses = () => {
             </button>
           </div>
         )}
-        <small className="col-on-primary-light font-italic">
+        <small className="col-on-primary-light fst-italic">
           Please be sure the content is in one of the following formats: CSV, JSON, JSONLD, RDF or
           XML
         </small>
@@ -251,7 +255,7 @@ const AbstractClassesTable = ({ abstractClassesLabels, cpId }) => {
       showError(response.error);
     }
 
-    return !_.isUndefined(response.error);
+    return !isUndefined(response.error);
   };
 
   /**
@@ -284,7 +288,7 @@ const AbstractClassesTable = ({ abstractClassesLabels, cpId }) => {
                 <td>{concept['label']}</td>
                 <td>
                   <button
-                    className="btn btn-sm btn-dark ml-2"
+                    className="btn btn-sm btn-dark ms-2"
                     onClick={() => handleGetMappingExportProfile(concept['label'])}
                     title="Export corresponding mapping export profile for this abstract class"
                   >

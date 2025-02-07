@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { isEmpty } from 'lodash';
 import FileInfo from '../mapping/FileInfo';
 import { validVocabulary, vocabName, countConcepts } from '../../helpers/Vocabularies';
 import AlertNotice from '../shared/AlertNotice';
@@ -152,7 +153,7 @@ const UploadVocabulary = (props) => {
     setErrors([]);
     let validity = validVocabulary(vocab);
 
-    if (!_.isEmpty(validity.errors)) {
+    if (!isEmpty(validity.errors)) {
       setErrors(validity.errors);
     }
 
@@ -200,11 +201,9 @@ const UploadVocabulary = (props) => {
     return (
       <div className="form-group">
         <div className="input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text" id="upload-help">
-              Upload
-            </span>
-          </div>
+          <span className="input-group-text" id="upload-help">
+            Upload
+          </span>
           <div className="custom-file">
             <input
               type="file"
@@ -228,7 +227,7 @@ const UploadVocabulary = (props) => {
         <div className="row">
           <div className="col">
             <label
-              className="mt-3 mb-3 col-primary cursor-pointer float-right"
+              className="mt-3 mb-3 col-primary cursor-pointer float-end"
               onClick={() => setUploadMode(uploadModes.FETCH_BY_URL)}
             >
               Fetch by URL
@@ -245,7 +244,9 @@ const UploadVocabulary = (props) => {
   const URLUploadForm = () => {
     return (
       <div className="form-group">
-        <label htmlFor="vocabulary-url-input">Vocabulary URL</label>
+        <label className="form-label" htmlFor="vocabulary-url-input">
+          Vocabulary URL
+        </label>
         <div className="row">
           <div className="col-10">
             <input
@@ -268,11 +269,11 @@ const UploadVocabulary = (props) => {
             </a>
           </div>
         </div>
-        <small className="form-text text-muted">It must be a valid URL</small>
+        <small className="form-text text-body-secondary">It must be a valid URL</small>
         <div className="row">
           <div className="col">
             <label
-              className="mt-3 mb-3 col-primary cursor-pointer float-right"
+              className="mt-3 mb-3 col-primary cursor-pointer float-end"
               onClick={() => setUploadMode(uploadModes.FILE_UPLOAD)}
             >
               Upload a file from your system
@@ -318,7 +319,7 @@ const UploadVocabulary = (props) => {
               <h4>Uploading Vocabulary</h4>
             </div>
             <div className="col-2">
-              <a className="float-right cursor-pointer" onClick={props.onRequestClose}>
+              <a className="float-end cursor-pointer" onClick={props.onRequestClose}>
                 <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
               </a>
             </div>
@@ -328,7 +329,7 @@ const UploadVocabulary = (props) => {
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>
+              <label className="form-label">
                 Name
                 <span className="text-danger">*</span>
               </label>
@@ -347,16 +348,16 @@ const UploadVocabulary = (props) => {
 
             {uploadMode == uploadModes.FILE_UPLOAD && <FileData />}
 
-            {uploadMode == uploadModes.FETCH_BY_URL && !_.isEmpty(fetchedVocabulary) && (
+            {uploadMode == uploadModes.FETCH_BY_URL && !isEmpty(fetchedVocabulary) && (
               <FetchedVocabularyPreview />
             )}
 
             <div className="row">
               <div className="col">
                 <button
-                  className="btn btn-dark float-right mt-3"
+                  className="btn btn-dark float-end mt-3"
                   type="submit"
-                  disabled={!fileContent && _.isEmpty(fetchedVocabulary)}
+                  disabled={!fileContent && isEmpty(fetchedVocabulary)}
                 >
                   Upload
                 </button>

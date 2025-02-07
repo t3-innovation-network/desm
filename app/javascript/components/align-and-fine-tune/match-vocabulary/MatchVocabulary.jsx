@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import Modal from 'react-modal';
+import { isUndefined, maxBy } from 'lodash';
 import fetchAlignmentVocabulary from '../../../services/fetchAlignmentVocabulary';
 import fetchVocabularyConcepts from '../../../services/fetchVocabularyConcepts';
 import updateAlignmentVocabularyConcept from '../../../services/updateAlignmentVocabularyConcept';
@@ -162,8 +163,8 @@ export default class MatchVocabulary extends Component {
     const { alignmentConcepts, spineConcepts } = this.state;
     const { predicates } = this.props;
 
-    let nextSpineConceptId = _.maxBy(spineConcepts, 'id').id + 1;
-    let nextAlignmentId = _.maxBy(alignmentConcepts, 'id').id + 1;
+    let nextSpineConceptId = maxBy(spineConcepts, 'id').id + 1;
+    let nextAlignmentId = maxBy(alignmentConcepts, 'id').id + 1;
 
     // Add a synthetic concept to have the chance to match concepts to
     // the "No Match" predicate option.
@@ -199,7 +200,7 @@ export default class MatchVocabulary extends Component {
     }
     /// It will return a truthy value (depending no the existence
     /// of the errors on the response object)
-    return !_.isUndefined(response.error);
+    return !isUndefined(response.error);
   }
 
   /**
@@ -379,7 +380,7 @@ export default class MatchVocabulary extends Component {
             </div>
           </div>
           <div className="col-4">
-            <div className="float-left">
+            <div className="float-start">
               <button
                 className="btn btn-dark"
                 onClick={this.addSyntheticConceptRow}
@@ -388,7 +389,7 @@ export default class MatchVocabulary extends Component {
                 + Add Synthetic
               </button>
             </div>
-            <div className="float-right">
+            <div className="float-end">
               {this.filteredMappingConcepts({ pickSelected: true }).length +
                 ' ' +
                 Pluralize('concept', this.filteredMappingConcepts({ pickSelected: true }).length) +
@@ -443,7 +444,7 @@ export default class MatchVocabulary extends Component {
                           (alignment) => alignment.spineConceptId === concept.id
                         );
 
-                        return !_.isUndefined(_alignment) ? (
+                        return !isUndefined(_alignment) ? (
                           <SpineConceptRow
                             key={concept.id}
                             alignment={_alignment}

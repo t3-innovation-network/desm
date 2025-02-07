@@ -59,9 +59,9 @@ const CPMetaData = () => {
   return (
     <div className="col">
       <div className="mt-5">
-        <label htmlFor="name">
+        <label className="form-label" htmlFor="name">
           Profile Name
-          <span className="ml-1 text-danger">*</span>
+          <span className="ms-1 text-danger">*</span>
         </label>
         <div className="input-group input-group">
           <input
@@ -82,7 +82,9 @@ const CPMetaData = () => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="description">Profile Description</label>
+        <label className="form-label" htmlFor="description">
+          Profile Description
+        </label>
         <div className="input-group input-group">
           <textarea
             id="description"
@@ -100,7 +102,9 @@ const CPMetaData = () => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="createdAt">Date Created</label>
+        <label className="form-label" htmlFor="createdAt">
+          Date Created
+        </label>
         <div className="input-group input-group">
           <input
             id="createdAt"
@@ -117,7 +121,9 @@ const CPMetaData = () => {
       </div>
 
       <div className="mt-5">
-        <label htmlFor="updatedAt">Date Last Modified</label>
+        <label className="form-label" htmlFor="updatedAt">
+          Date Last Modified
+        </label>
         <div className="input-group input-group">
           <input
             id="updatedAt"

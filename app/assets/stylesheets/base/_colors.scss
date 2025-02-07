@@ -13,3 +13,58 @@ $dashboard-background-color-light: #efefef;
 $dashboard-background-color-highlight: #2d9bf0;
 $dashboard-background-color-highlight2: #a9c9e9;
 $warning-color: #ffc107;
+$white: #fff;
+$black: #000;
+
+// desm theme colors
+$desm-theme-colors: (
+  // theme color (derived from bootstrap)
+  primary: #0d6efd,
+  secondary: #6c757d,
+  // desm theme colors
+  desm-primary: #dc3545,
+  red: #dc3545,
+  success: #28a745,
+  gray-dark: #343a40,
+  bg-dark: $background-color-dark
+);
+
+// desm predicate colors
+$desm-predicate-colors: (
+  dark-blue: (
+    bg: #00008b,
+    text: $white,
+  ),
+  dark-green: (
+    bg: #005600,
+    text: $white,
+  ),
+  light-blue: (
+    bg: #add8e6,
+    text: $black,
+  ),
+  lime-green: (
+    bg: #28a745,
+    text: $white,
+  ),
+  orange: (
+    bg: #ffa500,
+    text: $white,
+  ),
+  red: (
+    bg: #dc3545,
+    text: $white,
+  ),
+  pink: (
+    bg: #ff4c23,
+    text: $white,
+  ),
+  yellow: (
+    bg: #c3c300,
+    text: $white,
+  ),
+  unset: (
+    bg: unset,
+    text: $black,
+  ),
+);

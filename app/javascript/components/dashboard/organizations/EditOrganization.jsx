@@ -24,7 +24,7 @@ export default class EditOrganization extends Component {
 
   dashboardPath = () => {
     return (
-      <div className="float-right">
+      <div className="float-end">
         <FontAwesomeIcon icon={faHome} />{' '}
         <span>
           <Link className="col-on-primary" to="/">
@@ -132,9 +132,9 @@ export default class EditOrganization extends Component {
         <div className="card mt-5">
           <div className="card-header">
             <FontAwesomeIcon icon={faBuilding} />
-            <span className="pl-2 subtitle">Organization {organization.name}</span>
+            <span className="ps-2 subtitle">Organization {organization.name}</span>
             <button
-              className="btn btn-dark float-right"
+              className="btn btn-dark float-end"
               title="Delete this organization"
               onClick={() => {
                 this.deleteOrganizationAPI();
@@ -146,14 +146,14 @@ export default class EditOrganization extends Component {
           <div className="card-body">
             <>
               <div className="mandatory-fields-notice">
-                <small className="form-text text-muted">
+                <small className="form-text text-body-secondary">
                   Fields with <span className="text-danger">*</span> are mandatory!
                 </small>
               </div>
 
               <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
-                  <label>
+                  <label className="form-label">
                     Name
                     <span className="text-danger">*</span>
                   </label>
@@ -170,7 +170,7 @@ export default class EditOrganization extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label>
+                  <label className="form-label">
                     Email
                     <span className="text-danger">*</span>
                   </label>

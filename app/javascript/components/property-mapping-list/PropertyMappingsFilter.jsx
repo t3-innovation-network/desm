@@ -1,5 +1,47 @@
-import { Component } from 'react';
-import HoverableLabel from '../shared/HoverableLabel';
+import classNames from 'classnames';
+
+const CheckBoxOptions = ({
+  data,
+  selectedData,
+  onChange,
+  onSelected,
+  withBorder,
+  fLabel,
+  prefix = '',
+}) => {
+  const clsBlock = classNames({ 'border-bottom border-dark-subtle mb-3': withBorder });
+  if (!data.length) {
+    return <div className={clsBlock}>No data available</div>;
+  }
+  return (
+    <div className={clsBlock}>
+      <button
+        className="btn btn-link p-0 link-desm-primary form-label mb-2"
+        onClick={() => {
+          !selectedData.length ? onSelected(data) : onSelected([]);
+        }}
+      >
+        {!selectedData.length ? 'Show All' : 'Hide All'}
+      </button>
+
+      {data.map((d) => (
+        <div className="form-check" key={d.id}>
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id={`chk${prefix}-${d.id}`}
+            checked={selectedData.some((s) => s.id === d.id)}
+            onChange={(e) => onChange(e.target.value)}
+            value={d.id}
+          />
+          <label className="form-check-label cursor-pointer" htmlFor={`chk${prefix}-${d.id}`}>
+            {fLabel(d)}
+          </label>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 /**
  * Props
@@ -13,325 +55,99 @@ import HoverableLabel from '../shared/HoverableLabel';
  * @param {Array} selectedPredicates
  * @param {Array} selectedSpineSpecifications
  */
-export default class PropertyMappingsFilter extends Component {
-  /**
-   * State definition
-   */
-  state = {
-    showFilters: false,
+const PropertyMappingsFilter = (props) => {
+  const {
+    specifications,
+    onAlignmentSpecificationSelected,
+    onPredicateSelected,
+    onSpineSpecificationSelected,
+    predicates,
+    selectedAlignmentSpecifications,
+    selectedDomain,
+    selectedPredicates,
+    selectedSpineSpecifications,
+    withBorder = false,
+  } = props;
+
+  const newDataFor = (selectedData, data, value) => {
+    const id = parseInt(value);
+    const isSelected = selectedData.some((s) => s.id === id);
+    return isSelected
+      ? selectedData.filter((s) => s.id !== id)
+      : [...selectedData, data.find((s) => s.id === id)];
   };
 
-  /**
-   * Show/Hide the Filter
-   */
-  ToggleFilters = () => {
-    const { showFilters } = this.state;
+  const handleSpineOrganizationSelected = (specId) => {
+    onSpineSpecificationSelected(newDataFor(selectedSpineSpecifications, specifications, specId));
+  };
 
-    return (
-      <div className="mb-3" onClick={() => this.setState({ showFilters: !showFilters })}>
-        <button className="btn btn-dark mr-3">{showFilters ? '▲' : '▼'}</button>
-        <label className="cursor-pointer non-selectable">
-          {(showFilters ? 'Hide' : 'Show') + ' Filters'}
-        </label>
+  const handleAlignmentOrganizationSelected = (specId) => {
+    onAlignmentSpecificationSelected(
+      newDataFor(selectedAlignmentSpecifications, specifications, specId)
+    );
+  };
+
+  const handlePredicateSelected = (predicateId) => {
+    onPredicateSelected(newDataFor(selectedPredicates, predicates, predicateId));
+  };
+
+  const SpineOrganizationOptions = () => (
+    <CheckBoxOptions
+      data={specifications}
+      selectedData={selectedSpineSpecifications}
+      onChange={handleSpineOrganizationSelected}
+      onSelected={onSpineSpecificationSelected}
+      withBorder={withBorder}
+      fLabel={(spec) => `${spec.name} ${spec.version ? `(${spec.version})` : ''}`}
+      prefix="-sp"
+    />
+  );
+
+  const AlignmentOrganizationOptions = () => (
+    <CheckBoxOptions
+      data={specifications}
+      selectedData={selectedAlignmentSpecifications}
+      onChange={handleAlignmentOrganizationSelected}
+      onSelected={onAlignmentSpecificationSelected}
+      withBorder={withBorder}
+      fLabel={(spec) => `${spec.name} ${spec.version ? `(${spec.version})` : ''}`}
+      prefix="-al"
+    />
+  );
+
+  const AlignmentOptions = () => (
+    <CheckBoxOptions
+      data={predicates}
+      selectedData={selectedPredicates}
+      onChange={handlePredicateSelected}
+      onSelected={onPredicateSelected}
+      withBorder={withBorder}
+      fLabel={(predicate) => predicate.pref_label}
+      prefix="-opt"
+    />
+  );
+
+  return (
+    <div className="row">
+      <div className="col-12">
+        <span className="fs-5">Synthetic Spine</span>
+        <br />
+        <span className="form-label text-desm-primary">{selectedDomain.name}</span>
       </div>
-    );
-  };
-
-  /**
-   * Actions when a user selects an specification from the spine specifications filter
-   *
-   * @param {Integer} specId
-   */
-  handleSpineOrganizationSelected = (specId) => {
-    const {
-      onSpineSpecificationSelected,
-      specifications,
-      selectedSpineSpecifications,
-    } = this.props;
-
-    const isSelected = selectedSpineSpecifications.some((s) => s.id == specId);
-
-    const tempselectedSpineSpecifications = isSelected
-      ? selectedSpineSpecifications.filter((s) => s.id != specId)
-      : [...selectedSpineSpecifications, specifications.find((s) => s.id == specId)];
-
-    onSpineSpecificationSelected(tempselectedSpineSpecifications);
-  };
-
-  /**
-   * Actions when a user selects an specification from the spine specifications filter
-   *
-   * @param {Integer} specId
-   */
-  handleAlignmentOrganizationSelected = (specId) => {
-    const {
-      onAlignmentSpecificationSelected,
-      specifications,
-      selectedAlignmentSpecifications,
-    } = this.props;
-
-    const isSelected = selectedAlignmentSpecifications.some((s) => s.id == specId);
-
-    const tempselectedAlignmentSpecifications = isSelected
-      ? selectedAlignmentSpecifications.filter((s) => s.id != specId)
-      : [...selectedAlignmentSpecifications, specifications.find((s) => s.id == specId)];
-
-    onAlignmentSpecificationSelected(tempselectedAlignmentSpecifications);
-  };
-
-  /**
-   * Actions when a user selects a predicate from the filter
-   *
-   * @param {Integer} predicateId
-   */
-  handlePredicateSelected = (predicateId) => {
-    const { onPredicateSelected, predicates, selectedPredicates } = this.props;
-
-    let isSelected = selectedPredicates.some((sPredicate) => sPredicate.id == predicateId);
-
-    let tempSelectedPredicates;
-    if (isSelected) {
-      tempSelectedPredicates = selectedPredicates.filter(
-        (sPredicate) => sPredicate.id != predicateId
-      );
-    } else {
-      tempSelectedPredicates = [
-        ...selectedPredicates,
-        predicates.find((sPredicate) => sPredicate.id == predicateId),
-      ];
-    }
-
-    onPredicateSelected(tempSelectedPredicates);
-  };
-
-  /**
-   * The options to select on specification to show spines
-   */
-  SpineOrganizationOptions = () => {
-    const {
-      specifications,
-      selectedSpineSpecifications,
-      onSpineSpecificationSelected,
-    } = this.props;
-
-    return (
-      <>
-        <label
-          className="col-primary cursor-pointer non-selectable mb-3"
-          onClick={() => {
-            !selectedSpineSpecifications.length
-              ? onSpineSpecificationSelected(specifications)
-              : onSpineSpecificationSelected([]);
-          }}
-        >
-          {!selectedSpineSpecifications.length ? 'Show All' : 'Hide All'}
-        </label>
-
-        {specifications.map((spec) => {
-          return (
-            <div className="custom-control custom-checkbox mb-3" key={spec.id}>
-              <input
-                type="checkbox"
-                className="custom-control-input desm-custom-control-input"
-                id={`spec-chk-${spec.id}`}
-                checked={selectedSpineSpecifications.some((sOrg) => sOrg.id === spec.id)}
-                onChange={(e) => this.handleSpineOrganizationSelected(e.target.value)}
-                value={spec.id}
-              />
-              <label
-                className="custom-control-label cursor-pointer"
-                htmlFor={`spec-chk-${spec.id}`}
-              >
-                {spec.name} {spec.version ? `(${spec.version})` : ''}
-              </label>
-            </div>
-          );
-        })}
-      </>
-    );
-  };
-
-  /**
-   * The options to select on specification to show alignments
-   */
-  AlignmentOrganizationOptions = () => {
-    const {
-      specifications,
-      selectedAlignmentSpecifications,
-      onAlignmentSpecificationSelected,
-    } = this.props;
-
-    return (
-      <>
-        <label
-          className="col-primary cursor-pointer non-selectable mb-3"
-          onClick={() => {
-            !selectedAlignmentSpecifications.length
-              ? onAlignmentSpecificationSelected(specifications)
-              : onAlignmentSpecificationSelected([]);
-          }}
-        >
-          {!selectedAlignmentSpecifications.length ? 'Show All' : 'Hide All'}
-        </label>
-
-        {specifications.map((spec) => {
-          return (
-            <div className="custom-control custom-checkbox mb-3" key={spec.id}>
-              <input
-                type="checkbox"
-                className="custom-control-input desm-custom-control-input"
-                id={`al-spec-chk-${spec.id}`}
-                checked={selectedAlignmentSpecifications.some((s) => s.id === spec.id)}
-                onChange={(e) => this.handleAlignmentOrganizationSelected(e.target.value)}
-                value={spec.id}
-              />
-              <label
-                className="custom-control-label cursor-pointer"
-                htmlFor={`al-spec-chk-${spec.id}`}
-              >
-                {spec.name} {spec.version ? `(${spec.version})` : ''}
-              </label>
-            </div>
-          );
-        })}
-      </>
-    );
-  };
-
-  /**
-   * The options to list in the filter for alignments
-   */
-  AlignmentOptions = () => {
-    const { predicates, selectedPredicates, onPredicateSelected } = this.props;
-
-    return (
-      <>
-        <label
-          className="col-primary cursor-pointer non-selectable mb-3"
-          onClick={() => {
-            !selectedPredicates.length ? onPredicateSelected(predicates) : onPredicateSelected([]);
-          }}
-        >
-          {!selectedPredicates.length ? 'Show All' : 'Hide All'}
-        </label>
-
-        {predicates.map((predicate) => {
-          return (
-            <div className="custom-control custom-checkbox mb-3" key={predicate.id}>
-              <input
-                type="checkbox"
-                className="custom-control-input desm-custom-control-input"
-                id={'pred-chk-' + predicate.id}
-                checked={selectedPredicates.some((sPredicate) => sPredicate.id === predicate.id)}
-                onChange={(e) => this.handlePredicateSelected(e.target.value)}
-                value={predicate.id}
-              />
-              <label
-                className="custom-control-label cursor-pointer"
-                htmlFor={'pred-chk-' + predicate.id}
-              >
-                {predicate.pref_label}
-              </label>
-            </div>
-          );
-        })}
-      </>
-    );
-  };
-
-  render() {
-    /**
-     * Elements from state
-     */
-    const { showFilters } = this.state;
-    /**
-     * Elements from props
-     */
-    const { selectedDomain } = this.props;
-
-    return showFilters ? (
-      /// EXPANDED FILTERS
-      <div className="row top-border-strong bg-col-secondary">
-        <div className="col-2 mt-3">
-          <this.ToggleFilters />
-          <div className="card mt-5">
-            <div className="card-body">
-              <strong>Synthetic Spine</strong>
-              <div>
-                <label className="col-primary">
-                  <strong>{selectedDomain.name}</strong>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-3 mt-3">
-          <div className="card borderless">
-            <div className="card-header bottom-borderless bg-col-secondary">
-              <label className="non-selectable">
-                <strong>Show Spine Specifications</strong>
-              </label>
-            </div>
-            <div className="card-body bg-col-secondary">
-              <this.SpineOrganizationOptions />
-            </div>
-          </div>
-        </div>
-        <div className="col-3 mt-3">
-          <div className="card borderless">
-            <div className="card-header bottom-borderless bg-col-secondary">
-              <label className="non-selectable">
-                <strong>Show Alignments Specifications</strong>
-              </label>
-            </div>
-            <div className="card-body bg-col-secondary">
-              <this.AlignmentOrganizationOptions />
-            </div>
-          </div>
-        </div>
-        <div className="col-3 mt-3">
-          <div className="card borderless">
-            <div className="card-header bottom-borderless bg-col-secondary">
-              <label className="non-selectable">
-                <strong>Show Alignments</strong>
-              </label>
-            </div>
-            <div className="card-body bg-col-secondary">
-              <this.AlignmentOptions />
-            </div>
-          </div>
-        </div>
+      <div className="col-12 mt-3">
+        <label className="form-label fs-5">Show Spine Specifications</label>
+        <SpineOrganizationOptions />
       </div>
-    ) : (
-      /// END EXPANDED FILTERS
-      /// SHRINKED FILTERS
-      <div className="row top-border-strong bg-col-secondary">
-        <div className="col-2 mt-3">
-          <this.ToggleFilters />
-        </div>
-        <div className="col-3 mt-3">
-          <HoverableLabel
-            label={'Show Spine Specifications'}
-            labelCSSClass={'bg-col-secondary'}
-            content={<this.SpineOrganizationOptions />}
-          />
-        </div>
-        <div className="col-3 mt-3">
-          <HoverableLabel
-            label={'Show Alignments Specifications'}
-            labelCSSClass={'bg-col-secondary'}
-            content={<this.AlignmentOrganizationOptions />}
-          />
-        </div>
-        <div className="col-3 mt-3">
-          <HoverableLabel
-            label={'Show Alignments'}
-            labelCSSClass={'bg-col-secondary'}
-            content={<this.AlignmentOptions />}
-          />
-        </div>
+      <div className="col-12 mt-3">
+        <label className="form-label fs-5">Show Alignments Specifications</label>
+        <AlignmentOrganizationOptions />
       </div>
-      /// END SHRINKED FILTERS
-    );
-  }
-}
+      <div className="col-12 mt-3">
+        <label className="form-label fs-5">Show Alignments</label>
+        <AlignmentOptions />
+      </div>
+    </div>
+  );
+};
+
+export default PropertyMappingsFilter;

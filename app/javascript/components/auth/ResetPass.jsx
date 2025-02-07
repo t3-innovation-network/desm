@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { isEmpty } from 'lodash';
 import TopNav from '../shared/TopNav';
 import resetPassword from '../../services/resetPassword';
 import AlertNotice from '../shared/AlertNotice';
@@ -6,7 +7,6 @@ import TopNavOptions from '../shared/TopNavOptions';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
 import Loader from './../shared/Loader';
-import { encode } from '../../helpers/Encoder';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faKey, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { showSuccess } from '../../helpers/Messages';
@@ -26,11 +26,7 @@ const ResetPass = (props) => {
    * Controls the password and password confirmation matches
    */
   const handlePasswordBlur = () => {
-    if (
-      !_.isEmpty(password) &&
-      !_.isEmpty(passwordConfirmation) &&
-      password != passwordConfirmation
-    ) {
+    if (!isEmpty(password) && !isEmpty(passwordConfirmation) && password != passwordConfirmation) {
       setErrors("Passwords don't match");
       return;
     }
@@ -47,7 +43,7 @@ const ResetPass = (props) => {
 
     setWorking(true);
 
-    resetPassword(encode({ password: password }), token).then((response) => {
+    resetPassword({ password: password }, token).then((response) => {
       /// Manage the errors
       if (response.error) {
         setErrors(response.error + '\n. We were not able to reset your password.');
@@ -82,80 +78,82 @@ const ResetPass = (props) => {
   }, []);
 
   return (
-    <div className="container-fluid">
+    <>
       <TopNav centerContent={navCenterOptions} />
-      <div className="row mt-4">
-        <div className="col-lg-6 mx-auto">
-          {errors && <AlertNotice message={errors} onClose={() => setErrors('')} />}
+      <div className="container-fluid desm-content">
+        <div className="row mt-4">
+          <div className="col-lg-6 mx-auto">
+            {errors && <AlertNotice message={errors} onClose={() => setErrors('')} />}
 
-          {_.isEmpty(token) ? (
-            <AlertNotice message={'No token provided'} />
-          ) : (
-            <div className="card">
-              <div className="card-header">
-                <FontAwesomeIcon icon={faKey} />
-                <span className="pl-2 subtitle">Set up your password</span>
-                <p>Please type a strong password below.</p>
-              </div>
-              <div className="card-body">
-                <PasswordStrengthInfo />
-                <form className="mb-3" onSubmit={handleSubmit}>
-                  <div className="form-group">
-                    <label>
-                      New Password
-                      <span className="text-danger">*</span>
-                    </label>
-                    {passwordIsValid ? (
-                      <FontAwesomeIcon
-                        icon={faCheck}
-                        className="form-control-feedback right-aligned col-success"
+            {isEmpty(token) ? (
+              <AlertNotice message={'No token provided'} />
+            ) : (
+              <div className="card">
+                <div className="card-header">
+                  <FontAwesomeIcon icon={faKey} />
+                  <span className="ps-2 subtitle">Set up your password</span>
+                  <p>Please type a strong password below.</p>
+                </div>
+                <div className="card-body">
+                  <PasswordStrengthInfo />
+                  <form className="mb-3" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                      <label className="form-label">
+                        New Password
+                        <span className="text-danger">*</span>
+                      </label>
+                      {passwordIsValid ? (
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          className="form-control-feedback right-aligned col-success"
+                        />
+                      ) : (
+                        ''
+                      )}
+                      <input
+                        autoFocus
+                        className="form-control"
+                        name="password"
+                        onBlur={handlePasswordBlur}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Please enter your password"
+                        required
+                        type="password"
+                        value={password}
                       />
-                    ) : (
-                      ''
-                    )}
-                    <input
-                      autoFocus
-                      className="form-control"
-                      name="password"
-                      onBlur={handlePasswordBlur}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Please enter your password"
-                      required
-                      type="password"
-                      value={password}
-                    />
-                  </div>
+                    </div>
 
-                  <div className="form-group">
-                    <label>
-                      Password Confirmation
-                      <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      className="form-control"
-                      name="passwordConfirmation"
-                      onBlur={handlePasswordBlur}
-                      onChange={(e) => setPasswordConfirmation(e.target.value)}
-                      placeholder="Please confirm your password"
-                      required
-                      type="password"
-                      value={passwordConfirmation}
-                    />
-                  </div>
+                    <div className="form-group">
+                      <label className="form-label">
+                        Password Confirmation
+                        <span className="text-danger">*</span>
+                      </label>
+                      <input
+                        className="form-control"
+                        name="passwordConfirmation"
+                        onBlur={handlePasswordBlur}
+                        onChange={(e) => setPasswordConfirmation(e.target.value)}
+                        placeholder="Please confirm your password"
+                        required
+                        type="password"
+                        value={passwordConfirmation}
+                      />
+                    </div>
 
-                  <button type="submit" className="btn btn-dark">
-                    {working ? <Loader noPadding={true} smallSpinner={true} /> : 'Set Password'}
-                  </button>
-                </form>
-                <Link className="col-primary" to={'/sign-in'}>
-                  Login
-                </Link>
+                    <button type="submit" className="btn btn-dark">
+                      {working ? <Loader noPadding={true} smallSpinner={true} /> : 'Set Password'}
+                    </button>
+                  </form>
+                  <Link className="col-primary" to={'/sign-in'}>
+                    Login
+                  </Link>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -173,7 +171,7 @@ const PasswordStrengthInfo = () => {
         <li>Include symbols</li>
         <li>{'Make its length as minimum ' + minPasswordLength}</li>
       </ul>
-      <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+      <button type="button" className="btn-close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>

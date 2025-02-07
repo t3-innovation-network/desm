@@ -1,0 +1,40 @@
+@use 'sass:map';
+@use 'sass:math';
+
+.desm-mapping-list {
+  @include media-breakpoint-down(lg) {
+    background-color: $background-color-dark;
+    border-bottom: 1px solid $card-border-color;
+    border-top: 1px solid $card-border-color;
+    margin-left: 0;
+    margin-right: 0;
+
+    > .col-12 {
+      padding-left: math.div($container-padding-x, 2);
+      padding-right: math.div($container-padding-x, 2);
+    }
+  }
+
+  @include e(wrapper) {
+    @include media-breakpoint-down(lg) {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  @include e(card) {
+    @include media-breakpoint-down(lg) {
+      border: 0;
+
+      .card-header {
+        border: 0;
+      }
+    }
+  }
+
+  @include e(alignments) {
+    @include media-breakpoint-down(lg) {
+      padding-bottom: map.get($spacers, 3);
+    }
+  }
+}

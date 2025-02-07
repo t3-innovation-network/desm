@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { isNull } from 'lodash';
+import { isNull, capitalize } from 'lodash';
 import fetchConfigurationProfile from '../../../../services/fetchConfigurationProfile';
 import AlertNotice from '../../../shared/AlertNotice';
 import Loader from '../../../shared/Loader';
@@ -29,7 +29,7 @@ const EditConfigurationProfile = (props) => {
 
   const dashboardPath = () => {
     return (
-      <div className="float-right">
+      <div className="float-end">
         <FontAwesomeIcon icon={faHome} />{' '}
         <span>
           <Link className="col-on-primary" to="/">
@@ -107,7 +107,7 @@ const EditConfigurationProfile = (props) => {
                   <div className="row justify-content-center mb-3">
                     <PageStepRenderer />
                   </div>
-                  <div className="row mt-auto ml-auto">
+                  <div className="row mt-auto ms-auto">
                     <PrevNextButtons />
                   </div>
                 </div>
@@ -156,7 +156,7 @@ const CPCardHeader = () => {
   return (
     <>
       <div className="col-4">
-        <h3 className="float-left">{configurationProfile.name}</h3>
+        <h3 className="float-start">{configurationProfile.name}</h3>
       </div>
       <div className="col-4">
         {showChangesSaved && (
@@ -164,14 +164,14 @@ const CPCardHeader = () => {
             {savingCP
               ? 'Saving ...'
               : isNull(savingCP)
-              ? 'Changes were not saved'
-              : 'All changes saved'}
+                ? 'Changes were not saved'
+                : 'All changes saved'}
           </p>
         )}
       </div>
       <div className="col-4">
-        <p className="float-right" style={stateStyle(configurationProfile.state)}>
-          {_.capitalize(configurationProfile.state)}
+        <p className="float-end" style={stateStyle(configurationProfile.state)}>
+          {capitalize(configurationProfile.state)}
         </p>
       </div>
       <CompleteStructureValidationErrors />
@@ -204,7 +204,7 @@ const PrevNextButtons = () => {
     <>
       {currentStep !== 1 && currentStep !== 4 && (
         <button
-          className="btn btn-dark mr-3"
+          className="btn btn-dark me-3"
           style={{ width: '10rem' }}
           onClick={() => {
             dispatch(setStep(currentStep - 1));
@@ -215,7 +215,7 @@ const PrevNextButtons = () => {
       )}
       {currentStep !== 4 && (
         <button
-          className="btn btn-dark mr-3"
+          className="btn btn-dark me-3"
           style={{ width: '10rem' }}
           onClick={() => {
             dispatch(setStep(currentStep + 1));

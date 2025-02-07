@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { pickBy } from 'lodash';
 import createAdmin from '../../../services/createAdmin';
 import updateAdmin from '../../../services/updateAdmin';
 import AlertNotice from '../../shared/AlertNotice';
@@ -15,7 +16,7 @@ const AdminForm = ({ record, onCancel, onSave }) => {
     e.preventDefault();
     setSubmitting(true);
 
-    const data = _.pickBy({ email, fullname, password, passwordConfirmation });
+    const data = pickBy({ email, fullname, password, passwordConfirmation });
 
     const { admin, error } = await (record.id ? updateAdmin.bind(this, record.id) : createAdmin)(
       data
@@ -42,7 +43,9 @@ const AdminForm = ({ record, onCancel, onSave }) => {
           {error && <AlertNotice message={error} onClose={() => setError(null)} />}
 
           <div className="form-group">
-            <label htmlFor="fullname">Full Name</label>
+            <label className="form-label" htmlFor="fullname">
+              Full Name
+            </label>
             <input
               className="form-control"
               disabled={submitting}
@@ -53,7 +56,9 @@ const AdminForm = ({ record, onCancel, onSave }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">E-mail</label>
+            <label className="form-label" htmlFor="email">
+              E-mail
+            </label>
             <input
               className="form-control"
               disabled={submitting}
@@ -65,7 +70,9 @@ const AdminForm = ({ record, onCancel, onSave }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label className="form-label" htmlFor="password">
+              Password
+            </label>
             <input
               className="form-control"
               disabled={submitting}
@@ -75,14 +82,16 @@ const AdminForm = ({ record, onCancel, onSave }) => {
               value={password}
             />
             {record.id && (
-              <small className="form-text text-muted">
+              <small className="form-text text-body-secondary">
                 Leave password blank if you don&apos;t want to change it
               </small>
             )}
           </div>
 
           <div className="form-group">
-            <label htmlFor="passwordConfirmation">Password Confirmation</label>
+            <label className="form-label" htmlFor="passwordConfirmation">
+              Password Confirmation
+            </label>
             <input
               className="form-control"
               disabled={submitting}
@@ -94,7 +103,7 @@ const AdminForm = ({ record, onCancel, onSave }) => {
           </div>
 
           <button
-            className="btn btn-primary mr-3"
+            className="btn btn-primary me-3"
             disabled={!email || !fullname || submitting}
             type="submit"
           >

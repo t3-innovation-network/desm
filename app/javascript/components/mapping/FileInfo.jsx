@@ -17,7 +17,7 @@ const FileInfo = (props) => {
     <div className="card mt-3">
       <div className="card-header">
         <FontAwesomeIcon icon={faFile} />
-        <span className="pl-2 subtitle">File Details</span>
+        <span className="ps-2 subtitle">File Details</span>
       </div>
       <div className="card-body">
         <p>

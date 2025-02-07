@@ -1,0 +1,7 @@
+.desm-nav {
+  @each $type, $height in $desm-nav-top {
+    @include m(#{$type}) {
+      height: rfs-value($height);
+    }
+  }
+}

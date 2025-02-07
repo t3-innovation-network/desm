@@ -1,0 +1,36 @@
+@use 'sass:map';
+@use 'sass:list';
+
+@mixin txt-element-base-strict($typo) {
+  @each $style, $value in $typo {
+    #{$style}: $value;
+  }
+}
+
+@mixin txt-element-strict($element, $pw-map: $desm-element-typography) {
+  $typo: map.get($pw-map, $element);
+
+  @include txt-element-base-strict($typo);
+}
+
+@mixin txt-element-base($typo) {
+  @each $style, $value in $typo {
+    #{$style}: $value;
+  }
+}
+
+@mixin txt-element-heading($typo) {
+  @each $style, $value in $typo {
+    @if $style == font-family {
+      font-family: $value !important; // stylelint-disable-line declaration-no-important
+    } @else {
+      #{$style}: $value;
+    }
+  }
+}
+
+@mixin txt-element($element, $pw-map: $desm-element-typography) {
+  $typo: map.get($pw-map, $element);
+
+  @include txt-element-base($typo);
+}

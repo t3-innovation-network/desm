@@ -3,11 +3,11 @@ default: &default
     configuration:
       asset_pipeline_enabled: true
       asset_pipeline_precompile: true
-      node_version: "16.20.0"
+      node_version: "22.13.0"
       operating_system: ubuntu2204
-      ruby_version: "3.2.2"
+      ruby_version: "3.3.7"
   redis:
-      version: 7.0.5
+      version: 7.4.6
 
 production:
   <<: *default

@@ -111,7 +111,7 @@ const SchemaFilesWrapper = () => {
         </ConfirmDialog>
       )}
       <div className="mt-5 w-100">
-        <TabGroup cssClass={'ml-3 mr-3'}>
+        <TabGroup cssClass={'ms-3 me-3'}>
           {schemaFileTabs()}
           <AddTabBtn
             onClickHandler={handleAddFile}
