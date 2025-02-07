@@ -43,7 +43,7 @@ const ResetPass = (props) => {
 
     setWorking(true);
 
-    resetPassword({ password: password }, token).then((response) => {
+    resetPassword(password, token).then((response) => {
       /// Manage the errors
       if (response.error) {
         setErrors(response.error + '\n. We were not able to reset your password.');
