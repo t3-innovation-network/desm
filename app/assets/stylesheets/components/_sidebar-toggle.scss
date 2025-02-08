@@ -14,6 +14,7 @@
   top: $desm-sidebar-toggle-top;
   transition: transform 0.3s ease;
   width: $desm-sidebar-toggle-size;
+  z-index: $zindex-fixed + 2;
 
   @include e(icon) {
     font-size: $desm-sidebar-toggle-size;
