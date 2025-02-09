@@ -12,17 +12,20 @@ module API
 
       def index
         includes = %i(property vocabularies)
-        includes += %i(organization mapping_predicates specifications) if params[:with_weights].present?
-        includes += %i(organization) if params[:with_organization].present?
+        includes += %i(organization) if params[:with_organization].present? || params[:with_weights].present?
         terms = Spine.find(params[:id]).terms.includes(includes)
-        if params[:with_weights].present? && params[:id].present?
-          terms = terms
-                    .left_joins(alignments: :predicate)
-                    .select("terms.*, COALESCE(SUM(predicates.weight), 0) AS total_weight")
+        if params[:with_weights].present?
+          terms = terms.select(
+            "terms.*,
+             array_agg(DISTINCT specifications.id) AS specification_ids,
+             (array_agg(json_build_object('name', specifications.name, 'version', specifications.version)
+                        ORDER BY specifications.id))[1] AS first_specification"
+          )
+                    .joins(:specifications)
                     .group("terms.id")
         end
 
-        render json: terms, spine: params[:with_weights].present?, spine_id: params[:id],
+        render json: terms, spine: params[:with_weights].present?,
                with_organization: params[:with_organization].present?
       end
 

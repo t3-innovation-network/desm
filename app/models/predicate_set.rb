@@ -7,6 +7,7 @@
 #  id                 :bigint           not null, primary key
 #  creator            :string
 #  description        :text
+#  max_weight         :float            default(0.0), not null
 #  slug               :string
 #  source_uri         :string           not null
 #  title              :string           not null
@@ -39,12 +40,12 @@ class PredicateSet < ApplicationRecord
 
   belongs_to :strongest_match, class_name: "Predicate", optional: true
   has_one :configuration_profile
-  has_many :predicates
+  has_many :predicates, after_add: :update_max_weight, after_remove: :update_max_weight
 
   alias_attribute :name, :title
 
-  def max_weight
-    predicates.maximum(:weight)
+  def update_max_weight(_predicate)
+    update_attribute(:max_weight, predicates.maximum(:weight) || 0)
   end
 
   def to_json_ld

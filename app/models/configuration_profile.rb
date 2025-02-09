@@ -186,6 +186,10 @@ class ConfigurationProfile < ApplicationRecord
     CreateCpStructure.call({ configuration_profile: self })
   end
 
+  def max_mapping_weight
+    standards_organization_ids.size * mapping_predicates&.max_weight.to_f
+  end
+
   def remove!
     state_handler.remove!
   end

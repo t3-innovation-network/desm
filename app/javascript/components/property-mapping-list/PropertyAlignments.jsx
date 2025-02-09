@@ -44,10 +44,7 @@ const PropertyAlignments = (props) => {
     let filteredMappedTerms = compact(
       flatMap(filteredAl, (alignment) =>
         alignment.mappedTerms.map((mTerm) =>
-          intersection(
-            selectedAlignmentSpecificationsIds,
-            mTerm.specifications.map((s) => s.id)
-          ).length
+          intersection(selectedAlignmentSpecificationsIds, mTerm.specificationIds).length
             ? {
                 ...mTerm,
                 alignment,
@@ -109,7 +106,7 @@ const AlignmentCard = ({ alignment, term, isLast = false }) => {
       <div className="card-body p-2">
         <p className="mb-2">
           <span className="desm-icon me-1 align-middle">account_tree</span>
-          <span>{alignment.schemaName}. </span>
+          <span>{alignment.schemaName}</span>
           <br />
           <span className="desm-icon me-1 align-middle">arrow_split</span>
           <span className="fs-5">{term.name}</span>
