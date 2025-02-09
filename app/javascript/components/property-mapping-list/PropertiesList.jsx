@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Collapse from 'react-bootstrap/Collapse';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { flatMap, groupBy, intersection, sortBy, uniqBy, isEmpty } from 'lodash';
+import { flatMap, groupBy, intersection, sortBy, sum, uniqBy, isEmpty } from 'lodash';
 import AlertNotice from '../shared/AlertNotice';
 import fetchAlignmentsForSpine from '../../services/fetchAlignmentsForSpine';
 import fetchSpineTerms from '../../services/fetchSpineTerms';
@@ -86,10 +86,7 @@ const PropertiesList = (props) => {
             property.alignments.some((alignment) =>
               selectedAlignmentSpecificationsIds.includes(alignment.mapping.specification.id)
             ) &&
-            intersection(
-              selectedSpineSpecificationIds,
-              property.specifications.map((s) => s.id)
-            ).length))
+            intersection(selectedSpineSpecificationIds, property.specificationIds).length))
     );
 
     return implementSpineSort(filteredProps, selectedSpineOrderOption);
@@ -122,6 +119,8 @@ const PropertiesList = (props) => {
 
       spineTerms.forEach((term) => {
         term.alignments = groupedAlignments[term.id] || [];
+        // Calculate the max mapping weight for the term as the sum of all predicate weights for term alignment
+        term.currentMappingWeight = sum(term.alignments.map((a) => a.predicate.weight || 0));
         term.alignmentScore =
           term.maxMappingWeight > 0 ? (term.currentMappingWeight * 100) / term.maxMappingWeight : 0;
       });
