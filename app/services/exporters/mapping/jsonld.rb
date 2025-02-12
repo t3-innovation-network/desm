@@ -8,6 +8,9 @@ module Exporters
     class JSONLD
       attr_reader :mapping
 
+      delegate :specification, :user, to: :mapping
+      delegate :domain, to: :specification
+
       ###
       # @description: Initializes this class with the mapping to export.
       ###
@@ -24,10 +27,19 @@ module Exporters
 
       def graph
         @graph ||= begin
-          nodes = mapping.alignments.map do |alignment|
-            term_nodes(alignment)
-          end.flatten.unshift(main_node)
+          alignments = mapping
+                         .alignments
+                         .includes(
+                           :predicate,
+                           mapped_terms: [:property, { specifications: :domain }],
+                           spine_term: [:property, { specifications: :domain }]
+                         )
 
+          term_mapping_nodes = alignments.flat_map do |alignment|
+            term_nodes(alignment)
+          end
+
+          nodes = [*abstract_class_mapping_nodes, *term_mapping_nodes]
           deep_clean(nodes)
         end
       end
@@ -36,20 +48,22 @@ module Exporters
       # @description: Specifies the format the main node (the node that represents the mapping itself)
       #  should have.
       ###
-      def main_node
-        {
-          "@id": mapping_uri,
-          "@type": "desm:AbstractClassMapping",
-          "dcterms:created": mapping.created_at.strftime("%F"),
-          "dcterms:dateModified": mapping.updated_at.strftime("%F"),
-          "dcterms:title": mapping.title,
-          # @todo: Where to take this from
-          "dcterms:description": "",
-          "desm:abstractClassMapped": { "@id": mapping.specification.domain.uri },
-          "dcterms:hasPart": mapping.alignments.map do |alignment|
-            { "@id": alignment.uri }
-          end
-        }
+      def abstract_class_mapping_nodes
+        [
+          {
+            "@id": mapping_uri,
+            "@type": "desm:AbstractClassMapping",
+            "dcterms:title": mapping.title,
+            "dcterms:description": mapping.description,
+            "dcterms:created": mapping.created_at.strftime("%F"),
+            "dcterms:dateModified": mapping.updated_at.strftime("%F"),
+            "desm:abstractClassModeled": { "@id": domain.uri },
+            "dcterms:hasPart": mapping.alignments.map do |alignment|
+              { "@id": alignment_uri(alignment) }
+            end
+          },
+          domain_node(domain)
+        ]
       end
 
       ###
@@ -60,8 +74,11 @@ module Exporters
       def term_nodes(alignment)
         [
           alignment_node(alignment),
-          alignment.mapped_terms.map { |term| property_node(term) },
-          property_node(alignment.spine_term)
+          predicate_node(alignment.predicate),
+          *alignment.mapped_terms.flat_map do |term|
+            property_nodes(alignment, term)
+          end,
+          *property_nodes(alignment, alignment.spine_term)
         ].flatten
       end
 
@@ -70,15 +87,25 @@ module Exporters
       ###
       def alignment_node(alignment)
         {
-          "@id": alignment.uri,
+          "@id": alignment_uri(alignment),
           "@type": "desm:TermMapping",
           "dcterms:isPartOf": { "@id": mapping_uri },
           "desm:comment": alignment.comment,
-          "desm:mappedterm": alignment.mapped_terms.map do |mapped_term|
-            { "@id": mapped_term.uri }
-          end,
-          "desm:mappingPredicate": { "@id": alignment.predicate&.uri },
+          "desm:created": alignment.created_at.strftime("%F"),
+          "desm:dateModified": alignment.updated_at.strftime("%F"),
+          "desm:mappedTerm": alignment.mapped_terms.map { { "@id": _1.uri } },
+          "desm:mappingPredicate": { "@id": alignment.predicate&.source_uri },
           "desm:spineTerm": { "@id": alignment.spine_term.uri }
+        }
+      end
+
+      def domain_node(domain)
+        {
+          "@id": domain.source_uri,
+          "@type": "skos:Concept",
+          "skos:prefLabel": domain.pref_label,
+          "skos: definition": domain.definition,
+          "skos:altLabel": nil
         }
       end
 
@@ -100,24 +127,77 @@ module Exporters
         value
       end
 
+      def predicate_node(predicate)
+        return {} unless predicate
+
+        {
+          "@id": predicate.source_uri,
+          "@type": "skos:Concept",
+          "skos:prefLabel": predicate.pref_label,
+          "skos: definition": predicate.definition,
+          "skos:altLabel": nil
+        }
+      end
+
       ###
       # @description: Defines the structure of a generic property term.
       ###
-      def property_node(term)
+      def property_nodes(alignment, term)
+        specification = term.specifications.first
+
+        [
+          {
+            "@id": term.uri,
+            "@type": "rdf:Property",
+            "desm:sourceURI": { "@id": term.property.source_uri },
+            "rdfs:subPropertyOf": term.raw,
+            "desm:valueSpace": { "@id": term.property.value_space },
+            "rdfs:label": term.property.label,
+            "rdfs:comment": term.property.comment,
+            "desm:hasTermMapping": alignment_uri(alignment),
+            "desm:inSchema": { "@id": specification_uri(specification) },
+            "desm:domainIncludes": domain_nodes(term),
+            "desm:rangeIncludes": term.compact_ranges
+          },
+          specification_node(specification),
+          agent_node
+        ]
+      end
+
+      def specification_node(specification)
+        return {} unless specification
+
         {
-          "@id": term.source_uri,
-          "@type": "rdf:Property",
-          "desm:sourceURI": { "@id": term.property.source_uri },
-          "rdfs:subPropertyOf": parse_subproperty_of(term.property.subproperty_of),
-          "desm:valueSpace": { "@id": term.property.value_space },
-          "rdfs:label": term.property.label,
-          "rdfs:comment": term.property.comment,
-          "desm:domainIncludes": domain_nodes(term),
-          "desm:rangeIncludes": term.compact_ranges
+          "@id": specification_uri(specification),
+          "@type": "desm:Schema",
+          "dct:title": specification.name,
+          "dct:has Version": specification.version,
+          "desm:abstractClass": { "@id": specification.domain.source_uri },
+          "dct:creator": { "@id": agent_uri }
+        }
+      end
+
+      def agent_node
+        {
+          "@id": agent_uri,
+          "@type": "desm:Agent",
+          "sdo:name": user.fullname,
+          "desm:role": user.roles.pluck(:name),
+          "sdo:email": user.email,
+          "sdo:telephone": user.phone,
+          "desm:githubHandle": user.github_handle
         }
       end
 
       private
+
+      def agent_uri
+        "http://desmsolutions.org/Agent/#{user.id}"
+      end
+
+      def alignment_uri(alignment)
+        "http://desmsolutions.org/TermMapping/#{alignment.id}"
+      end
 
       ###
       # @description: Recursively removes all blank values from an enumerable node
@@ -139,7 +219,17 @@ module Exporters
       end
 
       def mapping_uri
-        "http://desmsolutions.org/TermMapping/#{mapping.id}"
+        "http://desmsolutions.org/AbstractClassMapping/#{mapping.id}"
+      end
+
+      def specification_uri(specification)
+        return unless specification
+
+        "http://desmsolutions.org/Schema/#{specification.id}"
+      end
+
+      def term_uri(term)
+        "http://desmsolutions.org/Term/#{term.id}"
       end
     end
   end
