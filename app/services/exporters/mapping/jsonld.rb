@@ -116,7 +116,13 @@ module Exporters
       #   as well as its full non-RDF domains
       ###
       def domain_nodes(term)
-        mapping.compact_domains(non_rdf: false) & term.compact_domains(non_rdf: false)
+        (mapping.compact_domains(non_rdf: false) & term.compact_domains(non_rdf: false)).map do |domain|
+          { "@id": domain }
+        end
+      end
+
+      def range_nodes(term)
+        term.compact_ranges.map { { "@id": _1 } }
       end
 
       ###
@@ -159,7 +165,7 @@ module Exporters
             "desm:hasTermMapping": alignment_uri(alignment),
             "desm:inSchema": { "@id": specification_uri(specification) },
             "desm:domainIncludes": domain_nodes(term),
-            "desm:rangeIncludes": term.compact_ranges
+            "desm:rangeIncludes": range_nodes(term)
           },
           specification_node(specification),
           agent_node
