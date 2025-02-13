@@ -93,9 +93,11 @@ module Exporters
           "desm:comment": alignment.comment,
           "desm:created": alignment.created_at.strftime("%F"),
           "desm:dateModified": alignment.updated_at.strftime("%F"),
-          "desm:mappedTerm": alignment.mapped_terms.map { { "@id": _1.uri } },
+          "desm:mappedTerm": alignment.mapped_terms.map do |term|
+            { "@id": term_uri(term) }
+          end,
           "desm:mappingPredicate": { "@id": alignment.predicate&.source_uri },
-          "desm:spineTerm": { "@id": alignment.spine_term.uri }
+          "desm:spineTerm": { "@id": term_uri(alignment.spine_term) }
         }
       end
 
@@ -147,7 +149,7 @@ module Exporters
 
         [
           {
-            "@id": term.uri,
+            "@id": term_uri(term),
             "@type": "rdf:Property",
             "desm:sourceURI": { "@id": term.property.source_uri },
             "rdfs:subPropertyOf": term.raw,
@@ -229,7 +231,7 @@ module Exporters
       end
 
       def term_uri(term)
-        "http://desmsolutions.org/Term/#{term.id}"
+        "http://desmsolutions.org/Property/#{term.id}"
       end
     end
   end
