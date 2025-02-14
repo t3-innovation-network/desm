@@ -57,7 +57,7 @@ module Exporters
             "dcterms:description": mapping.description,
             "dcterms:created": mapping.created_at.strftime("%F"),
             "dcterms:dateModified": mapping.updated_at.strftime("%F"),
-            "desm:abstractClassModeled": { "@id": domain.uri },
+            "desm:abstractClassModeled": { "@id": domain.source_uri },
             "dcterms:hasPart": mapping.alignments.map do |alignment|
               { "@id": alignment_uri(alignment) }
             end
