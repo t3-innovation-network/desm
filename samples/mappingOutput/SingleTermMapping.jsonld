@@ -91,7 +91,7 @@
         {
             "@id": "http://desmsolutions.org/Property/14638",
             "@type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
-            "rdfs:subPropertyOf": 
+            "rdfs:subPropertyOf":
             {
                 "@id": "http://purl.org/dc/terms/title"
 
