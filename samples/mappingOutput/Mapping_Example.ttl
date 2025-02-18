@@ -6,7 +6,7 @@
 @prefix schema: <http://schema.org/> .
 
 <http://desmsolutions.org/Config/336a544c-387e-4bfb-bf54-1ed8352d43af>
-  a <http://desmsolutions.org/ns/ConfigurationP{rofile> ;
+  a <http://desmsolutions.org/ns/ConfigurationProfile> ;
   dc:created "2020-08-09"^^xsd:string ;
   dc:dateModified "2020-08-10"^^xsd:string ;
   dc:description "Project Delphi is a schema cross-walking project spearheaded by CEDS and Credential Engine."^^xsd:string ;
