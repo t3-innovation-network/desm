@@ -1,9 +1,9 @@
 {
-    "@context": "https://raw.githubusercontent.com/t3-innovation-network/desm/refs/heads/main/ns/desmContext.json",
+    "@context": "https://desmsolutions.org/docs/ns/context.json",
     "@graph": [
         {
             "@id": "http://desmsolutions.org/AbstractClassMapping/293",
-            "@type": "desm:AbstractClassMapping",
+            "@type": "http://desmsolutions.org/ns/AbstractClassMapping",
             "dcterms:title": "Phil DCMI - Dublin Core Metadata Initiative - Thing",
             "dcterms:created": "2024-09-02",
             "dcterms:dateModified": "2024-09-02",
@@ -18,12 +18,12 @@
         },
         {
             "@id": "http://pjjk.org/temp/adm#Thing",
-            "@type": "skos:Concept",
+            "@type": "http://www.w3.org/2004/02/skos/core#Concept",
             "skos:prefLabel": "Thing"
         },
         {
             "@id": "http://desmsolutions.org/TermMapping/6732",
-            "@type": "desm:TermMapping",
+            "@type": "http://desmsolutions.org/ns/TermMapping",
             "dcterms:isPartOf": {
                 "@id": "http://desmsolutions.org/AbstractClassMapping/293"
             },
@@ -43,34 +43,14 @@
         },
         {
             "@id": "https://desmsolutions.org/concepts/reworded",
-            "@type": "skos:Concept",
+            "@type": "http://www.w3.org/2004/02/skos/core#Concept",
             "skos:prefLabel": "Reworded",
-            "skos: definition": "The definition is identical in intent but reworded; the properties are equivalent."
+            "skos:definition": "The definition is identical in intent but reworded; the properties are equivalent."
         },
         {
             "@id": "http://desmsolutions.org/Property/14785",
-            "@type": "rdf:Property",
-            "desm:sourceURI": {
-                "@id": "schema:name"
-            },
-            "rdfs:subPropertyOf": {
-                "@id": "schema:name",
-                "@type": "rdf:Property",
-                "rdfs:label": "name",
-                "rdfs:comment": "The name of the item.",
-                "rdfs:subPropertyOf": {
-                    "@id": "rdfs:label"
-                },
-                "schema:rangeIncludes": {
-                    "@id": "schema:Text"
-                },
-                "schema:domainIncludes": {
-                    "@id": "schema:Thing"
-                },
-                "owl:equivalentProperty": {
-                    "@id": "dcterms:title"
-                }
-            },
+            "@type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+            "rdfs:subPropertyOf":  {"@id": "https://schema.org/name"},
             "rdfs:label": "name",
             "rdfs:comment": "The name of the item.",
             "desm:hasTermMapping": "http://desmsolutions.org/TermMapping/6732",
@@ -79,18 +59,18 @@
             },
             "desm:domainIncludes": [
                 {
-                    "@id": "schema:Thing"
+                    "@id": "https://schema.org/Thing"
                 }
             ],
             "desm:rangeIncludes": [
                 {
-                    "@id": "schema:Text"
+                    "@id": "https://schema.org/Text"
                 }
             ]
         },
         {
             "@id": "http://desmsolutions.org/Schema/295",
-            "@type": "desm:Schema",
+            "@type": "http://desmsolutions.org/ns/Schema",
             "dct:title": "SDO",
             "desm:abstractClass": {
                 "@id": "http://pjjk.org/temp/adm#Thing"
@@ -101,7 +81,7 @@
         },
         {
             "@id": "http://desmsolutions.org/Agent/18",
-            "@type": "desm:Agent",
+            "@type": "http://desmsolutions.org/ns/Agent",
             "sdo:name": "Phil DCMI",
             "desm:role": [
                 "mapper"
@@ -110,37 +90,11 @@
         },
         {
             "@id": "http://desmsolutions.org/Property/14638",
-            "@type": "rdf:Property",
-            "desm:sourceURI": {
-                "@id": "dcterms:title"
-            },
-            "rdfs:subPropertyOf": {
-                "@id": "dcterms:title",
-                "@type": "rdf:Property",
-                "rdfs:label": {
-                    "@value": "Title",
-                    "@language": "en"
-                },
-                "rdfs:range": {
-                    "@id": "rdfs:Literal"
-                },
-                "rdfs:domain": {
-                    "@id": "sdo:CreativeWork"
-                },
-                "rdfs:comment": {
-                    "@value": "A name given to the resource.",
-                    "@language": "en"
-                },
-                "dcterms:issued": {
-                    "@type": "http://www.w3.org/2001/XMLSchema#date",
-                    "@value": "2008-01-14"
-                },
-                "rdfs:isDefinedBy": {
-                    "@id": "http://purl.org/dc/terms/"
-                },
-                "rdfs:subPropertyOf": {
-                    "@id": "http://purl.org/dc/elements/1.1/title"
-                }
+            "@type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+            "rdfs:subPropertyOf": 
+            {
+                "@id": "http://purl.org/dc/terms/title"
+
             },
             "rdfs:label": "Title",
             "rdfs:comment": "A name given to the resource.",
@@ -150,18 +104,18 @@
             },
             "desm:domainIncludes": [
                 {
-                    "@id": "sdo:CreativeWork"
+                    "@id": "https://schema.org/CreativeWork"
                 }
             ],
             "desm:rangeIncludes": [
                 {
-                    "@id": "rdfs:Literal"
+                    "@id": "http://www.w3.org/2000/01/rdf-schema#Literal"
                 }
             ]
         },
         {
             "@id": "http://desmsolutions.org/Schema/294",
-            "@type": "desm:Schema",
+            "@type": "http://desmsolutions.org/ns/Schema",
             "dct:title": "DC Terms",
             "desm:abstractClass": {
                 "@id": "http://pjjk.org/temp/adm#Thing"
@@ -172,7 +126,7 @@
         },
         {
             "@id": "http://desmsolutions.org/AbstractClassMapping/292",
-            "@type": "desm:AbstractClassMapping",
+            "@type": "http://desmsolutions.org/ns/AbstractClassMapping",
             "dcterms:title": "Phil DCMI - Dublin Core Metadata Initiative - Thing",
             "dcterms:created": "2024-09-02",
             "dcterms:dateModified": "2024-09-02",
@@ -187,7 +141,7 @@
         },
         {
             "@id": "http://desmsolutions.org/TermMapping/6731",
-            "@type": "desm:TermMapping",
+            "@type": "http://desmsolutions.org/ns/TermMapping",
             "dcterms:isPartOf": {
                 "@id": "http://desmsolutions.org/AbstractClassMapping/292"
             },
@@ -207,60 +161,9 @@
         },
         {
             "@id": "https://desmsolutions.org/concepts/identical",
-            "@type": "skos:Concept",
+            "@type": "http://www.w3.org/2004/02/skos/core#Concept",
             "skos:prefLabel": "Identical",
-            "skos: definition": "The definition is identical in wording and intent."
-        },
-        {
-            "@id": "http://desmsolutions.org/Property/14638",
-            "@type": "rdf:Property",
-            "desm:sourceURI": {
-                "@id": "dcterms:title"
-            },
-            "rdfs:subPropertyOf": {
-                "@id": "dcterms:title",
-                "@type": "rdf:Property",
-                "rdfs:label": {
-                    "@value": "Title",
-                    "@language": "en"
-                },
-                "rdfs:range": {
-                    "@id": "rdfs:Literal"
-                },
-                "rdfs:domain": {
-                    "@id": "sdo:CreativeWork"
-                },
-                "rdfs:comment": {
-                    "@value": "A name given to the resource.",
-                    "@language": "en"
-                },
-                "dcterms:issued": {
-                    "@type": "http://www.w3.org/2001/XMLSchema#date",
-                    "@value": "2008-01-14"
-                },
-                "rdfs:isDefinedBy": {
-                    "@id": "http://purl.org/dc/terms/"
-                },
-                "rdfs:subPropertyOf": {
-                    "@id": "http://purl.org/dc/elements/1.1/title"
-                }
-            },
-            "rdfs:label": "Title",
-            "rdfs:comment": "A name given to the resource.",
-            "desm:hasTermMapping": "http://desmsolutions.org/TermMapping/6731",
-            "desm:inSchema": {
-                "@id": "http://desmsolutions.org/Schema/294"
-            },
-            "desm:domainIncludes": [
-                {
-                    "@id": "sdo:CreativeWork"
-                }
-            ],
-            "desm:rangeIncludes": [
-                {
-                    "@id": "rdfs:Literal"
-                }
-            ]
+            "skos:definition": "The definition is identical in wording and intent."
         }
     ]
 }
