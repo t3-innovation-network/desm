@@ -19,6 +19,22 @@ module Exporters
       end
 
       ###
+      # @description: Merges nodes with the same `@id` into a single node
+      #   by joining distinct values of identical properties into an array.
+      ###
+      def self.deduplicate(nodes)
+        nodes.group_by { _1.fetch(:@id) }.values.map do |group|
+          group.reduce do |acc, hash|
+            acc.merge(hash) do |_, old_value, new_value|
+              next old_value if old_value == new_value
+
+              [old_value, new_value].flat_map { Array.wrap(_1) }.uniq
+            end
+          end
+        end
+      end
+
+      ###
       # @description: Exports the mapping into json-ld format.
       ###
       def export
@@ -40,7 +56,7 @@ module Exporters
           end
 
           nodes = [*abstract_class_mapping_nodes, *term_mapping_nodes]
-          deep_clean(nodes)
+          self.class.deduplicate(deep_clean(nodes))
         end
       end
 
