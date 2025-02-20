@@ -606,6 +606,7 @@ GEM
       psych (>= 3.3)
       rdf (~> 3.3)
       rdf-xsd (~> 3.3)
+    zaru (1.0.0)
     zeitwerk (2.7.1)
 
 PLATFORMS
@@ -675,6 +676,7 @@ DEPENDENCIES
   vernier (>= 0.3.0)
   web-console (>= 3.3.0)
   webmock (~> 3.23)
+  zaru (~> 1.0)
 
 RUBY VERSION
    ruby 3.3.7p123
