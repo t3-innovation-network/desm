@@ -29,6 +29,7 @@ class Spine < ApplicationRecord
   has_one :organization, through: :configuration_profile_user
   has_and_belongs_to_many :terms
   has_many :mappings
+  has_many :properties, through: :terms
 
   before_destroy :check_if_mappings_exist
 
