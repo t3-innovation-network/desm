@@ -121,17 +121,42 @@ class Mapping < ApplicationRecord
   end
 
   ###
+  # @description: Creates copies of selected terms and assigns them to the spine
+  ###
+  def assign_spine_terms(ids)
+    spine.terms = Term.where(id: ids).includes(:property).map do |term|
+      spine_term = configuration_profile_user
+                     .terms
+                     .create!(term.attributes.slice("name", "raw", "slug", "source_uri"))
+
+      spine_term.create_property!(
+        domain: [specification.domain.source_uri],
+        **term.property.attributes.slice("comment", "label", "range")
+      )
+
+      spine_term
+    end
+  end
+
+  ###
   # @description: Creates the terms for the mapping (alignments).
   ###
   def generate_alignments(first_upload: false)
     predicate_id = mapping_predicates.strongest_match_id if first_upload
 
-    spine.terms.each do |term|
+    terms = specification
+              .terms
+              .where(source_uri: spine.terms.pluck(:source_uri))
+              .group_by(&:source_uri)
+
+    spine.terms.each do |spine_term|
+      mapped_terms = first_upload ? terms.fetch(spine_term.source_uri) : []
+
       alignments.create!(
-        mapped_terms: (first_upload ? [term] : []),
+        mapped_terms:,
         predicate_id:,
-        spine_term_id: term.id,
-        uri: term.uri
+        spine_term:,
+        uri: spine_term.uri
       )
     end
   end
@@ -232,7 +257,7 @@ class Mapping < ApplicationRecord
     self.selected_term_ids = ids
     return if spine.terms.any?
 
-    spine.term_ids = ids
+    assign_spine_terms(ids)
     generate_alignments(first_upload: true)
   end
 
