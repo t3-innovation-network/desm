@@ -1,5 +1,5 @@
 module Desm
-  APP_DOMAIN = ENV['APP_DOMAIN'] || 'http://localhost:3030'
+  APP_DOMAIN = ENV.fetch('APP_DOMAIN')
   ADMIN_ROLE_NAME = ENV['ADMIN_ROLE_NAME'] || 'Super Admin'
   MAPPER_ROLE_NAME = (ENV['MAPPER_ROLE_NAME'] || 'mapper').downcase
   CONCEPTS_DIRECTORY_PATH = 'concepts/'
@@ -63,4 +63,6 @@ module Desm
       "@type": "@id"
     }
   }.freeze
+
+  CONTEXT_URI = "https://desmsolutions.org/ns/context.json".freeze
 end

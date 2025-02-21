@@ -38,7 +38,7 @@ module Exporters
       # @description: Exports the mapping into json-ld format.
       ###
       def export
-        { "@context": Desm::CONTEXT, "@graph": graph }
+        { "@context": Desm::CONTEXT_URI, "@graph": graph }
       end
 
       def graph
@@ -121,8 +121,7 @@ module Exporters
           "@id": domain.source_uri,
           "@type": "skos:Concept",
           "skos:prefLabel": domain.pref_label,
-          "skos: definition": domain.definition,
-          "skos:altLabel": nil
+          "skos:definition": domain.definition
         }
       end
 
@@ -168,19 +167,24 @@ module Exporters
       def property_nodes(alignment, term)
         specification = term.specifications.first
 
+        domain_includes =
+          if term == alignment.spine_term
+            { "@id": domain.source_uri }
+          else
+            domain_nodes(term)
+          end
+
         [
           {
             "@id": term_uri(term),
             "@type": "rdf:Property",
-            "desm:sourceURI": { "@id": term.property.source_uri },
-            "rdfs:subPropertyOf": term.raw,
-            "desm:valueSpace": { "@id": term.property.value_space },
             "rdfs:label": term.property.label,
-            "rdfs:comment": term.property.comment,
-            "desm:hasTermMapping": alignment_uri(alignment),
+            "desm:domainIncludes": domain_includes,
             "desm:inSchema": { "@id": specification_uri(specification) },
-            "desm:domainIncludes": domain_nodes(term),
-            "desm:rangeIncludes": range_nodes(term)
+            "desm:rangeIncludes": range_nodes(term),
+            "rdfs:comment": term.property.comment,
+            "rdfs:subPropertyOf": { "@id": term.property.source_uri },
+            "desm:hasTermMapping": { "@id": alignment_uri(alignment) }
           },
           specification_node(specification),
           agent_node
@@ -195,7 +199,7 @@ module Exporters
           "@type": "desm:Schema",
           "dct:title": specification.name,
           "dct:has Version": specification.version,
-          "desm:abstractClass": { "@id": specification.domain.source_uri },
+          "desm:abstractClass": { "@id": domain.source_uri },
           "dct:creator": { "@id": agent_uri }
         }
       end
@@ -215,11 +219,11 @@ module Exporters
       private
 
       def agent_uri
-        "http://desmsolutions.org/Agent/#{user.id}"
+        "#{Desm::APP_DOMAIN}/Agent/#{user.id}"
       end
 
       def alignment_uri(alignment)
-        "http://desmsolutions.org/TermMapping/#{alignment.id}"
+        "#{Desm::APP_DOMAIN}/TermMapping/#{alignment.id}"
       end
 
       ###
@@ -269,17 +273,17 @@ module Exporters
       end
 
       def mapping_uri
-        "http://desmsolutions.org/AbstractClassMapping/#{mapping.id}"
+        "#{Desm::APP_DOMAIN}/AbstractClassMapping/#{mapping.id}"
       end
 
       def specification_uri(specification)
         return unless specification
 
-        "http://desmsolutions.org/Schema/#{specification.id}"
+        "#{Desm::APP_DOMAIN}/Schema/#{specification.id}"
       end
 
       def term_uri(term)
-        "http://desmsolutions.org/Property/#{term.id}"
+        "#{Desm::APP_DOMAIN}/Property/#{term.id}"
       end
     end
   end
