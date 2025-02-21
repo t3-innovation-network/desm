@@ -423,6 +423,26 @@
             "domain": {"en": "desm:TermMapping"},
             "range": "rdf:Property",
             "isDefinedBy": "desm:"
+        },
+        {
+            "id": "desm:transformFromSpine",
+            "type": "rdf:Property",
+            "label": {"en": "Transform from spine"},
+            "comment": {"en": "Description of how to translate data values of the spine term to values that can be used for the mapped term."},
+            "scopeNote":{"en": "There is no formal syntax for expressing the translation. Data values may be referenced by a syntax such as JSONPath. Operations on the data may be expressed using a syntax such as OpenRefine GREL Functions."},
+            "domain": {"en": "desm:TermMapping"},
+            "range": "xsd:string",
+            "isDefinedBy": "desm:"
+        },
+        {
+            "id": "desm:transformToSpine",
+            "type": "rdf:Property",
+            "label": {"en": "Transform to spine"},
+            "comment": {"en": "Description of how to translate data values of the mapped term to values that can be used for the spine term."},
+            "scopeNote":{"en": "There is no formal syntax for expressing the translation. Data values may be referenced by a syntax such as JSONPath. Operations on the data may be expressed using a syntax such as OpenRefine GREL Functions."},
+            "domain": {"en": "desm:TermMapping"},
+            "range": "xsd:string",
+            "isDefinedBy": "desm:"
         }
     ]
 }
