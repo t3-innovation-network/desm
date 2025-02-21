@@ -51,12 +51,11 @@ module Exporters
                            spine_term: [:property, { specifications: :domain }]
                          )
 
-          term_mapping_nodes = alignments.flat_map do |alignment|
-            term_nodes(alignment)
-          end
-
+          term_mapping_nodes = alignments.flat_map { term_nodes(_1) }
           nodes = [*abstract_class_mapping_nodes, *term_mapping_nodes]
-          self.class.deduplicate(deep_clean(nodes))
+          clean_nodes = deep_clean(nodes)
+          expanded_nodes = clean_nodes.map { expand_uri_values(_1) }
+          self.class.deduplicate(expanded_nodes)
         end
       end
 
@@ -239,6 +238,33 @@ module Exporters
           end
         else
           node
+        end
+      end
+
+      def expand_uri(value)
+        return if value.start_with?(%r{https?://})
+
+        namespace, = value.split(":")
+        uri = Desm::CONTEXT[namespace.to_sym]
+        uri.present? ? value.sub("#{namespace}:", uri) : value
+      end
+
+      ###
+      # @description: Recursively replaces values with namespaced URIs
+      #   with full URIs according to the context.
+      ###
+      def expand_uri_values(nodes)
+        nodes.transform_values do |value|
+          case value
+          when Array
+            value.map { _1.is_a?(Hash) ? expand_uri_values(_1) : _1 }
+          when Hash
+            expand_uri_values(value)
+          when String
+            expand_uri(value)
+          else
+            value
+          end
         end
       end
 
