@@ -11,19 +11,10 @@ module API
       after_action :set_mapped_terms, only: [:create]
 
       def index
-        includes = %i(property vocabularies)
-        includes += %i(organization) if params[:with_organization].present? || params[:with_weights].present?
+        includes = %i(property)
+        includes += %i(vocabularies) unless params[:spine].present?
+        includes += %i(organization) if params[:with_organization].present?
         terms = Spine.find(params[:id]).terms.includes(includes)
-        if params[:with_weights].present?
-          terms = terms.select(
-            "terms.*,
-             array_agg(DISTINCT specifications.id) AS specification_ids,
-             (array_agg(json_build_object('name', specifications.name, 'version', specifications.version)
-                        ORDER BY specifications.id))[1] AS first_specification"
-          )
-                    .joins(:specifications)
-                    .group("terms.id")
-        end
 
         render json: terms, spine: params[:with_weights].present?,
                with_organization: params[:with_organization].present?
