@@ -23,8 +23,6 @@ export const defaultState = {
   selectedAlignmentSpecifications: [],
   // The currently selected domain
   selectedDomain: null,
-  // The specifications to show in the filter
-  selectedSpineSpecifications: [],
   // The predicates the user selected to use in filter
   selectedPredicates: [],
   // The order the user wants to see the alignments to the spine terms
@@ -88,7 +86,6 @@ export const propertyMappingListStore = (initialData = {}) => ({
   ),
   withFilters: computed(
     (state) =>
-      ifFilterAppliedFor(state.selectedSpineSpecifications, state.specifications) ||
       ifFilterAppliedFor(state.selectedAlignmentSpecifications, state.specifications) ||
       ifFilterAppliedFor(state.selectedPredicates, state.predicates)
   ),
@@ -99,7 +96,6 @@ export const propertyMappingListStore = (initialData = {}) => ({
   }),
   setSpecifications: action((state, specifications) => {
     state.specifications = specifications;
-    state.selectedSpineSpecifications = specifications;
     state.selectedAlignmentSpecifications = specifications;
   }),
   toggleSidebar: action((state) => {
