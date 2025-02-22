@@ -76,49 +76,83 @@ RSpec.describe Parsers::JsonLd::Node do
     end
   end
 
-  describe "rdfs_class_nodes returns the same node when it's explicitly an rdfs:Class" do
-    subject { described_class.new(credential_registry_node) }
+  describe "#rdfs_class_nodes" do
+    subject { described_class.new(node, classes:).rdfs_class_nodes }
+    let(:classes) { [] }
 
-    let(:credential_registry_node) do
-      {
-        "@type": "rdfs:Class",
-        "@id": "ceterms:RuleSet",
-        "rdfs:label": {
-          "en-US": "Rule Set"
-        },
-        "rdfs:comment": {
-          "en-US": "Resource that identifies the rules or methods by which one or more..."
-        },
-        "dct:description": {
-          "en-US": "In the future, there will likely be multiple formally recognized RuleSets."
-        },
-        "vann:usageNote": {
-          "en-US": "Encode the rules using Description Logic."
-        },
-        "vs:term_status": "vs:unstable",
-        "meta:changeHistory": "http://credreg.net/ctdl/termhistory/ceterms/RuleSet/json"
-      }
+    context "when it's explicitly an rdfs:Class" do
+      let(:node) do
+        {
+          "@type": "rdfs:Class",
+          "@id": "ceterms:RuleSet",
+          "rdfs:label": {
+            "en-US": "Rule Set"
+          },
+          "rdfs:comment": {
+            "en-US": "Resource that identifies the rules or methods by which one or more..."
+          },
+          "dct:description": {
+            "en-US": "In the future, there will likely be multiple formally recognized RuleSets."
+          },
+          "vann:usageNote": {
+            "en-US": "Encode the rules using Description Logic."
+          },
+          "vs:term_status": "vs:unstable",
+          "meta:changeHistory": "http://credreg.net/ctdl/termhistory/ceterms/RuleSet/json"
+        }
+      end
+
+      it "returns the same node" do
+        expect(subject).to eq([])
+      end
     end
 
-    it "returns the same node" do
-      expect(subject.rdfs_class_nodes).to eq([])
-    end
-  end
+    context "with inference" do
+      let(:node) do
+        {
+          "@id": "http://schema.org/EventCancelled",
+          "@type": "http://schema.org/EventStatusType",
+          "rdfs:comment": "The event has been cancelled. If the event has multiple startDate values, all are ...",
+          "rdfs:label": "EventCancelled"
+        }
+      end
 
-  describe "rdfs_class_nodes with inference" do
-    subject { described_class.new(node_to_infer) }
-
-    let(:node_to_infer) do
-      {
-        "@id": "http://schema.org/EventCancelled",
-        "@type": "http://schema.org/EventStatusType",
-        "rdfs:comment": "The event has been cancelled. If the event has multiple startDate values, all are assumed ...",
-        "rdfs:label": "EventCancelled"
-      }
+      it "infers the node type" do
+        expect(subject).to eq([])
+      end
     end
 
-    it "infers the node type" do
-      expect(subject.rdfs_class_nodes).to eq([])
+    context "with domain" do
+      let(:node) do
+        { "@id" => ":P600539", "@type" => "rdf:Property", "dc:creator" => "Common Education Data Standards",
+          "rdfs:label" => "Has Person Credential", "dc:identifier" => { "@type" => "xsd:token", "@value" => "P600539" },
+          "skos:notation" => "hasPersonCredential", "schema:rangeIncludes" => { "@id" => ":C200280" },
+          "schema:domainIncludes" => { "@id" => "C200275:testLabel" } }
+      end
+
+      context "without classes" do
+        it "returns id with label from domain id" do
+          expect(subject).to eq([{
+                                  "@id" => "C200275:testLabel",
+                                  "rdfs:label" => "Test Label"
+                                }])
+        end
+      end
+
+      context "with classes" do
+        let(:classes) do
+          [
+            Parsers::JsonLd::Node.new({ "@id" => "C200275:testLabel", "rdfs:label" => "Class Label" })
+          ]
+        end
+
+        it "returns id with label from domain label" do
+          expect(subject).to eq([{
+                                  "@id" => "C200275:testLabel",
+                                  "rdfs:label" => "Class Label"
+                                }])
+        end
+      end
     end
   end
 end
