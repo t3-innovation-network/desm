@@ -9,10 +9,12 @@ module Parsers
       include NodeTypes
 
       attr_accessor :types, :context
+      attr_reader :node
 
-      def initialize(node, context = {})
+      def initialize(node, context = {}, classes: [])
         @node = node
         @context = context
+        @classes = classes
         @types = TypeSet.new(node_types)
       end
 
@@ -93,9 +95,11 @@ module Parsers
           uri = domain.is_a?(Hash) ? domain["@id"] : domain
           next unless uri.present?
 
+          # try to find rdfs:Class node by id
+          rdfs_class = @classes.find { |c| uri_eql?(c.node, uri) }
           {
             "@id" => uri,
-            "rdfs:label" => uri.split(%r{[#/:]}).last.titleize
+            "rdfs:label" => rdfs_class&.read!("label").presence || uri.split(%r{[#/:]}).last.titleize
           }
         end
 
