@@ -1,10 +1,8 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import { debounce } from 'lodash';
 import { alignmentSortOptions, spineSortOptions } from './SortOptions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { DEBOUNCED_SEARCH_DELAY } from '../../utils/constants';
 import { valuesToOptions } from '../../helpers/FormHelpers';
 import { i18n } from '../../utils/i18n';
 
@@ -13,67 +11,87 @@ import { i18n } from '../../utils/i18n';
  *
  * @prop {Function} onAlignmentOrderChange
  * @prop {Function} onHideSpineTermsWithNoAlignmentsChange
+ * @prop {Function} onHide
  * @prop {Function} onSpineOrderChange
- * @prop {Function} onType Actions when a character is typed
+ * @prop {Function} onType
  * @prop {String} selectedAlignmentOrderOption
  * @prop {String} selectedSpineOrderOption
  */
-const SearchBar = (props) => {
+const SearchBarActions = (props) => {
   const {
     onAlignmentOrderChange,
+    onHide,
     onHideSpineTermsWithNoAlignmentsChange,
     onSpineOrderChange,
     onType,
-    hideSpineTermsWithNoAlignments,
     propertiesInputValue,
-    selectedAlignmentOrderOption,
-    selectedSpineOrderOption,
   } = props;
 
   const [inputValue, setInputValue] = useState(propertiesInputValue);
-  const debouncedSearch = useCallback(
-    debounce((val) => handleSearch(val), DEBOUNCED_SEARCH_DELAY),
-    []
+  const [hideSpineTermsWithNoAlignments, setHideSpineTermsWithNoAlignments] = useState(
+    props.hideSpineTermsWithNoAlignments
   );
+  const [selectedAlignmentOrderOption, setSelectedAlignmentOrderOption] = useState(
+    props.selectedAlignmentOrderOption
+  );
+  const [selectedSpineOrderOption, setSelectedSpineOrderOption] = useState(
+    props.selectedSpineOrderOption
+  );
+  const isApplySortDisabled =
+    selectedAlignmentOrderOption === props.selectedAlignmentOrderOption &&
+    selectedSpineOrderOption === props.selectedSpineOrderOption &&
+    hideSpineTermsWithNoAlignments === props.hideSpineTermsWithNoAlignments;
 
   const handleOnType = (event) => {
     const val = event.target.value;
     setInputValue(val);
-    // debounce onType action
-    debouncedSearch(val);
   };
 
   const handleHideSpineTermsWithNoAlignmentsChange = () => {
-    onHideSpineTermsWithNoAlignmentsChange(!hideSpineTermsWithNoAlignments);
+    setHideSpineTermsWithNoAlignments(!hideSpineTermsWithNoAlignments);
   };
 
-  const handleSearch = (val) => {
-    onType(val);
+  const handleSearchSubmit = () => {
+    onType(inputValue);
+    onHide();
+  };
+
+  const handleSortingApply = () => {
+    onAlignmentOrderChange(selectedAlignmentOrderOption);
+    onSpineOrderChange(selectedSpineOrderOption);
+    onHideSpineTermsWithNoAlignmentsChange(hideSpineTermsWithNoAlignments);
+    onHide();
   };
 
   return (
     <div className="row">
       <div className="col-12">
-        <div className="form-group input-group">
-          <input
-            type="search"
-            className="form-control"
-            placeholder={i18n.t('ui.properties_list.form.search_placeholder')}
-            value={inputValue}
-            onChange={handleOnType}
-            autoFocus
-          />
-          <span className="input-group-text">
-            <FontAwesomeIcon icon={faSearch} />
-          </span>
-        </div>
+        <input
+          type="search"
+          className="form-control"
+          placeholder={i18n.t('ui.properties_list.form.search_placeholder')}
+          value={inputValue}
+          onChange={handleOnType}
+          autoFocus
+        />
+      </div>
+
+      <div className="d-grid mt-2 mb-3 col-12">
+        <button
+          className="btn btn-primary"
+          disabled={inputValue === propertiesInputValue}
+          onClick={handleSearchSubmit}
+        >
+          <FontAwesomeIcon icon={faSearch} className="me-2" />
+          {i18n.t('ui.properties_list.form.search')}
+        </button>
       </div>
 
       <div className="col-12">
         <label className="form-label">{i18n.t('ui.properties_list.form.sort_spine_by')}</label>
         <Form.Select
           aria-label={i18n.t('ui.properties_list.form.sort_spine_by')}
-          onChange={(e) => onSpineOrderChange(e.target.value)}
+          onChange={(e) => setSelectedSpineOrderOption(e.target.value)}
           value={selectedSpineOrderOption}
         >
           {valuesToOptions(spineSortOptions)}
@@ -86,7 +104,7 @@ const SearchBar = (props) => {
         </label>
         <Form.Select
           aria-label={i18n.t('ui.properties_list.form.sort_aligned_items_by')}
-          onChange={(e) => onAlignmentOrderChange(e.target.value)}
+          onChange={(e) => setSelectedAlignmentOrderOption(e.target.value)}
           value={selectedAlignmentOrderOption}
         >
           {valuesToOptions(alignmentSortOptions)}
@@ -107,8 +125,18 @@ const SearchBar = (props) => {
           </label>
         </div>
       </div>
+
+      <div className="d-grid mt-2 col-12">
+        <button
+          className="btn btn-primary"
+          disabled={isApplySortDisabled}
+          onClick={handleSortingApply}
+        >
+          {i18n.t('ui.properties_list.form.sort')}
+        </button>
+      </div>
     </div>
   );
 };
 
-export default SearchBar;
+export default SearchBarActions;
