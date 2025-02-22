@@ -54,7 +54,7 @@ const AlignmentsHeader = (props) => {
         </div>
       </div>
       <div className="row">
-        <div className="col form-group input-group-has-icon">
+        <div className="col form-group input-group-has-icon position-relative">
           <FontAwesomeIcon icon={faSearch} className="form-control-feedback" />
           <input
             type="text"

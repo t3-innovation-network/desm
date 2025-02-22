@@ -16,19 +16,11 @@ import Predicate from '../shared/Predicate';
  * @param {String} selectedAlignmentOrderOption The option selected by the user to order the list of alignments
  * @param {Array} selectedAlignmentSpecificationsIds The list of specifications that made alignments, selected by the user
  *   in the filter.
- * @param {Array} selectedSpineSpecificationIds The list of specifications that has properties with alignments, selected
- *   by the user in the filter. This refers to the origin of the property. Initially, a spine specification will have
- *   all its properties with the same specification. When a synthetic property is created, it will keep the specification
- *   of origin.
  * @param {Function} onSetShowingConnectors A function to set the state of the showing connectors of the spine term
  */
 const PropertyAlignments = (props) => {
-  const {
-    selectedPredicateIds,
-    selectedAlignmentSpecificationsIds,
-    selectedSpineSpecificationIds,
-    onSetShowingConnectors,
-  } = props;
+  const { selectedPredicateIds, selectedAlignmentSpecificationsIds, onSetShowingConnectors } =
+    props;
   const alignments = props.spineTerm.alignments;
 
   // TODO: this need to be moved to top level store
@@ -59,7 +51,6 @@ const PropertyAlignments = (props) => {
     alignments,
     selectedPredicateIds,
     selectedAlignmentSpecificationsIds,
-    selectedSpineSpecificationIds,
     props.selectedAlignmentOrderOption,
   ]);
 

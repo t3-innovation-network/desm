@@ -26,7 +26,6 @@ import Info from './Info';
  * @param {Array} selectedAlignmentSpecifications
  * @param {Array} selectedPredicates
  * @param {String} selectedSpineOrderOption
- * @param {Array} selectedSpineSpecifications
  */
 const PropertiesList = (props) => {
   const {
@@ -39,7 +38,6 @@ const PropertiesList = (props) => {
     selectedAlignmentSpecifications,
     selectedPredicates,
     selectedSpineOrderOption,
-    selectedSpineSpecifications,
     showInfo,
     setShowInfo,
   } = props;
@@ -53,7 +51,6 @@ const PropertiesList = (props) => {
 
   const selectedPredicateIds = selectedPredicates.map((predicate) => predicate.id);
   const selectedAlignmentSpecificationsIds = selectedAlignmentSpecifications.map((s) => s.id);
-  const selectedSpineSpecificationIds = selectedSpineSpecifications.map((s) => s.id);
 
   const alignmentsExists = (alignments) => {
     return alignments.some((alignment) => !isEmpty(alignment.mappedTerms));
@@ -85,8 +82,7 @@ const PropertiesList = (props) => {
             ) &&
             property.alignments.some((alignment) =>
               selectedAlignmentSpecificationsIds.includes(alignment.mapping.specification.id)
-            ) &&
-            intersection(selectedSpineSpecificationIds, property.specificationIds).length))
+            )))
     );
 
     return implementSpineSort(filteredProps, selectedSpineOrderOption);
@@ -95,7 +91,6 @@ const PropertiesList = (props) => {
     properties,
     inputValue,
     hideSpineTermsWithNoAlignments,
-    selectedSpineSpecificationIds,
     selectedAlignmentSpecificationsIds,
     selectedPredicateIds,
   ]);
@@ -175,7 +170,6 @@ const PropertiesList = (props) => {
                   selectedAlignmentOrderOption={selectedAlignmentOrderOption}
                   selectedAlignmentSpecificationsIds={selectedAlignmentSpecificationsIds}
                   selectedPredicateIds={selectedPredicateIds}
-                  selectedSpineSpecificationIds={selectedSpineSpecificationIds}
                   spineTerm={term}
                   onSetShowingConnectors={onSetShowingConnectors}
                 />

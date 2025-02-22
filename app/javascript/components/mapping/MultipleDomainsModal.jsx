@@ -115,7 +115,7 @@ const MultipleDomainsModal = (props) => {
               <label className="form-label">
                 <strong>Please select one or more domains from the list to begin mapping</strong>
               </label>
-              <div className="form-group input-group-has-icon">
+              <div className="form-group input-group-has-icon position-relative">
                 <FontAwesomeIcon icon={faSearch} className="form-control-feedback" />
                 <input
                   type="text"
