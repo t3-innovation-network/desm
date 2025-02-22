@@ -38,7 +38,6 @@ const PropertyMappingList = (props) => {
     selectedAlignmentSpecifications,
     selectedPredicates,
     selectedSpineOrderOption,
-    selectedSpineSpecifications,
     showInfo,
     showExport,
   } = state;
@@ -179,7 +178,6 @@ const PropertyMappingList = (props) => {
                     selectedDomain={selectedDomain}
                     selectedPredicates={selectedPredicates}
                     selectedSpineOrderOption={selectedSpineOrderOption}
-                    selectedSpineSpecifications={selectedSpineSpecifications}
                     showInfo={showInfo}
                     setShowInfo={actions.setShowInfo}
                   />
