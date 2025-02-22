@@ -2,6 +2,7 @@
 
 class ExportMappings
   include Interactor
+  include FsSanitizable
 
   delegate :configuration_profile, :domains, :format, :mapping, to: :context
 
@@ -21,12 +22,7 @@ class ExportMappings
   end
 
   def filename
-    @filename ||=
-      if bulk_export?
-        domains.map(&:name).map { _1.tr(" ", "+") }.join("_")
-      else
-        mapping.export_filename
-      end
+    @filename ||= bulk_export? ? bulk_export_filename : mapping.export_filename
   end
 
   def export_csv
@@ -127,5 +123,31 @@ class ExportMappings
         end
       end
     end
+  end
+
+  private
+
+  #
+  # @description: Generates a filename for the bulk export
+  # Format is [project_name][abstract_classes joined by '_']_[latest timestamp from mappings],
+  # abstract classes should be "all" if all abstract classes were selected.
+  #
+  # @return [String]
+  #
+  def bulk_export_filename
+    # get latest timestamp from mappings
+    updated_at = mappings.map(&:updated_at).max
+    abstract_classes = if configuration_profile.domains.size == domains.size
+                         "all"
+                       else
+                         domains.map { |d| d.name.tr(" ", "+") }.join("_")
+                       end
+    ary_to_filename(
+      [
+        configuration_profile.name,
+        abstract_classes,
+        timestamp_for(updated_at)
+      ]
+    )
   end
 end
