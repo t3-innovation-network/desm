@@ -168,7 +168,7 @@ class Mapping < ApplicationRecord
       domain,
       specification&.name,
       specification&.version
-    ].compact.join(" - ")
+    ].compact_blank.join(" - ")
     self.name ||= name_from_data
     self.title ||= name_from_data
   end
