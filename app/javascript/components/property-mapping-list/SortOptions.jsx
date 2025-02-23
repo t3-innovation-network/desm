@@ -8,7 +8,6 @@ import { sortBy } from 'lodash';
 export const spineSortOptions = {
   OVERALL_ALIGNMENT_SCORE: 'Overall Alignment Score',
   TOTAL_IDENTICAL_ALIGNMENTS: 'Total Identical Alignments',
-  ORGANIZATION: 'Organization',
   SPINE_CLASS_TYPE: 'Spine Class/Type',
   SPINE_PROPERTY: 'Spine Property',
   // HAS_ALIGNMENT_ISSUES: "Has Alignment Issues",
@@ -48,13 +47,6 @@ export const implementSpineSort = (properties, sortOption) => {
     case spineSortOptions.TOTAL_IDENTICAL_ALIGNMENTS:
       iteratee = (p) =>
         -p.alignments.filter((a) => a.predicate.prefLabel.toLowerCase() === 'identical').length;
-      break;
-    /**
-     * Sort by organization name, since a property might be synthetic, meaning that a different
-     * organization than the spine added it.
-     */
-    case spineSortOptions.ORGANIZATION:
-      iteratee = (p) => p.organization.name;
       break;
     /**
      * Sort by selected domain class of the property. This field can be edited in the edit term screen.

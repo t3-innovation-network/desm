@@ -15,7 +15,6 @@ const Sidebar = (props) => {
     selectedDomain,
     selectedPredicates,
     selectedSpineOrderOption,
-    selectedSpineSpecifications,
     specifications,
   } = state;
   const clsSidebar = classNames('desm-sidebar border-dark-subtle border-end', {
@@ -75,7 +74,6 @@ const Sidebar = (props) => {
               selectedDomain={selectedDomain}
               selectedPredicates={selectedPredicates}
               selectedSpineOrderOption={selectedSpineOrderOption}
-              selectedSpineSpecifications={selectedSpineSpecifications}
             />
           </div>
         </div>

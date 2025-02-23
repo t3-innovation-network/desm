@@ -36,6 +36,7 @@
 #   already has a spine (a previous specification was uploaded for it).
 ###
 class Mapping < ApplicationRecord
+  include FsSanitizable
   include Slugable
 
   ###
@@ -99,6 +100,7 @@ class Mapping < ApplicationRecord
   ###
   # @description: Every mapping should have the same number of terms as the associated spine terms
   ###
+  before_validation :generate_name, on: :create
   after_create :generate_alignments
   before_update :update_mapped_at, if: -> { mapped? || status_changed?(to: Mapping.statuses[:mapped]) }
 
@@ -119,19 +121,56 @@ class Mapping < ApplicationRecord
   end
 
   ###
+  # @description: Creates copies of selected terms and assigns them to the spine
+  ###
+  def assign_spine_terms(ids)
+    spine.terms = Term.where(id: ids).includes(:property).map do |term|
+      spine_term = configuration_profile_user
+                     .terms
+                     .create!(term.attributes.slice("name", "raw", "slug", "source_uri"))
+
+      spine_term.create_property!(
+        domain: [specification.domain.source_uri],
+        **term.property.attributes.slice("comment", "label", "range")
+      )
+
+      spine_term
+    end
+  end
+
+  ###
   # @description: Creates the terms for the mapping (alignments).
   ###
   def generate_alignments(first_upload: false)
     predicate_id = mapping_predicates.strongest_match_id if first_upload
 
-    spine.terms.each do |term|
+    terms = specification
+              .terms
+              .where(source_uri: spine.terms.pluck(:source_uri))
+              .group_by(&:source_uri)
+
+    spine.terms.each do |spine_term|
+      mapped_terms = first_upload ? terms.fetch(spine_term.source_uri) : []
+
       alignments.create!(
-        mapped_terms: (first_upload ? [term] : []),
+        mapped_terms:,
         predicate_id:,
-        spine_term_id: term.id,
-        uri: term.uri
+        spine_term:,
+        uri: spine_term.uri
       )
     end
+  end
+
+  def generate_name
+    # name format: «project name»+«abstract class»+«schema name»+«schema version»
+    name_from_data = [
+      configuration_profile&.name,
+      domain,
+      specification&.name,
+      specification&.version
+    ].compact.join(" - ")
+    self.name ||= name_from_data
+    self.title ||= name_from_data
   end
 
   ###
@@ -140,7 +179,7 @@ class Mapping < ApplicationRecord
   # @return [String]
   ###
   def domain
-    specification.domain.pref_label
+    specification&.domain&.pref_label
   end
 
   ###
@@ -217,18 +256,20 @@ class Mapping < ApplicationRecord
     self.selected_term_ids = ids
     return if spine.terms.any?
 
-    spine.term_ids = ids
+    assign_spine_terms(ids)
     generate_alignments(first_upload: true)
   end
 
   def export_filename
-    [
-      configuration_profile.name,
-      domain,
-      specification.name,
-      specification.version || "",
-      updated_at.to_s.gsub(/[^\d]/, "")
-    ].map { _1.split.join("+") }.join("_").gsub(%r{[/,:*?"<>()|]}, "").gsub(/_+/, "_")
+    ary_to_filename(
+      [
+        configuration_profile.name,
+        domain,
+        specification.name,
+        specification.version,
+        timestamp_for(updated_at)
+      ]
+    )
   end
 
   private

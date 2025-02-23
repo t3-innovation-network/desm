@@ -77,7 +77,7 @@ const SpineHeader = (props) => {
       </div>
       <div className="row mb-2">
         <div className="col-5">
-          <div className="form-group input-group-has-icon">
+          <div className="form-group input-group-has-icon position-relative">
             <FontAwesomeIcon icon={faSearch} className="form-control-feedback" />
             <input
               type="text"

@@ -12,7 +12,8 @@ module Converters
       reader = RDF::RDFXML::Reader.open(file.path)
       graph = RDF::Graph.new << reader
       expanded_resources = JSON::LD::API.fromRdf(graph)
-      context = reader.root.namespaces
+      # select namespaces from the root element with not nil keys
+      context = reader.root.namespaces.select { |k, _v| k.present? }
       JSON::LD::API.compact(expanded_resources, context).symbolize_keys
     end
 

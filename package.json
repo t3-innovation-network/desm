@@ -75,7 +75,7 @@
   ],
   "scripts": {
     "build": "node esbuild.config.cjs",
-    "build:css:compile": "sass ./app/assets/stylesheets/application.bootstrap.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules",
+    "build:css:compile": "sass ./app/assets/stylesheets/application.bootstrap.scss:./app/assets/builds/application.css --load-path=node_modules",
     "build:css:prefix": "postcss ./app/assets/builds/application.css --output=./app/assets/builds/application.css",
     "build:css": "yarn build:css:compile && yarn build:css:prefix",
     "lint": "eslint app/javascript && stylelint 'app/assets/stylesheets/**/*.{css,scss}' --quiet",

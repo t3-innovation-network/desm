@@ -27,6 +27,10 @@ module Parsers
         SKOS_CONCEPT: [
           "skos:concept",
           "http://www.w3.org/2004/02/skos/core#concept"
+        ],
+        OWL_CLASS: [
+          "owl:class",
+          "http://www.w3.org/2002/07/owl#class"
         ]
       }.freeze
 

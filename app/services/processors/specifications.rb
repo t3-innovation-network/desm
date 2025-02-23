@@ -106,12 +106,12 @@ module Processors
       processor = new(file_content)
       # Since we're looking for domains inside the file,
       # we only care about the nodes with type 'rdf:Class'
+      classes = processor.filter_classes(with_node: true)
       domains = processor
                   .graph
                   .filter_map do |node|
-        Parsers::JsonLd::Node.new(node, processor.context).rdfs_class_nodes
-      end
-                  .flatten
+        Parsers::JsonLd::Node.new(node, processor.context, classes:).rdfs_class_nodes
+      end.flatten
 
       processor.process_domains(domains)
     end
@@ -206,6 +206,19 @@ module Processors
       final_spec
     end
 
+    ###
+    # @description: Filter a given graph to return a new one containing only classes
+    # @return [Array] of nodes
+    ###
+    def filter_classes(with_node: false)
+      @graph.filter_map do |graph_node|
+        node = Parsers::JsonLd::Node.new(graph_node)
+        if node.types.rdfs_class?
+          with_node ? node : graph_node
+        end
+      end
+    end
+
     private
 
     ###
@@ -253,16 +266,6 @@ module Processors
           parser.related_to_node_by?("domainIncludes", class_uri) ||
           parser.related_to_node_by?("dwcattributes:organizedInClass", class_uri) ||
           parser.types.eql_to?(class_uri)
-      end
-    end
-
-    ###
-    # @description: Filter a given graph to return a new one containing only classes
-    # @return [Array]
-    ###
-    def filter_classes
-      @graph.select do |node|
-        Parsers::JsonLd::Node.new(node, {}).types.rdfs_class?
       end
     end
 
