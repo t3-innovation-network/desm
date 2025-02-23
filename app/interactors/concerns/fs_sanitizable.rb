@@ -4,7 +4,7 @@ require "zaru"
 
 module FsSanitizable
   def ary_to_filename(ary)
-    sanitized_filename_for(ary.compact.map { _1.split.join("+") }.join("_"))
+    sanitized_filename_for(ary.compact_blank.map { _1.split.join("+") }.join("_"))
   end
 
   def sanitized_filename_for(filename)
