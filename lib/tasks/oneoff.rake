@@ -78,4 +78,12 @@ namespace :oneoff do
       predicate.save!
     end
   end
+
+  desc "One-off task: force to update mapping name, title"
+  task update_mapping_name_title: :environment do
+    Mapping.find_each do |mapping|
+      name = mapping.generate_name
+      mapping.update!(name:, title: name)
+    end
+  end
 end
