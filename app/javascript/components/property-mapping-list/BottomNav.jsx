@@ -85,7 +85,6 @@ const BottomNav = (props) => {
             selectedDomain={state.selectedDomain}
             selectedPredicates={state.selectedPredicates}
             selectedSpineOrderOption={state.selectedSpineOrderOption}
-            selectedSpineSpecifications={state.selectedSpineSpecifications}
           />
         </Offcanvas.Body>
       </Offcanvas>

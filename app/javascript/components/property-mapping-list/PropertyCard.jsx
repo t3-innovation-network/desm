@@ -13,15 +13,6 @@ import { sortBy } from 'lodash';
  * @param {Function} onToggleTermCollapse
  */
 const PropertyCard = ({ term, collapsed, showingConnectors, onToggleTermCollapse }) => {
-  const schemaName = useMemo(() => {
-    if (term.schemaName) {
-      return term.schemaName;
-    }
-
-    const alignments = term.alignments.filter((a) => a.schemaName);
-    return sortBy(alignments, 'id')[0]?.schemaName;
-  }, [term]);
-
   const clsToggle = classNames('desm-icon me-1 desm-toggle fs-3', {
     'desm-toggle--collapsed': collapsed,
   });
@@ -61,10 +52,6 @@ const PropertyCard = ({ term, collapsed, showingConnectors, onToggleTermCollapse
           <div className={clsVerticalConnector}></div>
           <small className="mt-1">Definition</small>
           <div className="mb-1">{<PropertyComments term={term} />}</div>
-
-          <small className="mt-1">Origin</small>
-          <p className="mb-1">{schemaName}</p>
-
           <ProgressReportBar
             currentValue={term.currentMappingWeight}
             maxValue={term.maxMappingWeight}

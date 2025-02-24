@@ -7,7 +7,7 @@ const SearchBar = ({ search, updateSearch }) => {
     <div className="row mt-4 justify-content-end">
       <div className="col-3">
         <hr className="bottom-border-white" />
-        <div className="form-group input-group-has-icon">
+        <div className="form-group input-group-has-icon position-relative">
           <FontAwesomeIcon icon={faSearch} className="form-control-feedback" />
           <input
             type="text"
