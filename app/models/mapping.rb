@@ -146,6 +146,7 @@ class Mapping < ApplicationRecord
     ].compact_blank.join(" - ")
     self.name ||= name_from_data
     self.title ||= name_from_data
+    name_from_data
   end
 
   ###
