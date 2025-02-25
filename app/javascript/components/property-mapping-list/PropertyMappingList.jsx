@@ -162,6 +162,10 @@ const PropertyMappingList = (props) => {
                   onTabClick={(id) => updateSelectedDomain(id)}
                   selectedId={selectedDomain?.id}
                   values={domains}
+                  isAllTermsCollapsed={state.isAllTermsCollapsed}
+                  isAllTermsExpanded={state.isAllTermsExpanded}
+                  collapseAllTerms={actions.collapseAllTerms}
+                  expandAllTerms={actions.expandAllTerms}
                 />
               </div>
               {selectedDomain ? (
@@ -180,6 +184,9 @@ const PropertyMappingList = (props) => {
                     selectedSpineOrderOption={selectedSpineOrderOption}
                     showInfo={showInfo}
                     setShowInfo={actions.setShowInfo}
+                    collapsedTerms={state.collapsedTerms}
+                    onToggleTermCollapse={actions.toggleTermCollapse}
+                    onUpdateProperties={actions.setPropertyIds}
                   />
                 </div>
               ) : null}

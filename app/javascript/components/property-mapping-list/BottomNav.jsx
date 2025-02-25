@@ -78,7 +78,6 @@ const BottomNav = (props) => {
             specifications={state.specifications}
             onAlignmentSpecificationSelected={actions.setSelectedAlignmentSpecifications}
             onPredicateSelected={actions.setSelectedPredicates}
-            onSpineSpecificationSelected={actions.setSelectedSpineSpecifications}
             predicates={state.predicates}
             selectedAlignmentOrderOption={state.selectedAlignmentOrderOption}
             selectedAlignmentSpecifications={state.selectedAlignmentSpecifications}

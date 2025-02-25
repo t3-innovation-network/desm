@@ -1,7 +1,7 @@
-const InfoExportButtons = ({ store }) => {
+const InfoExportButtons = ({ store, cls = '' }) => {
   const [state, actions] = store;
   return (
-    <div className="col-auto d-flex gap-2">
+    <div className={`col-auto d-flex gap-2 ${cls}`}>
       <button
         className="btn btn-light border-dark-subtle border pb-0"
         disabled={!state.isInfoEnabled}
