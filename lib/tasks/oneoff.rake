@@ -86,4 +86,11 @@ namespace :oneoff do
       mapping.update!(name:, title: name)
     end
   end
+
+  desc "Update max_weight for existing predicate_sets"
+  task update_predicate_sets: :environment do
+    PredicateSet.find_each do |predicate_set|
+      predicate_set.update_max_weight(nil)
+    end
+  end
 end

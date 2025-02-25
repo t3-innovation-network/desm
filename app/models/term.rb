@@ -81,7 +81,7 @@ class Term < ApplicationRecord
 
   def max_mapping_weight
     Rails.cache.fetch("max_mapping_weight_#{configuration_profile.id}", expires_in: 10.minutes) do
-      configuration_profile.standards_organization_ids.size * mapping_predicates&.max_weight.to_f
+      configuration_profile.max_mapping_weight
     end
   end
 
