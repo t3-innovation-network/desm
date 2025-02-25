@@ -30,6 +30,7 @@ import Info from './Info';
 const PropertiesList = (props) => {
   const {
     hideSpineTermsWithNoAlignments,
+    collapsedTerms,
     configurationProfile,
     inputValue,
     predicates,
@@ -40,6 +41,8 @@ const PropertiesList = (props) => {
     selectedSpineOrderOption,
     showInfo,
     setShowInfo,
+    onToggleTermCollapse,
+    onUpdateProperties,
   } = props;
 
   const [errors, setErrors] = useState([]);
@@ -47,21 +50,12 @@ const PropertiesList = (props) => {
   const [spineExists, setSpineExists] = useState(false);
   const [properties, setProperties] = useState([]);
   const [showingConnectors, setShowingConnectors] = useState({});
-  const [collapsedTerms, setCollapsedTerms] = useState([]);
 
   const selectedPredicateIds = selectedPredicates.map((predicate) => predicate.id);
   const selectedAlignmentSpecificationsIds = selectedAlignmentSpecifications.map((s) => s.id);
 
   const alignmentsExists = (alignments) => {
     return alignments.some((alignment) => !isEmpty(alignment.mappedTerms));
-  };
-
-  const onToggleTermCollapse = (termId) => {
-    if (collapsedTerms.includes(termId)) {
-      setCollapsedTerms(collapsedTerms.filter((id) => id !== termId));
-    } else {
-      setCollapsedTerms([...collapsedTerms, termId]);
-    }
   };
 
   const onSetShowingConnectors = (termId, value) => {
@@ -133,6 +127,7 @@ const PropertiesList = (props) => {
     if (!anyError(response)) {
       const properties = await decoratePropertiesWithAlignments(spineId, response.terms);
       setProperties(properties);
+      onUpdateProperties(properties.map((p) => p.id));
     }
   };
 
