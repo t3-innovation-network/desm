@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import classNames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Props:
@@ -7,7 +9,15 @@ import classNames from 'classnames';
  * @param {Integer} selectedId The is of the selected value
  * @param {Function} onTabClick Callback to execute on any tab click
  */
-const DesmTabs = ({ values, selectedId, onTabClick }) => {
+const DesmTabs = ({
+  values,
+  selectedId,
+  onTabClick,
+  isAllTermsCollapsed,
+  isAllTermsExpanded,
+  collapseAllTerms,
+  expandAllTerms,
+}) => {
   const selectedValue = values.find((value) => value.id === selectedId);
   const scrollContainerRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -74,6 +84,7 @@ const DesmTabs = ({ values, selectedId, onTabClick }) => {
             className="desm-tabs__arrow btn btn-light p-0 rounded-circle border-dark-subtle"
             onClick={scrollLeft}
             disabled={!canScrollLeft}
+            title="Scroll Left"
           >
             <span className="desm-icon fs-5">chevron_left</span>
           </button>
@@ -81,6 +92,7 @@ const DesmTabs = ({ values, selectedId, onTabClick }) => {
             className="desm-tabs__arrow btn btn-light p-0 rounded-circle border-dark-subtle"
             onClick={scrollRight}
             disabled={!canScrollRight}
+            title="Scroll Right"
           >
             <span className="desm-icon fs-5">chevron_right</span>
           </button>
@@ -112,11 +124,27 @@ const DesmTabs = ({ values, selectedId, onTabClick }) => {
           );
         })}
       </div>
-      {selectedValue?.definition && (
-        <div className="w-100">
-          <small>{selectedValue.definition}</small>
+      <div className="w-100 d-flex gap-3 mt-2 align-items-center">
+        <div>{selectedValue?.definition && <small>{selectedValue.definition}</small>}</div>
+        <div className="col d-flex gap-2 justify-content-end">
+          <button
+            className="desm-tabs__arrow btn btn-light p-0 rounded-circle border-dark-subtle"
+            onClick={collapseAllTerms}
+            disabled={isAllTermsCollapsed}
+            title="Collapse All"
+          >
+            <FontAwesomeIcon icon={faChevronUp} className="fa-icon--small" />
+          </button>
+          <button
+            className="desm-tabs__arrow btn btn-light p-0 rounded-circle border-dark-subtle"
+            onClick={expandAllTerms}
+            disabled={isAllTermsExpanded}
+            title="Expand All"
+          >
+            <FontAwesomeIcon icon={faChevronDown} className="fa-icon--small" />
+          </button>
         </div>
-      )}
+      </div>
     </>
   );
 };

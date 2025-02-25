@@ -47,6 +47,20 @@ const Sidebar = (props) => {
             <span className="desm-icon desm-icon--fill fs-3">filter_alt</span>
             <NotificationDot show={state.withFilters} />
           </div>
+          <div
+            className="border-bottom border-dark-subtle py-3 cursor-pointer link-opacity-75-hover"
+            disabled={!state.isInfoEnabled}
+            onClick={() => actions.setShowInfo(!state.showInfo)}
+          >
+            <span className="desm-icon fs-3">info</span>
+          </div>
+          <div
+            className="border-bottom border-dark-subtle py-3 cursor-pointer link-opacity-75-hover"
+            disabled={!state.isExportEnabled}
+            onClick={() => actions.setShowExport(!state.showExport)}
+          >
+            <span className="desm-icon fs-3">download</span>
+          </div>
         </div>
       ) : (
         <div className="h-100 overflow-x-hidden overflow-y-auto">
@@ -67,7 +81,6 @@ const Sidebar = (props) => {
               specifications={specifications}
               onAlignmentSpecificationSelected={actions.setSelectedAlignmentSpecifications}
               onPredicateSelected={actions.setSelectedPredicates}
-              onSpineSpecificationSelected={actions.setSelectedSpineSpecifications}
               predicates={predicates}
               selectedAlignmentOrderOption={selectedAlignmentOrderOption}
               selectedAlignmentSpecifications={selectedAlignmentSpecifications}
