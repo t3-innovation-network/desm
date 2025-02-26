@@ -6,7 +6,7 @@ module Exporters
     # @description: Manages to export a mapping to JSON-LD format to let the user download it.
     ###
     class JSONLD
-      attr_reader :mapping
+      attr_reader :alignments, :mapping
 
       delegate :specification, :user, to: :mapping
       delegate :domain, to: :specification
@@ -15,6 +15,14 @@ module Exporters
       # @description: Initializes this class with the mapping to export.
       ###
       def initialize(mapping)
+        @alignments = mapping
+                        .alignments
+                        .includes(
+                          :predicate,
+                          mapped_terms: [:property, { specifications: :domain }],
+                          spine_term: [:property, { specifications: :domain }]
+                        )
+
         @mapping = mapping
       end
 
@@ -43,14 +51,6 @@ module Exporters
 
       def graph
         @graph ||= begin
-          alignments = mapping
-                         .alignments
-                         .includes(
-                           :predicate,
-                           mapped_terms: [:property, { specifications: :domain }],
-                           spine_term: [:property, { specifications: :domain }]
-                         )
-
           term_mapping_nodes = alignments.flat_map { term_nodes(_1) }
           nodes = [*abstract_class_mapping_nodes, *term_mapping_nodes]
           clean_nodes = deep_clean(nodes)
@@ -73,9 +73,7 @@ module Exporters
             "dcterms:created": mapping.created_at.strftime("%F"),
             "dcterms:dateModified": mapping.updated_at.strftime("%F"),
             "desm:abstractClassModeled": { "@id": domain.source_uri },
-            "dcterms:hasPart": mapping.alignments.map do |alignment|
-              { "@id": alignment_uri(alignment) }
-            end
+            "dcterms:hasPart": alignments.map { { "@id": alignment_uri(_1) } }
           },
           domain_node(domain)
         ]
@@ -205,7 +203,7 @@ module Exporters
       end
 
       def agent_node
-        {
+        @agent_node ||= {
           "@id": agent_uri,
           "@type": "desm:Agent",
           "sdo:name": user.fullname,
