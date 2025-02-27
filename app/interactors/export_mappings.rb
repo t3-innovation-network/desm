@@ -4,6 +4,8 @@ class ExportMappings
   include Interactor
   include FsSanitizable
 
+  JSONLD = Exporters::Mapping::JSONLD
+
   delegate :configuration_profile, :domains, :format, :mapping, to: :context
 
   def call
@@ -67,12 +69,16 @@ class ExportMappings
   def jsonld_data
     @jsonld_data ||= if bulk_export?
                        {
-                         "@context": Desm::CONTEXT,
-                         "@graph": mappings.map { Exporters::Mapping::JSONLD.new(_1).graph }.flatten.uniq
-                       }.to_json
+                         "@context": Desm::CONTEXT_URI,
+                         "@graph": jsonld_graph
+                       }
                      else
-                       exporter.jsonld.to_json
-                     end
+                       exporter.jsonld
+                     end.to_json
+  end
+
+  def jsonld_graph
+    JSONLD.deduplicate(mappings.flat_map { JSONLD.new(_1).graph })
   end
 
   def mappings
