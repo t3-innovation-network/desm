@@ -1,0 +1,37 @@
+/* Navbar Styles */
+
+// Old styles, need to be updated
+.navbar-with-border {
+  border-bottom: 2px solid $primary-color;
+
+  @include media-breakpoint-up(lg) {
+    padding-bottom: 0 !important;
+  }
+}
+
+.navbar-nav > li > .nav-link {
+  color: $on-primary;
+}
+
+.nav-title-highlighted {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.selected-dashboard-option {
+  border-left: 1px solid $background-color;
+}
+
+// Navbar styles
+.desm-navbar {
+  @include media-breakpoint-up(lg) {
+    position: fixed;
+    z-index: $zindex-fixed;
+  }
+
+  @include e(brand) {
+    @include media-breakpoint-up(lg) {
+      margin-right: 5rem;
+    }
+  }
+}

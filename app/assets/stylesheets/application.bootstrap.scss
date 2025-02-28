@@ -1,0 +1,30 @@
+@charset "utf-8";
+
+/* stylelint-disable at-rule-empty-line-before */
+@import 'rfs/scss';
+
+// base styles
+@import 'common-utils';
+@import 'common';
+
+// bootstrap
+@import 'themes/settings'; // redefine bootstrap variables
+@import 'themes/bootstrap'; // bootstrap styles with custom settings
+@import 'themes/compatibility_4.x'; // compatibility with bootstrap 4.x
+
+// utilitie & helpers
+@import 'utils/utilities';
+
+// layout
+@import 'layout';
+
+// components
+@import 'components';
+
+// packages assets
+@import 'codemirror/lib/codemirror';
+@import 'react-redux-toastr/src/styles/index';
+@import 'react-tabs/style/react-tabs';
+
+// app assets
+@import 'legacy';

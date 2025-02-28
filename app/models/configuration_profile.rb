@@ -83,7 +83,7 @@ class ConfigurationProfile < ApplicationRecord
   #   parsing the structure.
   # 3. "deactivated" Can not be operated unless it's for removal or export. It can only be activated again, which
   #   will not trigger the structure creation again.
-  enum state: { incomplete: 0, complete: 1, active: 2, deactivated: 3 }
+  enum :state, { incomplete: 0, complete: 1, active: 2, deactivated: 3 }
 
   pg_search_scope :search_by_name, against: :name, using: { tsearch: { prefix: true } }
 

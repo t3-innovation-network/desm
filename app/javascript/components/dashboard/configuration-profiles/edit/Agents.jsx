@@ -55,7 +55,9 @@ const Agents = () => {
     setRefresh(!refresh);
   }, [currentDSOIndex]);
 
-  useEffect(() => initAgentData(), [currentAgentIndex, currentDSOIndex, refresh]);
+  useEffect(() => {
+    initAgentData();
+  }, [currentAgentIndex, currentDSOIndex, refresh]);
 
   const addAgent = () => {
     setAgentsData([
@@ -156,16 +158,16 @@ const Agents = () => {
             }}
             type="checkbox"
           />
-          <label className="form-check-label" htmlFor="leadMapper">
+          <label className="form-label" htmlFor="leadMapper">
             Lead Mapper?
           </label>
           <div className="form-text">Only lead mappers can publish completed mappings.</div>
         </div>
 
         <div className="mt-5">
-          <label htmlFor="name">
+          <label className="form-label" htmlFor="name">
             Agent Full Name
-            <span className="ml-1 text-danger">*</span>
+            <span className="ms-1 text-danger">*</span>
           </label>
           <div className="input-group input-group">
             <input
@@ -185,9 +187,9 @@ const Agents = () => {
         </div>
 
         <div className="mt-5">
-          <label htmlFor="email">
+          <label className="form-label" htmlFor="email">
             Agent Email
-            <span className="ml-1 text-danger">*</span>
+            <span className="ms-1 text-danger">*</span>
           </label>
           <div className="input-group input-group">
             <input
@@ -206,7 +208,9 @@ const Agents = () => {
         </div>
 
         <div className="mt-5">
-          <label htmlFor="phone">Agent Phone</label>
+          <label className="form-label" htmlFor="phone">
+            Agent Phone
+          </label>
           <div className="input-group input-group">
             <input
               id="phone"
@@ -222,7 +226,7 @@ const Agents = () => {
               onBlur={saveChanges}
               aria-describedby="phoneHelpBlock"
             />
-            <small id="phoneHelpBlock" className="form-text text-muted">
+            <small id="phoneHelpBlock" className="form-text text-body-secondary">
               Phone number should be at least 6 characters long and can contain digits, spaces, or
               hyphens, optionally starting with a plus sign. Examples: +1234567890, 123-456-789, 123
               456 7890
@@ -231,7 +235,9 @@ const Agents = () => {
         </div>
 
         <div className="mt-5">
-          <label htmlFor="gitbuh">GitHub Handle</label>
+          <label className="form-label" htmlFor="gitbuh">
+            GitHub Handle
+          </label>
           <div className="input-group input-group">
             <input
               id="github"

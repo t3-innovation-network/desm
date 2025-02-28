@@ -9,7 +9,7 @@ class PasswordsController < ApplicationController
 
   before_action :validate_email, only: :forgot
   before_action :validate_token, only: :reset
-  before_action :validate_password, only: %i(strength reset)
+  before_action :validate_password, only: :reset
 
   ###
   # @description: Manages to generate a token and send it to the user via email with
@@ -53,9 +53,7 @@ class PasswordsController < ApplicationController
   def validate_password
     raise ArgumentError, "Password not provided" unless permitted_params[:password].present?
 
-    decoded = decode(permitted_params[:password])
-
-    @password = decoded[:password]
+    @password = permitted_params[:password]
   end
 
   ###

@@ -52,7 +52,11 @@ export default class OutsideAlerter extends Component {
   }
 
   render() {
-    return <div ref={this.wrapperRef}>{this.props.children}</div>;
+    return (
+      <div className="position-relative" ref={this.wrapperRef}>
+        {this.props.children}
+      </div>
+    );
   }
 }
 

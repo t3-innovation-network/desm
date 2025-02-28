@@ -15,7 +15,7 @@ const UserInfo = () => {
     <>
       {isLoggedIn ? (
         <Link className="nav-link col-on-primary" to="/edit-profile">
-          <FontAwesomeIcon icon={faUser} className="mr-2" />
+          <FontAwesomeIcon icon={faUser} className="me-2" />
           {user && <span>{user.fullname + (organization ? ' @ ' + organization.name : '')}</span>}
         </Link>
       ) : (

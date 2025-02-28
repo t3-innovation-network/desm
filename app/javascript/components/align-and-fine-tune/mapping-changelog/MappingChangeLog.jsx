@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { isEmpty } from 'lodash';
 import fetchAudits from '../../../services/fetchAudits';
 import Collapsible from '../../shared/Collapsible';
 import ChangeDetails from './ChangeDetails';
@@ -68,7 +69,7 @@ const MappingChangeLog = (props) => {
         {changes.map((change, i) => {
           return (
             <li key={i}>
-              <div className="ml-3">
+              <div className="ms-3">
                 <div className="row">
                   <strong>{dateTimeLongFormat(change.created_at)}</strong>
                 </div>
@@ -91,7 +92,7 @@ const MappingChangeLog = (props) => {
    *
    * Render taking care of having changes present.
    */
-  return !_.isEmpty(changes) ? (
+  return !isEmpty(changes) ? (
     <Collapsible
       cardStyle={'mb-3 alert-info'}
       cardHeaderStyle={'bottom-borderless'}

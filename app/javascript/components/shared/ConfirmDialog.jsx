@@ -1,9 +1,10 @@
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
-import { SlideInDown } from './Animations.jsx';
+import Collapse from 'react-bootstrap/Collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Loader from './Loader.jsx';
+import { Col } from 'react-bootstrap';
 
 /**
  * @prop {Function} onConfirm
@@ -25,7 +26,9 @@ const ConfirmDialog = (props) => {
     onConfirm();
   };
 
-  useEffect(() => setWaiting(false), [visible]);
+  useEffect(() => {
+    setWaiting(false);
+  }, [visible]);
 
   return (
     <Modal
@@ -37,7 +40,7 @@ const ConfirmDialog = (props) => {
       shouldCloseOnEsc={false}
       shouldCloseOnOverlayClick={false}
     >
-      <SlideInDown>
+      <Collapse in={visible}>
         <div className="card" style={{ maxHeight: '45rem' }}>
           <div className="card-header">
             <div className="row">
@@ -46,7 +49,7 @@ const ConfirmDialog = (props) => {
               </div>
               <div className="col-2">
                 <a
-                  className="float-right cursor-pointer"
+                  className="float-end cursor-pointer"
                   onClick={() => !waiting && onRequestClose()}
                 >
                   <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
@@ -61,14 +64,14 @@ const ConfirmDialog = (props) => {
             <div className="row">
               <div className="col">
                 <button
-                  className="btn btn-dark float-right ml-3"
+                  className="btn btn-dark float-end ms-3"
                   disabled={waiting}
                   onClick={handleConfirm}
                 >
                   {waiting ? <Loader noPadding smallSpinner /> : 'Confirm'}
                 </button>
                 <button
-                  className="btn btn-dark float-right ml-3"
+                  className="btn btn-dark float-end ms-3"
                   disabled={waiting}
                   onClick={onRequestClose}
                 >
@@ -78,7 +81,7 @@ const ConfirmDialog = (props) => {
             </div>
           </div>
         </div>
-      </SlideInDown>
+      </Collapse>
     </Modal>
   );
 };

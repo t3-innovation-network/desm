@@ -76,7 +76,7 @@ const AlignmentsHeader = (props) => {
           ) : null}
         </div>
         <div className="col-6">
-          <div className="form-check float-right">
+          <div className="form-check float-end">
             <input
               className="form-check-input"
               type="checkbox"

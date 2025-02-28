@@ -1,6 +1,7 @@
 import apiRequest from './api/apiRequest';
 import queryString from 'query-string';
 import { decamelizeKeys } from 'humps';
+import { isEmpty } from 'lodash';
 
 const fetchAudits = async (filters) => {
   /**
@@ -16,7 +17,7 @@ const fetchAudits = async (filters) => {
     return queryString.stringify(query, { arrayFormat: 'comma' });
   };
 
-  if (_.isEmpty(filters)) throw 'No parameters received';
+  if (isEmpty(filters)) throw 'No parameters received';
 
   return await apiRequest({
     url: '/api/v1/audits?' + buildFilter(filters),

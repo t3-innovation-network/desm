@@ -1,0 +1,17 @@
+@use 'sass:map';
+
+.desm-sidebar {
+  height: calc(100% - rfs-value(map.get($desm-nav-top, base)));
+  position: fixed;
+  top: rfs-value(map.get($desm-nav-top, base) - 2px);
+  transition: width 0.3s ease;
+  z-index: $zindex-fixed + 1;
+
+  @include m(collapsed) {
+    width: map.get($desm-sidebar, collapsed, width);
+  }
+
+  @include m(expanded) {
+    width: map.get($desm-sidebar, expanded, width);
+  }
+}

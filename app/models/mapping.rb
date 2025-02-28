@@ -90,7 +90,7 @@ class Mapping < ApplicationRecord
   # 3. "in-progress" It means that the user is already mapping terms but
   #    not yet finished mapping
   # 4. "mapped" It means the terms are confirmed as mapped to the spine
-  enum status: { uploaded: 0, in_progress: 1, mapped: 2, ready_to_upload: 3 }
+  enum :status, { uploaded: 0, in_progress: 1, mapped: 2, ready_to_upload: 3 }
 
   ###
   # CALLBACKS

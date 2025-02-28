@@ -3,62 +3,39 @@ import { Link } from 'react-router-dom';
 import AuthButton from '../auth/AuthButton';
 import DashboardBtn from './DashboardBtn';
 import UserInfo from '../auth/UserInfo';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import logo from '../../../assets/images/t3-logo.png';
+import Container from 'react-bootstrap/Container';
+import Navbar from 'react-bootstrap/Navbar';
 
 const TopNav = (props) => {
   return (
-    <>
-      <nav className="navbar navbar-with-border with-shadow navbar-expand-lg pr-3">
-        <div className="col-sm-6 col-md-3 col-lg-2">
-          <div className="navbar-header">
-            {/* BRAND BOX */}
-
-            <div className="brand-box-container">
-              <Link to="/" className="navbar-brand nav-item brand-box" />
-            </div>
-          </div>
-        </div>
-
-        {/* DYNAMIC CONTENT */}
-
-        <div className="col-sm-6 col-md-9 col-lg-10">
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#toggle-nav"
-            aria-controls="toggle-nav"
-            aria-expanded="false"
-            aria-label="Toggle Navigation"
-          >
-            <FontAwesomeIcon icon={faBars} aria-hidden="true" />
-          </button>
-
-          <div className="collapse navbar-collapse" id="toggle-nav">
-            {props.centerContent()}
-
-            {/* SESSION INFO & ACTIONS */}
-
-            <ul className="navbar-nav ml-auto">
+    <Navbar
+      expand="lg"
+      className="navbar-with-border with-shadow align-items-center desm-navbar bg-white py-2 w-100"
+    >
+      <Container fluid>
+        <Link to="/" className="navbar-brand desm-navbar__brand">
+          <img src={logo} alt="Logo" className="desm-image--logo" />
+        </Link>
+        <Navbar.Toggle aria-controls="toggle-nav" />
+        <Navbar.Collapse id="toggle-nav">
+          {props.centerContent()}
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+              <UserInfo />
+            </li>
+            {!window.location.pathname.includes('dashboard') && (
               <li className="nav-item">
-                <UserInfo />
+                <DashboardBtn />
               </li>
-              {!window.location.pathname.includes('dashboard') && (
-                <li className="nav-item">
-                  <DashboardBtn />
-                </li>
-              )}
-              <li className="nav-item">
-                <AuthButton />
-              </li>
-            </ul>
-
-            {/* END SESSION INFO & ACTIONS */}
-          </div>
-        </div>
-      </nav>
-    </>
+            )}
+            <li className="nav-item">
+              <AuthButton />
+            </li>
+          </ul>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 };
 

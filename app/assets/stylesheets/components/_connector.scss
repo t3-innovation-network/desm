@@ -1,0 +1,39 @@
+.desm-connector {
+  @include m(mapping) {
+    border-bottom: 1px solid $card-border-color;
+    left: -0.25 * $container-padding-x;
+    position: absolute;
+    top: 50%;
+    width: 0.25 * $container-padding-x;
+
+    @include media-breakpoint-up(lg) {
+      left: -$grid-gutter-width;
+      width: $grid-gutter-width;
+    }
+  }
+
+  @include m(mapping-header-vertical) {
+    border-left: 1px solid $card-border-color;
+    height: rfs-value(45px);
+    left: -0.25 * $container-padding-x;
+    position: absolute;
+    top: 50%;
+  }
+
+  @include m(mapping-vertical) {
+    border-left: 1px solid $card-border-color;
+    height: 100%;
+    left: -0.25 * $container-padding-x;
+    position: absolute;
+  }
+
+  @include m(mapping-property-vertical) {
+    border-left: 1px solid $card-border-color;
+    left: calc(-0.25 * $container-padding-x - 1px);
+    position: absolute;
+
+    &.h-full {
+      height: calc(100% + $grid-gutter-width);
+    }
+  }
+}

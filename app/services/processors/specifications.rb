@@ -149,17 +149,13 @@ module Processors
     # @return [Array]
     ###
     def filter_vocabularies
-      vocabs = []
-
       parser = Parsers::Skos.new(context: @context, graph: @graph)
 
       # Get all the concept scheme nodes. With the pupose of separate all the vocabularies, we
       # need the concept schemes, which represents the vocabularies main nodes.
-      parser.scheme_nodes.each do |scheme_node|
-        vocabs << parser.build_skos(scheme_node)
+      parser.scheme_nodes.map do |scheme_node|
+        parser.build_skos(scheme_node)
       end
-
-      vocabs
     end
 
     ###

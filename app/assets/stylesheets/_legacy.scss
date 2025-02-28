@@ -1,0 +1,8 @@
+@import 'legacy/base';
+@import 'legacy/customradio';
+@import 'legacy/forms';
+@import 'legacy/stepper';
+
+.ReactModal__Overlay {
+  z-index: $zindex-modal !important; // stylelint-disable-line declaration-no-important
+}

@@ -1,4 +1,5 @@
 import { Component, useState } from 'react';
+import { isUndefined } from 'lodash';
 import DashboardContainer from '../DashboardContainer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
@@ -23,7 +24,7 @@ const UploadZone = () => {
   const uploadForm = () => <UploadConfigurationProfileForm />;
 
   return (
-    <div className="col mr-3">
+    <div className="col me-3">
       <div className="row">{uploadForm()}</div>
     </div>
   );
@@ -40,12 +41,12 @@ class UploadConfigurationProfile extends Component {
         errors: [...errorsList, response.error],
       });
     }
-    return !_.isUndefined(response.error);
+    return !isUndefined(response.error);
   }
 
   dashboardPath = () => {
     return (
-      <div className="float-right">
+      <div className="float-end">
         <FontAwesomeIcon icon={faHome} />{' '}
         <span>
           <Link className="col-on-primary" to="/">

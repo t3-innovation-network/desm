@@ -2,7 +2,7 @@ version: "3"
 services:
   web:
     build: .
-    command: bundle exec bin/rails server -p 3030 -b 0.0.0.0
+    command: unset PORT && env RUBY_DEBUG_OPEN=true bundle exec bin/rails server -b 0.0.0.0 -p 3030
     volumes:
       - .:/app
     ports:
@@ -11,8 +11,6 @@ services:
     depends_on:
       - db
       - redis
-    environment:
-      - WEBPACKER_DEV_SERVER_HOST=webpack
     env_file:
       - .env
 
@@ -24,9 +22,9 @@ services:
       POSTGRES_DB: "db"
       POSTGRES_HOST_AUTH_METHOD: "trust"
 
-  webpack:
+  css:
     build: .
-    command: bash -c "rm -rf ./public/packs; APP_DOMAIN=${APP_DOMAIN} ADMIN_ROLE_NAME=${ADMIN_ROLE_NAME} ./bin/webpack-dev-server"
+    command: yarn watch:css
     volumes:
       - .:/app
     ports:
@@ -34,11 +32,24 @@ services:
     environment:
       - "NODE_ENV=development"
       - "RAILS_ENV=development"
-      - "WEBPACKER_DEV_SERVER_HOST=0.0.0.0"
     env_file:
       - .env
+
+  js:
+    build: .
+    command: yarn build --watch
+    volumes:
+      - .:/app
+    ports:
+      - "3036:3036"
+    environment:
+      - "NODE_ENV=development"
+      - "RAILS_ENV=development"
+    env_file:
+      - .env
+
   redis:
-    image: "redis:5-alpine"
+    image: "redis:7.4.6-alpine"
     command: redis-server
     ports:
       - "6380:6379"

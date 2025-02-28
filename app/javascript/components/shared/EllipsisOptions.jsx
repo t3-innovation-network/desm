@@ -1,6 +1,7 @@
 import {} from 'react';
 import { Component } from 'react';
-import { FadeIn, SlideInDown } from './Animations.jsx';
+import Fade from 'react-bootstrap/Fade';
+import Collapse from 'react-bootstrap/Collapse';
 import OutsideAlerter from './OutsideAlerter.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
@@ -37,10 +38,10 @@ class EllipsisOptions extends Component {
       <OutsideAlerter onOutsideAlert={() => this.handleShrink()}>
         {expanded ? (
           <>
-            <button className="btn float-right p-1 icon--btn" disabled={disabled}>
+            <button className="btn float-end p-1 icon--btn" disabled={disabled}>
               <FontAwesomeIcon icon={faEllipsisV} />
             </button>
-            <SlideInDown className="float-over" style={{ minWidth: 'max-content' }}>
+            <Collapse in={expanded} className="float-over" style={{ minWidth: 'max-content' }}>
               <div className="card">
                 {options.map((option) => {
                   return (
@@ -54,17 +55,17 @@ class EllipsisOptions extends Component {
                   );
                 })}
               </div>
-            </SlideInDown>
+            </Collapse>
           </>
         ) : (
-          <FadeIn>
+          <Fade in={!expanded}>
             <button
-              className="btn float-right p-1 icon--btn"
+              className="btn float-end p-1 icon--btn"
               onClick={() => this.setState({ expanded: true })}
             >
               <FontAwesomeIcon icon={faEllipsisV} />
             </button>
-          </FadeIn>
+          </Fade>
         )}
       </OutsideAlerter>
     );

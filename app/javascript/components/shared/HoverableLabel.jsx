@@ -47,7 +47,7 @@ export default class HoverableLabel extends Component {
             >
               <div className="row">
                 <div className="col-10 cursor-pointer">
-                  <label className="non-selectable">{label}</label>
+                  <label className="form-label non-selectable">{label}</label>
                 </div>
                 <div className="col-2 cursor-pointer">{showing ? '▲' : '▼'}</div>
               </div>

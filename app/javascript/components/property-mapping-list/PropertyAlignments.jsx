@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react';
-import { compact, flatMap, intersection } from 'lodash';
+import { useEffect, useMemo, useState } from 'react';
+import { compact, flatMap, intersection, kebabCase } from 'lodash';
+import classNames from 'classnames';
 import { implementAlignmentSort, implementAlignmentTermsSort } from './SortOptions';
 import { propertyClassesForAlignmentTerm } from './stores/propertyMappingListStore';
 import PropertyComments from './PropertyComments';
+import Predicate from '../shared/Predicate';
 
 /**
  * @description A list of alignments with information like predicate, comment, and more.
@@ -18,12 +20,14 @@ import PropertyComments from './PropertyComments';
  *   by the user in the filter. This refers to the origin of the property. Initially, a spine specification will have
  *   all its properties with the same specification. When a synthetic property is created, it will keep the specification
  *   of origin.
+ * @param {Function} onSetShowingConnectors A function to set the state of the showing connectors of the spine term
  */
 const PropertyAlignments = (props) => {
   const {
     selectedPredicateIds,
     selectedAlignmentSpecificationsIds,
     selectedSpineSpecificationIds,
+    onSetShowingConnectors,
   } = props;
   const alignments = props.spineTerm.alignments;
 
@@ -62,6 +66,10 @@ const PropertyAlignments = (props) => {
     props.selectedAlignmentOrderOption,
   ]);
 
+  useEffect(() => {
+    onSetShowingConnectors(props.spineTerm.id, filteredMappedTerms.length > 0);
+  }, [filteredMappedTerms.length > 0]);
+
   return filteredMappedTerms.map((mTerm, idx) => (
     <AlignmentCard
       alignment={mTerm.alignment}
@@ -82,78 +90,68 @@ const AlignmentCard = ({ alignment, term, isLast = false }) => {
 
   const alignmentTermClasses = term.selectedClasses.join(', ');
   const alignmentTermRanges = term.compactRanges.join(', ');
+  const clsHeader = classNames(
+    'card-header u-txt--predicate d-inline-flex align-items-center  px-2 py-1',
+    `desm-predicate--${kebabCase(alignment.predicate.color || 'unset')}`
+  );
+  const clsConnector = classNames('desm-connector--mapping-property-vertical d-lg-none', {
+    'h-full': !isLast,
+    'h-50': isLast,
+  });
 
   return (
-    <div className={`card borderless ${isLast ? '' : 'mb-3'}`}>
-      <div className="card-header desm-rounded bottom-borderless bg-col-secondary">
-        <div className="row">
-          <div className="col-12 mb-1">
-            <span className="fw-bold fs-5">Schema:&nbsp;</span>
-            <span className="fs-5">{alignment.schemaName}. </span>
-            <span className="fw-bold fs-5">Property:&nbsp;</span>
-            <span className="fs-5">{term.name}</span>
-          </div>
-          <div className="col-2">
-            <div
-              className="text-center desm-rounded p-3"
-              style={{
-                backgroundColor: alignment.predicate.color || 'unset',
-                color: alignment.predicate.color ? 'White' : 'DarkSlateGrey',
-              }}
+    <div className={`card ${isLast ? '' : 'mb-3'} bg-bg-dark position-relative`}>
+      <div className={clsHeader}>
+        <Predicate predicate={alignment.predicate} />
+      </div>
+      <div className="desm-connector--mapping"></div>
+      <div className={clsConnector}></div>
+      <div className="card-body p-2">
+        <p className="mb-2">
+          <span className="desm-icon me-1 align-middle">account_tree</span>
+          <span>{alignment.schemaName}. </span>
+          <br />
+          <span className="desm-icon me-1 align-middle">arrow_split</span>
+          <span className="fs-5">{term.name}</span>
+        </p>
+
+        <p className="mb-1">
+          <span className="fw-bold">Definition:&nbsp;</span> {<PropertyComments term={term} />}
+          <br />
+          <span className="fw-bold">Relevant class(es):&nbsp;</span>
+          {alignmentTermClasses}
+          <br />
+          <span className="fw-bold">Expected value type:&nbsp;</span>
+          {alignmentTermRanges}
+          <br />
+        </p>
+        {(alignment.transformation?.to || alignment.transformation?.from) && (
+          <>
+            <div className="mb-1">
+              <p className="fw-bold mb-0">Data Transformation:</p>
+              {alignment.transformation?.to ? (
+                <p className="mb-0">To Spine: {alignment.transformation.to}</p>
+              ) : null}
+              {alignment.transformation?.from ? (
+                <p className="mb-0">From Spine: {alignment.transformation.from}</p>
+              ) : null}
+            </div>
+          </>
+        )}
+        {alignment.comment && (
+          <div className="w-100 text-end">
+            <label
+              className="non-selectable my-1 text-desm-primary cursor-pointer"
+              onClick={() => setShowingAlignmentComment(!showingAlignmentComment)}
             >
-              <strong>{alignment.predicate ? alignment.predicate.prefLabel : ''}</strong>
-            </div>
-            {alignment.predicate?.definition && (
-              <div className="lh-1 mt-1">
-                <small>{alignment.predicate.definition}</small>
-              </div>
-            )}
+              {showingAlignmentComment ? 'Hide Alignment Notes' : 'Alignment Notes'}
+            </label>
           </div>
-          <div className="col">
-            <p className="mb-2">
-              <span className="fw-bold">Definition:&nbsp;</span> {<PropertyComments term={term} />}
-            </p>
-            <p className="mb-2">
-              <span className="fw-bold">Relevant class(es):&nbsp;</span>
-              {alignmentTermClasses}
-            </p>
-            <p className="mb-2">
-              <span className="fw-bold">Expected value type:&nbsp;</span>
-              {alignmentTermRanges}
-            </p>
-            {(alignment.transformation?.to || alignment.transformation?.from) && (
-              <>
-                <div className="mb-2">
-                  <p className="fw-bold mb-0">Data Transformation:</p>
-                  {alignment.transformation?.to ? (
-                    <p className="mb-0">To Spine: {alignment.transformation.to}</p>
-                  ) : null}
-                  {alignment.transformation?.from ? (
-                    <p className="mb-0">From Spine: {alignment.transformation.from}</p>
-                  ) : null}
-                </div>
-              </>
-            )}
-            {alignment.comment && (
-              <label
-                className="non-selectable float-right mt-1 mb-0 col-primary cursor-pointer"
-                onClick={() => setShowingAlignmentComment(!showingAlignmentComment)}
-              >
-                {showingAlignmentComment ? 'Hide Alignment Notes' : 'Alignment Notes'}
-              </label>
-            )}
-          </div>
-        </div>
+        )}
         {showingAlignmentComment && (
-          <div className="row">
-            <div className="col">
-              <div className="card borderless">
-                <div className="card-body">
-                  <h6>Alignment Note</h6>
-                  {alignment.comment}
-                </div>
-              </div>
-            </div>
+          <div className="p-2 bg-white w-100">
+            <h6>Alignment Note</h6>
+            {alignment.comment}
           </div>
         )}
       </div>

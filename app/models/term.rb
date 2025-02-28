@@ -80,7 +80,9 @@ class Term < ApplicationRecord
   end
 
   def max_mapping_weight
-    configuration_profile.standards_organizations.count * mapping_predicates&.max_weight.to_f
+    Rails.cache.fetch("max_mapping_weight_#{configuration_profile.id}", expires_in: 10.minutes) do
+      configuration_profile.standards_organization_ids.size * mapping_predicates&.max_weight.to_f
+    end
   end
 
   ###
@@ -88,7 +90,8 @@ class Term < ApplicationRecord
   # @return [String]: the desm namespaced uri
   ###
   def desm_uri(domain = nil)
-    "desm-#{organization.name.downcase.strip}-#{domain&.pref_label&.downcase&.strip}:#{uri.split(':').last}"
+    pref_label = domain&.pref_label.to_s.downcase.strip
+    "desm-#{organization.name.downcase.strip}-#{pref_label}:#{uri.split(':').last}"
   end
 
   def assign_property

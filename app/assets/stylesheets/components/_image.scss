@@ -1,0 +1,13 @@
+.desm-image {
+  @each $type, $sizes in $desm-image-sizes {
+    @include m(#{$type}) {
+      @each $breakpoint, $values in $sizes {
+        @include media-breakpoint-up($breakpoint) {
+          @each $style, $value in $values {
+            #{$style}: rfs-value($value);
+          }
+        }
+      }
+    }
+  }
+}

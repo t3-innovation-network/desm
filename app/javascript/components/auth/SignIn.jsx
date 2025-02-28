@@ -66,69 +66,71 @@ class SignIn extends Component {
 
   render() {
     return (
-      <div className="container-fluid">
+      <>
         <TopNav centerContent={this.navCenterOptions} />
-        <div className="row mt-4">
-          <div className="col-lg-6 mx-auto">
-            {this.state.errors && (
-              <AlertNotice
-                message={this.state.errors}
-                onClose={() => this.setState({ errors: '' })}
-              />
-            )}
+        <div className="container-fluid desm-content">
+          <div className="row mt-4">
+            <div className="col-lg-6 mx-auto">
+              {this.state.errors && (
+                <AlertNotice
+                  message={this.state.errors}
+                  onClose={() => this.setState({ errors: '' })}
+                />
+              )}
 
-            <div className="card">
-              <div className="card-header">
-                <FontAwesomeIcon icon={faUsers} />
-                <span className="pl-2 subtitle">Sign In</span>
-              </div>
-              <div className="card-body">
-                <form className="mb-3" onSubmit={this.handleSubmit}>
-                  <div className="form-group">
-                    <label>
-                      Email
-                      <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      name="email"
-                      placeholder="Enter your email"
-                      value={this.state.email}
-                      onChange={this.handleOnChange}
-                      required
-                      autoFocus
-                    />
-                  </div>
+              <div className="card">
+                <div className="card-header">
+                  <FontAwesomeIcon icon={faUsers} />
+                  <span className="ps-2 subtitle">Sign In</span>
+                </div>
+                <div className="card-body">
+                  <form className="mb-3" onSubmit={this.handleSubmit}>
+                    <div className="form-group">
+                      <label className="form-label">
+                        Email
+                        <span className="text-danger">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        className="form-control"
+                        name="email"
+                        placeholder="Enter your email"
+                        value={this.state.email}
+                        onChange={this.handleOnChange}
+                        required
+                        autoFocus
+                      />
+                    </div>
 
-                  <div className="form-group">
-                    <label>
-                      Password
-                      <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      name="password"
-                      placeholder="Enter your password"
-                      value={this.state.password}
-                      onChange={this.handleOnChange}
-                      required
-                    />
-                  </div>
+                    <div className="form-group">
+                      <label className="form-label">
+                        Password
+                        <span className="text-danger">*</span>
+                      </label>
+                      <input
+                        type="password"
+                        className="form-control"
+                        name="password"
+                        placeholder="Enter your password"
+                        value={this.state.password}
+                        onChange={this.handleOnChange}
+                        required
+                      />
+                    </div>
 
-                  <button type="submit" className="btn btn-dark">
-                    Sign In
-                  </button>
-                </form>
-                <Link className="col-primary" to={'forgot-password'}>
-                  Forgot password?
-                </Link>
+                    <button type="submit" className="btn btn-dark">
+                      Sign In
+                    </button>
+                  </form>
+                  <Link className="col-primary" to={'forgot-password'}>
+                    Forgot password?
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }

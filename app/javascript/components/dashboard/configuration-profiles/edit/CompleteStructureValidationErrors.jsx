@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { capitalize, isEmpty, keys, map, snakeCase, sortBy } from 'lodash';
-import { i18n } from 'utils/i18n';
+import { i18n } from '../../../../utils/i18n';
 
 const VALIDATION_ERRORS_ORDER = [
   'general',

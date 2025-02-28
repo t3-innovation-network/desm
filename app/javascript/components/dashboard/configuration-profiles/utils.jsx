@@ -39,15 +39,15 @@ export const RemovableTab = ({
   <div
     className={`d-inline-block ${
       active
-        ? 'dashboard-active-tab border-left border-right'
+        ? 'dashboard-active-tab border-start border-end'
         : 'border bg-col-on-primary-light col-background'
-    } rounded cursor-pointer p-2 pl-3 pr-4 position-relative`}
+    } rounded cursor-pointer p-2 ps-3 pe-4 position-relative`}
     onClick={tabClickHandler}
   >
     {title}
     {showCloseBtn && (
       <span
-        className="font-weight-bold"
+        className="fw-bold"
         onClick={(event) => {
           event.stopPropagation();
           removeClickHandler();
@@ -85,7 +85,7 @@ export const SmallRemovableTab = ({
       {text}
     </span>
     <span
-      className="col-2 bg-dashboard-background col-background p-2 rounded text-center font-weight-bold"
+      className="col-2 bg-dashboard-background col-background p-2 rounded text-center fw-bold"
       style={{
         maxWidth: '30px',
         position: 'relative',
@@ -105,7 +105,7 @@ export const SmallRemovableTab = ({
 
 export const SmallAddTabBtn = ({ onClickHandler }) => (
   <span
-    className="bg-dashboard-background-highlight col-background cursor-pointer font-weight-bold px-3 py-2 rounded text-center"
+    className="bg-dashboard-background-highlight col-background cursor-pointer fw-bold px-3 py-2 rounded text-center"
     onClick={onClickHandler}
   >
     +
@@ -117,7 +117,7 @@ export const AddTabBtn = (props) => {
 
   return (
     <span
-      className="p-2 text-center border rounded bg-dashboard-background-highlight col-background font-weight-bold cursor-pointer"
+      className="p-2 text-center border rounded bg-dashboard-background-highlight col-background fw-bold cursor-pointer"
       title={tooltipMsg || 'Add new tab'}
       onClick={onClickHandler}
       style={{ maxWidth: '50px', fontSize: 'large' }}
@@ -135,7 +135,7 @@ export const NoDataFound = (props) => {
       <div className="d-flex align-items-center justify-content-center h-100 w-100">
         <img src={noDataImg} alt="No data found" />
       </div>
-      <div className="pl-5 pr-5 text-center font-italic">
+      <div className="ps-5 pe-5 text-center fst-italic">
         <h4>Couldn&apos;t find anything here!</h4>
         <p>{text}</p>
       </div>

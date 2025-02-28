@@ -1,0 +1,152 @@
+/* style-lint-disable at-rule-no-unknown */
+// form-group was deprecated, adding margin bottom to keep form-group spacing
+.form-group {
+  margin-bottom: 1rem;
+}
+
+// Custom file input - no more custom file input
+$custom-file-height: $input-height !default;
+$custom-file-height-inner: $input-height-inner !default;
+$custom-file-focus-border-color: $input-focus-border-color !default;
+$custom-file-focus-box-shadow: $input-focus-box-shadow !default;
+$custom-file-disabled-bg: $input-disabled-bg !default;
+$custom-file-padding-y: $input-padding-y !default;
+$custom-file-padding-x: $input-padding-x !default;
+$custom-file-line-height: $input-line-height !default;
+$custom-file-font-family: $input-font-family !default;
+$custom-file-font-weight: $input-font-weight !default;
+$custom-file-color: $input-color !default;
+$custom-file-bg: $input-bg !default;
+$custom-file-border-width: $input-border-width !default;
+$custom-file-border-color: $input-border-color !default;
+$custom-file-border-radius: $input-border-radius !default;
+$custom-file-box-shadow: $input-box-shadow !default;
+$custom-file-button-color: $custom-file-color !default;
+$custom-file-button-bg: $input-group-addon-bg !default;
+$custom-file-text: (
+  en: 'Browse',
+) !default;
+
+.custom-file {
+  display: inline-block;
+  height: $custom-file-height;
+  margin-bottom: 0;
+  position: relative;
+  width: 100%;
+}
+
+.custom-file-input {
+  height: $custom-file-height;
+  margin: 0;
+  opacity: 0;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  z-index: 2;
+
+  &:focus ~ .custom-file-label {
+    border-color: $custom-file-focus-border-color;
+    box-shadow: $custom-file-focus-box-shadow;
+  }
+
+  // Use [disabled] and :disabled to work around https://github.com/twbs/bootstrap/issues/28247
+  &[disabled] ~ .custom-file-label,
+  &:disabled ~ .custom-file-label {
+    background-color: $custom-file-disabled-bg;
+  }
+
+  @each $lang, $value in $custom-file-text {
+    &:lang(#{$lang}) ~ .custom-file-label::after {
+      content: $value;
+    }
+  }
+
+  ~ .custom-file-label[data-browse]::after {
+    content: attr(data-browse);
+  }
+}
+
+.custom-file-label {
+  background-color: $custom-file-bg;
+  border: $custom-file-border-width solid $custom-file-border-color;
+  color: $custom-file-color;
+  font-family: $custom-file-font-family;
+  font-weight: $custom-file-font-weight;
+  height: $custom-file-height;
+  left: 0;
+  line-height: $custom-file-line-height;
+  overflow: hidden;
+  padding: $custom-file-padding-y $custom-file-padding-x;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+
+  @include border-radius($custom-file-border-radius);
+  @include box-shadow($custom-file-box-shadow);
+
+  &::after {
+    border-left: inherit;
+    color: $custom-file-button-color;
+    content: 'Browse';
+    display: block;
+    height: $custom-file-height-inner;
+    line-height: $custom-file-line-height;
+    padding: $custom-file-padding-y $custom-file-padding-x;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    @include gradient-bg($custom-file-button-bg);
+    @include border-radius(0 $custom-file-border-radius $custom-file-border-radius 0);
+  }
+}
+
+.input-group {
+  > .custom-file {
+    align-items: center;
+    display: flex;
+    flex: 1 1 auto;
+    margin-bottom: 0;
+    min-width: 0; // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
+    position: relative; // For focus state's z-index
+    width: 1%;
+
+    + .custom-file {
+      margin-left: -$input-border-width;
+    }
+
+    &:not(:last-child) .custom-file-label,
+    &:not(:last-child) .custom-file-label::after {
+      @include border-end-radius(0);
+    }
+
+    &:not(:first-child) .custom-file-label {
+      @include border-start-radius(0);
+    }
+  }
+
+  // Bring the "active" form control to the top of surrounding elements
+  > .custom-file .custom-file-input:focus ~ .custom-file-label {
+    z-index: 3;
+  }
+
+  // Bring the custom file input above the label
+  > .custom-file .custom-file-input:focus {
+    z-index: 4;
+  }
+
+  &:not(.has-validation) {
+    > .custom-file:not(:last-child) .custom-file-label,
+    > .custom-file:not(:last-child) .custom-file-label::after {
+      @include border-end-radius(0);
+    }
+  }
+
+  &.has-validation {
+    > .custom-file:nth-last-child(n + 3) .custom-file-label,
+    > .custom-file:nth-last-child(n + 3) .custom-file-label::after {
+      @include border-end-radius(0);
+    }
+  }
+}

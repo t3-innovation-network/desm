@@ -85,7 +85,7 @@ const SpineTermRow = (props) => {
     return (
       <>
         {alignment.comment && (
-          <FontAwesomeIcon icon={faCircle} className="fa-xs col-success float-left comment-dot" />
+          <FontAwesomeIcon icon={faCircle} className="fa-xs col-success float-start comment-dot" />
         )}
         <strong>{selectedOption}</strong>
       </>
@@ -181,7 +181,7 @@ const SpineTermRow = (props) => {
             bodyContent={
               <>
                 {term.title && (
-                  <h6 className="card-subtitle text-muted">
+                  <h6 className="card-subtitle text-body-secondary">
                     Name: <strong>{term.title}</strong>
                   </h6>
                 )}
@@ -241,7 +241,7 @@ const SpineTermRow = (props) => {
               <small>{predicateDefinition}</small>
             </div>
           )}
-          <div className="w-100 mt-1 text-right">
+          <div className="w-100 mt-1 text-end">
             <button
               className="btn btn-link p-0 col-primary"
               onClick={() => actions.setEditing(true)}
@@ -249,7 +249,7 @@ const SpineTermRow = (props) => {
               {alignment?.comment ? 'Edit Comment' : 'Add Comment'}
             </button>
           </div>
-          <div className="w-100 mt-1 text-right">
+          <div className="w-100 mt-1 text-end">
             <label
               className="btn btn-link p-0 col-primary"
               onClick={() => actions.setTransforming(true)}
@@ -293,7 +293,7 @@ const SpineTermRow = (props) => {
                   bodyContent={
                     <>
                       {mTerm.title && (
-                        <h6 className="card-subtitle text-muted">
+                        <h6 className="card-subtitle text-body-secondary">
                           Name: <strong>{mTerm.title}</strong>
                         </h6>
                       )}

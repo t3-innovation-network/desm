@@ -31,9 +31,9 @@ const ExportMappings = ({ configurationProfile, domains, onError }) => {
   );
 
   return (
-    <form className="d-flex" onSubmit={handleSubmit}>
-      <label className="d-flex align-items-end mr-2">Export mappings from domains:</label>
-      <div className="flex-grow-1 mr-2">
+    <form className="row" onSubmit={handleSubmit}>
+      <label className="form-label">Export mappings from domains:</label>
+      <div className="col-12 mb-2">
         <MultiSelect
           disabled={downloading}
           labelledBy="Select domains"
@@ -42,25 +42,27 @@ const ExportMappings = ({ configurationProfile, domains, onError }) => {
           value={selectedDomains}
         />
       </div>
-      <label className="d-flex align-items-end mr-2">as</label>
-      <select
-        className="form-control mr-2 w-auto"
-        onChange={(e) => setSelectedFormat(e.target.value)}
-        value={selectedFormat}
-      >
-        {Object.entries(FORMAT_OPTIONS).map(([format, label]) => (
-          <option key={format} value={format}>
-            {label}
-          </option>
-        ))}
-      </select>
-      <button
-        className="btn btn-primary"
-        disabled={downloading || !selectedDomains.length}
-        type="submit"
-      >
-        Export
-      </button>
+      <label className="form-label">AS</label>
+      <div className="col-12 d-flex gap-2">
+        <select
+          className="form-select w-75"
+          onChange={(e) => setSelectedFormat(e.target.value)}
+          value={selectedFormat}
+        >
+          {Object.entries(FORMAT_OPTIONS).map(([format, label]) => (
+            <option key={format} value={format}>
+              {label}
+            </option>
+          ))}
+        </select>
+        <button
+          className="btn btn-primary flex-grow-1"
+          disabled={downloading || !selectedDomains.length}
+          type="submit"
+        >
+          Export
+        </button>
+      </div>
     </form>
   );
 };

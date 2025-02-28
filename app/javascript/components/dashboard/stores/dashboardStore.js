@@ -2,7 +2,7 @@ import { action, computed, thunk } from 'easy-peasy';
 import { sum } from 'lodash';
 import { baseModel } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
-import fetchDashboardStats from 'services/fetchDashboardStats';
+import fetchDashboardStats from '../../../services/fetchDashboardStats';
 
 export const defaultState = {
   // options

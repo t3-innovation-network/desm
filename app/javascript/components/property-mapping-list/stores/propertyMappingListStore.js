@@ -3,14 +3,20 @@ import { baseModel } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
 import { alignmentSortOptions, spineSortOptions } from '../SortOptions';
 import { action, computed, thunk } from 'easy-peasy';
-import fetchDomains from 'services/fetchDomains';
-import fetchPredicates from 'services/fetchPredicates';
-import fetchSpecifications from 'services/fetchSpecifications';
+import fetchDomains from '../../../services/fetchDomains';
+import fetchPredicates from '../../../services/fetchPredicates';
+import fetchSpecifications from '../../../services/fetchSpecifications';
 
 export const defaultState = {
   // status
   // Flag to determine whether to show or not the spine terms with no mapped terms
   hideSpineTermsWithNoAlignments: false,
+  sidebarCollapsed: true,
+  // Offcanvas state
+  showInfo: false,
+  showExport: false,
+  showSearch: false,
+  showFilters: false,
 
   // options
   // The currently selected specifications to fetch alignments from
@@ -53,16 +59,39 @@ export const propertyClassesForSpineTerm = (term) =>
 export const propertyClassesForAlignmentTerm = (alignment, term) =>
   intersection(term.compactDomains, alignment.compactDomains);
 
+const ifFilterAppliedFor = (selectedItems, items) => selectedItems.length !== items.length;
+
 export const propertyMappingListStore = (initialData = {}) => ({
   ...baseModel(initialData),
   ...easyStateSetters(defaultState, initialData),
 
   // computed
+  isExportEnabled: computed(
+    (state) => state.configurationProfile?.withSharedMappings && !state.loading
+  ),
+  isInfoEnabled: computed(
+    (state) =>
+      state.configurationProfile?.withSharedMappings && state.selectedDomain && !state.loading
+  ),
+  isSearchEnabled: computed(
+    (state) => state.configurationProfile?.withSharedMappings && !state.loading
+  ),
+  isFiltersEnabled: computed(
+    (state) => state.configurationProfile?.withSharedMappings && !state.loading
+  ),
   selectedConfigurationProfileId: computed((state) => (configurationProfile) => {
     if (state.configurationProfile) return null;
     return state.cp ? parseInt(state.cp) : configurationProfile?.id;
   }),
-
+  withSearchInput: computed(
+    (state) => state.hideSpineTermsWithNoAlignments || state.propertiesInputValue.length > 0
+  ),
+  withFilters: computed(
+    (state) =>
+      ifFilterAppliedFor(state.selectedSpineSpecifications, state.specifications) ||
+      ifFilterAppliedFor(state.selectedAlignmentSpecifications, state.specifications) ||
+      ifFilterAppliedFor(state.selectedPredicates, state.predicates)
+  ),
   // actions
   setAllPredicates: action((state, predicates) => {
     state.predicates = predicates;
@@ -72,6 +101,9 @@ export const propertyMappingListStore = (initialData = {}) => ({
     state.specifications = specifications;
     state.selectedSpineSpecifications = specifications;
     state.selectedAlignmentSpecifications = specifications;
+  }),
+  toggleSidebar: action((state) => {
+    state.sidebarCollapsed = !state.sidebarCollapsed;
   }),
   updateSelectedDomain: action((state, selectedDomain) => {
     state.selectedDomain = selectedDomain;
