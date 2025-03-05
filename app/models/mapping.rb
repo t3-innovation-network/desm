@@ -121,18 +121,25 @@ class Mapping < ApplicationRecord
   end
 
   ###
-  # @description: Creates copies of selected terms and assigns them to the spine
+  # @description: Clones a term to be assigned to the spine.
+  #   Also clones the term's property replacing its domain with the mapping's abstract class.
   ###
-  def assign_spine_terms(ids)
-    spine.terms = Term.where(id: ids).includes(:property).map do |term|
+  def copy_spine_term(term)
+    transaction do
       spine_term = configuration_profile_user
                      .terms
                      .create!(term.attributes.slice("name", "raw", "slug", "source_uri"))
 
-      spine_term.create_property!(
-        domain: [specification.domain.source_uri],
-        **term.property.attributes.slice("comment", "label", "range")
-      )
+      Property
+        .where(term: spine_term)
+        .update_all(
+          domain: [specification.domain.source_uri],
+          selected_domain: nil,
+          selected_range: nil,
+          subproperty_of: nil,
+          uri: nil,
+          **term.property.attributes.slice("comment", "label", "range")
+        )
 
       spine_term
     end
@@ -257,7 +264,11 @@ class Mapping < ApplicationRecord
     self.selected_term_ids = ids
     return if spine.terms.any?
 
-    assign_spine_terms(ids)
+    spine.terms = Term
+                    .where(id: ids)
+                    .includes(:property)
+                    .map { copy_spine_term(_1) }
+
     generate_alignments(first_upload: true)
   end
 

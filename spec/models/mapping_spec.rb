@@ -127,24 +127,26 @@ describe Mapping, type: :model do
         expect(mapping.alignments.count).to eq(2)
 
         spine_term1 = spine.terms.first
+        spine_term1_property = spine_term1.property.reload
         expect(spine_term1.name).to eq(term1.name)
         expect(spine_term1.raw).to eq(term1.raw)
         expect(spine_term1.slug).to eq(term1.slug)
         expect(spine_term1.source_uri).to eq(term1.source_uri)
-        expect(spine_term1.property.comment).to eq(term1.property.comment)
-        expect(spine_term1.property.domain).to eq([specification.domain.source_uri])
-        expect(spine_term1.property.label).to eq(term1.property.label)
-        expect(spine_term1.property.range).to eq(term1.property.range)
+        expect(spine_term1_property.comment).to eq(term1.property.comment)
+        expect(spine_term1_property.domain).to eq([specification.domain.source_uri])
+        expect(spine_term1_property.label).to eq(term1.property.label)
+        expect(spine_term1_property.range).to eq(term1.property.range)
 
         spine_term2 = spine.terms.second
+        spine_term2_property = spine_term2.property.reload
         expect(spine_term2.name).to eq(term2.name)
         expect(spine_term2.raw).to eq(term2.raw)
         expect(spine_term2.slug).to eq(term2.slug)
         expect(spine_term2.source_uri).to eq(term2.source_uri)
-        expect(spine_term2.property.comment).to eq(term2.property.comment)
-        expect(spine_term2.property.domain).to eq([specification.domain.source_uri])
-        expect(spine_term2.property.label).to eq(term2.property.label)
-        expect(spine_term2.property.range).to eq(term2.property.range)
+        expect(spine_term2_property.comment).to eq(term2.property.comment)
+        expect(spine_term2_property.domain).to eq([specification.domain.source_uri])
+        expect(spine_term2_property.label).to eq(term2.property.label)
+        expect(spine_term2_property.range).to eq(term2.property.range)
 
         expect(mapping.alignments.first.mapped_terms).to eq([term1])
         expect(mapping.alignments.first.spine_term).to eq(spine_term1)
