@@ -1,0 +1,30 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ewsm: <https://tool.desmsolutions.org/concepts/ewsm#> .
+
+ewsm:AbstractClasses a skos:ConceptScheme ;
+    dcterms:created "2025-02-26"^^xsd:date ;
+    dcterms:creator <https://people.pjjk.net/phil> ;
+    dcterms:description "This concept scheme identifies the abstract classes used by the Education and Workforce Schema Mapping project. We start with only a few but intend to grow."@en-us ;
+    dcterms:title "Education and workforce schema mapping abstract classes."@en-us ;
+    skos:hasTopConcept ewsm:Organization, ewsm:Contact, ewsm:Identifier ;
+    .
+
+ewsm:Organization a skos:Concept ;
+    skos:inScheme ewsm:AbstractClasses ;
+    skos:prefLabel "Organization"@en-us ;
+    skos:definition "A group of individuals; an enterprise, corporation, education institution, or similar."@en-us ;
+    .
+
+ewsm:Contact a skos:Concept ;
+    skos:inScheme ewsm:AbstractClasses ;
+    skos:prefLabel "Contact"@en-us ;
+    skos:definition "A contact point for an organization or individual, e.g. their address, phone etc."@en-us ;
+    .
+
+ewsm:Identifier a skos:Concept ;
+    skos:inScheme ewsm:AbstractClasses ;
+    skos:prefLabel "Identifier"@en-us ;
+    skos:definition "A means of identifying something."@en-us ;
+    .

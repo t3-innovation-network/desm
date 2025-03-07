@@ -265,7 +265,7 @@ GEM
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    logger (1.6.5)
+    logger (1.6.6)
     loofah (2.24.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -303,9 +303,9 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.7.4)
-    nokogiri (1.18.2-arm64-darwin)
+    nokogiri (1.18.3-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.2-x86_64-linux-gnu)
+    nokogiri (1.18.3-x86_64-linux-gnu)
       racc (~> 1.4)
     overcommit (0.64.1)
       childprocess (>= 0.6.3, < 6)
@@ -337,7 +337,7 @@ GEM
     pundit (2.4.0)
       activesupport (>= 3.0.0)
     racc (1.8.1)
-    rack (3.1.8)
+    rack (3.1.10)
     rack-cors (2.0.2)
       rack (>= 2.0.0)
     rack-session (2.1.0)
@@ -470,7 +470,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.4.0)
+    rexml (3.4.1)
     rspec-core (3.13.2)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.3)
@@ -606,6 +606,7 @@ GEM
       psych (>= 3.3)
       rdf (~> 3.3)
       rdf-xsd (~> 3.3)
+    zaru (1.0.0)
     zeitwerk (2.7.1)
 
 PLATFORMS
@@ -675,6 +676,7 @@ DEPENDENCIES
   vernier (>= 0.3.0)
   web-console (>= 3.3.0)
   webmock (~> 3.23)
+  zaru (~> 1.0)
 
 RUBY VERSION
    ruby 3.3.7p123

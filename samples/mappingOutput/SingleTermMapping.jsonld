@@ -1,0 +1,169 @@
+{
+    "@context": "https://desmsolutions.org/docs/ns/context.json",
+    "@graph": [
+        {
+            "@id": "http://desmsolutions.org/AbstractClassMapping/293",
+            "@type": "http://desmsolutions.org/ns/AbstractClassMapping",
+            "dcterms:title": "Phil DCMI - Dublin Core Metadata Initiative - Thing",
+            "dcterms:created": "2024-09-02",
+            "dcterms:dateModified": "2024-09-02",
+            "desm:abstractClassModeled": {
+                "@id": "http://pjjk.org/temp/adm#Thing"
+            },
+            "dcterms:hasPart": [
+                {
+                    "@id": "http://desmsolutions.org/TermMapping/6732"
+                }
+            ]
+        },
+        {
+            "@id": "http://pjjk.org/temp/adm#Thing",
+            "@type": "http://www.w3.org/2004/02/skos/core#Concept",
+            "skos:prefLabel": "Thing"
+        },
+        {
+            "@id": "http://desmsolutions.org/TermMapping/6732",
+            "@type": "http://desmsolutions.org/ns/TermMapping",
+            "dcterms:isPartOf": {
+                "@id": "http://desmsolutions.org/AbstractClassMapping/293"
+            },
+            "desm:created": "2024-09-02",
+            "desm:dateModified": "2024-09-02",
+            "desm:mappedTerm": [
+                {
+                    "@id": "http://desmsolutions.org/Property/14785"
+                }
+            ],
+            "desm:mappingPredicate": {
+                "@id": "https://desmsolutions.org/concepts/reworded"
+            },
+            "desm:spineTerm": {
+                "@id": "http://desmsolutions.org/Property/14638"
+            }
+        },
+        {
+            "@id": "https://desmsolutions.org/concepts/reworded",
+            "@type": "http://www.w3.org/2004/02/skos/core#Concept",
+            "skos:prefLabel": "Reworded",
+            "skos:definition": "The definition is identical in intent but reworded; the properties are equivalent."
+        },
+        {
+            "@id": "http://desmsolutions.org/Property/14785",
+            "@type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+            "rdfs:subPropertyOf":  {"@id": "https://schema.org/name"},
+            "rdfs:label": "name",
+            "rdfs:comment": "The name of the item.",
+            "desm:hasTermMapping": "http://desmsolutions.org/TermMapping/6732",
+            "desm:inSchema": {
+                "@id": "http://desmsolutions.org/Schema/295"
+            },
+            "desm:domainIncludes": [
+                {
+                    "@id": "https://schema.org/Thing"
+                }
+            ],
+            "desm:rangeIncludes": [
+                {
+                    "@id": "https://schema.org/Text"
+                }
+            ]
+        },
+        {
+            "@id": "http://desmsolutions.org/Schema/295",
+            "@type": "http://desmsolutions.org/ns/Schema",
+            "dct:title": "SDO",
+            "desm:abstractClass": {
+                "@id": "http://pjjk.org/temp/adm#Thing"
+            },
+            "dct:creator": {
+                "@id": "http://desmsolutions.org/Agent/18"
+            }
+        },
+        {
+            "@id": "http://desmsolutions.org/Agent/18",
+            "@type": "http://desmsolutions.org/ns/Agent",
+            "sdo:name": "Phil DCMI",
+            "desm:role": [
+                "mapper"
+            ],
+            "sdo:email": "phil+dcmi@pjjk.co.uk"
+        },
+        {
+            "@id": "http://desmsolutions.org/Property/14638",
+            "@type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+            "rdfs:subPropertyOf":
+            {
+                "@id": "http://purl.org/dc/terms/title"
+
+            },
+            "rdfs:label": "Title",
+            "rdfs:comment": "A name given to the resource.",
+            "desm:hasTermMapping": "http://desmsolutions.org/TermMapping/6732",
+            "desm:inSchema": {
+                "@id": "http://desmsolutions.org/Schema/294"
+            },
+            "desm:domainIncludes": [
+                {
+                    "@id": "https://schema.org/CreativeWork"
+                }
+            ],
+            "desm:rangeIncludes": [
+                {
+                    "@id": "http://www.w3.org/2000/01/rdf-schema#Literal"
+                }
+            ]
+        },
+        {
+            "@id": "http://desmsolutions.org/Schema/294",
+            "@type": "http://desmsolutions.org/ns/Schema",
+            "dct:title": "DC Terms",
+            "desm:abstractClass": {
+                "@id": "http://pjjk.org/temp/adm#Thing"
+            },
+            "dct:creator": {
+                "@id": "http://desmsolutions.org/Agent/18"
+            }
+        },
+        {
+            "@id": "http://desmsolutions.org/AbstractClassMapping/292",
+            "@type": "http://desmsolutions.org/ns/AbstractClassMapping",
+            "dcterms:title": "Phil DCMI - Dublin Core Metadata Initiative - Thing",
+            "dcterms:created": "2024-09-02",
+            "dcterms:dateModified": "2024-09-02",
+            "desm:abstractClassModeled": {
+                "@id": "http://pjjk.org/temp/adm#Thing"
+            },
+            "dcterms:hasPart": [
+                {
+                    "@id": "http://desmsolutions.org/TermMapping/6731"
+                }
+            ]
+        },
+        {
+            "@id": "http://desmsolutions.org/TermMapping/6731",
+            "@type": "http://desmsolutions.org/ns/TermMapping",
+            "dcterms:isPartOf": {
+                "@id": "http://desmsolutions.org/AbstractClassMapping/292"
+            },
+            "desm:created": "2024-09-02",
+            "desm:dateModified": "2024-09-02",
+            "desm:mappedTerm": [
+                {
+                    "@id": "http://desmsolutions.org/Property/14638"
+                }
+            ],
+            "desm:mappingPredicate": {
+                "@id": "https://desmsolutions.org/concepts/identical"
+            },
+            "desm:spineTerm": {
+                "@id": "http://desmsolutions.org/Property/14638"
+            }
+        },
+        {
+            "@id": "https://desmsolutions.org/concepts/identical",
+            "@type": "http://www.w3.org/2004/02/skos/core#Concept",
+            "skos:prefLabel": "Identical",
+            "skos:definition": "The definition is identical in wording and intent."
+        }
+    ]
+}
