@@ -48,7 +48,6 @@ const CheckBoxOptions = ({
  * @param {Array} specifications
  * @param {Function} onAlignmentSpecificationSelected
  * @param {Function} onPredicateSelected
- * @param {Function} onSpineSpecificationSelected
  * @param {Array} predicates
  * @param {Array} selectedAlignmentSpecifications
  * @param {String} selectedDomain
@@ -59,7 +58,6 @@ const PropertyMappingsFilter = (props) => {
     specifications,
     onAlignmentSpecificationSelected,
     onPredicateSelected,
-    onSpineSpecificationSelected,
     predicates,
     selectedAlignmentSpecifications,
     selectedDomain,
