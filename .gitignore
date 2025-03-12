@@ -12,6 +12,7 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+.DS_Store
 
 # Ignore pidfiles, but keep the directory.
 /tmp/pids/*
@@ -44,6 +45,7 @@ yarn-debug.log*
 # Ignore IDE donfiguration files
 .idea/*
 .vscode/*
+.github/copilot-instructions.md
 
 # simplecov reports
 coverage

@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropertyMappingsFilter from './PropertyMappingsFilter';
 import SearchBar from './SearchBar';
 import NotificationDot from '../shared/NotificationDot';
+import InfoExportButtons from './InfoExportButtons';
 
 const Sidebar = (props) => {
   const [state, actions] = props.store;
@@ -64,6 +65,10 @@ const Sidebar = (props) => {
         </div>
       ) : (
         <div className="h-100 overflow-x-hidden overflow-y-auto">
+          <InfoExportButtons
+            store={props.store}
+            cls="justify-content-center py-4 border-bottom border-dark-subtle"
+          />
           <div className="py-4 px-2 border-bottom border-dark-subtle">
             <SearchBar
               onAlignmentOrderChange={actions.setSelectedAlignmentOrderOption}
