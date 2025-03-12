@@ -106,6 +106,13 @@ en:
         other: "Shared mappings:"
       legend: Legend
     properties_list:
+      form:
+        search_placeholder: "Search for an Element/Property"
+        search: "Search"
+        sort_spine_by: "Sort Spine By"
+        sort_aligned_items_by: "Sort Aligned Items By"
+        sort: Apply Sorting
+        hide_spine_items_with_no_results: "Hide spine items with no results"
       notice:
         mapping:
           zero: No mapping properties found for this mapping.
@@ -118,35 +125,3 @@ en:
         message:
           mapping: You can edit each term of your specification until you are confident with names, vocabularies, uri's and more.
           spine: You can edit each term of your specification until you are confident with names, vocabularies, uri's and more.
-    pages:
-      default:
-        title: DESM
-        description: Data Ecosystem Schema Mapper Tool supports pairwise, semantic mapping of schema terms and their definitions using a synthetic spine agnostic to data models and formats. Resultant mappings are intended to help data standards organizations, developers, decision makers, and others have a clear understanding of how schemas map and provide useful visual and data outputs of completed mappings.
-      sign_in:
-        title: DESM - Sign In
-        description: Sign in to access the Data Ecosystem Schema Mapper Tool.
-      mappings_list:
-        title: DESM - Shared mappings
-        description: View shared mappings in the Data Ecosystem Schema Mapper Tool.
-      mappings:
-        title: DESM - Specifications
-        description: View/Update mappings in the Data Ecosystem Schema Mapper Tool.
-      mapping_new:
-        title: DESM - Upload Specification
-        description: Create a new mapping in the Data Ecosystem Schema Mapper Tool.
-      mapping_ready_to_upload:
-        title: DESM - Reimport Specification
-        description: Reimport specification in the Data Ecosystem Schema Mapper Tool.
-      mapping_to_domains:
-        title: DESM - Map to Domains
-        description: Map to Domains in the Data Ecosystem Schema Mapper Tool.
-      mapping_align:
-        title: DESM - Align and Fine Tune
-        description: Align and Fine Tune mapping in the Data Ecosystem Schema Mapper Tool.
-      spine_properties:
-        title: DESM - Spine Properties
-        description: View/Edit spine properties in the Data Ecosystem Schema Mapper Tool.
-      mapping_properties:
-        title: DESM - Mapping Properties
-        description: View/Edit mapping properties in the Data Ecosystem Schema Mapper Tool.
-

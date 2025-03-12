@@ -67,6 +67,8 @@ class Specification < ApplicationRecord
   ###
   validates :name, presence: true
 
+  scope :mapped, -> { joins(:mappings).where(mappings: { status: "mapped" }) }
+
   include Identifiable
 
   ###
