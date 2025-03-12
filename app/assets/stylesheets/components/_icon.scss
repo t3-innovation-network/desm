@@ -21,3 +21,9 @@
     font-variation-settings: 'FILL' 1;
   }
 }
+
+.fa-icon {
+  @include m(small) {
+    width: 0.8rem;
+  }
+}

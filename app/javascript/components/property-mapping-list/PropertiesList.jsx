@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Collapse from 'react-bootstrap/Collapse';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { flatMap, groupBy, intersection, sortBy, uniqBy, isEmpty } from 'lodash';
+import { flatMap, groupBy, intersection, sortBy, sum, uniqBy, isEmpty } from 'lodash';
 import AlertNotice from '../shared/AlertNotice';
 import fetchAlignmentsForSpine from '../../services/fetchAlignmentsForSpine';
 import fetchSpineTerms from '../../services/fetchSpineTerms';
@@ -26,11 +26,11 @@ import Info from './Info';
  * @param {Array} selectedAlignmentSpecifications
  * @param {Array} selectedPredicates
  * @param {String} selectedSpineOrderOption
- * @param {Array} selectedSpineSpecifications
  */
 const PropertiesList = (props) => {
   const {
     hideSpineTermsWithNoAlignments,
+    collapsedTerms,
     configurationProfile,
     inputValue,
     predicates,
@@ -39,9 +39,10 @@ const PropertiesList = (props) => {
     selectedAlignmentSpecifications,
     selectedPredicates,
     selectedSpineOrderOption,
-    selectedSpineSpecifications,
     showInfo,
     setShowInfo,
+    onToggleTermCollapse,
+    onUpdateProperties,
   } = props;
 
   const [errors, setErrors] = useState([]);
@@ -49,22 +50,12 @@ const PropertiesList = (props) => {
   const [spineExists, setSpineExists] = useState(false);
   const [properties, setProperties] = useState([]);
   const [showingConnectors, setShowingConnectors] = useState({});
-  const [collapsedTerms, setCollapsedTerms] = useState([]);
 
   const selectedPredicateIds = selectedPredicates.map((predicate) => predicate.id);
   const selectedAlignmentSpecificationsIds = selectedAlignmentSpecifications.map((s) => s.id);
-  const selectedSpineSpecificationIds = selectedSpineSpecifications.map((s) => s.id);
 
   const alignmentsExists = (alignments) => {
     return alignments.some((alignment) => !isEmpty(alignment.mappedTerms));
-  };
-
-  const onToggleTermCollapse = (termId) => {
-    if (collapsedTerms.includes(termId)) {
-      setCollapsedTerms(collapsedTerms.filter((id) => id !== termId));
-    } else {
-      setCollapsedTerms([...collapsedTerms, termId]);
-    }
   };
 
   const onSetShowingConnectors = (termId, value) => {
@@ -85,11 +76,7 @@ const PropertiesList = (props) => {
             ) &&
             property.alignments.some((alignment) =>
               selectedAlignmentSpecificationsIds.includes(alignment.mapping.specification.id)
-            ) &&
-            intersection(
-              selectedSpineSpecificationIds,
-              property.specifications.map((s) => s.id)
-            ).length))
+            )))
     );
 
     return implementSpineSort(filteredProps, selectedSpineOrderOption);
@@ -98,7 +85,6 @@ const PropertiesList = (props) => {
     properties,
     inputValue,
     hideSpineTermsWithNoAlignments,
-    selectedSpineSpecificationIds,
     selectedAlignmentSpecificationsIds,
     selectedPredicateIds,
   ]);
@@ -122,6 +108,8 @@ const PropertiesList = (props) => {
 
       spineTerms.forEach((term) => {
         term.alignments = groupedAlignments[term.id] || [];
+        // Calculate the max mapping weight for the term as the sum of all predicate weights for term alignment
+        term.currentMappingWeight = sum(term.alignments.map((a) => a.predicate.weight || 0));
         term.alignmentScore =
           term.maxMappingWeight > 0 ? (term.currentMappingWeight * 100) / term.maxMappingWeight : 0;
       });
@@ -139,6 +127,7 @@ const PropertiesList = (props) => {
     if (!anyError(response)) {
       const properties = await decoratePropertiesWithAlignments(spineId, response.terms);
       setProperties(properties);
+      onUpdateProperties(properties.map((p) => p.id));
     }
   };
 
@@ -176,7 +165,6 @@ const PropertiesList = (props) => {
                   selectedAlignmentOrderOption={selectedAlignmentOrderOption}
                   selectedAlignmentSpecificationsIds={selectedAlignmentSpecificationsIds}
                   selectedPredicateIds={selectedPredicateIds}
-                  selectedSpineSpecificationIds={selectedSpineSpecificationIds}
                   spineTerm={term}
                   onSetShowingConnectors={onSetShowingConnectors}
                 />

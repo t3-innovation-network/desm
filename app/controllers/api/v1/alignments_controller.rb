@@ -18,16 +18,24 @@ module API
                   .includes(
                     :predicate,
                     :specification,
-                    mapping: %i(configuration_profile_user organization),
-                    mapped_terms: [:organization, :property, { specifications: { domain: :spine } }, :vocabularies]
+                    mapping: %i(organization),
+                    mapped_terms: %i(
+                      organization property vocabularies
+                    )
                   )
-                  .where(
-                    mappings: { spine_id: params[:spine_id], status: :mapped }
-                  )
+                  .mapped_for_spine(params[:spine_id])
                   .where.not(predicate_id: nil)
                   .order(:spine_term_id, :uri)
 
-        render json: terms, with_schema_name: true
+        # get all specifictation ids for mapped terms ids and group by mapped term id
+        mapped_term_ids = terms.flat_map { |t| t.mapped_terms.map(&:id) }
+        specification_ids =
+          Specification.joins(:terms)
+            .select("specifications.id as id, terms.id as term_id")
+            .where("terms.id = ANY(ARRAY[?]::int[])", mapped_term_ids)
+            .group_by(&:term_id).transform_values { |v| v.map(&:id) }
+
+        render json: terms, with_schema_name: true, specification_ids:
       end
 
       def create

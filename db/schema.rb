@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_01_19_154948) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_11_190606) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "plpgsql"
@@ -212,6 +212,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_19_154948) do
     t.datetime "updated_at", null: false
     t.string "slug"
     t.bigint "strongest_match_id"
+    t.float "max_weight", default: 0.0, null: false
     t.index ["strongest_match_id"], name: "index_predicate_sets_on_strongest_match_id"
   end
 

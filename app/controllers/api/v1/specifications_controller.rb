@@ -20,13 +20,10 @@ module API
             Specification.all
           end
 
-        specifications = specifications.joins(:mappings).where(mappings: { status: "mapped" }).includes(:domain)
+        specifications = specifications.mapped
+        specifications = specifications.where(domain_id: params[:domain_id]) if params[:domain_id].present?
 
-        if (domain_id = params[:domain_id]).present?
-          specifications.where!(domain_id:)
-        end
-
-        render json: specifications.distinct.order(name: :asc)
+        render json: specifications.distinct.order(name: :asc), base: true
       end
 
       ###

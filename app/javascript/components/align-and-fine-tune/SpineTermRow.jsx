@@ -199,12 +199,6 @@ const SpineTermRow = (props) => {
                 </button>
                 {spineTermExpanded ? (
                   <div className="mt-2">
-                    <p className="card-text">
-                      Origin:{' '}
-                      <span className="col-primary">
-                        {term.synthetic ? origin : term.organization.name}
-                      </span>
-                    </p>
                     {!term.synthetic ? (
                       <>
                         <p className="card-text">
