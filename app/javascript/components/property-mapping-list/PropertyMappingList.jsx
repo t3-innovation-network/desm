@@ -133,11 +133,7 @@ const PropertyMappingList = (props) => {
                 requestType="indexWithSharedMappings"
                 selectedConfigurationProfileId={state.selectedConfigurationProfileId(null)}
                 withoutUserConfigurationProfile={true}
-              >
-                <Desktop>
-                  {configurationProfile ? <InfoExportButtons store={store} /> : null}
-                </Desktop>
-              </ConfigurationProfileSelect>
+              />
               <Offcanvas
                 placement="start"
                 show={showExport}

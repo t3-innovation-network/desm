@@ -1,7 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
 import classNames from 'classnames';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Props:
@@ -124,26 +122,31 @@ const DesmTabs = ({
           );
         })}
       </div>
-      <div className="w-100 d-flex gap-3 mt-2 align-items-center">
-        <div>{selectedValue?.definition && <small>{selectedValue.definition}</small>}</div>
-        <div className="col d-flex gap-2 justify-content-end">
-          <button
-            className="desm-tabs__arrow btn btn-light p-0 rounded-circle border-dark-subtle"
-            onClick={collapseAllTerms}
-            disabled={isAllTermsCollapsed}
-            title="Collapse All"
-          >
-            <FontAwesomeIcon icon={faChevronUp} className="fa-icon--small" />
-          </button>
-          <button
-            className="desm-tabs__arrow btn btn-light p-0 rounded-circle border-dark-subtle"
-            onClick={expandAllTerms}
-            disabled={isAllTermsExpanded}
-            title="Expand All"
-          >
-            <FontAwesomeIcon icon={faChevronDown} className="fa-icon--small" />
-          </button>
+      {selectedValue?.definition && (
+        <div className="w-100 d-flex gap-3 mt-2">
+          <small>test{selectedValue.definition}</small>
         </div>
+      )}
+      <div
+        className={`w-100 d-flex gap-2 ${selectedValue?.definition ? 'mt-1' : 'mt-3'} align-items-center`}
+      >
+        <button
+          className="btn btn-link p-0"
+          onClick={collapseAllTerms}
+          disabled={isAllTermsCollapsed}
+          title="Collapse All"
+        >
+          Collapse All
+        </button>
+        {' / '}
+        <button
+          className="btn btn-link p-0"
+          onClick={expandAllTerms}
+          disabled={isAllTermsExpanded}
+          title="Expand All"
+        >
+          Expand All
+        </button>
       </div>
     </>
   );
