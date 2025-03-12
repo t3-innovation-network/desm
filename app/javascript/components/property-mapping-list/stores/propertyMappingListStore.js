@@ -1,4 +1,4 @@
-import { flatMap, intersection } from 'lodash';
+import { flatMap, intersection, remove } from 'lodash';
 import { baseModel } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
 import { alignmentSortOptions, spineSortOptions } from '../SortOptions';
@@ -12,6 +12,7 @@ export const defaultState = {
   // Flag to determine whether to show or not the spine terms with no mapped terms
   hideSpineTermsWithNoAlignments: false,
   sidebarCollapsed: true,
+  collapsedTerms: [],
   // Offcanvas state
   showInfo: false,
   showExport: false,
@@ -23,8 +24,6 @@ export const defaultState = {
   selectedAlignmentSpecifications: [],
   // The currently selected domain
   selectedDomain: null,
-  // The specifications to show in the filter
-  selectedSpineSpecifications: [],
   // The predicates the user selected to use in filter
   selectedPredicates: [],
   // The order the user wants to see the alignments to the spine terms
@@ -42,6 +41,8 @@ export const defaultState = {
   withoutSharedMappings: false,
   // The list of available domains
   domains: [],
+  // Property Ids, properties need to be moved here from PropertiesList
+  propertyIds: [],
   // The available list of specifications
   specifications: [],
   //  The complete list of available predicates
@@ -66,6 +67,10 @@ export const propertyMappingListStore = (initialData = {}) => ({
   ...easyStateSetters(defaultState, initialData),
 
   // computed
+  isAllTermsCollapsed: computed(
+    (state) => state.collapsedTerms.length === state.propertyIds.length
+  ),
+  isAllTermsExpanded: computed((state) => state.collapsedTerms.length === 0),
   isExportEnabled: computed(
     (state) => state.configurationProfile?.withSharedMappings && !state.loading
   ),
@@ -88,22 +93,33 @@ export const propertyMappingListStore = (initialData = {}) => ({
   ),
   withFilters: computed(
     (state) =>
-      ifFilterAppliedFor(state.selectedSpineSpecifications, state.specifications) ||
       ifFilterAppliedFor(state.selectedAlignmentSpecifications, state.specifications) ||
       ifFilterAppliedFor(state.selectedPredicates, state.predicates)
   ),
   // actions
+  collapseAllTerms: action((state) => {
+    state.collapsedTerms = state.propertyIds;
+  }),
+  expandAllTerms: action((state) => {
+    state.collapsedTerms = [];
+  }),
   setAllPredicates: action((state, predicates) => {
     state.predicates = predicates;
     state.selectedPredicates = predicates;
   }),
   setSpecifications: action((state, specifications) => {
     state.specifications = specifications;
-    state.selectedSpineSpecifications = specifications;
     state.selectedAlignmentSpecifications = specifications;
   }),
   toggleSidebar: action((state) => {
     state.sidebarCollapsed = !state.sidebarCollapsed;
+  }),
+  toggleTermCollapse: action((state, termId) => {
+    if (state.collapsedTerms.includes(termId)) {
+      remove(state.collapsedTerms, (t) => t === termId);
+    } else {
+      state.collapsedTerms.push(termId);
+    }
   }),
   updateSelectedDomain: action((state, selectedDomain) => {
     state.selectedDomain = selectedDomain;

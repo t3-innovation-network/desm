@@ -1,10 +1,12 @@
 import { useState, useCallback } from 'react';
 import Form from 'react-bootstrap/Form';
-import { debounce, values } from 'lodash';
+import { debounce } from 'lodash';
 import { alignmentSortOptions, spineSortOptions } from './SortOptions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { DEBOUNCED_SEARCH_DELAY } from '../../utils/constants';
+import { valuesToOptions } from '../../helpers/FormHelpers';
+import { i18n } from '../../utils/i18n';
 
 /**
  * @description A complete row with a search bar to filter properties
@@ -49,13 +51,6 @@ const SearchBar = (props) => {
     onType(val);
   };
 
-  const valuesToOptions = (data) =>
-    values(data).map((value) => (
-      <option key={value} value={value}>
-        {value}
-      </option>
-    ));
-
   return (
     <div className="row">
       <div className="col-12">
@@ -63,7 +58,7 @@ const SearchBar = (props) => {
           <input
             type="search"
             className="form-control"
-            placeholder="Search for an Element/Property"
+            placeholder={i18n.t('ui.properties_list.form.search_placeholder')}
             value={inputValue}
             onChange={handleOnType}
             autoFocus
@@ -75,9 +70,9 @@ const SearchBar = (props) => {
       </div>
 
       <div className="col-12">
-        <label className="form-label">Sort Spine By</label>
+        <label className="form-label">{i18n.t('ui.properties_list.form.sort_spine_by')}</label>
         <Form.Select
-          aria-label="Sort Spine By"
+          aria-label={i18n.t('ui.properties_list.form.sort_spine_by')}
           onChange={(e) => onSpineOrderChange(e.target.value)}
           value={selectedSpineOrderOption}
         >
@@ -86,9 +81,11 @@ const SearchBar = (props) => {
       </div>
 
       <div className="col-12 mt-3">
-        <label className="form-label">Sort Aligned Items By</label>
+        <label className="form-label">
+          {i18n.t('ui.properties_list.form.sort_aligned_items_by')}
+        </label>
         <Form.Select
-          aria-label="Sort Spine By"
+          aria-label={i18n.t('ui.properties_list.form.sort_aligned_items_by')}
           onChange={(e) => onAlignmentOrderChange(e.target.value)}
           value={selectedAlignmentOrderOption}
         >
@@ -106,7 +103,7 @@ const SearchBar = (props) => {
             onChange={handleHideSpineTermsWithNoAlignmentsChange}
           />
           <label className="form-check-label" htmlFor="hide-spine-elems">
-            Hide spine items with no results
+            {i18n.t('ui.properties_list.form.hide_spine_items_with_no_results')}
           </label>
         </div>
       </div>

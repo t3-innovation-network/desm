@@ -7,6 +7,7 @@
 #  id                 :bigint           not null, primary key
 #  creator            :string
 #  description        :text
+#  max_weight         :float            default(0.0), not null
 #  slug               :string
 #  source_uri         :string           not null
 #  title              :string           not null

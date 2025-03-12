@@ -208,7 +208,7 @@ const MappingToDomains = (props) => {
                 </div>
 
                 <div className="row">
-                  <div className="col-12 form-group input-group-has-icon">
+                  <div className="col-12 form-group input-group-has-icon position-relative">
                     <FontAwesomeIcon icon={faSearch} className="form-control-feedback" />
                     <input
                       type="text"

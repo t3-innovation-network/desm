@@ -36,6 +36,7 @@
 #   already has a spine (a previous specification was uploaded for it).
 ###
 class Mapping < ApplicationRecord
+  include FsSanitizable
   include Slugable
 
   ###
@@ -99,6 +100,7 @@ class Mapping < ApplicationRecord
   ###
   # @description: Every mapping should have the same number of terms as the associated spine terms
   ###
+  before_validation :generate_name, on: :create
   after_create :generate_alignments
   before_update :update_mapped_at, if: -> { mapped? || status_changed?(to: Mapping.statuses[:mapped]) }
 
@@ -134,13 +136,26 @@ class Mapping < ApplicationRecord
     end
   end
 
+  def generate_name
+    # name format: «project name»+«abstract class»+«schema name»+«schema version»
+    name_from_data = [
+      configuration_profile&.name,
+      domain,
+      specification&.name,
+      specification&.version
+    ].compact_blank.join(" - ")
+    self.name ||= name_from_data
+    self.title ||= name_from_data
+    name_from_data
+  end
+
   ###
   # @description: The domain that this mapping is for. It's taken from the
   #   related specification
   # @return [String]
   ###
   def domain
-    specification.domain.pref_label
+    specification&.domain&.pref_label
   end
 
   ###
@@ -222,13 +237,15 @@ class Mapping < ApplicationRecord
   end
 
   def export_filename
-    [
-      configuration_profile.name,
-      domain,
-      specification.name,
-      specification.version || "",
-      updated_at.to_s.gsub(/[^\d]/, "")
-    ].map { _1.split.join("+") }.join("_").gsub(%r{[/,:*?"<>()|]}, "").gsub(/_+/, "_")
+    ary_to_filename(
+      [
+        configuration_profile.name,
+        domain,
+        specification.name,
+        specification.version,
+        timestamp_for(updated_at)
+      ]
+    )
   end
 
   private

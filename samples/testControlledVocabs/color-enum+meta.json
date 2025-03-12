@@ -1,0 +1,16 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "ColorCode": {
+            "description": "Color codes.",
+            "enum": ["r","g","b"],
+            "meta:enum": {
+                "r": "The colour red: 0xFF0000.",
+                "g": "The colour green: 0x00FF00.",
+                "b": "The colour bluee: 0x0000FF."
+            },
+            "type": "string"
+        }
+    }
+}

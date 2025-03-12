@@ -390,7 +390,7 @@ export default class EditTerm extends Component {
                       <textarea
                         className="form-control"
                         name="comment"
-                        value={term.property.comment}
+                        value={term.property.comment || ''}
                         onChange={this.handlePropertyChange}
                         disabled={uploadingVocabulary}
                       />

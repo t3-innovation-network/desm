@@ -1,11 +1,12 @@
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import PropertyMappingsFilter from './PropertyMappingsFilter';
-import SearchBar from './SearchBar';
+import SearchBarActions from './SearchBarActions';
 import NotificationDot from '../shared/NotificationDot';
 
 const BottomNav = (props) => {
   const [state, actions] = props.store;
   const { showExport, showInfo, showSearch, showFilters } = state;
+  const onCloseSearch = () => actions.setShowSearch(false);
   return (
     <nav className="desm-bottom-nav navbar sticky-bottom border-top border-bottom border-dark-subtle bg-white p-0">
       <div className="d-flex h-100 justify-content-between w-100">
@@ -47,12 +48,13 @@ const BottomNav = (props) => {
       <Offcanvas
         placement="start"
         show={showSearch}
-        onHide={() => actions.setShowSearch(false)}
+        onHide={onCloseSearch}
         aria-labelledby="Search"
       >
         <Offcanvas.Header closeButton />
         <Offcanvas.Body>
-          <SearchBar
+          <SearchBarActions
+            onHide={onCloseSearch}
             onAlignmentOrderChange={actions.setSelectedAlignmentOrderOption}
             onHideSpineTermsWithNoAlignmentsChange={actions.setHideSpineTermsWithNoAlignments}
             onSpineOrderChange={actions.setSelectedSpineOrderOption}
@@ -76,14 +78,12 @@ const BottomNav = (props) => {
             specifications={state.specifications}
             onAlignmentSpecificationSelected={actions.setSelectedAlignmentSpecifications}
             onPredicateSelected={actions.setSelectedPredicates}
-            onSpineSpecificationSelected={actions.setSelectedSpineSpecifications}
             predicates={state.predicates}
             selectedAlignmentOrderOption={state.selectedAlignmentOrderOption}
             selectedAlignmentSpecifications={state.selectedAlignmentSpecifications}
             selectedDomain={state.selectedDomain}
             selectedPredicates={state.selectedPredicates}
             selectedSpineOrderOption={state.selectedSpineOrderOption}
-            selectedSpineSpecifications={state.selectedSpineSpecifications}
           />
         </Offcanvas.Body>
       </Offcanvas>

@@ -26,9 +26,15 @@ module Parsers
 
       ###
       # @description: Determines if there's an skos:ConceptScheme among the provided types
+      # and filter out owl:Class nodes (https://www.w3.org/TR/skos-reference/#L8421)
+      # @return [Boolean]
       ###
       def concept_scheme?
-        @types_list.any? { |type| !type.nil? && NODE_TYPES[:SKOS_CONCEPT_SCHEME].include?(type.downcase) }
+        return false if owl_class?
+
+        @types_list.any? do |type|
+          !type.nil? && NODE_TYPES[:SKOS_CONCEPT_SCHEME].include?(type.downcase)
+        end
       end
 
       ###
@@ -45,6 +51,16 @@ module Parsers
       def includes_standardized_type?
         @types_list.any? do |type|
           standardized_type?(type.downcase)
+        end
+      end
+
+      ###
+      # @description: Determines if there's an owl:Class among the provided types
+      # @return [Boolean]
+      ###
+      def owl_class?
+        @types_list.any? do |type|
+          !type.nil? && NODE_TYPES[:OWL_CLASS].include?(type.downcase)
         end
       end
 

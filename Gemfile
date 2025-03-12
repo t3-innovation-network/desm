@@ -84,6 +84,8 @@ gem "strong_password", "~> 0.0.8"
 
 gem "mimemagic", github: "mimemagicrb/mimemagic", ref: "01f92d86d15d85cfd0f20dabd025dcbd36a8a60f"
 
+gem "zaru", "~> 1.0"
+
 group :development, :test do
   gem "annotate"
   gem "brakeman", require: false

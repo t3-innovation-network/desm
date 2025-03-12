@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropertyMappingsFilter from './PropertyMappingsFilter';
 import SearchBar from './SearchBar';
 import NotificationDot from '../shared/NotificationDot';
+import InfoExportButtons from './InfoExportButtons';
 
 const Sidebar = (props) => {
   const [state, actions] = props.store;
@@ -15,7 +16,6 @@ const Sidebar = (props) => {
     selectedDomain,
     selectedPredicates,
     selectedSpineOrderOption,
-    selectedSpineSpecifications,
     specifications,
   } = state;
   const clsSidebar = classNames('desm-sidebar border-dark-subtle border-end', {
@@ -48,9 +48,27 @@ const Sidebar = (props) => {
             <span className="desm-icon desm-icon--fill fs-3">filter_alt</span>
             <NotificationDot show={state.withFilters} />
           </div>
+          <div
+            className="border-bottom border-dark-subtle py-3 cursor-pointer link-opacity-75-hover"
+            disabled={!state.isInfoEnabled}
+            onClick={() => actions.setShowInfo(!state.showInfo)}
+          >
+            <span className="desm-icon fs-3">info</span>
+          </div>
+          <div
+            className="border-bottom border-dark-subtle py-3 cursor-pointer link-opacity-75-hover"
+            disabled={!state.isExportEnabled}
+            onClick={() => actions.setShowExport(!state.showExport)}
+          >
+            <span className="desm-icon fs-3">download</span>
+          </div>
         </div>
       ) : (
         <div className="h-100 overflow-x-hidden overflow-y-auto">
+          <InfoExportButtons
+            store={props.store}
+            cls="justify-content-center py-4 border-bottom border-dark-subtle"
+          />
           <div className="py-4 px-2 border-bottom border-dark-subtle">
             <SearchBar
               onAlignmentOrderChange={actions.setSelectedAlignmentOrderOption}
@@ -68,14 +86,12 @@ const Sidebar = (props) => {
               specifications={specifications}
               onAlignmentSpecificationSelected={actions.setSelectedAlignmentSpecifications}
               onPredicateSelected={actions.setSelectedPredicates}
-              onSpineSpecificationSelected={actions.setSelectedSpineSpecifications}
               predicates={predicates}
               selectedAlignmentOrderOption={selectedAlignmentOrderOption}
               selectedAlignmentSpecifications={selectedAlignmentSpecifications}
               selectedDomain={selectedDomain}
               selectedPredicates={selectedPredicates}
               selectedSpineOrderOption={selectedSpineOrderOption}
-              selectedSpineSpecifications={selectedSpineSpecifications}
             />
           </div>
         </div>
