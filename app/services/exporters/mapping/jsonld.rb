@@ -244,7 +244,7 @@ module Exporters
       end
 
       def expand_uri(value)
-        return if value.start_with?(%r{https?://})
+        return value if value.start_with?(%r{https?://})
 
         namespace, = value.split(":")
         uri = Desm::CONTEXT[namespace.to_sym]
