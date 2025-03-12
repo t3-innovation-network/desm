@@ -104,8 +104,8 @@ module Exporters
           "@type": "desm:TermMapping",
           "dcterms:isPartOf": { "@id": mapping_uri },
           "desm:comment": alignment.comment,
-          "desm:created": alignment.created_at.strftime("%F"),
-          "desm:dateModified": alignment.updated_at.strftime("%F"),
+          "dct:created": alignment.created_at.strftime("%F"),
+          "dct:dateModified": alignment.updated_at.strftime("%F"),
           "desm:mappedTerm": alignment.mapped_terms.map do |term|
             { "@id": term_uri(term) }
           end,
