@@ -27,6 +27,10 @@ $desm-element-typography: (
     font-size: 1rem,
     font-family: $desm-font-base,
   ),
+  badge: (
+    font-size: rfs-value(18px),
+    line-height: 1,
+  ),
   predicate: (
     font-size: rfs-value(15px),
     font-weight: 600,

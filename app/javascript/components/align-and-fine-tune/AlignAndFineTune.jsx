@@ -296,7 +296,7 @@ const AlignAndFineTune = (props) => {
   return (
     <>
       <TopNav centerContent={navCenterOptions} />
-      <div className="container-fluid d-flex flex-column h-100 desm-content">
+      <div className="container-fluid d-flex flex-column h-100 desm-content" role="main">
         {state.hasErrors ? (
           <AlertNotice message={state.errors} onClose={actions.clearErrors} />
         ) : null}

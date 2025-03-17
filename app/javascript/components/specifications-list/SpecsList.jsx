@@ -231,7 +231,7 @@ const SpecsList = (_props) => {
   return (
     <>
       <TopNav centerContent={navCenterOptions} />
-      <div className="container-fluid desm-content">
+      <div className="container-fluid desm-content" role="main">
         <div className="row">
           <div className="col p-lg-5 pt-5">
             <h1>My Specifications</h1>

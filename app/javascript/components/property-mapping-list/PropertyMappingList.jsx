@@ -111,7 +111,7 @@ const PropertyMappingList = (props) => {
       <Desktop>
         {configurationProfile?.withSharedMappings ? <Sidebar store={store} /> : null}
       </Desktop>
-      <div className={clsMainContent}>
+      <div className={clsMainContent} role="main">
         <div className="container-fluid">
           {state.hasErrors ? (
             <AlertNotice message={state.errors} onClose={actions.clearErrors} />
