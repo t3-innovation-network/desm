@@ -44,6 +44,18 @@ gem install foreman
 foreman start -f Procfile.local --env ./.env.development
 ```
 
+## Tests
+
+`rspec` for ruby based related tests
+
+`yarn playwright test` for accessibility tests (or use IDE plugin for playwright), they also can be run manually at GH Actions with 2 inputs:
+- site url, default qa site, env `BASE_URL`
+- configuration profile name, default 'DESM Demo and Documentation', env `SHARED_MAPPING_CONFIG`
+
+Set these env as you need (you can use `.env.playwright` for that) for local development.
+
+Accessiblility reports will be attached to each of the test, both in json and html formats, look for Attachments section at playwright report (download it from Artifacts section or "Playwright Reports" step at GH).
+
 ## Customization
 
 ### Adjust the text on the Homepage
