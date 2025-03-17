@@ -2,7 +2,7 @@ import mappingProcess from '../../../assets/images/mapping-process.png';
 
 const RightSideHome = () => (
   <div className="col-lg-8 p-lg-5 pt-5 bg-col-secondary">
-    <h6 className="subtitle">About the DESM tool</h6>
+    <h1 className="subtitle">About the DESM tool</h1>
     <p>
       The Data Ecosystem Mapping Tool (DESM) is a specialized tool for creating, editing,
       maintaining and viewing crosswalks between data standards from two or more Data Standard

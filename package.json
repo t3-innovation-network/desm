@@ -31,7 +31,7 @@
     "prop-types": "^15.8.1",
     "query-string": "^9.1.1",
     "react": "^18.3.1",
-    "react-bootstrap": "^2.10.8",
+    "react-bootstrap": "^2.10.9",
     "react-codemirror2": "^8.0.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",

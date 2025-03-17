@@ -140,7 +140,7 @@ const MappingToDomains = (props) => {
         termId={termToEdit.id}
       />
       <TopNav centerContent={navCenterOptions} />
-      <div className="container-fluid d-flex flex-column h-100 desm-content">
+      <div className="container-fluid d-flex flex-column h-100 desm-content" role="main">
         {state.hasErrors ? (
           <AlertNotice message={state.errors} onClose={actions.clearErrors} />
         ) : null}
@@ -176,6 +176,7 @@ const MappingToDomains = (props) => {
                           aria-valuenow="0"
                           aria-valuemin="0"
                           aria-valuemax={terms.length}
+                          aria-label={`Progress: ${state.mappedTerms.length * 100} out of ${maxValue}`}
                         ></div>
                       </div>
                     </div>
