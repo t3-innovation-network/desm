@@ -27,11 +27,14 @@ const MappingToDomains = (props) => {
     savingChanges,
     hideMapped,
     domain,
+    mappedTerms,
     mapping,
     terms,
     termToEdit,
     termsInputValue,
   } = state;
+
+  const progress = Math.floor((100 * mappedTerms.length / terms.length) || 0);
 
   // Action to perform after a term is dropped
   const afterDropTerm = (_spineTerm, items) => actions.afterDropTerm({ items });
@@ -171,12 +174,12 @@ const MappingToDomains = (props) => {
                           className="progress-bar bg-col-on-primary"
                           role="progressbar"
                           style={{
-                            width: (state.mappedTerms.length * 100) / terms.length + '%',
+                            width: `${progress}%`,
                           }}
                           aria-valuenow="0"
                           aria-valuemin="0"
                           aria-valuemax={terms.length}
-                          aria-label={`Progress: ${state.mappedTerms.length * 100} out of ${maxValue}`}
+                          aria-label={`Progress: ${progress}%`}
                         ></div>
                       </div>
                     </div>
