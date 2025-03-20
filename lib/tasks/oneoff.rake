@@ -110,6 +110,8 @@ namespace :oneoff do
             spine_term = mapping.copy_spine_term(term)
 
             Alignment
+              .joins(:mapping)
+              .where(mappings: { spine_id: spine })
               .where(spine_term: term)
               .update_all(spine_term_id: spine_term.id)
 
