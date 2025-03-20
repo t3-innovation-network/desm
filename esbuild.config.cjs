@@ -28,10 +28,10 @@ esbuild
     logLevel: 'info',
     define: {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-      'process.env.ADMIN_ROLE_NAME': JSON.stringify(process.env.ADMIN_ROLE_NAME || 'null'),
-      'process.env.MIN_PASSWORD_LENGTH': JSON.stringify(process.env.MIN_PASSWORD_LENGTH || 'null'),
-      'process.env.MAPPER_ROLE_NAME': JSON.stringify(process.env.MAPPER_ROLE_NAME || 'null'),
-      'process.env.APP_DOMAIN': JSON.stringify(process.env.APP_DOMAIN || 'null'),
+      'process.env.ADMIN_ROLE_NAME': JSON.stringify(process.env.ADMIN_ROLE_NAME || null),
+      'process.env.MIN_PASSWORD_LENGTH': JSON.stringify(process.env.MIN_PASSWORD_LENGTH || null),
+      'process.env.MAPPER_ROLE_NAME': JSON.stringify(process.env.MAPPER_ROLE_NAME || null),
+      'process.env.APP_DOMAIN': JSON.stringify(process.env.APP_DOMAIN || null),
     },
     mainFields: ['module', 'main'], // Prioritize ESM over CommonJS
   })
