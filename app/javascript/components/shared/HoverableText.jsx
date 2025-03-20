@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
 /**
  * Props:
@@ -6,36 +6,26 @@ import { Component } from 'react';
  * @param {JSX} primaryContent The content that's always visible
  * @param {JSX} secondaryContent The content that only appears when the mouse is over the label
  */
-class HoverableText extends Component {
-  state = {
-    /**
-     * Controls the hover (mouse over) action to this component
-     */
-    hovering: false,
-  };
+const HoverableText = ({ forComponent, primaryContent, secondaryContent, clsContent = '' }) => {
+  const [hovering, setHovering] = useState(false);
 
-  render() {
-    /**
-     * Elements from props
-     */
-    const { forComponent, primaryContent, secondaryContent } = this.props;
-    /**
-     * Elements from state
-     */
-    const { hovering } = this.state;
-
-    return (
-      <label
-        className="form-label"
-        onMouseEnter={() => this.setState({ hovering: true })}
-        onMouseLeave={() => this.setState({ hovering: false })}
-        htmlFor={forComponent}
-      >
+  return (
+    <label
+      className="form-label"
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => setHovering(false)}
+      htmlFor={forComponent}
+    >
+      <p className={`mb-0 ${clsContent}`}>
         <span>{primaryContent}</span>
-        {hovering ? <span style={{ color: 'grey' }}>{' - ' + secondaryContent}</span> : null}
-      </label>
-    );
-  }
-}
+        {hovering ? (
+          <span className="text-break" style={{ color: 'grey' }}>
+            {' - ' + secondaryContent}
+          </span>
+        ) : null}
+      </p>
+    </label>
+  );
+};
 
 export default HoverableText;
