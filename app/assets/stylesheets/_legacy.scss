@@ -6,3 +6,15 @@
 .ReactModal__Overlay {
   z-index: $zindex-modal !important; // stylelint-disable-line declaration-no-important
 }
+
+.ReactModal__Content {
+  width: 95% !important; // stylelint-disable-line declaration-no-important
+
+  @include media-breakpoint-up(sm) {
+    width: 80% !important; // stylelint-disable-line declaration-no-important
+  }
+
+  @include media-breakpoint-up(lg) {
+    width: 60% !important; // stylelint-disable-line declaration-no-important
+  }
+}

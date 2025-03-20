@@ -1,7 +1,7 @@
 module Desm
   APP_DOMAIN = ENV['APP_DOMAIN'] || 'http://localhost:3030'
   ADMIN_ROLE_NAME = ENV['ADMIN_ROLE_NAME'] || 'Super Admin'
-  MAPPER_ROLE_NAME = ENV['MAPPER_ROLE_NAME'] || 'mapper'
+  MAPPER_ROLE_NAME = (ENV['MAPPER_ROLE_NAME'] || 'mapper').downcase
   CONCEPTS_DIRECTORY_PATH = 'concepts/'
   DEFAULT_PASS = ENV['DEFAULT_PASS'] || 'xZ!2Hd!cYLzS^sc%P5'
   PHONE_RE = /\A\+?[0-9 -]{6,18}\z/i

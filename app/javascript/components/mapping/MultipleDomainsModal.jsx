@@ -61,6 +61,7 @@ const MultipleDomainsModal = (props) => {
           forComponent={id}
           primaryContent={primaryContent}
           secondaryContent={secondaryContent}
+          clsContent="desm-radio__content"
         />
       </div>
     );

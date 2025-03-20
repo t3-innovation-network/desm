@@ -17,13 +17,16 @@
 }
 
 .floating-spec-btn {
+  $floating-spec-btn-size: 5rem;
+
   border-radius: 50% !important;
   font-size: 1.1rem !important;
   font-weight: bold !important;
-  padding: 2rem !important;
+  height: $floating-spec-btn-size;
   position: absolute;
-  right: -2.5rem;
+  right: -0.5 * $floating-spec-btn-size;
   top: 50%;
+  width: $floating-spec-btn-size;
   z-index: 5;
 
   &:focus {

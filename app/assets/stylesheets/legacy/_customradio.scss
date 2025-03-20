@@ -2,7 +2,7 @@
 
 .desm-radio div {
   clear: both;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .desm-check-container-sm {
@@ -10,9 +10,12 @@
 }
 
 .desm-radio label {
+  align-items: center;
   border: 1px solid $primary-color-highlight;
   border-radius: 3px;
+  display: inline-flex;
   font-weight: normal;
+  min-height: 2.5rem;
   width: 100%;
 }
 
@@ -25,19 +28,21 @@
 .desm-radio input[type='radio']:empty ~ label,
 .desm-radio input[type='checkbox']:empty ~ label {
   cursor: pointer;
-  line-height: 2.5em;
+  padding-left: 3.25em;
+  padding-right: 0.5rem;
   position: relative;
-  text-indent: 3.25em;
   user-select: none;
 }
 
 .desm-radio input[type='radio']:empty ~ label::before,
 .desm-radio input[type='checkbox']:empty ~ label::before {
+  align-items: center;
   background: $primary-color-highlight;
   border-radius: 3px 0 0 3px;
   bottom: 0;
   content: '';
-  display: block;
+  display: flex;
+  height: 100%;
   left: 0;
   position: absolute;
   top: 0;
