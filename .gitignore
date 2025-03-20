@@ -46,6 +46,7 @@ yarn-debug.log*
 .idea/*
 .vscode/*
 .github/copilot-instructions.md
+.docker
 
 # simplecov reports
 coverage
