@@ -4,7 +4,7 @@ import ConfigurationProfileSelect from '../shared/ConfigurationProfileSelect';
 const SelectConfigurationProfile = ({ history }) => (
   <>
     <TopNav centerContent={() => null} />
-    <div className="container-fluid desm-content">
+    <div className="container-fluid desm-content" role="main">
       <div className="row mt-4">
         <div className="col-12 mx-auto">
           <ConfigurationProfileSelect

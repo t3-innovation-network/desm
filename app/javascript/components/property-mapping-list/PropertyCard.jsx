@@ -36,14 +36,15 @@ const PropertyCard = ({ term, collapsed, showingConnectors, onToggleTermCollapse
         onClick={() => onToggleTermCollapse(term.id)}
         aria-controls={`property-${term.id}`}
         aria-expanded={!collapsed}
+        role="button"
       >
         <div>
           <small>Property name</small>
-          <h3 className="fs-5 fw-bold position-relative">
+          <h2 className="fs-5 fw-bold position-relative">
             {term.name}
             <div className={clsConnector}></div>
             <div className={clsHeaderVerticalConnector}></div>
-          </h3>
+          </h2>
         </div>
         <div className={clsToggle}>keyboard_arrow_up</div>
       </div>
