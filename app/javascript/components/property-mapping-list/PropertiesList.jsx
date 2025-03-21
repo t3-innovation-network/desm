@@ -12,6 +12,8 @@ import PropertyCard from './PropertyCard';
 import { implementSpineSort } from './SortOptions';
 import Info from './Info';
 
+export const buildPropertyCardId = (propertyId) => `property_${propertyId}`;
+
 /**
  * @description: The list of properties with its alignments. Contains all the information about the property
  * itself, and the alignment, like the origin, the predicate, and more
@@ -149,7 +151,11 @@ const PropertiesList = (props) => {
     filteredProperties.map((term) => {
       const collapsed = collapsedTerms.includes(term.id);
       return (
-        <div className="desm-mapping-list row u-margin-bottom--gutter" key={term.id}>
+        <div
+          className="desm-mapping-list row u-margin-bottom--gutter"
+          id={buildPropertyCardId(term.id)}
+          key={term.id}
+        >
           <div className="col-lg-4 col-12">
             <PropertyCard
               term={term}
