@@ -8,12 +8,13 @@ Small stand-alone controlled vocabs:
 * lrmi-educationalUse.ttl A simple, small SKOS Concept scheme in turtle
 * lrmi-educationalUse-raw.json The same SKOS Concpet Scheme in JSON-LD, with no context just URIs and ojects.
 * lrmi-educationalUse-df.json The same but with a context block to make the JSON more paletable.
-* ceds-educationalUse.csv A similar vocabulary as a CSV.
 * simpleEnum.xsd A simple XML Schema enumeration.
 * StateProvinceElement.xsd A largish controlled vocabulary from PESC as an XSD enumeration.
 * color-enum+meta.json A JSON-Schema enumeration with meta:enum providing the term definitions.
 * color-AnyOf.json A JSON-Schema controlled vocabulary with anyOf keyword.
 * color-OneOf.json A JSON-Schema controlled vocabulary with oneOf keyword.
+* ceds-ex1.csv A single controlled vocabualry from CEDS.
+* ceds-ex2.csv Two controlled vocabularies from CEDS in one file.
 
 
 Other larger schemas which include Controlled Vocabs in the main schema:
