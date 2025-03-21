@@ -220,6 +220,13 @@ Rails.application.routes.draw do
 
   resources :users, only: [:index, :show, :update, :destroy]
 
+  # RDF entities redirects
+  get 'AbstractClassMapping/:id' => 'rdf_entities#abstract_class_mapping'
+  get 'Agent/:id', to: redirect('/dashboard/agents#%{id}')
+  get 'MappingConfiguration/:id', to: redirect('/mappings-list?cp=%{id}')
+  get 'Property/:id' => 'rdf_entities#property'
+  get 'TermMapping/:id' => 'rdf_entities#term_mapping'
+
   # Redirect all missing routes to home
   get '/*path' => 'homepage#index'
 end

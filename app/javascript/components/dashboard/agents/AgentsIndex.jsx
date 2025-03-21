@@ -10,16 +10,28 @@ import DashboardContainer from '../DashboardContainer';
 import AlertNotice from '../../../components/shared/AlertNotice';
 import { pageRoutes } from '../../../services/pageRoutes';
 import { i18n } from '../../../utils/i18n';
+import { scrollToElement } from '../../../utils/scrollToElement';
 
-const AgentsIndex = (_props = {}) => {
+const buildRowId = (id) => `agent_${id}`;
+
+const AgentsIndex = ({ location }) => {
   const store = useLocalStore(() => agentsStore());
+  const { hash } = location;
   const [state, actions] = store;
+  const { agents } = state;
   const searchInput = useDebounce(state.searchInput);
 
   // fetch data on start and refetch when searchInput/other filters changes
   useEffect(() => {
     actions.fetchDataFromAPI();
   }, []);
+
+  useEffect(() => {
+    if (agents.length) {
+      scrollToElement(hash, buildRowId);
+    }
+  }, [agents, hash]);
+
   useDidMountEffect(
     () => actions.handleFetchAgents(state.filterParams),
     [
@@ -43,7 +55,7 @@ const AgentsIndex = (_props = {}) => {
     const profiles = agent.profiles.map(profileData);
     const dsos = agent.profiles.map(organizationData);
     return (
-      <tr key={agent.id}>
+      <tr id={buildRowId(agent.id)} key={agent.id}>
         <td>{agent.name}</td>
         <td>{agent.email}</td>
         <td>{agent.phone}</td>
@@ -79,7 +91,7 @@ const AgentsIndex = (_props = {}) => {
                 <th scope="col" />
               </tr>
             </thead>
-            <tbody>{state.agents.map(buildTableRow)}</tbody>
+            <tbody>{agents.map(buildTableRow)}</tbody>
           </table>
         </div>
       </div>
