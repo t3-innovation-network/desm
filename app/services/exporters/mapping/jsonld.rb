@@ -154,7 +154,7 @@ module Exporters
           "@id": predicate.source_uri,
           "@type": "skos:Concept",
           "skos:prefLabel": predicate.pref_label,
-          "skos: definition": predicate.definition,
+          "skos:definition": predicate.definition,
           "skos:altLabel": nil
         }
       end
