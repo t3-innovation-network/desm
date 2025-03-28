@@ -93,4 +93,34 @@ namespace :oneoff do
       predicate_set.update_max_weight(nil)
     end
   end
+
+  desc "One-off task: replace spine terms with their copies"
+  task copy_spine_terms: :environment do
+    Spine
+      .includes(
+        mappings: [:configuration_profile_user, { specification: :domain }],
+        terms: :property
+      )
+      .each do |spine|
+        mapping = spine.mappings.first
+        next unless mapping
+
+        spine_terms = spine.terms.includes(:property).map do |term|
+          Spine.transaction do
+            spine_term = mapping.copy_spine_term(term)
+
+            Alignment
+              .joins(:mapping)
+              .where(mappings: { spine_id: spine })
+              .where(spine_term: term)
+              .update_all(spine_term_id: spine_term.id)
+
+            spine_term
+          end
+        end
+
+        spine.terms = spine_terms
+        puts "Migrated the #{spine.name} spine (##{spine.id})"
+      end
+  end
 end
