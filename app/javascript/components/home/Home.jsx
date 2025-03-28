@@ -6,7 +6,7 @@ import TopNavOptions from '../shared/TopNavOptions';
 const Home = () => (
   <>
     <TopNav centerContent={() => <TopNavOptions mapSpecification viewMappings />} />
-    <div className="container-fluid desm-content">
+    <div className="container-fluid desm-content" role="main">
       <div className="row">
         <LeftSideHome />
         <RightSideHome />

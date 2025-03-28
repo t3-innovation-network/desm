@@ -28,8 +28,8 @@ const Sidebar = (props) => {
   });
 
   return (
-    <div className={clsSidebar}>
-      <div className={clsToggle} onClick={actions.toggleSidebar}>
+    <div className={clsSidebar} role="complementary">
+      <div className={clsToggle} onClick={actions.toggleSidebar} role="button">
         <span className="desm-sidebar-toggle__icon desm-icon">chevron_right</span>
       </div>
       {sidebarCollapsed ? (
@@ -37,6 +37,7 @@ const Sidebar = (props) => {
           <div
             className="border-bottom border-dark-subtle py-3 cursor-pointer link-opacity-75-hover"
             onClick={actions.toggleSidebar}
+            role="button"
           >
             <span className="desm-icon fs-3">search</span>
             <NotificationDot show={state.withSearchInput} type="search" />
@@ -44,6 +45,7 @@ const Sidebar = (props) => {
           <div
             className="border-bottom border-dark-subtle py-3 cursor-pointer link-opacity-75-hover"
             onClick={actions.toggleSidebar}
+            role="button"
           >
             <span className="desm-icon desm-icon--fill fs-3">filter_alt</span>
             <NotificationDot show={state.withFilters} />
@@ -52,6 +54,7 @@ const Sidebar = (props) => {
             className="border-bottom border-dark-subtle py-3 cursor-pointer link-opacity-75-hover"
             disabled={!state.isInfoEnabled}
             onClick={() => actions.setShowInfo(!state.showInfo)}
+            role="button"
           >
             <span className="desm-icon fs-3">info</span>
           </div>
@@ -59,6 +62,7 @@ const Sidebar = (props) => {
             className="border-bottom border-dark-subtle py-3 cursor-pointer link-opacity-75-hover"
             disabled={!state.isExportEnabled}
             onClick={() => actions.setShowExport(!state.showExport)}
+            role="button"
           >
             <span className="desm-icon fs-3">download</span>
           </div>

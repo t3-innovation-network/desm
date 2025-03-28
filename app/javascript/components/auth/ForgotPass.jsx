@@ -79,7 +79,7 @@ class ForgotPass extends Component {
     return (
       <>
         <TopNav centerContent={this.navCenterOptions} />
-        <div className="container-fluid desm-content">
+        <div className="container-fluid desm-content" role="main">
           <div className="row mt-4">
             <div className="col-lg-6 mx-auto">
               {errors && (

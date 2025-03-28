@@ -8,7 +8,11 @@ const BottomNav = (props) => {
   const { showExport, showInfo, showSearch, showFilters } = state;
   const onCloseSearch = () => actions.setShowSearch(false);
   return (
-    <nav className="desm-bottom-nav navbar sticky-bottom border-top border-bottom border-dark-subtle bg-white p-0">
+    <nav
+      className="desm-bottom-nav navbar sticky-bottom border-top border-bottom border-dark-subtle bg-white p-0"
+      aria-label="Bottom Navigation"
+      role="navigation"
+    >
       <div className="d-flex h-100 justify-content-between w-100">
         <div>
           <button
