@@ -123,4 +123,28 @@ namespace :oneoff do
         puts "Migrated the #{spine.name} spine (##{spine.id})"
       end
   end
+
+  desc "One-off task: add CEDS prefix to URIs without one"
+  task fix_ceds_uris: :environment do
+    add_ceds_prefix = lambda do |obj|
+      case obj
+      when Hash
+        obj.transform_values { add_ceds_prefix.call(_1) }
+      when Array
+        obj.map { add_ceds_prefix.call(_1) }
+      when String
+        obj.sub(/^:/, "http://ceds.ed.gov/terms#")
+      else
+        obj
+      end
+    end
+
+    # CEDS values start with a C or P (for classes or properties) followed by digits
+    Term.where("source_uri ~ '^:(C|P)[0-9]+'").each do |term|
+      term.update!(
+        raw: add_ceds_prefix.call(term.raw),
+        source_uri: add_ceds_prefix.call(term.source_uri)
+      )
+    end
+  end
 end
