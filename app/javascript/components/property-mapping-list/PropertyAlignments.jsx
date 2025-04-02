@@ -5,6 +5,7 @@ import { implementAlignmentSort, implementAlignmentTermsSort } from './SortOptio
 import { propertyClassesForAlignmentTerm } from './stores/propertyMappingListStore';
 import PropertyComments from './PropertyComments';
 import Predicate from '../shared/Predicate';
+import { buildPropertyCardId } from './PropertiesList';
 
 /**
  * @description A list of alignments with information like predicate, comment, and more.
@@ -88,7 +89,10 @@ const AlignmentCard = ({ alignment, term, isLast = false }) => {
   });
 
   return (
-    <div className={`card ${isLast ? '' : 'mb-3'} bg-bg-dark position-relative`}>
+    <div
+      className={`card ${isLast ? '' : 'mb-3'} bg-bg-dark position-relative`}
+      id={buildPropertyCardId(term.id)}
+    >
       <div className={clsHeader}>
         <Predicate predicate={alignment.predicate} />
       </div>

@@ -1,0 +1,39 @@
+name: Playwright Tests
+run-name: Playwright Tests workflow is launched by ${{ github.actor }} 🚀
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Base URL for testing'
+        required: true
+        default: 'https://gopher.desm.staging.c66.me/'
+      configuration-profile:
+        description: 'Configuration profile for testing'
+        required: true
+        default: 'DESM Demo and Documentation'
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'yarn'
+    - name: Install dependencies
+      run: npm install -g yarn && yarn
+    - name: Install Playwright Browsers
+      run: yarn playwright install --with-deps
+    - name: Run Playwright tests
+      run: yarn playwright test
+      env:
+        BASE_URL: ${{ github.event.inputs.url }}
+        SHARED_MAPPING_CONFIG: ${{ github.event.inputs.configuration-profile }}
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      name: Playwright Reports
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30

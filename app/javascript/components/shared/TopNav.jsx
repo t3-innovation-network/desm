@@ -10,6 +10,7 @@ import Navbar from 'react-bootstrap/Navbar';
 const TopNav = (props) => {
   return (
     <Navbar
+      role="navigation"
       expand="lg"
       className="navbar-with-border with-shadow align-items-center desm-navbar bg-white py-2 w-100"
     >

@@ -1,0 +1,4 @@
+Comments,@type,Pref label / name,definition / description,id / notation,in Vocabulary,has Terms,for property,for Schema,Vocabulary Creator,Vocabulary Owner,Date,Version
+Explanation - see comment,Vocabulary,Organization Operational Status,"The current status of the organization's operations, exclusive of scheduled breaks, holidays, or other temporary interruptions.",001418,,"Active, Inactive",operationalStatus,CEDS,CEDS Team,CEDS,,v12.1.0.0
+,Term,Active,"The organization is active, except for scheduled breaks, holidays, or other temporary interruptions.",Active,001418,,operationalStatus,CEDS,CEDS Team,CEDS,,v12.1.0.0
+,Term,Inactive,The organization is inactive.,Inactive,001418,,operationalStatus,CEDS,CEDS Team,CEDS,,v12.1.0.0

@@ -41,7 +41,7 @@ const EditProfile = ({ history }) => {
     <>
       <TopNav centerContent={() => <TopNavOptions viewMappings mapSpecification />} />
 
-      <div className="container-fluid desm-content">
+      <div className="container-fluid desm-content" role="main">
         <div className="row mt-4">
           <div className="col-lg-6 mx-auto">
             {error && <AlertNotice message={error} onClose={() => setError(null)} />}

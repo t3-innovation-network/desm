@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const NotFound = () => (
   <>
     <TopNav />
-    <div className="container-fluid desm-content">
+    <div className="container-fluid desm-content" role="main">
       <div className="row text-center">
         <div className="col-lg-6 offset-lg-3 col-sm-6 offset-sm-3 col-12 p-3 error-main">
           <div className="row">
