@@ -51,6 +51,8 @@ class Term < ApplicationRecord
   has_many :alignments, foreign_key: :spine_term_id
   has_many :alignment_vocabularies, through: :alignments
 
+  has_and_belongs_to_many :spines
+
   ###
   # @description: The skos concept scheme (vocabulary), for this term. It can be many, but in the most
   #   common situations, each term will have 0 or 1 vocabulary

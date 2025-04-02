@@ -49,7 +49,7 @@ const Mapping = (props) => {
   return (
     <>
       <TopNav centerContent={navCenterOptions} />
-      <div className="container-fluid desm-content">
+      <div className="container-fluid desm-content" role="main">
         {state.hasErrors ? (
           <AlertNotice message={state.errors} onClose={actions.clearErrors} />
         ) : null}

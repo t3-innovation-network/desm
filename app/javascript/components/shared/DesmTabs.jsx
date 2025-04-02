@@ -117,7 +117,11 @@ const DesmTabs = ({
               style={{ cursor: 'pointer' }}
               title={value.definition}
             >
-              {value.name}
+              {selectedId === value.id ? (
+                <h1 className="u-txt--badge my-0">{value.name}</h1>
+              ) : (
+                value.name
+              )}
             </span>
           );
         })}

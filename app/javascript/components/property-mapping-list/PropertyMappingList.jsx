@@ -8,7 +8,7 @@ import TopNavOptions from '../shared/TopNavOptions';
 import DesmTabs from '../shared/DesmTabs';
 import BottomNav from './BottomNav';
 import InfoExportButtons from './InfoExportButtons';
-import PropertiesList from './PropertiesList';
+import PropertiesList, { buildPropertyCardId } from './PropertiesList';
 import Sidebar from './Sidebar';
 import ConfigurationProfileSelect from '../shared/ConfigurationProfileSelect';
 import { i18n } from '../../utils/i18n';
@@ -18,12 +18,14 @@ import { isEmpty } from 'lodash';
 import ExportMappings from '../shared/ExportMappings';
 import { TabletAndBelow, Desktop } from '../../utils/mediaQuery';
 import classNames from 'classnames';
+import { scrollToElement } from '../../utils/scrollToElement';
 
 const PropertyMappingList = (props) => {
   const store = useLocalStore(() => {
     const { cp, abstractClass } = camelizeLocationSearch(props);
     return propertyMappingListStore({ cp, abstractClass });
   });
+  const { hash } = props.location;
   const [state, actions] = store;
   const {
     configurationProfile,
@@ -33,6 +35,7 @@ const PropertyMappingList = (props) => {
     selectedDomain,
     hideSpineTermsWithNoAlignments,
     propertiesInputValue,
+    propertyIds,
     sidebarCollapsed,
     selectedAlignmentOrderOption,
     selectedAlignmentSpecifications,
@@ -68,6 +71,12 @@ const PropertyMappingList = (props) => {
     loadSpecifications();
   }, [configurationProfile?.id, selectedDomain]);
 
+  useEffect(() => {
+    if (propertyIds.length) {
+      scrollToElement(hash, buildPropertyCardId);
+    }
+  }, [hash, propertyIds]);
+
   const updateSelectedDomain = (id) => {
     const selectedDomain = domains.find((domain) => domain.id == id);
     actions.updateSelectedDomain(selectedDomain);
@@ -77,7 +86,7 @@ const PropertyMappingList = (props) => {
   const updateSelectedConfigurationProfile = (configurationProfile) => {
     actions.updateSelectedConfigurationProfile(configurationProfile);
     if (configurationProfile) {
-      updateQueryString({ cp: configurationProfile.id });
+      updateQueryString({ cp: configurationProfile.id.toString() });
     }
   };
 
@@ -111,7 +120,7 @@ const PropertyMappingList = (props) => {
       <Desktop>
         {configurationProfile?.withSharedMappings ? <Sidebar store={store} /> : null}
       </Desktop>
-      <div className={clsMainContent}>
+      <div className={clsMainContent} role="main">
         <div className="container-fluid">
           {state.hasErrors ? (
             <AlertNotice message={state.errors} onClose={actions.clearErrors} />

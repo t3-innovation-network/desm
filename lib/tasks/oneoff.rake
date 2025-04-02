@@ -93,4 +93,58 @@ namespace :oneoff do
       predicate_set.update_max_weight(nil)
     end
   end
+
+  desc "One-off task: replace spine terms with their copies"
+  task copy_spine_terms: :environment do
+    Spine
+      .includes(
+        mappings: [:configuration_profile_user, { specification: :domain }],
+        terms: :property
+      )
+      .each do |spine|
+        mapping = spine.mappings.first
+        next unless mapping
+
+        spine_terms = spine.terms.includes(:property).map do |term|
+          Spine.transaction do
+            spine_term = mapping.copy_spine_term(term)
+
+            Alignment
+              .joins(:mapping)
+              .where(mappings: { spine_id: spine })
+              .where(spine_term: term)
+              .update_all(spine_term_id: spine_term.id)
+
+            spine_term
+          end
+        end
+
+        spine.terms = spine_terms
+        puts "Migrated the #{spine.name} spine (##{spine.id})"
+      end
+  end
+
+  desc "One-off task: add CEDS prefix to URIs without one"
+  task fix_ceds_uris: :environment do
+    add_ceds_prefix = lambda do |obj|
+      case obj
+      when Hash
+        obj.transform_values { add_ceds_prefix.call(_1) }
+      when Array
+        obj.map { add_ceds_prefix.call(_1) }
+      when String
+        obj.sub(/^:/, "http://ceds.ed.gov/terms#")
+      else
+        obj
+      end
+    end
+
+    # CEDS values start with a C or P (for classes or properties) followed by digits
+    Term.where("source_uri ~ '^:(C|P)[0-9]+'").each do |term|
+      term.update!(
+        raw: add_ceds_prefix.call(term.raw),
+        source_uri: add_ceds_prefix.call(term.source_uri)
+      )
+    end
+  end
 end

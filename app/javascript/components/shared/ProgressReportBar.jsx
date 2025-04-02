@@ -28,17 +28,18 @@ const ProgressReportBar = (props) => {
           aria-valuenow="0"
           aria-valuemin="0"
           aria-valuemax={maxValue}
+          aria-label={`Progress: ${currentValue} out of ${maxValue}`}
         ></div>
       </div>
       {percentageMode ? (
-        <h5 className="mt-2">
+        <p className="h5 mt-2">
           <strong>{Math.round((currentValue * 100) / maxValue)}%</strong>
-        </h5>
+        </p>
       ) : (
-        <h5>
+        <p className="h5">
           <strong>{currentValue}</strong>
           {'/' + maxValue + (messageReport ? ' ' + messageReport : '')}
-        </h5>
+        </p>
       )}
     </>
   );
