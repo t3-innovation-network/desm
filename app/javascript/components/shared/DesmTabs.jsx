@@ -128,7 +128,7 @@ const DesmTabs = ({
       </div>
       {selectedValue?.definition && (
         <div className="w-100 d-flex gap-3 mt-2">
-          <small>test{selectedValue.definition}</small>
+          <small>{selectedValue.definition}</small>
         </div>
       )}
       <div
