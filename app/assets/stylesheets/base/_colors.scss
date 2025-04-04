@@ -22,8 +22,8 @@ $desm-theme-colors: (
   primary: #0d6efd,
   secondary: #6c757d,
   // desm theme colors
-  desm-primary: #dc3545,
-  red: #dc3545,
+  desm-primary: #b02a37,
+  red: #b02a37,
   success: #28a745,
   gray-dark: #343a40,
   bg-dark: $background-color-dark
@@ -61,7 +61,7 @@ $desm-predicate-colors: (
   ),
   yellow: (
     bg: #c3c300,
-    text: $white,
+    text: $black,
   ),
   unset: (
     bg: unset,

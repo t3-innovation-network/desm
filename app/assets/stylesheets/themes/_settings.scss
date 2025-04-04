@@ -48,3 +48,8 @@ $tooltip-opacity: 1;
 .tooltip {
   box-shadow: 1px 1px 4px 0px #00000040;
 }
+
+// links
+$link-color: #084298; // Darker blue for better contrast
+$link-decoration: underline;
+$link-hover-decoration: underline;
