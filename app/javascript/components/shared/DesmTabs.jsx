@@ -103,6 +103,8 @@ const DesmTabs = ({
         onMouseLeave={handleMouseLeave}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
+        tabIndex="0" // Make the element focusable
+        role="tablist" // Add appropriate ARIA role
       >
         {values.map((value) => {
           const tabClasses = classNames('badge px-3 py-2', {
@@ -116,6 +118,9 @@ const DesmTabs = ({
               onClick={() => onTabClick(value.id)}
               style={{ cursor: 'pointer' }}
               title={value.definition}
+              tabIndex="0" // Make each tab focusable
+              role="tab" // Add ARIA role for tabs
+              aria-selected={selectedId === value.id} // Indicate selected tab
             >
               {selectedId === value.id ? (
                 <h1 className="u-txt--badge my-0">{value.name}</h1>
@@ -128,7 +133,7 @@ const DesmTabs = ({
       </div>
       {selectedValue?.definition && (
         <div className="w-100 d-flex gap-3 mt-2">
-          <small>test{selectedValue.definition}</small>
+          <small>{selectedValue.definition}</small>
         </div>
       )}
       <div

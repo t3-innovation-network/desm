@@ -91,7 +91,9 @@ const ConfigurationProfileSelect = ({
           size="lg"
           onChange={handleSubmit}
         >
-          <option value="">{placeholderOptionText}</option>
+          <option value="">
+            <h1>{placeholderOptionText}</h1>
+          </option>
           {configurationProfiles.map((p) => (
             <option key={p.id} value={p.id}>
               {p.name}
