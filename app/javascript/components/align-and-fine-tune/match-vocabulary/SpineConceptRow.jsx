@@ -42,7 +42,7 @@ const SpineConceptRow = (props) => {
       <div className="col-4">
         <PredicateOptions
           predicates={predicates}
-          onPredicateSelected={(predicate) => onPredicateSelected(predicate)}
+          onPredicateSelected={onPredicateSelected}
           predicate={predicateLabel}
         />
       </div>

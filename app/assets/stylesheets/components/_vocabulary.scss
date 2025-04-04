@@ -1,0 +1,6 @@
+.desm-vocabulary-mapping {
+  &.ReactModal__Content {
+    margin-right: -95% !important; // stylelint-disable-line declaration-no-important
+    width: 95% !important; // stylelint-disable-line declaration-no-important;
+  }
+}
