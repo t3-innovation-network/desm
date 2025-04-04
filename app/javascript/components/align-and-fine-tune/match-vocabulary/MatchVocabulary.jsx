@@ -405,6 +405,7 @@ export default class MatchVocabulary extends Component {
         isOpen={modalIsOpen}
         onRequestClose={onRequestClose}
         contentLabel="Match Controlled Vocabulary"
+        className="desm-vocabulary-mapping"
         style={ModalStyles}
         shouldCloseOnEsc={false}
         shouldCloseOnOverlayClick={false}
