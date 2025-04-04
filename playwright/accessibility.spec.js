@@ -7,6 +7,8 @@ test.describe('Accessibility Tests', () => {
 
   test('Check homepage accessibility', async ({ page, makeAxeBuilder }, testInfo) => {
     await page.goto('/');
+    // wait for homepage to be loaded
+    await page.locator('text=About the DESM tool').waitFor();
     const accessibilityScanResults = await makeAxeBuilder().analyze();
 
     await outputAxeReport(
