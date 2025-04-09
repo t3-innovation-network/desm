@@ -110,10 +110,12 @@ describe Mapping, type: :model do
       let(:mapping) { create(:mapping, configuration_profile_user:) }
       let(:specification) { mapping.specification }
       let(:spine) { mapping.spine }
-      let(:term1) { create(:term) }
+      let(:term1) { create(:term, vocabularies: [vocabulary1, vocabulary2]) }
       let(:term2) { create(:term) }
       let(:term3) { create(:term) }
       let(:term4) { create(:term) }
+      let(:vocabulary1) { create(:vocabulary) }
+      let(:vocabulary2) { create(:vocabulary) }
 
       it "updates the selected terms and generates alignments" do
         specification.terms = [term1, term2]
@@ -122,6 +124,7 @@ describe Mapping, type: :model do
           mapping.update_selected_terms([term1.id, term2.id])
         end.to change { spine.properties.count }.by(2)
                  .and change { spine.terms.count }.by(2)
+                        .and not_change { term1.vocabularies.count }
 
         expect(mapping.selected_terms).to eq([term1, term2])
         expect(mapping.alignments.count).to eq(2)
@@ -132,6 +135,7 @@ describe Mapping, type: :model do
         expect(spine_term1.raw).to eq(term1.raw)
         expect(spine_term1.slug).to eq(term1.slug)
         expect(spine_term1.source_uri).to eq(term1.source_uri)
+        expect(spine_term1.vocabularies).to eq([vocabulary1, vocabulary2])
         expect(spine_term1_property.comment).to eq(term1.property.comment)
         expect(spine_term1_property.domain).to eq([specification.domain.source_uri])
         expect(spine_term1_property.label).to eq(term1.property.label)
@@ -143,6 +147,7 @@ describe Mapping, type: :model do
         expect(spine_term2.raw).to eq(term2.raw)
         expect(spine_term2.slug).to eq(term2.slug)
         expect(spine_term2.source_uri).to eq(term2.source_uri)
+        expect(spine_term2.vocabularies).to eq([])
         expect(spine_term2_property.comment).to eq(term2.property.comment)
         expect(spine_term2_property.domain).to eq([specification.domain.source_uri])
         expect(spine_term2_property.label).to eq(term2.property.label)
@@ -169,6 +174,7 @@ describe Mapping, type: :model do
         expect(spine_term1.raw).to eq(term1.raw)
         expect(spine_term1.slug).to eq(term1.slug)
         expect(spine_term1.source_uri).to eq(term1.source_uri)
+        expect(spine_term1.vocabularies).to eq([vocabulary1, vocabulary2])
         expect(spine_term1.property.comment).to eq(term1.property.comment)
         expect(spine_term1.property.domain).to eq([specification.domain.source_uri])
         expect(spine_term1.property.label).to eq(term1.property.label)
@@ -179,6 +185,7 @@ describe Mapping, type: :model do
         expect(spine_term2.raw).to eq(term2.raw)
         expect(spine_term2.slug).to eq(term2.slug)
         expect(spine_term2.source_uri).to eq(term2.source_uri)
+        expect(spine_term2.vocabularies).to eq([])
         expect(spine_term2.property.comment).to eq(term2.property.comment)
         expect(spine_term2.property.domain).to eq([specification.domain.source_uri])
         expect(spine_term2.property.label).to eq(term2.property.label)
