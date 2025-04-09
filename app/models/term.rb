@@ -117,7 +117,7 @@ class Term < ApplicationRecord
 
   def check_if_alignments_exist
     return if alignments.none?
-    return if (alignments_completed = alignments.includes(:predicate).select(&:completed?)).blank?
+    return if (alignments_completed = alignments.includes(:predicate).select(&:mapped?)).blank?
 
     mappings = alignments_completed.map { |a| a.mapping.title }.uniq.sort
 

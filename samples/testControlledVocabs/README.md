@@ -16,6 +16,10 @@ Small stand-alone controlled vocabs:
 * ceds-ex1.csv A single controlled vocabualry from CEDS.
 * ceds-ex2.csv Two controlled vocabularies from CEDS in one file.
 
+Small stand-alone schemas with controlled vocabularies
+* testSchema1 has two properties one for size, one for colour, with skos:ConceptSchemes for each; in json and ttl.
+* testSchema2 similar to testSchema1 but different properties and concept schemes.
+
 
 Other larger schemas which include Controlled Vocabs in the main schema:
 * CTDL, get it fresh from [here](https://credreg.net/ctdl/schema/encoding/json?includemetaproperties=false)

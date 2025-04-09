@@ -130,6 +130,8 @@ class Mapping < ApplicationRecord
                      .terms
                      .create!(term.attributes.slice("name", "raw", "slug", "source_uri"))
 
+      spine_term.vocabularies = term.vocabularies
+
       Property
         .where(term: spine_term)
         .update_all(
