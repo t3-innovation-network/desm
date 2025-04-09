@@ -1,0 +1,100 @@
+{
+    "@context": {
+        "ex": "https://example.com/ns#",
+        "colours": "https://example.com/concepts/colours#",
+        "sizes": "https://example.com/concepts/sizes#",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "skos": "http://www.w3.org/2004/02/skos/core#"
+    },
+    "@graph": [
+        {
+            "@id": "ex:Item",
+            "@type": "rdfs:Class",
+            "rdfs:label": "Item",
+            "rdfs:comment": "The class comprising all items."
+        },
+        {
+            "@id": "ex:rgb",
+            "@type": "rdfs:Property",
+            "rdfs:label": "RDG Code",
+            "rdfs:comment": "The colour of something, red green or blue."
+        },
+        {
+            "@id": "ex:size",
+            "@type": "rdfs:Property",
+            "rdfs:label": "Size",
+            "rdfs:comment": "The size of an item."
+        },
+        {
+            "@id": "colours:",
+            "@type": "skos:ConceptScheme",
+            "rdfs:label": "Colours",
+            "rdfs:comment": "A listing of colours.",
+            "skos:hasTopConcept": [
+                "colours:ff0000",
+                "colours:00ff00",
+                "colours:0000ff"
+            ]
+        },
+        {
+            "@id": "colours:ff0000",
+            "@type": "skos:Concept",
+            "skos:prefLabel": "Red",
+            "skos:definition": "The colour is red.",
+            "skos:inScheme": ["colours:"],
+            "skos:topConceptOf": ["colours:"]
+        },
+        {
+            "@id": "colours:00ff00",
+            "@type": "skos:Concept",
+            "skos:prefLabel": "Green",
+            "skos:definition": "The colour is green.",
+            "skos:inScheme": ["colours:"],
+            "skos:topConceptOf": ["colours:"]
+        },
+        {
+            "@id": "colours:0000ff",
+            "@type": "skos:Concept",
+            "skos:prefLabel": "Blue",
+            "skos:definition": "The colour is blue.",
+            "skos:inScheme": ["colours:"],
+            "skos:topConceptOf": ["colours:"]
+        },
+        {
+            "@id": "sizes:",
+            "@type": "skos:ConceptScheme",
+            "rdfs:label": "Sizes",
+            "rdfs:comment": "A listing of sizes.",
+            "skos:hasTopConcept": [
+                "sizes:1",
+                "sizes:2",
+                "sizes:3"
+            ]
+        },
+        {
+            "@id": "sizes:1",
+            "@type": "skos:Concept",
+            "skos:prefLabel": "Smallest",
+            "skos:definition": "Smallest size.",
+            "skos:inScheme": ["sizes:"],
+            "skos:topConceptOf": ["sizes:"]
+        },
+        {
+            "@id": "sizes:2",
+            "@type": "skos:Concept",
+            "skos:prefLabel": "Medium",
+            "skos:definition": "Not the smallest or the largest.",
+            "skos:inScheme": ["sizes:"],
+            "skos:topConceptOf": ["sizes:"]
+        },
+        {
+            "@id": "sizes:3",
+            "@type": "skos:Concept",
+            "skos:prefLabel": "Large",
+            "skos:definition": "Largest in size.",
+            "skos:inScheme": ["sizes:"],
+            "skos:topConceptOf": ["sizes:"]
+        }
+    ]
+}

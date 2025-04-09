@@ -1,0 +1,68 @@
+@prefix colours: <https://example.org/concepts/colours#> .
+@prefix ex: <https://example.org/ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sizes: <https://example.org/concepts/sizes#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+ex:Thing a rdfs:Class ;
+    rdfs:label "Thing" ;
+    rdfs:comment "The class comprising every thing." .
+
+colours: a skos:ConceptScheme ;
+    rdfs:label "Colours" ;
+    rdfs:comment "A listing of colours." ;
+    skos:hasTopConcept "colours:b",
+        "colours:g",
+        "colours:r" .
+
+colours:b a skos:Concept ;
+    skos:definition "The colour is blue." ;
+    skos:inScheme "colours:" ;
+    skos:prefLabel "Blue" ;
+    skos:topConceptOf "colours:" .
+
+colours:g a skos:Concept ;
+    skos:definition "The colour is green." ;
+    skos:inScheme "colours:" ;
+    skos:prefLabel "Green" ;
+    skos:topConceptOf "colours:" .
+
+colours:r a skos:Concept ;
+    skos:definition "The colour is red." ;
+    skos:inScheme "colours:" ;
+    skos:prefLabel "Red" ;
+    skos:topConceptOf "colours:" .
+
+sizes: a skos:ConceptScheme ;
+    rdfs:label "Sizes" ;
+    rdfs:comment "A listing of sizes." ;
+    skos:hasTopConcept "sizes:l",
+        "sizes:m",
+        "sizes:s" .
+
+sizes:l a skos:Concept ;
+    skos:definition "Large in size." ;
+    skos:inScheme "sizes:" ;
+    skos:prefLabel "Large" ;
+    skos:topConceptOf "sizes:" .
+
+sizes:m a skos:Concept ;
+    skos:definition "Medium in size." ;
+    skos:inScheme "sizes:" ;
+    skos:prefLabel "Medium" ;
+    skos:topConceptOf "sizes:" .
+
+sizes:s a skos:Concept ;
+    skos:definition "Small in size." ;
+    skos:inScheme "sizes:" ;
+    skos:prefLabel "Small" ;
+    skos:topConceptOf "sizes:" .
+
+ex:colour a rdfs:Property ;
+    rdfs:label "Colour" ;
+    rdfs:comment "The colour of something." .
+
+ex:size a rdfs:Property ;
+    rdfs:label "Size" ;
+    rdfs:comment "The size of something." .
+
