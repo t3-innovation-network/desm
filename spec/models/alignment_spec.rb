@@ -101,6 +101,27 @@ describe Alignment do
     end
   end
 
+  describe "#mapped?" do
+    it "returns if alignment is mapped" do
+      term = create(:term)
+      predicate = create(:predicate)
+      predicate2 = create(:predicate, :nomatch)
+      alignment1 = create(:alignment, spine_term: term, mapped_terms: [term], predicate:)
+      alignment2 = create(:alignment, predicate:, spine_term: term)
+      alignment3 = create(:alignment, predicate:, spine_term: term, synthetic: true)
+      alignment4 = create(:alignment, predicate:, spine_term: term, synthetic: false)
+      alignment5 = create(:alignment, predicate: predicate2, spine_term: term, synthetic: true)
+
+      mapped_alignments = term.alignments.select(&:mapped?)
+
+      expect(mapped_alignments).to include(alignment1)
+      expect(mapped_alignments).not_to include(alignment5)
+      expect(mapped_alignments).not_to include(alignment2)
+      expect(mapped_alignments).not_to include(alignment3)
+      expect(mapped_alignments).not_to include(alignment4)
+    end
+  end
+
   describe "methods" do
     xit "calls notify_updated on mapping when notify_mapping_updated is called" do
       mapping = create(:mapping)

@@ -130,6 +130,13 @@ class Alignment < ApplicationRecord
     false
   end
 
+  def mapped?
+    # if no match predicate is set, we consider the alignment as not mapped and can be removed
+    return false if predicate&.source_uri.present? && predicate.source_uri.downcase.include?("nomatch")
+
+    completed?
+  end
+
   ###
   # @description: Notify the user about changes on the mapping
   ###
