@@ -1,0 +1,100 @@
+{
+    "@context": {
+        "ex": "https://example.org/ns#",
+        "colours": "https://example.org/concepts/colours#",
+        "sizes": "https://example.org/concepts/sizes#",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "skos": "http://www.w3.org/2004/02/skos/core#"
+    },
+    "@graph": [
+        {
+            "@id": "ex:Thing",
+            "@type": "rdfs:Class",
+            "rdfs:label": "Thing",
+            "rdfs:comment": "The class comprising every thing."
+        },
+        {
+            "@id": "ex:colour",
+            "@type": "rdfs:Property",
+            "rdfs:label": "Colour",
+            "rdfs:comment": "The colour of something."
+        },
+        {
+            "@id": "ex:size",
+            "@type": "rdfs:Property",
+            "rdfs:label": "Size",
+            "rdfs:comment": "The size of something."
+        },
+        {
+            "@id": "colours:",
+            "@type": "skos:ConceptScheme",
+            "rdfs:label": "Colours",
+            "rdfs:comment": "A listing of colours.",
+            "skos:hasTopConcept": [
+                "colours:r",
+                "colours:g",
+                "colours:b"
+            ]
+        },
+        {
+            "@id": "colours:r",
+            "@type": "skos:Concept",
+            "skos:prefLabel": "Red",
+            "skos:definition": "The colour is red.",
+            "skos:inScheme": ["colours:"],
+            "skos:topConceptOf": ["colours:"]
+        },
+        {
+            "@id": "colours:g",
+            "@type": "skos:Concept",
+            "skos:prefLabel": "Green",
+            "skos:definition": "The colour is green.",
+            "skos:inScheme": ["colours:"],
+            "skos:topConceptOf": ["colours:"]
+        },
+        {
+            "@id": "colours:b",
+            "@type": "skos:Concept",
+            "skos:prefLabel": "Blue",
+            "skos:definition": "The colour is blue.",
+            "skos:inScheme": ["colours:"],
+            "skos:topConceptOf": ["colours:"]
+        },
+        {
+            "@id": "sizes:",
+            "@type": "skos:ConceptScheme",
+            "rdfs:label": "Sizes",
+            "rdfs:comment": "A listing of sizes.",
+            "skos:hasTopConcept": [
+                "sizes:s",
+                "sizes:m",
+                "sizes:l"
+            ]
+        },
+        {
+            "@id": "sizes:s",
+            "@type": "skos:Concept",
+            "skos:prefLabel": "Small",
+            "skos:definition": "Small in size.",
+            "skos:inScheme": ["sizes:"],
+            "skos:topConceptOf": ["sizes:"]
+        },
+        {
+            "@id": "sizes:m",
+            "@type": "skos:Concept",
+            "skos:prefLabel": "Medium",
+            "skos:definition": "Medium in size.",
+            "skos:inScheme": ["sizes:"],
+            "skos:topConceptOf": ["sizes:"]
+        },
+        {
+            "@id": "sizes:l",
+            "@type": "skos:Concept",
+            "skos:prefLabel": "Large",
+            "skos:definition": "Large in size.",
+            "skos:inScheme": ["sizes:"],
+            "skos:topConceptOf": ["sizes:"]
+        }
+    ]
+}
