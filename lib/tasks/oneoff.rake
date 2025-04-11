@@ -140,6 +140,16 @@ namespace :oneoff do
     end
 
     # CEDS values start with a C or P (for classes or properties) followed by digits
+    Property.where("source_uri ~ '^:(C|P)[0-9]+'").each do |property|
+      property.update!(
+        domain: add_ceds_prefix.call(property.domain),
+        range: add_ceds_prefix.call(property.range),
+        selected_domain: add_ceds_prefix.call(property.selected_domain),
+        selected_range: add_ceds_prefix.call(property.selected_range),
+        source_uri: add_ceds_prefix.call(property.source_uri)
+      )
+    end
+
     Term.where("source_uri ~ '^:(C|P)[0-9]+'").each do |term|
       term.update!(
         raw: add_ceds_prefix.call(term.raw),

@@ -13,6 +13,7 @@
 #  scheme          :string
 #  selected_domain :string
 #  selected_range  :string
+#  source_path     :string
 #  source_uri      :string
 #  subproperty_of  :string
 #  uri             :string
@@ -38,7 +39,7 @@ class Property < ApplicationRecord
   audited
 
   belongs_to :term
-  before_update :update_term, if: -> { label_changed? || source_uri_changed? }
+  before_update :update_term, if: -> { comment_changed? || label_changed? || source_uri_changed? }
 
   delegate :comments, to: :term
 
@@ -59,9 +60,13 @@ class Property < ApplicationRecord
   private
 
   def update_term
-    return if term.name == label && term.source_uri == source_uri
+    return if term.raw["rdfs:comment"] == comment && term.name == label && term.source_uri == source_uri
 
-    term.update!(name: label, source_uri:)
+    term.update!(
+      name: label,
+      raw: term.raw.merge("rdfs:comment": comment),
+      source_uri:
+    )
     self.uri = term.uri
   end
 end
