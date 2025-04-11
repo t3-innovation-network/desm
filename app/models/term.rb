@@ -111,6 +111,7 @@ class Term < ApplicationRecord
       selected_domain: domain&.first,
       range:,
       selected_range: range&.first,
+      source_path: parser.read!("sourcePath"),
       subproperty_of: parser.read!("subproperty")
     )
   end

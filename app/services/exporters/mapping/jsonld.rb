@@ -163,6 +163,7 @@ module Exporters
       # @description: Defines the structure of a generic property term.
       ###
       def property_nodes(alignment, term)
+        property = term.property
         specification = term.specifications.first
 
         domain_includes =
@@ -176,13 +177,14 @@ module Exporters
           {
             "@id": term_uri(term),
             "@type": "rdf:Property",
-            "rdfs:label": term.property.label,
+            "rdfs:label": property.label,
             "desm:domainIncludes": domain_includes,
             "desm:inSchema": { "@id": specification_uri(specification) },
             "desm:rangeIncludes": range_nodes(term),
-            "rdfs:comment": term.property.comment,
-            "rdfs:subPropertyOf": { "@id": term.property.source_uri },
-            "desm:hasTermMapping": { "@id": alignment_uri(alignment) }
+            "rdfs:comment": property.comment,
+            "rdfs:subPropertyOf": ({ "@id": property.source_uri } unless property.source_path?),
+            "desm:hasTermMapping": { "@id": alignment_uri(alignment) },
+            "desm:sourcePath": property.source_path
           },
           specification_node(specification),
           agent_node
