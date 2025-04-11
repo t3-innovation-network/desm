@@ -107,6 +107,7 @@ module Converters
         "@type": "rdf:Property",
         "rdfs:label": row.fetch(:element_name),
         "rdfs:comment": row[:definition],
+        "desm:sourcePath": global_id,
         "desm:valueSpace": concept_scheme&.slice(:@id),
         "rdfs:domain": fetch_domain_class(entity).slice(:@id),
         "rdfs:range": concept_scheme ? "skos:Concept" : "rdfs:Literal"

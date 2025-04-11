@@ -13,6 +13,7 @@
 #  scheme          :string
 #  selected_domain :string
 #  selected_range  :string
+#  source_path     :string
 #  source_uri      :string
 #  subproperty_of  :string
 #  uri             :string
@@ -57,11 +58,21 @@ describe Property do
       end
     end
 
-    context "when neither label nor source_uri is changed" do
+    context "when comment is changed" do
+      it "does not update the term name or property uri" do
+        new_comment = Faker::Lorem.sentence
+        expect do
+          property.update(comment: new_comment)
+        end.to change { property.term.comments }.to([new_comment])
+        expect(property.uri).to eq(property.term.uri)
+      end
+    end
+
+    context "when neither comment nor label nor source_uri are changed" do
       it "does not update the term name or property uri" do
         previous_uri = property.uri
         expect do
-          property.update(comment: "New Comment")
+          property.update(subproperty_of: Faker::Internet.url)
         end.not_to change { property.term }
         expect(property.uri).to eq(previous_uri)
       end
