@@ -13,6 +13,7 @@
 #  scheme          :string
 #  selected_domain :string
 #  selected_range  :string
+#  source_path     :string
 #  source_uri      :string
 #  subproperty_of  :string
 #  uri             :string

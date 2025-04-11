@@ -10,9 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_11_190606) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_10_203324) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "alignment_mapped_terms", force: :cascade do |t|
@@ -247,6 +246,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_11_190606) do
     t.string "selected_range"
     t.string "scheme"
     t.bigint "term_id", null: false
+    t.string "source_path"
     t.index ["term_id"], name: "index_properties_on_term_id"
   end
 
