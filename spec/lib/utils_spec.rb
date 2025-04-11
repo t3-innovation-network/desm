@@ -39,8 +39,8 @@ RSpec.describe Utils do
       end
 
       context "not from context" do
-        it "returns nothing" do
-          expect(Utils.compact_uri("http://example.org/Person")).to eq(nil)
+        it "returns as is" do
+          expect(Utils.compact_uri("http://example.org/Person")).to eq("http://example.org/Person")
         end
       end
     end
