@@ -16,6 +16,8 @@ module Exporters
         "Mapped term class/type",
         "Mapped term range",
         "Mapped term origin",
+        "Mapped term sub-property of",
+        "Mapped term path",
         "Comments",
         "Transformation notes"
       ].freeze
@@ -127,7 +129,11 @@ module Exporters
             # Mapped term range
             property.compact_ranges.join(", "),
             # Mapped term origin
-            CSV.term_origin(term)
+            CSV.term_origin(term),
+            # Mapped term sub-property of
+            (property.source_uri unless property.source_path?),
+            # Mapped term path
+            property.source_path
           ]
         end
       end
