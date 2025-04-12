@@ -78,13 +78,7 @@ class Term < ApplicationRecord
   #   json responses. This overrides the ApplicationRecord as_json method.
   ###
   def as_json(options = {})
-    super(options.merge(methods: %i(max_mapping_weight uri organization)))
-  end
-
-  def max_mapping_weight
-    Rails.cache.fetch("max_mapping_weight_#{configuration_profile.id}", expires_in: 10.minutes) do
-      configuration_profile.max_mapping_weight
-    end
+    super(options.merge(methods: %i(uri organization)))
   end
 
   ###
