@@ -14,9 +14,17 @@ class TermSerializer < ApplicationSerializer
     end
   end
 
-  attribute :max_mapping_weight, if: -> { params[:spine] } do
-    object.max_mapping_weight
+  attribute :alignment_score, if: -> { params[:spine] } do
+    if object.max_mapping_weight.positive?
+      100 * object.current_mapping_weight / object.max_mapping_weight
+    else
+      0
+    end
   end
+
+  attribute :current_mapping_weight, if: -> { params[:spine] }
+
+  attribute :max_mapping_weight, if: -> { params[:spine] }
 
   attribute :title do
     object.source_uri.to_s.split(":").last.presence || object.name
