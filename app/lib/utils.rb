@@ -26,6 +26,6 @@ class Utils
       return uri.sub(namespace, "#{prefix}:") if uri.start_with?(namespace)
     end
 
-    nil
+    uri
   end
 end
