@@ -13,7 +13,7 @@ module Converters
       super
       @doc = Nokogiri::XML(File.read(file.path))
 
-      doc.xpath("/xs:schema/xs:complexType").each do |complex_type|
+      doc.xpath("/xs:schema/xs:complexType | /xs:schema/xs:group").each do |complex_type|
         build_complex_type_resources(complex_type)
       end
     rescue Nokogiri::XML::XPath::SyntaxError => e
