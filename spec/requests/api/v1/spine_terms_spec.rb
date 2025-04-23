@@ -6,6 +6,10 @@ describe "API::V1::SpineTerms", type: :request do
   let(:user) { create(:user) }
   let(:configuration_profile) { create(:configuration_profile) }
 
+  before do
+    stub_authentication_for(user, configuration_profile:)
+  end
+
   describe "GET /api/v1/spines/:id/terms" do
     context "without spine" do
       before { get api_v1_spine_terms_list_path(2) }
@@ -18,7 +22,6 @@ describe "API::V1::SpineTerms", type: :request do
       let(:spine) { create(:spine, :with_terms, configuration_profile_user:) }
 
       before do
-        stub_authentication_for(user, configuration_profile:)
         get api_v1_spine_terms_list_path(spine.id)
       end
 
