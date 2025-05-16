@@ -7,9 +7,9 @@ import MatchVocabulary from './match-vocabulary/MatchVocabulary';
 import DropZone from '../shared/DropZone';
 import PredicateOptions from '../shared/PredicateOptions';
 import { DraggableItemTypes } from '../shared/DraggableItemTypes';
-import VocabularyLabel from './match-vocabulary/VocabularyLabel';
+import MapVocabularyLink from './match-vocabulary/MapVocabularyLink';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faPencilAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { noMatchPredicate } from './stores/mappingStore';
 import { showSuccess } from '../../helpers/Messages';
 import { spineTermRowStore } from './stores/spineTermRowStore';
@@ -33,6 +33,7 @@ const SpineTermRow = (props) => {
     alignment,
     onUpdateAlignmentComment,
     onUpdateAlignmentTransformation,
+    onEditTermClick,
     mappedTermsToSpineTerm,
     origin,
     compactDomains,
@@ -139,8 +140,8 @@ const SpineTermRow = (props) => {
   const withPredicate = predicateOption && !noMatchPredicate(predicateOption);
   const clsPredicate =
     (withPredicate && mappedTerms.length === 0) || (!predicateOption && mappedTerms.length > 0)
-      ? 'border-warning'
-      : '';
+      ? 'border-warning w-100'
+      : 'w-100';
 
   return (
     <>
@@ -213,8 +214,6 @@ const SpineTermRow = (props) => {
                         </p>
                       </>
                     ) : null}
-
-                    {alignmentHasVocabulary() ? <VocabularyLabel term={term} /> : ''}
                   </div>
                 ) : null}
               </>
@@ -253,6 +252,14 @@ const SpineTermRow = (props) => {
                 : 'Add Transformation'}
             </label>
           </div>
+          <div className="w-100 mt-1 text-end">
+            <MapVocabularyLink
+              disabled={!alignmentHasVocabulary()}
+              onVocabularyClick={actions.handleMatchVocabularyClick}
+              term={mappedTerms[0]}
+              id={term.id}
+            />
+          </div>
         </div>
 
         <div className="col-4">
@@ -278,6 +285,12 @@ const SpineTermRow = (props) => {
                       </div>
                       <div className="col-10">
                         <strong>{mTerm.name}</strong>
+                        <span
+                          onClick={() => onEditTermClick(mTerm)}
+                          className="ms-3 cursor-pointer"
+                        >
+                          <FontAwesomeIcon icon={faPencilAlt} />
+                        </span>
                       </div>
                     </div>
                   }
@@ -318,14 +331,6 @@ const SpineTermRow = (props) => {
                           <p className="card-text">
                             Ranges: <span>{mTerm.compactRanges.join(', ')}</span>
                           </p>
-                          {alignmentHasVocabulary() ? (
-                            <VocabularyLabel
-                              onVocabularyClick={actions.handleMatchVocabularyClick}
-                              term={mTerm}
-                            />
-                          ) : (
-                            ''
-                          )}
                         </div>
                       ) : null}
                     </>
