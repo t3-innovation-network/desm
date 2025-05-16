@@ -1,9 +1,7 @@
-import { useMemo } from 'react';
 import Collapse from 'react-bootstrap/Collapse';
 import classNames from 'classnames';
 import ProgressReportBar from '../shared/ProgressReportBar';
 import PropertyComments from './PropertyComments';
-import { sortBy } from 'lodash';
 
 /**
  * Props:

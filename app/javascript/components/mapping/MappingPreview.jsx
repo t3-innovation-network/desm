@@ -7,7 +7,7 @@ import {
   unsetMergedFileId,
   unsetSpecToPreview,
 } from '../../actions/files';
-import SpecsPreviewTabs from './SpecsPreviewTabs';
+import SpecsPreviewList from './SpecsPreviewList';
 import {
   doUnsubmit,
   setMappingFormErrors,
@@ -314,7 +314,7 @@ const MappingPreview = (props) => {
                   showImage={true}
                 />
               ) : (
-                <SpecsPreviewTabs disabled={addingVocabulary} propertiesCount={propertiesCount} />
+                <SpecsPreviewList disabled={addingVocabulary} propertiesCount={propertiesCount} />
               )}
             </>
           )

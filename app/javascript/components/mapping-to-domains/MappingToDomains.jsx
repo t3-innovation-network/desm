@@ -34,7 +34,7 @@ const MappingToDomains = (props) => {
     termsInputValue,
   } = state;
 
-  const progress = Math.floor((100 * mappedTerms.length / terms.length) || 0);
+  const progress = Math.floor((100 * mappedTerms.length) / terms.length || 0);
 
   // Action to perform after a term is dropped
   const afterDropTerm = (_spineTerm, items) => actions.afterDropTerm({ items });
@@ -192,6 +192,7 @@ const MappingToDomains = (props) => {
                     mappedTerms={state.mappedTerms}
                     selectedTermsCount={state.selectedTerms.length}
                     onRevertMapping={handleRevertMapping}
+                    onEditClick={actions.onEditTermClick}
                   />
                 </div>
                 <div className="mt-2">
