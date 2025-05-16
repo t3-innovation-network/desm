@@ -76,6 +76,10 @@ en:
             label: Transform to Spine
             placeholder: Enter transformation to spine
           save: Save Transformation
+          description_html: Transforms provide details on operations that are required on the values of one or more properties in order to make them a valid value for another property. No one syntax will be ideal for all data formats, but we suggest using JsonPath or XPath to identify the values, and <a href="https://openrefine.org/docs/manual/grelfunctions" target="_blank">OpenRefine GREL functions</a> to specify the operations that are required.
+      vocabularies:
+        map: Map Vocabulary
+        no_vocabulary: No vocabulary found, edit mapped property to add it.
     mapping_upload:
       new:
         step_1: 1. Upload Your Specification

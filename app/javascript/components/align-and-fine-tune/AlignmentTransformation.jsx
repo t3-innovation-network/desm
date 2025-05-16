@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLeftRight, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { transformationAlignmentStore } from './stores/transformationAlignmentStore';
 import useDidMountEffect from '../../helpers/useDidMountEffect';
+import HTMLOutput from '../shared/HTMLOutput';
 import { i18n } from '../../utils/i18n';
 
 const AlignmentTransformation = (props) => {
@@ -90,6 +91,9 @@ const AlignmentTransformation = (props) => {
                 value={transformation.from || ''}
                 onChange={handleFromChange}
               />
+            </div>
+            <div className="col col-12">
+              <HTMLOutput data={i18n.t('ui.mapping.transformation.form.description_html')} />
             </div>
           </div>
           <div className="row">
