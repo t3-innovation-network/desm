@@ -400,6 +400,13 @@ export const mappingStore = (initialData = {}) => ({
   onUpdateTerm: action((state, updatedTerm) => {
     let idx = state.mappingSelectedTerms.findIndex((t) => t.id === updatedTerm.id);
     if (idx >= 0) state.mappingSelectedTerms[idx] = updatedTerm;
+    state.alignments.forEach((alignment) => {
+      alignment.mappedTerms.forEach((t, i) => {
+        if (t.id === updatedTerm.id) {
+          alignment.mappedTerms[i] = { ...t, ...updatedTerm };
+        }
+      });
+    });
   }),
 
   // async actions

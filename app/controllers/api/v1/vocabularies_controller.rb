@@ -39,6 +39,27 @@ module API
         }
       end
 
+      def concepts
+        concepts = [].tap do |data|
+          params[:ids].split(",").each do |id|
+            vocabulary = Vocabulary.find(id)
+            parser = Parsers::Skos.new(
+              context: vocabulary.context,
+              graph: vocabulary.concepts.map do |concept|
+                concept.raw.merge(key: concept.id)
+              end
+            )
+
+            data << {
+              name: vocabulary.name,
+              concepts: parser.concepts_list_simplified
+            }
+          end
+        end
+
+        render json: concepts
+      end
+
       ###
       # @description: returns the vocabulary with the json structure as it is. Without ids
       #   nor internal representation data. This endpoint will give us a vocabulary with the
@@ -74,6 +95,24 @@ module API
         render json: processor.filter_vocabularies
       end
 
+      ###
+      # @description: Assigns vocabularies to a spine term based on the provided parameters.
+      ###
+      def spine_term
+        spine_term = current_configuration_profile.terms.find(spine_term_params[:spine_term_id])
+        terms = current_configuration_profile.terms.where(id: spine_term_params[:ids])
+        if spine_term.vocabularies.blank?
+          spine_term.vocabularies = terms.flat_map(&:vocabularies).uniq if spine_term.vocabularies.blank?
+          spine_term.save!
+        end
+
+        data = spine_term.vocabularies.map do |vocabulary|
+          concepts_for(vocabulary)
+        end
+
+        render json: data, status: :ok
+      end
+
       private
 
       ###
@@ -83,12 +122,28 @@ module API
         authorize(with_instance)
       end
 
+      def concepts_for(vocabulary)
+        parser = Parsers::Skos.new(
+          context: vocabulary.context,
+          graph: vocabulary.concepts.map do |concept|
+            concept.raw.merge(key: concept.id)
+          end
+        )
+
+        { name: vocabulary.name,
+          concepts: parser.concepts_list_simplified }
+      end
+
       ###
       # @description: Clean params
       # @return [ActionController::Parameters]
       ###
       def permitted_params
         params.require(:vocabulary).permit(:name, { content: {} })
+      end
+
+      def spine_term_params
+        params.permit(:spine_term_id, ids: [])
       end
     end
   end

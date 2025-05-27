@@ -44,6 +44,7 @@ const SpineConceptRow = (props) => {
           predicates={predicates}
           onPredicateSelected={onPredicateSelected}
           predicate={predicateLabel}
+          cls="w-100"
         />
       </div>
       <div className="col-4">

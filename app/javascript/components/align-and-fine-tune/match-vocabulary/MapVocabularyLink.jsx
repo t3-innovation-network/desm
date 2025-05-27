@@ -1,11 +1,11 @@
 import DesmTooltip from '../../shared/Tooltip';
 import { i18n } from '../../../utils/i18n';
 
-const MapVocabularyLink = ({ disabled, onVocabularyClick, term, id }) => {
+const MapVocabularyLink = ({ disabled, onVocabularyClick, terms, id }) => {
   const vocabularyButton = () => (
     <button
       className="btn btn-link p-0 col-primary"
-      onClick={() => onVocabularyClick?.(term)}
+      onClick={() => onVocabularyClick?.(terms)}
       disabled={disabled}
     >
       {i18n.t('ui.mapping.vocabularies.map')}
