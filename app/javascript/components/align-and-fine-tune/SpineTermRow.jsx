@@ -49,13 +49,15 @@ const SpineTermRow = (props) => {
     spineTermRowStore({
       predicateOption: findPredicate()?.pref_label,
       predicateDefinition: findPredicate()?.definition,
-      mappedTermMatching: mappedTermsToSpineTerm(term)[0],
+      mappedTermsMatching: mappedTermsToSpineTerm(term).filter(
+        (mTerm) => mTerm.vocabularies?.length
+      ),
     })
   );
   const {
     predicateOption,
     predicateDefinition,
-    mappedTermMatching,
+    mappedTermsMatching,
     editing,
     transforming,
     matchingVocab,
@@ -72,11 +74,10 @@ const SpineTermRow = (props) => {
 
   /**
    * Determines whether to show the vocabularies matching window or not.
-   * It will depend on both the spine term having a vocabulary associated
-   * and the mapped term either.
+   * It will depend on mapped terms having a vocabulary. In case if spine doesn't
+   * have a vocabulary, it will be created automatically on dialog opening.
    */
   const alignmentHasVocabulary = () =>
-    term.vocabularies?.length &&
     mappedTermsToSpineTerm(term).some((mTerm) => mTerm.vocabularies?.length);
   /**
    * Manage to show a card when there's a predicate selected.
@@ -167,7 +168,7 @@ const SpineTermRow = (props) => {
           mappingOrigin={origin}
           spineOrigin={spineOrigin}
           spineTerm={term}
-          mappedTerm={mappedTermMatching}
+          mappedTerms={mappedTermsMatching}
           predicates={predicates}
           alignment={alignment}
         />
@@ -256,7 +257,7 @@ const SpineTermRow = (props) => {
             <MapVocabularyLink
               disabled={!alignmentHasVocabulary()}
               onVocabularyClick={actions.handleMatchVocabularyClick}
-              term={mappedTerms[0]}
+              terms={mappedTerms.filter((mTerm) => mTerm.vocabularies?.length)}
               id={term.id}
             />
           </div>

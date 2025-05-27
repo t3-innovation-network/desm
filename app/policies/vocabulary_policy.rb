@@ -14,6 +14,10 @@ class VocabularyPolicy < ApplicationPolicy
     signed_in?
   end
 
+  def concepts?
+    signed_in?
+  end
+
   ###
   # @description: Determines if the user can create an instance of this resource
   # @return [TrueClass]
@@ -39,6 +43,10 @@ class VocabularyPolicy < ApplicationPolicy
   end
 
   def extract?
+    signed_in?
+  end
+
+  def spine_term?
     signed_in?
   end
 end
