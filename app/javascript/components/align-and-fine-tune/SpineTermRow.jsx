@@ -138,6 +138,7 @@ const SpineTermRow = (props) => {
   const onRequestTransformationClose = () => actions.setTransforming(false);
 
   const mappedTerms = mappedTermsToSpineTerm(term);
+  const syntheticNotSaved = term.synthetic && !term.persisted;
   const withPredicate = predicateOption && !noMatchPredicate(predicateOption);
   const clsPredicate =
     (withPredicate && mappedTerms.length === 0) || (!predicateOption && mappedTerms.length > 0)
@@ -239,23 +240,26 @@ const SpineTermRow = (props) => {
             <button
               className="btn btn-link p-0 col-primary"
               onClick={() => actions.setEditing(true)}
+              disabled={syntheticNotSaved}
             >
               {alignment?.comment ? 'Edit Comment' : 'Add Comment'}
             </button>
           </div>
           <div className="w-100 mt-1 text-end">
-            <label
+            <button
               className="btn btn-link p-0 col-primary"
               onClick={() => actions.setTransforming(true)}
+              disabled={syntheticNotSaved}
             >
               {alignment?.transformation?.to || alignment?.transformation?.from
                 ? 'Edit Transformation'
                 : 'Add Transformation'}
-            </label>
+            </button>
           </div>
           <div className="w-100 mt-1 text-end">
             <MapVocabularyLink
               disabled={!alignmentHasVocabulary()}
+              notPersisted={syntheticNotSaved}
               onVocabularyClick={actions.handleMatchVocabularyClick}
               terms={mappedTerms.filter((mTerm) => mTerm.vocabularies?.length)}
               id={term.id}

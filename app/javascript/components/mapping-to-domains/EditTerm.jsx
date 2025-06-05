@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocalStore } from 'easy-peasy';
+import { flatMap } from 'lodash';
 import Modal from 'react-modal';
 import Loader from '../shared/Loader';
 import ModalStyles from '../shared/ModalStyles';
@@ -60,7 +61,7 @@ function EditTerm(props) {
   };
 
   const fetchInitialData = () => {
-    if (props.termId) actions.fetchTermFromApi({ termId: props.termId });
+    if (props.termId) actions.fetchTermFromApi({ termId: props.termId, vocabularyConcepts: true });
   };
 
   const closeRequested = () => {
@@ -94,7 +95,7 @@ function EditTerm(props) {
                 className="form-control"
                 name="uri"
                 placeholder="Property URI"
-                value={term.property.uri}
+                value={term.property.uri || ''}
                 onChange={handleChange}
                 disabled={uploadingVocabulary}
               />
@@ -132,7 +133,7 @@ function EditTerm(props) {
                 className="form-control"
                 name="label"
                 placeholder="Property Label"
-                value={term.property.label}
+                value={term.property.label || ''}
                 onChange={handleChange}
                 disabled={uploadingVocabulary}
               />
@@ -221,8 +222,12 @@ function EditTerm(props) {
   );
 
   const vocabuliesList = () => {
-    const vocabulariesList = isSpineTerm ? term.vocabularies : vocabularies;
-    return vocabulariesList.map((vocab) => {
+    if (isSpineTerm) {
+      const concepts = flatMap(term.vocabularyConcepts.map((vc) => vc.concepts));
+      return concepts.map((concept) => <div key={concept.id}>{concept.name}</div>);
+    }
+
+    return vocabularies.map((vocab) => {
       return (
         <div className={'desm-radio-primary'} key={vocab.id}>
           <input

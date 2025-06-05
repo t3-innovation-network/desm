@@ -53,11 +53,12 @@ class AlignmentVocabulary < ApplicationRecord
   ###
   def assign_concepts_from_spine
     spine_term_concepts = spine_term.vocabularies.flat_map(&:concepts)
+    already_mapped = spine_term_concepts.any?
 
     spine_term_concepts.each do |concept|
       concepts.create!(
-        mapped_concepts: [concept],
-        predicate_id: mapping.mapping_predicates.strongest_match_id,
+        mapped_concepts: already_mapped ? [] : [concept],
+        predicate_id: already_mapped ? nil : mapping.mapping_predicates.strongest_match_id,
         spine_concept_id: concept.id
       )
     end

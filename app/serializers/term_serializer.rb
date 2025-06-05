@@ -29,4 +29,24 @@ class TermSerializer < ApplicationSerializer
   attribute :title do
     object.source_uri.to_s.split(":").last.presence || object.name
   end
+
+  attribute :vocabulary_concepts, if: -> { params[:vocabulary_concepts] } do
+    if object.spines.exists?
+      object.vocabularies.includes(:concepts).flat_map do |vocabulary|
+        parser = Parsers::Skos.new(
+          context: vocabulary.context,
+          graph: vocabulary.concepts.map do |concept|
+            concept.raw.merge(key: concept.id)
+          end
+        )
+
+        {
+          name: vocabulary.name,
+          concepts: parser.concepts_list_simplified
+        }
+      end
+    else
+      []
+    end
+  end
 end

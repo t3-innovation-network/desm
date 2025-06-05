@@ -210,6 +210,7 @@ export const mappingStore = (initialData = {}) => ({
         id: syntheticTermId,
         name: '',
         synthetic: true,
+        vocabularies: [],
         property: {
           comment: 'Synthetic property added to spine',
         },
@@ -254,7 +255,7 @@ export const mappingStore = (initialData = {}) => ({
       // Manage synthetic name (valid only when the spine term is synthetic)
       if (selectedTerms.length) {
         let synteticTerm = state.spineTerms.find((sTerm) => sTerm.id === spineTerm.id);
-        if (synteticTerm.synthetic) spineTerm.name = selectedTerms[0].name;
+        if (synteticTerm.synthetic) synteticTerm.name = selectedTerms[0].name;
       }
       // Deselect terms
       selectedTerms.forEach((term) => (term.selected = false));

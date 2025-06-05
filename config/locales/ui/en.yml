@@ -80,6 +80,7 @@ en:
       vocabularies:
         map: Map Vocabulary
         no_vocabulary: No vocabulary found, edit mapped property to add it.
+        not_saved: Please save the mapping before mapping a vocabulary to synthetic term.
     mapping_upload:
       new:
         step_1: 1. Upload Your Specification
