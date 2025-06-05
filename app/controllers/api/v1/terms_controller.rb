@@ -21,7 +21,7 @@ module API
       # @description: Returns the term with id equal to the one passed in params
       ###
       def show
-        render json: @instance
+        render json: TermSerializer.new(@instance, vocabulary_concepts: params[:vocabulary_concepts]).as_json
       end
 
       ###

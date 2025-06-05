@@ -1,7 +1,7 @@
 import DesmTooltip from '../../shared/Tooltip';
 import { i18n } from '../../../utils/i18n';
 
-const MapVocabularyLink = ({ disabled, onVocabularyClick, terms, id }) => {
+const MapVocabularyLink = ({ disabled, notPersisted, onVocabularyClick, terms, id }) => {
   const vocabularyButton = () => (
     <button
       className="btn btn-link p-0 col-primary"
@@ -12,8 +12,11 @@ const MapVocabularyLink = ({ disabled, onVocabularyClick, terms, id }) => {
     </button>
   );
 
-  return disabled ? (
-    <DesmTooltip id={id} title={disabled ? i18n.t('ui.mapping.vocabularies.no_vocabulary') : ''}>
+  return disabled || notPersisted ? (
+    <DesmTooltip
+      id={id}
+      title={i18n.t(`ui.mapping.vocabularies.${notPersisted ? 'not_saved' : 'no_vocabulary'}`)}
+    >
       <div style={{ display: 'inline-block', cursor: 'not-allowed' }}>{vocabularyButton()}</div>
     </DesmTooltip>
   ) : (

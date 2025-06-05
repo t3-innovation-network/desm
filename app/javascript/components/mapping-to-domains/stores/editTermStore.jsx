@@ -127,11 +127,11 @@ export const editTermStore = (initialData = {}) => ({
       document.body.classList.remove('waiting');
     }
   }),
-  fetchTermFromApi: thunk(async (actions, { termId }, h) => {
+  fetchTermFromApi: thunk(async (actions, { termId, vocabularyConcepts = false }, h) => {
     const state = h.getState();
     actions.setLoading(true);
     try {
-      const response = await fetchTerm(termId);
+      const response = await fetchTerm(termId, { vocabularyConcepts });
       if (state.withoutErrors(response)) {
         actions.setTerm(response.term);
       } else {
