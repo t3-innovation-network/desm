@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/role">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Role</rdfs:label>
+    <rdfs:comment xml:lang="en">Functon or job of an agent.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/Agent"/>
+    <rdfs:range rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/asbtractClassType">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Abstract Class Type Scheme</rdfs:label>
+    <rdfs:comment xml:lang="en">The abstract class concept scheme used in a mapping project</rdfs:comment>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/AbstractClassSet"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/Schema">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label xml:lang="en">Schema</rdfs:label>
+    <rdfs:comment xml:lang="en">Resource describing controlled concepts or enumerations.</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/hasTermMapping">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Has Term Mapping</rdfs:label>
+    <rdfs:comment xml:lang="en">Relates a property to a term mapping in which it is included.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://desmsolutions.org/ns/TermMapping"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/administrator">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Administrator</rdfs:label>
+    <rdfs:comment xml:lang="en">Agent with administrative duties.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/DSO"/>
+    <rdfs:range rdf:resource="http://desmsolutions.org/ns/Agent"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb3">
+    <rdf:first rdf:resource="http://desmsolutions.org/ns/AbstractClassSe"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/inSchema">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">In Schema</rdfs:label>
+    <rdfs:comment xml:lang="en">Relates a property to a scheme in which it is included.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://desmsolutions.org/ns/Schema"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/MappingConfiguration">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label xml:lang="en">Mapping Configuration Set</rdfs:label>
+    <rdfs:comment xml:lang="en">Resource identifying the form and aggregation of one or more mappings of one or more Abstract Class created by one or more Data Standards Organizations (DSOs).</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2004/02/skos/core#inScheme">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">In Scheme</rdfs:label>
+    <rdfs:comment xml:lang="en">Relates a resource (for example a concept) to a concept scheme in which it is included.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/2004/02/skos/core#"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/spineTerm">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Spine Term</rdfs:label>
+    <rdfs:comment xml:lang="en">Property of the synthetic spine generated during the mapping process.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/TermMapping"/>
+    <rdfs:range rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/dc/terms/creator">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Creator</rdfs:label>
+    <rdfs:comment xml:lang="en">An entity responsible for making the resource.</rdfs:comment>
+    <skos:scopeNote xml:lang="en"></skos:scopeNote>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/Schema"/>
+    <rdfs:range rdf:resource="http://desmsolutions.org/ns/Agent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/terms/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/mappedTerm">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Mapped Term</rdfs:label>
+    <rdfs:comment xml:lang="en">Property being mapped to a spine property.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/TermMapping"/>
+    <rdfs:range rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/hasSchema">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Has Schema</rdfs:label>
+    <rdfs:comment xml:lang="en">Schema in which this property is defined.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://desmsolutions.org/ns/Schema"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/sourcePath">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Source Path</rdfs:label>
+    <rdfs:comment xml:lang="en">Property or class path in a schema.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/Agent">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label xml:lang="en">Agent</rdfs:label>
+    <rdfs:comment xml:lang="en">Personnel engaged in the process of crosswalking terms</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/dc/terms/isPartOf">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Is Part Of</rdfs:label>
+    <rdfs:comment xml:lang="en">A related resource in which the described resource is physically or logically included.</rdfs:comment>
+    <rdfs:domain rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb10"/>
+    <rdfs:range rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb13"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/terms/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://schema.org/email">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">email</rdfs:label>
+    <rdfs:comment xml:lang="en">Email address.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/Agent"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:isDefinedBy rdf:resource="http://schema.org/"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb20">
+    <rdf:first rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <rdf:rest rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb21"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2004/02/skos/core#broader">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Has Broader</rdfs:label>
+    <rdfs:comment xml:lang="en">Broader concepts are typically rendered as parents in a concept hierarchy (tree).</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/2004/02/skos/core#"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/abstractClass">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Abstract Class</rdfs:label>
+    <rdfs:comment xml:lang="en">Indicates an abstract class that is relevant to a schema.</rdfs:comment>
+    <skos:scopeNote xml:lang="en">References a specific abstract class instance in the SKOS concept scheme for abstract classes identified in the configuration profile being used.</skos:scopeNote>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/AbstractClass"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://schema.org/name">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Name</rdfs:label>
+    <rdfs:comment xml:lang="en">The name of the item.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/Agent"/>
+    <rdfs:range rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+    <rdfs:isDefinedBy rdf:resource="http://schema.org/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/hasScheme">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Has Scheme</rdfs:label>
+    <rdfs:comment xml:lang="en">Concept Scheme that belongs to this Data Standards Organization.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/DSO"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/githubHandle">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">GitHub handle</rdfs:label>
+    <rdfs:comment xml:lang="en">GitHub username.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/Agent"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/issue">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Issue</rdfs:label>
+    <rdfs:comment xml:lang="en">Recording of an issue with mapping a property to another property.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/TermMapping"/>
+    <rdfs:range rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label xml:lang="en">Property</rdfs:label>
+    <rdfs:comment xml:lang="en">Property in a cross walk crosswalked to a propery in the spine.</rdfs:comment>
+    <skos:scopeNote xml:lang="en">Crosswalks map a properties from the DSOs' schemas to properties in the synthetic spine.</skos:scopeNote>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/relatedSchema">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Related Schema</rdfs:label>
+    <rdfs:comment xml:lang="en">Schema to which a concept scheme provides property values.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptSCheme"/>
+    <rdfs:range rdf:resource="http://desmsolutions.org/ns/Schema"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/AbstractClassMapping">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label xml:lang="en">Abstract Class Mapping</rdfs:label>
+    <rdfs:comment xml:lang="en">Resource describing mappings by one or more Data Standards Organizations (DSOs) to a single abstract class.</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/hasProperty">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Has Property</rdfs:label>
+    <rdfs:comment xml:lang="en">Property of a particular schema.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/Schema"/>
+    <rdfs:range rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/mappingPredicate">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Mapping Predicate</rdfs:label>
+    <rdfs:comment xml:lang="en">Concept identifying the relationship between two properties being mapped.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/TermMapping"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2004/02/skos/core#hasTopConcept">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">hasTopCOncept</rdfs:label>
+    <rdfs:comment xml:lang="en">Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/2004/02/skos/core#"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2004/02/skos/core#ConceptScheme">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label xml:lang="en">Concept Scheme</rdfs:label>
+    <rdfs:comment xml:lang="en">A set of concepts, optionally including statements about semantic relationships between those concepts.</rdfs:comment>
+    <skos:scopeNote xml:lang="en">A concept scheme may be defined to include concepts from different sources.</skos:scopeNote>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/2004/02/skos/core#"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/hasDSO">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Has DSO</rdfs:label>
+    <rdfs:comment xml:lang="en">DSO participating in one or more asbtract class mappings in this project.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/MappingCOnfiguration"/>
+    <rdfs:range rdf:resource="http://desmsolutions.org/ns/DSO"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/domainIncludes">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Domain Includes</rdfs:label>
+    <rdfs:comment xml:lang="en">Property used to state that a property may be used to describe instances of one or more classes.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/mapper">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Mapper</rdfs:label>
+    <rdfs:comment xml:lang="en">An agent adminitering or performing a mapping or crosswalk.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/DSO"/>
+    <rdfs:range rdf:resource="http://desmsolutions.org/ns/Agent"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb12">
+    <rdf:first rdf:resource="http://desmsolutions.org/ns/AbstractClassMapping"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb19">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#class"/>
+    <owl:unionOf rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb20"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb15">
+    <rdf:first rdf:resource="http://desmsolutions.org/ns/AbstractClassSet"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/asbtractClassModeled">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Abstract Class Modeled</rdfs:label>
+    <rdfs:comment xml:lang="en">Instance of the abstract class used by a term mapping.</rdfs:comment>
+    <skos:scopeNote xml:lang="en">References a specific abstract class instance in the SKOS concept scheme for abstract classes identified in the configuration profile being used.</skos:scopeNote>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/AbstractClassMapping"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2004/02/skos/core#narrower">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Narrower</rdfs:label>
+    <rdfs:comment xml:lang="en">Narrower concepts are typically rendered as children in a concept hierarchy (tree).</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/2004/02/skos/core#"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2004/02/skos/core#Concept">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label xml:lang="en">Concept</rdfs:label>
+    <rdfs:comment xml:lang="en">An idea or notion; a unit of thought.</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/2004/02/skos/core#"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb18">
+    <rdf:first rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/DSO">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label xml:lang="en">Data Standards Organization</rdfs:label>
+    <rdfs:comment xml:lang="en">Organization or person responsible for creating or making available a de facto or de jure data standard being crosswalked in a project.</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb9">
+    <rdf:first rdf:resource="http://desmsolutions.org/ns/TermMapping"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/mappingPredicateType">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Mapping Predicate Type</rdfs:label>
+    <rdfs:comment xml:lang="en">Concept scheme defining mapping predicate types.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://desmsolutions.org/ns/AbstractCLassSet"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/dc/terms/created">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Date Created</rdfs:label>
+    <rdfs:comment xml:lang="en">Date of creation of the resource.</rdfs:comment>
+    <rdfs:domain rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb1"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/terms/"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb6">
+    <rdf:first rdf:resource="http://desmsolutions.org/ns/AbstractCLassMapping"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://desmsolutions.org/ns/rangeIncludes">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Range Includes</rdfs:label>
+    <rdfs:comment xml:lang="en">Property to used to state that the values of a property are instances of one or more classes.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb19"/>
+    <rdfs:isDefinedBy rdf:resource="http://desmsolutions.org/ns/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2000/01/rdf-schema#label">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Human-readable version of the name of a resource.</rdfs:label>
+    <rdfs:domain rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb16"/>
+    <rdfs:range rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"/>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/2000/01/rdf-schema#"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb10">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#class"/>
+    <owl:unionOf rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb11"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb8">
+    <rdf:first rdf:resource="http://desmsolutions.org/ns/AbstractClassMapping"/>
+    <rdf:rest rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb9"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2000/01/rdf-schema#Class">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label xml:lang="en">Class</rdfs:label>
+    <rdfs:comment xml:lang="en">Type or class of resource to which properties are related.</rdfs:comment>
+    <skos:scopeNote xml:lang="en">Related to, but not the same as rdfs:Class.</skos:scopeNote>
+    <rdfs:isDefinedBy rdf:resource="http://www.w3.org/2000/01/rdf-schema#"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/dc/terms/hasPart">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Has Part</rdfs:label>
+    <rdfs:comment xml:lang="en">Related resource that is included either physically or logically in the described resource.</rdfs:comment>
+    <rdfs:domain rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb4"/>
+    <rdfs:range rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb7"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/terms/"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb17">
+    <rdf:first rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:rest rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb18"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb16">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#class"/>
+    <owl:unionOf rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb17"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb14">
+    <rdf:first rdf:resource="http://desmsolutions.org/ns/AbstractMapping"/>
+    <rdf:rest rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb15"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb21">
+    <rdf:first rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb4">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#class"/>
+    <owl:unionOf rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb5"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb11">
+    <rdf:first rdf:resource="http://desmsolutions.org/ns/TermMapping"/>
+    <rdf:rest rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb12"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb2">
+    <rdf:first rdf:resource="http://desmsolutions.org/ns/AbstractClassMapping"/>
+    <rdf:rest rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb3"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb13">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#class"/>
+    <owl:unionOf rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb14"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb7">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#class"/>
+    <owl:unionOf rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb8"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb5">
+    <rdf:first rdf:resource="http://desmsolutions.org/ns/AbstractClassSet"/>
+    <rdf:rest rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb6"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb1">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#class"/>
+    <owl:unionOf rdf:nodeID="n0fbe5afef51b476bba1c9af92324678eb2"/>
+  </rdf:Description>
+</rdf:RDF>
