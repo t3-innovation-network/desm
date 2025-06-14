@@ -170,6 +170,7 @@ Rails.application.routes.draw do
 
       resources :vocabularies, only: [:index, :create, :show] do
         get :concepts, on: :collection
+        get :predicates, on: :collection
         post :extract, on: :collection
         post :spine_term, on: :collection
       end

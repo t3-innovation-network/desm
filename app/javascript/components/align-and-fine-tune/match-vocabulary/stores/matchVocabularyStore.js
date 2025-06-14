@@ -3,6 +3,7 @@ import { flatMap, maxBy } from 'lodash';
 import { baseModel } from '../../../stores/baseModel';
 import { easyStateSetters } from '../../../stores/easyState';
 import fetchAlignmentVocabulary from '../../../../services/fetchAlignmentVocabulary';
+import fetchVocabularyPredicates from '../../../../services/fetchVocabularyPredicates';
 import fetchVocabulariesConcepts from '../../../../services/fetchVocabulariesConcepts';
 import updateAlignmentVocabularyConcept from '../../../../services/updateAlignmentVocabularyConcept';
 import createSyntheticVocabularyConcept from '../../../../services/createSyntheticVocabularyConcept';
@@ -16,6 +17,8 @@ export const defaultState = {
   changesPerformed: 0,
   // options
   // data
+  // special vocabulary predicates
+  predicates: [],
   /**
    * The vocabulary concepts for the spine term
    */
@@ -207,6 +210,19 @@ export const matchVocabularyStore = (initialData = {}) => ({
     return response;
   }),
 
+  handleFetchPreducates: thunk(async (actions, _params, h) => {
+    const state = h.getState();
+    // don't refetch predicates if they are already loaded, they're the same for all vocabularies
+    if (state.predicates.length > 0) return;
+    const response = await fetchVocabularyPredicates();
+    if (state.withoutErrors(response)) {
+      actions.setPredicates(response.predicates);
+    } else {
+      actions.addError(response.error);
+    }
+    return response;
+  }),
+
   fetchDataFromAPI: thunk(async (actions, { alignment, mappedTerms, spineTerm }, h) => {
     const state = h.getState();
     actions.setLoading(true);
@@ -225,6 +241,7 @@ export const matchVocabularyStore = (initialData = {}) => ({
         await Promise.all([
           actions.handleFetchMappedTermVocabulary({ mappedTerms }),
           actions.handleFetchAlignmentVocabulary({ alignment }),
+          actions.handleFetchPreducates(),
         ]);
       }
     } finally {
