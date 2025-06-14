@@ -12,6 +12,14 @@ module SchemeDefinitionFetchable
     "text/xml": ".xml"
   }.freeze
 
+  def self.infer_extension(uri)
+    ext = File.extname(uri)
+    return ext if ext.present?
+
+    response = HTTParty.get(uri)
+    EXTENSIONS[response.headers.content_type.to_sym]
+  end
+
   def fetch_definition(uri)
     return {} unless valid_uri?(uri)
 
@@ -54,10 +62,6 @@ module SchemeDefinitionFetchable
   end
 
   def infer_extension(uri)
-    ext = File.extname(uri)
-    return ext if ext.present?
-
-    response = HTTParty.get(uri)
-    EXTENSIONS[response.headers.content_type.to_sym]
+    self.class.infer_extension(uri)
   end
 end

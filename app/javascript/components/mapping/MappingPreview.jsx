@@ -161,8 +161,11 @@ const MappingPreview = (props) => {
    * @param {Object} data
    */
   const handleVocabularyAdded = async (data) => {
-    const response = await extractVocabularies(data.vocabulary.content);
-    dispatch(setVocabularies([...vocabularies, ...response.vocabularies]));
+    const response = await extractVocabularies(data.vocabulary);
+    if (!response.error) {
+      dispatch(setVocabularies([...vocabularies, ...response.vocabularies]));
+    }
+    return response;
   };
 
   /**
