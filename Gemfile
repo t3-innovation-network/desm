@@ -77,7 +77,7 @@ gem "redis"
 gem "rubyzip", "~> 2.3", require: "zip"
 
 # Simplify seeding
-gem "seed-fu"
+gem "seedbank", "~> 0.5.0"
 
 # Validate the use of strong passwords
 gem "strong_password", "~> 0.0.8"

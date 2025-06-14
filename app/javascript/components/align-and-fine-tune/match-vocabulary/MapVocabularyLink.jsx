@@ -6,7 +6,7 @@ const MapVocabularyLink = ({ disabled, notPersisted, onVocabularyClick, terms, i
     <button
       className="btn btn-link p-0 col-primary"
       onClick={() => onVocabularyClick?.(terms)}
-      disabled={disabled}
+      disabled={disabled || notPersisted}
     >
       {i18n.t('ui.mapping.vocabularies.map')}
     </button>

@@ -32,11 +32,16 @@ const MatchVocabulary = ({
   mappedTerms,
   alignment,
   spineTerm,
-  predicates,
 }) => {
   const [state, actions] = useLocalStore(() => matchVocabularyStore());
-  const { filteredMappingConcepts, loading, spineConcepts, alignmentConcepts, changesPerformed } =
-    state;
+  const {
+    filteredMappingConcepts,
+    loading,
+    predicates,
+    spineConcepts,
+    alignmentConcepts,
+    changesPerformed,
+  } = state;
   const mappedTermsIds = mappedTerms.map((mappedTerm) => mappedTerm.id);
 
   const handleAfterDropConcept = (spineData) => {
@@ -162,7 +167,7 @@ const MatchVocabulary = ({
                       );
                       return !isUndefined(_alignment) ? (
                         <SpineConceptRow
-                          key={concept.id}
+                          key={`conceptId-${concept.id}`}
                           alignment={_alignment}
                           concept={concept}
                           mappingOrigin={mappingOrigin}

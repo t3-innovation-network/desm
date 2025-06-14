@@ -22,6 +22,10 @@ module API
         render json: vocabularies
       end
 
+      def predicates
+        render json: AlignmentVocabulary.predicate_set.predicates.includes(:predicate_set)
+      end
+
       ###
       # @description: Returns a specific vocabulary
       ###

@@ -170,7 +170,6 @@ const SpineTermRow = (props) => {
           spineOrigin={spineOrigin}
           spineTerm={term}
           mappedTerms={mappedTermsMatching}
-          predicates={predicates}
           alignment={alignment}
         />
       ) : null}

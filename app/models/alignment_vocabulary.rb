@@ -35,6 +35,10 @@ class AlignmentVocabulary < ApplicationRecord
 
   after_create :assign_concepts_from_spine, unless: -> { concepts.exists? }
 
+  def self.predicate_set
+    PredicateSet.find_by!(title: Desm::VOCABULARIES_PREDICATE_SET)
+  end
+
   ###
   # @description: The first of the vocabularies is what we need. The client
   # @return [Vocabulary]
@@ -58,7 +62,7 @@ class AlignmentVocabulary < ApplicationRecord
     spine_term_concepts.each do |concept|
       concepts.create!(
         mapped_concepts: already_mapped ? [] : [concept],
-        predicate_id: already_mapped ? nil : mapping.mapping_predicates.strongest_match_id,
+        predicate_id: already_mapped ? nil : AlignmentVocabulary.predicate_set.strongest_match_id,
         spine_concept_id: concept.id
       )
     end

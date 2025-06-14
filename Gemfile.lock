@@ -519,9 +519,8 @@ GEM
     rubyzip (2.4.1)
     scanf (1.0.0)
     securerandom (0.4.1)
-    seed-fu (2.3.9)
-      activerecord (>= 3.1)
-      activesupport (>= 3.1)
+    seedbank (0.5.0)
+      rake (>= 10.0)
     shacl (0.4.1)
       json-ld (~> 3.3)
       rdf (~> 3.3)
@@ -663,7 +662,7 @@ DEPENDENCIES
   ruby-lsp-rails
   ruby-prof (>= 0.17.0)
   rubyzip (~> 2.3)
-  seed-fu
+  seedbank (~> 0.5.0)
   shoulda-matchers
   simplecov
   spring

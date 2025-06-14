@@ -26,6 +26,10 @@ class VocabularyPolicy < ApplicationPolicy
     signed_in?
   end
 
+  def predicates?
+    signed_in?
+  end
+
   ###
   # @description: Determines if the user can see this resource
   # @return [TrueClass]
