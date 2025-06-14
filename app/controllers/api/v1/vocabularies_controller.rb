@@ -93,7 +93,7 @@ module API
       # @description: Extracts vocubularies from an uploaded file
       ###
       def extract
-        content = params[:content].to_unsafe_h
+        content = Parsers::FormatConverter.convert_content_to_jsonld(**extract_params.to_h.symbolize_keys)
         parser = Parsers::Specification.new(file_content: content)
         processor = Processors::Specifications.new(parser.to_jsonld)
         render json: processor.filter_vocabularies
@@ -136,6 +136,10 @@ module API
 
         { name: vocabulary.name,
           concepts: parser.concepts_list_simplified }
+      end
+
+      def extract_params
+        params.permit(:file, :url, :content)
       end
 
       ###
