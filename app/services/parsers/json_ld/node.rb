@@ -21,9 +21,11 @@ module Parsers
       ###
       # @description: Read an attribute from a node and return it's content as String
       # @param [String] attribute_name: The node to be evaluated
+      # @param [Boolean] first_only: If true, only the first value in case of an array will be returned,
+      #   makes sense in case we're fetching definition and it has multiple values for different languages
       # @return [String]
       ###
-      def read!(attribute_name)
+      def read!(attribute_name, first_only: false)
         # Use approximation to get the exact key we're going to read in the hash
         key = find_node_key(attribute_name)
 
@@ -31,7 +33,7 @@ module Parsers
         return nil unless @node.key?(key)
 
         # Read the value, safely, it can be an array, so we ensure we can read it
-        val = @node[key].is_a?(Array) && @node[key].one? ? @node[key].first : @node[key]
+        val = @node[key].is_a?(Array) && (@node[key].one? || first_only) ? @node[key].first : @node[key]
 
         # What we have now, can be the final result (what we were looking for), or it can
         # still be a hash, so we read it again.

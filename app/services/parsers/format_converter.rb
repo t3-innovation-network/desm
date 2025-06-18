@@ -42,7 +42,7 @@ module Parsers
                     File.extname(file).delete(".").downcase.strip
                   else
                     # get extension from url
-                    SchemeDefinitionFetchable.infer_extension(url).sub(/^\./, "")
+                    SchemeDefinitionFetchable.infer_extension(url)&.sub(/^\./, "")
                   end
       converter = CONVERTERS[extension.to_sym]
       raise ArgumentError, "Unsupported file type: #{extension}" unless converter.present?

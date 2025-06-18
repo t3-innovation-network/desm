@@ -9,7 +9,8 @@ module SchemeDefinitionFetchable
     "text/csv": ".csv",
     "application/zip": ".zip",
     "application/xml": ".xml",
-    "text/xml": ".xml"
+    "text/xml": ".xml",
+    "text/turtle": ".ttl"
   }.freeze
 
   def self.infer_extension(uri)
@@ -62,6 +63,6 @@ module SchemeDefinitionFetchable
   end
 
   def infer_extension(uri)
-    self.class.infer_extension(uri)
+    SchemeDefinitionFetchable.infer_extension(uri)
   end
 end
