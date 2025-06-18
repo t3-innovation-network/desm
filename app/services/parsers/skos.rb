@@ -135,10 +135,21 @@ module Parsers
     ###
     def child_concepts_uris(concept_scheme_node)
       parser = Parsers::JsonLd::Node.new(concept_scheme_node)
-      child_nodes = Array.wrap(parser.read!("hasConcept"))
+      child_nodes = []
 
       # Some specification may not use "hasConcept", but "hasTopConcept"
-      child_nodes = Array.wrap(parser.read!("hasTopConcept")) if child_nodes.all?(&:empty?)
+      %w(hasConcept hasTopConcept).each do |relation|
+        child_nodes = Array.wrap(parser.read!(relation))
+        break unless child_nodes.all?(&:empty?)
+      end
+
+      # Some specifications may use opposite direction and use inScheme field for concept nodes
+      if child_nodes.all?(&:empty?)
+        child_nodes = @graph.filter_map do |node|
+          node_parser = Parsers::JsonLd::Node.new(node)
+          node if node_parser.read!("inScheme").present?
+        end
+      end
 
       raise ArgumentError, "No concept nodes found for Vocabulary #{parser.read!('id')}" if child_nodes.all?(&:empty?)
 

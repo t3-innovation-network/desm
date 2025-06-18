@@ -62,6 +62,6 @@ module SchemeDefinitionFetchable
   end
 
   def infer_extension(uri)
-    self.class.infer_extension(uri)
+    SchemeDefinitionFetchable.infer_extension(uri)
   end
 end

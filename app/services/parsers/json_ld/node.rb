@@ -31,7 +31,7 @@ module Parsers
         return nil unless @node.key?(key)
 
         # Read the value, safely, it can be an array, so we ensure we can read it
-        val = @node[key].is_a?(Array) && @node[key].one? ? @node[key].first : @node[key]
+        val = @node[key].is_a?(Array) ? @node[key].first : @node[key]
 
         # What we have now, can be the final result (what we were looking for), or it can
         # still be a hash, so we read it again.
