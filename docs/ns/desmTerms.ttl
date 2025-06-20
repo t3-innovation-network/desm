@@ -151,8 +151,8 @@ dct:hasPart a rdf:Property ;
     rdfs:domain [
         a owl:class ;
         owl:unionOf (
-            desm:AbstractClassSet 
-            desm:AbstractCLassMapping 
+            desm:AbstractClassSet
+            desm:AbstractCLassMapping
         )
     ];
     rdfs:range [
@@ -160,7 +160,7 @@ dct:hasPart a rdf:Property ;
         owl:unionOf (
                 desm:AbstractClassMapping
                 desm:TermMapping
-         ) 
+         )
     ];
     rdfs:isDefinedBy dct:
     .
@@ -219,15 +219,15 @@ dct:isPartOf a rdf:Property ;
     rdfs:domain [
         a owl:class ;
         owl:unionOf (
-            desm:TermMapping 
+            desm:TermMapping
             desm:AbstractClassMapping
         )
     ] ;
     rdfs:range  [
         a owl:class ;
         owl:unionOf (
-            desm:AbstractMapping 
-            desm:AbstractClassSet 
+            desm:AbstractMapping
+            desm:AbstractClassSet
         )
     ] ;
     rdfs:isDefinedBy dct:
@@ -244,8 +244,8 @@ rdfs:label a rdf:Property ;
     rdfs:domain [
         a owl:class ;
         owl:unionOf (
-            rdf:Property 
-            rdfs:Class 
+            rdf:Property
+            rdfs:Class
         )
     ];
     rdfs:range rdf:langString ;
@@ -300,9 +300,9 @@ desm:rangeIncludes a rdf:Property ;
     rdfs:range [
         a owl:class ;
         owl:unionOf (
-            skos:Concept 
+            skos:Concept
             rdfs:Class
-        ) 
+        )
     ];
     rdfs:isDefinedBy desm:
     .
@@ -332,5 +332,21 @@ desm:spineTerm a rdf:Property ;
     rdfs:comment "Property of the synthetic spine generated during the mapping process."@en ;
     rdfs:domain desm:TermMapping ;
     rdfs:range rdf:Property ;
+    rdfs:isDefinedBy desm:
+    .
+desm:transformToSpine a rdf:Property ;
+    rdfs:label "Transform to spine"@en ;
+    rdfs:comment "Description of how to translate data values of the mapped term to values that can be used for the spine term."@en ;
+    skos:usageNote "There is no formal syntax for expressing the translation. Data values may be referenced by a syntax such as JSONPath. Operations on the data may be expressed using a syntax such as OpenRefine GREL Functions."@en ;
+    rdfs:domain desm:TermMapping ;
+    rdfs:range xsd:string ;
+    rdfs:isDefinedBy desm:
+    .
+desm:transformFromSpine a rdf:Property ;
+    rdfs:label "Transform from spine"@en ;
+    rdfs:comment "Description of how to translate data values of the spine term to values that can be used for the mapped term."@en ;
+    skos:usageNote "There is no formal syntax for expressing the translation. Data values may be referenced by a syntax such as JSONPath. Operations on the data may be expressed using a syntax such as OpenRefine GREL Functions."@en ;
+    rdfs:domain desm:TermMapping ;
+    rdfs:range xsd:string ;
     rdfs:isDefinedBy desm:
     .

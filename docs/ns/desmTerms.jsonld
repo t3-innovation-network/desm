@@ -957,6 +957,44 @@
       "rdfs:range": {
         "id": "rdfs:Class"
       }
+    },
+    {
+      "id": "desm:transformToSpine",
+      "type": "rdf:Property",
+      "rdfs:label" : {
+        "@language" : "en",
+        "@value": "Transform to spine"
+      },
+      "rdfs:comment":{
+        "@language" : "en",
+        "@value": "Description of how to translate data values of the mapped term to values that can be used for the spine term."
+      },
+      "skos:usageNote": {
+        "@language" : "en",
+        "@value": "There is no formal syntax for expressing the translation. Data values may be referenced by a syntax such as JSONPath. Operations on the data may be expressed using a syntax such as OpenRefine GREL Functions."
+      },
+      "rdfs:domain": "desm:TermMapping",
+      "rdfs:range": "xsd:string",
+      "rdfs:isDefinedBy": "http://desmsolutions.org/ns/"
+    },
+    {
+      "id": "desm:transformFromSpine",
+      "type": "rdf:Property",
+      "rdfs:label" : {
+        "@language" : "en",
+        "@value": "Transform from spine"
+      },
+      "rdfs:comment":{
+        "@language" : "en",
+        "@value": "Description of how to translate data values of the spine term to values that can be used for the mapped term."
+      },
+      "skos:usageNote": {
+        "@language" : "en",
+        "@value": "There is no formal syntax for expressing the translation. Data values may be referenced by a syntax such as JSONPath. Operations on the data may be expressed using a syntax such as OpenRefine GREL Functions."
+      },
+      "rdfs:domain": "desm:TermMapping",
+      "rdfs:range": "xsd:string",
+      "rdfs:isDefinedBy": "http://desmsolutions.org/ns/"
     }
   ]
 }
