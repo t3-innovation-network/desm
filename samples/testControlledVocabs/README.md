@@ -15,6 +15,8 @@ Small stand-alone controlled vocabs:
 * color-OneOf.json A JSON-Schema controlled vocabulary with oneOf keyword.
 * ceds-ex1.csv A single controlled vocabualry from CEDS.
 * ceds-ex2.csv Two controlled vocabularies from CEDS in one file.
+* ctdl-AudienceLevel.ttl A simple, small SKOS Concept Scheme in turtle.
+* ctdl-AudienceLevel.json The same Concept Scheme in JSON-LD.
 
 Small stand-alone schemas with controlled vocabularies
 * testSchema1 has two properties one for size, one for colour, with skos:ConceptSchemes for each; in json and ttl.
