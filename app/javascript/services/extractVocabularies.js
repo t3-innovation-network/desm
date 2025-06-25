@@ -7,6 +7,12 @@ const extractVocabularies = async (data) => {
     payload: data,
     defaultResponse: [],
     successResponse: 'vocabularies',
+    options: {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
+    formData: true,
   });
 };
 

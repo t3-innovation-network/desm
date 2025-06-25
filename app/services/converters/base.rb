@@ -31,7 +31,7 @@ module Converters
     def self.convert(file)
       {
         "@context": CONTEXT,
-        "@graph": new(file).resources.to_a
+        "@graph": new(file).resources.to_a.uniq
       }
     end
 

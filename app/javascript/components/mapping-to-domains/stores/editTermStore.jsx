@@ -104,7 +104,7 @@ export const editTermStore = (initialData = {}) => ({
     document.body.classList.add('waiting');
     const state = h.getState();
     try {
-      const response = await extractVocabularies(data.vocabulary);
+      const response = await extractVocabularies(data);
       if (state.withoutErrors(response)) {
         const extractedVocabs = response.vocabularies;
         const newVocabs = await Promise.all(

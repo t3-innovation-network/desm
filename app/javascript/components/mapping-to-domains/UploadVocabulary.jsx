@@ -69,16 +69,6 @@ const UploadVocabulary = (props) => {
   };
 
   /**
-   * After the sate of the file is changed, read it if there's any valid
-   * file
-   */
-  useEffect(() => {
-    if (file != null) {
-      readFileContent(file, setFileContent, (error) => setErrors([error]));
-    }
-  }, [file]);
-
-  /**
    * File content to be displayed after
    * file upload is complete
    *
@@ -90,21 +80,6 @@ const UploadVocabulary = (props) => {
     ) : (
       ''
     );
-  };
-
-  /**
-   * Manages to corroborate that the file content is a valid JSON
-   *
-   * @param {String} content
-   */
-  const isValidJson = (content) => {
-    let isValid = isJSON(content);
-
-    if (!isValid) {
-      setErrors(['Invalid JSON!\nBe sure to validate the file before uploading']);
-    }
-
-    return isValid;
   };
 
   /**
@@ -126,39 +101,10 @@ const UploadVocabulary = (props) => {
     setFetching(false);
   };
 
-  /**
-   * Safely try to get the vocabulary name
-   */
-  const handleSetFetchedVocabularyName = (vocab) => {
-    let name = '';
-    try {
-      name = vocabName(vocab['@graph']);
-      setFetchedVocabularyName(name);
-    } catch (e) {
-      setErrors([e]);
-    }
-  };
-
   const handleVocabularyURLChange = (e) => {
     setErrors([]);
     setVocabularyURL(e.target.value);
     setFile(null);
-  };
-
-  /**
-   * Determines the vocabulary validity
-   *
-   * @param {Object} vocab
-   */
-  const handleVocabularyValidity = (vocab) => {
-    setErrors([]);
-    let validity = validVocabulary(vocab);
-
-    if (!isEmpty(validity.errors)) {
-      setErrors(validity.errors);
-    }
-
-    return validity.result;
   };
 
   /**
@@ -171,7 +117,7 @@ const UploadVocabulary = (props) => {
       case uploadModes.FETCH_BY_URL:
         return isString(fetchedVocabulary) ? fetchedVocabulary : JSON.stringify(fetchedVocabulary);
       case uploadModes.FILE_UPLOAD:
-        return fileContent;
+        return null;
     }
   };
 
@@ -181,15 +127,17 @@ const UploadVocabulary = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    let vocab = vocabularyToSubmit();
+    const formData = new FormData();
+    formData.append('name', name);
 
-    const response = await props.onVocabularyAdded({
-      vocabulary: {
-        file: file?.name,
-        url: vocabularyURL,
-        content: vocab,
-      },
-    });
+    if (uploadMode === uploadModes.FILE_UPLOAD && file) {
+      formData.append('file', file);
+    } else if (uploadMode === uploadModes.FETCH_BY_URL) {
+      formData.append('url', vocabularyURL);
+      formData.append('content', vocabularyToSubmit());
+    }
+
+    const response = await props.onVocabularyAdded(formData);
 
     if (response.error) {
       setErrors([response.error]);
@@ -359,7 +307,7 @@ const UploadVocabulary = (props) => {
                 <button
                   className="btn btn-dark float-end mt-3"
                   type="submit"
-                  disabled={!fileContent && isEmpty(fetchedVocabulary)}
+                  disabled={!file && isEmpty(fetchedVocabulary)}
                 >
                   Upload
                 </button>
