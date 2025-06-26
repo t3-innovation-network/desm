@@ -115,6 +115,9 @@ module Parsers
 
       private
 
+      LANG_KEYS = %w(en-US en-us en_us enUS en-_u_s en).freeze
+      private_constant :LANG_KEYS
+
       ###
       # @description: Find the first node attribute which the key contains the string given
       #   as the name of the attribute to read
@@ -192,9 +195,11 @@ module Parsers
 
         return node[:@value] if valid_node_key?(node, :@value)
 
-        lang_value = node["en-US"] || node["en-us"] || node["en_us"] || node["enUS"] || node["en-_u_s"]
+        # return first language value if the node is a language map
+        lang_key = LANG_KEYS.find { |key| node.key?(key) }
+        return node[lang_key] if lang_key
 
-        lang_value || node
+        node
       end
 
       ###

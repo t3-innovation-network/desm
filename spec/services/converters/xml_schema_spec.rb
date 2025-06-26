@@ -6,27 +6,44 @@ RSpec.describe Converters::XmlSchema do
   describe ".convert" do
     let(:graph) { result.fetch(:@graph) }
     let(:result) { described_class.convert(file) }
-
     let(:file) do
-      Rack::Test::UploadedFile.new(file_fixture("pesc.xml"))
+      Rack::Test::UploadedFile.new(file_fixture(schema_file))
     end
 
-    it "converts XML schema to JSON-LD" do
-      expect(result.keys).to eq(%i(@context @graph))
+    context "when converting an XML schema file" do
+      let(:schema_file) { "pesc.xml" }
 
-      expect(result.fetch(:@context)).to eq(
-        dct: "http://purl.org/dc/terms/",
-        desm: "http://desmsolutions.org/ns/",
-        rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-        rdfs: "http://www.w3.org/2000/01/rdf-schema#",
-        skos: "http://www.w3.org/2004/02/skos/core#"
-      )
+      it_behaves_like "valid JSON-LD conversion"
+    end
 
-      expect(graph.map { |r| r[:@type] }.uniq).to match_array(
-        %w(rdf:Class rdf:Property skos:Concept skos:ConceptScheme)
-      )
+    context "when converting XSD with complext types and enumerations" do
+      let(:schema_file) { "simpleEnum.xsd" }
 
-      expect(graph.map { |r| r[:@id] }.size).to eq(graph.size)
+      it_behaves_like "valid JSON-LD conversion", %w(rdf:Class)
+
+      it "includes the enumeration values in the graph" do
+        expect(graph.map { |r| r[:@type] }.uniq).to include("skos:ConceptScheme")
+        expect(graph.map { |r| r[:@type] }.uniq).to include("skos:Concept")
+
+        concepts = graph.select { |r| r[:@type] == "skos:Concept" }
+        expect(concepts.size).to eq(3)
+        expect(concepts.map { |c| c[:"skos:prefLabel"] }).to match_array(%w(red green blue))
+      end
+    end
+
+    context "when converting XSD with simple types enumerations" do
+      let(:schema_file) { "StateProvinceElement.xsd" }
+
+      it_behaves_like "valid JSON-LD conversion", %w(rdf:Class rdf:Property)
+
+      it "includes the enumeration values in the graph" do
+        expect(graph.map { |r| r[:@type] }.uniq).to include("skos:ConceptScheme")
+        expect(graph.map { |r| r[:@type] }.uniq).to include("skos:Concept")
+
+        concepts = graph.select { |r| r[:@type] == "skos:Concept" }
+        expect(concepts.size).to eq(77)
+        expect(concepts.map { |c| c[:"skos:prefLabel"] }).to include("AA", "AK", "VA")
+      end
     end
   end
 end
