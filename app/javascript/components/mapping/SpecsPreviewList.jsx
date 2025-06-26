@@ -84,13 +84,15 @@ const SpecsPreviewList = (props) => {
       </SpecCollapseHeder>
       <Collapse in={!collapsed['spec-list']}>
         <div id="spec-list">
-          {(filteredFile['@graph'] || []).map((property, i) => {
-            return (
-              <div className="card mt-2 mb-2" key={i}>
-                <div className="card-header">{property['@id']}</div>
-              </div>
-            );
-          })}
+          {(filteredFile['@graph'] || [])
+            .filter((r) => /rdfs?:Property/.test(r['@type']))
+            .map((property, i) => {
+              return (
+                <div className="card mt-2 mb-2" key={i}>
+                  <div className="card-header">{property['@id']}</div>
+                </div>
+              );
+            })}
         </div>
       </Collapse>
 
