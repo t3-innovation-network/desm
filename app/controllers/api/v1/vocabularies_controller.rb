@@ -83,10 +83,8 @@ module API
       ###
       def create
         processor = Processors::Vocabularies.new(permitted_params[:content].to_h)
-
         @instance = processor.create(permitted_params[:name], current_configuration_profile)
-
-        render json: @instance, include: :concepts
+        render json: @instance.as_json(include: :concepts).merge(new_record: @instance.new_record?)
       end
 
       ###

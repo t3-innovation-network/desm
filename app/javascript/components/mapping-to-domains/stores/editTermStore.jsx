@@ -9,6 +9,8 @@ import extractVocabularies from '../../../services/extractVocabularies';
 import { readNodeAttribute, vocabName } from './../../../helpers/Vocabularies';
 import { baseModel } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
+import { showSuccess, showWarning } from '../../../helpers/Messages';
+import { i18n } from '../../../utils/i18n';
 
 export const defaultState = {
   // status
@@ -105,6 +107,9 @@ export const editTermStore = (initialData = {}) => ({
     const state = h.getState();
     try {
       const response = await extractVocabularies(data);
+      let countCreated = 0,
+        countUpdated = 0,
+        updateVocabularies = [];
       if (state.withoutErrors(response)) {
         const extractedVocabs = response.vocabularies;
         const newVocabs = await Promise.all(
@@ -113,6 +118,12 @@ export const editTermStore = (initialData = {}) => ({
               const name = vocabName(content['@graph']);
               if (!name) return;
               const { vocabulary } = await createVocabulary({ vocabulary: { content, name } });
+              if (vocabulary.new_record) {
+                countCreated++;
+              } else {
+                countUpdated++;
+                updateVocabularies.push(vocabulary.name);
+              }
               return vocabulary;
             } catch {
               return null;
@@ -120,6 +131,17 @@ export const editTermStore = (initialData = {}) => ({
           })
         );
         actions.updateVocabularies(newVocabs);
+        const countSaved = countCreated + countUpdated;
+        if (countUpdated > 0) {
+          const messageProcessed = i18n.t('ui.mapping.vocabularies.created', {
+            count: countCreated,
+          });
+          const messageUpdated = i18n.t('ui.mapping.vocabularies.updated', {
+            count: countUpdated,
+            name: updateVocabularies.join(', '),
+          });
+          showWarning(`${messageProcessed} ${messageUpdated}`);
+        }
       }
       return response;
     } finally {

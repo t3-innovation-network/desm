@@ -101,10 +101,10 @@ const MatchVocabulary = ({
       <div className="col-8">
         <div className="row">
           <div className="col-4">
-            <h4 className="text-center">T3 Spine</h4>
+            <h4 className="text-center">Spine</h4>
           </div>
           <div className="col-4 offset-4">
-            <h4 className="text-center">{mappingOrigin}</h4>
+            <h4 className="text-center">{alignment.schemaName}</h4>
           </div>
         </div>
       </div>
@@ -115,7 +115,7 @@ const MatchVocabulary = ({
             onClick={addSyntheticConceptRow}
             title="Use this button to add new elements to the spine"
           >
-            + Add Synthetic
+            + Add to Spine
           </button>
         </div>
         <div className="float-end">
@@ -132,7 +132,7 @@ const MatchVocabulary = ({
     <Modal
       isOpen={modalIsOpen}
       onRequestClose={onRequestClose}
-      contentLabel="Match Controlled Vocabulary"
+      contentLabel="Map Controlled Vocabulary"
       className="desm-vocabulary-mapping"
       style={ModalStyles}
       shouldCloseOnEsc={false}
@@ -170,6 +170,7 @@ const MatchVocabulary = ({
                           key={`conceptId-${concept.id}`}
                           alignment={_alignment}
                           concept={concept}
+                          schemaName={alignment.schemaName}
                           mappingOrigin={mappingOrigin}
                           spineOrigin={spineOrigin}
                           predicates={predicates}
@@ -189,7 +190,7 @@ const MatchVocabulary = ({
                   </div>
                   <div className="col-4 bg-col-secondary pt-3">
                     <MappingConceptsList
-                      mappingOrigin={mappingOrigin}
+                      schemaName={alignment.schemaName}
                       filteredMappingConcepts={filteredMappingConcepts}
                       onMappingConceptClick={actions.toggleMappingConcept}
                       afterDropConcept={handleAfterDropConcept}

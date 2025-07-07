@@ -33,29 +33,17 @@ const UploadVocabulary = (props) => {
    */
   const [file, setFile] = useState(null);
   /**
-   * The content of the file. Set after reading it with a "FileReader"
-   */
-  const [fileContent, setFileContent] = useState('');
-  /**
    * Name for the vocabulary
    */
   const [name, setName] = useState('');
-
   /**
    * URL to fetch the vocabulary from
    */
   const [vocabularyURL, setVocabularyURL] = useState('');
-
   /**
    * The vocabulary that's fetched using an external URL
    */
   const [fetchedVocabulary, setFetchedVocabulary] = useState({});
-
-  /**
-   * The name of the vocabulary that's fetched using an external URL
-   */
-  const [fetchedVocabularyName, setFetchedVocabularyName] = useState('');
-
   const [fetching, setFetching] = useState(false);
 
   /**
