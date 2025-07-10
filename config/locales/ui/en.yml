@@ -86,9 +86,8 @@ en:
           one: "1 vocabulary was added."
           other: "%{count} vocabularies were added."
         updated:
-          one: "%{name} vocabulary was updated."
-          other: "%{name} vocabularies were updated."
-
+          one: "The vocabulary %{name} was uploaded as %{new_name} because a vocabulary called %{name} already exists."
+          other: "The vocabularies %{name} were uploaded as %{new_name} because a vocabularies called %{name} already exist."
     mapping_upload:
       new:
         step_1: 1. Upload Your Specification

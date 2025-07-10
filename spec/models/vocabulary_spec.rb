@@ -8,6 +8,7 @@
 #  content                  :jsonb            not null
 #  context                  :jsonb            not null
 #  name                     :string           not null
+#  version                  :integer          default(1), not null
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #  configuration_profile_id :bigint           not null

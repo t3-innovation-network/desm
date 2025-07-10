@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { isEmpty, isString } from 'lodash';
 import FileInfo from '../mapping/FileInfo';
-import { validVocabulary, vocabName, countConcepts } from '../../helpers/Vocabularies';
 import AlertNotice from '../shared/AlertNotice';
 import fetchExternalVocabulary from './../../services/fetchExternalVocabulary';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { readFileContent } from '../dashboard/configuration-profiles/utils';
 
 // eslint-disable-next-line no-undef
 var isJSON = require('is-valid-json');

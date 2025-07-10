@@ -86,12 +86,13 @@ module Processors
     #
     # @param [String] file: The file to be filtered
     # @param [Array] uris: The identifier of the selected rdfs:Class'es that will be used to filter the file
+    # @param [ConfigurationProfile] configuration_profile: The configuration profile to filter the vocabularies
     # @return [Hash] The collection of vocabularies, if any, and the new filtered specification
     ###
-    def self.filter_specification(spec, uris)
+    def self.filter_specification(spec, uris, configuration_profile = nil)
       processor = new(spec)
       {
-        vocabularies: processor.filter_vocabularies,
+        vocabularies: processor.filter_vocabularies(configuration_profile),
         specification: processor.filter_specification_by_domain(uris)
       }
     end
@@ -148,13 +149,14 @@ module Processors
     # @param [Struct] spec: The specification to be filtered
     # @return [Array]
     ###
-    def filter_vocabularies
+    def filter_vocabularies(configuration_profile = nil)
       parser = Parsers::Skos.new(context: @context, graph: @graph)
 
       # Get all the concept scheme nodes. With the pupose of separate all the vocabularies, we
       # need the concept schemes, which represents the vocabularies main nodes.
       parser.scheme_nodes.map do |scheme_node|
-        parser.build_skos(scheme_node)
+        data = parser.build_skos(scheme_node)
+        data.merge(Processors::Vocabularies.name_data_for(data, configuration_profile))
       end
     end
 

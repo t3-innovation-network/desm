@@ -149,7 +149,7 @@ const MappingPreview = (props) => {
    */
   const handleLookForVocabularyName = (vocab) => {
     try {
-      return vocabName(vocab['@graph']);
+      return vocabName(vocab);
     } catch (error) {
       showError(error);
       return '';
@@ -166,17 +166,23 @@ const MappingPreview = (props) => {
     if (!response.error) {
       // select vocabularies from the response that were already in the store
       const existingVocabularies = response.vocabularies.filter((v) =>
-        vocabularies.some(
-          (existingVocab) => vocabName(existingVocab['@graph']) === vocabName(v['@graph'])
-        )
+        vocabularies.some((existingVocab) => vocabName(existingVocab) === vocabName(v))
       );
+      response.vocabularies.forEach((vocab) => {
+        // find vocabularies with the same name and get maximum version + 1
+        const existingVocabs = vocabularies.filter((v) => vocabName(v) === vocabName(vocab));
+        if (existingVocabs.length > 0) {
+          const maxVersion = Math.max(...existingVocabs.map((v) => v.version));
+          vocab.version = maxVersion + 1;
+        }
+      });
       dispatch(setVocabularies([...vocabularies, ...response.vocabularies]));
       // if any existing vocabulary was found, show a error message
       if (existingVocabularies.length > 0) {
         dispatch(
           setMappingFormErrors([
-            'The following vocabularies were already added and will be updated on saving: ' +
-              existingVocabularies.map((v) => vocabName(v['@graph'])).join(', '),
+            'The following vocabularies were already added and will be added with version number on saving: ' +
+              existingVocabularies.map((v) => vocabName(v)).join(', '),
           ])
         );
       }
@@ -210,11 +216,15 @@ const MappingPreview = (props) => {
           },
         });
         if (!response.error) {
-          if (response.vocabulary.new_record) {
+          if (response.vocabulary.version === 1) {
             countCreated++;
           } else {
             countUpdated++;
-            updateVocabularies.push(response.vocabulary.name);
+            updateVocabularies.push({
+              name: response.vocabulary.name,
+              version: response.vocabulary.version,
+              name_with_version: response.vocabulary.name_with_version,
+            });
           }
         }
       })
@@ -225,10 +235,11 @@ const MappingPreview = (props) => {
     if (countSaved && countUpdated === 0) {
       showSuccess(i18n.t('ui.mapping.vocabularies.created', { count: countSaved }));
     } else if (countUpdated > 0) {
-      const messageProcessed = i18n.t('ui.mapping.vocabularies.created', { count: countCreated });
+      const messageProcessed = i18n.t('ui.mapping.vocabularies.created', { count: countSaved });
       const messageUpdated = i18n.t('ui.mapping.vocabularies.updated', {
         count: countUpdated,
-        name: updateVocabularies.join(', '),
+        name: updateVocabularies.map((v) => `"${v.name}"`).join(', '),
+        new_name: updateVocabularies.map((v) => `"${v.name_with_version}"`).join(', '),
       });
       showWarning(`${messageProcessed} ${messageUpdated}`);
     }

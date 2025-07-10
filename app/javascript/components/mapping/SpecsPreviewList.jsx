@@ -110,7 +110,7 @@ const SpecsPreviewList = (props) => {
       <Collapse in={!collapsed['vocabularies-list']}>
         <div id="vocabularies-list">
           {vocabularies.map((vocabulary, i) => {
-            const name = vocabName(vocabulary['@graph']);
+            const name = vocabName(vocabulary, 1);
             return (
               <div className="card mt-2 mb-2" key={name}>
                 <div className="card-header d-flex justify-content-between align-items-center">

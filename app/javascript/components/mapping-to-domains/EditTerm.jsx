@@ -240,7 +240,7 @@ function EditTerm(props) {
             disabled={uploadingVocabulary || isSpineTerm}
           />
           <label className="form-label" htmlFor={vocab.id}>
-            {vocab.name}
+            {vocab.name_with_version || vocab.name}
           </label>
         </div>
       );

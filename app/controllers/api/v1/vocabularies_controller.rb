@@ -16,10 +16,10 @@ module API
         vocabularies = if current_user.super_admin?
                          Vocabulary.all
                        else
-                         current_configuration_profile.vocabularies.order(:name)
+                         current_configuration_profile.vocabularies
                        end
 
-        render json: vocabularies
+        render json: vocabularies.order(:name, :version)
       end
 
       def predicates
@@ -39,6 +39,8 @@ module API
 
         render json: {
           name: @instance.name,
+          name_with_version: @instance.name_with_version,
+          version: @instance.version,
           concepts: parser.concepts_list_simplified
         }
       end
@@ -84,7 +86,7 @@ module API
       def create
         processor = Processors::Vocabularies.new(permitted_params[:content].to_h)
         @instance = processor.create(permitted_params[:name], current_configuration_profile)
-        render json: @instance.as_json(include: :concepts).merge(new_record: @instance.new_record?)
+        render json: @instance, with_concepts: true
       end
 
       ###
@@ -94,7 +96,7 @@ module API
         content = Parsers::FormatConverter.convert_content_to_jsonld(**extract_params.to_h.symbolize_keys)
         parser = Parsers::Specification.new(file_content: content)
         processor = Processors::Specifications.new(parser.to_jsonld)
-        render json: processor.filter_vocabularies
+        render json: processor.filter_vocabularies(current_configuration_profile)
       end
 
       ###

@@ -9,7 +9,7 @@ import extractVocabularies from '../../../services/extractVocabularies';
 import { readNodeAttribute, vocabName } from './../../../helpers/Vocabularies';
 import { baseModel } from '../../stores/baseModel';
 import { easyStateSetters } from '../../stores/easyState';
-import { showSuccess, showWarning } from '../../../helpers/Messages';
+import { showWarning } from '../../../helpers/Messages';
 import { i18n } from '../../../utils/i18n';
 
 export const defaultState = {
@@ -77,12 +77,11 @@ export const editTermStore = (initialData = {}) => ({
     state.errors = [];
   }),
   updateVocabularies: action((state, newVocabs) => {
-    const newVocabOptions = newVocabs.filter(Boolean).map((v) => ({ id: v.id, name: v.name }));
-    state.vocabularies = uniqBy([...state.vocabularies, ...newVocabOptions], (v) => v.name);
-    state.term.vocabularies = uniqBy(
-      [...state.term.vocabularies, ...newVocabOptions],
-      (v) => v.name
-    );
+    const newVocabOptions = newVocabs
+      .filter(Boolean)
+      .map((v) => ({ id: v.id, name: v.name, version: v.version }));
+    state.vocabularies = uniqBy([...state.vocabularies, ...newVocabOptions], (v) => v.id);
+    state.term.vocabularies = uniqBy([...state.term.vocabularies, ...newVocabOptions], (v) => v.id);
   }),
 
   // thunks
@@ -115,14 +114,18 @@ export const editTermStore = (initialData = {}) => ({
         const newVocabs = await Promise.all(
           extractedVocabs.map(async (content) => {
             try {
-              const name = vocabName(content['@graph']);
+              const name = vocabName(content);
               if (!name) return;
               const { vocabulary } = await createVocabulary({ vocabulary: { content, name } });
-              if (vocabulary.new_record) {
+              if (vocabulary.version === 1) {
                 countCreated++;
               } else {
                 countUpdated++;
-                updateVocabularies.push(vocabulary.name);
+                updateVocabularies.push({
+                  name: vocabulary.name,
+                  version: vocabulary.version,
+                  name_with_version: vocabulary.name_with_version,
+                });
               }
               return vocabulary;
             } catch {
@@ -134,11 +137,12 @@ export const editTermStore = (initialData = {}) => ({
         const countSaved = countCreated + countUpdated;
         if (countUpdated > 0) {
           const messageProcessed = i18n.t('ui.mapping.vocabularies.created', {
-            count: countCreated,
+            count: countSaved,
           });
           const messageUpdated = i18n.t('ui.mapping.vocabularies.updated', {
             count: countUpdated,
-            name: updateVocabularies.join(', '),
+            name: updateVocabularies.map((v) => `"${v.name}"`).join(', '),
+            new_name: updateVocabularies.map((v) => `"${v.name_with_version}"`).join(', '),
           });
           showWarning(`${messageProcessed} ${messageUpdated}`);
         }
