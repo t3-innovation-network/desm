@@ -15,7 +15,7 @@ module API
         includes += %i(vocabularies) unless params[:spine].present?
         includes += %i(organization) if params[:with_organization].present?
 
-        max_weight = current_configuration_profile.predicates.maximum(:weight) || 0
+        max_weight = current_configuration_profile.predicate_set&.max_weight || 0
 
         select = "terms.*, " \
                  "SUM(COALESCE(predicates.weight, 0))::int AS current_mapping_weight, " \

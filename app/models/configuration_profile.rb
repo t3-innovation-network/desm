@@ -49,6 +49,7 @@ class ConfigurationProfile < ApplicationRecord
   belongs_to :abstract_classes, class_name: "DomainSet", foreign_key: :domain_set_id, optional: true
   belongs_to :mapping_predicates, class_name: "PredicateSet", foreign_key: :predicate_set_id, optional: true
   belongs_to :administrator, class_name: "User", foreign_key: :administrator_id, optional: true
+  belongs_to :predicate_set, optional: true
   has_many :configuration_profile_users, dependent: :destroy
   has_and_belongs_to_many :standards_organizations, class_name: "Organization"
   has_many :domains, through: :abstract_classes
