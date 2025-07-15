@@ -1,0 +1,185 @@
+@prefix accommodation: <https://purl.org/ctdl/vocabs/accommodation/> .
+@prefix actionStat: <https://purl.org/ctdl/vocabs/actionStat/> .
+@prefix adms: <http://www.w3.org/ns/adms#> .
+@prefix agentSector: <https://purl.org/ctdl/vocabs/agentSector/> .
+@prefix alignment: <https://purl.org/ctdl/vocabs/alignment/> .
+@prefix array: <https://purl.org/ctdl/vocabs/array/> .
+@prefix asn: <http://purl.org/ASN/schema/core/> .
+@prefix assessMethod: <https://purl.org/ctdl/vocabs/assessMethod/> .
+@prefix assessUse: <https://purl.org/ctdl/vocabs/assessUse/> .
+@prefix audience: <https://purl.org/ctdl/vocabs/audience/> .
+@prefix audLevel: <https://purl.org/ctdl/vocabs/audLevel/> .
+@prefix case: <https://purl.imsglobal.org/spec/case/> .
+@prefix ceasn: <https://purl.org/ctdlasn/terms/> .
+@prefix ceds: <https://ceds.ed.gov/element/> .
+@prefix ceterms: <https://purl.org/ctdl/terms/> .
+@prefix claimType: <https://purl.org/ctdl/vocabs/claimType/> .
+@prefix collectionCategory: <https://purl.org/ctdl/vocabs/collectionCategory/> .
+@prefix compare: <https://purl.org/ctdl/vocabs/compare/> .
+@prefix costType: <https://purl.org/ctdl/vocabs/costType/> .
+@prefix credentialStat: <https://purl.org/ctdl/vocabs/credentialStat/> .
+@prefix creditUnit: <https://purl.org/ctdl/vocabs/creditUnit/> .
+@prefix cs: <http://vocab.org/changeset/schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix deliveryType: <https://purl.org/ctdl/vocabs/deliveryType/> .
+@prefix financialAid: <https://purl.org/ctdl/vocabs/financialAid/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix gemq: <http://purl.org/gem/qualifiers/> .
+@prefix inputType: <https://purl.org/ctdl/vocabs/inputType/> .
+@prefix learnMethod: <https://purl.org/ctdl/vocabs/learnMethod/> .
+@prefix lifeCycle: <https://purl.org/ctdl/vocabs/lifeCycle/> .
+@prefix logic: <https://purl.org/ctdl/vocabs/logic/> .
+@prefix lrmi: <http://purl.org/dcx/lrmi-terms/> .
+@prefix meta: <http://credreg.net/meta/terms/> .
+@prefix obi: <https://w3id.org/openbadges#> .
+@prefix odrl2: <https://www.w3.org/ns/odrl/2/> .
+@prefix orgType: <https://purl.org/ctdl/vocabs/orgType/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix qdata: <https://credreg.net/qdata/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix residency: <https://purl.org/ctdl/vocabs/residency/> .
+@prefix scheduleFrequency: <https://purl.org/ctdl/vocabs/scheduleFrequency/> .
+@prefix scheduleTiming: <https://purl.org/ctdl/vocabs/scheduleTiming/> .
+@prefix schema: <https://schema.org/> .
+@prefix score: <https://purl.org/ctdl/vocabs/score/> .
+@prefix serviceType: <https://purl.org/ctdl/vocabs/serviceType/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix support: <https://purl.org/ctdl/vocabs/support/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix vs: <https://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix wd: <http://www.wikidata.org/entity/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ceterms:AudienceLevel a skos:ConceptScheme ;
+	rdfs:label "Audience Level"@en-US ;
+	rdfs:comment "Types of levels in an academic or training progression expected of, or to be developed by, the typical person for the resource being described."@en-US ;
+	vs:term_status vs:stable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/ceterms/AudienceLevel/json> ;
+	meta:hasConcept audLevel:AdvancedLevel, audLevel:AssociatesDegreeLevel, audLevel:BachelorsDegreeLevel, audLevel:BeginnerLevel, audLevel:DoctoralDegreeLevel, audLevel:GraduateLevel, audLevel:IntermediateLevel, audLevel:LowerDivisionLevel, audLevel:MastersDegreeLevel, audLevel:PostSecondaryLevel, audLevel:ProfessionalLevel, audLevel:RemedialLevel, audLevel:SecondaryLevel, audLevel:UndergraduateLevel, audLevel:UpperDivisionLevel ;
+	skos:hasTopConcept audLevel:AdvancedLevel, audLevel:BeginnerLevel, audLevel:GraduateLevel, audLevel:IntermediateLevel, audLevel:LowerDivisionLevel, audLevel:PostSecondaryLevel, audLevel:ProfessionalLevel, audLevel:RemedialLevel, audLevel:SecondaryLevel, audLevel:UndergraduateLevel, audLevel:UpperDivisionLevel .
+
+audLevel:AdvancedLevel a skos:Concept ;
+	skos:prefLabel "Advanced Level"@en-US ;
+	skos:definition "Intended for those with significant experience or expertise where developmental expectations are staged for assessing knowledge, skills, or competencies beyond the novice and intermediate levels."@en-US ;
+	vs:term_status vs:stable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/audLevel/AdvancedLevel/json> ;
+	skos:inScheme ceterms:AudienceLevel ;
+	skos:topConceptOf ceterms:AudienceLevel .
+
+audLevel:AssociatesDegreeLevel a skos:Concept ;
+	skos:prefLabel "Associates Degree Level"@en-US ;
+	skos:definition "Intended for those completing college/university-level programs within their first one to two years (lower-division) of post-secondary education."@en-US ;
+	vs:term_status vs:stable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/audLevel/AssociatesDegreeLevel/json> ;
+	skos:broader audLevel:PostSecondaryLevel ;
+	skos:inScheme ceterms:AudienceLevel .
+
+audLevel:BachelorsDegreeLevel a skos:Concept ;
+	skos:prefLabel "Bachelors Degree Level"@en-US ;
+	skos:definition "Intended for those completing college/university-level programs within approximately three to four years where course work and activities advance skills from a lower-division or generalist level to an upper-division level."@en-US ;
+	vs:term_status vs:stable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/audLevel/BachelorsDegreeLevel/json> ;
+	skos:broader audLevel:PostSecondaryLevel ;
+	skos:inScheme ceterms:AudienceLevel .
+
+audLevel:BeginnerLevel a skos:Concept ;
+	skos:prefLabel "Beginner Level"@en-US ;
+	skos:definition "Intended for novices or those with limited experience."@en-US ;
+	vs:term_status vs:stable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/audLevel/BeginnerLevel/json> ;
+	skos:inScheme ceterms:AudienceLevel ;
+	skos:topConceptOf ceterms:AudienceLevel .
+
+audLevel:DoctoralDegreeLevel a skos:Concept ;
+	skos:prefLabel "Doctoral Degree Level"@en-US ;
+	skos:definition "Intended for those who have completed Bachelors and Masters degrees or their equivalent and who will be required to complete either independent research or a significant project or paper."@en-US ;
+	vs:term_status vs:stable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/audLevel/DoctoralDegreeLevel/json> ;
+	skos:broader audLevel:PostSecondaryLevel ;
+	skos:inScheme ceterms:AudienceLevel .
+
+audLevel:GraduateLevel a skos:Concept ;
+	skos:prefLabel "Graduate Level"@en-US ;
+	skos:definition "Intended for those who enrolled in a degree program or other formal program above the baccalaureate level, such as a masters or doctoral degree program."@en-US ;
+	vs:term_status vs:stable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/audLevel/GraduateLevel/json> ;
+	skos:inScheme ceterms:AudienceLevel ;
+	skos:topConceptOf ceterms:AudienceLevel .
+
+audLevel:IntermediateLevel a skos:Concept ;
+	skos:prefLabel "Intermediate Level"@en-US ;
+	skos:definition "Intended for those with some experience, where knowledge, skills, and competency expectations are staged for development beyond novice-level and in preparation for a more advanced-level."@en-US ;
+	dct:description "An individual at this level has foundational competencies to function independently with occasional supervision."@en-US ;
+	vs:term_status vs:stable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/audLevel/IntermediateLevel/json> ;
+	skos:inScheme ceterms:AudienceLevel ;
+	skos:topConceptOf ceterms:AudienceLevel .
+
+audLevel:LowerDivisionLevel a skos:Concept ;
+	skos:prefLabel "Lower Division Level"@en-US ;
+	skos:definition "Intended for those in the first half of an undergraduate level program."@en-US ;
+	vs:term_status vs:stable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/audLevel/LowerDivisionLevel/json> ;
+	skos:inScheme ceterms:AudienceLevel ;
+	skos:topConceptOf ceterms:AudienceLevel .
+
+audLevel:MastersDegreeLevel a skos:Concept ;
+	skos:prefLabel "Masters Degree Level"@en-US ;
+	skos:definition "Intended for those who have completed a Bachelor's Degree or equivalent."@en-US ;
+	vs:term_status vs:stable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/audLevel/MastersDegreeLevel/json> ;
+	skos:broader audLevel:PostSecondaryLevel ;
+	skos:inScheme ceterms:AudienceLevel .
+
+audLevel:PostSecondaryLevel a skos:Concept ;
+	skos:prefLabel "Post-Secondary Level"@en-US ;
+	skos:definition "Intended for those who have completed secondary level school programs or equivalent."@en-US ;
+	vs:term_status vs:stable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/audLevel/PostSecondaryLevel/json> ;
+	skos:inScheme ceterms:AudienceLevel ;
+	skos:topConceptOf ceterms:AudienceLevel ;
+	skos:narrower audLevel:AssociatesDegreeLevel, audLevel:BachelorsDegreeLevel, audLevel:DoctoralDegreeLevel, audLevel:MastersDegreeLevel .
+
+audLevel:ProfessionalLevel a skos:Concept ;
+	skos:prefLabel "Professional Level"@en-US ;
+	skos:definition "Intended for those attending professional programs or equivalent, such as law or medicine."@en-US ;
+	dct:description "Other levels can typically be paired with Professional Level to refine a description of a level."@en-US ;
+	vs:term_status vs:stable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/audLevel/ProfessionalLevel/json> ;
+	skos:inScheme ceterms:AudienceLevel ;
+	skos:topConceptOf ceterms:AudienceLevel .
+
+audLevel:RemedialLevel a skos:Concept ;
+	skos:prefLabel "Remedial Level"@en-US ;
+	skos:definition "Intended for those who are under-prepared for learning at a particular level."@en-US ;
+	vs:term_status vs:unstable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/audLevel/RemedialLevel/json> ;
+	skos:inScheme ceterms:AudienceLevel ;
+	skos:topConceptOf ceterms:AudienceLevel .
+
+audLevel:SecondaryLevel a skos:Concept ;
+	skos:prefLabel "Secondary School or Equivalent"@en-US ;
+	skos:definition "Intended for those attending secondary (high-school) level programs."@en-US ;
+	vs:term_status vs:stable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/audLevel/SecondaryLevel/json> ;
+	skos:inScheme ceterms:AudienceLevel ;
+	skos:topConceptOf ceterms:AudienceLevel .
+
+audLevel:UndergraduateLevel a skos:Concept ;
+	skos:prefLabel "Undergraduate Level"@en-US ;
+	skos:definition "Intended for those who are enrolled in a degree program or other formal program at or below the baccalaureate, such as an associate’s degree, vocational, or technical program."@en-US ;
+	vs:term_status vs:stable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/audLevel/UndergraduateLevel/json> ;
+	skos:inScheme ceterms:AudienceLevel ;
+	skos:topConceptOf ceterms:AudienceLevel .
+
+audLevel:UpperDivisionLevel a skos:Concept ;
+	skos:prefLabel "Upper Division Level"@en-US ;
+	skos:definition "Intended for those in the second half of an undergraduate level program."@en-US ;
+	vs:term_status vs:stable ;
+	meta:changeHistory <https://credreg.net/ctdl/termhistory/audLevel/UpperDivisionLevel/json> ;
+	skos:inScheme ceterms:AudienceLevel ;
+	skos:topConceptOf ceterms:AudienceLevel .
+

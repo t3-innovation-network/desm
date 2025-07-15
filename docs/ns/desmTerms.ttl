@@ -64,6 +64,14 @@ desm:administrator a rdf:Property ;
     rdfs:range desm:Agent;
     rdfs:isDefinedBy desm:
     .
+desm:abstractClass a rdf:Property ;
+    rdfs:label "Abstract Class"@en ;
+    rdfs:comment "Indicates an abstract class that is relevant to a schema."@en ;
+    skos:scopeNote "References a specific abstract class instance in the SKOS concept scheme for abstract classes identified in the configuration profile being used."@en ;
+    rdfs:domain desm:AbstractClass;
+    rdfs:range skos:Concept;
+    rdfs:isDefinedBy desm:
+    .
 desm:asbtractClassModeled a rdf:Property ;
     rdfs:label "Abstract Class Modeled"@en ;
     rdfs:comment "Instance of the abstract class used by a term mapping."@en ;
@@ -76,7 +84,7 @@ desm:asbtractClassType a rdf:Property ;
     rdfs:label "Abstract Class Type Scheme"@en ;
     rdfs:comment "The abstract class concept scheme used in a mapping project"@en ;
     rdfs:domain desm:AbstractClassSet;
-    rdfs:range skos:COnceptScheme;
+    rdfs:range skos:ConceptScheme;
     rdfs:isDefinedBy desm:
     .
 skos:broader a rdf:Property ;
@@ -89,7 +97,13 @@ skos:broader a rdf:Property ;
 dct:created a rdf:Property ;
     rdfs:label "Date Created"@en ;
     rdfs:comment "Date of creation of the resource."@en ;
-    rdfs:domain desm:AbstractClassMapping, desm:AbstractClassSet;
+    rdfs:domain [
+        a owl:class ;
+        owl:unionOf (
+            desm:AbstractClassMapping
+            desm:AbstractClassSe
+        )
+    ];
     rdfs:range xsd:date;
     rdfs:isDefinedBy dct:
     .
@@ -101,6 +115,15 @@ dct:creator a rdf:Property ;
     rdfs:range desm:Agent ;
     rdfs:isDefinedBy dct:
     .
+
+desm:domainIncludes a rdf:Property ;
+    rdfs:label "Domain Includes"@en ;
+    rdfs:comment "Property used to state that a property may be used to describe instances of one or more classes."@en ;
+    rdfs:domain rdf:Property;
+    rdfs:range rdfs:Class;
+    rdfs:isDefinedBy desm:
+    .
+
 sdo:email a rdf:Property ;
     rdfs:label "email"@en ;
     rdfs:comment "Email address."@en ;
@@ -125,10 +148,20 @@ desm:hasDSO a rdf:Property ;
 dct:hasPart a rdf:Property ;
     rdfs:label "Has Part"@en ;
     rdfs:comment "Related resource that is included either physically or logically in the described resource."@en ;
-    rdfs:domain desm:AbstractClassSet ,
-        desm:AbstractCLassMapping ;
-    rdfs:range desm:AbstractClassMapping ,
-        desm:TermMapping ;
+    rdfs:domain [
+        a owl:class ;
+        owl:unionOf (
+            desm:AbstractClassSet
+            desm:AbstractCLassMapping
+        )
+    ];
+    rdfs:range [
+        a owl:class ;
+        owl:unionOf (
+                desm:AbstractClassMapping
+                desm:TermMapping
+         )
+    ];
     rdfs:isDefinedBy dct:
     .
 desm:hasProperty a rdf:Property ;
@@ -161,7 +194,7 @@ desm:hasTermMapping a rdf:Property ;
     .
 skos:hasTopConcept a rdf:Property ;
     rdfs:label "hasTopCOncept"@en ;
-    rdfs:comment "Relates, by convention, a concept scheme to a concept which is topmost in the broader\/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies."@en ;
+    rdfs:comment "Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies."@en ;
     rdfs:domain skos:ConceptScheme ;
     rdfs:range skos:Concept ;
     rdfs:isDefinedBy skos:
@@ -183,10 +216,20 @@ skos:inScheme a rdf:Property ;
 dct:isPartOf a rdf:Property ;
     rdfs:label "Is Part Of"@en ;
     rdfs:comment "A related resource in which the described resource is physically or logically included."@en ;
-    rdfs:domain desm:TermMapping ,
-        desm:AbstractClassMapping ;
-    rdfs:range  desm:AbstractMapping ,
-        desm:AbstractClassSet ;
+    rdfs:domain [
+        a owl:class ;
+        owl:unionOf (
+            desm:TermMapping
+            desm:AbstractClassMapping
+        )
+    ] ;
+    rdfs:range  [
+        a owl:class ;
+        owl:unionOf (
+            desm:AbstractMapping
+            desm:AbstractClassSet
+        )
+    ] ;
     rdfs:isDefinedBy dct:
     .
 desm:issue a rdf:Property ;
@@ -198,8 +241,13 @@ desm:issue a rdf:Property ;
     .
 rdfs:label a rdf:Property ;
     rdfs:label "Human-readable version of the name of a resource."@en ;
-    rdfs:domain rdf:Property ,
-        rdfs:Class ;
+    rdfs:domain [
+        a owl:class ;
+        owl:unionOf (
+            rdf:Property
+            rdfs:Class
+        )
+    ];
     rdfs:range rdf:langString ;
     rdfs:isDefinedBy rdfs:
     .
@@ -245,12 +293,17 @@ skos:narrower a rdf:Property ;
     rdfs:range skos:Concept ;
     rdfs:isDefinedBy skos:
     .
-desm:range a rdf:Property ;
-    rdfs:label "Range"@en ;
+desm:rangeIncludes a rdf:Property ;
+    rdfs:label "Range Includes"@en ;
     rdfs:comment "Property to used to state that the values of a property are instances of one or more classes."@en ;
     rdfs:domain rdf:Property;
-    rdfs:range skos:Concept ,
-        desm:Class ;
+    rdfs:range [
+        a owl:class ;
+        owl:unionOf (
+            skos:Concept
+            rdfs:Class
+        )
+    ];
     rdfs:isDefinedBy desm:
     .
 desm:relatedSchema a rdf:Property ;
@@ -279,5 +332,21 @@ desm:spineTerm a rdf:Property ;
     rdfs:comment "Property of the synthetic spine generated during the mapping process."@en ;
     rdfs:domain desm:TermMapping ;
     rdfs:range rdf:Property ;
+    rdfs:isDefinedBy desm:
+    .
+desm:transformToSpine a rdf:Property ;
+    rdfs:label "Transform to spine"@en ;
+    rdfs:comment "Description of how to translate data values of the mapped term to values that can be used for the spine term."@en ;
+    skos:usageNote "There is no formal syntax for expressing the translation. Data values may be referenced by a syntax such as JSONPath. Operations on the data may be expressed using a syntax such as OpenRefine GREL Functions."@en ;
+    rdfs:domain desm:TermMapping ;
+    rdfs:range xsd:string ;
+    rdfs:isDefinedBy desm:
+    .
+desm:transformFromSpine a rdf:Property ;
+    rdfs:label "Transform from spine"@en ;
+    rdfs:comment "Description of how to translate data values of the spine term to values that can be used for the mapped term."@en ;
+    skos:usageNote "There is no formal syntax for expressing the translation. Data values may be referenced by a syntax such as JSONPath. Operations on the data may be expressed using a syntax such as OpenRefine GREL Functions."@en ;
+    rdfs:domain desm:TermMapping ;
+    rdfs:range xsd:string ;
     rdfs:isDefinedBy desm:
     .
