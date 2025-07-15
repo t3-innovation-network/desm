@@ -3,426 +3,998 @@
     "id": "@id",
     "type": "@type",
     "dct": "http://purl.org/dc/terms/",
-    "desm": "https://github.com/t3-innovation-network/desm/tree/main/schemas/desmSchema/",
+    "desm": "http://desmsolutions.org/ns/",
+    "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "sdo": "sdo:",
-    "xsd": "http://www.w3.org/2001/XMLSchema#" ,
-    "AbstractClassMapping": {"id": "desm:AbstractClassMapping"} ,
-    "AbstractClassSet": {"id": "desm:AbstractClassSet"} ,
-    "Agent": {"id": "desm:Agent"} ,
-    "Class": {"id": "rdfs:Class"} ,
-    "Concept": {"id": "skos:Concept"} ,
-    "ConceptScheme": {"id": "skos:ConceptScheme"} ,
-    "DSO": {"id": "desm:DSO"} ,
-    "Schema": {"id": "desm:Schema"} ,
-    "Property": {"id": "rdf:Property"} ,
-    "abstractClassModeled": {"id": "desm:abstractClassModeled", "type": "id"} ,
-    "abstractClassType": {"id": "desm:abstractClassType", "type": "id"} ,
-    "administrator": {"id": "desm:administrator", "type": "id"} ,
-    "broader": {"id": "skos:broader", "type": "id"} ,
-    "comment": {"id": "rdfs:comment", "@container": "@language"} ,
-    "created": {"id": "dct:created", "type": "xsd:date"} ,
-    "creator": {"id": "dct:creator", "type": "id"} ,
-    "description": {"id": "dct:description", "@container": "@language"} ,
-    "domain": {"id": "rdfs:domain", "type": "id"} ,
-    "email": {"id": "sdo:email", "type": "xsd:string"} ,
-    "githubHandle": {"id": "desm:githubHandle", "type": "xsd:string"} ,
-    "hasDSO": {"id": "desm:hasDSO", "type": "id"} ,
-    "hasPart": {"id": "dct:hasPart", "type": "id"} ,
-    "hasProperty": {"id": "desm:hasProperty", "type": "id"} ,
-    "hasSchema": {"id": "desm:hasSchema", "type": "id"} ,
-    "hasScheme": {"id": "desm:hasScheme", "type": "id"} ,
-    "hasTermMapping": {"id": "desm:hasTermMapping", "type": "id"} ,
-    "hasTopConcept": {"id": "skos:hasTopConcept", "type": "id"} ,
-    "inSchema": {"id": "desm:inSchema", "type": "id"} ,
-    "inScheme": {"id": "skos:inScheme", "type": "id"} ,
-    "isDefinedByr": {"id": "rdfs:isDefinedBy", "type": "id"} ,
-    "isPartOf": {"id": "dct:isPartOf", "type": "id"} ,
-    "issue": {"id": "desm:issue", "@container": "@language"} ,
-    "label": {"id": "rdfs:label", "@container": "@language"} ,
-    "mappedTerm": {"id": "desm:mappedTerm", "type": "id"} ,
-    "mapper": {"id": "desm:mapper", "type": "id"} ,
-    "mappingPredicate": {"id": "desm:mappingPredicate", "type": "id"} ,
-    "name": {"id": "sdo:name", "@container": "@language"} ,
-    "narrower": {"id": "skos:narrower", "type": "id"} ,
-    "prefLabel": {"id": "skos:prefLabel", "@container": "@language"} ,
-    "range": {"id": "rdfs:range", "type": "id"} ,
-    "relatedSchema": {"id": "desm:relatedSchema", "type": "id"} ,
-    "role": {"id": "desm:role", "type": "id"} ,
-    "scopeNote": {"id": "skos:scopeNote", "@container": "@language"} ,
-    "sourcePath": {"id": "desm:sourcePath", "type": "xsd:string"} ,
-    "spineTerm": {"id": "desm:spineTerm", "type": "xsd:string"} ,
-    "title": {"id": "dcterms:title", "@container": "@language"}
+    "sdo": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
   },
-
-  "@graph":
-    [
-        {
-            "id": "desm:AbstractClassMapping",
-            "type": "rdfs:Class",
-            "label": {"en": "Abstract Class Mapping"},
-            "comment": {"en": "Resource describing mappings by one or more Data Standards Organizations (DSOs) to a single abstract class."},
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "desm:Agent",
-            "type": "rdfs:Class",
-            "label": {"en": "Agent"},
-            "comment": {"en": "Personnel engaged in the process of crosswalking terms"},
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "rdfs:Class",
-            "type": "rdfs:Class",
-            "label": {"en": "Class"},
-            "comment": {"en": "Type or class of resource to which properties are related."},
-            "scopeNote": {"en": "Related to, but not the same as rdfs:Class."},
-            "isDefinedBy": "rdfs:"
-        },
-        {
-            "id": "skos:Concept",
-            "type": "rdfs:Class",
-            "label": {"en": "Concept"},
-            "comment": {"en": "An idea or notion; a unit of thought."},
-            "isDefinedBy": "skos:"
-        },
-        {
-            "id": "skos:ConceptScheme",
-            "type": "rdfs:Class",
-            "label": {"en": "Concept Scheme"},
-            "comment": {"en": "A set of concepts, optionally including statements about semantic relationships between those concepts."},
-            "scopeNote": {"en": "A concept scheme may be defined to include concepts from different sources."},
-            "isDefinedBy": "skos:"
-        },
-        {
-            "id": "desm:DSO",
-            "type": "rdfs:Class",
-            "label": {"en": "Data Standards Organization"},
-            "comment": {"en": "Organization or person responsible for creating or making available a de facto or de jure data standard being crosswalked in a project."},
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "desm:MappingConfiguration",
-            "type": "rdfs:Class",
-            "label": {"en": "Mapping Configuration"},
-            "comment": {"en": "Resource identifying the form and aggregation of one or more mappings of one or more Abstract Class created by one or more Data Standards Organizations (DSOs)."},
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "rdf:Property",
-            "type": "rdfs:Class",
-            "label": {"en": "Property"},
-            "comment": {"en": "Property in a cross walk crosswalked to a propery in the spine."},
-            "scopeNote": {"en": "Crosswalks map a properties from the DSOs' schemas to properties in the synthetic spine."},
-            "isDefinedBy": "rdf:"
-        },
-        {
-            "id": "desm:Schema",
-            "type": "rdfs:Class",
-            "label": {"en": "Resource describing controlled concepts or enumerations."},
-            "isDefinedBy": "desm:"
-        },
-                {
-            "id": "desm:administrator",
-            "type": "rdf:Property",
-            "label": {"en": "Administrator"},
-            "comment": {"en": "Agent with administrative duties."},
-            "domain": "desm:DSO",
-            "range": "desm:Agent",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "desm:asbtractClassModeled",
-            "type": "rdf:Property",
-            "label": {"en": "Abstract Class Modeled"},
-            "comment": {"en": "Instance of the abstract class used by a term mapping."},
-            "scopeNote": {"en": "References a specific abstract class instance in the SKOS concept scheme for abstract classes identified in the configuration profile being used."},
-            "domain": "desm:AbstractClassMapping",
-            "range": "skos:Concept",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "desm:asbtractClassType",
-            "type": "rdf:Property",
-            "label": {"en": "Abstract Class Type Scheme"},
-            "comment": {"en": "The abstract class concept scheme used in a mapping project"},
-            "domain": "desm:AbstractClassSet",
-            "range": "skos:COnceptScheme",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "skos:broader",
-            "type": "rdf:Property",
-            "label": {"en": "Has Broader"},
-            "comment": {"en": "Broader concepts are typically rendered as parents in a concept hierarchy (tree)."},
-            "domain": "skos:Concept",
-            "range": "skos:Concept",
-            "isDefinedBy": "skos:"
-        },
-        {
-            "id": "dct:created",
-            "type": "rdf:Property",
-            "label": {"en": "Date Created"},
-            "comment": {"en": "Date of creation of the resource."},
-            "domain": [
-                "desm:AbstractClassMapping",
-                "desm:AbstractClassSet"
-            ],
-            "range": "xsd:date",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "id": "dct:creator",
-            "type": "rdf:Property",
-            "label": {"en": "Creator"},
-            "comment": {"en": "An entity responsible for making the resource."},
-            "domain": "desm:Schema",
-            "range": "desm:Agent",
-            "isDefinedBy": "dct:"
-        },
-        {
-            "id": "sdo:email",
-            "type": "rdf:Property",
-            "label": {"en": "email"},
-            "comment": {"en": "Email address."},
-            "domain": "desm:Agent",
-            "range": "xsd:string",
-            "isDefinedBy": "sdo:"
-        },
-        {
-            "id": "desm:githubHandle",
-            "type": "rdf:Property",
-            "label": {"en": "GitHub handle"},
-            "comment": {"en": "GitHub username."},
-            "domain": "desm:Agent",
-            "range": "xsd:string",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "desm:hasDSO",
-            "type": "rdf:Property",
-            "label": {"en": "Has DSO"},
-            "comment": {"en": "DSO participating in one or more asbtract class mappings in this project."},
-            "domain": "desm:MappingConfiguration",
-            "range": "desm:DSO",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "dct:hasPart",
-            "type": "rdf:Property",
-            "label": {"en": "Has Part"},
-            "comment": {"en": "Related resource that is included either physically or logically in the described resource."},
-            "domain": [
-                "desm:AbstractClassSet",
-                "desm:AbstractCLassMapping"
-            ],
-            "range": [
-                "desm:AbstractClassMapping",
-                "desm:TermMapping"
-            ],
-            "isDefinedBy": "dct:"
-        },
-        {
-            "id": "desm:hasProperty",
-            "type": "rdf:Property",
-            "label": {"en": "Has Property"},
-            "comment": {"en": "Property of a particular schema."},
-            "domain": "desm:Schema",
-            "range": "rdf:Property",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "desm:hasSchema",
-            "type": "rdf:Property",
-            "label": {"en": "Has Schema"},
-            "comment": {"en": "Schema in which this property is defined."},
-            "domain": "rdf:Property",
-            "range": "desm:Schema",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "desm:hasScheme",
-            "type": "rdf:Property",
-            "label": {"en": "Has Scheme"},
-            "comment": {"en": "Concept Scheme that belongs to this Data Standards Organization."},
-            "domain": "desm:DSO",
-            "range": "skos:ConceptScheme",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "desm:hasTermMapping",
-            "type": "rdf:Property" ,
-            "label": {"en": "Has Term Mapping"},
-            "comment": {"en": "Relates a property to a term mapping in which it is included."},
-            "domain": "rdf:Property",
-            "range": "desm:TermMapping",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "skos:hasTopConcept",
-            "type": "rdf:Property",
-            "label": {"en": "hasTopCOncept"},
-            "comment": {"en": "Relates, by convention, a concept scheme to a concept which is topmost in the broader\\/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies."},
-            "domain": "skos:ConceptScheme",
-            "range": "skos:Concept",
-            "isDefinedBy": "skos:"
-        },
-        {
-            "id": "skos:inScheme",
-            "type": "rdf:Property",
-            "label": {"en": "In Scheme"},
-            "comment": {"en": "Relates a resource (for example a concept) to a concept scheme in which it is included."},
-            "domain": "skos:Concept",
-            "range": "skos:ConceptScheme",
-            "isDefinedBy": "skos:"
-        },
-        {
-            "id": "desm:inSchema",
-            "type": "rdf:Property",
-            "label": {"en": "In Schema"},
-            "comment": {"en": "Relates a property to a scheme in which it is included."},
-            "domain": "rdf:Property",
-            "range": "desm:Schema",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "dct:isPartOf",
-            "type": "rdf:Property",
-            "label": {"en": "Is Part Of"},
-            "comment": {"en": "Related resource in which the described resource is physically or logically included."},
-            "domain": [
-                "desm:TermMapping",
-                "desm:AbstractClassMapping"
-            ],
-            "range": [
-                "desm:AbstractMapping",
-                "desm:AbstractClassSet"
-            ],
-            "isDefinedBy": "dct:"
-        },
-        {
-            "id": "desm:issue",
-            "type": "rdf:Property",
-            "label": {"en": "Issue"},
-            "comment": {"en": "Recording of an issue with mapping a property to another property."},
-            "domain": "desm:TermMapping",
-            "range": "rdf:langString",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "label",
-            "type": "rdf:Property",
-            "label": {"en": "Human-readable version of the name of a resource."},
-            "domain": [
-                "rdf:Property",
-                "rdfs:Class"
-            ],
-            "range": "rdf:langString",
-            "isDefinedBy": "rdfs:"
-        },
-        {
-            "id": "desm:mappedTerm",
-            "type": "rdf:Property",
-            "label": {"en": "Mapped Term"},
-            "comment": {"en": "Property being mapped to a spine property."},
-            "domain": "desm:TermMapping",
-            "range": "rdf:Property",
-            "isDefinedBy":"desm:"
-        },
-        {
-            "id": "desm:mapper",
-            "type": "rdf:Property",
-            "label": {"en": "Mapper"},
-            "comment": {"en": "An agent adminitering or performing a mapping or crosswalk."},
-            "domain": "desm:DSO",
-            "range": "desm:Agent",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "desm:mappingPredicate",
-            "type": "rdf:Property",
-            "label": {"en": "Mapping Predicate"},
-            "comment": {"en": "Concept identifying the relationship between two properties being mapped."},
-            "domain": "desm:TermMapping",
-            "range": "skos:Concept",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "desm:mappingPredicateType",
-            "type": "rdf:Property",
-            "label": {"en": "Mapping Predicate Type"},
-            "comment": {"en": "Concept scheme defining mapping predicate types."},
-            "domain": "desm:AbstractCLassSet",
-            "range": "skos:ConceptScheme",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "sdo:name",
-            "type": "rdf:Property",
-            "label": {"en": "Name"},
-            "comment": {"en": "The name of the item."},
-            "domain": "desm:Agent",
-            "range": "rdf:langString",
-            "isDefinedBy": "sdo:"
-        },
-        {
-            "id": "skos:narrower",
-            "type": "rdf:Property",
-            "label": {"en": "Narrower"},
-            "comment": {"en": "Narrower concepts are typically rendered as children in a concept hierarchy (tree)."},
-            "domain": "skos:Concept",
-            "range": "skos:Concept",
-            "isDefinedBy": "skos:"
-        },
-        {
-            "id": "desm:range",
-            "type": "rdf:Property",
-            "label": {"en": "Range"},
-            "comment": {"en": "Property to used to state that the values of a property are instances of one or more classes."},
-            "domain": "rdf:Property",
-            "range": [
-                "skos:Concept",
-                "desm:Class"
-            ],
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "desm:relatedSchema",
-            "type": "rdf:Property",
-            "label": {"en": "Related Schema"},
-            "comment": {"en": "Schema to which a concept scheme provides property values."},
-            "domain": "skos:ConceptSCheme",
-            "range": "desm:Schema",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "desm:role",
-            "type": "rdf:Property",
-            "label": {"en": "Role"},
-            "comment": {"en": "Functon or job of an agent."},
-            "domain": "desm:Agent",
-            "range": "rdf:langString",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "desm:sourcePath",
-            "type": "rdf:Property",
-            "label": {"en": "Source Path"},
-            "comment": {"en": "Property or class path in a schema."},
-            "domain": "rdf:Property",
-            "range": "xsd:string",
-            "isDefinedBy": "desm:"
-        },
-        {
-            "id": "desm:spineTerm",
-            "type": "rdf:Property",
-            "label": {"en": "Spine Term"},
-            "comment": {"en": "Property of the synthetic spine generated during the mapping process."},
-            "domain": {"en": "desm:TermMapping"},
-            "range": "rdf:Property",
-            "isDefinedBy": "desm:"
-        }
-    ]
+  "@graph": [
+    {
+      "id": "desm:administrator",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Agent with administrative duties."
+      },
+      "rdfs:domain": {
+        "id": "desm:DSO"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Administrator"
+      },
+      "rdfs:range": {
+        "id": "desm:Agent"
+      }
+    },
+    {
+      "id": "desm:inSchema",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Relates a property to a scheme in which it is included."
+      },
+      "rdfs:domain": {
+        "id": "rdf:Property"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "In Schema"
+      },
+      "rdfs:range": {
+        "id": "desm:Schema"
+      }
+    },
+    {
+      "id": "http://schema.org/name",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "The name of the item."
+      },
+      "rdfs:domain": {
+        "id": "desm:Agent"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://schema.org/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Name"
+      },
+      "rdfs:range": {
+        "id": "rdf:langString"
+      }
+    },
+    {
+      "id": "dct:isPartOf",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "A related resource in which the described resource is physically or logically included."
+      },
+      "rdfs:domain": {
+        "id": "_:ne1fe42aa270347f5a6afbd24ee522a5db10"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://purl.org/dc/terms/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Is Part Of"
+      },
+      "rdfs:range": {
+        "id": "_:ne1fe42aa270347f5a6afbd24ee522a5db13"
+      }
+    },
+    {
+      "id": "_:ne1fe42aa270347f5a6afbd24ee522a5db10",
+      "type": "owl:class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "id": "desm:TermMapping"
+          },
+          {
+            "id": "desm:AbstractClassMapping"
+          }
+        ]
+      }
+    },
+    {
+      "id": "_:ne1fe42aa270347f5a6afbd24ee522a5db13",
+      "type": "owl:class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "id": "desm:AbstractMapping"
+          },
+          {
+            "id": "desm:AbstractClassSet"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desm:hasTermMapping",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Relates a property to a term mapping in which it is included."
+      },
+      "rdfs:domain": {
+        "id": "rdf:Property"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Has Term Mapping"
+      },
+      "rdfs:range": {
+        "id": "desm:TermMapping"
+      }
+    },
+    {
+      "id": "skos:inScheme",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Relates a resource (for example a concept) to a concept scheme in which it is included."
+      },
+      "rdfs:domain": {
+        "id": "skos:Concept"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://www.w3.org/2004/02/skos/core#"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "In Scheme"
+      },
+      "rdfs:range": {
+        "id": "skos:ConceptScheme"
+      }
+    },
+    {
+      "id": "desm:mappingPredicate",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Concept identifying the relationship between two properties being mapped."
+      },
+      "rdfs:domain": {
+        "id": "desm:TermMapping"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Mapping Predicate"
+      },
+      "rdfs:range": {
+        "id": "skos:Concept"
+      }
+    },
+    {
+      "id": "skos:hasTopConcept",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies."
+      },
+      "rdfs:domain": {
+        "id": "skos:ConceptScheme"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://www.w3.org/2004/02/skos/core#"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "hasTopCOncept"
+      },
+      "rdfs:range": {
+        "id": "skos:Concept"
+      }
+    },
+    {
+      "id": "desm:mappingPredicateType",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Concept scheme defining mapping predicate types."
+      },
+      "rdfs:domain": {
+        "id": "desm:AbstractCLassSet"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Mapping Predicate Type"
+      },
+      "rdfs:range": {
+        "id": "skos:ConceptScheme"
+      }
+    },
+    {
+      "id": "dct:created",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Date of creation of the resource."
+      },
+      "rdfs:domain": {
+        "id": "_:ne1fe42aa270347f5a6afbd24ee522a5db1"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://purl.org/dc/terms/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Date Created"
+      },
+      "rdfs:range": {
+        "id": "xsd:date"
+      }
+    },
+    {
+      "id": "_:ne1fe42aa270347f5a6afbd24ee522a5db1",
+      "type": "owl:class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "id": "desm:AbstractClassMapping"
+          },
+          {
+            "id": "desm:AbstractClassSe"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desm:hasProperty",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Property of a particular schema."
+      },
+      "rdfs:domain": {
+        "id": "desm:Schema"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Has Property"
+      },
+      "rdfs:range": {
+        "id": "rdf:Property"
+      }
+    },
+    {
+      "id": "desm:Schema",
+      "type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Resource describing controlled concepts or enumerations."
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Schema"
+      }
+    },
+    {
+      "id": "desm:asbtractClassType",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "The abstract class concept scheme used in a mapping project"
+      },
+      "rdfs:domain": {
+        "id": "desm:AbstractClassSet"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Abstract Class Type Scheme"
+      },
+      "rdfs:range": {
+        "id": "skos:ConceptScheme"
+      }
+    },
+    {
+      "id": "desm:AbstractClassMapping",
+      "type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Resource describing mappings by one or more Data Standards Organizations (DSOs) to a single abstract class."
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Abstract Class Mapping"
+      }
+    },
+    {
+      "id": "skos:broader",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Broader concepts are typically rendered as parents in a concept hierarchy (tree)."
+      },
+      "rdfs:domain": {
+        "id": "skos:Concept"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://www.w3.org/2004/02/skos/core#"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Has Broader"
+      },
+      "rdfs:range": {
+        "id": "skos:Concept"
+      }
+    },
+    {
+      "id": "dct:hasPart",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Related resource that is included either physically or logically in the described resource."
+      },
+      "rdfs:domain": {
+        "id": "_:ne1fe42aa270347f5a6afbd24ee522a5db4"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://purl.org/dc/terms/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Has Part"
+      },
+      "rdfs:range": {
+        "id": "_:ne1fe42aa270347f5a6afbd24ee522a5db7"
+      }
+    },
+    {
+      "id": "_:ne1fe42aa270347f5a6afbd24ee522a5db4",
+      "type": "owl:class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "id": "desm:AbstractClassSet"
+          },
+          {
+            "id": "desm:AbstractCLassMapping"
+          }
+        ]
+      }
+    },
+    {
+      "id": "_:ne1fe42aa270347f5a6afbd24ee522a5db7",
+      "type": "owl:class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "id": "desm:AbstractClassMapping"
+          },
+          {
+            "id": "desm:TermMapping"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rdfs:label",
+      "type": "rdf:Property",
+      "rdfs:domain": {
+        "id": "_:ne1fe42aa270347f5a6afbd24ee522a5db16"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://www.w3.org/2000/01/rdf-schema#"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Human-readable version of the name of a resource."
+      },
+      "rdfs:range": {
+        "id": "rdf:langString"
+      }
+    },
+    {
+      "id": "_:ne1fe42aa270347f5a6afbd24ee522a5db16",
+      "type": "owl:class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "id": "rdf:Property"
+          },
+          {
+            "id": "rdfs:Class"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desm:sourcePath",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Property or class path in a schema."
+      },
+      "rdfs:domain": {
+        "id": "rdf:Property"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Source Path"
+      },
+      "rdfs:range": {
+        "id": "xsd:string"
+      }
+    },
+    {
+      "id": "desm:spineTerm",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Property of the synthetic spine generated during the mapping process."
+      },
+      "rdfs:domain": {
+        "id": "desm:TermMapping"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Spine Term"
+      },
+      "rdfs:range": {
+        "id": "rdf:Property"
+      }
+    },
+    {
+      "id": "desm:hasSchema",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Schema in which this property is defined."
+      },
+      "rdfs:domain": {
+        "id": "rdf:Property"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Has Schema"
+      },
+      "rdfs:range": {
+        "id": "desm:Schema"
+      }
+    },
+    {
+      "id": "skos:ConceptScheme",
+      "type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "A set of concepts, optionally including statements about semantic relationships between those concepts."
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://www.w3.org/2004/02/skos/core#"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Concept Scheme"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "A concept scheme may be defined to include concepts from different sources."
+      }
+    },
+    {
+      "id": "desm:mappedTerm",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Property being mapped to a spine property."
+      },
+      "rdfs:domain": {
+        "id": "desm:TermMapping"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Mapped Term"
+      },
+      "rdfs:range": {
+        "id": "rdf:Property"
+      }
+    },
+    {
+      "id": "desm:rangeIncludes",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Property to used to state that the values of a property are instances of one or more classes."
+      },
+      "rdfs:domain": {
+        "id": "rdf:Property"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Range Includes"
+      },
+      "rdfs:range": {
+        "id": "_:ne1fe42aa270347f5a6afbd24ee522a5db19"
+      }
+    },
+    {
+      "id": "_:ne1fe42aa270347f5a6afbd24ee522a5db19",
+      "type": "owl:class",
+      "owl:unionOf": {
+        "@list": [
+          {
+            "id": "skos:Concept"
+          },
+          {
+            "id": "rdfs:Class"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desm:asbtractClassModeled",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Instance of the abstract class used by a term mapping."
+      },
+      "rdfs:domain": {
+        "id": "desm:AbstractClassMapping"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Abstract Class Modeled"
+      },
+      "rdfs:range": {
+        "id": "skos:Concept"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "References a specific abstract class instance in the SKOS concept scheme for abstract classes identified in the configuration profile being used."
+      }
+    },
+    {
+      "id": "desm:MappingConfiguration",
+      "type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Resource identifying the form and aggregation of one or more mappings of one or more Abstract Class created by one or more Data Standards Organizations (DSOs)."
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Mapping Configuration Set"
+      }
+    },
+    {
+      "id": "desm:githubHandle",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "GitHub username."
+      },
+      "rdfs:domain": {
+        "id": "desm:Agent"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "GitHub handle"
+      },
+      "rdfs:range": {
+        "id": "xsd:string"
+      }
+    },
+    {
+      "id": "desm:Agent",
+      "type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Personnel engaged in the process of crosswalking terms"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Agent"
+      }
+    },
+    {
+      "id": "rdf:Property",
+      "type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Property in a cross walk crosswalked to a propery in the spine."
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Property"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "Crosswalks map a properties from the DSOs' schemas to properties in the synthetic spine."
+      }
+    },
+    {
+      "id": "http://schema.org/email",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Email address."
+      },
+      "rdfs:domain": {
+        "id": "desm:Agent"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://schema.org/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "email"
+      },
+      "rdfs:range": {
+        "id": "xsd:string"
+      }
+    },
+    {
+      "id": "desm:hasScheme",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Concept Scheme that belongs to this Data Standards Organization."
+      },
+      "rdfs:domain": {
+        "id": "desm:DSO"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Has Scheme"
+      },
+      "rdfs:range": {
+        "id": "skos:ConceptScheme"
+      }
+    },
+    {
+      "id": "desm:relatedSchema",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Schema to which a concept scheme provides property values."
+      },
+      "rdfs:domain": {
+        "id": "skos:ConceptSCheme"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Related Schema"
+      },
+      "rdfs:range": {
+        "id": "desm:Schema"
+      }
+    },
+    {
+      "id": "skos:narrower",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Narrower concepts are typically rendered as children in a concept hierarchy (tree)."
+      },
+      "rdfs:domain": {
+        "id": "skos:Concept"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://www.w3.org/2004/02/skos/core#"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Narrower"
+      },
+      "rdfs:range": {
+        "id": "skos:Concept"
+      }
+    },
+    {
+      "id": "rdfs:Class",
+      "type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Type or class of resource to which properties are related."
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://www.w3.org/2000/01/rdf-schema#"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Class"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "Related to, but not the same as rdfs:Class."
+      }
+    },
+    {
+      "id": "desm:DSO",
+      "type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Organization or person responsible for creating or making available a de facto or de jure data standard being crosswalked in a project."
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Data Standards Organization"
+      }
+    },
+    {
+      "id": "desm:hasDSO",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "DSO participating in one or more asbtract class mappings in this project."
+      },
+      "rdfs:domain": {
+        "id": "desm:MappingCOnfiguration"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Has DSO"
+      },
+      "rdfs:range": {
+        "id": "desm:DSO"
+      }
+    },
+    {
+      "id": "desm:role",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Functon or job of an agent."
+      },
+      "rdfs:domain": {
+        "id": "desm:Agent"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Role"
+      },
+      "rdfs:range": {
+        "id": "rdf:langString"
+      }
+    },
+    {
+      "id": "desm:issue",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Recording of an issue with mapping a property to another property."
+      },
+      "rdfs:domain": {
+        "id": "desm:TermMapping"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Issue"
+      },
+      "rdfs:range": {
+        "id": "rdf:langString"
+      }
+    },
+    {
+      "id": "dct:creator",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "An entity responsible for making the resource."
+      },
+      "rdfs:domain": {
+        "id": "desm:Schema"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://purl.org/dc/terms/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Creator"
+      },
+      "rdfs:range": {
+        "id": "desm:Agent"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": ""
+      }
+    },
+    {
+      "id": "skos:Concept",
+      "type": "rdfs:Class",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "An idea or notion; a unit of thought."
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://www.w3.org/2004/02/skos/core#"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Concept"
+      }
+    },
+    {
+      "id": "desm:abstractClass",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Indicates an abstract class that is relevant to a schema."
+      },
+      "rdfs:domain": {
+        "id": "desm:AbstractClass"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Abstract Class"
+      },
+      "rdfs:range": {
+        "id": "skos:Concept"
+      },
+      "skos:scopeNote": {
+        "@language": "en",
+        "@value": "References a specific abstract class instance in the SKOS concept scheme for abstract classes identified in the configuration profile being used."
+      }
+    },
+    {
+      "id": "desm:mapper",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "An agent adminitering or performing a mapping or crosswalk."
+      },
+      "rdfs:domain": {
+        "id": "desm:DSO"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Mapper"
+      },
+      "rdfs:range": {
+        "id": "desm:Agent"
+      }
+    },
+    {
+      "id": "desm:domainIncludes",
+      "type": "rdf:Property",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Property used to state that a property may be used to describe instances of one or more classes."
+      },
+      "rdfs:domain": {
+        "id": "rdf:Property"
+      },
+      "rdfs:isDefinedBy": {
+        "id": "http://desmsolutions.org/ns/"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Domain Includes"
+      },
+      "rdfs:range": {
+        "id": "rdfs:Class"
+      }
+    },
+    {
+      "id": "desm:transformToSpine",
+      "type": "rdf:Property",
+      "rdfs:label" : {
+        "@language" : "en",
+        "@value": "Transform to spine"
+      },
+      "rdfs:comment":{
+        "@language" : "en",
+        "@value": "Description of how to translate data values of the mapped term to values that can be used for the spine term."
+      },
+      "skos:usageNote": {
+        "@language" : "en",
+        "@value": "There is no formal syntax for expressing the translation. Data values may be referenced by a syntax such as JSONPath. Operations on the data may be expressed using a syntax such as OpenRefine GREL Functions."
+      },
+      "rdfs:domain": "desm:TermMapping",
+      "rdfs:range": "xsd:string",
+      "rdfs:isDefinedBy": "http://desmsolutions.org/ns/"
+    },
+    {
+      "id": "desm:transformFromSpine",
+      "type": "rdf:Property",
+      "rdfs:label" : {
+        "@language" : "en",
+        "@value": "Transform from spine"
+      },
+      "rdfs:comment":{
+        "@language" : "en",
+        "@value": "Description of how to translate data values of the spine term to values that can be used for the mapped term."
+      },
+      "skos:usageNote": {
+        "@language" : "en",
+        "@value": "There is no formal syntax for expressing the translation. Data values may be referenced by a syntax such as JSONPath. Operations on the data may be expressed using a syntax such as OpenRefine GREL Functions."
+      },
+      "rdfs:domain": "desm:TermMapping",
+      "rdfs:range": "xsd:string",
+      "rdfs:isDefinedBy": "http://desmsolutions.org/ns/"
+    }
+  ]
 }

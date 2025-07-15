@@ -14,9 +14,23 @@ module API
         includes = %i(property)
         includes += %i(vocabularies) unless params[:spine].present?
         includes += %i(organization) if params[:with_organization].present?
-        terms = Spine.find(params[:id]).terms.includes(includes)
 
-        render json: terms, spine: params[:with_weights].present?,
+        max_weight = current_configuration_profile.predicate_set&.max_weight || 0
+
+        select = "terms.*, " \
+                 "SUM(COALESCE(predicates.weight, 0))::int AS current_mapping_weight, " \
+                 "SUM(#{max_weight})::int AS max_mapping_weight"
+
+        terms = Spine
+                  .find(params[:id])
+                  .terms
+                  .select(Arel.sql(select))
+                  .left_joins(alignments: :predicate)
+                  .group(:id)
+                  .includes(includes)
+
+        render json: terms,
+               spine: params[:with_weights].present?,
                with_organization: params[:with_organization].present?
       end
 

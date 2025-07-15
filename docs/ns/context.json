@@ -32,6 +32,8 @@
     "spineTerm": {"@id": "desm:spineTerm", "@type": "@id" },
     "subPropertyOf": {"@id": "rdfs:subPropertyOf", "@type": "@id"},
     "title": {"@id": "dct:title", "@container": "@language"},
+    "transformToSpine": {"@id": "desm:transformToSpine", "@type": "xsd:string" },
+    "transformFromSpine": {"@id": "desm:transformFromSpine", "@type": "xsd:string" },
     "valueSpace": {"@id": "desm:valueSpace", "@type": "@id" }
   }
 }
