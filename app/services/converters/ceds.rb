@@ -58,6 +58,9 @@ module Converters
     # @param row [CSV::Row]
     # @return [Hash, nil]
     def build_concept_scheme(row)
+      return build_vocabulary_concept_scheme(row) if row[:type].to_s.downcase == "vocabulary"
+      return build_vocabulary_concept(row) if row[:type].to_s.downcase == "term"
+
       options = (row[:option_set] || "").split("\n")
       return if options.size < 2
 
@@ -75,6 +78,40 @@ module Converters
         "dct:title": "#{element_name} Option Set",
         "dct:description": "Option set for #{element_name}",
         "skos:hasTopConcept": concept_ids
+      }
+    end
+
+    def build_vocabulary_concept(row)
+      label = row.fetch(:pref_label_name)
+      definition = row.fetch(:definition_description, "")
+      technical_name = label.gsub(" ", "_").camelize
+      in_scheme = row.fetch(:in_vocabulary, nil)
+
+      concept = {
+        "@id": build_desm_uri(row.fetch(:id_notation, technical_name)),
+        "@type": "skos:Concept",
+        "skos:prefLabel": label,
+        "skos:definition": { en: definition },
+        "skos:notation": row.fetch(:id_notation, ""),
+        "skos:inScheme": in_scheme.present? ? build_desm_uri(in_scheme) : nil
+      }
+
+      resources << concept
+      concept
+    end
+
+    def build_vocabulary_concept_scheme(row)
+      element_name = row.fetch(:pref_label_name)
+      technical_name = element_name.gsub(" ", "_").camelize
+      scheme_id = build_desm_uri(row.fetch(:id_notation, technical_name))
+      {
+        "@id": scheme_id,
+        "@type": "skos:ConceptScheme",
+        "dct:title": element_name,
+        "dct:description": row.fetch(:definition_description, ""),
+        "dct:creator": row.fetch(:for_schema, ""),
+        "dct:modified": row.fetch(:date, ""),
+        "skos:hasTopConcept": row.fetch(:has_terms, "").split(",").map(&method(:build_desm_uri))
       }
     end
 
@@ -98,8 +135,8 @@ module Converters
     # @return [Hash]
     def build_property(row)
       concept_scheme = fetch_concept_scheme(row)
-      entity = row.fetch(:entity)
-      global_id = row.fetch(:global_id)
+      entity = row.fetch(:entity, "")
+      global_id = row.fetch(:global_id, "")
       return unless global_id.present?
 
       property = {

@@ -6,27 +6,61 @@ RSpec.describe Converters::Ceds do
   describe ".convert" do
     let(:graph) { result.fetch(:@graph) }
     let(:result) { described_class.convert(file) }
-
     let(:file) do
-      Rack::Test::UploadedFile.new(file_fixture("ceds.csv"))
+      Rack::Test::UploadedFile.new(file_fixture(schema_file))
     end
 
-    it "converts CEDS to JSON-LD" do
-      expect(result.keys).to eq(%i(@context @graph))
+    context "when converting CSV schema file" do
+      let(:schema_file) { "ceds.csv" }
 
-      expect(result.fetch(:@context)).to eq(
-        dct: "http://purl.org/dc/terms/",
-        desm: "http://desmsolutions.org/ns/",
-        rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-        rdfs: "http://www.w3.org/2000/01/rdf-schema#",
-        skos: "http://www.w3.org/2004/02/skos/core#"
-      )
+      it_behaves_like "valid JSON-LD conversion"
+    end
 
-      expect(graph.map { |r| r[:@type] }.uniq).to match_array(
-        %w(rdf:Class rdf:Property skos:Concept skos:ConceptScheme)
-      )
+    context "when converting CSV schema file with vocabulary" do
+      let(:schema_file) { "ceds-ex1.csv" }
 
-      expect(graph.uniq.size).to eq(graph.size)
+      it_behaves_like "valid JSON-LD conversion", %w(rdf:Class rdf:Property)
+
+      it "includes vocabulary and it's concepts" do
+        vocabularies = graph.select { |r| r[:@type] == "skos:ConceptScheme" }
+        expect(vocabularies.size).to eq(1)
+        expect(vocabularies.map { |v| v[:"dct:title"] }.uniq).to include("Organization Operational Status")
+        expect(vocabularies.map { |v| v[:"dct:creator"] }.uniq).to include("CEDS")
+
+        concepts = graph.select { |r| r[:@type] == "skos:Concept" }
+        expect(concepts.size).to eq(2)
+        expect(concepts.map { |c| c[:"skos:prefLabel"] }).to match_array(%w(Active Inactive))
+        expect(concepts.map do |c|
+          c[:"skos:definition"][:en]
+        end).to all include("The organization is")
+        expect(concepts.to_set { |c| c[:"skos:inScheme"] }).to eq(Set.new(vocabularies.map { |v| v[:@id] }))
+        expect(concepts.map { |c| c[:"skos:notation"] }).to match_array(%w(Active Inactive))
+      end
+    end
+
+    context "when converting CSV schema file with multiple vocabularies" do
+      let(:schema_file) { "ceds-ex2.csv" }
+
+      it_behaves_like "valid JSON-LD conversion", %w(rdf:Class rdf:Property)
+
+      it "includes vocabularies and their concepts" do
+        vocabularies = graph.select { |r| r[:@type] == "skos:ConceptScheme" }
+        expect(vocabularies.size).to eq(2)
+        expect(vocabularies.map do |v|
+          v[:"dct:title"]
+        end.uniq).to include("Education Verification Method", "Facility Joint Development Type")
+        expect(vocabularies.map { |v| v[:"dct:creator"] }.uniq).to include("CEDS")
+
+        concepts = graph.select { |r| r[:@type] == "skos:Concept" }
+        expect(concepts.size).to eq(7)
+        expect(concepts.map { |c| c[:"skos:prefLabel"] }).to match_array(["Official Transcript",
+                                                                          "Transcript Copy",
+                                                                          "Degree Copy",
+                                                                          "Grade Report",
+                                                                          "Other",
+                                                                          "Dedicated",
+                                                                          "Shared"])
+      end
     end
   end
 end

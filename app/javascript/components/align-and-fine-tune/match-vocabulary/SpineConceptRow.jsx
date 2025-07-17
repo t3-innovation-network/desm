@@ -9,7 +9,7 @@ import SimpleConceptCard from './SimpleConceptCard';
  * Props:
  * @prop {Object} alignment
  * @prop {Object} concept
- * @prop {String} mappingOrigin
+ * @prop {String} schemaName
  * @prop {String} spineOrigin
  * @prop {Array} predicates
  * @prop {Function} onPredicateSelected
@@ -22,7 +22,7 @@ const SpineConceptRow = (props) => {
   const {
     alignment,
     concept,
-    mappingOrigin,
+    schemaName,
     spineOrigin,
     predicates,
     onPredicateSelected,
@@ -44,12 +44,13 @@ const SpineConceptRow = (props) => {
           predicates={predicates}
           onPredicateSelected={onPredicateSelected}
           predicate={predicateLabel}
+          cls="w-100"
         />
       </div>
       <div className="col-4">
         {alignment.mappedConceptsList && alignment.mappedConceptsList.length ? (
           alignment.mappedConceptsList.map((concept) => {
-            return <SimpleConceptCard key={concept.id} concept={concept} origin={mappingOrigin} />;
+            return <SimpleConceptCard key={concept.id} concept={concept} origin={schemaName} />;
           })
         ) : (
           <DropZone

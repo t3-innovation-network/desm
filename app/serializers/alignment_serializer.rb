@@ -14,7 +14,7 @@ class AlignmentSerializer < ApplicationSerializer
     object.uri
   end
 
-  attribute :schema_name, if: -> { params[:with_schema_name] } do
+  attribute :schema_name do
     schema = object.specification
     "#{schema.name}#{schema.version.present? ? " (#{schema.version})" : ''}"
   end

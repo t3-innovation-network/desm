@@ -76,6 +76,18 @@ en:
             label: Transform to Spine
             placeholder: Enter transformation to spine
           save: Save Transformation
+          description_html: Transforms provide details on the operations required to adjust the value of one or more properties to make them valid for another schema. These may involve literal reformatting or conceptual alignment (e.g., changing an object to a string). JsonPath or XPath can be used to identify the values, and <a href="https://openrefine.org/docs/manual/grelfunctions" target="_blank">OpenRefine GREL functions</a> can be used to specify the operations. “Transform to Spine” converts a source value to the spine format; “Transform from Spine” converts it from spine to the target schema. <a href="https://github.com/t3-innovation-network/desm/wiki" target="_blank">Learn more in the Wiki</a>.
+      vocabularies:
+        map: Map Vocabulary
+        no_vocabulary: No vocabulary found, edit mapped property to add it.
+        not_saved: Please save the mapping before mapping a vocabulary to synthetic term.
+        created:
+          zero: No vocabularies were added.
+          one: "1 vocabulary was added."
+          other: "%{count} vocabularies were added."
+        updated:
+          one: "The vocabulary %{name} was uploaded as %{new_name} because a vocabulary called %{name} already exists."
+          other: "The vocabularies %{name} were uploaded as %{new_name} because a vocabularies called %{name} already exist."
     mapping_upload:
       new:
         step_1: 1. Upload Your Specification

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { isNull, isUndefined } from 'lodash';
+import { isNull, isUndefined, merge } from 'lodash';
 import FileInfo from './FileInfo';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocalStore } from 'easy-peasy';
@@ -146,25 +146,8 @@ const MappingForm = ({ mapping = null }) => {
         actions.setDomainsInFile(response.domains);
         return;
       }
-    }
 
-    await previewSingleDomainFile(mergedFileId);
-  };
-
-  /**
-   * The uploaded file is a single domain file. Let's just get the content and show in preview
-   *
-   * @param {int} mergedFileId
-   */
-  const previewSingleDomainFile = async (mergedFileId) => {
-    let response = await fetchMergedFile(mergedFileId);
-
-    if (!anyError(response)) {
-      let tempSpecs = [];
-      tempSpecs.push(JSON.stringify(response.mergedFile, null, 2));
-
-      dispatch(setSpecToPreview(tempSpecs));
-      dispatch(setFilteredFile(response.mergedFile));
+      await onSelectDomainsFromFile([response.domains[0].uri], mergedFileId);
     }
   };
 
@@ -210,8 +193,8 @@ const MappingForm = ({ mapping = null }) => {
    *
    * @param {Array} uris: The uri's of the selected domains
    */
-  const handleFilterSpecification = async (uris) => {
-    let response = await filterSpecification(uris, mergedFileId);
+  const handleFilterSpecification = async (uris, fileId = null) => {
+    let response = await filterSpecification(uris, fileId || mergedFileId);
 
     if (!anyError(response)) {
       dispatch(setVocabularies(response.filtered.vocabularies));
@@ -230,15 +213,15 @@ const MappingForm = ({ mapping = null }) => {
    *
    * @param {Array} uris The list of identifiers of the rdfs:Class(es) selected.
    */
-  const onSelectDomainsFromFile = async (uris) => {
+  const onSelectDomainsFromFile = async (uris, fileId = null) => {
     dispatch(startProcessingFile());
     actions.setMultipleDomainsInFile(false);
 
-    mappingFormData.selectedDomains = uris;
-    dispatch(setMappingFormData(mappingFormData));
+    const data = { ...formData(), ...mappingFormData, selectedDomains: uris };
+    dispatch(setMappingFormData(data));
 
     let tempSpecs = [];
-    let specification = await handleFilterSpecification(uris);
+    let specification = await handleFilterSpecification(uris, fileId);
 
     tempSpecs.push(JSON.stringify(specification, null, 2));
 

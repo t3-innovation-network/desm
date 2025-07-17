@@ -21,9 +21,11 @@ module Parsers
       ###
       # @description: Read an attribute from a node and return it's content as String
       # @param [String] attribute_name: The node to be evaluated
+      # @param [Boolean] first_only: If true, only the first value in case of an array will be returned,
+      #   makes sense in case we're fetching definition and it has multiple values for different languages
       # @return [String]
       ###
-      def read!(attribute_name)
+      def read!(attribute_name, first_only: false)
         # Use approximation to get the exact key we're going to read in the hash
         key = find_node_key(attribute_name)
 
@@ -31,7 +33,7 @@ module Parsers
         return nil unless @node.key?(key)
 
         # Read the value, safely, it can be an array, so we ensure we can read it
-        val = @node[key].is_a?(Array) && @node[key].one? ? @node[key].first : @node[key]
+        val = @node[key].is_a?(Array) && (@node[key].one? || first_only) ? @node[key].first : @node[key]
 
         # What we have now, can be the final result (what we were looking for), or it can
         # still be a hash, so we read it again.
@@ -113,6 +115,9 @@ module Parsers
 
       private
 
+      LANG_KEYS = %w(en-US en-us en_us enUS en-_u_s en).freeze
+      private_constant :LANG_KEYS
+
       ###
       # @description: Find the first node attribute which the key contains the string given
       #   as the name of the attribute to read
@@ -190,9 +195,11 @@ module Parsers
 
         return node[:@value] if valid_node_key?(node, :@value)
 
-        lang_value = node["en-US"] || node["en-us"] || node["en_us"] || node["enUS"]
+        # return first language value if the node is a language map
+        lang_key = LANG_KEYS.find { |key| node.key?(key) }
+        return node[lang_key] if lang_key
 
-        lang_value || node
+        node
       end
 
       ###

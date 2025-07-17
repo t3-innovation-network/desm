@@ -33,7 +33,11 @@ class AlignmentVocabulary < ApplicationRecord
   has_one :spine_term, through: :alignment
   has_many :concepts, class_name: :AlignmentVocabularyConcept, dependent: :destroy
 
-  after_create :assign_concepts_from_spine, unless: proc { concepts.count.positive? }
+  after_create :assign_concepts_from_spine, unless: -> { concepts.exists? }
+
+  def self.predicate_set
+    PredicateSet.find_by!(title: Desm::VOCABULARIES_PREDICATE_SET)
+  end
 
   ###
   # @description: The first of the vocabularies is what we need. The client
@@ -47,16 +51,18 @@ class AlignmentVocabulary < ApplicationRecord
 
   ###
   # @description: If this vocabulary mapping was created from the controller, it does not contain any concept yet.
-  #   Let's create each one from the spine property vocabulary concepts.
+  #   Let's create each one from the spine property vocabulary concepts and as there were no alignments yet, we
+  #   map them 1 to 1 with the strongest predicate.
   # @return [Array]
   ###
   def assign_concepts_from_spine
-    spine = alignment.spine.mappings.count == 1
+    spine_term_concepts = spine_term.vocabularies.flat_map(&:concepts)
+    already_mapped = spine_term_concepts.any?
 
-    spine_vocabulary.concepts.each do |concept|
+    spine_term_concepts.each do |concept|
       concepts.create!(
-        mapped_concepts: spine ? [concept] : [],
-        predicate_id: (mapping.mapping_predicates.strongest_match_id if spine),
+        mapped_concepts: already_mapped ? [] : [concept],
+        predicate_id: already_mapped ? nil : AlignmentVocabulary.predicate_set.strongest_match_id,
         spine_concept_id: concept.id
       )
     end

@@ -6,21 +6,48 @@ module Processors
   #   skos concepts as a graph
   ###
   class Vocabularies < Skos
+    def self.name_data_for(data, configuration_profile = nil)
+      node = Parsers::Skos.new(graph: data[:@graph]).scheme_nodes.first.with_indifferent_access
+      return {} unless node.present?
+
+      node = Parsers::JsonLd::Node.new(node)
+      name = node.read!("title") || node.read!("label")
+      return { name:, name_with_version: name, version: 1 } if configuration_profile.nil?
+
+      # If the vocabulary is already created, we can get the version from it
+      vocab = configuration_profile.vocabularies.find_by(name:)
+      return { name:, name_with_version: name, version: 1 } if vocab.nil?
+
+      version = configuration_profile.vocabularies.where(name:).maximum(:version) + 1
+      { name:, name_with_version: "#{name} (#{version})", version: }
+    rescue StandardError
+      {}
+    end
+
     def create(name, configuration_profile)
-      @vocabulary = create_vocabulary(name, configuration_profile)
-
-      @vocabulary.concepts = create_concepts
-
+      Vocabulary.with_advisory_lock("vocabularies_#{configuration_profile.id}") do
+        @vocabulary = create_vocabulary(name, configuration_profile)
+        @vocabulary.concepts = create_concepts
+      end
       @vocabulary
     end
 
     def create_vocabulary(name, configuration_profile)
-      @vocabulary = configuration_profile.vocabularies.find_or_initialize_by(name:) do |vocab|
-        vocab.update!(
+      # check if we already have a vocabulary with this name and if so create new one with incremented version
+      version = 1
+      if configuration_profile.vocabularies.exists?(name:)
+        version = configuration_profile.vocabularies.where(name:).maximum(:version) + 1
+      end
+
+      # Create a new vocabulary with the given name and content
+      @vocabulary = configuration_profile.vocabularies.find_or_initialize_by(name:, version:) do |vocab|
+        vocab.assign_attributes(
           content: first_concept_scheme_node,
           context: @context || {}
         )
       end
+      @vocabulary.save!
+      @vocabulary
     end
 
     def create_concepts

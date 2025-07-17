@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "ColorCode": {
+      "$ref": "#/definitions/ColorCodeType",
+      "description": "Color codes."
+    }
+  },
+  "definitions": {
+    "ColorCodeType": {
+      "description": "RGB colour codes.",
+      "oneOf": [
+        {
+          "const": "r",
+          "title": "red",
+          "description": "The colour red: 0xFF0000."
+        },
+        {
+          "const": "g",
+          "title": "green",
+          "description": "The colour green: 0x00FF00."
+        },
+        {
+          "const": "b",
+          "title": "blue",
+          "description": "The colour blue: 0x0000FF"
+        }
+      ],
+      "type": "string"
+    }
+  }
+}
