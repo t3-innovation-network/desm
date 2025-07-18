@@ -13,8 +13,8 @@ en:
       show_all: Show All
     select:
       configuration_profile:
-        placeholder: Choose Configuration Profile...
-        aria_label: Choose Configuration Profile
+        placeholder: Choose Mapping...
+        aria_label: Choose Mapping
     dashboard:
       nav:
         agents: Agents

@@ -7,7 +7,6 @@ import TopNav from '../shared/TopNav';
 import TopNavOptions from '../shared/TopNavOptions';
 import DesmTabs from '../shared/DesmTabs';
 import BottomNav from './BottomNav';
-import InfoExportButtons from './InfoExportButtons';
 import PropertiesList, { buildPropertyCardId } from './PropertiesList';
 import Sidebar from './Sidebar';
 import ConfigurationProfileSelect from '../shared/ConfigurationProfileSelect';

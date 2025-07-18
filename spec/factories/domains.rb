@@ -27,7 +27,7 @@ require "faker"
 
 FactoryBot.define do
   factory :domain do
-    pref_label { Faker::App.name }
+    sequence(:pref_label) { |n| "#{Faker::App.name} #{n}" }
     definition { Faker::Lorem.sentence }
     source_uri { Faker::Lorem.sentence }
     domain_set

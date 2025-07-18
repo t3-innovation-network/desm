@@ -188,6 +188,7 @@ a:hover {
 
 .selected-item {
   border-bottom: solid 4px $primary-color-light !important;
+  margin-bottom: -1px;
   z-index: 3;
 }
 
