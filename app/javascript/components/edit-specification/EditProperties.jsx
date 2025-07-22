@@ -82,7 +82,7 @@ const EditProperties = (props) => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Find Element / Property"
+                      placeholder="Find Property/Element"
                       value={termsInputValue}
                       onChange={filterTermsOnChange}
                     />

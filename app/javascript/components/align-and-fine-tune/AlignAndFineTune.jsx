@@ -166,6 +166,7 @@ const AlignAndFineTune = (props) => {
     >
       <SpineHeader
         domain={mapping.domain}
+        specificationName={mapping.specification.name}
         hideMappedSpineTerms={hideMappedSpineTerms}
         setHideMappedSpineTerms={actions.setHideMappedSpineTerms}
         mappingSelectedTerms={mappingSelectedTerms}
@@ -246,7 +247,7 @@ const AlignAndFineTune = (props) => {
   const renderRightSide = () => (
     <div className="bg-col-secondary col-lg-4 mh-100 p-lg-5 pt-5" style={{ overflowY: 'scroll' }}>
       <AlignmentsHeader
-        organizationName={organization.name}
+        specificationName={mapping.specification.name}
         domain={mapping.domain}
         selectedAlignments={state.selectedAlignments}
         hideMappedSelectedTerms={hideMappedSelectedTerms}

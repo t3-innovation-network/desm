@@ -39,7 +39,7 @@ export const defaultState = {
 
   // options
   // filter value to configure the query to get the specifications
-  filter: 'user',
+  filter: 'all',
 
   // data
   // The list of mappings to display

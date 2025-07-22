@@ -32,7 +32,7 @@ const ExportMappings = ({ configurationProfile, domains, onError }) => {
 
   return (
     <form className="row" onSubmit={handleSubmit}>
-      <label className="form-label">Export mappings from domains:</label>
+      <label className="form-label">Export mappings from abstract classes:</label>
       <div className="col-12 mb-2">
         <MultiSelect
           disabled={downloading}

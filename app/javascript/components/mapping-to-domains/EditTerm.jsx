@@ -80,13 +80,13 @@ function EditTerm(props) {
       <div className="card">
         <div className="card-body">
           <h5>
-            <strong>Property name</strong>
+            <strong>Property/Element name</strong>
           </h5>
 
           <div className="form-group row">
             <div className="col-3">
               <label className="form-label">
-                <strong>Property URI</strong>
+                <strong>Property/Element URI</strong>
               </label>
             </div>
             <div className="col-9">
@@ -94,7 +94,7 @@ function EditTerm(props) {
                 type="text"
                 className="form-control"
                 name="uri"
-                placeholder="Property URI"
+                placeholder="Property/Element URI"
                 value={term.property.uri || ''}
                 onChange={handleChange}
                 disabled={uploadingVocabulary}
@@ -124,7 +124,7 @@ function EditTerm(props) {
           <div className="form-group row">
             <div className="col-3">
               <label className="form-label">
-                <strong>Property label</strong>
+                <strong>Property/Element label</strong>
               </label>
             </div>
             <div className="col-9">
@@ -132,7 +132,7 @@ function EditTerm(props) {
                 type="text"
                 className="form-control"
                 name="label"
-                placeholder="Property Label"
+                placeholder="Property/Element Label"
                 value={term.property.label || ''}
                 onChange={handleChange}
                 disabled={uploadingVocabulary}
@@ -151,7 +151,7 @@ function EditTerm(props) {
                 type="text"
                 className="form-control"
                 name="scheme"
-                placeholder="Property Scheme"
+                placeholder="Property/Element Scheme"
                 value={term.property.scheme || ''}
                 onChange={handleChange}
                 disabled={uploadingVocabulary}
@@ -171,7 +171,7 @@ function EditTerm(props) {
         />
       </div>
       <div className="form-group">
-        <label className="form-label">Selected Domain</label>
+        <label className="form-label">Used on class(es)</label>
         <ExpandableOptions
           options={domainsAsOptions}
           selectedOption={term.property.selectedDomain}
@@ -180,7 +180,7 @@ function EditTerm(props) {
         />
       </div>
       <div className="form-group">
-        <label className="form-label">Selected Range</label>
+        <label className="form-label">Expected value type(s)</label>
 
         <ExpandableOptions
           options={rangeAsOptions}
@@ -254,7 +254,7 @@ function EditTerm(props) {
           <div className="row justify-content-between">
             <div className="col">
               <label className="form-label">
-                {isSpineTerm ? 'Vocabulary Spine Terms' : 'Vocabulary (optional)'}
+                {isSpineTerm ? 'Vocabulary Spine Terms' : 'Controlled Vocabulary (optional)'}
               </label>
             </div>
             {!isSpineTerm && (
@@ -263,7 +263,7 @@ function EditTerm(props) {
                   className="link-red cursor-pointer float-end"
                   onClick={() => setUploadingVocabulary(true)}
                 >
-                  Add Vocabulary
+                  Add Controlled Vocabulary
                 </a>
               </div>
             )}

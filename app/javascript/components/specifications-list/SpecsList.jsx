@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import Loader from '../shared/Loader';
 import TopNavOptions from '../shared/TopNavOptions';
 import SpineSpecsList from './SpineSpecsList';
-import { startCase, toLower } from 'lodash';
 import ConfirmDialog from '../shared/ConfirmDialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -58,16 +57,20 @@ const SpecsList = (_props) => {
 
   const renderMapping = (mapping) => {
     const fromSameOrg = mapping.organization.id === organization?.id;
+    let specificationName = mapping.specification.name;
+    if (mapping.specification.version) {
+      specificationName += ` (${mapping.specification.version})`;
+    }
 
     return (
       <tr key={mapping.id}>
-        <td>
-          {mapping.title} ({mapping.specification.name})
-        </td>
-        <td>{mapping.specification.version}</td>
+        <td>{mapping.domain}</td>
+        <td>{specificationName}</td>
         <td>{mapping.mapped_terms + '/' + mapping.selected_terms.length}</td>
-        <td>{startCase(toLower(mapping.status))}</td>
-        <td>{mapping.specification.user.fullname}</td>
+        <td>{i18n.t(`ui.mapping.status.${mapping.status}`)}</td>
+        <td>
+          {mapping.specification.user.fullname} ({mapping.organization.name})
+        </td>
         <td>
           {mapping['mapped?'] ? (
             <>
@@ -183,11 +186,11 @@ const SpecsList = (_props) => {
           <table className="table">
             <thead>
               <tr>
-                <th scope="col">Specification Name</th>
-                <th scope="col">Version</th>
+                <th scope="col">Abstract Class</th>
+                <th scope="col">Specification (Version)</th>
                 <th scope="col">Mapped</th>
                 <th scope="col">Status</th>
-                <th scope="col">Author</th>
+                <th scope="col">Author (Affiliation)</th>
                 <th scope="col">
                   <select
                     className="form-select"
@@ -234,7 +237,7 @@ const SpecsList = (_props) => {
       <div className="container-fluid desm-content" role="main">
         <div className="row">
           <div className="col p-lg-5 pt-5">
-            <h1>My Specifications</h1>
+            <h1>Mappings for {currentConfigurationProfile.name}</h1>
             {renderTable()}
           </div>
         </div>

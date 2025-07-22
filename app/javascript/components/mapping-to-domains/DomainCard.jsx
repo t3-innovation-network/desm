@@ -19,7 +19,7 @@ const DomainCard = ({ domain, mappedTerms, onRevertMapping, onEditClick }) => (
           <DropZone
             droppedItem={{ name: domain.name, uri: domain.id }}
             acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
-            placeholder="Drag a matching property here"
+            placeholder="Drag relevant properties/elements here"
             style={{ minHeight: '200px' }}
           >
             {mappedTerms.length > 0 &&

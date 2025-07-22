@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { isNull, isUndefined, merge } from 'lodash';
+import { isNull, isUndefined } from 'lodash';
 import FileInfo from './FileInfo';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocalStore } from 'easy-peasy';
@@ -14,7 +14,6 @@ import {
   unsetMappingFormErrors,
 } from '../../actions/mappingform';
 import fetchDomains from '../../services/fetchDomains';
-import fetchMergedFile from '../../services/fetchMergedFile';
 import MultipleDomainsModal from './MultipleDomainsModal';
 import checkDomainsInFile from '../../services/checkDomainsInFile';
 import filterSpecification from '../../services/filterSpecification';
@@ -302,7 +301,7 @@ const MappingForm = ({ mapping = null }) => {
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label className="form-label" htmlFor="specification_name">
+              <label className="form-label required" htmlFor="specification_name">
                 Name of your specification
               </label>
               <input
@@ -337,7 +336,7 @@ const MappingForm = ({ mapping = null }) => {
             <div className="form-group">
               {isNew ? (
                 <>
-                  <label className="form-label">{i18n.t(`${i18key}.form.domain`)}</label>
+                  <label className="form-label required">{i18n.t(`${i18key}.form.domain`)}</label>
 
                   <div className="desm-radio">
                     {state.domains.map((domain) => (
@@ -365,7 +364,9 @@ const MappingForm = ({ mapping = null }) => {
                     Boolean(files.length) &&
                     !submitted &&
                     !processingFile && (
-                      <span style={{ color: 'red' }}>Please select a domain from the list ☝️ </span>
+                      <span style={{ color: 'red' }}>
+                        Please select an abstract class from the list ☝️{' '}
+                      </span>
                     )}
                 </>
               ) : (
@@ -380,8 +381,8 @@ const MappingForm = ({ mapping = null }) => {
               )}
 
               <small className="mb-3">
-                Domains in <span className="badge bg-success">green</span> have a spine already
-                uploaded
+                Abstract classes in <span className="badge bg-success">green</span> have a spine
+                already uploaded
               </small>
             </div>
             <div className="form-group">
@@ -405,12 +406,13 @@ const MappingForm = ({ mapping = null }) => {
                   />
                   <label className="custom-file-label" htmlFor="file-uploader">
                     Attach File
-                    <span className="text-danger">*</span>
+                    <span className="text-danger align-top"> *</span>
                   </label>
                 </div>
               </div>
               <label className="mt-3">
-                You can upload your specification as CSV, JSON-LD, JSON Schema, RDF, or XML format
+                You can upload your specification as RDF (Turtle, JSON-LD or RDF/XML), JSON Schema,
+                XML Schema (XSD), or CSV.
               </label>
               {Boolean(files.length) && !submitted && !processingFile && (
                 <section>

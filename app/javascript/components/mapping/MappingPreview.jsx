@@ -181,7 +181,7 @@ const MappingPreview = (props) => {
       if (existingVocabularies.length > 0) {
         dispatch(
           setMappingFormErrors([
-            'The following vocabularies were already added and will be added with version number on saving: ' +
+            'The following controlled vocabularies were already added and will be added with version number on saving: ' +
               existingVocabularies.map((v) => vocabName(v)).join(', '),
           ])
         );
@@ -287,7 +287,7 @@ const MappingPreview = (props) => {
           />
         ) : creatingVocabularies ? (
           <Loader
-            message="We're processing vocabularies. Please wait, this might take a while ..."
+            message="We're processing controlled vocabularies. Please wait, this might take a while ..."
             showImage={true}
           />
         ) : (
@@ -309,7 +309,7 @@ const MappingPreview = (props) => {
                         onClick={handleLooksGood}
                         title={
                           !propertiesCount
-                            ? 'No properties were found in the uploaded file/s. Please review it an try again'
+                            ? 'No properties/elements were found in the uploaded file/s. Please review it an try again'
                             : 'Create the specification'
                         }
                       >
@@ -323,10 +323,10 @@ const MappingPreview = (props) => {
                 <div className="col">
                   <label
                     className="col-primary cursor-pointer float-end"
-                    title="Add a new vocabulary"
+                    title="Add a new controlled vocabulary"
                     onClick={() => setAddingVocabulary(true)}
                   >
-                    Add Vocabulary
+                    Add Controlled Vocabulary
                   </label>
                 </div>
               </div>

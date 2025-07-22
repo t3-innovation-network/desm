@@ -6,9 +6,6 @@ import fetchExternalVocabulary from './../../services/fetchExternalVocabulary';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
-// eslint-disable-next-line no-undef
-var isJSON = require('is-valid-json');
-
 const UploadVocabulary = (props) => {
   /**
    * Representation of an error on this page process
@@ -160,7 +157,8 @@ const UploadVocabulary = (props) => {
           </div>
         </div>
         <small className="mt-5">
-          You can upload your concept scheme file in CSV, JSON-LD, JSON Schema, RDF, or XML format
+          You can upload your concept scheme file in RDF - SKOS (Turtle, JSON-LD or RDF/XML
+          serializations), JSON-Schema and XML Schema (XSD) enumerations, and CSV.
         </small>
         <div className="row">
           <div className="col">
@@ -252,7 +250,7 @@ const UploadVocabulary = (props) => {
         <div className="card-header">
           <div className="row">
             <div className="col-10">
-              <h4>Uploading Vocabulary</h4>
+              <h4>Uploading Controlled Vocabulary</h4>
             </div>
             <div className="col-2">
               <a className="float-end cursor-pointer" onClick={props.onRequestClose}>
@@ -273,7 +271,7 @@ const UploadVocabulary = (props) => {
                 type="text"
                 className="form-control"
                 name="name"
-                placeholder="Enter a name for this vocabulary"
+                placeholder="Enter a name for this controlled vocabulary"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 autoFocus

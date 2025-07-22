@@ -204,13 +204,13 @@ const SpineTermRow = (props) => {
                     {!term.synthetic ? (
                       <>
                         <p className="card-text">
-                          Domains:{' '}
+                          Used on class(es):{' '}
                           <span className="col-primary">
                             {intersection(compactDomains, term.compactDomains).join(', ')}
                           </span>
                         </p>
                         <p className="card-text">
-                          Ranges:{' '}
+                          Expected value type(s):{' '}
                           <span className="col-primary">{term.compactRanges.join(', ')}</span>
                         </p>
                       </>
@@ -272,7 +272,7 @@ const SpineTermRow = (props) => {
             droppedItem={{ id: term.id }}
             disabled={noMatchPredicate(predicateOption)}
             cls={clsPredicate}
-            placeholder="Drag a matching property here"
+            placeholder="Drag relevant properties/elements here"
           >
             {mappedTerms.map((mTerm) => {
               return (
@@ -327,13 +327,13 @@ const SpineTermRow = (props) => {
                       {mappedTermExpanded ? (
                         <div className="mt-2">
                           <p className="card-text">
-                            Domains:{' '}
+                            Used on class(es):{' '}
                             <span>
                               {intersection(compactDomains, mTerm.compactDomains).join(', ')}
                             </span>
                           </p>
                           <p className="card-text">
-                            Ranges: <span>{mTerm.compactRanges.join(', ')}</span>
+                            Expected value type(s): <span>{mTerm.compactRanges.join(', ')}</span>
                           </p>
                         </div>
                       ) : null}
