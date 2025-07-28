@@ -85,7 +85,7 @@ export const specsListStore = (initialData = {}) => ({
   }),
   removeMapping: action((state, mappingId) => {
     remove(state.mappings, (m) => m.id === mappingId);
-    state.confirmRemove = false;
+    state.confirmingRemove = false;
     state.mappingIdToRemove = null;
   }),
 
@@ -104,6 +104,7 @@ export const specsListStore = (initialData = {}) => ({
       }
       return response;
     } finally {
+      actions.setConfirmingRemove(false);
       actions.setMappingIdToRemove(null);
     }
   }),
