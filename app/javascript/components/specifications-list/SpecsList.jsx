@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react';
 import { useLocalStore } from 'easy-peasy';
 import TopNav from '../shared/TopNav';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Loader from '../shared/Loader';
 import TopNavOptions from '../shared/TopNavOptions';
 import SpineSpecsList from './SpineSpecsList';
@@ -29,8 +29,14 @@ const SpecsList = (_props) => {
   const { mappings, filter, loading } = state;
 
   useEffect(() => {
+    if (!currentConfigurationProfile) return;
     actions.fetchDataFromAPI();
-  }, [filter]);
+  }, [filter, currentConfigurationProfile]);
+
+  // Redirect if no configuration profile selected
+  if (!currentConfigurationProfile) {
+    return <Redirect to={pageRoutes.configurationProfileSelect()} />;
+  }
 
   // Mark a 'mapped' mapping back to 'in-progress'
   const handleMarkToInProgress = (mappingId) =>
@@ -88,7 +94,7 @@ const SpecsList = (_props) => {
               )}
 
               <Link
-                to={pageRoutes.mappingsList(currentConfigurationProfile.id, mapping.domain)}
+                to={pageRoutes.mappingsList(currentConfigurationProfile?.id, mapping.domain)}
                 className="btn btn-sm btn-dark ms-2"
                 title="View this mapping"
               >
@@ -237,7 +243,7 @@ const SpecsList = (_props) => {
       <div className="container-fluid desm-content" role="main">
         <div className="row">
           <div className="col p-lg-5 pt-5">
-            <h1>Mappings for {currentConfigurationProfile.name}</h1>
+            <h1>Mappings for {currentConfigurationProfile?.name}</h1>
             {renderTable()}
           </div>
         </div>

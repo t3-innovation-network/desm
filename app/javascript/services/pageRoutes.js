@@ -10,6 +10,8 @@ export const pageRoutes = {
   organizations: () => '/dashboard/organizations',
   configurationProfiles: () => '/dashboard/configuration-profiles',
   configurationProfile: (id) => `/dashboard/configuration-profiles/${id}`,
+  // auth
+  configurationProfileSelect: () => '/select-configuration-profile',
   // mappings
   mappingsList: (cp, abstractClass = null) => {
     const params = queryString.stringify({ cp, abstractClass }, { skipNull: true });
