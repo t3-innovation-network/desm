@@ -13,8 +13,8 @@ en:
       show_all: Show All
     select:
       configuration_profile:
-        placeholder: Choose Configuration Profile...
-        aria_label: Choose Configuration Profile
+        placeholder: Choose Mapping...
+        aria_label: Choose Mapping
     dashboard:
       nav:
         agents: Agents
@@ -63,9 +63,15 @@ en:
       step:
         new: Upload Specification
         ready_to_upload: Reimport Specification
-        uploaded: Map to Domains
-        in_progress: Align and Fine Tune
+        uploaded: Map Classes
+        in_progress: Map Properties
         mapped: Mapped
+      status:
+        new: New
+        ready_to_upload: Ready to Import
+        uploaded: Mapping Classes
+        in_progress: Mapping Properties
+        mapped: Published
       transformation:
         title: Transformation
         form:
@@ -92,11 +98,25 @@ en:
       new:
         step_1: 1. Upload Your Specification
         form:
-          domain: Which domain are you uploading?
+          domain: Which abstract class are you mapping?
       persisted:
-        step_1: 1. Upload More Properties for Your Specification
+        step_1: 1. Upload More Properties/Elements for Your Specification
         form:
-          domain: Domain
+          domain: Abstract Class
+    mapping_to_domains:
+      properties:
+        added:
+          zero: properties/elements added to abstract class
+          one: "property/element added to abstract class"
+          other: "properties/elements added to abstract class"
+        selected:
+          zero: "properties/elements selected"
+          one: "property/element selected"
+          other: "properties/elements selected"
+        uploaded:
+          zero: "No properties/elements have been uploaded"
+          one: "1 property/element have been uploaded"
+          other: "%{count} properties/elements have been uploaded"
     notifications:
       search: Search filter applied
       filter: Filter applied

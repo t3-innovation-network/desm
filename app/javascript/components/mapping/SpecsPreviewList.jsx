@@ -80,6 +80,8 @@ const SpecsPreviewList = (props) => {
             {propertiesCount + ' '}
           </strong>
           {pluralize('property', propertiesCount)}
+          {'/'}
+          {pluralize('element', propertiesCount)}
         </h4>
       </SpecCollapseHeder>
       <Collapse in={!collapsed['spec-list']}>
@@ -104,7 +106,8 @@ const SpecsPreviewList = (props) => {
         onToggleCollapse={onToggleCollapse}
       >
         <h4>
-          Vocabularies {` - ${vocabularies.length} ${pluralize('vocabulary', vocabularies.length)}`}{' '}
+          Controlled Vocabularies{' '}
+          {` - ${vocabularies.length} ${pluralize('vocabulary', vocabularies.length)}`}{' '}
         </h4>
       </SpecCollapseHeder>
       <Collapse in={!collapsed['vocabularies-list']}>
@@ -120,7 +123,7 @@ const SpecsPreviewList = (props) => {
                     onClick={() => {
                       handleRemoveVocabulary(i);
                     }}
-                    title="Remove this vocabulary"
+                    title="Remove this controlled vocabulary"
                     disabled={disabled}
                   >
                     <FontAwesomeIcon icon={faTrash} aria-hidden="true" className="cursor-pointer" />

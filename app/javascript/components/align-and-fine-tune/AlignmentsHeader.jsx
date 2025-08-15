@@ -5,7 +5,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Props
- * @prop {String} organizationName
+ * @prop {String} specificationName
  * @prop {Object} domain
  * @prop {Array} selectedAlignments
  * @prop {Boolean} hideMappedSelectedTerms
@@ -17,7 +17,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
  */
 const AlignmentsHeader = (props) => {
   const {
-    organizationName,
+    specificationName,
     domain,
     selectedAlignments,
     hideMappedSelectedTerms,
@@ -34,7 +34,7 @@ const AlignmentsHeader = (props) => {
       <div className="row">
         <div className="col-8">
           <p>
-            <strong>{organizationName + ' > '}</strong>
+            <strong>{specificationName + ' > '}</strong>
             {domain}
           </p>
         </div>
@@ -59,7 +59,7 @@ const AlignmentsHeader = (props) => {
           <input
             type="text"
             className="form-control"
-            placeholder="Find Element / Property"
+            placeholder="Find Property/Element"
             value={mappingSelectedTermsInputValue}
             onChange={filterMappingSelectedTermsOnChange}
           />
@@ -85,7 +85,7 @@ const AlignmentsHeader = (props) => {
               id="hideMappingElems"
             />
             <label className="form-check-label" htmlFor="hideMappingElems">
-              Hide mapped properties
+              Hide mapped properties/elements
             </label>
           </div>
         </div>

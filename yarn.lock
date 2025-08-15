@@ -2220,11 +2220,6 @@ is-typed-array@^1.1.13, is-typed-array@^1.1.14, is-typed-array@^1.1.15:
   dependencies:
     which-typed-array "^1.1.16"
 
-is-valid-json@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/is-valid-json/-/is-valid-json-1.0.2.tgz#b5abd5bf96562239e0d16be4145b6f7a1d78538f"
-  integrity sha512-uUhuzcO+U0L/R5BskSF3FYymUA4ngN5Eq495AhqK0UQwW5oLNkR47eyFQ21/9Vi1bPqFa/xn207ChFj65AUncQ==
-
 is-weakmap@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/is-weakmap/-/is-weakmap-2.0.2.tgz#bf72615d649dfe5f699079c54b83e47d1ae19cfd"

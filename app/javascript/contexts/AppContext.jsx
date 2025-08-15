@@ -12,6 +12,9 @@ export const AppContextProvider = ({ children }) => {
   const [organization, setOrganization] = useState(
     data.organization ? JSON.parse(data.organization) : null
   );
+  const [sharedMappings, setSharedMappings] = useState(
+    data.sharedMappings ? JSON.parse(data.sharedMappings) : []
+  );
 
   return (
     <AppContext.Provider
@@ -20,10 +23,12 @@ export const AppContextProvider = ({ children }) => {
         leadMapper,
         loggedIn,
         organization,
+        sharedMappings,
         setCurrentConfigurationProfile,
         setLeadMapper,
         setLoggedIn,
         setOrganization,
+        setSharedMappings,
       }}
     >
       {children}

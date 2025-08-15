@@ -20,15 +20,15 @@ en:
         title: DESM - Reimport Specification
         description: Reimport specification in the Data Ecosystem Schema Mapper Tool.
       mapping_to_domains:
-        title: DESM - Map to Domains
-        description: Map to Domains in the Data Ecosystem Schema Mapper Tool.
+        title: DESM - Map Classes
+        description: Map Classes in the Data Ecosystem Schema Mapper Tool.
       mapping_align:
-        title: DESM - Align and Fine Tune
-        description: Align and Fine Tune mapping in the Data Ecosystem Schema Mapper Tool.
+        title: DESM - Map Properties/Elements
+        description: Map Properties/Elements in the Data Ecosystem Schema Mapper Tool.
       spine_properties:
-        title: DESM - Spine Properties
+        title: DESM - Spine Properties/Elements
         description: View/Edit spine properties in the Data Ecosystem Schema Mapper Tool.
       mapping_properties:
-        title: DESM - Mapping Properties
-        description: View/Edit mapping properties in the Data Ecosystem Schema Mapper Tool.
+        title: DESM - Mapping Properties/Elements
+        description: View/Edit mapping properties/elements in the Data Ecosystem Schema Mapper Tool.
 

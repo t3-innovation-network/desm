@@ -212,7 +212,7 @@ export const mappingStore = (initialData = {}) => ({
         synthetic: true,
         vocabularies: [],
         property: {
-          comment: 'Synthetic property added to spine',
+          comment: 'New term added to spine',
         },
       });
       state.alignments.push({
