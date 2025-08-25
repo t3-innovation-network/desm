@@ -1,15 +1,10 @@
-import { useEffect, useState } from 'react';
-import { isEmpty } from 'lodash';
+import { useState } from 'react';
+import { isEmpty, isString } from 'lodash';
 import FileInfo from '../mapping/FileInfo';
-import { validVocabulary, vocabName, countConcepts } from '../../helpers/Vocabularies';
 import AlertNotice from '../shared/AlertNotice';
 import fetchExternalVocabulary from './../../services/fetchExternalVocabulary';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { readFileContent } from '../dashboard/configuration-profiles/utils';
-
-// eslint-disable-next-line no-undef
-var isJSON = require('is-valid-json');
 
 const UploadVocabulary = (props) => {
   /**
@@ -33,29 +28,17 @@ const UploadVocabulary = (props) => {
    */
   const [file, setFile] = useState(null);
   /**
-   * The content of the file. Set after reading it with a "FileReader"
-   */
-  const [fileContent, setFileContent] = useState('');
-  /**
    * Name for the vocabulary
    */
   const [name, setName] = useState('');
-
   /**
    * URL to fetch the vocabulary from
    */
   const [vocabularyURL, setVocabularyURL] = useState('');
-
   /**
    * The vocabulary that's fetched using an external URL
    */
   const [fetchedVocabulary, setFetchedVocabulary] = useState({});
-
-  /**
-   * The name of the vocabulary that's fetched using an external URL
-   */
-  const [fetchedVocabularyName, setFetchedVocabularyName] = useState('');
-
   const [fetching, setFetching] = useState(false);
 
   /**
@@ -65,17 +48,8 @@ const UploadVocabulary = (props) => {
   const handleFileChange = (event) => {
     setErrors([]);
     setFile(event.target.files[0]);
+    setVocabularyURL(null);
   };
-
-  /**
-   * After the sate of the file is changed, read it if there's any valid
-   * file
-   */
-  useEffect(() => {
-    if (file != null) {
-      readFileContent(file, setFileContent, (error) => setErrors([error]));
-    }
-  }, [file]);
 
   /**
    * File content to be displayed after
@@ -92,21 +66,6 @@ const UploadVocabulary = (props) => {
   };
 
   /**
-   * Manages to corroborate that the file content is a valid JSON
-   *
-   * @param {String} content
-   */
-  const isValidJson = (content) => {
-    let isValid = isJSON(content);
-
-    if (!isValid) {
-      setErrors(['Invalid JSON!\nBe sure to validate the file before uploading']);
-    }
-
-    return isValid;
-  };
-
-  /**
    * Fetch the vocabulary from the provided URL
    */
   const handleFetchVocabulary = async () => {
@@ -117,47 +76,18 @@ const UploadVocabulary = (props) => {
 
     if (error) {
       setErrors([error]);
-    } else if (isValidJson(vocabulary)) {
+    } else {
       setFetchedVocabulary(vocabulary);
-      handleSetFetchedVocabularyName(vocabulary);
     }
 
     document.body.classList.remove('waiting');
     setFetching(false);
   };
 
-  /**
-   * Safely try to get the vocabulary name
-   */
-  const handleSetFetchedVocabularyName = (vocab) => {
-    let name = '';
-    try {
-      name = vocabName(vocab['@graph']);
-      setFetchedVocabularyName(name);
-    } catch (e) {
-      setErrors([e]);
-    }
-  };
-
   const handleVocabularyURLChange = (e) => {
     setErrors([]);
     setVocabularyURL(e.target.value);
-  };
-
-  /**
-   * Determines the vocabulary validity
-   *
-   * @param {Object} vocab
-   */
-  const handleVocabularyValidity = (vocab) => {
-    setErrors([]);
-    let validity = validVocabulary(vocab);
-
-    if (!isEmpty(validity.errors)) {
-      setErrors(validity.errors);
-    }
-
-    return validity.result;
+    setFile(null);
   };
 
   /**
@@ -168,28 +98,33 @@ const UploadVocabulary = (props) => {
   const vocabularyToSubmit = () => {
     switch (uploadMode) {
       case uploadModes.FETCH_BY_URL:
-        return fetchedVocabulary;
+        return isString(fetchedVocabulary) ? fetchedVocabulary : JSON.stringify(fetchedVocabulary);
       case uploadModes.FILE_UPLOAD:
-        return JSON.parse(fileContent);
+        return null;
     }
   };
 
   /**
    * Send the file with the vocabulary to the backend
    */
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    let vocab = vocabularyToSubmit();
+    const formData = new FormData();
+    formData.append('name', name);
 
-    if (handleVocabularyValidity(vocab)) {
-      props.onVocabularyAdded({
-        vocabulary: {
-          name: name,
-          content: vocab,
-        },
-      });
+    if (uploadMode === uploadModes.FILE_UPLOAD && file) {
+      formData.append('file', file);
+    } else if (uploadMode === uploadModes.FETCH_BY_URL) {
+      formData.append('url', vocabularyURL);
+      formData.append('content', vocabularyToSubmit());
+    }
 
+    const response = await props.onVocabularyAdded(formData);
+
+    if (response.error) {
+      setErrors([response.error]);
+    } else {
       props.onRequestClose();
     }
   };
@@ -212,7 +147,7 @@ const UploadVocabulary = (props) => {
               data-show-caption="true"
               id="file-vocab-uploader"
               aria-describedby="upload-help"
-              accept=".json, .jsonld"
+              accept=".csv, .json, .jsonld, .nt, .rdf, .ttl, .xml, .xsd, .zip"
               onChange={handleFileChange}
             />
             <label className="custom-file-label" htmlFor="file-vocab-uploader">
@@ -222,7 +157,8 @@ const UploadVocabulary = (props) => {
           </div>
         </div>
         <small className="mt-5">
-          You can upload your concept scheme file in JSONLD format (skos file)
+          You can upload your concept scheme file in RDF - SKOS (Turtle, JSON-LD or RDF/XML
+          serializations), JSON-Schema and XML Schema (XSD) enumerations, and CSV.
         </small>
         <div className="row">
           <div className="col">
@@ -291,17 +227,15 @@ const UploadVocabulary = (props) => {
     <table className="table table-striped">
       <thead>
         <tr>
-          <th>Concept Scheme</th>
-          <th>Number of Concepts</th>
+          <th>URL</th>
         </tr>
       </thead>
       <tbody>
-        {countConcepts(fetchedVocabulary).map((scheme, i) => (
-          <tr key={i}>
-            <td>{scheme.name}</td>
-            <td>{scheme.conceptsCount.toLocaleString()}</td>
-          </tr>
-        ))}
+        <tr>
+          <td>
+            <span className="text-break">{vocabularyURL}</span>
+          </td>
+        </tr>
       </tbody>
     </table>
   );
@@ -316,7 +250,7 @@ const UploadVocabulary = (props) => {
         <div className="card-header">
           <div className="row">
             <div className="col-10">
-              <h4>Uploading Vocabulary</h4>
+              <h4>Uploading Controlled Vocabulary</h4>
             </div>
             <div className="col-2">
               <a className="float-end cursor-pointer" onClick={props.onRequestClose}>
@@ -337,7 +271,7 @@ const UploadVocabulary = (props) => {
                 type="text"
                 className="form-control"
                 name="name"
-                placeholder="Enter a name for this vocabulary"
+                placeholder="Enter a name for this controlled vocabulary"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 autoFocus
@@ -357,7 +291,7 @@ const UploadVocabulary = (props) => {
                 <button
                   className="btn btn-dark float-end mt-3"
                   type="submit"
-                  disabled={!fileContent && isEmpty(fetchedVocabulary)}
+                  disabled={!file && isEmpty(fetchedVocabulary)}
                 >
                   Upload
                 </button>

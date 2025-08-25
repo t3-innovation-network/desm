@@ -10,6 +10,19 @@ module Converters
     def initialize(file)
       super
 
+      build_from(file)
+    end
+
+    def self.read(path)
+      Zip::File.open(path)
+      true
+    rescue Zip::Error
+      raise Converters::ParseError
+    end
+
+    private
+
+    def build_from(file)
       Dir.mktmpdir do |temp_dir|
         Zip::File.open(file.path) do |zip_file|
           zip_file.each do |f|
@@ -26,27 +39,19 @@ module Converters
       end
     end
 
-    def self.read(path)
-      Zip::File.open(path)
-      true
-    rescue Zip::Error
-      raise Converters::ParseError
-    end
-
-    private
-
     ##
     # Builds an `skos:Concept` from an enumeration's value.
     #
     # @param value [String]
     # @param scheme_name [String]
     # @return [Hash]
-    def build_concept(value, scheme_name)
+    def build_concept(value, scheme_name, enum: false)
       concept = {
-        "@id": build_desm_uri("#{scheme_name}_#{value}"),
+        "@id": build_desm_uri("#{scheme_name}_#{enum ? value['const'] || value['title'] : value}"),
         "@type": "skos:Concept",
-        "skos:prefLabel": value,
-        "skos:definition": nil,
+        "skos:prefLabel": enum ? value["title"] : value,
+        "skos:definition": enum ? value["description"] : nil,
+        "skos:notation": enum ? value["const"] : nil,
         "skos:inScheme": build_desm_uri(scheme_name)
       }
 
@@ -60,27 +65,33 @@ module Converters
     # @param name [String]
     # @param payload [Hash]
     # @return [Hash, nil]
-    def build_concept_scheme(name, payload:)
+    def build_concept_scheme(name, payload:) # rubocop:disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+      # if it contains ref to definitions (e.g. "$ref"=>"#/definitions/ColorCodeType") take
+      # the definition last part of the ref as name
+      name = payload["$ref"].split("/").last if payload["$ref"].present? && payload["$ref"].include?("definitions/")
+      enum = payload["type"] != "array"
       scheme_name = "#{name} Enumeration"
 
       values =
-        if payload["type"] == "array"
-          payload.dig("items", "properties")&.keys&.-(IGNORED_PROPERTIES)
+        if enum
+          payload["enum"]&.map do |value|
+            { const: nil, title: value, description: payload["meta:enum"]&.dig(value) }.with_indifferent_access
+          end || payload["oneOf"] || payload["anyOf"]
         else
-          payload["enum"]
+          payload.dig("items", "properties")&.keys&.-(IGNORED_PROPERTIES)
         end
 
       return unless values&.any?
 
       concept_ids = values.map do |value|
-        build_concept(value, scheme_name).fetch(:@id)
+        build_concept(value, scheme_name, enum:).fetch(:@id)
       end
 
       {
         "@id": build_desm_uri(scheme_name),
         "@type": "skos:ConceptScheme",
         "dct:title": scheme_name.decamelize,
-        "dct:description": nil,
+        "dct:description": payload["description"],
         "skos:hasTopConcept": concept_ids
       }
     end

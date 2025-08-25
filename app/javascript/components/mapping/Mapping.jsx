@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useLocalStore } from 'easy-peasy';
+import { Redirect } from 'react-router-dom';
 import TopNav from '../shared/TopNav';
 import MappingForm from './MappingForm';
 import MappingPreview from './MappingPreview';
@@ -8,8 +9,11 @@ import AlertNotice from '../shared/AlertNotice';
 import { unsetMappingFormErrors } from '../../actions/mappingform';
 import { useDispatch, useSelector } from 'react-redux';
 import { mappingUploadStore } from './stores/mappingUploadStore';
+import { AppContext } from '../../contexts/AppContext';
+import { pageRoutes } from '../../services/pageRoutes';
 
 const Mapping = (props) => {
+  const { currentConfigurationProfile } = useContext(AppContext);
   const dispatch = useDispatch();
   const [state, actions] = useLocalStore(() =>
     mappingUploadStore({ mapping: { id: props.match.params.id || null } })
@@ -24,6 +28,11 @@ const Mapping = (props) => {
       actions.fetchDataFromAPI({ mappingId: props.match.params.id });
     }
   }, []);
+
+  // Redirect if no configuration profile selected
+  if (!currentConfigurationProfile) {
+    return <Redirect to={pageRoutes.configurationProfileSelect()} />;
+  }
 
   /**
    * Here is where the route redirects when the user wants to map

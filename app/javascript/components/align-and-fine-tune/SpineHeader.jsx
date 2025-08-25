@@ -5,6 +5,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 /**
  * Props:
  * @prop {Object} domain,
+ * @prop {String} specificationName,
  * @prop {Boolean} hideMappedSpineTerms,
  * @prop {Function} setHideMappedSpineTerms,
  * @prop {Array} mappingSelectedTerms,
@@ -17,6 +18,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 const SpineHeader = (props) => {
   const {
     domain,
+    specificationName,
     hideMappedSpineTerms,
     setHideMappedSpineTerms,
     spineTermsInputValue,
@@ -29,7 +31,7 @@ const SpineHeader = (props) => {
   return (
     <div className="border-bottom desm-col-header">
       <div className="row mb-2">
-        <h6 className="subtitle">3. Map CredReg to Schema / Spine</h6>
+        <h6 className="subtitle">3. Map {specificationName} to Schema / Spine</h6>
       </div>
       <div className="row mb-2">
         <div className="col-5">
@@ -50,7 +52,7 @@ const SpineHeader = (props) => {
               onChange={() => setHideMappedSpineTerms(!hideMappedSpineTerms)}
             />
             <label className="form-check-label cursor-pointer" htmlFor="hideSpineElms">
-              Hide Mapped Elements
+              Hide mapped properties/elements
             </label>
           </div>
         </div>
@@ -82,7 +84,7 @@ const SpineHeader = (props) => {
             <input
               type="text"
               className="form-control"
-              placeholder="Find Element / Property"
+              placeholder="Find Property/Element"
               value={spineTermsInputValue}
               onChange={filterSpineTermsOnChange}
             />
@@ -93,9 +95,9 @@ const SpineHeader = (props) => {
           <button
             className="btn w-100 btn-dark"
             onClick={handleAddSynthetic}
-            title="Use this button to add new elements to the spine"
+            title="Use this button to add new properties/elements to the spine"
           >
-            + Add Synthetic
+            + Add Spine Term
           </button>
         </div>
       </div>

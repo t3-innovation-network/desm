@@ -21,32 +21,10 @@ test.describe('Accessibility Tests', () => {
     expect(accessibilityScanResults.violations).toEqual([]);
   });
 
-  test('Check choose configuration page accessibility', async ({
-    page,
-    makeAxeBuilder,
-  }, testInfo) => {
-    page.goto('/mappings-list');
-    // wait for configuration profile list to be loaded
-    await page.locator('#currentConfigurationProfile').waitFor();
-    const accessibilityScanResults = await makeAxeBuilder().analyze();
-    await outputAxeReport(
-      {
-        accessibilityScanResults,
-        pageName: 'shared-mapping-config',
-      },
-      testInfo
-    );
-    expect(accessibilityScanResults.violations).toEqual([]);
-  });
-
   test('Check shared mapping page accessibility', async ({ page, makeAxeBuilder }, testInfo) => {
-    page.goto('/mappings-list');
-    // wait for configuration profile list to be loaded
-    await page.locator('#currentConfigurationProfile').waitFor();
-    await page
-      .getByLabel('Choose Configuration Profile')
-      .selectOption({ label: sharedMappingConfig });
-
+    page.goto('/');
+    // click on link with text sharedMappingConfig
+    await page.getByRole('link', { name: sharedMappingConfig }).click();
     // wait for shared mapping to be loaded for words Property name
     await page.locator('text=Property name').first().waitFor();
     const accessibilityScanResults = await makeAxeBuilder().analyze();

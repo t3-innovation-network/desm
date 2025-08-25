@@ -17,6 +17,7 @@ import ConfirmDialog from '../shared/ConfirmDialog';
 import { AppContext } from '../../contexts/AppContext';
 import { useLocalStore } from 'easy-peasy';
 import { mappingStore } from './stores/mappingStore';
+import EditTerm from '../mapping-to-domains/EditTerm';
 
 const AlignAndFineTune = (props) => {
   const { leadMapper, organization } = useContext(AppContext);
@@ -141,6 +142,7 @@ const AlignAndFineTune = (props) => {
             onPredicateSelected={onPredicateSelected}
             onUpdateAlignmentComment={actions.updateAlignmentComment}
             onUpdateAlignmentTransformation={actions.updateAlignmentTransformation}
+            onEditTermClick={actions.onEditTermClick}
             onRevertMapping={(mappedTerm) =>
               actions.handleRevertMapping({
                 termId: term.id,
@@ -164,6 +166,7 @@ const AlignAndFineTune = (props) => {
     >
       <SpineHeader
         domain={mapping.domain}
+        specificationName={mapping.specification.name}
         hideMappedSpineTerms={hideMappedSpineTerms}
         setHideMappedSpineTerms={actions.setHideMappedSpineTerms}
         mappingSelectedTerms={mappingSelectedTerms}
@@ -232,7 +235,8 @@ const AlignAndFineTune = (props) => {
       key={term.id}
       term={term}
       onClick={onSelectedTermClick}
-      editEnabled={false}
+      onEditClick={actions.onEditTermClick}
+      editEnabled={true}
       isMapped={state.selectedTermIsMapped}
       alwaysEnabled={true}
       disableClick={options.disableClick}
@@ -243,7 +247,7 @@ const AlignAndFineTune = (props) => {
   const renderRightSide = () => (
     <div className="bg-col-secondary col-lg-4 mh-100 p-lg-5 pt-5" style={{ overflowY: 'scroll' }}>
       <AlignmentsHeader
-        organizationName={organization.name}
+        specificationName={mapping.specification.name}
         domain={mapping.domain}
         selectedAlignments={state.selectedAlignments}
         hideMappedSelectedTerms={hideMappedSelectedTerms}
@@ -295,6 +299,12 @@ const AlignAndFineTune = (props) => {
 
   return (
     <>
+      <EditTerm
+        modalIsOpen={state.editingTerm}
+        onRequestClose={() => actions.setEditingTerm(false)}
+        onUpdateTerm={actions.onUpdateTerm}
+        termId={state.termToEdit?.id}
+      />
       <TopNav centerContent={navCenterOptions} />
       <div className="container-fluid d-flex flex-column h-100 desm-content" role="main">
         {state.hasErrors ? (

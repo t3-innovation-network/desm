@@ -39,7 +39,7 @@ export const defaultState = {
 
   // options
   // filter value to configure the query to get the specifications
-  filter: 'user',
+  filter: 'all',
 
   // data
   // The list of mappings to display
@@ -85,7 +85,7 @@ export const specsListStore = (initialData = {}) => ({
   }),
   removeMapping: action((state, mappingId) => {
     remove(state.mappings, (m) => m.id === mappingId);
-    state.confirmRemove = false;
+    state.confirmingRemove = false;
     state.mappingIdToRemove = null;
   }),
 
@@ -104,6 +104,7 @@ export const specsListStore = (initialData = {}) => ({
       }
       return response;
     } finally {
+      actions.setConfirmingRemove(false);
       actions.setMappingIdToRemove(null);
     }
   }),

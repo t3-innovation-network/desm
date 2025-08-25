@@ -7,7 +7,7 @@ import ConceptCard from './ConceptCard';
  * List the concepts for the mapped term vocabulary as selectable cards.
  *
  * Props:
- * @param {String} mappingOrigin
+ * @param {String} schemaName
  * @param {Function} filteredMappingConcepts
  * @param {Function} onMappingConceptClick
  * @param {Function} afterDropConcept
@@ -16,7 +16,7 @@ const MappingConceptsList = (props) => {
   /**
    * Elements from props
    */
-  const { mappingOrigin, filteredMappingConcepts, onMappingConceptClick, afterDropConcept } = props;
+  const { schemaName, filteredMappingConcepts, onMappingConceptClick, afterDropConcept } = props;
 
   /**
    * Structure for a single concept as a card
@@ -24,7 +24,7 @@ const MappingConceptsList = (props) => {
    * @param {Object} concept
    */
   const singleConceptCard = (concept) => {
-    return <ConceptCard concept={concept} onClick={onMappingConceptClick} origin={mappingOrigin} />;
+    return <ConceptCard concept={concept} onClick={onMappingConceptClick} origin={schemaName} />;
   };
 
   return (

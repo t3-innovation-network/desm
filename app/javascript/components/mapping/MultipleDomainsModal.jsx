@@ -71,7 +71,7 @@ const MultipleDomainsModal = (props) => {
     <Modal
       isOpen={modalIsOpen}
       onRequestClose={onRequestClose}
-      contentLabel="Multiple Domains Found"
+      contentLabel="Multiple Classes Found"
       style={ModalStyles}
       shouldCloseOnEsc={false}
       shouldCloseOnOverlayClick={false}
@@ -81,7 +81,7 @@ const MultipleDomainsModal = (props) => {
           <div className="row">
             <div className="col-10">
               <h5 className="col-primary">
-                <strong>{domains.length}</strong> {Pluralize('domain', domains.length)} found
+                <strong>{domains.length}</strong> {Pluralize('class', domains.length)} found
               </h5>
             </div>
             <div className="col-2">
@@ -94,7 +94,7 @@ const MultipleDomainsModal = (props) => {
           <div className="row">
             <div className="col-12">
               <label className="form-label float-start">
-                {Pluralize('domain', state.selectedDomainsSize, true)} selected
+                {Pluralize('class', state.selectedDomainsSize, true)} selected
               </label>
 
               <button
@@ -114,7 +114,7 @@ const MultipleDomainsModal = (props) => {
           <div className="row">
             <div className="col">
               <label className="form-label">
-                <strong>Please select one or more domains from the list to begin mapping</strong>
+                <strong>Please select one or more classes from the list to begin mapping</strong>
               </label>
               <div className="form-group input-group-has-icon position-relative">
                 <FontAwesomeIcon icon={faSearch} className="form-control-feedback" />

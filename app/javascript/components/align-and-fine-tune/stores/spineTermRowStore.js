@@ -14,8 +14,8 @@ export const defaultState = {
   matchingVocab: false,
   // options
   // data
-  // The term we are using to match vocabularies against the spine
-  mappedTermMatching: null,
+  // The terms we are using to match vocabularies against the spine
+  mappedTermsMatching: null,
   // The predicate option selected
   predicateOption: null,
   // The predicate option definition
@@ -35,7 +35,7 @@ export const spineTermRowStore = (initialData = {}) => ({
   // actions
   handleMatchVocabularyClick: action((state, payload) => {
     state.matchingVocab = true;
-    state.mappedTermMatching = payload;
+    state.mappedTermsMatching = payload;
   }),
 
   // thunks

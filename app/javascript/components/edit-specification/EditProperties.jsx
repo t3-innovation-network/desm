@@ -9,7 +9,7 @@ import TopNavOptions from '../shared/TopNavOptions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AppContext } from '../../contexts/AppContext';
-import { termsStore } from './stores/termsStore';
+import { termsStore, TERMS_MODE } from './stores/termsStore';
 import { i18n } from '../../utils/i18n';
 
 const EditProperties = (props) => {
@@ -45,6 +45,7 @@ const EditProperties = (props) => {
         onRemoveTerm={actions.onRemoveTerm}
         onUpdateTerm={actions.onUpdateTerm}
         termId={termToEdit.id}
+        isSpineTerm={mode == TERMS_MODE.SPINE}
       />
 
       <TopNav centerContent={navCenterOptions} />
@@ -81,7 +82,7 @@ const EditProperties = (props) => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Find Element / Property"
+                      placeholder="Find Property/Element"
                       value={termsInputValue}
                       onChange={filterTermsOnChange}
                     />

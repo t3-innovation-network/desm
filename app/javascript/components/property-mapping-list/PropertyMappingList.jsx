@@ -7,7 +7,6 @@ import TopNav from '../shared/TopNav';
 import TopNavOptions from '../shared/TopNavOptions';
 import DesmTabs from '../shared/DesmTabs';
 import BottomNav from './BottomNav';
-import InfoExportButtons from './InfoExportButtons';
 import PropertiesList, { buildPropertyCardId } from './PropertiesList';
 import Sidebar from './Sidebar';
 import ConfigurationProfileSelect from '../shared/ConfigurationProfileSelect';
@@ -58,7 +57,10 @@ const PropertyMappingList = (props) => {
       : domains[0];
     selectedAbstractClass ||= domains[0];
     actions.setSelectedDomain(selectedAbstractClass);
-    updateQueryString({ abstractClass: selectedAbstractClass?.name });
+    updateQueryString(
+      { abstractClass: selectedAbstractClass?.name },
+      { replace: !state.abstractClass }
+    );
   };
 
   useEffect(() => {
@@ -70,6 +72,20 @@ const PropertyMappingList = (props) => {
   useEffect(() => {
     loadSpecifications();
   }, [configurationProfile?.id, selectedDomain]);
+  useEffect(() => {
+    // TODO: need to handle configurationProfile change too
+    const { abstractClass } = camelizeLocationSearch(props);
+    if (
+      abstractClass &&
+      selectedDomain &&
+      abstractClass.toLowerCase() !== selectedDomain.name.toLowerCase()
+    ) {
+      const selectedAbstractClass = domains.find(
+        (d) => d.name.toLowerCase() == abstractClass.toLowerCase()
+      );
+      if (selectedAbstractClass) actions.setSelectedDomain(selectedAbstractClass);
+    }
+  }, [props.location.search]);
 
   useEffect(() => {
     if (propertyIds.length) {

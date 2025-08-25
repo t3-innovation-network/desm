@@ -1,38 +1,60 @@
+import { useContext, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { AppContext } from '../../contexts/AppContext';
 import { Link } from 'react-router-dom';
 import { pageRoutes } from '../../services/pageRoutes';
+import fetchConfigurationProfiles from '../../services/fetchConfigurationProfiles';
+import { isAdmin, isMapper } from '../../helpers/Auth';
 
 const LeftSideHome = () => {
+  const { sharedMappings, setSharedMappings } = useContext(AppContext);
+  const user = useSelector((state) => state.user);
+  useEffect(() => {
+    // Fetch configuration profiles with shared mappings
+    (async () => {
+      const { configurationProfiles } = await fetchConfigurationProfiles('indexWithSharedMappings');
+      setSharedMappings(configurationProfiles);
+    })();
+  }, []);
+
+  const mapSpecificationContent = () => {
+    if (isAdmin(user)) {
+      return <p>You are currently logged in as an admin user and so cannot map specifications.</p>;
+    }
+    if (isMapper(user)) {
+      return (
+        <ul>
+          <li key="my-mappings">
+            <Link to="/mappings">My Mappings</Link>
+          </li>
+          <li key="new-mapping">
+            <Link to="/new-mapping">New Mapping</Link>
+          </li>
+        </ul>
+      );
+    }
+    return <p>If you have an account you may log in to map your specification.</p>;
+  };
+
   return (
     <div className="col-lg-4 p-lg-5 pt-5">
       <section>
-        <h6 className="subtitle">View Specification</h6>
-        <p>To see crosswalks currently in process.</p>
-        <Link
-          to={pageRoutes.mappingsList()}
-          className="btn wide-btn btn-dark"
-          title="See all the finished mappings to a specification (or a specific domain)"
-        >
-          View Shared Mappings
-        </Link>
+        <h6 className="subtitle">View Published Mappings:</h6>
+        {sharedMappings.length > 0 ? (
+          <ul>
+            {sharedMappings.map((mapping) => (
+              <li key={mapping.id}>
+                <Link to={pageRoutes.mappingsList(mapping.id)}>{mapping.name}</Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No published mappings available.</p>
+        )}
       </section>
       <section>
-        <h6 className="subtitle">Map your schema:</h6>
-      </section>
-      <section>
-        <ol className="usage-explanation">
-          <li>Upload your schema</li>
-          <li>Map the schema&apos;s properties and concepts</li>
-          <li>Review and download the completed mappings</li>
-        </ol>
-      </section>
-      <section>
-        <Link
-          to="/new-mapping"
-          className="btn wide-btn btn-dark"
-          title="Create a mapping between 2 specifications"
-        >
-          New Mapping
-        </Link>
+        <h6 className="subtitle">Map your specification:</h6>
+        {mapSpecificationContent()}
       </section>
     </div>
   );

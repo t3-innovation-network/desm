@@ -4,7 +4,7 @@ const HeaderContent = (props) => {
   return (
     <div className="row">
       <div className="col-6">
-        <h3>Match Controlled Vocabulary</h3>
+        <h3>Map Controlled Vocabulary</h3>
       </div>
       <div className="col-6 text-end">
         <button className="btn btn-outline-secondary me-2" onClick={onRequestClose}>

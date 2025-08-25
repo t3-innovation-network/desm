@@ -1,11 +1,10 @@
 import { useEffect, useContext } from 'react';
 import { useLocalStore } from 'easy-peasy';
 import TopNav from '../shared/TopNav';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Loader from '../shared/Loader';
 import TopNavOptions from '../shared/TopNavOptions';
 import SpineSpecsList from './SpineSpecsList';
-import { startCase, toLower } from 'lodash';
 import ConfirmDialog from '../shared/ConfirmDialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -30,8 +29,14 @@ const SpecsList = (_props) => {
   const { mappings, filter, loading } = state;
 
   useEffect(() => {
+    if (!currentConfigurationProfile) return;
     actions.fetchDataFromAPI();
-  }, [filter]);
+  }, [filter, currentConfigurationProfile]);
+
+  // Redirect if no configuration profile selected
+  if (!currentConfigurationProfile) {
+    return <Redirect to={pageRoutes.configurationProfileSelect()} />;
+  }
 
   // Mark a 'mapped' mapping back to 'in-progress'
   const handleMarkToInProgress = (mappingId) =>
@@ -58,16 +63,20 @@ const SpecsList = (_props) => {
 
   const renderMapping = (mapping) => {
     const fromSameOrg = mapping.organization.id === organization?.id;
+    let specificationName = mapping.specification.name;
+    if (mapping.specification.version) {
+      specificationName += ` (${mapping.specification.version})`;
+    }
 
     return (
       <tr key={mapping.id}>
-        <td>
-          {mapping.title} ({mapping.specification.name})
-        </td>
-        <td>{mapping.specification.version}</td>
+        <td>{mapping.domain}</td>
+        <td>{specificationName}</td>
         <td>{mapping.mapped_terms + '/' + mapping.selected_terms.length}</td>
-        <td>{startCase(toLower(mapping.status))}</td>
-        <td>{mapping.specification.user.fullname}</td>
+        <td>{i18n.t(`ui.mapping.status.${mapping.status}`)}</td>
+        <td>
+          {mapping.specification.user.fullname} ({mapping.organization.name})
+        </td>
         <td>
           {mapping['mapped?'] ? (
             <>
@@ -85,7 +94,7 @@ const SpecsList = (_props) => {
               )}
 
               <Link
-                to={pageRoutes.mappingsList(currentConfigurationProfile.id, mapping.domain)}
+                to={pageRoutes.mappingsList(currentConfigurationProfile?.id, mapping.domain)}
                 className="btn btn-sm btn-dark ms-2"
                 title="View this mapping"
               >
@@ -183,11 +192,11 @@ const SpecsList = (_props) => {
           <table className="table">
             <thead>
               <tr>
-                <th scope="col">Specification Name</th>
-                <th scope="col">Version</th>
+                <th scope="col">Abstract Class</th>
+                <th scope="col">Specification (Version)</th>
                 <th scope="col">Mapped</th>
                 <th scope="col">Status</th>
-                <th scope="col">Author</th>
+                <th scope="col">Author (Affiliation)</th>
                 <th scope="col">
                   <select
                     className="form-select"
@@ -234,7 +243,7 @@ const SpecsList = (_props) => {
       <div className="container-fluid desm-content" role="main">
         <div className="row">
           <div className="col p-lg-5 pt-5">
-            <h1>My Specifications</h1>
+            <h1>Mappings for {currentConfigurationProfile?.name}</h1>
             {renderTable()}
           </div>
         </div>

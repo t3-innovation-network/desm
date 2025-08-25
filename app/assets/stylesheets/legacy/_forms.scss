@@ -13,6 +13,14 @@
 .form-group {
   > label {
     font-weight: 600;
+
+    &.required {
+      &::after {
+        color: $primary-color;
+        content: ' *';
+        vertical-align: top;
+      }
+    }
   }
 }
 

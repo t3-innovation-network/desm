@@ -1,5 +1,5 @@
 import queryString from 'query-string';
-import { isEqual } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 import { camelizeKeys } from 'humps';
 
 export const parseLocationSearch = ({ location }) => queryString.parse(location.search);
@@ -43,17 +43,23 @@ export const parseWithRouter = (
 };
 
 // React Router v6 compatibile
-export const updateWithRouter = ({ history, location, v6 = false }) => (search) => {
-  const oldSearch = v6 ? parseSearchParams(location) : queryString.parse(location.search);
-  const newSearch = { ...oldSearch, ...search };
-  for (const k of Object.keys(newSearch)) {
-    if (!newSearch[k]) {
-      delete newSearch[k];
+export const updateWithRouter =
+  ({ history, location, v6 = false, replace = false }) =>
+  (search, options = {}) => {
+    const oldSearch = v6 ? parseSearchParams(location) : queryString.parse(location.search);
+    const newSearch = { ...oldSearch, ...search };
+    for (const k of Object.keys(newSearch)) {
+      if (!newSearch[k]) {
+        delete newSearch[k];
+      }
     }
-  }
-  // don't need to push history if search is the same
-  if (isEqual(oldSearch, newSearch)) return;
-  const newQuery = new URLSearchParams(newSearch).toString();
-  const params = { pathname: '', search: `?${newQuery}` };
-  v6 ? history(params) : history.push(params);
-};
+    // don't need to push history if search is the same
+    if (isEqual(oldSearch, newSearch)) return;
+    const newQuery = new URLSearchParams(newSearch).toString();
+    const params = { pathname: '', search: `?${newQuery}` };
+    if (options.replace) {
+      v6 ? history(params) : history.replace(params);
+    } else {
+      v6 ? history(params) : history.push(params);
+    }
+  };

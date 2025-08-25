@@ -7,7 +7,7 @@ import { vocabName } from '../helpers/Vocabularies';
  * @returns {Array}
  */
 export const setVocabularies = (vocabularies) => {
-  const uniqueVocabularies = uniqBy(vocabularies, (v) => vocabName(v['@graph']));
+  const uniqueVocabularies = uniqBy(vocabularies, (v) => vocabName(v, 1));
 
   return {
     type: 'SET_VOCABULARIES',
