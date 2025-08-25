@@ -67,9 +67,7 @@ const RightSideHome = () => (
 
     <p>
       DESM is sponsored by the U.S. Chamber of Commerce Foundations&apos; T3 Innovation Network
-      program. The T3 Open Competency Network, in partnership with the T3 Data and Technology
-      Standards Network is responsible for the requirements and project plans that are used for
-      development and enhancement of the DESM too.
+      program.
     </p>
 
     <p>
