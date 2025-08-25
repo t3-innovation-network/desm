@@ -83,7 +83,12 @@ export const mappingToDomainsStore = (initialData = {}) => ({
   }),
   onUpdateTerm: action((state, updatedTerm) => {
     let idx = state.terms.findIndex((t) => t.id === updatedTerm.id);
-    if (idx >= 0) state.terms[idx] = updatedTerm;
+    if (idx >= 0)
+      state.terms[idx] = {
+        ...updatedTerm,
+        mapped: state.terms[idx].mapped,
+        mappedPersistent: state.terms[idx].mappedPersistent,
+      };
   }),
   onRemoveTerm: action((state, term) => {
     remove(state.terms, (t) => t.id === term.id);

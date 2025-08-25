@@ -7,9 +7,9 @@ import MatchVocabulary from './match-vocabulary/MatchVocabulary';
 import DropZone from '../shared/DropZone';
 import PredicateOptions from '../shared/PredicateOptions';
 import { DraggableItemTypes } from '../shared/DraggableItemTypes';
-import VocabularyLabel from './match-vocabulary/VocabularyLabel';
+import MapVocabularyLink from './match-vocabulary/MapVocabularyLink';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faPencilAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { noMatchPredicate } from './stores/mappingStore';
 import { showSuccess } from '../../helpers/Messages';
 import { spineTermRowStore } from './stores/spineTermRowStore';
@@ -33,6 +33,7 @@ const SpineTermRow = (props) => {
     alignment,
     onUpdateAlignmentComment,
     onUpdateAlignmentTransformation,
+    onEditTermClick,
     mappedTermsToSpineTerm,
     origin,
     compactDomains,
@@ -48,13 +49,15 @@ const SpineTermRow = (props) => {
     spineTermRowStore({
       predicateOption: findPredicate()?.pref_label,
       predicateDefinition: findPredicate()?.definition,
-      mappedTermMatching: mappedTermsToSpineTerm(term)[0],
+      mappedTermsMatching: mappedTermsToSpineTerm(term).filter(
+        (mTerm) => mTerm.vocabularies?.length
+      ),
     })
   );
   const {
     predicateOption,
     predicateDefinition,
-    mappedTermMatching,
+    mappedTermsMatching,
     editing,
     transforming,
     matchingVocab,
@@ -71,11 +74,10 @@ const SpineTermRow = (props) => {
 
   /**
    * Determines whether to show the vocabularies matching window or not.
-   * It will depend on both the spine term having a vocabulary associated
-   * and the mapped term either.
+   * It will depend on mapped terms having a vocabulary. In case if spine doesn't
+   * have a vocabulary, it will be created automatically on dialog opening.
    */
   const alignmentHasVocabulary = () =>
-    term.vocabularies?.length &&
     mappedTermsToSpineTerm(term).some((mTerm) => mTerm.vocabularies?.length);
   /**
    * Manage to show a card when there's a predicate selected.
@@ -136,11 +138,12 @@ const SpineTermRow = (props) => {
   const onRequestTransformationClose = () => actions.setTransforming(false);
 
   const mappedTerms = mappedTermsToSpineTerm(term);
+  const syntheticNotSaved = term.synthetic && !term.persisted;
   const withPredicate = predicateOption && !noMatchPredicate(predicateOption);
   const clsPredicate =
     (withPredicate && mappedTerms.length === 0) || (!predicateOption && mappedTerms.length > 0)
-      ? 'border-warning'
-      : '';
+      ? 'border-warning w-100'
+      : 'w-100';
 
   return (
     <>
@@ -166,8 +169,7 @@ const SpineTermRow = (props) => {
           mappingOrigin={origin}
           spineOrigin={spineOrigin}
           spineTerm={term}
-          mappedTerm={mappedTermMatching}
-          predicates={predicates}
+          mappedTerms={mappedTermsMatching}
           alignment={alignment}
         />
       ) : null}
@@ -202,19 +204,17 @@ const SpineTermRow = (props) => {
                     {!term.synthetic ? (
                       <>
                         <p className="card-text">
-                          Domains:{' '}
+                          Used on class(es):{' '}
                           <span className="col-primary">
                             {intersection(compactDomains, term.compactDomains).join(', ')}
                           </span>
                         </p>
                         <p className="card-text">
-                          Ranges:{' '}
+                          Expected value type(s):{' '}
                           <span className="col-primary">{term.compactRanges.join(', ')}</span>
                         </p>
                       </>
                     ) : null}
-
-                    {alignmentHasVocabulary() ? <VocabularyLabel term={term} /> : ''}
                   </div>
                 ) : null}
               </>
@@ -239,19 +239,30 @@ const SpineTermRow = (props) => {
             <button
               className="btn btn-link p-0 col-primary"
               onClick={() => actions.setEditing(true)}
+              disabled={syntheticNotSaved}
             >
               {alignment?.comment ? 'Edit Comment' : 'Add Comment'}
             </button>
           </div>
           <div className="w-100 mt-1 text-end">
-            <label
+            <button
               className="btn btn-link p-0 col-primary"
               onClick={() => actions.setTransforming(true)}
+              disabled={syntheticNotSaved}
             >
               {alignment?.transformation?.to || alignment?.transformation?.from
                 ? 'Edit Transformation'
                 : 'Add Transformation'}
-            </label>
+            </button>
+          </div>
+          <div className="w-100 mt-1 text-end">
+            <MapVocabularyLink
+              disabled={!alignmentHasVocabulary()}
+              notPersisted={syntheticNotSaved}
+              onVocabularyClick={actions.handleMatchVocabularyClick}
+              terms={mappedTerms.filter((mTerm) => mTerm.vocabularies?.length)}
+              id={term.id}
+            />
           </div>
         </div>
 
@@ -261,7 +272,7 @@ const SpineTermRow = (props) => {
             droppedItem={{ id: term.id }}
             disabled={noMatchPredicate(predicateOption)}
             cls={clsPredicate}
-            placeholder="Drag a matching property here"
+            placeholder="Drag relevant properties/elements here"
           >
             {mappedTerms.map((mTerm) => {
               return (
@@ -278,6 +289,12 @@ const SpineTermRow = (props) => {
                       </div>
                       <div className="col-10">
                         <strong>{mTerm.name}</strong>
+                        <span
+                          onClick={() => onEditTermClick(mTerm)}
+                          className="ms-3 cursor-pointer"
+                        >
+                          <FontAwesomeIcon icon={faPencilAlt} />
+                        </span>
                       </div>
                     </div>
                   }
@@ -310,22 +327,14 @@ const SpineTermRow = (props) => {
                       {mappedTermExpanded ? (
                         <div className="mt-2">
                           <p className="card-text">
-                            Domains:{' '}
+                            Used on class(es):{' '}
                             <span>
                               {intersection(compactDomains, mTerm.compactDomains).join(', ')}
                             </span>
                           </p>
                           <p className="card-text">
-                            Ranges: <span>{mTerm.compactRanges.join(', ')}</span>
+                            Expected value type(s): <span>{mTerm.compactRanges.join(', ')}</span>
                           </p>
-                          {alignmentHasVocabulary() ? (
-                            <VocabularyLabel
-                              onVocabularyClick={actions.handleMatchVocabularyClick}
-                              term={mTerm}
-                            />
-                          ) : (
-                            ''
-                          )}
                         </div>
                       ) : null}
                     </>

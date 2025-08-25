@@ -18,8 +18,11 @@ module API
       end
 
       def index_shared_mappings
-        render json: ConfigurationProfile.active.with_shared_mappings.order(:name), with_shared_mappings: true,
-               shared_mappings: true
+        # cache the shared mappings for performance
+        shared_mappings = Rails.cache.fetch("shared_mappings", expires_in: 1.minute) do
+          ConfigurationProfile.active.with_shared_mappings.order(:name)
+        end
+        render json: shared_mappings, with_shared_mappings: true, shared_mappings: true
       end
 
       def index_for_user

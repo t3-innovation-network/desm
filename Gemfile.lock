@@ -519,9 +519,8 @@ GEM
     rubyzip (2.4.1)
     scanf (1.0.0)
     securerandom (0.4.1)
-    seed-fu (2.3.9)
-      activerecord (>= 3.1)
-      activesupport (>= 3.1)
+    seedbank (0.5.0)
+      rake (>= 10.0)
     shacl (0.4.1)
       json-ld (~> 3.3)
       rdf (~> 3.3)
@@ -599,6 +598,9 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    with_advisory_lock (5.3.0)
+      activerecord (>= 6.1)
+      zeitwerk (>= 2.6)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     yaml-ld (0.0.3)
@@ -663,7 +665,7 @@ DEPENDENCIES
   ruby-lsp-rails
   ruby-prof (>= 0.17.0)
   rubyzip (~> 2.3)
-  seed-fu
+  seedbank (~> 0.5.0)
   shoulda-matchers
   simplecov
   spring
@@ -677,6 +679,7 @@ DEPENDENCIES
   vernier (>= 0.3.0)
   web-console (>= 3.3.0)
   webmock (~> 3.23)
+  with_advisory_lock (~> 5.3)
   zaru (~> 1.0)
 
 RUBY VERSION

@@ -1,10 +1,10 @@
 import { DraggableItemTypes } from '../shared/DraggableItemTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import DropZone from '../shared/DropZone';
 import TermCard from './TermCard';
 
-const DomainCard = ({ domain, mappedTerms, onRevertMapping }) => (
+const DomainCard = ({ domain, mappedTerms, onRevertMapping, onEditClick }) => (
   <div className="card mb-2" key={domain.id}>
     <div className="card-body">
       <div className="row">
@@ -19,7 +19,7 @@ const DomainCard = ({ domain, mappedTerms, onRevertMapping }) => (
           <DropZone
             droppedItem={{ name: domain.name, uri: domain.id }}
             acceptedItemType={DraggableItemTypes.PROPERTIES_SET}
-            placeholder="Drag a matching property here"
+            placeholder="Drag relevant properties/elements here"
             style={{ minHeight: '200px' }}
           >
             {mappedTerms.length > 0 &&
@@ -37,9 +37,13 @@ const DomainCard = ({ domain, mappedTerms, onRevertMapping }) => (
                       </div>
                       <div className="col-10">
                         <strong>{term.name}</strong>
+                        <span onClick={() => onEditClick(term)} className="ms-3 cursor-pointer">
+                          <FontAwesomeIcon icon={faPencilAlt} />
+                        </span>
                       </div>
                     </div>
                   }
+                  editEnabled={true}
                   expanded={false}
                   isMapped={() => false}
                   key={term.id}

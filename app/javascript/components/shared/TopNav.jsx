@@ -1,7 +1,5 @@
-import {} from 'react';
 import { Link } from 'react-router-dom';
 import AuthButton from '../auth/AuthButton';
-import DashboardBtn from './DashboardBtn';
 import UserInfo from '../auth/UserInfo';
 import logo from '../../../assets/images/t3-logo.png';
 import Container from 'react-bootstrap/Container';
@@ -25,11 +23,6 @@ const TopNav = (props) => {
             <li className="nav-item">
               <UserInfo />
             </li>
-            {!window.location.pathname.includes('dashboard') && (
-              <li className="nav-item">
-                <DashboardBtn />
-              </li>
-            )}
             <li className="nav-item">
               <AuthButton />
             </li>

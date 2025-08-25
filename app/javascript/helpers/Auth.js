@@ -1,4 +1,3 @@
-// TODO: check if it'll work the same way if to move from webpacker
 const adminRoleName = process.env.ADMIN_ROLE_NAME || 'Super Admin'; // eslint-disable-line no-undef
 const mapperRoleName = process.env.MAPPER_ROLE_NAME || 'Mapper'; // eslint-disable-line no-undef
 

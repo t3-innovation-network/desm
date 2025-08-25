@@ -14,7 +14,6 @@ import {
   unsetMappingFormErrors,
 } from '../../actions/mappingform';
 import fetchDomains from '../../services/fetchDomains';
-import fetchMergedFile from '../../services/fetchMergedFile';
 import MultipleDomainsModal from './MultipleDomainsModal';
 import checkDomainsInFile from '../../services/checkDomainsInFile';
 import filterSpecification from '../../services/filterSpecification';
@@ -146,25 +145,8 @@ const MappingForm = ({ mapping = null }) => {
         actions.setDomainsInFile(response.domains);
         return;
       }
-    }
 
-    await previewSingleDomainFile(mergedFileId);
-  };
-
-  /**
-   * The uploaded file is a single domain file. Let's just get the content and show in preview
-   *
-   * @param {int} mergedFileId
-   */
-  const previewSingleDomainFile = async (mergedFileId) => {
-    let response = await fetchMergedFile(mergedFileId);
-
-    if (!anyError(response)) {
-      let tempSpecs = [];
-      tempSpecs.push(JSON.stringify(response.mergedFile, null, 2));
-
-      dispatch(setSpecToPreview(tempSpecs));
-      dispatch(setFilteredFile(response.mergedFile));
+      await onSelectDomainsFromFile([response.domains[0].uri], mergedFileId);
     }
   };
 
@@ -210,8 +192,8 @@ const MappingForm = ({ mapping = null }) => {
    *
    * @param {Array} uris: The uri's of the selected domains
    */
-  const handleFilterSpecification = async (uris) => {
-    let response = await filterSpecification(uris, mergedFileId);
+  const handleFilterSpecification = async (uris, fileId = null) => {
+    let response = await filterSpecification(uris, fileId || mergedFileId);
 
     if (!anyError(response)) {
       dispatch(setVocabularies(response.filtered.vocabularies));
@@ -230,15 +212,15 @@ const MappingForm = ({ mapping = null }) => {
    *
    * @param {Array} uris The list of identifiers of the rdfs:Class(es) selected.
    */
-  const onSelectDomainsFromFile = async (uris) => {
+  const onSelectDomainsFromFile = async (uris, fileId = null) => {
     dispatch(startProcessingFile());
     actions.setMultipleDomainsInFile(false);
 
-    mappingFormData.selectedDomains = uris;
-    dispatch(setMappingFormData(mappingFormData));
+    const data = { ...formData(), ...mappingFormData, selectedDomains: uris };
+    dispatch(setMappingFormData(data));
 
     let tempSpecs = [];
-    let specification = await handleFilterSpecification(uris);
+    let specification = await handleFilterSpecification(uris, fileId);
 
     tempSpecs.push(JSON.stringify(specification, null, 2));
 
@@ -319,7 +301,7 @@ const MappingForm = ({ mapping = null }) => {
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label className="form-label" htmlFor="specification_name">
+              <label className="form-label required" htmlFor="specification_name">
                 Name of your specification
               </label>
               <input
@@ -354,7 +336,7 @@ const MappingForm = ({ mapping = null }) => {
             <div className="form-group">
               {isNew ? (
                 <>
-                  <label className="form-label">{i18n.t(`${i18key}.form.domain`)}</label>
+                  <label className="form-label required">{i18n.t(`${i18key}.form.domain`)}</label>
 
                   <div className="desm-radio">
                     {state.domains.map((domain) => (
@@ -382,7 +364,9 @@ const MappingForm = ({ mapping = null }) => {
                     Boolean(files.length) &&
                     !submitted &&
                     !processingFile && (
-                      <span style={{ color: 'red' }}>Please select a domain from the list ☝️ </span>
+                      <span style={{ color: 'red' }}>
+                        Please select an abstract class from the list ☝️{' '}
+                      </span>
                     )}
                 </>
               ) : (
@@ -397,8 +381,8 @@ const MappingForm = ({ mapping = null }) => {
               )}
 
               <small className="mb-3">
-                Domains in <span className="badge bg-success">green</span> have a spine already
-                uploaded
+                Abstract classes in <span className="badge bg-success">green</span> have a spine
+                already uploaded
               </small>
             </div>
             <div className="form-group">
@@ -422,12 +406,13 @@ const MappingForm = ({ mapping = null }) => {
                   />
                   <label className="custom-file-label" htmlFor="file-uploader">
                     Attach File
-                    <span className="text-danger">*</span>
+                    <span className="text-danger align-top"> *</span>
                   </label>
                 </div>
               </div>
               <label className="mt-3">
-                You can upload your specification as CSV, JSON-LD, JSON Schema, RDF, or XML format
+                You can upload your specification as RDF (Turtle, JSON-LD or RDF/XML), JSON Schema,
+                XML Schema (XSD), or CSV.
               </label>
               {Boolean(files.length) && !submitted && !processingFile && (
                 <section>

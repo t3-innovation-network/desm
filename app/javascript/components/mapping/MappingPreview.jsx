@@ -7,7 +7,7 @@ import {
   unsetMergedFileId,
   unsetSpecToPreview,
 } from '../../actions/files';
-import SpecsPreviewTabs from './SpecsPreviewTabs';
+import SpecsPreviewList from './SpecsPreviewList';
 import {
   doUnsubmit,
   setMappingFormErrors,
@@ -25,8 +25,9 @@ import { vocabName } from '../../helpers/Vocabularies';
 import UploadVocabulary from '../mapping-to-domains/UploadVocabulary';
 import Pluralize from 'pluralize';
 import extractVocabularies from '../../services/extractVocabularies';
-import { showError, showSuccess } from '../../helpers/Messages';
+import { showError, showSuccess, showWarning } from '../../helpers/Messages';
 import { pageRoutes } from '../../services/pageRoutes';
+import { i18n } from '../../utils/i18n';
 
 const MappingPreview = (props) => {
   const { mapping } = props;
@@ -148,7 +149,7 @@ const MappingPreview = (props) => {
    */
   const handleLookForVocabularyName = (vocab) => {
     try {
-      return vocabName(vocab['@graph']);
+      return vocabName(vocab);
     } catch (error) {
       showError(error);
       return '';
@@ -161,36 +162,41 @@ const MappingPreview = (props) => {
    * @param {Object} data
    */
   const handleVocabularyAdded = async (data) => {
-    const response = await extractVocabularies(data.vocabulary.content);
-    dispatch(setVocabularies([...vocabularies, ...response.vocabularies]));
-  };
-
-  /**
-   * Use the api service to create one only vocabulary.
-   *
-   * @param {String} name The name for the vocabulary
-   * @param {Object} content The JSON structured content for the vocabulary
-   */
-  const handleSaveOneVocabulary = async (name, content) => {
-    let response = await createVocabulary({
-      vocabulary: {
-        name: name,
-        content: content,
-      },
-    });
-
-    if (response.error) {
-      return false;
+    const response = await extractVocabularies(data);
+    if (!response.error) {
+      // select vocabularies from the response that were already in the store
+      const existingVocabularies = response.vocabularies.filter((v) =>
+        vocabularies.some((existingVocab) => vocabName(existingVocab) === vocabName(v))
+      );
+      response.vocabularies.forEach((vocab) => {
+        // find vocabularies with the same name and get maximum version + 1
+        const existingVocabs = vocabularies.filter((v) => vocabName(v) === vocabName(vocab));
+        if (existingVocabs.length > 0) {
+          const maxVersion = Math.max(...existingVocabs.map((v) => v.version));
+          vocab.version = maxVersion + 1;
+        }
+      });
+      dispatch(setVocabularies([...vocabularies, ...response.vocabularies]));
+      // if any existing vocabulary was found, show a error message
+      if (existingVocabularies.length > 0) {
+        dispatch(
+          setMappingFormErrors([
+            'The following controlled vocabularies were already added and will be added with version number on saving: ' +
+              existingVocabularies.map((v) => vocabName(v)).join(', '),
+          ])
+        );
+      }
     }
-
-    return true;
+    return response;
   };
 
   /**
    * Create all the vocabularies
    */
   const handleCreateVocabularies = async () => {
-    let cantSaved = 0;
+    let countCreated = 0,
+      countUpdated = 0,
+      updateVocabularies = [];
 
     setCreatingVocabularies(true);
     /// Iterate through all the vocabularies, creating one by one using the api service
@@ -203,14 +209,40 @@ const MappingPreview = (props) => {
         /// will generate an error in the backend.
         if (vName === '' || isUndefined(vName)) return;
 
-        if (await handleSaveOneVocabulary(vName, vocab)) {
-          cantSaved++;
+        const response = await createVocabulary({
+          vocabulary: {
+            name: vName,
+            content: vocab,
+          },
+        });
+        if (!response.error) {
+          if (response.vocabulary.version === 1) {
+            countCreated++;
+          } else {
+            countUpdated++;
+            updateVocabularies.push({
+              name: response.vocabulary.name,
+              version: response.vocabulary.version,
+              name_with_version: response.vocabulary.name_with_version,
+            });
+          }
         }
       })
     );
     setCreatingVocabularies(false);
 
-    if (cantSaved) showSuccess(cantSaved + ' vocabularies processed.');
+    const countSaved = countCreated + countUpdated;
+    if (countSaved && countUpdated === 0) {
+      showSuccess(i18n.t('ui.mapping.vocabularies.created', { count: countSaved }));
+    } else if (countUpdated > 0) {
+      const messageProcessed = i18n.t('ui.mapping.vocabularies.created', { count: countSaved });
+      const messageUpdated = i18n.t('ui.mapping.vocabularies.updated', {
+        count: countUpdated,
+        name: updateVocabularies.map((v) => `"${v.name}"`).join(', '),
+        new_name: updateVocabularies.map((v) => `"${v.name_with_version}"`).join(', '),
+      });
+      showWarning(`${messageProcessed} ${messageUpdated}`);
+    }
   };
 
   /**
@@ -255,7 +287,7 @@ const MappingPreview = (props) => {
           />
         ) : creatingVocabularies ? (
           <Loader
-            message="We're processing vocabularies. Please wait, this might take a while ..."
+            message="We're processing controlled vocabularies. Please wait, this might take a while ..."
             showImage={true}
           />
         ) : (
@@ -277,7 +309,7 @@ const MappingPreview = (props) => {
                         onClick={handleLooksGood}
                         title={
                           !propertiesCount
-                            ? 'No properties were found in the uploaded file/s. Please review it an try again'
+                            ? 'No properties/elements were found in the uploaded file/s. Please review it an try again'
                             : 'Create the specification'
                         }
                       >
@@ -291,10 +323,10 @@ const MappingPreview = (props) => {
                 <div className="col">
                   <label
                     className="col-primary cursor-pointer float-end"
-                    title="Add a new vocabulary"
+                    title="Add a new controlled vocabulary"
                     onClick={() => setAddingVocabulary(true)}
                   >
-                    Add Vocabulary
+                    Add Controlled Vocabulary
                   </label>
                 </div>
               </div>
@@ -314,7 +346,7 @@ const MappingPreview = (props) => {
                   showImage={true}
                 />
               ) : (
-                <SpecsPreviewTabs disabled={addingVocabulary} propertiesCount={propertiesCount} />
+                <SpecsPreviewList disabled={addingVocabulary} propertiesCount={propertiesCount} />
               )}
             </>
           )

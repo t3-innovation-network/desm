@@ -1,13 +1,22 @@
 import { isString, isEmpty, isNull, isObject, isArray } from 'lodash';
 
-/**
- * Generate a name for the vocabulary
- *
- * @param {Array} graph a list of nodes.
- */
-export const vocabName = (graph) => {
-  let schemeNode = graphMainNode(graph);
+const versionedName = (vocab) => {
+  if (vocab.version === 1) return vocab.name;
+  return `${vocab.name} (${vocab.version})`;
+};
 
+/**
+ * Get or generate a name for the vocabulary
+ *
+ * @param {Object} vocab containing vocab data.
+ * @param {Number} version (optional) to return a versioned name.
+ * @returns {String} the name of the vocabulary.
+ */
+export const vocabName = (vocab, version = null) => {
+  // data will be returned from the backend with a name_with_version, fallback to parse from graph
+  if (vocab.name_with_version) return version ? versionedName(vocab) : vocab.name;
+
+  let schemeNode = graphMainNode(vocab['@graph']);
   if (!schemeNode) throw 'ConceptScheme node not found!';
 
   /// Look for an attribute with a name for the vocabulary in the concept scheme node
@@ -20,7 +29,8 @@ export const vocabName = (graph) => {
     }
   }
 
-  return name;
+  // TODO: move all this to backend serializer
+  return !version || version === 1 ? name : `${name} (${version})`;
 };
 
 /**
@@ -33,86 +43,6 @@ export const graphMainNode = (graph) => {
   return graph.find((node) => {
     return nodeTypes(node).find((type) => type?.toLowerCase()?.includes('conceptscheme'));
   });
-};
-
-/**
- * Validate it's a skos file with a vocabulary inside.
- * It must have:
- * - A context
- * - A graph
- * - A main node (of type skos:ConceptScheme) inside the graph
- * - At least one concept node inside the graph
- *
- * @param {String|Object} vocab
- */
-export const validVocabulary = (vocab) => {
-  /// Ensure we deal with a JSON (object, not string)
-  if (isString(vocab)) vocab = JSON.parse(vocab);
-
-  let errors = [];
-
-  let hasContext = vocab['@context'];
-  let hasGraph = vocab['@graph'];
-  let hasMainNode = hasGraph && graphMainNode(vocab['@graph']);
-  let hasConcepts =
-    hasGraph &&
-    vocab['@graph'].some((node) =>
-      nodeTypes(node).some((type) => {
-        if (!type) {
-          return false;
-        }
-
-        return (
-          type.toLowerCase().includes('concept') && !type.toLowerCase().includes('conceptscheme')
-        );
-      })
-    );
-
-  if (!hasContext) errors.push('Missing context.');
-  if (!hasGraph) errors.push('Missing graph.');
-  if (!hasMainNode) errors.push('Missing concept scheme node.');
-  if (!hasConcepts) errors.push('Missing concept nodes');
-
-  return {
-    errors: errors,
-    result: hasContext && hasGraph && hasMainNode && hasConcepts,
-  };
-};
-
-/**
- * The number of concepts inside each scheme
- * @param {Object} vocab
- */
-export const countConcepts = (vocab) => {
-  if (isEmpty(vocab)) {
-    return [];
-  }
-
-  const conceptSchemes = {};
-
-  vocab['@graph'].forEach((node) => {
-    const types = nodeTypes(node);
-    let ids = [];
-
-    if (types.some((t) => t.toLowerCase().includes('conceptscheme'))) {
-      ids = [node['@id']];
-    } else if (types.some((t) => t.toLowerCase().includes('concept'))) {
-      ids = node['skos:inScheme'];
-    }
-
-    ids.forEach((id) => {
-      if (conceptSchemes[id]) {
-        conceptSchemes[id].push(node);
-      } else {
-        conceptSchemes[id] = [node];
-      }
-    });
-  });
-
-  return Object.values(conceptSchemes).map((graph) => ({
-    name: vocabName(graph),
-    conceptsCount: graph.length - 1,
-  }));
 };
 
 /**

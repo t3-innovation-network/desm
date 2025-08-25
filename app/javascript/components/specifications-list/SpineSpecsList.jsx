@@ -110,10 +110,10 @@ const SpineSpecsList = ({ loading, onRemove, spines }) => {
         spines.map((spine) => {
           return (
             <tr key={spine.id}>
+              <td>{spine.name}</td>
               <td>
-                {spine.name + ' '} <strong className="col-primary">- Spine</strong>
+                <span className="col-primary">Spine</span>
               </td>
-              <td />
               <td />
               <td />
               <td />

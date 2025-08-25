@@ -8,6 +8,7 @@ module Desm
   PRIVATE_KEY = ENV['PRIVATE_KEY'] || 'BAE4QavZnymiL^c584&nBV*dxEGFzas4KXiHTz!a26##!zsHnS'
   MIN_PASSWORD_LENGTH = ENV['MIN_PASSWORD_LENGTH'] || 8
   DESM_NAMESPACE = URI("http://desmsolutions.org/ns/")
+  VOCABULARIES_PREDICATE_SET = "Vacabulary Predicates"
 
   ###
   # @description: These are for established specs used in the mapping. This block will be the same for all mapping,

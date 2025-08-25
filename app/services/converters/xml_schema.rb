@@ -13,8 +13,14 @@ module Converters
       super
       @doc = Nokogiri::XML(File.read(file.path))
 
-      doc.xpath("/xs:schema/xs:complexType | /xs:schema/xs:group").each do |complex_type|
+      doc.xpath(COMPLEX_TYPE_XPATH).each do |complex_type|
         build_complex_type_resources(complex_type)
+      end
+      return unless resources.empty?
+
+      doc.xpath("/xs:schema/xs:simpleType").each do |simple_type|
+        concept_scheme = build_concept_scheme(simple_type)
+        resources << concept_scheme if concept_scheme.present?
       end
     rescue Nokogiri::XML::XPath::SyntaxError => e
       # TODO: check if we need to raise exception here
@@ -29,6 +35,10 @@ module Converters
     end
 
     private
+
+    COMPLEX_TYPE_XPATH = "/xs:schema/xs:complexType | /xs:schema/xs:group | /xs:schema/xs:element/xs:complexType"
+
+    private_constant :COMPLEX_TYPE_XPATH
 
     ##
     # Builds RDF resources from an `xs:complexType`.
@@ -99,7 +109,7 @@ module Converters
     # @param complex_type [Nokogiri::XML::Element]
     # @return [Hash]
     def build_domain_class(complex_type)
-      name = complex_type["name"]
+      return unless (name = complex_type["name"]).present?
 
       {
         "@id": build_desm_uri(name.upcase_first),
@@ -151,7 +161,7 @@ module Converters
         "rdfs:comment": extract_annotation(element),
         "desm:sourcePath": element.path,
         "desm:valueSpace": concept_scheme&.slice(:@id),
-        "rdfs:domain": fetch_domain_class(complex_type).slice(:@id),
+        "rdfs:domain": fetch_domain_class(complex_type)&.slice(:@id),
         "rdfs:range": derive_range(type)
       }
 

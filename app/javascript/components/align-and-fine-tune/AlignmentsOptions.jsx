@@ -31,11 +31,11 @@ const AlignmentsOptions = (props) => {
           disabled={loading || !noPartiallyMappedTerms}
           title={
             noPartiallyMappedTerms
-              ? 'Mark this mapping as finished'
+              ? 'Publish this mapping'
               : 'Be sure to map all the properties to the spine, and to set a predicate to each alignment'
           }
         >
-          Done
+          Publish
         </button>
       )}
     </>

@@ -20,6 +20,8 @@ export const defaultState = {
   changesPerformed: 0,
   // Controls displaying the removal confirmation dialog
   confirmingRemoveAlignment: false,
+  // Controls displaying Edit Term modal
+  editingTerm: false,
 
   // options
   // Whether to hide mapped spine terms or not
@@ -36,6 +38,8 @@ export const defaultState = {
   alignments: [],
   // Represents the alignment that's going to be removed if the user confirms that action
   alignmentToRemove: null,
+  // Term that the user is editing
+  termToEdit: { property: {} },
   // Declare and have an initial state for the mapping
   mapping: {},
   // The terms of the mapping (The selected ones from the uploaded specification)
@@ -96,8 +100,8 @@ export const mappingStore = (initialData = {}) => ({
    *
    * @param {Integer} spineTermId
    */
-  alignmentForSpineTerm: computed((state) => (spineTermId) =>
-    state.alignments.find((alg) => alg.spineTermId === spineTermId)
+  alignmentForSpineTerm: computed(
+    (state) => (spineTermId) => state.alignments.find((alg) => alg.spineTermId === spineTermId)
   ),
   /**
    * The selected or not selected terms that includes the string typed by the user in the
@@ -169,13 +173,14 @@ export const mappingStore = (initialData = {}) => ({
    *    marked in memory as "mappedTo".
    * 2. The term is already mapped in the backend (is one of the mapping terms in DB).
    */
-  selectedTermIsMapped: computed((state) => (alignment) =>
-    state.alignments.some(
-      (alg) =>
-        alg.predicateId &&
-        !(state.noMatchPredicateId === alg.predicateId) &&
-        alg.mappedTerms.some((mappedTerm) => mappedTerm.id === alignment.id)
-    )
+  selectedTermIsMapped: computed(
+    (state) => (alignment) =>
+      state.alignments.some(
+        (alg) =>
+          alg.predicateId &&
+          !(state.noMatchPredicateId === alg.predicateId) &&
+          alg.mappedTerms.some((mappedTerm) => mappedTerm.id === alignment.id)
+      )
   ),
   /**
    * Returns whether the spine term has any mapping terms mapped to it. It can be 1 of 2 options:
@@ -205,8 +210,9 @@ export const mappingStore = (initialData = {}) => ({
         id: syntheticTermId,
         name: '',
         synthetic: true,
+        vocabularies: [],
         property: {
-          comment: 'Synthetic property added to spine',
+          comment: 'New term added to spine',
         },
       });
       state.alignments.push({
@@ -249,7 +255,7 @@ export const mappingStore = (initialData = {}) => ({
       // Manage synthetic name (valid only when the spine term is synthetic)
       if (selectedTerms.length) {
         let synteticTerm = state.spineTerms.find((sTerm) => sTerm.id === spineTerm.id);
-        if (synteticTerm.synthetic) spineTerm.name = selectedTerms[0].name;
+        if (synteticTerm.synthetic) synteticTerm.name = selectedTerms[0].name;
       }
       // Deselect terms
       selectedTerms.forEach((term) => (term.selected = false));
@@ -386,6 +392,22 @@ export const mappingStore = (initialData = {}) => ({
       .map((a) => a.spineTermId);
     let syntheticTerms = state.spineTerms.filter((term) => syntheticTermIds.includes(term.id));
     state.spineTerms = terms.concat(syntheticTerms);
+  }),
+  // Handles to view the modal window that allows to edit a term
+  onEditTermClick: action((state, term) => {
+    state.editingTerm = true;
+    state.termToEdit = term;
+  }),
+  onUpdateTerm: action((state, updatedTerm) => {
+    let idx = state.mappingSelectedTerms.findIndex((t) => t.id === updatedTerm.id);
+    if (idx >= 0) state.mappingSelectedTerms[idx] = updatedTerm;
+    state.alignments.forEach((alignment) => {
+      alignment.mappedTerms.forEach((t, i) => {
+        if (t.id === updatedTerm.id) {
+          alignment.mappedTerms[i] = { ...t, ...updatedTerm };
+        }
+      });
+    });
   }),
 
   // async actions

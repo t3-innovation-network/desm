@@ -15,9 +15,10 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AppContext } from '../../contexts/AppContext';
 import { mappingToDomainsStore } from './stores/mappingToDomainsStore';
 import { pageRoutes } from '../../services/pageRoutes';
+import { i18n } from '../../utils/i18n';
 
 const MappingToDomains = (props) => {
-  const { organization } = useContext(AppContext);
+  const { currentConfigurationProfile, organization } = useContext(AppContext);
   const [state, actions] = useLocalStore(() =>
     mappingToDomainsStore({ mapping: { id: props.match.params.id || null } })
   );
@@ -34,7 +35,7 @@ const MappingToDomains = (props) => {
     termsInputValue,
   } = state;
 
-  const progress = Math.floor((100 * mappedTerms.length / terms.length) || 0);
+  const progress = Math.floor((100 * mappedTerms.length) / terms.length || 0);
 
   // Action to perform after a term is dropped
   const afterDropTerm = (_spineTerm, items) => actions.afterDropTerm({ items });
@@ -50,7 +51,7 @@ const MappingToDomains = (props) => {
   const handleDoneDomainMapping = async () => {
     const result = await actions.handleDoneDomainMapping();
     if (result) {
-      // Redirect to 3rd step mapping ("Align and Fine Tune")
+      // Redirect to 3rd step mapping ("Map Properties")
       props.history.push(pageRoutes.mappingInProgress(mapping.id));
     }
   };
@@ -88,11 +89,11 @@ const MappingToDomains = (props) => {
   const DoneDomainMapping = () => {
     return (
       <button
-        className="btn bg-col-primary col-background"
+        className="btn bg-col-primary col-background ms-3"
         onClick={handleDoneDomainMapping}
         disabled={!state.mappedTerms.length}
       >
-        Done Domain Mapping
+        Done
       </button>
     );
   };
@@ -103,14 +104,14 @@ const MappingToDomains = (props) => {
   const SaveButtonOptions = () => {
     return (
       <>
-        <DoneDomainMapping />
         <button
-          className="btn btn-dark ms-3"
+          className="btn btn-dark"
           onClick={handleSaveChanges}
           disabled={!changesPerformed || savingChanges}
         >
           {savingChanges ? <Loader noPadding={true} smallSpinner={true} /> : 'Save Changes'}
         </button>
+        <DoneDomainMapping />
       </>
     );
   };
@@ -155,17 +156,27 @@ const MappingToDomains = (props) => {
               {/* LEFT SIDE */}
               <div className="col-lg-7 col-6 mh-100 p-lg-5 pt-5" style={{ overflowY: 'scroll' }}>
                 <div className="border-bottom">
-                  <h6 className="subtitle">2. Add the properties to the proper domain</h6>
-                  <h1>Mapping {mapping.name}</h1>
+                  <h6 className="subtitle">
+                    2. Add the relevant properties/elements to this abstract class
+                  </h6>
+                  <h1 className="fs-3">
+                    <span className="fw-bold">Mapping for: </span>
+                    {currentConfigurationProfile.name}
+                    <br />
+                    <span className="fw-bold">Abstract Class: </span>
+                    {mapping.domain}
+                    <br />
+                    <span className="fw-bold">Schema: </span>
+                    {mapping.specification.name}
+                  </h1>
                   <div className="row">
                     <div className="col-5">
                       <p>
                         <strong>{state.mappedTerms.length}</strong>
-                        {' of ' +
-                          terms.length +
-                          ' ' +
-                          Pluralize('property', terms.length) +
-                          ' added to domains'}
+                        {' of ' + terms.length + ' '}
+                        {i18n.t('ui.mapping_to_domains.properties.added', {
+                          count: terms.length,
+                        })}
                       </p>
                     </div>
                     <div className="col-7">
@@ -192,6 +203,7 @@ const MappingToDomains = (props) => {
                     mappedTerms={state.mappedTerms}
                     selectedTermsCount={state.selectedTerms.length}
                     onRevertMapping={handleRevertMapping}
+                    onEditClick={actions.onEditTermClick}
                   />
                 </div>
                 <div className="mt-2">
@@ -207,7 +219,7 @@ const MappingToDomains = (props) => {
               >
                 <div className="row">
                   <div className="col-6">
-                    <h6 className="subtitle">{organization.name}</h6>
+                    <h6 className="subtitle">{mapping.specification.name}</h6>
                   </div>
                 </div>
 
@@ -217,7 +229,7 @@ const MappingToDomains = (props) => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Find Element / Property"
+                      placeholder="Find Property/Element"
                       value={termsInputValue}
                       onChange={filterTermsOnChange}
                     />
@@ -227,7 +239,9 @@ const MappingToDomains = (props) => {
                 <div className="row">
                   <div className="col-6">
                     <strong>{state.selectedTerms.length}</strong>{' '}
-                    {' ' + Pluralize('property', state.selectedTerms.length) + ' selected'}
+                    {i18n.t('ui.mapping_to_domains.properties.selected', {
+                      count: state.selectedTerms.length,
+                    })}
                     <button className="btn btn-link py-0" onClick={toggleSelectAll}>
                       {state.selectedTerms.length ? 'Deselect' : 'Select'} All
                     </button>
@@ -242,7 +256,7 @@ const MappingToDomains = (props) => {
                         id="hideElems"
                       />
                       <label className="form-check-label" htmlFor="hideElems">
-                        Hide mapped properties
+                        Hide mapped properties/elements
                       </label>
                     </div>
                   </div>
@@ -250,13 +264,10 @@ const MappingToDomains = (props) => {
                 <div className="mt-4">
                   <AlertNotice
                     cssClass="bg-col-primary col-background"
-                    title={
-                      terms.length +
-                      ' ' +
-                      Pluralize('property', terms.length) +
-                      ' have been uploaded'
-                    }
-                    message="Now you can drag and drop them to the matching domain on the left individually or click on several/select all and drag them as a group to begin maping your specification."
+                    title={i18n.t('ui.mapping_to_domains.properties.uploaded', {
+                      count: terms.length,
+                    })}
+                    message="Now you can select the relevant properties/elements for this abstract class on the left individually or click on several/select all and drag them as a group to begin maping your specification."
                   />
 
                   <>

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import Collapsible from '../../shared/Collapsible';
 
 /**
@@ -8,51 +8,35 @@ import Collapsible from '../../shared/Collapsible';
  * @param {Function} onClick
  * @param {String} origin
  */
-class ConceptCard extends Component {
-  /**
-   * Internal state for "selected"
-   */
-  state = {
-    selected: this.props.concept.selected,
-  };
+function ConceptCard({ concept, onClick, origin }) {
+  const [selected, setSelected] = useState(concept.selected);
 
-  /**
-   * Internal handler for onclick event
-   */
-  handleClick = () => {
-    const { selected } = this.state;
-    const { onClick, concept } = this.props;
-
-    this.setState({ selected: !selected }, () => {
-      if (onClick) {
-        onClick(concept);
-      }
+  const handleClick = () => {
+    setSelected((prev) => {
+      const newSelected = !prev;
+      if (onClick) onClick(concept);
+      return newSelected;
     });
   };
 
-  render() {
-    const { concept, origin } = this.props;
-    const { selected } = this.state;
-
-    return (
-      <Collapsible
-        headerContent={<strong>{concept.name}</strong>}
-        cardStyle={'with-shadow mb-2' + (selected ? ' draggable term-selected' : '')}
-        cardHeaderColStyle={selected ? '' : 'cursor-pointer'}
-        observeOutside={false}
-        handleOnClick={this.handleClick}
-        bodyContent={
-          <>
-            <p>{concept.definition}</p>
-            <p>
-              Origin:
-              <span className="col-primary">{' ' + origin}</span>
-            </p>
-          </>
-        }
-      />
-    );
-  }
+  return (
+    <Collapsible
+      headerContent={<strong>{concept.name}</strong>}
+      cardStyle={'with-shadow mb-2' + (selected ? ' draggable term-selected' : '')}
+      cardHeaderColStyle={selected ? '' : 'cursor-pointer'}
+      observeOutside={false}
+      handleOnClick={handleClick}
+      bodyContent={
+        <>
+          <p>{concept.definition}</p>
+          <p>
+            Origin:
+            <span className="col-primary">{' ' + origin}</span>
+          </p>
+        </>
+      }
+    />
+  );
 }
 
 export default ConceptCard;

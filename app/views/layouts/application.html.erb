@@ -16,6 +16,7 @@
     data-lead-mapper="<%= current_configuration_profile_user&.lead_mapper? %>"
     data-logged-in="<%= current_user.present? %>"
     data-organization="<%= current_organization&.to_json %>"
+    data-shared-mappings="<%= ConfigurationProfile.active.with_shared_mappings.order(:name).select(:name, :id).as_json(only: [:name, :id]).to_json %>"
   >
     <%= render "shared/impersonation_status" %>
     <%= yield %>

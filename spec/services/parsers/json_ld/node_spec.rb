@@ -46,8 +46,8 @@ RSpec.describe Parsers::JsonLd::Node do
       end
     end
 
-    context "hash with language code keys" do
-      let(:comment) { { "en" => "Comment", "es" => "Comentario", "jp" => "意見" } }
+    context "hash with language code keys that are not listed as lang keys" do
+      let(:comment) { { "english" => "Comment", "es" => "Comentario", "jp" => "意見" } }
 
       it "returns an array of the hash's values" do
         expect(parsed_comment).to eq(%w(Comment Comentario 意見))

@@ -42,7 +42,8 @@ module API
       #  related properties
       ###
       def filter
-        render json: Processors::Specifications.filter_specification(@instance.content, params[:uris])
+        render json: Processors::Specifications.filter_specification(@instance.content, params[:uris],
+                                                                     current_configuration_profile)
       end
 
       ###
